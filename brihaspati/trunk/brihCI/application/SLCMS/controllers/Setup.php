@@ -9,7 +9,8 @@
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
- * @author Raju Kamal(kamalraju8@gmail.com)    category program 
+ * @author Raju Kamal(kamalraju8@gmail.com)    category program
+ * @author Neha Khullar(nehukhullar@gmail.com)) Entrance Exam Fees 
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -2800,4 +2801,176 @@ class Setup extends CI_Controller
         }//else
         redirect('setup/editcontact');
     }
-}
+
+
+/*   -------------*********** Entrance Exam Fees ****************--------------------   */
+                                           
+/** This function display the Entrance Exam Fees                                                                                                                                                 
+  * @param type  
+  * @return type
+  */                                                                                                           
+   public function viewentranceexamfees() {  
+        $this->result = $this->common_model->get_list('admissionstudent_entranceexamfeeconf');
+        $this->logger->write_logmessage("view"," View Entrance Exam Fees", "Entrance Exam Fees details...");
+        $this->load->view('setup/viewentranceexamfees',$this->result);
+    }
+
+/** This function add the Entrance Exam Fees
+     * @return type
+     */
+    public function addentranceexamfees() {
+              $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');  
+              if(isset($_POST['addentranceexamfees'])) {
+                        $this->form_validation->set_rules('fees','Fees Name','trim|xss_clean|required|callback_isEntranceExist');
+                        $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
+                        $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
+                        $this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|is_natural_no_zero'); 
+                }
+                //if form validation true
+                if($this->form_validation->run()==TRUE){
+                  $data = array(
+                       'aseefc_feename'=>$_POST['fees'],
+                       'aseefc_category'=>$_POST['category'],
+                       'aseefc_gender'=>$_POST['gender'],
+                       'aseefc_amount'=>$_POST['amount'],
+                                        
+                        );
+                        $eeflagfees=$this->common_model->insertrec('admissionstudent_entranceexamfeeconf', $data);
+                        if (!$eeflagfees){
+                   		$this->logger->write_logmessage("insert"," Error in adding entrance exam fees ", " Entrance Exam Fees data insert error . "  );
+                  		$this->logger->write_dblogmessage("insert"," Error in adding entrance exam fees ", " Entrance Exam Fees data insert error . " );
+                   		$this->session->set_flashdata('err_message','Error in adding fees - ' . $_POST['name'] , 'error');
+                    		redirect('setup/addentranceexamfees');
+                         } 
+                		else{
+                  			$this->logger->write_logmessage("insert"," add entrance exam fees ", "Entrance Exam Fees record added successfully..."  );
+                  			$this->logger->write_dblogmessage("insert"," add entrance exam fees ", "Entrance Exam Fees record added successfully..." );
+                  			$this->session->set_flashdata("success", "Entrance Exam Fees added successfully...");
+                   			redirect("setup/viewentranceexamfees");
+                    }
+            }    
+    $this->load->view('setup/addentranceexamfees');
+}    
+ /** This function check for duplicate  Entrance Exam Fees 
+     * @return type
+     */
+    public function isEntranceExist($aseefc_feename) {
+        $is_exist = $this->common_model->isduplicate('admissionstudent_entranceexamfeeconf','aseefc_feename',$aseefc_feename);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isEntranceExist', 'fees master for ' . $aseefc_feename . ' already exist.');
+                return false;
+            }
+            else {
+                 return true;
+            }
+        }
+/**This function is used for update record of  enterance exam fees 
+    * @param type $id
+    */
+    public function editentranceexamfees($id) {
+	$this->entfeeresult = $this->common_model->get_listspfic2('category','cat_name','cat_id');
+	$entrancerowfee=$this->common_model->get_listrow('admissionstudent_entranceexamfeeconf','aseefc_id', $id);
+	if ($entrancerowfee->num_rows() < 1)
+        {
+            redirect('setup/editentranceexamfees');
+        }
+        $ent_data_q = $entrancerowfee->row();
+
+        /* Form fields */
+
+        $data['aseefc_feename'] = array(
+                 'name' => 'aseefc_feename',
+                 'id' => 'aseefc_feename',
+                 'maxlength' => '50',
+                 'size' => '40',
+                 'value' => $ent_data_q->aseefc_feename,
+                 );
+
+        $data['aseefc_category'] = array(
+                'name' => 'aseefc_category',
+                'id' => 'aseefc_category',
+                'maxlength' => '50',
+                'size' => '40',
+		'value' =>$ent_data_q->aseefc_category,
+                );
+        $data['aseefc_gender'] = array(
+                'name' => 'aseefc_gender',
+                'id' => 'aseefc_gender',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $ent_data_q->aseefc_gender,
+
+                );
+        $data['aseefc_amount'] = array(
+                'name' => 'aseefc_amount',
+                'id' => 'aseefc_amount',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $ent_data_q->aseefc_amount,
+                );
+
+        $data['id'] = $id;
+                                                            
+     /*Form Validation*/
+        $this->form_validation->set_rules('aseefc_feename','Name','trim|required');
+	$this->form_validation->set_rules('aseefc_category','Category','trim|required');
+        $this->form_validation->set_rules('aseefc_gender','Gender','trim|xss_clean|required');
+        $this->form_validation->set_rules('aseefc_amount','Amount','trim|xss_clean|is_natural_no_zero|required');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['aseefc_feename']['value'] = $this->input->post('aseefc_feename', TRUE);
+            $data['aseefc_category']['value'] = $this->input->post('aseefc_category', TRUE);
+            $data['aseefc_gender']['value'] = $this->input->post('aseefc_gender', TRUE);
+            $data['aseefc_amount']['value'] = $this->input->post('aseefc_amount', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editentranceexamfees', $data);
+            return;
+        }
+        else{
+
+            $aseefc_feename = $this->input->post('aseefc_feename', TRUE);
+            $aseefc_category = $this->input->post('aseefc_category', TRUE);
+            $aseefc_gender = $this->input->post('aseefc_gender', TRUE);
+            $aseefc_amount = $this->input->post('aseefc_amount', TRUE);
+
+           $logmessage = "";
+            if($ent_data_q-> aseefc_feename != $aseefc_feename)
+                    $logmessage = "Edit Fees Name " .$ent_data_q->aseefc_feename. " changed by " .$aseefc_feename;
+            if($ent_data_q-> aseefc_category != $aseefc_category)
+                     $logmessage = "Edit Category " .$ent_data_q->aseefc_category. " changed by " .$aseefc_category;
+            if($ent_data_q->aseefc_gender != $aseefc_gender)
+                $logmessage = "Edit Gender" .$ent_data_q->aseefc_gender. " changed by " .$aseefc_gender;
+            if($ent_data_q->aseefc_amount != $aseefc_amount)
+                $logmessage = "Edit Amount" .$ent_data_q->aseefc_amount. " changed by " .$aseefc_amount;
+
+            $update_data = array(
+               'aseefc_feename' => $aseefc_feename,
+               'aseefc_category' =>$aseefc_category,
+               'aseefc_gender' => $aseefc_gender,
+               'aseefc_amount' => $aseefc_amount,
+               );
+
+        $eeflag=$this->common_model->updaterec('admissionstudent_entranceexamfeeconf', $update_data,'aseefc_id', $id);
+        if(!$eeflag)
+            {
+                $this->logger->write_logmessage("error","Edit entrance exam fees Setting error", "Edit entrance exam fees Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit entrance exam fees Setting error", "Edit entrance exam fees Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating entrance exam fees - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editentranceexamfees', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit entrance exam fees us Setting by".$this->session->userdata('username') , "Edit entrance exam fees Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit entrance exam fees Setting by".$this->session->userdata('username') , "Edit entrance exam fees Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Entrance Exam Fees detail updated successfully..');
+                redirect('setup/viewentranceexamfees');
+               }
+        }//else 
+        redirect('setup/editentranceexamfees');
+    }//end funtion
+}//end class
