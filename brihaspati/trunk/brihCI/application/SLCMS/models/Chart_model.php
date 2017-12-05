@@ -3,14 +3,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
- * Description of Chart_Modelnew
+ * Description of Chart_Model
  *
  * @author sharad singh(sharad23nov@gmail.com) 
  */
 
 class Chart_model extends CI_Model {
  
-    private $performance = 'performance';
     private $tablename = 'admissionstudent_registration';
     private $barchart = 'barchart';
  
@@ -19,10 +18,8 @@ class Chart_model extends CI_Model {
         parent::__construct();
         $this->load->database();
     }
-
  
     public function get_chart_data($havedate) {
-        
         $this->db->from('admissionstudent_registration');
         $this->db->where('asreg_verificationdate', $havedate);
         $query = $this->db->get();
@@ -51,5 +48,13 @@ class Chart_model extends CI_Model {
         $this->db->truncate();
     }
 
- 
+    public function feesdata($tbname){
+        $this->db->from($tbname);
+        $this->db->where('asfee_reconcilestatus', "Y");
+        $query = $this->db->get();
+        $rowcount = $query->num_rows();
+        return $rowcount;
+
+
+    } 
 }

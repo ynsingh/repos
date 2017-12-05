@@ -661,8 +661,12 @@ class Enterenceadmin extends CI_Controller
         $registeredapplicant = array_reverse($registeredapplicant);
         $data['registeredapplicant'] = $registeredapplicant;
         
-        //echo sizeof($registeredapplicant);
+        // Course Stat
+        $allprogramid = $this->commodel->get_listspficarry('admissionopen','admop_prgname_branch','admop_acadyear',$acadyear);
+        //print_r($allprogramid);  
+        $data['allprogramid']  = $allprogramid;       
 
+        
 
         $this->load->view('enterenceadmin/graphicalreports',$data);
    }
@@ -896,5 +900,86 @@ class Enterenceadmin extends CI_Controller
 	}
 
 
+   public function viewnumericalreport(){
+        //$this->load->model('chart_model', 'chart1');
+        
+        /* Form submit vs date*/
 
+        //$this->chart1->truncatetable('barchart');
+
+        $currdate = date("Y-m-d");
+        str_replace("-","",$currdate);
+
+        // get application start and end date of current academic year
+
+        $acadyear = $this->usermodel->getcurrentAcadYear();
+        $startdate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_startdate;
+        $enddate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate;
+        $enddate = date("Y-m-d",strtotime($enddate));
+
+        if ($enddate < $currdate)
+            $performancedate = $enddate;
+        else
+            $performancedate = $currdate;
+
+        $noofrec = array();
+        $daterec = array();
+        $start_date = date('Y-m-d', strtotime($performancedate .' -10 day'));
+
+/*        for($i = 0; $i < 10 ; $i++)
+        {
+            $results = $this->chart1->get_chart_data($start_date);
+            $istart_date = date("Ymd", strtotime($start_date));
+            $insdata = array('pdate'=>$istart_date,'pval'=>$results);
+            $this->commodel->insertrec('barchart', $insdata);
+
+            $next_date = date('Y-m-d', strtotime($start_date .' +1 day'));
+            $start_date =  $next_date;
+        }
+
+        $results1 = $this->chart1->get_chart_data1();
+*/
+        /* Fees submit vs time */
+        
+        // get fee reconcile status
+//        $feepaid = $this->chart1->feesdata('admissionstudent_fees');
+        //get total no of form submitted
+        $totalsubmitted = $this->commodel->getnoofrows('admissionstudent_registration',''); 
+//        $feenotpaid = $totalsubmitted - $feepaid;
+        
+//        $data['chart_data1'] = $results1['chart_data1'];
+//        $data['min_date'] = $results1['min_date'];
+//        $data['max_date'] = $results1['max_date'];
+        //$data['feepaid'] = $results1['feepaid'];
+//        $data['feepaid'] = $feepaid;
+        //$data['feenotpaid'] = $results1['feenotpaid'];
+        $whdata = array('step3_status' => 1);
+        $totalregistered =  $this->commodel->getnoofrows('admissionstudent_enterencestep',$whdata);
+//        $data['feenotpaid'] = $feenotpaid;
+//        $data['totalsubmitted'] = $totalsubmitted;
+        $data['totalregistered'] = $totalregistered;
+        
+        //get list of registered application
+        $registeredapplicant = $this->commodel->get_listspficarry('admissionstudent_enterencestep','','','');
+        //print_r($registeredapplicant);
+        $registeredapplicant = array_reverse($registeredapplicant);
+        $data['registeredapplicant'] = $registeredapplicant;
+        
+        // Course Stat
+        $allprogramid = $this->commodel->get_listspficarry('admissionopen','admop_prgname_branch','admop_acadyear',$acadyear);
+        //print_r($allprogramid);  
+        $data['allprogramid']  = $allprogramid;       
+
+        // Exam center stat
+
+        $centername = $this->commodel->get_listspficarry('admissionstudent_enterenceexamcenter','eec_name','','');
+        //print_r($centername);
+        $data['centername'] = $centername;
+        
+        
+
+        $this->load->view('enterenceadmin/numericalreports',$data);
+    }
 }//end class
+
+
