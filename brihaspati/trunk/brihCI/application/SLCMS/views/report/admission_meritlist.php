@@ -12,11 +12,8 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body> 
-	<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
-   		<?php $help_uri = site_url()."/help/helpdoc#FacultyList";
+   		<!--?php $help_uri = site_url()."/help/helpdoc#FacultyList";
                     echo "<table style=\" \" align=right>";
                     echo "<tr>";
                     echo "<td align=right>";
@@ -26,7 +23,22 @@
                     echo "</tr>";
                     echo "</table>";
                     ?>
-        </table>
+        </table-->
+<table width="100%;">
+            <tr>
+<?php
+                    echo "<td align=\"left\" width=\"33%\">";
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Admission Merit List Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
+                    $help_uri = site_url()."/help/helpdoc#FacultyList";
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
+echo "</tr>";
+echo "</table>";
+?>
 
            <table class="TFtable" >
             <thead>
@@ -102,7 +114,7 @@
                                         echo "</tr>";
                                 };
                         else :
-                                echo "<td colspan=\"6\" align=\"center\"> No Records found...!</td>";
+                                echo "<td colspan=\"16\" align=\"center\"> No Records found...!</td>";
                         endif;
 
                 ?>

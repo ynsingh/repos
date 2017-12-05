@@ -5,31 +5,27 @@
 <html>
    <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-        <style>
-            thead th{
-
-                background-color: #DCDCDC;
-              }
-                .tag_color{
-                        color:red;
-                }
-
-       </style>
     </head>
     <body>
-    <center>
-         <table width=70%">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
+         <table width=100%">
           <tr><td>
-                <?php  echo anchor('map/authusertype/', "Map Add Authority ", array('title' => 'Add Detail', 'class' =>'top_parent'));?>
-                <?php
-                 $help_uri = site_url()."/help/helpdoc#Authority";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+              <?php  
+                 echo "<td align=\"left\" width=\"33%\">";  
+                 echo anchor('map/authusertype/', "Map Add Authority ", array('title' => 'Add Detail', 'class' =>'top_parent'));
+                 echo "<td align=\"center\" width=\"34%\">";
+                 echo "<b>Authority Details</b>";
+                 echo "</td>";
+                 echo "<td align=\"right\" width=\"33%\">";
+                $help_uri = site_url()."/help/helpdoc#Authority";
+                echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
                  ?>
     
-                <div  style="margin-left:2%; width:90%;" >
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                  <?php if(isset($_SESSION['success'])){?>
                     <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,11 +39,10 @@
                 ?>
                 </div>
            </td></tr>
-        </table></center>
-        <br/>
-            <table cellpadding="16" class="TFtable">
-            <thead >
-            <tr align="center">
+        </table>
+        <div class="scroller_sub_page">
+            <table cellpadding="0" class="TFtable">
+            <thead><tr>
                 <th>Sr.No</th>
                 <th>Authority Name</th>
                 <th>User Name</th>
@@ -62,17 +57,14 @@
                      $count =0;
                      if( count($this->authuser) ):
                      foreach($this->authuser as $row){ ?>
-                     <tr align="center">
+                     <tr>
                      <td> <?php echo ++$count; ?> </td>
-                       <!-- <//?php
-                       //echo "<td>";-->
 		       <td><?php echo $this->loginmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name ?></td>
 	<!--	<td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$row->user_id)->username; ?></td>-->
                 <?php  echo "<td>";
                 echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->user_id)->firstname .' '.$this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->user_id)->lastname;?>
                                                                                                                                         
                 </td>                           
-                <?php echo "</td>";?>
                 <td> <?php echo $row->map_date ?></td>
                     	<td> <?php echo $row->till_date ?></td>
                     	<td> <?php echo $row->authority_type ?></td>

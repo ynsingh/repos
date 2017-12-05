@@ -3,34 +3,42 @@
 <!--@name displayfees.php 
   @author Vijay (vijay.pal428@gmail.com)
  -->
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+
+<!--@name authoritya.php 
+  @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+ -->
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center>
-		   <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+                    <!--?php
+                    echo "<table>";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#FeesMasterArchive";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    $help_uri = site_url()."/help/helpdoc#AuthorityArchive";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:56%;position:absolute;\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?>
+                    ?-->
 
-        <table style="margin-left:10px;">
+<table width="100%">
             <tr colspan="2"><td>
-            <div  style="margin-left:-06px;width:1793px;">
-
+            <?php
+            echo "<td align=\"center\" width=\"100%\">";
+            echo "<b>Fees Master Archive Details</b>";
+            echo "</td>";
+             ?>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -41,13 +49,13 @@
                 <?php
                 };
                 ?>
-
-            </div>
+</div>
             </td></tr>
-        </table></center>
-        <table cellpadding="16" class="TFtable" >
-            <thead>
-                <tr align="center">
+        </table>
+
+        <div class="scroller_sub_page">
+        <table  class="TFtable" >
+            <thead> 
 		<th>Sr.No</th>
 		<th>Fees master Id</th>
 		<th>Program Name</th>
@@ -91,7 +99,7 @@
                 <?php endif;?>
 
             </tbody>
-        </table>
+        </table></div>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

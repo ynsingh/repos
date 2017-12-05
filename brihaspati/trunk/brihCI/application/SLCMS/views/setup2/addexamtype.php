@@ -7,15 +7,19 @@
 
  <head>
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
      <?php $this->load->view('template/menu');?>
  </head>
  <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <table width="100%">
             <tr><td>
-                <div align="left">
-                <?php echo anchor('setup2/examtype/', "View Exam Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
-                <div  style="width:100%;">
+                <?php echo anchor('setup2/examtype/', "View Exam Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">";
+                    $help_uri = site_url()."/help/helpdoc#ViewExamDetail";
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
+            ?>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -30,10 +34,9 @@
               </div>
              </td></tr>
         </table>
-<tr>
-    <div>
+<div>
     <form action="<?php echo site_url('setup2/addexamtype');?>" method="POST" class="form-inline">
-            <table style="margin-left:1%;">
+    <table><tr>
             <tr>
                 <td><label for="exty_name" class="control-label">Exam Type:</label></td>
                 <td>
@@ -67,11 +70,10 @@
                 <button name="reset" >Clear</button>
                 </td>
            </tr>
-           </table>
+          </tr>
+        </table>
     </form>
-    </div>
-    </tr>
-    </table>
+</div>
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>

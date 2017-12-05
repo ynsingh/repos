@@ -8,11 +8,12 @@
     <head>
     <title> View Department</title> 
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>    
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
 
        <!-- <?//php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -31,37 +32,42 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-           <center>
-	   <table  width="70%">
-	    <tr><td>
-  	   <div>
-	   <?php echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); 
-	   $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+          <table  width="100%">
+	   <tr><td>
+          <?php
+           echo "<td align=\"left\" width=\"33%\">";
+           echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); 
+           echo "</td>";
+
+           echo "<td align=\"center\" width=\"34%\">";
+           echo "<b>Department Details</b>";
+           echo "</td>";
+
+           echo "<td align=\"right\" width=\"33%\">";
+    	   $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+           echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+           echo "</td>";
            ?>
-            <tr><td>    
-                <div  style="margin-left:2%;width:70%;">
+                <div>
                 <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                	echo $this->session->flashdata('flash_data');
 		echo $this->session->flashdata('error');
                 ?>
             	</div>
-        </td></tr>   
-        <tr>          
-           <div align="left" style="margin-left:2%;">
-          <table cellpadding="16" class="TFtable">
+        </td></tr>      
+        </table>     
+         <div class="scroller_sub_page">
+          <table  class="TFtable">
           <thead>
-          <tr align="center">
-       <th>University Name</th><th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
+          <th>University Name</th><th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
                  <?php
                     foreach ($this->deptresult as $row)
                     {
-                     
-                        echo "<tr align=\"center\">";
+                        echo "<tr>";
 			echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->dept_orgcode)->org_name. "</td>";
 	      	        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name . "</td>";
                         echo "<td>";
@@ -78,14 +84,13 @@
                         
          //               echo "<td>" . anchor('setup/deletedept/' . $row->dept_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
                         echo "<td>" . anchor('setup/editdepartment/' . $row->dept_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
-                        echo "</br>";
                         echo "</tr>";
                     }
                     echo "</table>";
                 ?>
             </div>
         </tr>
-    </table></center>    
+    </table>
     </body>   
   <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

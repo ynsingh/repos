@@ -9,9 +9,6 @@ echo"<title>Add Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
-    echo "<h1>"; 
-    echo "Welcome "; echo$this->session->userdata('username'); 
-    echo"</h1>";
     $this->load->view('template/menu');
 ?>
 <?php
@@ -36,40 +33,37 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-<br>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%;">
 <tr><td>
 <div>
-<?php echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
-$help_uri = site_url()."/help/helpdoc#Subject";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:80%\">Click for Help</b></a>";
-?>
+	<?php echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+	 echo "<td align=\"right\">";
+	$help_uri = site_url()."/help/helpdoc#Subject";
+	echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+	echo"</td>"
+	?>
 </td></tr>
-</table>
-</div>
-
-    <table>
-    <tr><td>
-    <div  style="margin-left:30px;">
-
-    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
-    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+</table></div>
+<table><tr>
+    <div>
+<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+    <?php echo form_error('<div  class="isa_error">','</div>');?>
 
      <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:30px" class="isa_success"><?php echo $_SESSION['success'];?></div>
+       <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 <?php    }
     if(isset($_SESSION['error']))
     {
-?>        <div style="margin-left:30px"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+?>        <div  class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+</div>
 <?php
     }
-
-    echo "</td></tr>";
+    echo "</tr>";
     echo "</table>";
-    echo "<div style=\"margin-left:30px;\">";
+    echo "</div>";
 
     /* Form */
-
     echo "<table>";
     echo form_open('setup/subject');
     
@@ -180,12 +174,13 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo form_submit('reset', 'Clear');
     //echo form_button('submit', 'Submit');
     echo"</td></tr>";
-    echo "</p>";
+//    echo "</p>";
     echo form_close();
     echo "</table>";
+    
     /* Form */
 echo"</body>";
-echo "<div align=\"left\">";  
+echo "<div>";  
     $this->load->view('template/footer');
 echo "</div>";
 echo "</html>";

@@ -7,8 +7,7 @@
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-    <?php $this->load->view('template/menu');?>
+   <?php $this->load->view('template/menu');?>
   </head>
  <body>
     <!--<//?php
@@ -20,17 +19,24 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-      <center>
-      <table width="70%">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
+      <table width="100%">
             <tr><td>
-                <div align="left">
-		<?php  echo anchor('setup2/addsemrule/', "Add Semester Rule", array('title' => 'Add Semseter Rule','class' =>'top_parent'));
-		?>
-                 <?php
-                 $help_uri = site_url()."/help/helpdoc#ViewSemesterRule";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
-                 ?>
-                <div  style="width:90%;margin-left:2%">
+                <div>
+	     <?php
+                echo "<td align=\"left\" width=\"33%\">";   
+                echo anchor('setup2/addsemrule/', "Add Semester Rule", array('title' => 'Add Semseter Rule','class' =>'top_parent'));
+                echo "</td>";
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Semester Rule Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
+                $help_uri = site_url()."/help/helpdoc#ViewSemesterRule";
+		echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+                  ?>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -45,13 +51,10 @@
               </div>
           </div>   
              </td></tr>
-       </table></center>
-
+       </table>
+<div class="scroller_sub_page">
 <table>
-<tr>
-<div align="left" style="margin-left:2%;">
-<table cellpadding="16" class="TFtable" >
-<tr align="center">
+<table cellpadding="0" class="TFtable" >
 <thead><th>Sr.No</th><th>Program Name</th><th>Branch</th><th>Semester</th><th>Minimum Credit</th><th>Maximum Credit</th><th>Semester CPI</th><th>Action</th></tr></thead>
 
    <?php
@@ -60,7 +63,7 @@
         foreach ($this->result as $row)
         {  
          ?>
-             <tr align="center">
+             <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo  $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->semcr_prgid)->prg_name ?></td>
             <td> <?php echo $sub1 = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->semcr_prgid)->prg_branch  ?></td>
@@ -85,15 +88,9 @@
         echo "</tr>";
         endif;
 
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
-//        echo "<td colspan= \"10\" align=\"center\"> No Records found...!</td>";
            ?>
 
 </div>
-</tr>
 </table>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>

@@ -7,15 +7,9 @@
 echo "<html>";
 echo"<title>View Subject</title>";
 echo "<head>";
-
     $this->load->view('template/header');
-    echo "<h1>"; 
-    echo "Welcome "; echo$this->session->userdata('username'); 
-    echo"</h1>";
-    $this->load->view('template/menu');
-?>
+    $this->load->view('template/menu');?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/tablestyle.css">
-
 <?php
 echo "</head>";
 echo "<body>";
@@ -37,40 +31,40 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-<center>
-<div>
-<table width= "70%">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width= "100%">
 <tr><td>
-<?php echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
+<?php 
+echo "<td align=\"left\" width=\"33%\">";
+echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
+echo "</td>";
+echo "<td align=\"center\" width=\"34%\">";
+echo "<b>Subject Details</b>";
+echo "</td>";
+echo "<td align=\"right\" width=\"33%\">";
 $help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+echo "</td>";
 ?>
 </td></tr>
 </table>
-</div>
-    <center>
     <table width="100%">
-    <tr><td>
     <div>
-
     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
     <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
      <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:2%" class="isa_success"><?php echo str_replace("%20"," ",$_SESSION['success']);?></div>
+       <div class="isa_success"><?php echo str_replace("%20"," ",$_SESSION['success']);?></div>
 <?php    }
     if(isset($_SESSION['error']))
     {
-?>        <div style="margin-left:2%"; class="isa_success">"<?php echo str_replace("%20"," ",$_SESSION['error']);?> </div>
+?>        <div class="isa_success">"<?php echo str_replace("%20"," ",$_SESSION['error']);?> </div>
 <?php
     }
     echo "</div>";
-    echo "</td></tr>";
-    echo "</table>";echo "</center>";
-    echo "<div >";
-
+    echo "</table>";;
+    
 /* form data */
-
-         echo "<table border=0 cellpadding=10  class=\"TFtable\">";
+         echo "<table border=0  class=\"TFtable\">";
          echo "<thead><tr><th>Sr. No </th><th>Program Name</th><th>Semester/Year</th><th>Subject Type</th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>";
 
 	 $srno = 0;
@@ -78,7 +72,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     foreach($subjectlists as $subjectlist)
     {
         $srno = $srno + 1;
-        echo "<tr align=\"center\">";
         echo "<td>"; echo $srno; echo"</td>";
 	echo "<td>"; 
 	if(!empty($subjectlist->sub_program)){
@@ -110,9 +103,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
 /* form data */
 
-    echo "</div>";
 echo"</body>";
-echo "<div align=\"center\">";  
     $this->load->view('template/footer');
 echo "</div>";
 echo "</html>";

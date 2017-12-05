@@ -7,24 +7,27 @@
 <title>View Students List</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-	<table style="width:70%;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table style="width:100%;">
 	<tr><td>
 		<?php
-                 $help_uri = site_url()."/help/helpdoc#ViewStudentlistwithHead";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:relative;margin-top:-10px;\">Click for Help</b></a>";
+                echo "<td align=\"left\" width=\"33%\">";
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Student List Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
+                $help_uri = site_url()."/help/helpdoc#ViewStudentlistwithHead";
+                echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 ?>
-	</td></tr>
+              </td></tr>
 	</table>
-	</br>
-        
-                <table cellpadding="16" class="TFtable" >
-            <thead>
-                <tr align="left">
+	<div class="scroller_sub_page">
+        <table  class="TFtable" >
+            <thead><tr>
                 <th>Student Name</th>
                 <th>Father's Name</th>
                 <th>Address</th>
@@ -40,7 +43,7 @@
                         if( count($this->tresult) ):
                                 foreach($this->tresult as $row){
                                         echo "<tr>";
-                                        echo " <td align=\"center\">";
+                                        echo " <td>";
                                         echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
                                         echo $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;
 					echo " </td>";
@@ -70,7 +73,7 @@
                                         echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
 					echo " ) ";
                                         echo "</td>";
-                                        echo " <td align=\"center\">";
+                                        echo " <td>";
 					$semester=$this->commodel->get_listspficarry('student_program','sp_semester','sp_smid ',$smid);
 					foreach($semester as $row1){
 						$sem= $row1->sp_semester;
@@ -86,7 +89,7 @@
 
                 ?>
             </thead>
-        </table>
+        </table></div>
 
  </div><?php $this->load->view('template/footer'); ?></div>
     </body>

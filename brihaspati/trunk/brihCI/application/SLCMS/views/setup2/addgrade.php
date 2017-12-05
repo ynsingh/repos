@@ -7,7 +7,6 @@
 
  <head>
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
      <?php $this->load->view('template/menu');?>
  </head>    
  <body> 
@@ -20,16 +19,18 @@
         echo "</tr>";
         echo "</table>";
         ?>-->
-
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
      <table width="100%" >
             <tr><td>
-                <div align="left">
-                <?php echo anchor('setup2/grademaster/', "View Grade Master ", array('title' => 'View Grade Master' ,'class' =>'top_parent'));?>
-                <?php
-                 $help_uri = site_url()."/help/helpdoc#GradeMaster";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
-                 ?>
-                <div  style="width:90%;margin-left:2%;">
+                <div>
+                <?php echo anchor('setup2/grademaster/', "View Grade Master ", array('title' => 'View Grade Master' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">"; 
+                $help_uri = site_url()."/help/helpdoc#GradeMaster";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";		
+                echo "</td>";  
+
+             ?>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -44,11 +45,9 @@
               </div>
              </td></tr>
         </table>
- 
-    <tr>
     <div> 
     <form action="<?php echo site_url('setup2/addgrade');?>" method="POST" class="form-inline">
-            <table style="margin-left:2%;">
+            <table><tr>
             <tr>
                 <td><label for="gm_gradename" class="control-label">Grade Name:</label></td>
                 <td>
@@ -109,7 +108,8 @@
                 </td>
            </tr>
            </table>
-    </form>
+	</div>
+          </form>
     </div>
     </tr>
     </table>

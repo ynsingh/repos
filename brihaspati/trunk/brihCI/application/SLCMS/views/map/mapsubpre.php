@@ -103,12 +103,12 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-         </br>    
+    
         <table width="100%"> 
             
             <?php echo form_error('<div style="" class="isa_error">','</div>');?>
  
-            <tr><td>  
+ <tr><td>  
                 <div>    
                 <?php echo anchor('map/prerequisite/', "Subject With Prerequisite List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
 		$help_uri = site_url()."/help/helpdoc#MapSubjectandPaperwithPrerequisite";
@@ -136,7 +136,7 @@
             </div>
         </td></tr>  
         </table>  
-        <br/>
+ 
             
 	<form action="<?php echo site_url('map/mapsubpre');?>" method="POST" class="form-inline">
 	<table>

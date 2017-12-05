@@ -13,10 +13,7 @@
  </head>
  <body>
 
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
-
 <script>
     $(document).ready(function(){
     $('#state_id').on('change',function(){
@@ -54,22 +51,22 @@ function calculate() {
 	
 	}
 </script>
- <table width= "100%">
+ <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:1%">
                 <?php echo anchor('enterenceadmin/examcenter','Exam Center List',array('title'=>'View Detail','class' => 'top_parent'  ));
-                //$help_uri = site_url()."/help/helpdoc#ProgramFees";
-                //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:68%\">Click for Help</b></a>";
+                echo "<td align=\"right\">";
+                $help_uri = site_url()."/help/helpdoc#ProgramFees";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
                 ?>
-</tr></td>
+		</td></tr>
 
-                <div>
                 <tr><td>
-                <div align="left" style="margin-left:2%;width:90%;">
+                <div>
 
                 <?php
                      echo validation_errors('<div class="isa_warning">','</div>');
-                     echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');
+                     echo form_error('<div  class="isa_error">','</div>');
 
                      if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -84,9 +81,8 @@ function calculate() {
                 </div>
             </td></tr>
 </table>
- <div>
     <form action="<?php echo site_url('enterenceadmin/addexamcenter');?>" method="POST" class="form-inline">
-            <table style="margin-left:2%;">
+            <table>
             <tr>
                 <td><label for="eec_code" class="control-label">Entrance Exam Center Code:</label></td>
                 <td>
@@ -101,7 +97,7 @@ function calculate() {
             </tr>
  		 <tr>
                  <td><label for="eec_address" class="control-label">Entrance Exam Center Address:</label></td>
-                 <td><textarea rows= "" cols="44" name="eec_address" size="50" > </textarea></td>
+                 <td><textarea rows= "" cols="44" name="eec_address" size="30" > </textarea></td>
                  </tr>
 		<tr><td>State: </td><td>
                 <select name="eec_state"  id="state_id">
@@ -158,9 +154,6 @@ function calculate() {
            </tr>
            </table>
     </form>
-    </div>
-    </tr>
-    </table>
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>

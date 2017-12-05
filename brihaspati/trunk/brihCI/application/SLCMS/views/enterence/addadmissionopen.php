@@ -37,21 +37,18 @@
     </head>
     <body>
 
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </table>
         <table width="100%" >
 
-          <?php //echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
-            <tr><td>
-                <div style="width:100%;">
+                <td>      
                 <?php echo anchor('enterence/viewadmissionopen/', "Open Admission List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                echo "<td align=\"right\">";
                 $help_uri = site_url()."/help/helpdoc#";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>"
 		?>
-		 </div>
-                <div align="left" style="width:90%">
-
+	
+                 <div>
                 <?php echo validation_errors('<div style="" class="isa_warning">','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
@@ -62,7 +59,7 @@
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
 
-                    <div style=""  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                 <?php
                 };
@@ -71,8 +68,8 @@
 		</td></tr>
         </table>
         
-	<table style="" >
-
+<!--	<table style="" > -->
+<table>
 
            <form action="<?php echo site_url('Enterence/addadmissionopen');?>" method="POST" >
 		 <td><label for="academicyear" class="control-label">  Academic Year :</label></td>

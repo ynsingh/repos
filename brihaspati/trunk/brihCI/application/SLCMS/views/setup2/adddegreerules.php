@@ -7,7 +7,6 @@
 
  <head>
       <?php $this->load->view('template/header'); ?>
-      <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
       <?php $this->load->view('template/menu');?>
       <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <script>
@@ -25,8 +24,7 @@
                 }
             }); 
         }
-</script>
-   
+</script>   
 </head>
 <body>
 <!--<//?php
@@ -38,16 +36,16 @@
         echo "</tr>";
         echo "</table>";
         ?>-->
-
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
      <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:2%;width:90%;">
-                <?php echo anchor('setup2/degreerules/', "View Degree Rules ", array('title' => 'View Degree rules' ,'class' =>'top_parent'));?>
-                <?php
-                 $help_uri = site_url()."/help/helpdoc#DegreeRule";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";
-                 ?>
-                <div>
+                <?php echo anchor('setup2/degreerules/', "View Degree Rules ", array('title' => 'View Degree rules' ,'class' =>'top_parent'));
+                echo"<td align=\"right\">";
+                //$help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
+                //echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+            	?>                
+                 <div> 
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 	<div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -60,14 +58,13 @@
                 };
                ?>
               </div>
-	</div>
          </td></tr>
     </table>
-    <div style="margin-left:i2%;">
+    <div> 
     <form action="<?php echo site_url('setup2/adddegreerules');?>" method="POST" class="form-inline">
-            <table style="margin-left:2%;">
+                <table>
     		<tr><td><label for="programname" class="control-label"> Choose Programme:</label></td><td>
-             <select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
+             <select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" >
              <option value="" disabled  selected >------Select Program Name--------------</option>
              <?php foreach($this->prgresult as $dataspt): ?>
              <option value="<?php echo $dataspt->prg_name; ?>"><?php echo $dataspt->prg_name; ?></option>
@@ -77,7 +74,7 @@
         <tr>
            <td><label for="dr_prgid" class="control-label">Choose Branch:</label></td>
            <td>
-                <select name="dr_prgid" id="dr_prgid" class="my_dropdown" style="width:300px;">
+                <select name="dr_prgid" id="dr_prgid" class="my_dropdown" style="width:100%;">
                 <option value="" disabled  selected >------Select Branch Name--------------</option>
             </td>
            </tr>
@@ -163,9 +160,8 @@
 
                 </td>
             </tr>
-            </table>
-    </form>
-    </div>
+            </table></div>
+   </form>
     <div align="left"> <?php $this->load->view('template/footer');?></div>
     </html>
 

@@ -17,11 +17,7 @@
    <body>
 <?php $this->load->view('template/header');
  $this->load->view('template/menu'); ?>
-
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <div>
 <center>   
 
@@ -32,7 +28,6 @@
 	</td>
        	</tr>
 </table>
-</br>
 <table style="width:100%;border:2px solid #a8a8a8;">
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th>
 	<?php echo $this->message;?>

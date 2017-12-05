@@ -7,7 +7,6 @@
     <head>  
         <title>Change Password</title>  
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
 	<?php 
 			if($this->session->userdata('id_role') == 1){
                                 $this->load->view('template/menu');
@@ -21,7 +20,7 @@
 	?>
     </head>
 <body>
-<br>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -35,11 +34,17 @@
             echo "</table>";
 ?-->
  		    <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<td align=\"left\" width=\"33%\">";
+                    echo "<table style=\"width: 100%;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Change Password Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
                     $help_uri = site_url()."/help/helpdoc#ChangePassword";
-		    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:80%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+		    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -48,7 +53,7 @@
 <table>
             <tr colspan="2">
                 <td>
-                    <div align="left" style="margin-left:30px;width:1700px;">  
+                    <div>  
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>
@@ -66,10 +71,10 @@
      </tr> 
 </table>
 <tr>  
-                <div style="margin-left:30px;margin-top:-18px"> 
-                <br>    
+                <div> 
+                    
                            <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
-                        <table style="margin-left:30px;">
+                        <table>
                             <tr>  
                                 <td><label for="oldpassword" class="control-label"><b>Old Password</b></label></td>
                                 <td><input type="password" name="oldpassword" class="form-control" size="30"><br></td>
@@ -99,7 +104,7 @@
 </tr>
 </div>
 </form>
-</table>
+</table></div>
 </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

@@ -27,27 +27,24 @@
 		});
 	})
 	</script>
-</script>				
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
 </head>    
 <body>
-		 	
-<table> 
-			<font size=3pt>
-			<div style="margin-left: 7px; width:200px;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table> 	
+<table width= "100%"> <tr><td>
+                        <div>	
 			<?php echo anchor('setup/dispseatsetting', "Seat Reservation List", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " ";
+                        echo "<td align=\"right\">";
                         $help_uri = site_url()."/help/helpdoc#SeatReservation";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                        echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                        echo "</td>";           
              ?>
-			</font>
-     
-            <tr colspan="2"><td>    
-            <div align="left" style="margin-left:30px;width:1000px;">
+			</div>
+            <div>
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php echo form_error('<div  class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -56,14 +53,12 @@
                     ?>
                
                 </div>
-				</td></tr>  
+	</td></tr>  
     
-            <tr>  
-                <div style="margin-left:30px;">
-                <br/>    
-      
+            </table>  
+                      
                     <form action="<?php echo site_url('setup/seatsetting');?>" method="POST" class="form-inline">
-                    <table style="margin-left:30px;">
+                    <table>
 						
 				<div>
 				<span> </span><input id="totseat" type ="hidden" value= <?php echo $this->totalseat; ?>>  
@@ -120,9 +115,9 @@
                      </table>
                     </form>
        
-                </div> 
-            </tr>     
-        </table>     
+     <!--       </tr>     
+        </table>
+</div>     -->
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

@@ -23,10 +23,8 @@ echo "<title>".'IGNTU - Program Subject List'."</title>";
 echo "</head>";
 echo "<body>";
 ?>
-<div style="margin-top:0px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+
 
 <?php
 /*
@@ -48,12 +46,20 @@ echo "<body>";
 */
 ?>
 
-<div align="left">
-<center><table style="width:100%">
+<div>
+<table style="width:100%">
 <tr><td>
-<?php echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+<?php
+echo "<td align=\"left\" width=\"33%\">"; 
+echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+echo "</td>";
+echo "<td align=\"center\" width=\"34%\">";
+echo "<b>Subject Paper Details</b>";
+echo "</td>";
+echo "<td align=\"right\" width=\"33%\">";
 $help_uri = site_url()."/help/helpdoc#ViewSubjectPaperList";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+
 ?>
 </td></tr>
 </table>

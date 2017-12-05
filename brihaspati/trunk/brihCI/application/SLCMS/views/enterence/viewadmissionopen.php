@@ -5,24 +5,28 @@
 
   <head>
 	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+<style type="text/css">
+tr td{font-size:15px;}
+</style>
    	<?php $this->load->view('template/header'); ?>
    	 <?php $this->load->view('template/menu');?>
 </head>
 <body>
-
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 
-<center>
 	<table width="100%">
             <tr><td>
-                <div align="left">
-                <?php  echo anchor('enterence/addadmissionopen/', "Add Admission Open", array('title' => 'Add Admission Open','class' =>'top_parent'));
-                ?>
-                 <?php
+                <div>
+                <?php 
+                 echo "<td align=\"left\" width=\"33%\">";
+                 echo anchor('enterence/addadmissionopen/', "Add Admission Open", array('title' => 'Add Admission Open','class' =>'top_parent')); 
+                 echo "</td>";
+                 echo "<td align=\"center\" width=\"34%\">";
+                 echo "<b>Admission Open Details</b>";
+                 echo "</td>";
+                 echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#viewadmissionopen";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -39,14 +43,14 @@
               </div>
           </div>
              </td></tr>
-       </table></center></br>
+       </table>
 <div class="scroller_sub_page">
 <table>
 <tr>
 <div>
 
-<table cellpadding="16" class="TFtable" >
-<tr align="center">
+<table class="TFtable" >
+<tr>
 <thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><!--<th>Entrance Exam Fees </th>--> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th><th>Action</th></tr></thead>
 <?php
         $count =0;

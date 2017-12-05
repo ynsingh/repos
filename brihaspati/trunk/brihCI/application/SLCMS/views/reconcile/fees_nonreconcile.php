@@ -14,15 +14,10 @@
 <?php $this->load->view('template/header');
  $this->load->view('template/menu'); ?>
 
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <div>
 
 <?php
-echo "<center>";
-
 	if($this->session->flashdata('msg')){
 echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
 	echo $this->session->flashdata('msg');
@@ -32,7 +27,7 @@ echo "<div>";
 echo "</center>";
 ?>
 
-<center>
+
 
 
 <table width="100%;" style="" >
@@ -43,14 +38,15 @@ echo "</center>";
        	</tr>
 </table>
    
-</br>
+
 <div class="scroller_sub_page">
 <table style="width:100%;border:2px solid #a8a8a8;">
-<thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th>Non Reconcile Fees Detail</th></tr></thead>
+<thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th align="left">Non-Reconcile Fees Detail</th></tr></thead>
+
 </table>
    <table class="TFtable" style="background-color:#38B0DE;border:2px solid #a8a8a8;">
 	<thead >
-	<tr>
+	<tr align=left>
 <th>Sr. No.</th>
 <th>Student name</th><th>Program(Branch)</th><th>Semester</th><th>Year</th><th>Fees Type</th><th>Fees Amount</th><th>Reference Number</th>
 <th>Bank Name / Payment Method</th><th>Action</th>

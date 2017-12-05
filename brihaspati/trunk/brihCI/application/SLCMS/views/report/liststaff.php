@@ -11,18 +11,23 @@
 <title>View Staff list</title>
     <head>    
          <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+  
   <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<td align=\"left\" width=\"33%\">";
+                    echo "<table style=\"width: 100%;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Staff List Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
                     $help_uri = site_url()."/help/helpdoc#StaffList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -36,10 +41,10 @@
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
              </table-->
-              </center>
-                <table cellpadding="16" class="TFtable" >
+                <div class="scroller_sub_page">
+                <table cellpadding="0" class="TFtable" >
             <thead>
-                <tr align="center"> 
+                <tr> 
                 <th>Staff Name</th>
                 <th>Position (Designation)</th>
                 <th>Email Id</th>
@@ -79,7 +84,7 @@
 
                 ?>
             </thead>
-        </table>
+        </table></div>
  </div><?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>

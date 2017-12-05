@@ -7,7 +7,6 @@
 
  <head>
       <?php $this->load->view('template/header'); ?>
-      <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
       <?php $this->load->view('template/menu');?>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
@@ -54,13 +53,16 @@
         echo "</tr>";
         echo "</table>";
         ?>-->
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 
      <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:2%;width:90%;">
+                <div>
                 <?php echo anchor('setup2/designation/', "View Designation list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">";
 		$help_uri = site_url()."/help/helpdoc#Designation";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
  		?>
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -78,9 +80,10 @@
         </div>
          </td></tr>
     </table>
-    <div style="margin-left:2%;">
+    <div>
     <form action="<?php echo site_url('setup2/adddesignation');?>" method="POST" class="form-inline">
-	<table style="margin-left:2%;">
+        
+	<table>
         	<tr>
                 	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
                 	<td><input type="text" name="desig_code" class="form-control" size="33" /><br></td>
@@ -105,7 +108,7 @@
 		</tr>
 
                  <td>Designation Payscale: <font color='Red'> *</font> </td>
-                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:300px;">
+                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:100%;">
                 <option selected="selected" disabled selected>--------Select-------------</option>
                 <?php foreach($this->payresult as $datas): ?>
                          <option value="<?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
@@ -118,7 +121,7 @@
                 <tr>
                <td><label for="desig_name" class="control-label">Designation Name:</label></td>
                <td>
-               <input type="text" name="desig_name"  class="form-control" size="33" /><br>
+               <input type="text" name="desig_name"  class="form-control" size="33%" /><br>
                </td>
                <td>
                   <?php //echo form_error('dr_mincredit')?>
@@ -142,12 +145,12 @@
               <tr>
                 <td><label for="desig_short" class="control-label">Designation short :</label></td>
                 <td>
-                <input type="text" name="desig_short" class="form-control" size="33" /><br>
+                <input type="text" name="desig_short" class="form-control" size="33%" /><br>
                 </td>
                 <tr>
                 <td><label for="desig_desc" class="control-label">Designation Description :</label></td>
                 <td>
-                <input type="text" name="desig_desc" class="form-control" size="33" /><br>
+                <input type="text" name="desig_desc" class="form-control" size="33%" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minsubcredit')?>
@@ -162,8 +165,10 @@
                 </td>
             </tr>
             </table>
-    </form>
+           </form>
     </div>
+<p><br><p>
+</body>
     <div align="left"> <?php $this->load->view('template/footer');?></div>
     </html>
 

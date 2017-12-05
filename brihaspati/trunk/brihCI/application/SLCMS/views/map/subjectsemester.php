@@ -6,10 +6,9 @@
 <html>
 <title>Subject Semester Program with Department List</title>
     <head>    
-            <?php      $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <?php $this->load->view('template/header'); ?>
         <?php $this->load->view('template/menu');?>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
        <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>-->
@@ -36,39 +35,40 @@
             echo "</table>";
         ?>-->
         <!-- </br>   -->
-        <center> 
-        <table width="70%;"> 
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+        <table width="100%;"> 
            
             <tr><td> 
-                 <?php //echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
-		 //$help_uri = site_url()."/help/helpdoc#ViewMapSubjectandSemester";
-		 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:44%\">Click for Help</b></a>";
+                 <?php
+                    echo "<td align=\"left\" width=\"33%\">";
+//                    echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Subject Semester Program Department Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
+//		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandSemester";
+//		 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
 		 ?>
                 <div>
-  
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-
                 <?php if(isset($_SESSION['success'])){?>
-                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-
+               <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
                 <?php if(isset($_SESSION['err_message'])){?>
                     <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
-
                 <?php
                 };
                 ?>        
-    
-            </div>
+                </div>
         </td></tr>  
-        </table></center>  
-        <br/>
-      <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" class="TFtable">
-            <thead >
-            <tr align="center">
+        </table>  
+        <div class="scroller_sub_page">
+            <table  class="TFtable">
+            <thead>
                 <th>Sr.No</th>
                 <th>Deptt. Name</th>
                 <th>Prog Name</th>
@@ -83,14 +83,13 @@
                 <th>Modify Date</th>
                 <th>Action</th>-->
                <!-- <th></th>-->
-            </tr>
            <!-- <tr></tr>-->
         </thead>
         <tbody>
            <?php $serial_no = 1;?>
             <?php if( count($subsemrec) ): ?>
                 <?php foreach($subsemrec as $row){ ?>
-                    <tr align="center">
+                    <tr>
                     <td><?php echo $serial_no++; ?></td>   
                     <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_dept)->dept_name ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->subp_degree)->prg_name ?></td>
@@ -115,8 +114,7 @@
                     echo "<td colspan= \"10\" align=\"center\"> No Records found...!</td>";
             	 endif;?> 
         </tbody>
-    </table> 
-  <!-- </div>  -->     
+    </table>
     </body>  
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

@@ -5,8 +5,7 @@
 <html>
     <head>    
        <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-        <?php $this->load->view('template/menu');?> 
+       <?php $this->load->view('template/menu');?> 
         <style>
                 .abc{
                     width:100%;
@@ -34,31 +33,36 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-         </br>    
+
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
+             
         <table width="100%"> 
             
-            <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+            <?php echo form_error('<div class="isa_error">','</div>');?>
  
             <tr><td>  
-                <div style="margin-left:2%;">    
+                <div>    
                 <?php echo anchor('map/viewscprgseat/', "Campus Program Seat List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                echo "<td align=\"right\">";
 		$help_uri = site_url()."/help/helpdoc#MapStudyCenterandProgramwithSeat";
-		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
+		echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>"
 		?>
+                </td>
                 </div>
-                <div align="left" style="margin-left:2%;width:90%">
+                <div>
                  
-                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
 
-                    <div style="margin-left:2%;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                 <?php
                 };
@@ -67,36 +71,36 @@
             </div>
         </td></tr>  
         </table>  
-        <br/>
-        <table style="margin-left:2%;">
+
+<div>
+        <table>
             
            <form action="<?php echo site_url('map/mapscprgseat');?>" method="POST" >
             <tr>
                 <td><?php echo form_label('Campus Name', 'campus');?>
                 </td>
                 <td>
-                    <?php echo form_dropdown('campus', $campus, '', 'class="abc" style="width:100%;"');?>
+                    <?php echo form_dropdown('campus', $campus, '', 'class="abc" style="width:90%;"');?>
 
                 </td>
             </tr>
             <tr>
                 <td><?php echo form_label('Program Name', 'program');?></td>
                 <td>
-                 <?php echo form_dropdown('program',$program,'', 'class="abc" style="width:100%;"');?> 
+                 <?php echo form_dropdown('program',$program,'', 'class="abc" style="width:90%;"');?> 
                 </td>
             </tr>
             <tr>
                 <td>Number of Seat :</td>
                 <td>
-                   <input type="text" name="seatno" value="" size="34" style="width:100%;">
+                   <input type="text" name="seatno" value="" size="34" style="width:90%;">
                 </td>
-                <td><?php echo form_error('seatno')?></td>
-                <td>Example : 30</td>
+                <td><?php //echo form_error('seatno')?> <span style= "text-align; left" align=left>Example:30</span></td>                
             </tr>
             <tr>
                 <td>Gender :</td>
                 <td>
-                    <select name="gender"class="my_dropdown" style="width:100%;">
+                    <select name="gender"class="my_dropdown" style="width:90%;">
                     <option value="" disabled selected>------Select Gender------</option>  
                     <option value="All" class="dropdown-item">All</option>
                     <option value="Male" class="dropdown-item">Male</option>
@@ -108,7 +112,7 @@
             <tr>
                 <td>Academic Year :</td>
                 <td>
-                    <select name="academicyear" class="my_dropdown" style="width:100%;">
+                    <select name="academicyear" class="my_dropdown" style="width:90%;">
                     <option value="" disabled selected >------Select Academic year------</option>  
                     <?php
                    
@@ -127,7 +131,7 @@
                 <td>Semester :</td>
                 <td>
                     
-                    <select name="semester" id="" class="my_dropdown" style="width:100%;">
+                    <select name="semester" id="" class="my_dropdown" style="width:90%;">
                     <option value="" disabled selected >------Select Semester------</option>    
                     <option value="ODD" class="dropdown-item">ODD</option>
                     <option value="EVEN" class="dropdown-item">EVEN</option>
@@ -156,7 +160,7 @@
                
             </tr>
         </form>    
-        </table>
+        </table></div>
     </body> 
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

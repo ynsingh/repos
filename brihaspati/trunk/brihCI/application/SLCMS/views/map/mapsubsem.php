@@ -6,7 +6,6 @@
 <title>Subject Semester Program with Department List</title>
     <head>    
        	<?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
 	<?php $this->load->view('template/menu');?> 
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<script>
@@ -46,31 +45,33 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-         </br>    
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <table width="100%"> 
-            
-            <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+        <div>    
+            <?php echo form_error('<div class="isa_error">','</div>');?>
  
             <tr><td>  
-                <div style="margin-left:2%;">    
+                <div>    
                 <?php echo anchor('map/subjectsemester/', "Subject Semester Program Department List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                echo "<td align=\"right\">";
 		$help_uri = site_url()."/help/helpdoc#MapSubjectandSemester";
-		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:50%\">Click for Help</b></a>";
+		echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
 		?>
                 </div>
-                <div align="left" style="margin-left:2%;width:90%;">
+                <div>
                  
-                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
 
-                    <div style="margin-left:2%;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                 <?php
                 };
@@ -79,10 +80,9 @@
             </div>
         </td></tr>  
         </table>  
-        <br/>
-            
+        <div>     
 	<form action="<?php echo site_url('map/mapsubsem');?>" method="POST" class="form-inline">
-	<table style="margin-left:2%;">
+        <table>
 		<tr>
                 <td>Department Name :</td>
                 <td>

@@ -16,10 +16,7 @@
      <?php $this->load->view('template/menu');?>
  </head>
  <body>
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <script>
 $( function() {
 	   $( "#StartDate,#EndDate" ).datepicker({
@@ -30,13 +27,14 @@ $( function() {
 </script>
 	<table width="100%">
  <tr colspan="2"><td>
-		 <div  style="margin-left:2%;">
-                <?php echo anchor('announcement/viewannouncement', "View Announcement", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
-                <!--?php
+		 <div>
+                <?php echo anchor('announcement/viewannouncement', "View Announcement", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
-                 ?-->
-		<div  style="margin-left:2%;">
+                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		echo "</td>";
+                 ?>                 
+		<div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -52,10 +50,9 @@ $( function() {
               </div>
              </td></tr>
         </table>
-<tr>
     <div>
     <form action="<?php echo site_url ('announcement/addannouncement');?>" method="POST" enctype="multipart/form-data">
- <table style="margin-left:4%;">
+ <table><tr>
             <tr>
                 <td><label for="anou_cname" class="control-label">Announcement Component Name:</label></td>
                 <td>
@@ -121,9 +118,7 @@ $( function() {
            </table>
     </form>
     </div>
-     </div>
     </tr>
-    </table>
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>

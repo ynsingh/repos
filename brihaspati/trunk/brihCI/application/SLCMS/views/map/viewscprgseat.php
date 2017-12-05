@@ -6,13 +6,8 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
-       <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>-->
-        
     </head>    
     <body>
         
@@ -35,39 +30,45 @@
             echo "</table>";
         ?>-->
         <!-- </br>   -->
-        <center> 
-        <table width="70%"> 
-           
-            <tr><td> 
-                 <?php echo anchor('map/mapscprgseat/', "Map Campus Program Seat ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
-		 $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:50%\">Click for Help</b></a>";
+
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+ 
+        <table width="100%"> 
+                <tr><td>
+             
+                 <?php 
+                     echo anchor('map/mapscprgseat/', "Map Campus Program Seat ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+                     echo "</td>";
+                     echo "<td align=\"center\" width=\"34%\">";
+                     echo "<b>Campus Program Seat Details</b>";
+                     echo "</td>";
+                     echo "<td align=\"right\" width=\"33%\">";
+                    $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
+		 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
 		 ?>
-                <div style="margin-left:2%; width:90%;">
-  
-                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-
-                <?php if(isset($_SESSION['success'])){?>
-                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-
+                <div>
+                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                 <?php if(isset($_SESSION['success'])){?>
+                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
                 <?php if(isset($_SESSION['err_message'])){?>
-                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
-
-                <?php
+               <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+               <?php
                 };
                 ?>        
-    
-                </div>
+  
+               </div>
         </td></tr>  
-        </table></center>  
+        </table> 
         
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" class="TFtable">
+            <div class="scroller_sub_page">
+            <table cellpadding="0" class="TFtable">
             <thead >
-            <tr align="center">
+            <tr>
                 <th>Sr.No</th>
                 <th>Campus Name</th>
                 <th>Program Name</th>
@@ -86,10 +87,9 @@
         </thead>
         <tbody>
            <?php $serial_no = 1;?>
-    <?php if( count($records) ): ?>
-	<?php foreach($records as $record){ ?>
-	    <tr align="center">
-		
+           <?php if( count($records) ): ?>
+	   <?php foreach($records as $record){ ?>
+	    <tr>
 	    <td><?php echo $serial_no++; ?></td>   
 	    <td><?php echo $this->mapmodel->get_studycenername($record->spsc_sc_code) ; ?></td>
 	    <td><?php echo $this->mapmodel->get_Programseat($record->spsc_prg_id); ?></td>
@@ -110,13 +110,9 @@
 	  <td colspan= "10" align="center"> No Records found...!</td>
 	     </tr>
     <?php endif;?> 
-                  
-                    
-            
+              
         </tbody>
-        
-    </table> 
-  <!-- </div>  -->     
+        </table> 
     </body>  
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

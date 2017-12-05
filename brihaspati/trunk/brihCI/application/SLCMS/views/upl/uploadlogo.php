@@ -5,21 +5,24 @@
 	
     </head>
     <body>
-
 <div >
 <div id="body">
 	<?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-  
 	<?php $this->load->view('template/menu'); ?>
-
-	</div>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</div>
  <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<td align=\"left\" width=\"33%\">";
+                    echo "<table style=\"width:100%;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
+                    echo "<b>Upload Logo Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\"style=\"font-size:16px\">";
                     $help_uri = site_url()."/help/helpdoc#UploadLogo";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:43%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";                   
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -40,10 +43,10 @@
 	echo "<tr>";
 	echo "<td>";
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
-	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-        echo "<tbody align=\"left\">";
+	echo "<table>";
+        echo "<tbody>";
 
-	echo "<div align=\"left\">";
+	echo "<div>";
 // display user message area
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		echo "<div style=\"margin-left:30px;width:1700px;align:left;\" class=\"isa_success\">";
@@ -59,7 +62,7 @@
 
 	//echo $error;
 	echo form_open_multipart('upl/uploadlogo');
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><input type='file' name='userfile' size='20' />";
+	echo "<tr><td style=\"\"><input type='file' name='userfile' size='20' />";
 	echo "<input type='submit' name='uploadlogo' value='upload' /> ";
 	echo "</td></tr>";
 	echo "</form>";
@@ -71,6 +74,7 @@
 	echo "</td>";
 	echo "</tr>";
         echo "</table>";
+        echo "</div>";
 ?>
 	</div>
 	<?php $this->load->view('template/footer'); ?>

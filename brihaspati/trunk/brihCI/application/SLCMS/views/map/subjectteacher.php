@@ -11,8 +11,6 @@
         <?php $this->load->view('template/menu');?>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
- <script>
-    </script>    
     </head>
     <body>
  <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
@@ -130,9 +128,8 @@ function getpaperName(idcomb){
    <table style="width:100%;">
      <tr colspan="2"><td>
       <div>
-        <font color=blue size=4pt>
          <?php
-            echo anchor('map/listsubjectteacher/', 'List of Subject and Paper With Teacher', array());
+            echo anchor('map/listsubjectteacher/', "List of Subject and Paper With Teacher" ,array('title' => 'List of Subject and Paper With Teacher' , 'class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#MapSubjectandPaperwithTeacher";
             echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
          ?>
@@ -155,7 +152,7 @@ function getpaperName(idcomb){
    </table>
    <div> 
    <form id="myform" action="<?php echo site_url('map/subjectteacher');?>" method="POST" class="form-inline">
-   <table style="margin-left:0px;">
+   <table>
  	<tr>
             <td>Campus Name :</td>
             <td>

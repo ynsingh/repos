@@ -7,7 +7,6 @@
 
  <head>
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
      <?php $this->load->view('template/menu');?>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <script>
@@ -38,15 +37,20 @@
         echo "</tr>";
         echo "</table>";
         ?>-->
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
 
      <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:2%;">
-                <?php echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));?>
-                <?php
-                 $help_uri = site_url()."/help/helpdoc#SemesterRule";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
-                 ?>
+                <?php echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">";
+                $help_uri = site_url()."/help/helpdoc#ViewSemesterRule";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+
+            ?>
+                
+                
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -59,14 +63,13 @@
                 <?php
                 };
                ?>
-              </div>
+</div>
              </td></tr>
         </table>
  
-    <tr>
-    <div style="margin-left:2%;">
+    <div>
     <form action="<?php echo site_url('setup2/addsemrule');?>" method="POST" class="form-inline">
-		<table style="margin-left:2%;">
+		<table><tr>
 		<tr>
            	<td>Program Name :</td>
            	<td>
@@ -146,12 +149,11 @@
                 <button name="reset" >Clear</button>
                 </td>
            </tr>
-           </table>
-    </form>
-    </div>
-    </tr>
-    </table>
-    </body>
+	</tr>
+      </table>
+   </div>
+ </form>
+</body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>
 

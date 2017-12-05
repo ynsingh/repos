@@ -7,21 +7,24 @@
 <title>Add program Category</title>
  <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
  </head>
    <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
+
      <table width="100%">
        <tr><td>
-        <div style="margin-left:2%;" >
+        <div>
         <?php
            echo anchor('setup/viewprogramcat', 'Program Categroy List', array('class' => 'top_parent'));
+           echo "<td align=\"right\">";
            $help_uri = site_url()."/help/helpdoc#ProgramCategory";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+           echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+           echo "</td>";
         ?>
-        </font>
         </div>
-        <div align="left" style="margin-left:2%;width:90%;">
+        <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -37,10 +40,10 @@
       </div>
     </td>
     </tr>
-    <tr>
-    <div align="left" style="margin-left:30px">
+    </table>
+    <div>
         <form action="<?php echo site_url('setup/programcat');?>" method="POST" class="form-inline">
-          <table style="margin-left:30px">
+        <table>
             <tr>
                 <td><label for="procatname" class="control-label"> Program Category Name :</label></td>
                 <td>
@@ -86,10 +89,8 @@
                 </td>
             </tr>
            </table>
-        </form>
+          </form>
       </div>
-     </tr>
-    </table>
   </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

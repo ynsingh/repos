@@ -4,7 +4,6 @@
 <body>
 <div>
 <?php $this->load->view('template/header.php');?>
-<h1>Welcome <?= $this->session->userdata('username')?> </h1>
 <?php $this->load->view('template/menu.php');?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 </div>
@@ -29,18 +28,24 @@
     echo "</table>";
 */
 ?>
-<center>
-<table width="70%">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
 	<tr><td>
-		<?php echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
+		<?php 
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
+                echo "</td>";
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Program Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
 		$help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
-		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+		echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
 		?>
 </td></tr>
 </table>
-
-        <table width="70%"> 
-            <tr><td>    
+            <table width="100%"> 
                 <div>
                 <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -49,16 +54,14 @@
                 };
                 ?>
             </div>
-        </td></tr>   
-        </table></center>   
-    <div align="left" >
-    <table  cellpadding="16" class="TFtable">
+        </table>
+    <div class="scroller_sub_page">   
+    <table  class="TFtable">
     <!--<table border=0 cellpadding=16 style="padding: 8px 8px 8px 25px;margin-left:30px;" class="TFtable">
     <table>-->
 
-	<thead>
-	    <tr align="center">
-		<th>No</th>
+	   <thead>
+	        <th>No</th>
                 <th>Campus Name</th>
                 <th>Deptt. Name</th>
 		<th>Prog Category</th>
@@ -76,7 +79,6 @@
 		<th>Creatoion Date</th>-->
 		<th>Action</th>
     <!--<td><strong>No</strong></td><td><strong>Program Category</strong></td><td><strong>Program Name</strong></td><td><strong>Program Branch</strong></td> <td><strong>Seat Available</strong></td><td><strong>Program Code</strong></td><td><strong>Program Short</strong></td><td><strong>Program Description</strong></td><td><strong>Program Min Time</strong></td><td><strong>Program Max Time</strong></td><td><strong>Creator Name</strong></td><td><strong>Creatoion Date</strong></td><td><strong>Edit/Delete</strong></td> -->
-    	</tr> 
 	</thead>
 
     <?php  
@@ -85,7 +87,7 @@
          {
             $count = $count + 1;
     ?>
-            <tr align='center'>
+            <tr>
             <td><?php echo $count;?></td>
             <td><?php echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;?></td>
             <td><?php echo $this->common_model->get_listspfic1('Department','dept_name','dept_id',$row->prg_deptid)->dept_name;?></td>
@@ -108,9 +110,7 @@
     <?php        
          }?>  
     </tr>     
-    </table>
-    </div>    
-
+    </table></div>
 <div>
 <?php $this->load->view('template/footer.php');?>
 </div>

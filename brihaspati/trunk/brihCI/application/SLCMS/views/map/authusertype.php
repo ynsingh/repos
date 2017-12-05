@@ -71,25 +71,22 @@ $("#StartDate").datepicker("option","maxDate", selected)
 }); 
 });
 </script>
-
   <div id="body">
         <?php $this->load->view('template/header'); ?>
-                <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-
         <?php $this->load->view('template/menu'); ?>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </div>
-<table style="margin-left:10px;">
+<table style="width:100%;">
                 <tr colspan="2"><td>
                 <?php echo anchor('map/viewauthuser',' Map Authority and User List',array('title'=>'View Detail','class' => 'top_parent'  ));
-                //$help_uri = site_url()."/help/helpdoc#ProgramFees";
-                //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+                echo "<td align=\"right\">";
+                $help_uri = site_url()."/help/helpdoc#ProgramFees";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 ?>
 </tr></td>
-
+</table>
                 <div>
                 <tr colspan="2"><td>
-                <div align="left" style="margin-left:30px;width:1700px;">
-
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
@@ -98,15 +95,12 @@ $("#StartDate").datepicker("option","maxDate", selected)
                     <?php
                     };
                     ?>
-
                 </div>
             </td></tr>
 </table>
-     <form action="<?php echo site_url('map/authusertype');?>" method="POST" class="form-inline">
-
-
-                <table style="margin-left:30px;">
-
+ <div>
+     <form action="<?php echo site_url('map/authusertype');?>" method="POST" class="form-inline">   
+                      <table>
                         <td> Authority Name: </td><td>
                         <select name="authorities" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select authority ---------</option>
@@ -138,14 +132,14 @@ $("#StartDate").datepicker("option","maxDate", selected)
                          <tr>
                         
                         <td><label>From Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="From Date" name="map_date" id="StartDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td>
+                        <td><input type="text"placeholder="From Date" name="map_date" id="StartDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td>
                         </tr>
                         <tr>
 
                         
                         
                         <td><label>Till Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td>
+                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td>
                         </tr>
                         <tr>
 
@@ -158,7 +152,6 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         </tr>
                     </form>
                   </div>
-            </tr>
         </table>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>

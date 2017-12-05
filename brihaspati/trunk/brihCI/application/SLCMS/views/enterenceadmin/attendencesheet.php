@@ -14,9 +14,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-<style>
-tr td{font-size:20px;}
-</style>
 </head>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>

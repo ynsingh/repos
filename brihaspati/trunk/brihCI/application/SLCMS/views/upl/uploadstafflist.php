@@ -14,22 +14,21 @@
 <div >
 <div id="body">
         <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-
         <?php $this->load->view('template/menu'); ?>
 
         </div>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
                    <?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#UploadStaffList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:43%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
                     ?>
-
            <div>
 <?php
 //      echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -84,6 +83,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
+        echo "<div>";
 ?>
         </div>
         <?php $this->load->view('template/footer'); ?>

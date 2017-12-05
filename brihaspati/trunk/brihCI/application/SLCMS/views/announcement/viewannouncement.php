@@ -6,21 +6,26 @@
 <title>View Announcement</title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+
    <?php $this->load->view('template/header'); ?>
     <?php $this->load->view('template/menu');?>
   </head>
 <body>
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <table width= "100%">
 <tr colspan="2"><td>
-                <?php  echo anchor('announcement/addannouncement/', "Add Announcement", array('title' => 'Add Announcement Detail','class' =>'top_parent'));
-                 //$help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                <?php  
+                 echo "<td align=\"left\" width=\"33%\">";
+                 echo anchor('announcement/addannouncement/', "Add Announcement", array('title' => 'Add Announcement Detail','class' =>'top_parent'));
+                 echo "</td>";
+                 echo "<td align=\"center\" width=\"34%\">";
+                 echo "<b>Announcement Details</b>";
+                 echo "</td>";
+                 echo "<td align=\"right\" width=\"33%\">";
+                 $help_uri = site_url()."/help/helpdoc#ViewExamtype";
+                 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 ?>
-		<div  style="margin-left:2%;">
+		<div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -34,12 +39,10 @@
                 ?>
               </div>
              </td></tr>
-       </table></br>
+       </table>
 <div class="scroller_sub_page">
-        <table cellpadding="16" class="TFtable" >
-            <thead>
-                <tr align="center">
-<th>Sr.No</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Attachment</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Action</th></tr></thead>
+        <table class="TFtable" >
+            <thead><th>Sr.No</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Attachment</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Action</th></tr></thead>
 <tbody>
 <?php
         $count =0;

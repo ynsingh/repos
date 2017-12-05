@@ -4,13 +4,36 @@
  -->
 <html>
 <head>
-<title>User Manual</title>  
         <?php $this->load->view('template/header'); ?>
-        <h1> Welcome <?= $this->session->userdata('username') ?></h1>
         <?php $this->load->view('template/menu');?>
  	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
 </head>
 <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
+            <tr colspan="2"><td>
+            <?php
+            echo "<td align=\"center\" width=\"100%\">";
+            echo "<b>User Manaul Details</b>";
+            echo "</td>";
+             ?>
+                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
+
+                <?php if(isset($_SESSION['success'])){?>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+
+                <?php
+                };
+                ?>
+                <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+
+                <?php
+                };
+                ?>
+</div>
+            </td></tr>
+        </table>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
 	<div class="head">Online Addmision System</div>
 	<div class="content">

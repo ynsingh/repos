@@ -7,8 +7,7 @@
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-    <?php $this->load->view('template/menu');?>
+   <?php $this->load->view('template/menu');?>
   </head>
  <body>
     <!--<//?php
@@ -20,18 +19,27 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-      <center>
-      <table width= "70%">
+
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+            <table width= "100%">
             <tr><td>
-                <div align="left">
-                <?php  echo anchor('setup2/addexamtype/', "Add  Exam Type", array('title' => 'Add   Exam Type  Detail','class' =>'top_parent'));
+            <div>
+              <?php  
+                   echo "<td align=\"left\" width=\"33%\">";
+                   echo anchor('setup2/addexamtype/', "Add  Exam Type", array('title' => 'Add   Exam Type  Detail','class' =>'top_parent'));
+                   echo "</td>";
+                   echo "<td align=\"center\" width=\"34%\">";
+                   echo "<b>Exam Type Details</b>";
+                   echo "</td>";
+                   echo "<td align=\"right\" width=\"33%\">";
 		 $help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
                 ?>
-                  </div>
-                <div  style="width:90%;margin-left:2%">
+                </div>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-              <?php if(isset($_SESSION['success'])){?>
+                <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
@@ -43,13 +51,10 @@
                 ?>
               </div>
              </td></tr>
-       </table></center>
-
+       </table>
+<div class="scroller_sub_page">
 <table>
-<tr>
-<div align="left" style="margin-left:2%;">
-<table cellpadding="16" class="TFtable" >
-<tr align="center">
+<table  class="TFtable" >
 <thead><th>Sr.No</th><th>Exam Type </th><th>Description</th><th>Action</th></tr></thead>
  <?php
         $count =0;
@@ -57,7 +62,7 @@
         foreach ($this->result as $row)
         {
          ?>
-             <tr align="center">
+           <tr>
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row-> exty_name ?></td>
             <td> <?php echo $row-> exty_desc ?></td>
@@ -68,7 +73,6 @@
 
                         echo anchor('setup2/editexamtype/' . $row-> exty_id  , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
          //    }
-            echo "</td>";
             echo "</tr>";
 
         }
@@ -77,15 +81,7 @@
             echo "<td colspan= \"12\" align=\"center\"> No Records found...!</td>";
         echo "</tr>";
         endif;
-
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
            ?>
-
-</div>
-</tr>
 </table>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>

@@ -13,10 +13,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 		<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/Studentsteps.css" />
-<style>
-table tr td{font-size:18px;}
-thead th{font-size:18px;}
-</style>
 </head>
 
 <body>
@@ -25,10 +21,7 @@ thead th{font-size:18px;}
 		$this->load->view('template/header'); ?>
 	
         <?php $this->load->view('template/menu');?>
-
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <?php
 echo "<center>";
 

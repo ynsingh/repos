@@ -1,27 +1,33 @@
 <!--@name displayrole.php
   @author kishore kr shukla (kishore.shukla@gmail.com)
- -->
+-->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
 <title>View Role</title>
   <head>
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-   <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-    <?php $this->load->view('template/menu');?>
+   	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+  	<?php $this->load->view('template/header'); ?>
+  	<?php $this->load->view('template/menu');?>
   </head>
- <body>
-    
-<center>
-      <table width="70%">
+  <body>
+	<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?></td></tr></table>
+      	<table width="100%">
             <tr><td>
-                <div align="left" >
-                <?php echo anchor('setup/role/', "Add Role", array('title' => 'Add Detail','class' =>'top_parent'));?>
-                 <?php
-                 $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
-                 ?></div>
-                <div  style="width:70%;margin-left:2%">
+                <?php 
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/role/', "Add Role", array('title' => 'Add Detail','class' =>'top_parent'));
+                echo "</td>"; 
+ 
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Role Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
+                $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
+  	        echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+                ?>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -34,23 +40,18 @@
                 };
                ?>
               </div>
-             </td></tr>
+            </td></tr>
        </table>
-</center>
-<table width="70%">
-<tr>
-<div>
-<table cellpadding="16"  class="TFtable" >
-<tr align="center">
-<thead><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th></tr></thead>
-
-   <?php
-        $count =0;
-        //foreach ($query->result() as $row)
-        foreach ($this->result as $row)
-        {  
-         ?>
-             <tr align="center">
+	<div class="scroller_sub_page">
+	<table class="TFtable">
+	<thead><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th></tr></thead>
+	   <?php
+        	$count =0;
+  	      //foreach ($query->result() as $row)
+        	foreach ($this->result as $row)
+        	{  
+         	?>
+            <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->role_name ?></td>
             <td> <?php echo $row->role_desc ?></td>
@@ -65,14 +66,9 @@
             echo "</tr>";
           
         }
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
           ?>
-</div>
-</tr>
 </table>
+</div>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

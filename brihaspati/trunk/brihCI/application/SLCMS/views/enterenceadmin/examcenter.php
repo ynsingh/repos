@@ -6,22 +6,28 @@
 <title>View Exam Center</title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+
    <?php $this->load->view('template/header'); ?>
 
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
-
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+
 
 <table width= "100%">
             <tr><td>
                 <div>
-                <?php  echo anchor('enterenceadmin/addexamcenter/', "Add  Exam Center", array('title' => 'Add   Exam Center  Detail','class' =>'top_parent'));
-                 //$help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                <?php  
+                  echo "<td align=\"left\" width=\"33%\">";
+                  echo anchor('enterenceadmin/addexamcenter/', "Add  Exam Center", array('title' => 'Add   Exam Center  Detail','class' =>'top_parent'));
+                  echo "</td>";
+                  echo "<td align=\"center\" width=\"34%\">";
+                  echo "<b>Exam Center Details</b>";
+                  echo "</td>";
+                  echo "<td align=\"right\" width=\"33%\">";
+                 $help_uri = site_url()."/help/helpdoc#ViewExamtype";
+                 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;">

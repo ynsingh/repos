@@ -12,26 +12,25 @@
 <title>Fees</title>
   <div id="body">
         <?php $this->load->view('template/header'); ?>
-                <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-
         <?php $this->load->view('template/menu'); ?>
 </div>
- <table width= "100%">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+ <table width= "100%"> 
             <tr><td>
-                <div align="left">
+                <div>
                 <?php echo anchor('setup/displayfees',' Program Fees with Head List',array('title'=>'View Detail','class' => 'top_parent'  )); 
+                echo "<td align=\"right\">";
+                echo "</td>";
+                echo "<td>";
 		$help_uri = site_url()."/help/helpdoc#ProgramFees";
-		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:68%\">Click for Help</b></a>";
+		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
+                echo "</td>";
 		?>
-</tr></td>
-
-        	<div>
-             	<tr><td>
-                <div align="left" style="margin-left:2%;width:90%;">
-
+     </div>
+                <div>
 		<?php 
 		     echo validation_errors('<div class="isa_warning">','</div>');
-                     echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');
+                     echo form_error('<div  class="isa_error">','</div>');
 
                      if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -46,12 +45,9 @@
                 </div>
             </td></tr>
 </table>
-     <form action="<?php echo site_url('setup/fees');?>" method="POST" class="form-inline">
-
-
-
-                <table style="margin-left:1%;">
-
+ <div>
+     <form action="<?php echo site_url('setup/fees');?>" method="POST" class="form-inline">    
+                <table>
                 	<tr><td> Program Name: </td><td>
 			<select name="program" style="width:100%;">
                         <option value=""disabled selected>---------Select program ---------</option>
@@ -138,14 +134,14 @@
 
 			
                         <tr>
-                        <td colspan="2" style="margin-left:40%;">
-                        <button name="fees" style="margin-left:32%;">Add Fees </button>
+                        <td></td>
+                        <td colspan="2">
+                        <button name="fees">Add Fees </button>
 			<button name="clear">Clear</button>
                         </td>
                         </tr>
                     </form>
                   </div>
-            </tr>
         </table>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>

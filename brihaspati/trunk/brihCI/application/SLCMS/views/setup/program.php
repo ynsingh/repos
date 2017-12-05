@@ -2,8 +2,7 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php $this->load->view('template/header.php');?>
- <h1>Welcome <?= $this->session->userdata('username') ?></h1>
- <?php $this->load->view('template/menu.php');?>
+<?php $this->load->view('template/menu.php');?>
 <html>
 <title>Add Program</title>
 <?php
@@ -25,21 +24,17 @@
     echo "</table>";
 */
 ?>
-<br>
-<div align="left">
-<table style="margin-left:10px;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<div>
+<table style="width:100%;">
 <tr><td>
 <?php echo anchor('setup/viewprogram/', "Program List" ,array('title' => 'Program List' , 'class' => 'top_parent'));
+echo "<td align=\"right\">";
 $help_uri = site_url()."/help/helpdoc#ProgramandSeat";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+echo "</td>";
 ?>
-</td></tr>
-</table>
-</div>
-
-<table> 
-    <tr colspan="2"><td>    
-    <div align="left" style="margin-left:30px;width:1000px;">
+        <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -48,20 +43,20 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         };
         if(isset($_SESSION['error']))
         {
-        ?> <div style="margin-left:30px"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+        ?> <div  class="isa_success">"<?php echo $_SESSION['error'];?> </div>
         <?php
         }
         ?>
     </div>
     </td></tr>  
 </table>
-
     <form action="<?php echo site_url('setup/program');?>" method="POST" class="form-inline">
-    <table style="margin-left:30px;">
+    <div>
+    <table>
     <tr>
         <td><label for="prgcampus">Select Campus</label></td>
         <td>
-            <select name="prgcampus">
+            <select name="prgcampus" style="width:100%;">
         	<option value=""disabled selected>------------------Select Campus------------</option>
                 <?php foreach($this->scresult as $datas): ?>	
                     <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
@@ -73,7 +68,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     <tr>
         <td><label for="prgdepartment">Select Department</label></td>
          <td>
-            <select name="prgdepartment">
+            <select name="prgdepartment" style="width:100%;">
         	<option value=""disabled selected>--------------Select Department----------</option>
                 <?php foreach($this->deptresult as $deptdata): ?>	
                     <option value="<?php echo $deptdata->dept_id; ?>"><?php echo $deptdata->dept_name; ?></option>
@@ -85,7 +80,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     <tr>
         <td><label for="prgcat">Program Category</label></td>
         <td>
-            <select name="prgcat">
+            <select name="prgcat" style="width:100%;">
                 <option value=""disabled selected>-----------------Select Category------------</option>
                 <!---<option value="Under Graduate" class="dropdown-item">Under Graduate</option>
                 <option value="Post Graduate" class="dropdown-item">Post Graduate</option>
@@ -104,7 +99,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 	<tr>
         <td><label for="prgpattern">Program Pattern</label></td>
         <td>
-            <select name="prgpattern">
+            <select name="prgpattern" style="width:100%;">
                 <option value=""disabled selected>--------------------Select Pattern------------</option>
                 <option value="Yearly" class="dropdown-item">Yearly</option>
                 <option value="Semester" class="dropdown-item">Semester</option>
@@ -114,51 +109,51 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     </tr>
     <tr><td>
         <label for="prgname">Program Name</label></td>
-        <td><input type="text" name="prgname" size="35"  size="43" value="<?php echo isset($_POST["prgname"]) ? $_POST["prgname"] : ''; ?>" />
+        <td><input type="text" name="prgname"   size="43" value="<?php echo isset($_POST["prgname"]) ? $_POST["prgname"] : ''; ?>" />
         </td><td><?php echo form_error('prgname')?>
 	</td><td>Example : Batchlor of Art, Master of Art etc  
     </td></tr>
     <tr><td>
         <label for="prgbranch">Program Branch</label></td>
-        <td><input type="text" name="prgbranch" size="35"  size="43" value="<?php echo isset($_POST["prgbranch"]) ? $_POST["prgbranch"] : ''; ?>" />
+        <td><input type="text" name="prgbranch"   size="43" value="<?php echo isset($_POST["prgbranch"]) ? $_POST["prgbranch"] : ''; ?>" />
         </td><td><?php echo form_error('prgbranch')?>
 	</td><td>Example :UG (Arts, Science, commerce etc), PG (Physics, Math  etc)
     </td></tr>
 
     <tr><td>
         <label for="prgcode">Program Code</label></td>
-        <td><input type="text" name="prgcode" size="35"  size="43" value="<?php echo isset($_POST["prgcode"]) ? $_POST["prgcode"] : ''; ?>" />
+        <td><input type="text" name="prgcode"  size="43" value="<?php echo isset($_POST["prgcode"]) ? $_POST["prgcode"] : ''; ?>" />
         </td><td><?php echo form_error('prgcode')?>
     </td></tr>
     <tr><td>
         <label for="prgshort">Program Short</label></td>
-        <td><input type="text" name="prgshort" size="35"  size="43" value="<?php echo isset($_POST["prgshort"]) ? $_POST["prgshort"] : ''; ?>" />
+        <td><input type="text" name="prgshort"  size="43" value="<?php echo isset($_POST["prgshort"]) ? $_POST["prgshort"] : ''; ?>" />
         </td><td><?php echo form_error('prgshort')?>
     </td></tr>
     <tr><td>
         <label for="prgdesc">Program Description</label></td>
-        <td><input type="text" name="prgdesc" size="35"  size="43" value="<?php echo isset($_POST["prgdesc"]) ? $_POST["prgdesc"] : ''; ?>" />
+        <td><input type="text" name="prgdesc"   size="43" value="<?php echo isset($_POST["prgdesc"]) ? $_POST["prgdesc"] : ''; ?>" />
         </td><td><?php echo form_error('prgdesc')?>
     </td></tr>
     <tr><td>
         <label for="prgcredit">Program Credit</label></td>
-        <td><input type="text" name="prgcredit" size="35"  size="43" value="<?php echo isset($_POST["prgcredit"]) ? $_POST["prgcredit"] : ''; ?>" />
+        <td><input type="text" name="prgcredit"   size="43" value="<?php echo isset($_POST["prgcredit"]) ? $_POST["prgcredit"] : ''; ?>" />
         </td><td><?php echo form_error('prgcredit')?>
     </td></tr>
     <tr><td>
         <label for="prgseat">Total Seat</label></td>
-        <td><input type="text" name="prgseat" size="35"  size="43" value="<?php echo isset($_POST["prgseat"]) ? $_POST["prgseat"] : ''; ?>" />
+        <td><input type="text" name="prgseat"   size="43" value="<?php echo isset($_POST["prgseat"]) ? $_POST["prgseat"] : ''; ?>" />
         </td><td><?php echo form_error('prgseat')?>
     </td></tr>
     <tr>
         <td><label for="prgmintime">Program Min Time</label></td>
-        <td><input type="text" name="prgmintime" size="35"  size="43" value="<?php echo isset($_POST["prgmintime"]) ? $_POST["prgmintime"] : ''; ?>" />
+        <td><input type="text" name="prgmintime"   size="43" value="<?php echo isset($_POST["prgmintime"]) ? $_POST["prgmintime"] : ''; ?>" />
         </td><td><?php echo form_error('prgmintime')?></td>
         <td>in Years</td>
     </tr>
     <tr>
         <td><label for="prgmaxtime">Program Max Time</label></td>
-        <td><input type="text" name="prgmaxtime" size="35"  size="43" value="<?php echo isset($_POST["prgmaxtime"]) ? $_POST["prgmaxtime"] : ''; ?>" />
+        <td><input type="text" name="prgmaxtime"   size="43" value="<?php echo isset($_POST["prgmaxtime"]) ? $_POST["prgmaxtime"] : ''; ?>" />
         </td><td><?php echo form_error('prgmaxtime')?></td>
          <td>in Years</td>
     </tr>
@@ -178,8 +173,9 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <button name="reset" >Clear</button>
     </td>
     </tr>
-    </table>
+    </table></div>
     </form>
+<p><br></p>
     <?php echo form_close();	?>
 </body>
 <?php $this->load->view('template/footer.php');?>

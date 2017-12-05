@@ -8,32 +8,25 @@
        
         <?php $this->load->view('template/menu');?>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-        <style>
-            thead th{
-               
-                background-color: #DCDCDC;
-              }
-		.tag_color{
-			color:red;
-		}
-		
-       </style>
     </head>    
     <body>
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
-	<center>
          <table style="width:100%"> 
           <tr><td> 
-               <?php echo anchor('map/userroletype/', "Map with User Role List ", array('title' => 'Add Detail' , 'class' => 'top_parent'));?>
                <?php
-                 $help_uri = site_url()."/help/helpdoc#EmailSetting";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
-                 ?>
-
-               <div  style="margin-left:2%; width:90%;" >
+                   echo "<td align=\"left\" width=\"33%\">"; 
+                   echo anchor('map/userroletype/', "Map with User Role List ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+                   echo "</td>";
+                   echo "<td align=\"center\" width=\"34%\">";
+                   echo "<b>User Role List Details</b>";
+                   echo "</td>";
+                   echo "<td align=\"right\" width=\"33%\">";               
+                $help_uri = site_url()."/help/helpdoc#EmailSetting";
+                echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+                ?>
+               </div>
+               <div>
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -47,13 +40,12 @@
                 ?>        
         	</div>
         </td></tr>  
-        </table>  </center>
-        <br/>
+        </table>  
       <!-- <div class="panel panel-primary"> -->
 	<div class="scroller_sub_page">
-            <table cellpadding="16" class="TFtable">
+            <table cellpadding="0" class="TFtable">
             <thead >
-            <tr align="center">
+            <tr>
                 <th>Sr.No</th>
                 <th>User Name</th>
                 <th>User Type</th>
@@ -62,21 +54,19 @@
                 <th>Campus Name</th>
                 <th>Action</th>
             </tr>
-            <tr></tr>
-            <tr></tr>
         </thead>
         <tbody>
 		
                 <?php $serial_no = 1;?>
                 <?php foreach($this->result as $record){ ?>
-                    <tr align="center">
+                    <tr>
                     <td><?php echo $serial_no++; ?></td>   
                     <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td>
                     <td><?php echo $record->usertype; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?></td>
                     <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid)->sc_name; ?></td>
-                     <?php if($record->userid==1 && $record->roleid ==1): ?> 
+                    <?php if($record->userid==1 && $record->roleid ==1): ?> 
                     <td> <?php  //echo anchor(current_url().'/#', "Delete",array('title' => 'Details' , 'class' => 'tag_color')); ?>&nbsp;
                     &nbsp;<?php  //echo anchor(current_url().'/#',"Edit",array('title' => 'Details' , 'class' => 'tag_color')); ?></td>
 		    <?php else : ?>	

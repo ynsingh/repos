@@ -7,7 +7,6 @@
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
@@ -20,17 +19,25 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-      <center>
-      <table width="70%">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
+      <table width="100%">
             <tr><td>
-                <div align="left">
-		<?php  echo anchor('setup2/addgrade/', "Add Grade", array('title' => 'Add Grade Detail','class' =>'top_parent'));
-		?>
-                 <?php
+                <div>
+	    <?php  
+                echo "<td align=\"left\" width=\"33%\">";    
+                echo anchor('setup2/addgrade/', "Add Grade", array('title' => 'Add Grade Detail','class' =>'top_parent'));
+		echo "</td>";
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Grade Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#ViewGrade";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+		 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
                  ?>
-                <div  style="width:90%;margin-left:2%">
+                </div>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -44,13 +51,9 @@
                ?>
               </div>
              </td></tr>
-       </table></center>
-
-<table>
-<tr>
-<div align="left" style="margin-left:2%;">
-<table cellpadding="16" class="TFtable" >
-<tr align="center">
+       </table>
+<div class="scroller_sub_page">
+<table class="TFtable" >
 <thead><th>Sr.No</th><th>Grade Name</th><th>Grade Point</th><th>Grade Short</th><th>Grade Description</th><th>Action</th></tr></thead>
 
    <?php
@@ -58,7 +61,7 @@
         foreach ($this->result as $row)
         {  
          ?>
-             <tr align="center">
+             <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->gm_gradename ?></td>
             <td> <?php echo $row->gm_gradepoint ?></td>
@@ -75,13 +78,7 @@
             echo "</tr>";
           
         }
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
-          ?>
-</div>
-</tr>
+?>
 </table>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>

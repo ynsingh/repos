@@ -32,22 +32,27 @@
             echo "</table>";
         ?>-->
         <!-- </br>   --> 
-        <center>
-        <table width=70%;"> 
+        <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+        <table width=100%;"> 
            
             <tr><td> 
-                 <?php echo anchor('map/mapsubpre/', "Map Subject with Prerequisite", array('title' => 'Add Detail' , 'class' => 'top_parent'));
-		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandPaperwithPrerequisite";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                 <?php
+                    echo "<td align=\"left\" width=\"33%\">"; 
+                    echo anchor('map/mapsubpre/', "Map Subject with Prerequisite", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Subject with Prerequisite Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
+		    $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandPaperwithPrerequisite";
+		    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                   echo "</td>";
 		 ?>
-                <div  style="margin-left:2%;width:90%;">
-  
-                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-
-                <?php if(isset($_SESSION['success'])){?>
-                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-
-                <?php
+                <div>
+                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                 <?php if(isset($_SESSION['success'])){?>
+                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                 <?php
                 };
                 ?>
                 <?php if(isset($_SESSION['err_message'])){?>
@@ -56,15 +61,13 @@
                 <?php
                 };
                 ?>        
-    
-            </div>
+              </div>
         </td></tr>  
-        </table></center>  
-        <br/>
-      <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" class="TFtable">
+        </table>  
+              <!-- <div class="panel panel-primary"> -->
+            <table class="TFtable">
             <thead >
-            <tr align="center">
+            <tr>
                 <th>Sr.No</th>
                 <th>Department Name</th>
                 <th>Program Name</th>

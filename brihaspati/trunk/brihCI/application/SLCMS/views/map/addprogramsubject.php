@@ -15,10 +15,8 @@ echo "<title>".'IGNTU - Program Subject Add List'."</title>";
 <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">-->
     <style>
     .abc{
-        width:265px;
+        width:330px;
     }
-select{width:100%;height:30px;font-size:18px;}
-.text{width:100%;}
     </style>
 <script>
  function getdegreename(branch){
@@ -57,9 +55,7 @@ function getsubj(combid){
 <?php
 echo "</head>";
 echo "<body>";?>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <?php
 /*
     echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -88,12 +84,7 @@ echo "<body>";?>
 $help_uri = site_url()."/help/helpdoc#MapProgramwithSubjectandPaper";
 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
 ?>
-</td></tr>
-</table>
-</div>
-<table width="100%">
-    <tr><td>
-    <div align="left">
+    <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -102,16 +93,16 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
         };
         if(isset($_SESSION['error']))
         {
-        ?> <div style="margin-left:2%"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+        ?> <div  class="isa_success">"<?php echo $_SESSION['error'];?> </div>
         <?php
         }
         ?>
     </div>
+</div>
     </td></tr>
 </table>
-
 <?php
-    echo "<div align=\"left\";>";
+    echo "<div>";
     //echo "<div style=\"margin-left:10px;\">";
 
 /* Form */
@@ -125,7 +116,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
         $acadyear[$temp ] = $temp;
     }
 
-    echo "<table style= \"margin-left:2%;\">";
+    echo "<table>";
     echo form_open('map/addprogramsubject');
 ?>
 	<tr>
@@ -142,7 +133,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
 		<tr ><td>
         	<label for="text">Program Category</label>
 		</td><td>
-			<select name="subjecttype" id="pcategory"  onchange="getdegreename(this.value)">
+			<select name="subjecttype" id="pcategory" style="width:100%;" onchange="getdegreename(this.value)">
 			<option selected="true" disabled="disabled" style="font-size:18px;">------Program Category------</option>
 				<?php 
 				    foreach($pcategory as $row){
@@ -158,7 +149,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
 		<tr ><td>
         	<label for="text">Degree</label>
 		</td><td>
-			<select name="degree" id="degree">
+			<select name="degree" id="degree" style="width:100%;">
 			<option selected="true" disabled="disabled" style="font-size:18px;">------Degree------</option>
 	  		</select>
 		
@@ -286,7 +277,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_input($subjectcode,'class="text"');
     echo "</td><td>";
-    //echo form_error('subjectcode');
+    echo form_error('subjectcode');
     echo"</td><td>"; echo "Example : Phy01";
     echo "</td></tr>";
     echo "</p>";

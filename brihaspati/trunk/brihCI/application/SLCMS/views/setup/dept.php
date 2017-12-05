@@ -10,7 +10,6 @@
 </head>
   <div id="body">
 	<?php $this->load->view('template/header'); ?> 
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     	<?php $this->load->view('template/menu'); ?>
 </div>
 <!-- <//?php 
@@ -31,21 +30,22 @@
             echo "</table>";
          
 	?>-->
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 
       	<table width="100%">
 		<tr><td>  
-  	        <div style="margin-left:2%">
+  	        <div>
   		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
+                echo "<td align=\"right\">";
 		$help_uri = site_url()."/help/helpdoc#Department";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
 		?>
 		</div>
- 		</tr></td>
-	   	<tr><td>    
-                <div align="left" style="margin-left:2%;width:90%;">
+                <div>
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;class="isa_error">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -55,14 +55,15 @@
                
                 </div>
             	</td></tr>  
-              	<tr>
-         	<form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
-      		<table style="margin-left:1.5%;"> 
+                </table>
+                <div>
+                <form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
+      		<table> 
 
 		<tr><td>
                           
         		Choose your University:</td><td>
-    			<select name="orgprofile" width="100%">
+    			<select name="orgprofile" style="width:100%;">
     			<option value=""disabled selected>--------------------Select university------------------</option>
 			<?php foreach($this->uresult as $datas): ?>	
    				<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
@@ -70,7 +71,7 @@
    			</select>          
    			</td></tr><tr><td>    
  			Choose your Campus: </td><td>         
- 			<select name="studycenter" width="100%">
+ 			<select name="studycenter" style="width:100%;">
  			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
 			<?php foreach($this->scresult as $datas): ?>	
@@ -81,7 +82,7 @@
 
                          <tr><td>
                         Choose your Authorities Name: </td><td>
-                        <select name="authorities" width="80%">
+                        <select name="authorities" style="width:100%;">
                         <option value=""disabled selected>-------------------Select authorities-----------------</option>
                         <?php foreach($this->authresult as $datas): ?>
                                 <option value="<?php echo $datas->id; ?>"><?php echo $datas-> name; ?></option>
@@ -92,52 +93,50 @@
                           
           		<tr>  
                                 <td><label>School/Faculty Code:</label></td>
-                                <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="43" value="<?php echo isset($_POST["dept_schoolcode"]) ? $_POST["dept_schoolcode"] : ''; ?>" /></td> 
+                                <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="40" value="<?php echo isset($_POST["dept_schoolcode"]) ? $_POST["dept_schoolcode"] : ''; ?>" /></td> 
                                  <td>Example: Sbs</td>
                             </tr>
                             <tr> 
                                 <td><label>School/Faculty Name:</label></td>
-                                <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="43" value="<?php echo isset($_POST["dept_schoolname"]) ? $_POST["dept_schoolname"] : ''; ?>" /> </td>
+                                <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="40" value="<?php echo isset($_POST["dept_schoolname"]) ? $_POST["dept_schoolname"] : ''; ?>" /> </td>
                                <td>Example: School of basic science  </td>
                                             
                             </tr>
                             <tr>
                                 <td><label>Department Code:</label></td>
-                                <td><input type="text"placeholder="Department Code" size="43" name="dept_code" value="<?php echo isset($_POST["dept_code"]) ? $_POST["dept_code"] : ''; ?>" /> </td>
+                                <td><input type="text"placeholder="Department Code" size="40" name="dept_code" value="<?php echo isset($_POST["dept_code"]) ? $_POST["dept_code"] : ''; ?>" /> </td>
                                  <td>Example: Phy </td>          
                             </tr>
                             <tr>
                                 <td><label>Department Name:</label></td>
-                                <td><input type="text"placeholder="Department Name" name="dept_name"  size="43" value="<?php echo isset($_POST["dept_name"]) ? $_POST["dept_name"] : ''; ?>" /></td>
+                                <td><input type="text"placeholder="Department Name" name="dept_name"  size="40" value="<?php echo isset($_POST["dept_name"]) ? $_POST["dept_name"] : ''; ?>" /></td>
                                <td>Example:Physics Department </td>                               
                 
                             </tr>
                             <tr>
                                 <td><label>Department Nick Name:</label></td>
-                                <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="43" value="<?php echo isset($_POST["dept_short"]) ? $_POST["dept_short"] : ''; ?>"/> </td>
+                                <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="40" value="<?php echo isset($_POST["dept_short"]) ? $_POST["dept_short"] : ''; ?>"/> </td>
                                  <td>Example:Phy </td>
                                 
                             </tr>
                             <tr>
                                 <td><label>Department Description:</label></td>    
-                                <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="43" value="<?php echo isset($_POST["dept_descripation"]) ? $_POST["dept_descripation"] : ''; ?>" /> </td>   
+                                <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="40" value="<?php echo isset($_POST["dept_descripation"]) ? $_POST["dept_descripation"] : ''; ?>" /> </td>   
                                  <td>Example:Department of Physics  </td>           
                             </tr>
 			                    
                             <tr>
                           
-                          <td colspan="2" style="margin-left:40%;">     
+                          <td> </td><td>
 	         
-                         <button name="dept" style="margin-left:38%;">Add Department </button>
+                         <button name="dept" >Add Department </button>
                           <button name="reset" >Clear</button>
                              <?php echo form_close(); ?>
                                 </td>
                             </tr>
                         </table>
-                    </form>
+                       </form>
                   </div> 
-            </tr>     
-        </table>     
 
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
