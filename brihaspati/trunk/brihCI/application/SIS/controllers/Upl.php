@@ -4,7 +4,7 @@
  * @name Upl.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com)  upload csv file for staff profile registration in SIS
- * 
+ * @author Manorama Pal(palseema30@gmail.com) upload csv file for staff tranfer orders and service particulars.
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -392,7 +392,7 @@ class Upl extends CI_Controller
                             }//else close   
                             
                             $this->logger->write_logmessage("insert","Staff Transfer and Posting", " Employee transfer record insert successfully ");
-                            $this->logger->write_dblogmessage("update","Staff Transfer and Posting", "Employee transfer record insert successfully");
+                            $this->logger->write_dblogmessage("insert","Staff Transfer and Posting", "Employee transfer record insert successfully");
                             $this->session->set_flashdata('success', 'Employee transfer record insert successfully ......');
                         }//ifclose $usrinputtfr_flag
                         else{
@@ -440,7 +440,8 @@ class Upl extends CI_Controller
         }//$post close    
         $this->load->view('upl/uploadtransferorder');
         
-    }//clode function
+    }//close function
+    
     //This function has been created for export transfer orders  using csv file format
     public function exporttransferorder(){
         if(isset($_POST["exportdata"])){
@@ -465,4 +466,89 @@ class Upl extends CI_Controller
             fclose($output);  
         }//if close  
     }//close function
+    
+    /*******************************This function has been created for upload staff service particulars ******************************/
+    //public function servicedata($id=0){
+    public function servicedata(){
+        //echo "getting id=====".$id;
+        //$emsdata['dataid']=$id;  
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+       //$this->session->set_flashdata($array_items);
+	$error =array();
+        if(isset($_POST['servicerecord']))
+        {
+            $ferror='';
+            $filename=$_FILES['userfile']['tmp_name'];
+            $filesize=$_FILES['userfile']['size'];
+            $flag=true;
+            $file = fopen($filename, "r");
+            fgetcsv($file);
+            $i=1;
+            while (false !== ($line = fgets($file)))
+            {
+                $getData = explode(",", $line);
+                $flag=false;
+               
+                if(count($getData) == 7){
+                  // if($id==0) {
+                       
+                    $id=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code', $getData[0])->emp_id;
+                                           
+                   //}
+                  
+                   $dataempsd = array(
+                        'empsd_empid'       => $id,
+                        'empsd_campuscode'  => $getData[1],
+                        'empsd_desigcode'   => $getData[2],
+                        'empsd_pbid'        => $getData[3], 
+                        'empsd_pbdate'      => $getData[4],
+                        'empsd_dojoin'      => $getData[5], 
+                        'empsd_dorelev'     => $getData[6],
+                    ); 
+                    $empsdinput_flag=$this->sismodel->insertrec('employee_servicedetail', $dataempsd);
+                    if($empsdinput_flag){
+                        $this->logger->write_logmessage("insert","Employee service particulars", " Employee service records insert successfully ");
+                        $this->logger->write_dblogmessage("insert","Employee service particulars", "Employee service records insert successfully");
+                        $this->session->set_flashdata('success', 'Employee service records insert successfully ...........');
+                    }//ifclose $empsdinput_flag
+                    else{
+                        $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $id)->emp_name;
+                        $this->logger->write_logmessage("error","Error in employee service particulars", "Error in employee service particulars ".$empname );
+                        $this->logger->write_dblogmessage("error","Error in employee service particulars", "Error in employee service particulars ".$empname);
+                        
+                    }//else$empsdinput_flag
+                    $i++;
+                }//ifcount
+                else{
+                            echo "insufficient data";
+                            $error[] ="At row".$i."insufficient data";
+                            $this->logger->write_logmessage("insert"," Error in employee service particulars ", "At row".$i."insufficient data"  );
+                            $this->logger->write_dblogmessage("insert"," Error in employee service particulars ", "At row".$i."insufficient data" );
+                            $this->session->set_flashdata('error',"At row".$i."insufficient data");
+                            $i++;
+                }
+            } //while
+            if($flag){
+                    $this->session->set_flashdata('error', ' File without data');
+                    $this->load->view('upl/servicedata');
+                    //redirect('upl/servicedata');
+                    return;
+            }else{
+                foreach ($error as $item => $value):
+                    $ferror = $ferror ."</br>". $item .":". $value;
+                endforeach;
+                //display error of array
+                //put ferror in log file.
+                $this->session->set_flashdata('error', $ferror);
+                redirect('upl/servicedata');
+                  
+            }
+                
+            fclose($file);
+            
+        }//issetpost
+        //$this->load->view('upl/servicedata',$emsdata);
+        $this->load->view('upl/servicedata');
+    }
+    /******************************* closer upload staff service particulars ******************************/
 }

@@ -2,6 +2,7 @@
 
 <!--@name  displayscheme.php 
   @author Rekha Devi Pal(rekha20uly@gmail.com)
+  @author Manorama Pal(palseema30@gmail.com) add AGP Code 
  -->
 
 <html>
@@ -49,6 +50,7 @@
             <thead>
                 <tr>
         <th>Sr.No</th>
+        <th>AGP Code </th>
         <th>Salary Grade Name </th>
         <th>Salary Grade Max </th>
         <th>Salary Grade Min</th>
@@ -63,9 +65,10 @@
               ?>    
 		<tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $row->sgm_name?> </td>
-                    <td><?php echo $row->sgm_max ?> </td>
-                    <td><?php echo $row->sgm_min ?></td>
+                    <td><?php echo $row->sgm_id;?> </td>
+                    <td><?php echo $row->sgm_name;?> </td>
+                    <td><?php echo $row->sgm_max ;?> </td>
+                    <td><?php echo $row->sgm_min ;?></td>
 		    <td><?php echo $row->sgm_gradepay ?> </td>
              	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>

@@ -147,8 +147,11 @@ echo "<ul class=\"sf-menu\" >";
 					echo "</li>";*/
      				        echo "<li>";
                                                 echo anchor('upl/uploadslist', 'Upload Staff List', array('title' => 'Upload Staff List'));
-                                        echo "</li>";					
-                                         echo "<li>";
+                                        echo "</li>";	
+                                        echo "<li>";
+                                                echo anchor('upl/servicedata', 'Upload Service Data', array('title' => 'Upload Service Data'));
+                                        echo "</li>";
+                                        echo "<li>";
                                                 echo anchor('upl/uploadtransferorder', 'Upload Transfer Orders', array('title' => 'Upload Transfer Orders'));
                                         echo "</li>";
                                 echo "</ul>";
