@@ -303,6 +303,7 @@ class Setup extends CI_Controller
 
     public function program() 
     {
+	$this->prgcat = $this->common_model->get_listspfic2('programcategory','prgcat_id','prgcat_name');    
         $this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
         $this->deptresult = $this->common_model->get_listspfic2('Department','dept_id', 'dept_name');
         $data['title'] = 'Add program';
@@ -398,10 +399,11 @@ class Setup extends CI_Controller
 
     public function viewprogram()
     {
-        $this->db->from('program');
-        $getprg = $this->db->get();
-        $getres = $getprg->result();
-        $data['prgres'] = $getres;
+        //$this->db->from('program');
+        //$getprg = $this->db->get();
+        //$getres = $getprg->result();
+//	$data['prgres'] = $getres;
+	$data['prgres']=$this->common_model->get_list('program');
         $msg="";
         $data['msg'] = $msg;
         $this->load->view('setup/viewprogram', $data);
