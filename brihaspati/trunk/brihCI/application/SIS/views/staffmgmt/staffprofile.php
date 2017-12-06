@@ -766,14 +766,14 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="28" >
                 </div></td>
                 <td><label for="remarks" style="font-size:15px;">Remarks</label>
-                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="3" cols="40" required pattern="[a-zA-Z0-9 ]+" placeholder="Remarks......"></textarea>
+                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="3" cols="40"  placeholder="Remarks......"></textarea>
                 </div></td>
             </tr>
             <tr>
                 
                
                 <td><label for="Address" style="font-size:15px;">Address</label>
-                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" placeholder="Address..."></textarea>
+                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50"  placeholder="Address..."></textarea>
                 </div></td>
                 <td colspan="2"><label for="userfile" style="font-size:15px;">Upload Photo</label>
                    <div>

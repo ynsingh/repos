@@ -404,6 +404,7 @@
           </tr>
         </table>
       </form>
+<p> &nbsp; </p>	
      </div>		
    </body>
   <div align="center">  <?php $this->load->view('template/footer');?></div>
