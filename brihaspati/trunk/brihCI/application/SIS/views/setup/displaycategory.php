@@ -14,7 +14,7 @@
  <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width='100%'>
-     <tr colspan="2">
+     <tr colspan="2"><td>
          <?php
 	    echo "<td align=\"left\" width=\"33%\">";
             echo anchor('setup/category/', 'Add Category', array('class' => 'top_parent'));
@@ -30,7 +30,8 @@
 	    echo "</td>";
          ?>
 
-        <div>
+       <div align="left" style="margin-left:0%;width:90%;">
+
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
               <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,7 +44,7 @@
                 <?php
                 };
                 ?>    
-        </div> 
+        </div> </td>
     </tr>
   </table>
         <div class="scroller_sub_page">

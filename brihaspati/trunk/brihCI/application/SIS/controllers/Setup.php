@@ -13,6 +13,7 @@
  * @author Neha Khullar(nehukhullar@gmail.com) add bankdetails
  * @author Neha Khullar(nehukhullar@gmail.com) department Archive
  * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
+ @Modification : Om Prakash(omprakashkgp@gmail.com) Dec-2017, check for duplicate entry 
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -792,6 +793,11 @@ class Setup extends CI_Controller
 
             if($this->form_validation->run()==TRUE){
 
+	    $catname = $this->input->post("cname");
+	    $catcode = $this->input->post("ccode");
+	    $catshort = $this->input->post("csname");
+	    
+            $cdatacheck = array('cat_name'=>ucwords(strtolower($_POST['cname'])) , 'cat_code'=>strtoupper($_POST['ccode']), 'cat_short'=>strtoupper($_POST['csname']) );
             $data = array(
                 'cat_name'=>ucwords(strtolower($_POST['cname'])),
                 'cat_code'=>strtoupper($_POST['ccode']),
@@ -799,6 +805,15 @@ class Setup extends CI_Controller
                 'cat_desc'=>$_POST['cdesc']
 
             );
+	   $catdatadup = $this->common_model->isduplicatemore('category', $cdatacheck);
+
+                   if($catdatadup == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Category Name' = $catname, 'Category code' = $catcode , 'Category Short Name' =$catshort .");
+                        redirect('setup/category');
+                        return;
+                 }
+           else{
 	   $catflag=$this->common_model->insertrec('category', $data) ;
 	   if(!$catflag)
 	   {
@@ -814,7 +829,7 @@ class Setup extends CI_Controller
             	redirect("setup/displaycategory", "refresh");
 	      }
            }
-
+	 }
         }
       $this->load->view('setup/category');
    }
@@ -871,7 +886,7 @@ class Setup extends CI_Controller
             'maxlength' => '50',
             'size' => '40',
             'value' => $category_data->cat_name,
-	    'readonly' => 'readonly'	
+	    	
         );
         $data['ccode'] = array(
            'name' => 'ccode',
@@ -937,6 +952,7 @@ class Setup extends CI_Controller
             if($category_data->cat_desc != $data_cdesc)
                 $logmessage = "Add Category " .$category_data->cat_desc. " changed by " .$data_cdesc;
 
+            $cdatacheck = array('cat_name'=>ucwords(strtolower($_POST['cname'])) , 'cat_code'=>strtoupper($_POST['ccode']), 'cat_short'=>strtoupper($_POST['csname']) );
             $update_data = array(
                'cat_name' => $data_cname,
                'cat_code' => $data_ccode,
@@ -944,6 +960,15 @@ class Setup extends CI_Controller
                'cat_desc'  => $data_cdesc
             );
 
+	   $catdatadup = $this->common_model->isduplicatemore('category', $cdatacheck);
+
+                   if($catdatadup == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Category Name' = $data_cname, 'Category code' = $data_ccode , 'Category Short Name' =$data_csname .");
+                        redirect('setup/displaycategory/');
+                        return;
+                 }
+          else{
 	   $catflag=$this->common_model->updaterec('category', $update_data, 'cat_id', $data_cid);
 	   if(!$catflag)	
             {
@@ -958,6 +983,7 @@ class Setup extends CI_Controller
                 $this->session->set_flashdata('success','Category record updated successfully...');
                 redirect('setup/displaycategory/');
                 }
+	   }	
         }//else
         redirect('setup/editcategory/');
     }
@@ -994,8 +1020,8 @@ class Setup extends CI_Controller
             
 	   if(isset($_POST['dept'])) { 
                 $this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
-                $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
+                $this->form_validation->set_rules('orgprofile','University Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('studycenter','Campus Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
                 $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
                 $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
@@ -1005,8 +1031,17 @@ class Setup extends CI_Controller
                        
                 if($this->form_validation->run()==TRUE){
 
-                 if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
-                 $data = array(
+		$campcode = $this->input->post("studycenter");
+		$campname = $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$campcode)->sc_name;
+		$authid = $this->input->post("authorities");
+		$authname = $this->login_model->get_listspfic1('authorities','name','id',$authid)-> name;
+ 		$deptbame = $this->input->post("dept_name");
+
+                if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
+               
+		$ddatacheck = array('dept_uoid'=>strtoupper($_POST['authorities']), 'dept_orgcode'=>strtoupper($_POST['orgprofile']), 'dept_sccode'=>strtoupper($_POST['studycenter']), 'dept_code'=>strtoupper($_POST['dept_code']), 'dept_name'=>ucwords(strtolower($_POST['dept_name'])) );
+               
+		     $data = array(
                                'dept_uoid'=>strtoupper($_POST['authorities']),
                                 'dept_orgcode'=>strtoupper($_POST['orgprofile']),
                                 'dept_sccode'=>strtoupper($_POST['studycenter']),
@@ -1014,9 +1049,19 @@ class Setup extends CI_Controller
                                 'dept_schoolname'=>ucwords(strtolower($_POST['dept_schoolname'])),
                                 'dept_code'=>strtoupper($_POST['dept_code']),
                                 'dept_name'=>ucwords(strtolower($_POST['dept_name'])),
-                                'dept_short'=>$_POST['dept_short'],
+                                'dept_short'=>strtoupper($_POST['dept_short']),
                                 'dept_description'=>$_POST['dept_descripation'],
                         );
+		   $deptdatadup = $this->common_model->isduplicatemore('Department', $ddatacheck);
+
+                   if($deptdatadup == 1 ){
+
+                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname , 'Authorities Name' = $authname , 'Department Name' =$deptbame .");
+                                  redirect('setup/dept');
+                                  return;
+                       }
+                   else{
+
                         $deptflag=$this->common_model->insertrec('Department', $data) ;
                         if(!$deptflag)
                         {
@@ -1030,9 +1075,10 @@ class Setup extends CI_Controller
                                 $this->logger->write_dblogmessage("insert"," add Department ", "Department record added successfully.".$dept_name );
                                 $this->session->set_flashdata("success", "Department added successfully...");
                                 redirect('setup/dispdepartment');
-                        }
-                        }
-			return;
+                           }
+                         }
+		       }
+		       return;
                 }
         }
         $this->load->view('setup/dept');
@@ -1069,6 +1115,7 @@ class Setup extends CI_Controller
      /* this function is used for update department record */
     public function editdepartment($id) {
 
+	    $this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
 	$deptrow=$this->common_model->get_listrow('Department','dept_id', $id);
         if ($deptrow->num_rows() < 1)
         {
@@ -1181,11 +1228,15 @@ class Setup extends CI_Controller
                 $this->load->view('setup/editdepartment', $data);
         }
         else{
-            $schoolcode=strtoupper($this->input->post('deptschoolcode', TRUE));
-            $schoolname = ucwords(strtolower($this->input->post('deptschoolname', TRUE)));
+		
+            $deptorgcode = strtoupper($this->input->post('deptorgcode', TRUE));
+            $deptsccode = strtoupper($this->input->post('deptsccode', TRUE));
+            $deptuoid = strtoupper($this->input->post('authorities', TRUE));
+            $schoolcode = strtoupper($this->input->post('deptschoolcode', TRUE));
+	    $schoolname = ucwords(strtolower($this->input->post('deptschoolname', TRUE)));
             $departmentcode = strtoupper($this->input->post('deptcode', TRUE));
             $departmentname = ucwords(strtolower($this->input->post('deptname', TRUE)));
-            $departmentshort = $this->input->post('deptshort', TRUE);
+            $departmentshort =strtoupper($this->input->post('deptshort', TRUE));
             $departmentdescription = $this->input->post('deptdescription', TRUE);
 //            $deptsccode = strtoupper($this->input->post('deptsccode',TRUE));
   //          $deptorgcode = strtoupper($this->input->post('deptorgcode', TRUE));
@@ -1203,7 +1254,10 @@ class Setup extends CI_Controller
                 $logmessage = $logmessage ." update dept short " .$dept_data->dept_short. " changed by " .$departmentshort;
             if($dept_data->dept_description != $departmentdescription)
                 $logmessage = $logmessage ." update dept description " .$dept_data->dept_description. " changed by " .$departmentdescription;
-       // insert data into department archive table
+         // insert data into department archive table
+
+	   $ddatachecke = array('dept_uoid'=>$deptuoid, 'dept_orgcode'=>$deptorgcode, 'dept_sccode'=>$deptsccode, 'dept_code'=>$departmentcode, 'dept_name'=>$departmentname );
+
         $insertdata= array(
                  'depta_deptid'=>$dept_data->dept_id,
                  'depta_name'=>$dept_data->dept_name,
@@ -1227,6 +1281,7 @@ class Setup extends CI_Controller
             }
 
             $update_data = array(
+	       'dept_uoid'=>$deptuoid,
                'dept_schoolcode' => $schoolcode,
                'dept_schoolname' => $schoolname,
                'dept_code' => $departmentcode,
@@ -1236,6 +1291,14 @@ class Setup extends CI_Controller
               // 'dept_sccode' => $deptsccode,
                //'dept_orgcode' => $deptorgcode
             );
+	   $deptdatadupe = $this->common_model->isduplicatemore('Department', $ddatachecke);
+
+           if($deptdatadupe == 1 ){
+                       $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $deptsccode , 'Authorities Name' = $deptuoid , 'Department Name' =$departmentname .");
+                       redirect('setup/dispdepartment');
+                       return;
+           }
+      else{
            $deptflag=$this->common_model->updaterec('Department', $update_data, 'dept_id', $id);
            if(!$deptflag)
             {
@@ -1251,8 +1314,10 @@ class Setup extends CI_Controller
                 redirect('setup/dispdepartment');
                 }
             }
+          redirect('setup/editdepartment');
         }
-  
+       
+  }
  /****************************************** Add Role Module ********************************************/
 
     /** This function for add role

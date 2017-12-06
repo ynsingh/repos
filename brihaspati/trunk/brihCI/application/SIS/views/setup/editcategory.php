@@ -21,6 +21,10 @@
 
       <table>
             <tr colspan="2"><td>
+	     	<?php
+        	   echo anchor('setup/displaycategory', 'Category List', array('class' => 'top_parent'));
+	        ?>
+		 <div align="left" style="margin-left:0%;width:90%;">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -35,7 +39,7 @@
                         <?php
                     };
 		?>	  
-
+		</div>
             </td></tr>
         </table>
         <table>  
@@ -64,7 +68,7 @@
                     echo form_input($ccode);
                 echo "</td>";
                 echo "<td>";
-                   
+                    echo "Example: Scheduled Tribe";
                 echo "</td>";
             echo "</tr>";
         
@@ -77,7 +81,7 @@
                     echo form_input($csname);
                 echo "</td>";
                 echo "<td>";
-                    echo " Example : ST";
+                    echo " Example : ST, SC, OBC, GEN, PH etc. ";
                 echo "</td>";
             echo "</tr>";
             
@@ -90,7 +94,7 @@
                     echo form_input($cdesc);
                 echo "</td>";
                 echo "<td>";
-                    
+                    echo " Example : Reserved Category, Unreserved Category.";
                 echo "</td>";
             echo "</tr>";
             //echo "</p>";

@@ -3,6 +3,7 @@
 
 <!--@name editdepartment.php 
   @author Raju Kamal(kamalraju8@gmail.com)
+  @Modification: Om Prakash(omprakashkgp@gmail.com) Dec-2017
  -->
 
 <html>
@@ -40,15 +41,26 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-        <table width="100%">
+        <table width="70%">
+	     <tr><td align=left;>
+                <?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  ));
+                ?>
+                
+             </td></tr>
+
       <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
             <tr><td>
-                <div>
+               <div align="left" style="margin-left:0%;width:90%;">
                     <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                     <?php echo form_error('<div  class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
+
+                    <?php
+                    };
+                     if(isset($_SESSION['err_message'])){?>
+                        <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                     <?php
                     };
@@ -63,7 +75,7 @@
            echo form_open('setup/editdepartment/' . $id);
             echo "<tr>";
                 echo "<td>";
-                echo form_label('University Code', 'deptorgcode');
+                echo form_label('University Name', 'deptorgcode');
                 echo "</td>";
                 echo "<td>";
  //                     $whval= $deptorgcode['value'];
@@ -78,7 +90,7 @@
             echo "</tr>";
            echo "<tr>";
                 echo "<td>";
-                echo form_label('Campus Code', 'deptsccode');
+                echo form_label('Campus Name', 'deptsccode');
                 echo "</td>";
                 echo "<td>";
                  echo form_input($deptsccode);
@@ -93,12 +105,18 @@
                 echo "<td>";
                 echo form_label('Authorities Name', 'authorities');
                 echo "</td>";
+                echo "<td>"; 
+                //echo form_input($authorities); ?>
+		<select name="authorities" id="authorities" class="my_dropdown" style="width:100%;">
+		<option value="<?php echo  $this->login_model->get_listspfic1('authorities','id','name', $authorities["value"])->id; ?>" > <?php echo $authorities["value"]; ?></option> 
+		 <?php foreach($this->authresult as $datas): ?>
+                    <option value="<?php echo $datas->id ; ?>"><?php echo $datas->name ; ?></option>
+                 <?php endforeach; ?>
+		</select>	
+                <?php echo "</td>"; 
                 echo "<td>";
-                 echo form_input($authorities);
-                 echo "</td>";
-                 echo "<td>";
-                 echo "</td>";
-                 echo "</tr>";
+                echo "</td>";
+                echo "</tr>";
 
 
             echo "<tr>";

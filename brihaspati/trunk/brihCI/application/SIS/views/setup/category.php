@@ -23,7 +23,7 @@
 	   echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
             echo "</td>";
        	?>
-        <div>
+        <div align="left" style="margin-left:0%;width:90%;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -44,9 +44,9 @@
             <tr>  
                 <td><label for="cname" class="control-label"> Category Name :</label></td>
                 <td>
-                <input type="text" name="cname" class="form-control" size="40" /><br>
+                <input type="text" name="cname" class="form-control" size="40" placeholder="Category Name" /><br>
                 </td>
- 		<td><?php echo form_error('cname')?></td> 
+ 	<!--	<td><?php echo form_error('cname')?></td> -->
 		<td> Example : Scheduled Tribe, Other Backward Class, General etc. </td>
             </tr>
             <tr> 
@@ -54,9 +54,9 @@
                 <label for="ccode" class="control-label">Category Code :</label>
                 </td>
                 <td>
-                    <input type="text" name="ccode" size="40" class="form-control"/> <br>
+                    <input type="text" name="ccode" size="40" class="form-control" placeholder="Category Code" /> <br>
                 </td>
- 		<td><?php echo form_error('ccode')?></td>
+ 	<!--	<td><?php echo form_error('ccode')?></td>-->
 		<td>Example : 01, 02, 03, st04, sc-5 etc.</td>
             </tr>
             <tr>
@@ -64,9 +64,9 @@
                     <label for="csname" class="control-label">Category Short Name :</label>
                 </td>
                 <td>
-                    <input type="text" name="csname" size="40"  class="form-control"/> <br>
+                    <input type="text" name="csname" size="40"  class="form-control" placeholder="Category Short Name"/> <br>
                 </td>
-		 <td><?php echo form_error('csname')?></td>
+	<!--	 <td><?php echo form_error('csname')?></td>-->
 		<td> Example : ST, SC, OBC, GEN, PH etc. </td>
             </tr>
             <tr>
@@ -74,9 +74,9 @@
                 <label for="cdesc" class="control-label">Category Description :</label>
                 </td>
                 <td>
-                    <input type="text" name="cdesc"  size="40"/> <br>
+                    <input type="text" name="cdesc"  size="40" placeholder="Category Description" /> <br>
                 </td>
- 		<td><?php echo form_error('cdesc')?></td>
+ 	<!--	<td><?php echo form_error('cdesc')?></td>-->
 		<td> Example : Reserved Category, Unreserved Category. </td>
             </tr>
             <tr><td></td>

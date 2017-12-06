@@ -3,7 +3,8 @@
 <!--@name dept.php 
   @author Raju kamal (kamalraju8@gmail.com)
   kumar.abhay.4187@gmail.com =>repopluate
- -->
+ @Modification : Om Prakash(omprakashkgp@gmail.com) Dec-2017
+  -->
 <html>
 <head>
 <title>Add Department</title>
@@ -34,13 +35,14 @@
 
       	<table width="100%">
 		<tr><td>  
-  		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
-                 echo "<td align=\"right\">";
-	 	 $help_uri = site_url()."/help/helpdoc#Department";
-                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-                 echo "</td>";
-		 ?>
-                <div>
+  			<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
+		        echo "<td align=\"right\">";
+		           $help_uri = site_url()."/help/helpdoc#Department";
+           			echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+            		echo "</td>";
+		?>
+                <div align="left" style="margin-left:0%;width:90%;">
+       
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -48,9 +50,13 @@
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     <?php
                     };
-                    ?>
-               
-                </div>
+                   
+                    if(isset($_SESSION['err_message'])){?>
+	              <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                  <?php
+                    };
+                   ?>
+                 </div>
             	</td></tr> 
                 </table> 
               	<tr>
@@ -58,7 +64,7 @@
       		<table> 
 		<tr><td>
                           
-        		Choose your University:</td><td>
+        		University Name:</td><td>
     			<select name="orgprofile" style="width:100%;">
     			<option value=""disabled selected>--------------------Select university------------------</option>
 			<?php foreach($this->uresult as $datas): ?>	
@@ -66,7 +72,7 @@
  			<?php endforeach; ?>
    			</select>          
    			</td></tr><tr><td>    
- 			Choose your Campus: </td><td>         
+ 			Campus Name: </td><td>         
  			<select name="studycenter" style="width:100%;">
  			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
@@ -77,7 +83,7 @@
 			</td></tr>
                          
                          <tr><td>
-                        Choose your Authorities Name: </td><td>
+                        Authorities Name: </td><td>
                         <select name="authorities" style="width:100%;">
                         <option value=""disabled selected>-------------------Select authorities-----------------</option>
 			<?php foreach($this->authresult as $datas): ?>
@@ -125,8 +131,9 @@
                           <td></td>
                           <td colspan="2">     
                          <button name="dept" >Add Department </button>
-                          <button name="reset" >Clear</button>
+                          <!--<button name="reset" >Clear</button>-->
                              <?php echo form_close(); ?>
+			 <input type="reset" name="Reset" value="Clear"/>
                                 </td>
                             </tr>
                     </form>
