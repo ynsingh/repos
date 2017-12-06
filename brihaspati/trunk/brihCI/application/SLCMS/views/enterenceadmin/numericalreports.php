@@ -65,7 +65,6 @@
                  <?php $this->load->view('template/menu');?>
 
 <p>
-<?php $centername;?>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </p>	
             </div></br></br></br><br>
@@ -119,7 +118,7 @@
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Exam Center Stats</b> </div>
                             <div class="panel-body">
-                            <table class="TFtable" style="width: 430px; height: 350px;">
+                            <table class="TFtable" style="width: 430px; max-height: 350px;">
                                     <thead >
                                     <tr align="left" valign=top>
                                         <th><b>Enterance Exam Center</b></th>
@@ -128,6 +127,48 @@
                                         <th><b>Unpaid</b></th>
                                     </tr>
                                     </thead>
+                                    <?php 
+                                        foreach($centerid as $row)
+                                        {   
+                                    ?>
+                                        <tr >
+                                            <td>            
+                                            <?php 
+                                                echo $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$row->eec_id)->eec_name;
+                                            $center_id = $row->eec_id;?>
+                                            </td>
+                                            <?php
+                                                $whdata = array('ca_centername' => $center_id); 
+                                                $totalsubmitted =  $this->commodel->getnoofrows('admissionstudent_centerallocation',$whdata);
+                                            ?>
+                                            <td>
+                                            <?php echo $totalsubmitted; ?>
+                                            </td>
+                                            <?php
+                                                $selectdata=array('ca_asmid'); 
+                                                $getsmids = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$selectdata,$whdata);
+                                                $noofpaid = 0;
+                                                foreach($getsmids as $row1)
+                                                {
+                                                    $paidsmid = $row1->ca_asmid;
+                                                    $feepaidstat = $this->commodel->get_listrow('admissionstudent_enterencestep','admission_masterid',$paidsmid);
+                                                    $data2 = $feepaidstat->result();
+                                                    $feepay = 0;
+                                                    if(sizeof($data2) > 0)
+                                                    {
+                                                        $feepay = $feepaidstat->row()->step4_status;
+                                                    }
+                                                    if($feepay == "1")
+                                                        $noofpaid = $noofpaid + 1;
+                                                }
+                                                ?>
+                                            <td><?php echo $noofpaid;?></td>
+                                            <td><?php echo $totalsubmitted - $noofpaid;?> </td>
+                    
+                                        </tr>    
+                                    <?php        
+                                        }
+                                    ?>
                             </table>        
                             </div>
                         </div>

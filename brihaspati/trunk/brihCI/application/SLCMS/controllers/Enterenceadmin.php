@@ -972,11 +972,9 @@ class Enterenceadmin extends CI_Controller
 
         // Exam center stat
 
-        $centername = $this->commodel->get_listspficarry('admissionstudent_enterenceexamcenter','eec_name','','');
+        $centerid = $this->commodel->get_listspficarry('admissionstudent_enterenceexamcenter','eec_id','','');
         //print_r($centername);
-        $data['centername'] = $centername;
-        
-        
+        $data['centerid'] = $centerid;
 
         $this->load->view('enterenceadmin/numericalreports',$data);
     }
