@@ -110,14 +110,14 @@ function filladd()
  			<option  disabled selected>Study Centers</option>
 			<?php 
 			
-			if(($prgcat == 'Diploma') || ($prgcat == 'Under Graduate')|| ($prgcat == 'Certificate')){
+			if(($prgcat == 'Diploma Course') || ($prgcat == 'Under Graduate')|| ($prgcat == 'Certificate Course')){
 			?>	
 			<option value="<?php echo '1'; ?>"><?php echo 'IGNTU, HQ, Amarkantak'; ?></option>
-			<option value="2"><?php echo 'Regional campus,manipur'; ?></option>
 			<?php }  ?>
 			<?php 
 			if(($prgcat == 'Post Graduate') || ($prgcat == 'Research')){
 			?>
+			<option value="<?php echo '1'; ?>"><?php echo 'IGNTU, HQ, Amarkantak'; ?></option>
 			<option value="2"><?php echo 'Regional campus,manipur'; ?></option>
 			<?php } ?>
 			</select>   

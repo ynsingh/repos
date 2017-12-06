@@ -121,7 +121,8 @@ function drawStatChart() {
       var data = google.visualization.arrayToDataTable([
         ["Element", "", { role: "style" } ],
 <?php
-            echo '["UnPaid",' .$feenotpaid.', "#b87333"], ["Paid",' .$feepaid.', "#b87333"],["Total Submitted",'.$totalsubmitted.',"silver"],["Total Registered",'.$totalregistered.',"gold"],';
+            //echo '["UnPaid",' .$feenotpaid.', "#b87333"], ["Paid",' .$feepaid.', "#b87333"],["Total Registered",'.$totalsubmitted.',"silver"],["Total Submitted",'.$totalregistered.',"gold"],';
+            echo '["UnPaid",' .$feenotpaid.', "#b87333"], ["Paid",' .$feepaid.', "black"],["Total Submitted",'.$totalregistered.',"gold"],["Total Registered",'.$totalsubmitted.',"silver"]';
 ?>
       ]);
 
@@ -182,11 +183,11 @@ function drawStatChart() {
             </tr>
             <tr>
                     <td valign=top>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0;">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Recent Applications</b> </div>
-                            <div class="panel-body">
+                            <div class="panel-body" style="overflow:scroll;width: 800px; height: 400px">
                             <?php //print_r($registeredapplicant);?>
-                                <table class="TFtable">
+                                <table class="TFtable" style="width: 800px; height: 400px;">
                                     <thead >
                                     <tr align="left" valign=top>
                                         <th><b>Applicant Name</b></th>

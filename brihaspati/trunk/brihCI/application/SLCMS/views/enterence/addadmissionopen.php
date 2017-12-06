@@ -81,7 +81,7 @@
                       for($i = 2016; $i < date("Y")+10; $i++){
 
                         $j=$i+1;
-                        echo '<option value="'.$i.' - '.$j.'">'.$i.' - '.$j.'</option>';
+                        echo '<option value="'.$i.'-'.$j.'">'.$i.'-'.$j.'</option>';
 
                         }
                         ?>

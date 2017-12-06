@@ -59,45 +59,10 @@ echo "</center>"; ?>
 <table style="width:100%;border:0px solid black;" align=center border=0> 
 	
 	<tr>
-		<!--<td style="width:30%;" valign="top">
-			<div id="cssmenu" style="">
-                				<ul>
-							<li><a href="ADMISSION NOTIFICATION">ADMISSION NOTIFICATON</a></li>
-								<?php 
-									$cdate = date('Y-m-d H:i:s');
-									foreach($this->prgcat as $pname){
-										$progname = $pname->prgcat_name;
-										$selectfield=array('admop_prgname_branch');
-										$data=array(
-      											'admop_prgcat' => $progname,
-      											'admop_lastdate >=' => $cdate,
-       										);
-										$progid = $this->commodel-> get_listspficemore('admissionopen',$selectfield,$data);
-										
-								?>
-        						 <li class='has-sub'><a href=""><?php echo $pname->prgcat_name;?></a>
-                      	  				<ul>
-								<?php foreach($progid as $row){
-									$id = $row->admop_prgname_branch;
-									$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
-									
-							?>
-                        						<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
-									<input type="hidden" value="<?php echo $id;?>" name="prgid">
-								<?php }?>
-                        				</ul>
-								<?php }?>
-							</li>
-						</ul>
-               			 </div>
-       			 </div>
-        		
-		</td>--->
-
 		<td align=center style="width:30%;" valign="top">
 		<div style="overflow:auto;height:300px;">
 			<table style="width:100%" class="TFtable" >
-				<tr style="background-color:#38B0DE;color:white;font-size:21px;">
+				<tr style="background-color:#38B0DE;color:white;font-size:15px;">
 				<td style="border:2px solid white;" align=center colspan=5>Announcement</td></tr>
 				<?php
 				$count =0;
@@ -145,9 +110,9 @@ echo "</center>"; ?>
 				<input type="button" value="New Student" style="width:49%" id="button"></a></td>
 			</tr>
 			<tr>
-               			 <td> 
+               			 <td><br> 
 				<a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
-                		<input type="button" value="Forgot Password" style="width:100%" id="button"></a></td>
+                		<font size=4>Forgot Password</font></a></td>
 			</tr>
 				
 			</table>

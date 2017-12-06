@@ -79,9 +79,9 @@ echo "</center>"; ?>
 							<li><a href="">ADMISSION NOTIFICATON</a></li>
 								<?php 
 								$cdate = date('Y-m-d H:i:s');
-								foreach($scrlist as $row){
-									$scid = $row->sc_id;
-									$wharray = array('prg_scid'  =>  $scid);
+//								foreach($scrlist as $row){
+									$scid = 1;
+									$wharray = array('prg_scid'  =>  1);
 									$prgcat = $this->commodel->get_distinctrecord('program','prg_category',$wharray);
 									foreach($prgcat as $row){	
 										$prgcatname = $row->prg_category;
@@ -107,7 +107,7 @@ echo "</center>"; ?>
 										
 									</li>
 							<?php }
-									}?>
+			//						}?>
 						</ul>
                			 </div>
        			 </div>

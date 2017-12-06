@@ -72,7 +72,7 @@
          <center>
            <table style="margin-top:5px;">
             <tr>
-                    <td valign=top>
+    <!--                <td valign=top>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Recent Applications</b> </div>
                             <div class="panel-body">
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                     </td>
-
+-->
                     <td>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Exam Center Stats</b> </div>
@@ -133,8 +133,8 @@
                         </div>
                     </td>   
 
-            </tr>
-            <tr>
+  <!--          </tr>
+            <tr> -->
                 <td valign=top>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Course Stats</b> </div>
@@ -189,6 +189,26 @@
                 </td>
 
             </tr>
+		<tr>
+			<td colspan=2>
+                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Exam Center & Course Stats</b> </div>
+                            <div class="panel-body">
+                            <table class="TFtable" style="height: 350px;">
+                                    <thead >
+                                    <tr align="left" valign=top>
+                                        <th><b>Enterance Exam Center/Course</b></th>
+                                        <th><b>Submitted</b></th>
+                                        <th><b>Paid</b></th>
+                                        <th><b>Unpaid</b></th>
+                                    </tr>
+                                    </thead>
+                            </table>
+                            </div>
+                        </div>
+                    </td>
+
+		</tr>
             </table></center>
 
             </div><?php $this->load->view('template/footer'); ?></div>
