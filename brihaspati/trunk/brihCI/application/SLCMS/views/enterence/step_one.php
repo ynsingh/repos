@@ -108,8 +108,13 @@ function filladd()
 			<label for="ennumber">Study Centers</label></br>
 			<select name="entcenter" style="height:37px;font-size:18px;font-weight:bold;" >
  			<option  disabled selected>Study Centers</option>
-			<?php 
-			
+				<?php foreach($this->scresult as $scrow): 
+					$scid = $this->commodel->get_listspfic1('study_center','sc_id','sc_id',$scrow->prg_scid)->sc_id;
+					$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+				?>
+					<option value="<?php echo $scid;?>"><?php echo $scname; ?></option>
+				<?php endforeach; ?>
+			<!-- <?php 
 			if(($prgcat == 'Diploma Course') || ($prgcat == 'Under Graduate')|| ($prgcat == 'Certificate Course')){
 			?>	
 			<option value="<?php echo '1'; ?>"><?php echo 'IGNTU, HQ, Amarkantak'; ?></option>
@@ -119,7 +124,7 @@ function filladd()
 			?>
 			<option value="<?php echo '1'; ?>"><?php echo 'IGNTU, HQ, Amarkantak'; ?></option>
 			<option value="2"><?php echo 'Regional campus,manipur'; ?></option>
-			<?php } ?>
+			<?php } ?>--->
 			</select>   
 		<td/>
 
@@ -258,7 +263,7 @@ function filladd()
 		<td>
 			<label>Reservation Type</label></br>
 			<?php $this->load->view('enterence/multi_drop');?>
-			<select name="basic[]" multiple="multiple" class="3col active" style="" required>
+			<select name="basic[]" multiple="multiple" class="3col active" style="">
         			<option value="Diffrently Abled">Differently Abled</option>
         			<option value="Supernumerary Seats">Supernumerary Seats</option>
        				<option value="N.C.C. Cadets">N.C.C. Cadets</option>

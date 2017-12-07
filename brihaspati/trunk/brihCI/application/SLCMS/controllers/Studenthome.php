@@ -16,8 +16,8 @@ class Studenthome extends CI_Controller
  	$this->load->model("common_model", "commodel");
         $this->load->model("user_model","usermodel");
         $this->load->model("student_model", "studentmodel");
-        if(empty($this->session->userdata('id_user'))) {
-            $this->session->set_flashdata('flash_data', 'You don\'t have access!');
+       if(empty($this->session->userdata('id_user'))) {
+            $this->session->set_flashdata('err_message', 'You don\'t have access!');
             redirect('welcome');
         }
     }
@@ -63,8 +63,8 @@ class Studenthome extends CI_Controller
 
             //get study center code.
             $sc_code = $stud_master1->sm_sccode;  
-            $sc_name = $this->commodel->get_listrow('study_center','sc_code',$sc_code)->row()->sc_name;
-            $data['sc_name'] = $sc_name;
+            $sc_name = $this->commodel->get_listrow('study_center','sc_id',$sc_code)->row()->sc_name;
+	    $data['sc_name'] = $sc_name;
 
             //get degree
 
@@ -83,8 +83,9 @@ class Studenthome extends CI_Controller
              */
             $noofsemester = sizeof($stud_prg_rec->result());
             $degree_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_name;
-            $this->load->model("student_model", "studentmodel");           
-            $data['degree_name'] = $degree_name;
+		 $branch_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_branch;
+            //$this->load->model("student_model", "studentmodel");           
+            $data['degree_name'] = $degree_name."( ".$branch_name." )";
             //get the value of current semester and academic year,semestertype(odd or even)
 
             $semestertype = $this->usermodel->getcurrentSemester();

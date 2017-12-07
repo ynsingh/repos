@@ -435,6 +435,7 @@ class Enterence extends CI_Controller {
         //get program name
         $prg_name=$this->uri->segment(3);
         $data['prg_name'] = $prg_name;
+		
         $msgflag = 0;
         $data['msgflag'] = $msgflag;
 
@@ -588,13 +589,6 @@ class Enterence extends CI_Controller {
     }
 
 	public function step_one(){
-		  $data = array();
-        //get program name
-        $prg_name=$this->uri->segment(3);
-        $data['prg_name'] = $prg_name;
-        $msgflag = 0;
-        $data['msgflag'] = $msgflag;
-
 		$regisid = $this->session->userdata['asreg_id'];
 		
 		$rsdata1 = array('step1_status' => '1', 'registration_id' => $regisid);
@@ -611,19 +605,22 @@ class Enterence extends CI_Controller {
 		$dob = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_dob','asreg_id',$regisid)->asreg_dob;		
 		$data['dob'] = $dob;
 		$prgid = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_program','asreg_id',$regisid)->asreg_program;	
-		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';	
+		
+		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';
 		$data['prgname'] = $prgname;
-		$prgcat = $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgid)->prg_category;
-		$data['prgcat'] = $prgcat;
-		$sccode = $this->commodel->get_listspfic1('program','prg_scid','prg_id',$prgid)->prg_scid;
-		$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
-		$data['scname'] = $scname;
+		//$prgcat = $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgid)->prg_category;
+		//$data['prgcat'] = $prgcat;
+		//$sccode = $this->commodel->get_listspfic1('program','prg_scid','prg_id',$prgid)->prg_scid;
+		//$data['sccode'] = $sccode;
+		//$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
+		//$data['scname'] = $scname;
 		$cdate = date('Y-m-d');
 		$age = $cdate-$dob;
 		$data['age'] = $age;
-
-		$this->scresult = $this->commodel->get_list('study_center');
-		$this->prgname  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');		
+		$whdata = array('prg_id' => $prgid);
+		$this->scresult = $this->commodel->get_listspficemore('program','prg_scid',$whdata);
+		//print_r($this->scresult);die;	
+		//$this->prgname  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');		
 		$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
 
 		//send student enetrance data in table
@@ -643,7 +640,7 @@ class Enterence extends CI_Controller {
           		$this->form_validation->set_rules('entdisability','Disability','trim|xss_clean|required');
            		$this->form_validation->set_rules('entreligion','Religion','trim|xss_clean|required');
 			$this->form_validation->set_rules('basic[]','Reservation type','trim|required');
-
+			$this->form_validation->set_rules('entaadhar','Aadhar Number','trim|xss_clean|numeric');
 			//address detail validation code
            		$this->form_validation->set_rules('entpstreet','Parmanant address street','trim|xss_clean|required');
 			$this->form_validation->set_rules('entpcity','Parmanant address city','trim|xss_clean|required');
@@ -1602,14 +1599,13 @@ class Enterence extends CI_Controller {
                     	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." .$Sid);
 			
 			$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
-			$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
-			$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
+			//$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+			//$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
 			$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
 
-			
 			$center = array(
-		  		'ca_centerlocation'  => $clocation,
-				'ca_centername'	     => $cname,
+		  		'ca_centerlocation'  => $cid,
+				'ca_centername'	     => $cid,
 				'ca_prgid'	     => $pegid
 		      	 );
 		

@@ -3,7 +3,7 @@
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
 --------------------------------------------------------->
 <center>
-<table border="0" style="width:70%;">
+<table border="0" style="width:95%;">
 <tr><td>
  
 <h1 style="text-align:left;"><b>General Instructions</b></h1>

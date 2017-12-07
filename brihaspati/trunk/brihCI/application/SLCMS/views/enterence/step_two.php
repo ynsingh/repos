@@ -88,7 +88,7 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 		<tr>	
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">1</td>
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">10th</td>
-			<td><input type="text"  placeholder="Highschool" name="Hcname" style="" value="<?php echo isset($_POST["Hcname"]) ? $_POST["Hcname"] : ''; ?>"></td>
+			<td><input type="text"  placeholder="Highschool" name="Hcname" style="" value="<?php echo isset($_POST["Hcname"]) ? $_POST["Hcname"] : '10'; ?>" readonly></td>
 			<td><input type="text" placeholder="Institute name" name="Hinstitute" style=" " value="<?php echo isset($_POST["Hinstitute"]) ? $_POST["Hinstitute"] : ''; ?>"></td>
 			<td><input type="text" placeholder="Bord/University" name="Hboard" style=" " value="<?php echo isset($_POST["Hboard"]) ? $_POST["Hboard"] : ''; ?>"></td>
 			<td><input type="text" placeholder="Subjects" name="Hsubject" style=" " value="<?php echo isset($_POST["Hsubject"]) ? $_POST["Hsubject"] : ''; ?>"></td>
@@ -160,7 +160,7 @@ $( "#mysecondnumber" ).on('change',function(){
 		<tr>	
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">2</td>
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">12th</td>
-			<td><input type="text" placeholder="Intermediate" name="Icname" style=" " value="<?php echo isset($_POST["Icname"]) ? $_POST["Icname"] : ''; ?>"></td>
+			<td><input type="text" placeholder="Intermediate" name="Icname" style=" " value="<?php echo isset($_POST["Icname"]) ? $_POST["Icname"] : '12'; ?>" readonly></td>
 			<td><input type="text" placeholder="Institute name" name="Iinstitute" style=" " value="<?php echo isset($_POST["Iinstitute"]) ? $_POST["Iinstitute"] : ''; ?>"></td>
 			<td><input type="text" placeholder="Bord/University" name="Iboard" style=" " value="<?php echo isset($_POST["Iboard"]) ? $_POST["Iboard"] : ''; ?>"></td>
 			<td><input type="text" placeholder="Subjects" name="Isubject" style=" " value="<?php echo isset($_POST["Isubject"]) ? $_POST["Isubject"] : ''; ?>"></td>
@@ -208,7 +208,7 @@ $( "#mysecondnumber1" ).on('change',function(){
 		<tr>	
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">3</td>
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">Graduation</td>
-			<td><input type="text" placeholder="Course Name" name="Gcname" style=" " value="<?php echo isset($_POST["Gcname"]) ? $_POST["Gcname"] : ''; ?>"></td>
+			<td><input type="text" placeholder="Course Name" name="Gcname" style=" " value="<?php echo isset($_POST["Gcname"]) ? $_POST["Gcname"] : 'Graduate'; ?>" readonly></td>
 			<td><input type="text"  placeholder="Institute name" name="Ginstitute" style=" " value="<?php echo isset($_POST["Ginstitute"]) ? $_POST["Ginstitute"] : ''; ?>"></td>
 			<td><input type="text"  placeholder="Bord/University" name="Gboard" style=" " value="<?php echo isset($_POST["Gboard"]) ? $_POST["Gboard"] : ''; ?>"></td>
 			<td><input type="text"  placeholder="Subjects" name="Gsubject" style=" " value="<?php echo isset($_POST["Gsubject"]) ? $_POST["Gsubject"] : ''; ?>"></td>
@@ -256,7 +256,7 @@ $( "#mysecondnumber2" ).on('change',function(){
 		<tr>	
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">4</td>
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">Post Graduation</td>
-			<td><input type="text"  placeholder="Course Name" name="Pcname" style=" " value="<?php echo isset($_POST["Pcname"]) ? $_POST["Pcname"] : ''; ?>"></td>
+			<td><input type="text"  placeholder="Course Name" name="Pcname" style=" " value="<?php echo isset($_POST["Pcname"]) ? $_POST["Pcname"] : 'Post Graduate'; ?>" readonly></td>
 			<td><input type="text"  placeholder="Institute name" name="Pinstitute" style=" " value="<?php echo isset($_POST["Pinstitute"]) ? $_POST["Pinstitute"] : ''; ?>"></td>
 			<td><input type="text"  placeholder="Bord/University" name="Pboard" style=" " value="<?php echo isset($_POST["Pboard"]) ? $_POST["Pboard"] : ''; ?>"></td>
 			<td><input type="text"  placeholder="Subjects" name="Psubject" style=" " value="<?php echo isset($_POST["Psubject"]) ? $_POST["Psubject"] : ''; ?>"></td>

@@ -62,150 +62,51 @@ echo "</center>"; ?>
 <table style="width:100%;border:0px solid black;" align=center border=0> 
 	
 	<tr>
-		<td style="width:33%;" valign="top">
-			<div align=left>
-			<select style="height:37px;font-size:18px;font-weight:bold;width:80%;" id="menuhide">
- 				<option  disabled selected>Study Centers</option>
-				
-				<option value="1" id="open-one">IGNTU, HQ, Amarkantak</option>
-				<option value="2" id="open-two">Regional campus,manipur</option>
-				
-			</select>  
+		<form action="<?php echo site_url('welcomeform');?>" method="POST">
+			<td style="width:33%;" valign="top">
+				<div align=left>
+				<select style="height:37px;font-size:18px;font-weight:bold;width:80%;" id="studylist" name="studylist" onchange="getcatelist(this.value)" >
+ 					<option disabled selected>Study Centers</option>
+					<?php foreach($scrlist as $row){?>
+						<option value="<?php echo $row->sc_id;?>" ><?php echo $row->sc_name;?></option>
+					<?php }?>
+				</select>  
+			<!--<input type="text" id="studyid" name="studyid">-->
+		</form>
+<script>
+//function run() {
+ //   document.getElementById("studyid").value = document.getElementById("studylist").value;
+//}
+function getcatelist(studycid){
+                var studycid = studycid;
+               // alert(studycid);
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>slcmsindex.php/welcomeform/menulist",
+                data: {"studylist" : studycid},
+                dataType:"html",
+                success: function(data){
+	                $('#cssmenu').html(data.replace(/^"|"$/g, ''));
+                }
+               
+         }); 
+}
+</script>
 			</div>
+<!--<div id="m"></div>-->
 <br>
-			<DIV id="box-one" style="display:none;">
-			<div id="cssmenu">
-                				<ul>
-							<li><a href="">ADMISSION NOTIFICATON</a></li>
-								<?php 
-								$cdate = date('Y-m-d H:i:s');
-//								foreach($scrlist as $row){
-									$scid = 1;
-									$wharray = array('prg_scid'  =>  1);
-									$prgcat = $this->commodel->get_distinctrecord('program','prg_category',$wharray);
-									foreach($prgcat as $row){	
-										$prgcatname = $row->prg_category;
-										$selectfield=array('admop_prgname_branch');
-										$data=array(
-      											'admop_prgcat' => $prgcatname,
-      											'admop_lastdate >=' => $cdate,
-       										);
-										$progid = $this->commodel->get_distinctrecord('admissionopen',$selectfield,$data);
-									?>
-        						 		<li class='has-sub'><a href=""><?php echo $prgcatname;?></a>
-                      	  						    	<ul>
-											<?php foreach($progid as $row){
-												$id = $row->admop_prgname_branch;
-												$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
-									
-												?>
-                        									<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
-											<input type="hidden" value="<?php echo $id;?>" name="prgid">
-											
-										<?php }?>
-                        							</ul>
-										
-									</li>
-							<?php }
-			//						}?>
-						</ul>
-               			 </div>
-       			 </div>
-        		</DIV>
-
-		<DIV id="box-two" style="display:none;">
-			<div id="cssmenu">
-                				<ul>
-							<li><a href="">ADMISSION NOTIFICATON</a></li> 
-							
-								<?php 
-									$cdate = date('Y-m-d H:i:s');
-									//foreach($this->prgcat as $pname){
-										$pg = 'Post Graduate';
-										//$prgcatpart = explode(',',$progname);
-										$selectfield=array('admop_prgname_branch');
-										$data=array(
-      											//'admop_prgcat' => $progname,
-											'admop_prgcat'  => $pg,
-											//'admop_prgcat'  => 'Research',
-      											'admop_lastdate >=' => $cdate,
-       										);
-										//print_r($data);
-										$progid = $this->commodel->get_distinctrecord('admissionopen',$selectfield,$data);
-										//print_r($progid);
-								?>
-        						 <li class='has-sub'><a href="">Post Graduate</a>
-							 
-                      	  				<ul>
-								<?php foreach($progid as $row){
-									$id = $row->admop_prgname_branch;
-									$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
-									
-							?>
-                        						<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
-									<input type="hidden" value="<?php echo $id;?>" name="prgid">
-								<?php }?>
-                        				</ul>
-								<?php //}?>
-							</li>
-							<?php 
-									$cdate = date('Y-m-d H:i:s');
-									//foreach($this->prgcat as $pname){
-										$re = 'Research';
-										//$prgcatpart = explode(',',$progname);
-										$selectfield=array('admop_prgname_branch');
-										$data=array(
-      											//'admop_prgcat' => $progname,
-											'admop_prgcat'  => $re,
-											//'admop_prgcat'  => 'Research',
-      											'admop_lastdate >=' => $cdate,
-       										);
-										//print_r($data);
-										$progid1 = $this->commodel->get_distinctrecord('admissionopen',$selectfield,$data);
-										//print_r($progid);
-								?>
-							<li class='has-sub'><a href="">Research</a>
-							 
-                      	  				<ul>
-								<?php foreach($progid1 as $row){
-									$id1 = $row->admop_prgname_branch;
-									$pname1 = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id1)->prg_name;
-									
-							?>
-                        						<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id1;?>"><?php echo $pname1 ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id1)->prg_branch .")" ;?></a></li>
-									<input type="hidden" value="<?php echo $id1;?>" name="prgid">
-								<?php }?>
-                        				</ul>
-								<?php //}?>
-							</li>
-						</ul>
-               			 </div>
-       			 </div>
+			<DIV id="cssmenu" style="">
+			
         		</DIV>
 
 
 		</td>
-<script>
-$('#menuhide').on('change', function () {
-    if(this.value == "1"){
-        $("#box-one").show();
-    } else {
-        $("#box-one").hide();
-    }
-if(this.value == "2"){
-        $("#box-two").show();
-    } else {
-        $("#box-two").hide();
-    }
 
-});
-
-</script>
 		<td align=center width="34%" style="" valign="top">
 		
 		<div style="overflow:auto;height:300px;">
 			<table style="width:100%" class="TFtable" >
-				<tr style="background-color:#38B0DE;color:white;font-size:21px;">
+				<tr style="background-color:#38B0DE;color:white;font-size:16px;">
 				<td style="border:2px solid white;" align=center colspan=5>Announcement</td></tr>
 				<?php
 				$count =0;
@@ -280,8 +181,8 @@ if(this.value == "2"){
 				</tr>
 				<tr height=15></tr>
 				<tr>
-					<td style="text-align:right;font-size:20px;"><a href="<?php echo base_url('uploads/SLCMS/Prospectus1718.pdf');?>" title="Download Online Form" target=_blank>
-					Important Information To Fill The Online Form
+					<td style="text-align:right;font-size:20px;"><a href="<?php echo base_url('uploads/SLCMS/usermanual.pdf');?>" title="Download Online Form" target=_blank>
+					Important Information &nbsp;&nbsp;&nbsp;&nbsp;<br>To Fill The Online Form
 					<img src="<?php echo base_url(); ?>uploads/SLCMS/pdf-icon.png" alt="logo" style="height:25px;"></a></td>
 				</tr>
 				<tr height=15></tr>

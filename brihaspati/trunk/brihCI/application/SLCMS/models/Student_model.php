@@ -86,7 +86,7 @@ class Student_model extends CI_Model
     }
 
     function showCourse(){
-			$this->db->select('DISTINCT(course_name)');
+			$this->db->select('DISTINCT(course_name),(branchname)');
 			$this->db->from('admissionmeritlist');
 			$query = $this->db->get();
 			$results = $query->result();

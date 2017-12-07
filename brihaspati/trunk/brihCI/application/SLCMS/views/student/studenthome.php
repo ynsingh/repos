@@ -2,7 +2,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
     <head>
-        <title>Welcome to IGNTU</title>
+        <title>Welcome</title>
     </head>
     <body>
 
@@ -44,9 +44,9 @@
 	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
 */
-	echo "</br>";
+	//echo "</br>";
      //	echo $this->session->userdata('id_user'); 
-	echo "<table><tr><td>";
+	echo "<table><tr><td valign=top>";
 	echo "<table align = \"center\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
@@ -122,7 +122,7 @@
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;\">";
 	echo "<tbody align=\"left\">";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td>";
+	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td colspan=3>";
     echo $degree_name; //name of the program
 	echo "</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Subject Name</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Academic Year</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Semester</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Qualify Status</b></td></tr>";
@@ -213,11 +213,11 @@
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;\">";
 	echo "<tbody align=\"left\">";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td>";
+	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td colspan=4>";
     echo $degree_name; //name of the program
         echo "</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Academic Year</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Semester</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Type</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Amount</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Status</b></td></tr>";
-            if(sizeof($stud_fee_rec)!=0)
+            if(sizeof($stud_fee_rec)!=0){
             foreach($stud_fee_rec as $row1){
                     echo"<tr><td style=\"padding: 8px 8px 8px 20px;\">";
                     echo $acadyear;
@@ -232,8 +232,8 @@
                     echo "</td><td style=\"padding: 8px 8px 8px 20px;\"> ";
                     echo $row1->sfee_paymentmethod."  ".$row1->sfee_feespaidstatus;
                     echo "</td></tr>";
-            }
-            else
+            }}
+            else{
                     echo"<tr><td style=\"padding: 8px 8px 8px 20px;\">";
                     echo $acadyear;
                     echo "</td><td style=\"padding: 8px 8px 8px 20px;\">";
@@ -241,7 +241,7 @@
                     echo "</td>";
                     echo "<td style=\"padding: 8px 8px 8px 20px;\">";        
                     echo $fees;
-                    echo "</td></tr>";
+                    echo "</td></tr>";}
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">";
 
 	echo "</td></tr>";

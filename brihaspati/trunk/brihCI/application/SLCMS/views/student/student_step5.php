@@ -18,6 +18,7 @@ $id = ($this->session->userdata['sm_id']);
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/Studentsteps.css" />
@@ -32,16 +33,19 @@ function myFunction() {
 </head>
 <body>
 <div>
-<?php
-/*
-echo "<center>";
-	if($this->session->flashdata('msg')){
-	echo" <div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
-		echo $this->session->flashdata('msg');
-	echo "<div>";
-}
-echo "</center>";*/
-?>
+<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+        <?php
+    	 };
+       	?>
+	
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>
 </div>
 
 <page size="A4">
@@ -59,10 +63,15 @@ echo "</center>";*/
 		</div> 
 		</header>
 		<div class="textname">Application Form</div>
-		  <div id="photo">
+		  <!--<div id="photo">
 			<img src="<?php echo base_url('uploads/student_sign_photo/student_photo/'.$this->phresult); ?>" >
-		  </div>
-		<table class="TFtable" id="personal">
+		  </div>--->
+	</br>
+	<table style="width:100%;" align=right>
+		<tr>
+
+		<td width=82%;>
+		<table class="TFtable"  align=right>
 			<thead id="styleTable"><th colspan=7>Personal Detail</th></thead>
 			
 			<tr>
@@ -102,11 +111,23 @@ echo "</center>";*/
 			<tr>
 				
 				<td>Blood Group :</td>
-				<td colspan=4><?php echo $this->bgroup;?></td>
+				<td ><?php echo $this->bgroup;?></td>
+				<td>Roll Number :</td>
+				<td ><?php echo $this->rollno;?></td>
 			</tr>
 		</table>
+		</td>
+		
+		<td valign=top >
+			<img src="<?php echo base_url('uploads/student_sign_photo/student_photo/'.$this->phresult); ?>" height=170 style="width:100%;">
+		</td>
+		</tr>
+	</table>
 
-		<table class="TFtable" id="padd">
+
+
+
+		<table class="TFtable" id="padd" align=right>
 			<thead>
 			<tr>
 				<th><span style="float:left;">Address</span></th>
@@ -124,16 +145,16 @@ echo "</center>";*/
 					<td>Street/Village/Taluka/city</td><td><?php echo $this->pcity;?></td>
 					<td colspan=2><?php echo $this->ccity;?></td>
 				</tr>
-				<tr>
+				<!--<tr>
 					<td>Post office</td><td><?php echo $this->ppost;?></td>
 					<td colspan=2><?php echo $this->cpost;?></td>
 				</tr>
 				<tr>
 					<td>District</td><td><?php echo $this->pdist;?></td>
-					<td colspan=2><?php echo $this->cdist;?></td>
-				</tr>
+					<td colspan=2><?php echo $this->pdist;?></td>
+				</tr>-->
 				<tr>
-					<td>State</td><td><?php echo $this->pstat;?></td>
+					<td>State</td><td><?php echo $this->cstat;?></td>
 					<td colspan=2><?php echo $this->cstat;?></td>
 				</tr>
 				<tr>
@@ -156,7 +177,7 @@ echo "</center>";*/
 		<b>Note:GOI format of caste certificate should be submitted at the time of physical verification documents.</b>
 		</div>	
 
-		<table class="TFtable" id="academic">	
+		<table class="TFtable" id="academic" align=right>	
 			<thead id="styleTable"><th colspan=7>
 			Academic Detail
 			</th></thead>
@@ -186,7 +207,7 @@ echo "</center>";*/
 			</tbody>
 		</table>
 		</br>
-		<table class="TFtable" id="feegap">
+		<table class="TFtable" id="feegap" align=right>
 			<thead id="styleTable"><th colspan=4 >
 			<span >Fees Detail</span>
 			</th></thead>
@@ -202,8 +223,8 @@ echo "</center>";*/
 	<div id="formbody2">
 		</br>
 		
-		<table id="formbody2">
-			<thead id="styleTable"><th colspan=7>Terms & Conditions</th></thead>
+		<table id="formbody2" align=right>
+			<thead id="styleTable" style="width:100%;"><th>Terms & Conditions</th></thead>
 			<tbody>
 				<tr><td>
 					<?php $this->load->view('student/studentCrieteria2');?>
@@ -218,8 +239,10 @@ echo "</center>";*/
 				 </div>
 			</td>
 			<td>
-				<label class="signlabel">Student Signature</label></br>
-				<img src="<?php echo base_url('uploads/student_sign_photo/student_sign/'.$this->signresult); ?>"></td>
+				
+				<img src="<?php echo base_url('uploads/student_sign_photo/student_sign/'.$this->signresult); ?>"></br>
+				<label class="signlabel">Student Signature</label>
+			</td>
 				
 			</tr>
 			</table>

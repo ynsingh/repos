@@ -24,11 +24,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </p>
 <table align=center style="width:100%;">
-<tr class="isa_success">
+<tr>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
-        <td><?php echo $_SESSION['success'];?></td>
+        <td class="isa_success"><?php echo $_SESSION['success'];?></td>
         <?php
     	 };
        	?>
@@ -39,6 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         };
 	?>  
 </tr>
+   </table>	
    </table>		
 <center>
 <form action="<?php echo site_url('enterenceadmin/generateattendence'); ?>" method="POST">
@@ -51,8 +52,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
 				<?php foreach($this->centerlist as $row): 
-					 if(!empty($row->ca_centername)){?>	
-					<option value="<?php echo $row->ca_centername;?>"><?php echo $row->ca_centername; ?></option>
+					 if(!empty($row->ca_centername)){
+					$centerid = $row->ca_centername;
+					$centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+					$centercode = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$centerid)->eec_code;
+				?>	
+					<option value="<?php echo $centerid;?>"><?php echo $centername.'( '.$centercode.' )'; ?></option>
 				<?php    }
 					 endforeach; ?>
 			</select>
@@ -74,13 +79,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$i=0;
 			if(!empty($this->centerlist)){
 				foreach($this->centerlist as $row){
-				
-					//$centerid = $row->eec_id;
-					$cname = $row->ca_centername;
-					$centerid = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_id','eec_name',$cname)->eec_id;
-				
-					//$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
-			
+					$centerid = $row->ca_centername;
+					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+					
 		?>
 					<td style="border:1px solid black;">
 				<?php if(!empty($cname)){?>

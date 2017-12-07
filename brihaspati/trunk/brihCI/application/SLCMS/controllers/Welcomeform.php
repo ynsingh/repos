@@ -58,8 +58,9 @@ class Welcomeform extends CI_Controller {
 		$this->load->view('welcome_message',$data);	
 	}
 
-	public function welcome_form(){
+	/*public function welcome_form(){
 		$this->scresult = $this->commodel->get_list('study_center');
+		print_r($this->scresult);die;
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
 		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
@@ -69,16 +70,68 @@ class Welcomeform extends CI_Controller {
 		$data['annoresult'] = $annoresult;
 
 		$this->load->view('welcome_form',$data);
-	}
+	}*/
 
+	public function menulist(){
+		$studyidlist = $this->input->post('studylist');	
+		$datawh=array('prg_scid' => $studyidlist);
+		$prgcat = $this->commodel->get_distinctrecord('program','prg_category',$datawh);
+		?>
+		<div id="cssmenu">
+                	<ul>
+			  <li><a href="">ADMISSION NOTIFICATON</a></li>
+				<?php 
+				     $cdate = date('Y-m-d H:i:s');
+				     foreach($prgcat as $row){	
+					     	$prgcatname = $row->prg_category;
+								
+				?>
+        					<li class='has-sub'><a href=""><?php echo $prgcatname;?></a>
+                      	  			    	<ul>
+								<?php 
+									$selectfield=array('admop_prgname_branch');
+									$data=array(
+      										'admop_prgcat' => $prgcatname,
+      										'admop_lastdate >=' => $cdate,
+       									);
+									$prgid = $this->commodel->get_distinctrecord('admissionopen',$selectfield,$data);
+									foreach($prgid as $row){
+										$id = $row->admop_prgname_branch;
+										$selectf=array('prg_id');
+										$whdata=array(
+      											'prg_category' => $prgcatname,
+											'prg_scid'   => $studyidlist,
+      											'prg_id' => $id,
+       										);//print_r($whdata);
+										$progid = $this->commodel->get_distinctrecord('program',$selectf,$whdata);
+										//print_r($progid);
+										//if($id == $progid){	
+										foreach($progid as $row){									
+											$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->prg_id)->prg_name;
+											$prgbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->prg_id)->prg_branch ;
+										?>
+                        								<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$prgbranch.")" ;?></a></li>
+										<?php //}?>
+											<input type="hidden" value="<?php echo $id;?>" name="prgid">
+											
+										<?php } 
+									}?>
+                        			      	</ul>
+					     </li>
+				<?php }?>
+		</ul>
+  	</div>
+ 
+<?php	}
 	public function index() {
-		$scrlist = $this->commodel->get_listmore('study_center','sc_id');
+		
+		$scrlist = $this->commodel->get_list('study_center');
 		$data['scrlist'] = $scrlist;
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
 		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
-		$prgcat = $this->commodel->get_listmore('programcategory',$field);
-		$data['prgcat'] = $prgcat;
+		//$prgcat = $this->commodel->get_listmore('programcategory',$field);
+		//$data['prgcat'] = $prgcat;
 		$cdate = date('Y-m-d');
         	$wharray = array('anou_cname=' => 'SLCMS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
         	$annoresult = $this->commodel->get_listarry('announcement','*',$wharray);

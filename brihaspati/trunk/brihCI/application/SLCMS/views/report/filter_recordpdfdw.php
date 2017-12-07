@@ -33,7 +33,7 @@
 			<td>Study Center :</td>
 			<td><?php echo $scname;?></td>
 			<td>Enterence Exam Center :</td>
-			<td><?php echo $exname;?></td>
+			<td><?php echo $exname.'( '.$excode.' )';?></td>
 		</tr>
 	</table>
 

@@ -50,17 +50,11 @@ input[type='button']{font-size:16px;}
 <center>
 <div>
 	<div id="body">
-	<?php 
-	// $thisPage="studentForm";
-	 $this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
-	<?php    //if(isset($_SESSION)) {
-        	//echo $this->session->flashdata('flash_data');
-    	//} ?>
- 	<br><br>
-		<?php $this->load->view('student/stuStepshead');?>
+	<?php $this->load->view('template/header'); ?>
+	<div class="welcome"><h2>Welcome</h2></div>
+	<?php $this->load->view('student/stuStepshead');?>
 
-	<div align="left" style="width:70%;">
+	<div style="width:100%;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         
         <?php if(isset($_SESSION['err_message'])){?>
@@ -89,10 +83,7 @@ echo "</center>";
 		<tr><td>
         	<label for="username">Hall Ticket Number</label></td>
 		</td><td>
-		<?php //echo "<span style='color:red;font-size:18px;float:left;'>";echo form_error('Sanumber'); echo "</span>";?>
-		<?php //if(isset($msg)){ 
-			//echo $msg;
-			//} ?>
+		
         	<input type="text" name="Sanumber" placeholder="Enter Your Hall Ticket Number" autofocus/> <br>
 		</td></tr>	
 		<tr ><td>
@@ -106,7 +97,7 @@ echo "</center>";
 					$count = count($result);
 					for($i = 0 ; $i<$count ; $i++){
 			        ?>
-				<option value="<?php echo $result[$i]->course_name;?>"><?php echo $result[$i]->course_name;?>
+				<option value="<?php echo $result[$i]->course_name;?>"><?php echo $result[$i]->course_name.'('.$result[$i]->branchname.')';?>
 			<?php } endif; ?>
 	  </select>
 		<!---<select name="programname" id="programname"  style="width:122%;height:40px;font-size:18px;font-weight:bold;" onchange="getbranchname(this.value)" >
@@ -117,26 +108,20 @@ echo "</center>";
 		</select>-->	
 		</td>
 		</tr>
-		<tr><td>
-			<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
+		<!--<tr><td>
+			
 			<label for="nnumber">Select Branch</label></br></td>
 			<td>
-				<!--<select id="getbranch" style="width:122%;height:40px;font-size:18px;font-weight:bold;" name="Sbranch">
-					<option selected="true" disabled="disabled">Select branch</option>
-				</select>--->
-			
+				
 			<select name="Sbranchname" id="branchname"  style="width:120%;height:30px;font-size:18px;font-weight:bold;">
               		  <option value="" selected="true" disabled="disabled" >Select Branch</option>
 			</select>
 	
-		</td></tr>
+		</td></tr>-->
 		<tr><td>
 		<label for="text">Email-Id</label>
 		</td><td>
-		<?php //echo "<span style='color:red;font-size:18px;float:left;'>";echo form_error('Sname'); echo "</span>";?>
-		<?php //if(isset($msg)){ 
-			//echo $msg;
-			//} ?>
+		
         	<input type="email" name="Semail" placeholder="Enter Your Email-id"/><br>
 		</td></tr>
 		<tr>
@@ -150,10 +135,8 @@ echo "</center>";
 	<center>
 	</div>
 <p> &nbsp; </p>
-	<?php 
-	 //$thisPage="studentForm";
-	 $this->load->view('template/footer'); ?>
-	<!--<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>-->
+	<?php  $this->load->view('template/footer'); ?>
+	
 </div>
 
 </body>

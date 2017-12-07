@@ -47,33 +47,23 @@ select{width:100%;font-size:17px;height:40px;}
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
+	<div class="welcome"><h2>Welcome : <?php echo $mailid;?></h2></div>
 	<?php $this->load->view('student/stuStepshead');?>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
-<?php
-echo "<center>";
-echo "<div style='font-size:20px;text-align:center;width:50%;height:30px;'>";
-	if($this->session->flashdata('msg')){
-	echo $this->session->flashdata('msg');
-	
-}
-echo "<div>";
-echo "</center>";
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		echo "<div style=\"margin-left:30px;width:1700px;text-align:left;font-size:18px;border:1px ridge white;\" class=\"isa_success\">";
-		echo '<div style="margin-left:40px;">'.$_SESSION['success'].'</div>';
-		echo "</div>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		echo "<div style=\"margin-left:30px;width:1700px;align:left;\" class=\"isa_error\">";
-		echo $_SESSION['error'];
-		echo "</div>";
-	}
-?>
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+        <?php
+    	 };
+       	?>
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>  
 
-<?php //echo $this->email=$this->Common_model->get_listspfic1('student_master','sm_email','sm_id',$id)->sm_email;?>
-
-<h1>Fees Submission</h1>
+<!---<h1>Fees Submission</h1>
 <center>
 <div id="form">
 	<div id="text">Student Detail</div>
@@ -154,13 +144,72 @@ echo "</center>";
 </table>
 	</br></br>
 	<form action="" method="POST">
-		<!---<input type="hidden" name="totalfees" value="<?php echo $totalfees;?>" >--->
+		<!---<input type="hidden" name="totalfees" value="<?php echo $totalfees;?>" >---
 		<input type="submit" value="Online payment" style="font-size:18px;">
 		<a href="<?php echo site_url('Student/offlinePayment');?>" style="text-decoration:none;" ><input type="button" value="Offline payment"style="font-size:18px;"></a>
 	</form>
 
-</div>
+</div>--->
 </center>
+
+<h3>Online Payment</h3>
+ <div class="container" style="text-align:left;">
+            <div class="row">
+                <div class="col-md-3"></div>  
+                <div class="col-md-6">
+                 <form action="<?= $action; ?>/_payment" method="post" id="payuForm" name="payuForm">
+		  <!--<form action="<?php echo site_url('payumoney'); ?>" method="POST" id="payuForm" name="payuForm">--->
+                        <input type="hidden" name="key" value="<?= $mkey ?>" />
+                        <input type="hidden" name="hash" value="<?= $hash ?>"/>
+                        <input type="hidden" name="txnid" value="<?= $tid ?>" />
+
+                        <div class="form-group">
+                            <label class="control-label">Total Payable Amount</label>
+				<input class="form-control" name="amount" id="amount" value="<?= $amount; ?>" readonly/>
+			</div>
+                        <div class="form-group">
+                            <label class="control-label">Your Name</label>
+                            <input class="form-control" name="firstname" id="name" value="<?= $name; ?>" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Email</label>
+                            <input class="form-control" name="email" id="mailid" value="<?= $mailid; ?>" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Phone</label>
+                            <input class="form-control" name="phone" value="<?= $phoneno; ?>" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Program (Branch)</label>
+                            <textarea class="form-control" name="productinfo" readonly><?= $productinfo; ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Fees Type</label>
+			    <input class="form-control" type="text" name="address1" value="<?php echo 'Entrance Exam fees'; ?>" readonly>
+                            <!--<input class="form-control" name="address1" value="<?= $address ?>" readonly/>     ---->
+			   <!-- <select name="address1" class="form-control">
+				<option selected="true" disabled="disabled">Select Fees Type</option>
+				<option value="semfee">Semester fees</option>
+				<option value="exmfee">Exam fees</option>
+				<option value="finefee">Panality fees</option>
+				</select>
+-->
+                        </div>
+                        <div class="form-group">
+                            <input name="surl" value="<?=$surl ?>" size="64" type="hidden" />
+                            <input name="furl" value="<?=$furl ?>" size="64" type="hidden" />                             
+                            <input type="hidden" name="service_provider" value="" size="64" /> 
+                            <input name="curl" value="<?//= $cancel ?> " type="hidden" />
+                        </div>
+                        <div class="form-group text-center">
+                        <input type="submit" value="Pay Now" class="btn btn-success" /></td>
+                        </div>
+                    </form>                                  
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div> 
+
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 

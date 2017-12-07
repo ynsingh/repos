@@ -38,51 +38,23 @@ select{width:100%;font-size:17px;height:40px;}
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
+	<div class="welcome"><h2>Welcome : <?php echo $email?></h2></div>
 	<?php $this->load->view('student/stuStepshead');?>
-<?php
 
-echo "<div class='col-lg-12'>";
-echo "<table>";
-echo "<tr>";
-//echo "<td style='width:350px;'>";
-//echo "<h4>id". " <b>:</b> ". " " .$id."</h4>";
-//echo "</td>";
-
-//echo "<td style='width:500px;'>";
-//echo "<h4>Welcome". " <b>:</b> ". " " .$firstname." "."</h4>";
-//echo "</td>";
-
-//echo "<td>";
-//echo "<h4>Application No.". " <b>:</b> ". " " .$applino." </h4>";
-//echo "</td>";
-
-echo "</tr>";
-echo "</table>";
-echo "</div>";
-	
-?>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
-<?php
-echo "<center>";
-echo "<div style='font-size:20px;text-align:center;width:50%;height:5px;'>";
-	if($this->session->flashdata('msg')){
-	echo $this->session->flashdata('msg');
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+        <?php
+    	 };
+       	?>
 	
-}
-echo "<div>";
-echo "</center>";
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-		echo $_SESSION['success'];
-		echo "</div>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		echo "<div id='error'>";
-		echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
-		echo "</div>";
-	}
-?>
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>  
 
 	<center>
 	

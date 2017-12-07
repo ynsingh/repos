@@ -23,23 +23,13 @@
 <p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </p>	
-<?php
-echo "<center>";
 
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:left;background-color:#DFF2BF;width:70%;height:30px;color:green;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
-
-echo "</center>";
-?>
 <table align=center style="width:100%;">
-<tr class="isa_success">
+<tr>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
-        <td><?php echo $_SESSION['success'];?></td>
+        <td class="isa_success"><?php echo $_SESSION['success'];?></td>
         <?php
     	 };
        	?>
@@ -51,7 +41,6 @@ echo "</center>";
 	?>  
 </tr>
    </table>	
-
 <center>   
 
 	<form action="<?php echo site_url('enterenceadmin/search_rollnumber'); ?>" method="POST">
@@ -67,8 +56,11 @@ echo "</center>";
 				<?php 
 					foreach($examcenter as $row): 
 					if(!empty($row->ca_centername)){
+					$centerid = $row->ca_centername;
+					$centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+					$centercode = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$centerid)->eec_code;
 				?>	
-					<option value="<?php echo $row->ca_centername;?>"><?php echo $row->ca_centername; ?></option>
+					<option value="<?php echo $centerid;?>"><?php echo $centername.'( '.$centercode.' )'; ?></option>
 				<?php } endforeach; ?>
 			</select>
 			</td>
@@ -107,7 +99,8 @@ echo "</center>";
 				<td><?php echo $rollno;?></td>
 				<?php $prgid = $row->ca_prgid;?>
 				<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?></td>
-				<td><?php echo $row->ca_centername;?></td>
+				<td><?php $centerid = $row->ca_centername;
+					echo $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;?></td>
 			</tr>
 			<?php }}}}//}?>
 
@@ -125,7 +118,8 @@ echo "</center>";
 				<td><?php echo $rollno;?></td>
 				<?php $prgid = $row->ca_prgid;?>
 				<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?></td>
-				<td><?php echo $row->ca_centername;?></td>
+				<td><?php $centerid = $row->ca_centername;
+					echo $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;?></td>
 			</tr>
 			<?php }}}}?>
 
@@ -144,7 +138,8 @@ echo "</center>";
 				<td><?php echo $rollno;?></td>
 				<?php $prgid = $row->ca_prgid;?>
 				<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?></td>
-				<td><?php echo $row->ca_centername;?></td>
+				<td><?php $centerid = $row->ca_centername;
+					echo $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;?></td>
 			</tr>
 			<?php }}} ?>
 

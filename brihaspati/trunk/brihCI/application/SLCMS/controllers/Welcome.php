@@ -61,6 +61,7 @@ class Welcome extends CI_Controller {
 
 	public function welcome_form(){
 		$this->scresult = $this->commodel->get_list('study_center');
+		
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
 		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
@@ -73,7 +74,7 @@ class Welcome extends CI_Controller {
 	}
 
 	public function index() {
-
+		
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
 		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
@@ -87,8 +88,10 @@ class Welcome extends CI_Controller {
 		
             if($_POST) {
                 $result = $this->login->validate_user($_POST);
+		//print_r($result);die;
                 /*get role by using model class and set templates according to role*/
                 $roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
+		//print_r($roles);die;
                 if(!empty($result)) {
              		if(!empty($roles)){   
                     		if(count($roles) == 1){
@@ -168,12 +171,12 @@ class Welcome extends CI_Controller {
                         		endforeach;
                     		}
 			}else{ //if close role empty
-                    		$this->session->set_flashdata('flash_data', 'You do not have any role in this system!');
+                    		$this->session->set_flashdata('err_message', 'You do not have any role in this system!');
                     		redirect('welcome');
             		}
                 }//if empty result validate close 
                 else {
-                    $this->session->set_flashdata('flash_data', 'Username or password is wrong!');
+                    $this->session->set_flashdata('err_message', 'Username or password is wrong!');
                     redirect('welcome');
                 }
             }    

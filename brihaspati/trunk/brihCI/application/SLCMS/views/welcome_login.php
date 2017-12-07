@@ -105,7 +105,7 @@ echo "</center>"; ?>
 			</tr>
 			<tr>
 				<td>
-        			<button type="submit"  style="width:49%" id="button"><b>Login</b></button>
+        			<input type="submit"  style="width:49%" id="button" value="Login"><b></b>
 				<a href="<?php echo site_url('Student/student_step0');?>" style="text-decoration:none;" title="Click to open student detail form">
 				<input type="button" value="New Student" style="width:49%" id="button"></a></td>
 			</tr>

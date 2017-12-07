@@ -402,6 +402,7 @@ class Enterenceadmin extends CI_Controller
 	public function viewstikerlist(){
 		//$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
         	$this->centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
+		
 		$exmceter = $this->input->post('stiexamcenter',TRUE);
 		if(isset($_POST['searchsticker'])){
 			$selectdata=array('ca_asmid','ca_rollno','ca_centername');
@@ -417,12 +418,16 @@ class Enterenceadmin extends CI_Controller
 
 	public function generatesticker(){
 		$exmceter = $this->input->post('stiexamcenter',TRUE);
+		//print_r($exmceter);die;
+		//$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$exmceter)->eec_name;
 		if(!empty($exmceter)){
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
 				'ca_hallticketstatus' => 'Y','ca_centername'  => $exmceter, 'ca_rollno !=' => NULL
 			);
+			//print_r($attrecord);die;
        			$getsticker = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+			//print_r($getsticker);die;
 			$this->genstickerpdf($getsticker);
 		}
 		
@@ -435,7 +440,7 @@ class Enterenceadmin extends CI_Controller
 					$attselectdata=array('ca_hallticketstatus' => 'Y','ca_asmid','ca_rollno','ca_centername','ca_prgid');
 					$attrecord=array('ca_centername'  => $exmceter1,'ca_rollno !=' => NULL);
        					$getsticker1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
-					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getsticker1);
+					$this->logger->write_logmessage("update", "Attendence sheet data for each enter".$getsticker1);
 					//print_r($getatt1);
 					$this->genstickerpdf($getsticker1);
 				}
@@ -445,12 +450,12 @@ class Enterenceadmin extends CI_Controller
 		//$this->session->set_flashdata('success',$message);
 		$flag = true;
 			if($getsticker){
-				$message = '<h3>Centerwise sticker sheet generated Successfully .</h3>';
+				$message = 'Centerwise sticker sheet generated Successfully .';
 				$this->session->set_flashdata('success',$message);
 				redirect('enterenceadmin/viewstikerlist');
 			}
 			else{
-				$message = '<h3>Centerwise sticker sheet not generated.So first click on hall ticket generation.</h3>';
+				$message = 'Centerwise sticker sheet not generated.So first click on hall ticket generation.';
 				$this->session->set_flashdata('err_message',$message);
 				redirect('enterenceadmin/viewstikerlist');
 				}
@@ -465,7 +470,7 @@ class Enterenceadmin extends CI_Controller
 		foreach($getsticker as $row){
 			$asmid=$row->ca_asmid;
 			$cname=$row->ca_centername;
-			$centerid = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_id','eec_name',$cname)->eec_id;
+			$centerid = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cname)->eec_name;
 			$year=date('Y');
                 	// move file to directory code for photo
 			$desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year;
@@ -484,7 +489,7 @@ class Enterenceadmin extends CI_Controller
 						
 			//add pdf code to store and view pdf file
 			$temp = $this->load->view('enterenceadmin/stickerpdf', $data, TRUE);
-			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/'.$centerid.'Sticker'.'.pdf';
+			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/'.$cname.'Sticker'.'.pdf';
 			$this->genpdf($temp,$pth);
 			$master = array(
 		      		'ca_stickerstatus'   => 'Y',
@@ -531,12 +536,12 @@ class Enterenceadmin extends CI_Controller
 		//$this->session->set_flashdata('success',$message);
 		$flag = true;
 			if($getatt){
-				$message = '<h3>Centerwise attendance sheet generated Successfully .</h3>';
+				$message = 'Centerwise attendance sheet generated Successfully .';
 				$this->session->set_flashdata('success',$message);
 				redirect('enterenceadmin/viewattendancesheet');
 			}
 			else{
-				$message = '<h3>Centerwise attendance sheet not generated.So First Click on the sticker generation.</h3>';
+				$message = 'Centerwise attendance sheet not generated.So First Click on the sticker generation.';
 				$this->session->set_flashdata('err_message',$message);
 				redirect('enterenceadmin/viewattendancesheet');
 				}
@@ -549,8 +554,8 @@ class Enterenceadmin extends CI_Controller
 		$data['getatt']=$getatt;
 			foreach($getatt as $row){
 				$asmid=$row->ca_asmid;
-				$cname=$row->ca_centername;
-				$centerid = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_id','eec_name',$cname)->eec_id;
+				$centerid=$row->ca_centername;
+				$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
 				$year=date('Y');
                       	 	// move file to directory code for photo
 				$desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year;
@@ -725,13 +730,13 @@ class Enterenceadmin extends CI_Controller
 
 			$flag = true;
 			if($flag){
-				$message = '<h3>Enterance Admission fees reconcile successfully done !</h3>';
-				$this->session->set_flashdata('msg',$message);
+				$message = 'Enterance Admission fees reconcile successfully done !';
+				$this->session->set_flashdata('success',$message);
 				redirect('enterenceadmin/viewentfeereconcile');
 			}
 			else{
-				$message = '<h3>Enterance Admission fees reconcile not updated !</h3>';
-				$this->session->set_flashdata('error',$message);
+				$message = 'Enterance Admission fees reconcile not updated !';
+				$this->session->set_flashdata('err_message',$message);
 				$this->load->view('enterenceadmin/ent_feesnonreconcile');
 				}
 

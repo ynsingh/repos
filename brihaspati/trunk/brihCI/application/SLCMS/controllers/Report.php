@@ -163,9 +163,12 @@ class Report  extends CI_Controller
 			$sccode = $stud_admission->asm_sccode;
 			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
 			$data['scname'] = $scname;
-			$excode = $stud_admission->asm_enterenceexamcenter;
-			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
+			$exid = $stud_admission->asm_enterenceexamcenter;
+			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$exid)->eec_name;	
 			$data['exname'] = $exname;
+			$excode =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$exid)->eec_code;
+			$data['excode'] = $excode; 
+
 			$age = $stud_admission->asm_age;
 			$data['age'] = $age;
 			$mastatus = $stud_admission->asm_mstatus;

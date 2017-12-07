@@ -30,81 +30,35 @@ input[type='button']{font-size:16px;}
 
 <div>
 	<div id="body">
-	<?php //$thisPage2="studentCrieteria2"; 
-		$this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
-<?php
+	<?php $this->load->view('template/header'); ?>
+	<div class="welcome"><h2>Welcome : <?php echo $email?></h2></div>
 
-echo "<div class='col-lg-12'>";
-echo "<table>";
-echo "<tr>";
-echo "<td style='width:350px;'>";
-//echo "<h4>id". " <b>:</b> ". " " .$id."</h4>";
-echo "</td>";
-
-//echo "<td style='width:500px;'>";
-//echo "<h4>Welcome". " <b>:</b> ". " " .$firstname." "."</h4>";
-//echo "</td>";
-
-//echo "<td>";
-//echo "<h4>Application No.". " <b>:</b> ". " " .$applino." </h4>";
-//echo "</td>";
-
-echo "</tr>";
-echo "</table>";
-echo "</div>";
-	
-?>
-	<?php //if(isset($_SESSION)) {
-        	//echo $this->session->flashdata('flash_data');
-    	//} ?>
- 	<br><br>
-		<?php $this->load->view('student/stuStepshead');?>
+	<?php $this->load->view('student/stuStepshead');?>
 	<center>
 </br>
-<?php
-echo "<center>";
-echo "<div style='font-size:20px;text-align:center;width:50%;height:30px;'>";
-	if($this->session->flashdata('msg')){
-	echo $this->session->flashdata('msg');
-	
-}
-echo "<div>";
-echo "</center>";
-?>	
-	<div align="left" style="margin-left:0px;width:1700px;">
-        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:0px;" class="isa_error">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-<center>
-       <!---- <div class="alert alert-success" style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;"><?php echo $_SESSION['success'];?></div>---->
-</center>
-        <?php
-    	 };
-       	?>
-        
-      </div>
 
-	<div id="step2">
-	<table style="">
+
+	<div id="">
+	<table style="width:95%;margin-top:-40px;">
 		<tr><td>
 		<?php $this->load->view('student/studentCrieteria2.php');//include('student/studentCrieteria2.php');?>
 		</td></tr>
 	</table> 
-<table style="">
-<tr><td>
+<table style="width:100%;">
+<tr><td align=left>
 	<form action="<?php echo site_url('Student/student_step2'); ?>" method="POST">
-		 <input type="checkbox" name="crieteria[]" value="Read" id="termsChkbx"><span style="font-size:16px;">I have read the condition all above and agree.</span>
-			</br>
+	 <input type="checkbox" name="crieteria[]" value="Read" id="termsChkbx">
+	 <span style="font-size:16px;">I have read the condition all above and agree.</span>
+	</br>
 		<!--<input type="hidden" name="id" value="<?php echo $id; ?>">-->
-		 <a href="" style="text-decoration:none;">
+		 <a href="" style="text-decoration:none;color:black;">
 			<!---<input type='hidden' name="Sid" size='20' value="<?php echo $id;?>" readonly/>
 			
 			<input type='hidden' name="Sano" size='20' value="<?php //echo $applino?>" readonly/>
 		
 			<input type='hidden' name="Sname" size='20' value="<?php //echo $firstname; ?>" readonly/>--->
 
-			<input type="submit" name="criteria" value="Next" style="width:40%;height:40px;font-size:22px;" id="sub1" disabled="disabled">
+			<input type="submit" name="criteria" value="Next" style="width:10%;height:40px;font-size:22px;" id="sub1" disabled="disabled">
 		</a>
 	</form>
 <script>

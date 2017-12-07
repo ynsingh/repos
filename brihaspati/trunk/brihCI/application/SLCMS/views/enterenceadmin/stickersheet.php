@@ -34,23 +34,13 @@ function myFunction() {
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </p>
 
-<?php
-echo "<center>";
 
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:40px;color:green;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
-
-echo "</center>";
-?>
 <table align=center style="width:100%;">
-<tr class="isa_success">
+<tr>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
-        <td><?php echo $_SESSION['success'];?></td>
+        <td class="isa_success"><?php echo $_SESSION['success'];?></td>
         <?php
     	 };
        	?>
@@ -62,6 +52,7 @@ echo "</center>";
 	?>  
 </tr>
    </table>	
+   </table>	
 	<form action="<?php echo site_url('enterenceadmin/generatesticker'); ?>" method="POST">
 	<table style="width:70%;margin-top:-1%;" border=0>
 		<tr>
@@ -72,10 +63,15 @@ echo "</center>";
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
 					<?php foreach($this->centerlist as $row): 
-						 if(!empty($row->ca_centername)){ ?>			
-					?>	
-					<option value="<?php echo $row->ca_centername;?>"><?php echo $row->ca_centername; ?></option>
-					<?php  } endforeach; ?>
+						 if(!empty($row->ca_centername)){
+				$cid = $row->ca_centername;
+				$centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+				$centercode = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$cid)->eec_code;
+					if(!empty($centername)){
+					?>			
+						
+					<option value="<?php echo $row->ca_centername;?>"><?php echo $centername.'( '.$centercode.' )'; ?></option>
+					<?php } } endforeach; ?>
 			</select>
 			</td>
 			<td align=left valign="">
@@ -93,10 +89,9 @@ echo "</center>";
 			$i=0;
 			if(!empty($this->centerlist)){
 				foreach($this->centerlist as $row){
-					//$centerid = $row->eec_id;
-					$cname = $row->ca_centername;
-					$centerid = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_id','eec_name',$cname)->eec_id;
-			//$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+					$centerid = $row->ca_centername;
+					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+					//print_r($cname);
 		?>
 				<td style="border:1px solid black;">
 				<?php if(!empty($cname)){?>

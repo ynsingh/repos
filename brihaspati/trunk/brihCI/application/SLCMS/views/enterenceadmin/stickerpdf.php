@@ -25,8 +25,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$i=0;
 		if(!empty($getsticker)){
 			foreach($getsticker as $row){
+			$cid= $row->ca_centername;
+			$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+			$centercode = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$cid)->eec_code;
 		?>
-				<td style="border:1px solid black;width:20%"><?php echo $row->ca_centername;?><br>
+				<td style="border:1px solid black;width:20%"><?php echo $cname.'( '.$centercode.' )'; ?><br>
 				<?php $prgid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
                        		echo $progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?>
 				<br>				

@@ -2,12 +2,12 @@
     -- @name studentCrieteria2.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
 --------------------------------------------------------->
-<table style="width:100%;" id="criete2">
+<table style="width:100%;" id="">
 		
 <tr><td>
 <p>
 <h2 style="text-align:left;" id="undertaking"><b>Undertaking by the Students of IGNTU and Parent on Ragging </b></h2>
-<ol style="font-size:12px;">
+<ol style="font-size:17px;">
 <li>
 I declare that I shall abide by the admission rules and regulations of IGNTU Amarkantak and follow the code of conduct for students. I acknowledge that the University has the power to take disciplinary action against me for non-compliance of the same. 
 </li>
@@ -36,7 +36,7 @@ The University has No Tolerance Policy for Ragging by the students, whether insi
 
 <tr><td>
 <h2 style="text-align:left;" id="declaration"><b>Declaration /undertaking from the student on Qualification and code of conduct </b></h2>
-<ol style="font-size:12px;" id="declaration2">
+<ol style="font-size:15px;" id="declaration2">
 <li>
 I hereby declare that, the entries made by me in the Application Form and Admission Form are complete and true to the best of my knowledge and based on records. 
 </li>
@@ -70,7 +70,7 @@ I hereby undertake to inform the University, about any changes in information su
  
 <tr><td>
 <h2 style="text-align:left;" id="declaration2">Declaration from the Student on Physical Fitness </b></h2>
-<ol style="font-size:12px;">
+<ol style="font-size:15px;">
 <li>
 I declare that I am not suffering from any serious/contagious ailment including psychology related symptoms. 
 </li><li>
@@ -81,7 +81,7 @@ I also understand that the declaration on physical fitness submitted by me is co
 <tr><td>
 
 <h2 style="text-align:left;" id="declaration3"><b>Declaration by the Candidate </b></h2>
-<p style="font-size:12px;" id="declare">
+<p style="font-size:15px;" id="declare">
 I have carefully read all the instructions for filling up the application form and other documents. I, solemnly declare that the forgoing information in the application form is complete, correct & true to the best of my knowledge and belief. I also certify that I am liable for disciplinary action by the University if any information given in found false/incorrect. 
 </p>
 </td></tr>
