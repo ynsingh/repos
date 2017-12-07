@@ -56,16 +56,23 @@ class Student extends CI_Controller {
 						
 						//verify the data existance filled by user 
 						$result = $this->commodel->isduplicatemore("admissionmeritlist",$data);
-						print_r($result);
+					//	print_r($result);
 						//$result = $this->stumodel->login($data);
 						if ($result == true) {
 							$number = $this->input->post('Sanumber');
-							//call studentstep function and that function will decide in which page you are landing after putting the correct crediential
-							$this->studentstep($number);
+							 //verify the data existance filled by user
+                                                        $result1 = $this->commodel->isduplicate('admissionstudent_master','asm_applicationno',$number);
+                                                        if ($result1 == true) {
+                                                                //call studentstep function and that function will decide in which page you are landing after putting the correct crediential
+                                                                $this->studentstep($number);
+                                                        }else{
+                                                                $this->session->set_flashdata('err_message', 'Your data does not exist, So you contact to administrator or department.');
+                                                                redirect('welcome');
+                                                        }
 						}	
 						 else {
 							
-							$this->session->set_flashdata("err_message",'Your some detail is inavalid');
+							$this->session->set_flashdata("err_message",'Your details are inavalid');
 							redirect('student/student_step0');
 							}
 					}
@@ -99,11 +106,9 @@ class Student extends CI_Controller {
 					'app_no' => $applicationno,
 			                'id_role' => 3
 			                ];
-                               $this->session->set_userdata($data);
-			//redirect to step1 for completion
-			//$this->logger->write_logmessage("error", "I am  in data in student step inside step 1 check  -3" . $stp1 );
+				$this->session->set_userdata($data);
+                                //verify the data existance filled by user 
 				redirect('Student/student_step1');
-				
 			}
 			else if($stp2 == 0 || $stp2 == NULL){
 				//check the value set in session if not then
@@ -241,6 +246,13 @@ class Student extends CI_Controller {
 		
 		$number = $this->session->userdata['app_no'];
 		$data['number']	= $number;
+		
+	//	$whdata = array( 'asm_applicationno' => $number );
+                $resultap = $this->commodel->isduplicate('admissionstudent_master','asm_applicationno', $number);
+                if ($resultap) {
+                        $this->session->set_flashdata('err_message', 'Your data is not exist, So you contact to administrator or department.');
+                        redirect('welcome');
+                }
 
 		$data1 = array('step1_status' => '1', 'application_no' => $number);
 		$recheckstustep_exist1 = $this->commodel->isduplicatemore('admissionstep',$data1);

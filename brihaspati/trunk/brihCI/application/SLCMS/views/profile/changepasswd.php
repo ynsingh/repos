@@ -21,26 +21,16 @@
     </head>
 <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
- <!--?php
-            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
-            echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
-            echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
-            echo "Profile";
-            echo "<span  style='padding: 8px 8px 8px 20px;'>";
-            echo "|";
-            echo "<span  style='padding: 8px 8px 8px 20px;'>";
-            echo "Change Password";
-            echo "</span>";
-            echo "</table>";
-?-->
  		    <?php
+                    echo "<table width=\"100%\">";
+                    echo "<tr>";
                     echo "<td align=\"left\" width=\"33%\">";
                     echo "<table style=\"width: 100%;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Change Password Details</b>";
+                    echo "<b>Change Password </b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
                     $help_uri = site_url()."/help/helpdoc#ChangePassword";
@@ -70,11 +60,10 @@
             </td>
      </tr> 
 </table>
-<tr>  
                 <div> 
                     
                            <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
-                        <table>
+                        	<table>
                             <tr>  
                                 <td><label for="oldpassword" class="control-label"><b>Old Password</b></label></td>
                                 <td><input type="password" name="oldpassword" class="form-control" size="30"><br></td>
@@ -101,10 +90,9 @@
                             </tr>
 
 
-</tr>
-</div>
-</form>
-</table></div>
+			</table>
+		</form>
+	</div>
 </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

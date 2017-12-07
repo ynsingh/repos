@@ -11,13 +11,30 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 
     </head>
 <body>
-<?php $this->load->view('template/header');
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+<?php 
+$this->load->view('template/header');
  $this->load->view('template/menu'); ?>
 
 
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+<?php
+		 echo "<table width=\"100%\">";
+		 echo "<tr>";
+		 echo "<td align=\"left\" width=\"33%\"><b>";
+		 echo anchor('profile/viewprofile', 'View Profile', array('title' => 'View Profile', 'class' => 'top_parent'));
+                 echo "</b></td>";
+                 echo "<td align=\"center\" width=\"34%\">";
+                 echo "<b></b>";
+                 echo "</td>";
+                 echo "<td align=\"right\" width=\"33%\"><b>";
+		 echo anchor('profile/changepasswd', 'Change Password', array('title' => 'Change Password', 'class' => 'top_parent'));
+		 echo "</b></td>";
+                 echo "</tr>";
+		 echo "</table>";
+
+                ?>
+
 <div>
 
 <div class="scroller">

@@ -276,7 +276,7 @@ class Enterence extends CI_Controller {
 		$whdata = array('admop_lastdate >=' => $cdate);
 		//print_r($whdata);
 		//$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_entexam_date','');
-		$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_entexam_date',$whdata);
+		$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_prgname_branch,admop_entexam_date',$whdata);
                 $this->logger->write_logmessage("view"," View Admission List", "Admission List details...");
                 $this->logger->write_dblogmessage("view"," View Admission List" , "Admission List record display successfully..." );
 		$this->load->view('enterence/imp_date');

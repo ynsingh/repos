@@ -79,15 +79,15 @@ echo "</center>";
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
             <!--<td> <?php echo $row->admop_acadyear?></td>--->
-            <td> <?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_name',$row->admop_prgcat)->prgcat_name; ?>
-            </td>
-            <!--- <td> <?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
-                       echo "(";
+            <td> <?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_name',$row->admop_prgcat)->prgcat_name; 
+          	echo " [ "; 
+             echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
+                       echo " ( ";
                        echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->admop_prgname_branch)->prg_branch ;
-                       echo ")";
+                       echo " )]";
                 ?>
             </td>
-           <td> <?php echo $row->admop_entexam_fees?></td>
+         <!--  <td> <?php echo $row->admop_entexam_fees?></td>
             <td> <?php echo $row->admop_min_qual ?></td>
             <td> <?php echo $row->admop_entexam_patt ?></td>-->
 		<?php 
