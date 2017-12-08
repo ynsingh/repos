@@ -908,7 +908,6 @@ class Enterenceadmin extends CI_Controller
    public function viewnumericalreport(){
         //$this->load->model('chart_model', 'chart1');
         
-        /* Form submit vs date*/
 
         //$this->chart1->truncatetable('barchart');
 
@@ -931,20 +930,10 @@ class Enterenceadmin extends CI_Controller
         $daterec = array();
         $start_date = date('Y-m-d', strtotime($performancedate .' -10 day'));
 
-/*        for($i = 0; $i < 10 ; $i++)
-        {
-            $results = $this->chart1->get_chart_data($start_date);
-            $istart_date = date("Ymd", strtotime($start_date));
-            $insdata = array('pdate'=>$istart_date,'pval'=>$results);
-            $this->commodel->insertrec('barchart', $insdata);
-
-            $next_date = date('Y-m-d', strtotime($start_date .' +1 day'));
-            $start_date =  $next_date;
-        }
+/*      
 
         $results1 = $this->chart1->get_chart_data1();
 */
-        /* Fees submit vs time */
         
         // get fee reconcile status
 //        $feepaid = $this->chart1->feesdata('admissionstudent_fees');
@@ -972,13 +961,11 @@ class Enterenceadmin extends CI_Controller
         
         // Course Stat
         $allprogramid = $this->commodel->get_listspficarry('admissionopen','admop_prgname_branch','admop_acadyear',$acadyear);
-        //print_r($allprogramid);  
         $data['allprogramid']  = $allprogramid;       
 
         // Exam center stat
 
         $centerid = $this->commodel->get_listspficarry('admissionstudent_enterenceexamcenter','eec_id','','');
-        //print_r($centername);
         $data['centerid'] = $centerid;
 
         $this->load->view('enterenceadmin/numericalreports',$data);

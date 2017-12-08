@@ -234,16 +234,62 @@
 			<td colspan=2>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Exam Center & Course Stats</b> </div>
-                            <div class="panel-body">
+                            <div class="panel-body" style="overflow:scroll;">
                             <table class="TFtable" style="height: 350px;">
-                                    <thead >
                                     <tr align="left" valign=top>
                                         <th><b>Enterance Exam Center/Course</b></th>
                                         <th><b>Submitted</b></th>
                                         <th><b>Paid</b></th>
                                         <th><b>Unpaid</b></th>
                                     </tr>
-                                    </thead>
+                                    <?php
+                                        foreach($centerid as $row)
+                                        {
+                                            $centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$row->eec_id)->eec_name;
+                                    ?>
+                                        
+                                           <tr><td><b><?php echo $centername;?></b></td><td></td><td></td><td></td></tr> 
+                                            <?php
+                        
+                                                $center_id = $row->eec_id;
+                                                foreach($allprogramid as $row1)
+                                                {
+                                                ?>
+                                                <?php
+                                                    $data = array('ca_centername' => $center_id,'ca_prgid' => $row1->admop_prgname_branch);
+                                                ?><tr>
+                                                <td><?php 
+                                                    $prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$row1->admop_prgname_branch)->prg_name;                    
+                                                    echo $prgname; ?> </td>
+                                                <?php  
+                                                    $studid = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid',$data); ?>
+                                                    <td><?php echo sizeof($studid);?></td>
+<?php                                              
+                                                    $noofpaid = 0;
+                                                    foreach($studid as $row2)
+                                                    {
+                                                        $studregid = $row2->ca_asmid;
+                                                        $feestat = $this->commodel->get_listrow('admissionstudent_enterencestep','admission_masterid',$studregid);
+                                                        //print_r($feestat);
+                                                        $data1 = $feestat->result();
+                                                        $feepay = 0;
+                                                        if(sizeof($data1) > 0)
+                                                        {   
+                                                            echo $feepay = $feestat->row()->step4_status;
+                                                        }                 
+                                                        if($feepay == "1")
+                                                            $noofpaid = $noofpaid + 1;
+                                                        }           ?>
+                                                    <td><?php echo $noofpaid;?></td>
+                                                    <td><?php echo sizeof($studid) - $noofpaid;?></td>
+                                                    </tr>
+                                                    <?php
+                                                    }
+                                                ?>
+                                                
+                                     <?php  }
+                                     ?>
+
                             </table>
                             </div>
                         </div>
