@@ -63,12 +63,13 @@ select{width:100%;font-size:17px;height:40px;}
         };
 	?>  
 
-<!---<h1>Fees Submission</h1>
+<h1>Fees Submission</h1>
 <center>
-<div id="form">
+<div id="form"  style="width:80%;">
 	<div id="text">Student Detail</div>
 	</br>
-<table>
+
+<table >
 	<tr>
 		<td>Student Id :</td><td><?php echo $id;?></td>
 		<td  width="200"></td>
@@ -79,7 +80,7 @@ select{width:100%;font-size:17px;height:40px;}
 	<tr>
 		
 		
-		<td>Name :</td><td><?php echo $this->sname;?></td>
+		<td>Name :</td><td><?php echo $name;?></td>
 		<td></td>
 		<td>Father Name :</td><td><?php echo $this->fname;?></td>
 		
@@ -104,9 +105,7 @@ select{width:100%;font-size:17px;height:40px;}
 	<td>Gender</td><td><?php echo $this->gender;?></td>
 	<td></td>
 	<td>Programme</td><td>
-	<?php foreach($this->resultprg as $prresult){
-	 echo $prresult->prg_name.'('.$prresult->prg_branch.')';
-	 }?>
+	<?php echo $productinfo;?>
 	</td>
 	</tr>
 </table>
@@ -125,7 +124,7 @@ select{width:100%;font-size:17px;height:40px;}
 		
 	<tbody>
 	<?php	
-		$totalfees = '';
+		$amount = '';
 		//$this->progresult = $this->Common_model->get_list('fees_master');
 		foreach($this->feesresult as $d2){
 		 ?>
@@ -133,32 +132,51 @@ select{width:100%;font-size:17px;height:40px;}
 		<td><?php echo $d2->fm_head;?></td>
 		
 		<td><?php echo $d2->fm_amount;?></td>
-		<?php $totalfees = $totalfees+$d2->fm_amount;?>
+		<?php $amount = $amount+$d2->fm_amount;?>
 		</tr>
 		
 	<?php } ?>
-		<thead style="font-size:18px;"><tr><th>Total</th><th><span style="float:left;"><?php echo $totalfees;?></span></th></tr></thead>		
+		<thead style="font-size:18px;"><tr><th>Total</th><th><span style="float:left;"><?php echo $amount;?></span></th></tr></thead>		
 		
 	</tbody>
 
 </table>
 	</br></br>
-	<form action="" method="POST">
-		<!---<input type="hidden" name="totalfees" value="<?php echo $totalfees;?>" >---
-		<input type="submit" value="Online payment" style="font-size:18px;">
-		<a href="<?php echo site_url('Student/offlinePayment');?>" style="text-decoration:none;" ><input type="button" value="Offline payment"style="font-size:18px;"></a>
-	</form>
+<form action="<?= $action; ?>/_payment" method="post" id="payuForm" name="payuForm">
+	 <input type="hidden" name="key" value="<?= $mkey ?>" />
+	 <input type="hidden" name="hash" value="<?= $hash ?>"/>
+ 	 <input type="hidden" name="txnid" value="<?= $tid ?>" />
+	 <input type="hidden" name="amount" id="amount" value="<?= $amount; ?>" readonly/>
+ 	 <input type="hidden" name="firstname" id="name" value="<?= $name; ?>" readonly/>
+ 	 <input type="hidden" name="email" id="mailid" value="<?= $mailid; ?>" readonly/>
+	 <input type="hidden" name="phone" value="<?= $phoneno; ?>" readonly />
+     	 <textarea  name="productinfo" style="display:none;" readonly><?= $productinfo; ?></textarea>
+ 	 <input type="hidden" type="text" name="address1" value="<?php echo 'Semester fees'; ?>" readonly>
 
-</div>--->
+	 <div class="form-group">
+                <input name="surl" value="<?=$surl ?>" size="64" type="hidden" />
+                <input name="furl" value="<?=$furl ?>" size="64" type="hidden" />                             
+                <input type="hidden" name="service_provider" value="" size="64" /> 
+                <input name="curl" value="<?//= $cancel ?> " type="hidden" />
+          </div>
+	<?php if($amount){?>
+	  <input type="submit" value="Online Payment" class="btn btn-success" style="font-size:18px;"/>		
+	<?php }?>
+		<!--<input type="hidden" name="totalfees" value="<?php echo $totalfees;?>" >
+		<input type="submit" value="Online payment" style="font-size:18px;">
+		<a href="<?php echo site_url('Student/offlinePayment');?>" style="text-decoration:none;" ><input type="button" value="Offline payment"style="font-size:18px;"></a>-->
+</form>
+
+</div>
 </center>
 
-<h3>Online Payment</h3>
+<!--<h3>Online Payment</h3>
  <div class="container" style="text-align:left;">
             <div class="row">
                 <div class="col-md-3"></div>  
                 <div class="col-md-6">
                  <form action="<?= $action; ?>/_payment" method="post" id="payuForm" name="payuForm">
-		  <!--<form action="<?php echo site_url('payumoney'); ?>" method="POST" id="payuForm" name="payuForm">--->
+		  <--<form action="<?php echo site_url('payumoney'); ?>" method="POST" id="payuForm" name="payuForm">---
                         <input type="hidden" name="key" value="<?= $mkey ?>" />
                         <input type="hidden" name="hash" value="<?= $hash ?>"/>
                         <input type="hidden" name="txnid" value="<?= $tid ?>" />
@@ -186,14 +204,14 @@ select{width:100%;font-size:17px;height:40px;}
                         <div class="form-group">
                             <label class="control-label"> Fees Type</label>
 			    <input class="form-control" type="text" name="address1" value="<?php echo 'Entrance Exam fees'; ?>" readonly>
-                            <!--<input class="form-control" name="address1" value="<?= $address ?>" readonly/>     ---->
+                            <!--<input class="form-control" name="address1" value="<?= $address ?>" readonly/>     ----
 			   <!-- <select name="address1" class="form-control">
 				<option selected="true" disabled="disabled">Select Fees Type</option>
 				<option value="semfee">Semester fees</option>
 				<option value="exmfee">Exam fees</option>
 				<option value="finefee">Panality fees</option>
 				</select>
--->
+--
                         </div>
                         <div class="form-group">
                             <input name="surl" value="<?=$surl ?>" size="64" type="hidden" />
@@ -208,7 +226,7 @@ select{width:100%;font-size:17px;height:40px;}
                 </div>
                 <div class="col-md-2"></div>
             </div>
-        </div> 
+        </div> -->
 
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->

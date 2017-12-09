@@ -248,7 +248,9 @@ function myFunction() {
 			</table>
 
 	<?php //}/*end for each*/ ?>
-<table><tr><td>
+<table><tr>
+<td><a href="<?php echo site_url('student/student_step5dw'); ?>" style="text-decoration:none;"><input type="submit" value="Save" title="Click for save"  id="b1"></a></td>
+<td>
  <input type="submit" value="Print Your Detail" onclick="myFunction()" title="Click for print" id="b1">
 </td>
 <td>

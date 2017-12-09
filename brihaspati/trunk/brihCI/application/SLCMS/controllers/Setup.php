@@ -1574,7 +1574,7 @@ class Setup extends CI_Controller
           $fm_data_q=$this->common_model->get_listrow('fees_master','fm_id', $id);
       if ($fm_data_q->num_rows() < 1)
         {
-            redirect('setup2/displayfees');
+            redirect('setup/displayfees');
         }
                 $fmdflag=$this->common_model->deleterow('fees_master','fm_id', $id);
           	if(!$fmdflag)
@@ -1606,12 +1606,14 @@ class Setup extends CI_Controller
 
             //'value' => $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name,
         /* Form fields */
+	$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id',$fm_data->fm_programid)->prg_branch.' )';
+
           $data['fm_programid'] = array(
             'name' => 'fm_programid',
             'id' => 'prgcode',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $fm_data->fm_programid,
+            'value' => $prgname,
 	    'readonly' => 'readonly'
           );
 		

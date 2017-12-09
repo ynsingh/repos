@@ -65,7 +65,7 @@ class Map_model extends CI_Model
     }
     public function get_studycenername($sccode){
         //$scname = array();
-        $this->db->select('sc_name')->from('study_center')->where('sc_code',$sccode);
+        $this->db->select('sc_name')->from('study_center')->where('sc_id',$sccode);
         $scd = $this->db->get()->result();
         foreach($scd as $row)
         {
