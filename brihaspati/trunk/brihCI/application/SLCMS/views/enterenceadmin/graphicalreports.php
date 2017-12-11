@@ -157,18 +157,16 @@ function drawStatChart() {
                
                  <?php $this->load->view('template/menu');?>
 
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>	
-            </div></br></br></br><br>
+            </div>
          <center>
-           <table style="margin-top:5px;">
+           <table style="margin-top:5px; width:100%;">
             <tr>
                     <td>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                        <div class="panel panel-primary" style="background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Form Submit Report</b>  </div>
                             <div class="panel-body">
-                            <div id="columnchart_material" style="width: 800px; height: 400px;"></div>
+                            <div id="columnchart_material" style="height: 400px;"></div>
                             </div>
                         </div>
                     </td>
@@ -176,18 +174,18 @@ function drawStatChart() {
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Fees Submission</b> </div>
                             <div class="panel-body">
-                            <div id="columnchart_material1" style="width: 430px; height: 400px;"></div>
+                            <div id="columnchart_material1" style="height: 400px;"></div>
                             </div>
                         </div>
                     </td>
             </tr>
             <tr>
                     <td valign=top>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0;">
+                        <div class="panel panel-primary" style="background-color: #D0D0D0;">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Recent Applications</b> </div>
                             <div class="panel-body" style="overflow:scroll;width: 800px; height: 400px">
                             <?php //print_r($registeredapplicant);?>
-                                <table class="TFtable" style="width: 800px; height: 400px;">
+                                <table class="TFtable" style="height: 400px;">
                                     <thead >
                                     <tr align="left" valign=top>
                                         <th><b>Applicant Name</b></th>
@@ -229,7 +227,7 @@ function drawStatChart() {
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Application Stats</b> </div>
                             <div class="panel-body">
-                            <div id="columnchart_material2" style="width: 430px; height: 400px;"></div>
+                            <div id="columnchart_material2" style="height: 400px;"></div>
                             </div>
                         </div>
                     </td>   

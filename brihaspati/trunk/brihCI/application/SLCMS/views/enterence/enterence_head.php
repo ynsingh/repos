@@ -56,8 +56,8 @@
 		<ul class="breadcrumb">
     			<li><a href="<?php echo site_url('welcomeform');?>" style="padding: 15px 0 10px 45px;">Home</a></li>
 			<li><a href="<?php echo site_url('Enterence/important_date');?>" style="padding: 15px 0 10px 45px;">Important Date</a></li>
-			<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>" style="padding: 15px 20px 10px 30px;">Incomplete Enterance Form</a></li>
-			<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>" style="padding: 15px 30px 10px 40px;">Print Enterance Form</a></li>
+			<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>" style="padding: 15px 20px 10px 30px;">Incomplete Entrance Form</a></li>
+			<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>" style="padding: 15px 30px 10px 40px;">Print Entrance Form</a></li>
 			<li><a href="<?php echo site_url('Enterence/stu_hallticket');?>" style="padding: 15px 30px 10px 40px;">Download Hall Ticket</a></li>
 <!--			<li><a href="<?php echo site_url('Enterence/email_address');?>" style="padding: 10px 0 10px 45px;">Mailing Address</a></li>-->
 			<li><a href="<?php echo site_url('Enterence/contactus');?>" style="padding: 15px 0 10px 45px;">Contact Us</a></li>

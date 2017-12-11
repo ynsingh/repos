@@ -1016,8 +1016,8 @@ class Enterence extends CI_Controller {
 							);
 							if(!empty($_POST['eduexname'.$j])){
 								$this->commodel->insertrec('admissionstudent_entrance_exam',$entx);
-								$this->logger->write_logmessage("insert", "Student enterance exam detail add.");
-                    						$this->logger->write_dblogmessage("insert", "Student enterance exam detail add.");
+								$this->logger->write_logmessage("insert", "Student entrance exam detail add.");
+                    						$this->logger->write_dblogmessage("insert", "Student entrance exam detail add.");
 							}
 							else{break;}
 					}//for close
@@ -1631,9 +1631,9 @@ class Enterence extends CI_Controller {
 				redirect('enterence/step_five');
                		}
                		else{
-            			$this->logger->write_logmessage("update","Student enterance admission fees add.".$Sid);
-               			$this->logger->write_dblogmessage("update", "Student enterance admission fees add.".$Sid);
-				$this->session->set_flashdata("success", "Your".' ' .$post5 .' '."enterance fees submitted successfully.");
+            			$this->logger->write_logmessage("update","Student entrance admission fees add.".$Sid);
+               			$this->logger->write_dblogmessage("update", "Student entrance admission fees add.".$Sid);
+				$this->session->set_flashdata("success", "Your".' ' .$post5 .' '."entrance fees submitted successfully.");
 				redirect('enterence/step_five');
                		}
 		//}//if duplicate close

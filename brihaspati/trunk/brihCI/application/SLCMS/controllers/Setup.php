@@ -1481,6 +1481,7 @@ class Setup extends CI_Controller
      public function fees() {
                
         	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
+        	$this->prgresult = $this->common_model->get_distinctrecord('program','prg_name','');
                 $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');
 
 
@@ -1606,7 +1607,8 @@ class Setup extends CI_Controller
 
             //'value' => $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name,
         /* Form fields */
-	$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id',$fm_data->fm_programid)->prg_branch.' )';
+//	$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id',$fm_data->fm_programid)->prg_branch.' )';
+	$prgname = $fm_data->fm_programid;
 
           $data['fm_programid'] = array(
             'name' => 'fm_programid',

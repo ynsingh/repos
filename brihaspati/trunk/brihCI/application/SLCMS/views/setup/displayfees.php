@@ -67,8 +67,9 @@
 		     <td> <?php echo ++$count; ?> </td>
 			<?php  
 			echo "<td>";
-			$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id', $row->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id', $row->fm_programid)->prg_branch.' )';
-			echo  $prgname;
+//			$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id', $row->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id', $row->fm_programid)->prg_branch.' )';
+//			echo  $prgname;
+			echo $row->fm_programid;
 			//echo  $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
 			echo "</td>";
 			?>

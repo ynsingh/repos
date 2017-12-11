@@ -50,11 +50,6 @@
         <!-- Load Google chart api -->
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/loader.js"></script>
-    <script type="text/javascript">
-
-    
-    </script>
-       
         </head>
 
         <body>
@@ -64,64 +59,19 @@
                
                  <?php $this->load->view('template/menu');?>
 
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>	
-            </div></br></br></br><br>
+		<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+            </div>
          <center>
-           <table style="margin-top:5px;">
+           <table width="100%">
             <tr>
-    <!--                <td valign=top>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
-                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Recent Applications</b> </div>
-                            <div class="panel-body">
-                            <?php //print_r($registeredapplicant);?>
-                                <table class="TFtable" style="width: 700px; height: 350px;>
-                                    <thead >
-                                    <tr align="left" valign=top>
-                                        <th><b>Applicant Name</b></th>
-                                        <th><b>Type</b></th>
-                                        <th><b>Status</b></th>
-                                        <th><b>Time</b></th>
-                                    </tr>
-                                    </thead>
-                                <?php $i=0;  foreach($registeredapplicant as $row){ ?>
-                                <tr align="left">
-<?php //echo $this->cmodel->get_listspfic1('program','prg_category ','prg_id',$row->pstp_prgid)->prg_category;?>
-                                <?php $fname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->admission_masterid)->asm_fname; 
-                                      $mname = $this->commodel->get_listspfic1('admissionstudent_master','asm_mname','asm_id',$row->admission_masterid)->asm_mname; 
-                                      $lname = $this->commodel->get_listspfic1('admissionstudent_master','asm_lname','asm_id',$row->admission_masterid)->asm_lname;
-                                if(empty($mname))
-                                    $fullname = $fname." ".$lname;
-                                else
-                                    $fullname = $fname." ".$mname." ".$lname;
-                                ?>
-                                <td><?php echo $fullname;?></td>
-                                <td>Application-2017</td>
-                                <?php $row->step5_status;
-                                    if($row->step5_status == 1):
-                                ?>
-                                        <td>Paid</td>
-                                    <?php else: ?>
-                                        <td>Unpaid</td>
-                                     <?php endif;?>
-                                <td><?php echo $row->step1_date;?></td>
-                                </tr>
-                                <?php } ?>
-
-                                </table>
-                            </div>
-                        </div>
-                    </td>
--->
-                    <td>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                    <td valign="top">
+                        <div class="panel panel-primary" style="background-color: #D0D0D0;">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Exam Center Stats</b> </div>
-                            <div class="panel-body">
-                            <table class="TFtable" style="width: 430px; max-height: 350px;">
+                            <div class="panel-body" style="max-height:350px; overflow:auto;">
+                            <table class="TFtable">
                                     <thead >
                                     <tr align="left" valign=top>
-                                        <th><b>Enterance Exam Center</b></th>
+                                        <th><b>Enterance Exam Center (Center Code)</b></th>
                                         <th><b>Submitted</b></th>
                                         <th><b>Paid</b></th>
                                         <th><b>Unpaid</b></th>
@@ -134,7 +84,9 @@
                                         <tr >
                                             <td>            
                                             <?php 
-                                                echo $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$row->eec_id)->eec_name;
+                                                 $eecname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$row->eec_id)->eec_name;
+                                                 $eeccode = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$row->eec_id)->eec_code;
+                                                echo $eecname ." ( " .$eeccode ." ) ";
                                             $center_id = $row->eec_id;?>
                                             </td>
                                             <?php
@@ -174,13 +126,11 @@
                         </div>
                     </td>   
 
-  <!--          </tr>
-            <tr> -->
                 <td valign=top>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                        <div class="panel panel-primary" style="margin-left:10px;background-color: #D0D0D0; max-height:350px; overflow:auto; ">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Course Stats</b> </div>
-                            <div class="panel-body">
-                            <table class="TFtable">
+                            <div class="panel-body" style="max-height:350px; overflow:auto;">
+                            <table class="TFtable" >
                                     <thead >
                                     <tr align="left" valign=top>
                                         <th><b>Branch for Graduate Courses</b></th>
@@ -195,7 +145,9 @@
                                         ?>
                                         <tr><td>
                                         <?php
-                                            echo $prg_name = $this->commodel->get_listrow('program','prg_id',$row->admop_prgname_branch)->row()->prg_name;
+                                             $prg_name = $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name;
+                                             $prg_branch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->admop_prgname_branch)->prg_branch;
+                                            echo $prg_name . " ( " . $prg_branch . " ) ";
                                          ?></td>
                                             <td>                                         
                                             <?php $whdata = array('asreg_program' => $row->admop_prgname_branch);
@@ -232,12 +184,12 @@
             </tr>
 		<tr>
 			<td colspan=2>
-                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                        <div class="panel panel-primary" style="margin-top:10px;background-color: #D0D0D0;">
                             <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Exam Center & Course Stats</b> </div>
-                            <div class="panel-body" style="overflow:scroll;">
-                            <table class="TFtable" style="height: 350px;">
+                            <div class="panel-body" style="max-height:350px; overflow:scroll;">
+                            <table class="TFtable" >
                                     <tr align="left" valign=top>
-                                        <th><b>Enterance Exam Center/Course</b></th>
+                                        <th><b>Enterance Exam Center(Center Code)/Course(Branch)</b></th>
                                         <th><b>Submitted</b></th>
                                         <th><b>Paid</b></th>
                                         <th><b>Unpaid</b></th>
@@ -246,9 +198,10 @@
                                         foreach($centerid as $row)
                                         {
                                             $centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$row->eec_id)->eec_name;
+                                            $centercode = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$row->eec_id)->eec_code;
                                     ?>
                                         
-                                           <tr><td><b><?php echo $centername;?></b></td><td></td><td></td><td></td></tr> 
+                                           <tr><td><b><?php echo $centername ." ( ". $centercode ." ) ";?></b></td><td></td><td></td><td></td></tr> 
                                             <?php
                         
                                                 $center_id = $row->eec_id;
@@ -260,7 +213,8 @@
                                                 ?><tr>
                                                 <td><?php 
                                                     $prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$row1->admop_prgname_branch)->prg_name;                    
-                                                    echo $prgname; ?> </td>
+                                                    $prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row1->admop_prgname_branch)->prg_branch;                    
+                                                    echo $prgname ." ( " .$prgbranch . " ) "; ?> </td>
                                                 <?php  
                                                     $studid = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid',$data); ?>
                                                     <td><?php echo sizeof($studid);?></td>
@@ -275,7 +229,7 @@
                                                         $feepay = 0;
                                                         if(sizeof($data1) > 0)
                                                         {   
-                                                            echo $feepay = $feestat->row()->step4_status;
+                                                            $feepay = $feestat->row()->step4_status;
                                                         }                 
                                                         if($feepay == "1")
                                                             $noofpaid = $noofpaid + 1;

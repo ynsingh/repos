@@ -110,7 +110,7 @@
                 echo "<td>";
                 echo "</td>";
                 echo "</tr>";
-		
+/*		
 		 echo "<tr>";
                 echo "<td>";
                 echo form_label('Entrance Exam Fees', 'admop_entexam_fees');
@@ -121,6 +121,7 @@
                 echo "<td>";
                 echo "</td>";
                 echo "</tr>";
+*/
 		echo "<tr>";
                 echo "<td>";
                 echo form_label('Minimum Qualification', 'admop_min_qual');
