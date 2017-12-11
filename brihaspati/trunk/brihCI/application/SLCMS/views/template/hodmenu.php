@@ -112,6 +112,32 @@ echo "<ul class=\"sf-menu\">";
                                         echo "</li>";					
 				echo "</ul>";
 				echo "</li>";
+				
+				echo "<li>";
+                                echo "<a href=" . ">Admission</a>";
+                                echo "<ul>";
+  /*                                      echo "<li>";
+                                                echo anchor('reconcile/fees_nonreconcile', 'Admission Fees Reconcile', array('title' => 'Admission Fees Reconcile'));
+                                        echo "</li>";*/
+                                        echo "<li>";
+                                                echo anchor('admissionstu/stu_nonverified', 'Student Data Verification', array('title' => 'Student Data Verification'));
+                                        echo "</li>";
+/*                                        echo "<li>";
+                                                echo anchor('admissionstu/stu_depttrf', 'Student Department Transfer', array('title' => 'Student Department Transfer'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('admissionstu/stu_admcancle', 'Admission Cancellataion', array('title' => 'Admission Cancellataion'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('admissionstu/stu_feereimb', 'Admission Fees Reimbursement', array('title' => 'Admission Fees Reimbursement'));
+                                        echo "</li>";*/
+                                        echo "<li>";
+                                                echo anchor('admissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
+                                        echo "</li>";
+                                echo "</ul>";
+                        echo "</li>";
+
+
 				echo "<li>";
                                 echo "<a href=" . ">Announcement</a>";
                                 echo "<ul>";

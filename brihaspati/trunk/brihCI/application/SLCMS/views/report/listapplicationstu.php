@@ -60,7 +60,7 @@ function myFunction() {
 		<tr>
 			<td>
 				<label>Programme Category</label></br>
-				<select name="progcat" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+				<select name="progcat" class="form-control" style="height:37px;width:300px;font-size:18px;font-weight:bold;">
  					<option disabled selected>Select Program</option>
 					<?php foreach($this->prgcatname as $row){?>
 						<option value="<?php echo $row->prgcat_name;?>"><?php echo $row->prgcat_name;?></option>
@@ -117,7 +117,7 @@ function myFunction() {
 		<tr>
 
 		<td>	<label for="nnumber">Exam Center</label></br>
-			<select name="appstuexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+			<select name="appstuexamcenter" class="form-control" style="width:300px;height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select exam center</option>
 					<?php foreach($this->examcenter as $row): ?>	
@@ -156,7 +156,7 @@ function myFunction() {
 
 		<td>	
 			<label for="nnumber">Program (Branch) Applied</label></br>	
-			<select name="appstubranch" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
+			<select name="appstubranch" class="form-control" id="register_name" style="width:300px;height:37px;font-size:18px;font-weight:bold;">
 			<option  disabled selected>Select Branch Applied</option>
 				<?php foreach($this->prgname as $data){?>
 				<option value="<?php echo $data->prg_id;?>"><?php echo $data->prg_name.'('.$data->prg_branch.')'; ?></option>
