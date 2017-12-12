@@ -27,7 +27,7 @@
                                 <td>Study Center :</td>
                                 <td><?php echo $scname;?></td>
                         </tr><tr>
-                                <td>Enterence Exam Center :</td>
+                                <td>Entrance Exam Center :</td>
                                 <td><?php echo $exname ." ( ".$excode ." )";?></td>
                         </tr>
                         </table>
@@ -119,7 +119,7 @@
 
 			<tbody>
 				<tr>
-					<td>H.No./Apartment :</td><td><?php echo $paddress; ?></td>
+					<td>H.No./Appartment :</td><td><?php echo $paddress; ?></td>
 					<td colspan=2><?php echo $caddress;?></td>
 				</tr>
 				<tr>
@@ -155,7 +155,7 @@
 			<tr>
 				<th style="text-align:justify;font-weight:bold;">Programmes</th>
 				<th style="text-align:justify;font-weight:bold;">Board/university</th>
-				<th style="text-align:justify;font-weight:bold;">Complition year</th>
+				<th style="text-align:justify;font-weight:bold;">Completion year</th>
 				<th style="text-align:justify;font-weight:bold;">Passed/Appeared</th>
 				<th style="text-align:justify;font-weight:bold;">Marks obtained</th>
 				<th style="text-align:justify;font-weight:bold;">Max. marks</th>
@@ -254,7 +254,7 @@
 			<th style="text-align:justify;font-weight:bold;">Fees Name</th>
 			<th style="text-align:justify;font-weight:bold;">Amount</th>
 			<th style="text-align:justify;font-weight:bold;">Payment Method</th>
-			<th style="text-align:justify;font-weight:bold;">Refference Number</th>
+			<th style="text-align:justify;font-weight:bold;">Reference Number</th>
 			<th style="text-align:justify;font-weight:bold;">Fees Id</th>
 			<th style="text-align:justify;font-weight:bold;">Bank Name</th>
 			</tr></thead>

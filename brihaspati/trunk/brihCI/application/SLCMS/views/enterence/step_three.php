@@ -67,12 +67,12 @@ updateList = function() {
 		<table style="border:0px solid black;width:60%;" align=center>
 			<tr>
 				<td>
-				<label><span id="star">*</span><b>Recent photograph (Photo size should be 100kb and photo extension jpeg , jpg or png)</b></label></br>				
+				<label><span id="star">*</span><b>Recent Photograph (Photo size should be 100kb and extension should be jpeg, jpg or png)</b></label></br>				
 				<input type='file' name='photo' ></td></tr>
 		<tr height=20></tr>
 				<tr>				
 				<td>
-				<label><span id="star">*</span><b>Signature(Signature size should be 100kb and signature extension jpeg , jpg or png)</b></label></br>				
+				<label><span id="star">*</span><b>Signature (Signature size should be 100kb and extension should be jpeg, jpg or png)</b></label></br>				
 				<input type='file' name='sign' /></td>
 		
 			</tr>

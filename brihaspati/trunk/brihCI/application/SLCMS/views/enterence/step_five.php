@@ -107,7 +107,7 @@ echo "</center>";
                                 <td>Study Center :</td>
 				<td><?php echo $scname;?></td>
 			</tr><tr>
-                                <td>Enterence Exam Center :</td>
+                                <td>Entrance Exam Center :</td>
                                 <td><?php echo $exname ." ( ".$excode ." )";?></td>
                         </tr>
                 	</table>
@@ -122,7 +122,7 @@ echo "</center>";
 			
 			
 			<tr>	
-				<td>Name of the candidate :</td>
+				<td>Name of the Candidate :</td>
 				<td><?php echo $name;?></td>
 				<td>E-mail :</td>
 				<td><?php echo $email;?></td>
@@ -135,7 +135,7 @@ echo "</center>";
 				
 			</tr>
 			<tr>
-				<td>Date of birth :</td>
+				<td>Date of Birth :</td>
 				<td><?php echo $dob;?></td>
 				<td>Age :</td>
 				<td><?php echo $age.'Years';?></td>
@@ -203,7 +203,7 @@ echo "</center>";
 
 			<tbody>
 				<tr>
-					<td>H.No./Apartment :</td><td><?php echo $paddress; ?></td>
+					<td>H.No./Appartment :</td><td><?php echo $paddress; ?></td>
 					<td colspan=2><?php echo $caddress;?></td>
 				</tr>
 				<tr>
@@ -251,7 +251,7 @@ echo "</center>";
 			<tr>
 				<th><span style="float:left;">Programmes</span></th>
 				<th><span style="float:left;">Board/University</span></th>
-				<th><span style="float:left;">Year of completion</span></th>
+				<th><span style="float:left;">Year of Completion</span></th>
 				<th><span style="float:left;">Passed/Appeared</span></th>
 				<th><span style="float:left;">Marks Obtained</span></th>
 				<th><span style="float:left;">Max. Marks</span></th>

@@ -98,7 +98,7 @@ function filladd()
 		<tr height=10></tr>
 	    <tr>	
 		<td>	
-			<label for="nnumber">Course Applied for</label></br>
+			<label for="nnumber">Course Applied For</label></br>
 					
 			<input type="text" name="entcouname" placeholder="Enter Your Email" value="<?php echo $prgname;?>" readonly/>
 		<td/>
@@ -129,7 +129,7 @@ function filladd()
 		<td/>
 
 		<td>	<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
-			<label for="nnumber">Enterence Exam Center</label></br>
+			<label for="nnumber">Entrance Exam Center</label></br>
 			<select name="entexamcenter" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Center</option>
@@ -139,7 +139,7 @@ function filladd()
 			</select>		
 		<td/>
 		<td>	
-			<label for="nnumber">Applicant name</label></br>	
+			<label for="nnumber">Applicant Name</label></br>	
 			<input type="text" name="entappliname" placeholder="Enter Your Name" value="<?php echo isset($_POST["entappliname"]) ? $_POST["entappliname"] : ''; ?>"/>
 		<td/>
 	</tr>
@@ -153,7 +153,7 @@ function filladd()
 		<td/>
 
 		<td>	
-			<label>Mobile/Phone no.</label></br>
+			<label>Mobile/Phone No.</label></br>
 			<input type="text" name="entmobile" placeholder="Enter Mobile Number" MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo $mobile; ?>" readonly/>				
 		<td/>
 
@@ -186,7 +186,7 @@ function filladd()
 			 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
   			  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
 
-		<label>Select date of birth</label></br>
+		<label>Select Date Of Birth</label></br>
 		<input id="dob" type="text" name="entdob" placeholder="Enter Your Dob" value="<?php echo $dob; ?>" readonly>
 
 			<script>
@@ -246,7 +246,7 @@ function filladd()
 		<td/>
 	
 		<td>
-			<label>Select religion</label></br>
+			<label>Select Religion</label></br>
 			<select name="entreligion" style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled="disabled" style="font-size:18px;">Select Religion</option>
 				<option value="HINDUISM">HINDUISM</option>
@@ -291,7 +291,7 @@ function filladd()
 		<td/>
 
 		<td>	
-			<label>Aadhar no.</label></br>
+			<label>Aadhar No.</label></br>
 			<input type="text" name="entaadhar" placeholder="Enter Aadhar Number" MaxLength="13" value="<?php echo isset($_POST["entaadhar"]) ? $_POST["entaadhar"] : ''; ?>" >				
 		<td/>
 
@@ -304,9 +304,9 @@ function filladd()
 	</table>
 
 <table style="width:100%;" border=2>
-	<thead><tr><th align=left style="font-size:22px;" colspan=2>Parmanent and Correspondence Address</th>
+	<thead><tr><th align=left style="font-size:22px;" colspan=2>Permanent and Correspondence Address</th>
 		<th align=right colspan=2  style="font-size:18px;">
-		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Parmanent Address
+		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Permanent Address
 	</th>
 	</tr>
 	
@@ -315,7 +315,7 @@ function filladd()
 	<tr>
 		<td colspan=2>
 		<table style="width:100%;">
-				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;">Parmanent Address</td></tr>
+				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;">Permanent Address</td></tr>
 		<tr height=10></tr>
 			<tr><td>
 			<label for="nnumber">Street</label></br>

@@ -18,9 +18,7 @@
           
         <?php $this->load->view('template/menu');?>
 
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 	
 <?php
 echo "<center>";
@@ -44,7 +42,6 @@ echo "</center>";
 	<td style=""></td>
 	</tr>
 </table>
-</br>
 <table style="width:100%;border:2px solid #a8a8a8;">
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr align="left"><th>
 	<?php echo $this->message;?>

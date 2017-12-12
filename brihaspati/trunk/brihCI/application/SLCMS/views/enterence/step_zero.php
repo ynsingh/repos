@@ -10,7 +10,7 @@
 ?>
 <html>
 <head>
-<title>IGNTU - Enterance Exam Registraion</title>
+<title>IGNTU - Entrance Exam Registraion</title>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
@@ -93,7 +93,7 @@ button{height:35px;font-size:20px;}
     <form action="<?php echo site_url('Enterence/step_zero'); ?>" method="POST" >
     <table style="border:2px solid #c6c6c6; margin-top:50px;width:35%;">
     <tr style="background-color:#38B0DE;color:white;font-size:20px;">
-<td style="border:2px solid white;" align=center colspan=5>Enterance Exam Registration</td></tr>
+<td style="border:2px solid white;" align=center colspan=5>Entrance Exam Registration</td></tr>
 <tr height=20></tr>	
         <tr><td>
 	

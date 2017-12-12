@@ -59,7 +59,7 @@ function myFunction() {
 		<table style="width:100%;" border=0 id="foohide">
 		<tr>
 			<td>
-				<label>Programme Category</label></br>
+				<label>Programe Category</label></br>
 				<select name="progcat" class="form-control" style="height:37px;width:300px;font-size:18px;font-weight:bold;">
  					<option disabled selected>Select Program</option>
 					<?php foreach($this->prgcatname as $row){?>
@@ -68,7 +68,7 @@ function myFunction() {
 				</select>  
 			</td>
 			<td>	
-				<label for="nnumber">Applicant name</label></br>	
+				<label for="nnumber">Applicant Name</label></br>	
 				<input type="text" name="appstuname" placeholder="Enter Your Name" />
 			</td>
 		
@@ -127,7 +127,7 @@ function myFunction() {
 		</td>
 
 		<td>
-			<label>Select religion</label></br>
+			<label>Select Religion</label></br>
 			<select name="appstureligion" class="form-control"  style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled="disabled" style="font-size:18px;">Select Religion</option>
 				<option value="HINDUISM">HINDUISM</option>
@@ -150,7 +150,7 @@ function myFunction() {
 			</select>
 		</td>-->
 		<td>	
-			<label for="nnumber">Application no.</label></br>	
+			<label for="nnumber">Application No.</label></br>	
 			<input type="text" name="appstuapplino" placeholder="Enter Application no"/>
 		</td>
 
@@ -185,7 +185,7 @@ function myFunction() {
 	<table class="TFtable" border=0>
 	<tr>
 		<th>Sr. No.</th>
-		<th>Prgoram Category</th>
+		<th>Program Category</th>
 		<th>Program (Branch) </th>
 		<th>Hall Ticket Number</th>
 		<th>Applicant Name</th>

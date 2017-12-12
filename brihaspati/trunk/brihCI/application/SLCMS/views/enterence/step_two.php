@@ -79,8 +79,8 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 		</thead>
 
 		<thead style="font-size:20px;">
-			<th>No.</th><th>Programmes</th><th>Course</th><th>Name of the institution</th><th>Board or university</th><th>Subjects/Specialization</th>
-<th>Year of passing</th><th>Marks obtained</th><th>Max. marks</th><th>% of Marks</th><th>Passed or Appeard</th>
+			<th>No.</th><th>Programmes</th><th>Course</th><th>Name of the Institution</th><th>Board or University</th><th>Subjects/Specialization</th>
+<th>Year of Passing</th><th>Marks Obtained</th><th>Max. Marks</th><th>% of Marks</th><th>Passed or Appeard</th>
 		</thead>
 		
 		<tbody>
@@ -356,8 +356,8 @@ $( "#mysecondnumber4" ).on('change',function(){
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Details if any employment (Optional)</th>
 		</thead>
 		<thead style="font-size:20px;">
-			<tr><th>Name of the university/institute</th><th>Name of post</th><th>Present pay & grade</th><th>Nature of appointment</th>
-			<th>Date of joining</th><th>Remarks</th><th>Previous experience if any</th>
+			<tr><th>Name of the University/Institute</th><th>Name of Post</th><th>Present Pay & Grade</th><th>Nature of Appointment</th>
+			<th>Date of Joining</th><th>Remarks</th><th>Previous Experience if any</th>
 			</tr>
 		</thead>
 	<tbody>

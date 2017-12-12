@@ -71,7 +71,7 @@
                             <table class="TFtable">
                                     <thead >
                                     <tr align="left" valign=top>
-                                        <th><b>Enterance Exam Center (Center Code)</b></th>
+                                        <th><b>Entrance Exam Center (Center Code)</b></th>
                                         <th><b>Submitted</b></th>
                                         <th><b>Paid</b></th>
                                         <th><b>Unpaid</b></th>
@@ -189,7 +189,7 @@
                             <div class="panel-body" style="max-height:350px; overflow:scroll;">
                             <table class="TFtable" >
                                     <tr align="left" valign=top>
-                                        <th><b>Enterance Exam Center(Center Code)/Course(Branch)</b></th>
+                                        <th><b>Entrance Exam Center(Center Code)/Course(Branch)</b></th>
                                         <th><b>Submitted</b></th>
                                         <th><b>Paid</b></th>
                                         <th><b>Unpaid</b></th>
