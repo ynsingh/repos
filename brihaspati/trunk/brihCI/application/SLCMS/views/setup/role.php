@@ -22,14 +22,26 @@
         ?>-->
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
      <table width="100%" >
-            <tr><td>
-                <?php echo anchor('setup/displayrole/', "View Role Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
-                <?php
-                 echo "<td align=\"right\">";
-                 $help_uri = site_url()."/help/helpdoc#Role";
-		 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-		 echo "</td>";
+            <tr>
+               <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/displayrole/', "View Role Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                echo "</td>";
+                 
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Role Details</b>";
+                echo "</td>";
+
+               echo "<td align=\"right\" width=\"33%\">";
+               $help_uri = site_url()."/help/helpdoc#Role";
+	       echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+	       echo "</td>";
                  ?>
+	   </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -51,10 +63,7 @@
             <tr>
                 <td><label for="role_name" class="control-label">Role Name:</label></td>
                 <td>
-                <input type="text" name="role_name"  class="form-control" size="30" /><br>
-                </td>
-                <td>
-                    <?php echo form_error('role_name')?>
+                <input type="text" name="role_name"  class="form-control" size="30" />
                 </td>
                 <td>
                    Example: Admin, System Administrator
@@ -66,10 +75,7 @@
                 <label for="role_desc" class="control-label">Role Description:</label>
                 </td>
                 <td>
-                    <input type="text" name="role_desc" size="30"  class="form-control" /> <br>
-                </td>
-                <td>
-                    <?php echo form_error('role_desc')?>
+                    <input type="text" name="role_desc" size="30"  class="form-control" /> 
                 </td>
                 <td>
                     Example : System Admin a person who manages the operation of a computer system.
@@ -81,7 +87,6 @@
                 <button name="reset" >Clear</button>
                 </td>
            </tr>
-	</tr>
      </table>
   </form>
     </body>

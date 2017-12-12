@@ -12,15 +12,28 @@
  <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <table width="100%">
-            <tr><td>
+            <tr>
                 <div>
-                <?php echo anchor('setup/viewentranceexamfees/', "View Entrance Exam Fees Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
-                //echo "<td align=\"right\">";
-                 //   $help_uri = site_url()."/help/helpdoc#ViewEntranceExamFeesDetail";
-                   // echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-                    //echo "</td>";
-              ?>
-                <div>
+                <?php 
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/viewentranceexamfees/', "View Entrance Exam Fees Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                echo "</td>";
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Entrance Exam Fees Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
+                //$help_uri = site_url()."/help/helpdoc#Authority";
+                //echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+               ?>
+                </div>
+               </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+               <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -39,9 +52,8 @@
     <form action="<?php echo site_url('setup/addentranceexamfees');?>" method="POST" class="form-inline">
     <table>
             <tr>
-
                      <tr>
-                        <td><label>Fees Name</label></td>
+                        <td>Fees Name :</td>
                         <td><input type="text"placeholder="fees" name="fees"  size="30" /></td>
                         <?php //echo form_error('fm_amount')?></td>
                         </tr>
@@ -68,7 +80,7 @@
                         </select>
                         </td></tr>
                         <tr>
-                        <td><label>Amount:</label></td>
+                        <td>Amount:</td>
                         <td><input type="text"placeholder="Amount" name="amount"  size="30" /></td>
                         <?php //echo form_error('fm_amount')?></td>
                         </tr>

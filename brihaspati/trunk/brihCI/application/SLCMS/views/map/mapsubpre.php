@@ -108,14 +108,28 @@
             
             <?php echo form_error('<div style="" class="isa_error">','</div>');?>
  
- <tr><td>  
+ <tr>  
                 <div>    
-                <?php echo anchor('map/prerequisite/', "Subject With Prerequisite List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('map/prerequisite/', "Subject With Prerequisite List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                echo "</td>";
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Subject With Prerequisite Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
 		$help_uri = site_url()."/help/helpdoc#MapSubjectandPaperwithPrerequisite";
 		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
+                
 		?>
                 </div>
-                <div>
+               </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+               <div>
                  
                 <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
 
@@ -205,7 +219,7 @@
 
             	<tr>
                	<td></td>
-                <td colspan="2">   
+                <td>   
                 <button name="mapsubpre" >Submit</button>
                 <button name="reset" >Clear</button>
                 </td>

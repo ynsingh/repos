@@ -41,16 +41,26 @@
 
 
      <table width="100%">
-            <tr><td>
-                <?php echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));
-                echo "<td align=\"right\">";
+            <tr>
+                <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));
+                echo "</td>";                
+                 
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Semester Rule Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
                 $help_uri = site_url()."/help/helpdoc#ViewSemesterRule";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
 
             ?>
-                
-                
+               </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -69,9 +79,9 @@
  
     <div>
     <form action="<?php echo site_url('setup2/addsemrule');?>" method="POST" class="form-inline">
-		<table><tr>
+		<table>
 		<tr>
-           	<td>Program Name :</td>
+           	<td><label>Program Name :</label></td>
            	<td>
                 <select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" >
                 <option value="" disabled  selected >------Select Program Name--------------</option>
@@ -81,7 +91,7 @@
            </td>
        </tr>
         <tr>
-           <td>Branch Name :</td>
+           <td><label>Branch Name :</label></td>
            <td>
                 <select name="semcr_prgid" id="semcr_prgid" class="my_dropdown" style="width:100%;">
                 <option value="" disabled  selected >------Select Branch Name--------------</option>
@@ -89,7 +99,7 @@
         </tr>
 
 		<tr>
-                        <td>Semester :</td>
+                        <td><label>Semester :</label></td>
                         <td>
                         <select name="semcr_semester" id="" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select Semester------</option>
@@ -107,10 +117,7 @@
 
                 <td><label for="semcr_mincredit" class="control-label">Semester Minimum Credit:</label></td>
                 <td>
-                <input type="text" name="semcr_mincredit"  class="form-control" size="33" /><br>
-                </td>
-                <td>
-                    <?php //echo form_error('semcr_mincredit')?>
+                <input type="text" name="semcr_mincredit"  class="form-control" size="33" />
                 </td>
                 <td>
                    Example:any positive number 
@@ -119,10 +126,7 @@
 		<tr>
                 <td><label for="semcr_maxcredit" class="control-label">Semester Maximum Credit:</label></td>
                 <td>
-                <input type="text" name="semcr_maxcredit"  class="form-control" size="33" /><br>
-                </td>
-                <td>
-                    <?php //echo form_error('semcr_maxcredit')?>
+                <input type="text" name="semcr_maxcredit"  class="form-control" size="33" />
                 </td>
                 <td>
                    Example:any positive number    
@@ -133,10 +137,7 @@
                 <label for="semcr_semcpi" class="control-label">Semester CPI:</label>
                 </td>
                 <td>
-                    <input type="text" name="semcr_semcpi" size="33"  class="form-control" /> <br>
-                </td>
-                <td>
-                    <?php //echo form_error('semcr_semcpi ')?>
+                    <input type="text" name="semcr_semcpi" size="33"  class="form-control" />
                 </td>
                 <td>
 			Example: any decimal value
@@ -149,7 +150,6 @@
                 <button name="reset" >Clear</button>
                 </td>
            </tr>
-	</tr>
       </table>
    </div>
  </form>

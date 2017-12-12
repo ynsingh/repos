@@ -14,16 +14,27 @@
 
 
      <table width="100%">
-       <tr><td>
+       <tr>
         <div>
-        <?php
+        <?php 
+           echo "<td align=\"left\" width=\"33%\">";
            echo anchor('setup/viewprogramcat', 'Program Categroy List', array('class' => 'top_parent'));
-           echo "<td align=\"right\">";
+           echo "</td>";
+
+           echo "<td align=\"center\" width=\"34%\">";
+           echo "<b>Add Program Category Details</b>";
+           echo "</td>";
+
+           echo "<td align=\"right\" width=\"33%\">";
            $help_uri = site_url()."/help/helpdoc#ProgramCategory";
            echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
            echo "</td>";
         ?>
         </div>
+       </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
         <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -47,9 +58,8 @@
             <tr>
                 <td><label for="procatname" class="control-label"> Program Category Name :</label></td>
                 <td>
-                <input type="text" name="procatname" class="form-control" size="40" /><br>
+                <input type="text" name="procatname" class="form-control" size="40" />
                 </td>
-                <td><?php echo form_error('procatname')?></td>
                 <td> Example : Under Graduate , Post Graduate , Diploma  </td>
             </tr>
             <tr>
@@ -57,9 +67,8 @@
                 <label for="procatcode" class="control-label">Program Category Code :</label>
                 </td>
                 <td>
-                    <input type="text" name="procatcode" size="40" class="form-control"/> <br>
+                    <input type="text" name="procatcode" size="40" class="form-control"/> 
                 </td>
-                <td><?php echo form_error('procatcode')?></td>
                 <td>Example :01,02,03,04 </td>
             </tr>
             <tr>
@@ -67,9 +76,8 @@
                     <label for="proshrtname" class="control-label">Program Category Short Name :</label>
                 </td>
                 <td>
-                    <input type="text" name="proshrtname" size="40"  class="form-control"/> <br>
+                    <input type="text" name="proshrtname" size="40"  class="form-control"/> 
                 </td>
-                 <td><?php echo form_error('proshrtname')?></td>
                 <td> Example: UG,PG,R etc  </td>
             </tr>
             <tr>
@@ -77,21 +85,19 @@
                 <label for="prodesc" class="control-label">Program Category Description :</label>
                 </td>
                 <td>
-                    <input type="text" name="prodesc"  size="40"/> <br>
+                    <input type="text" name="prodesc"  size="40"/> 
                 </td>
-                <td><?php echo form_error('prodesc')?></td>
                 <td> Example :  </td>
             </tr>
             <tr><td></td>
-                <td colspan="2">
+                <td>
                 <button name="programcat" >Add Category program </button>
                 <input type="reset" name="Reset" value="Clear"/>
                 </td>
             </tr>
            </table>
           </form>
-      </div>
-  </body>
+       </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
 

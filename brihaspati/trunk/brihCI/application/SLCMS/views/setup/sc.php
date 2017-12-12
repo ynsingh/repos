@@ -48,6 +48,54 @@ dateFormat: 'yy-mm-dd',
 //defaultDate: '1yr',
 yearRange: 'c-47:c+50',
 });
+$('#country_id').on('change',function(){
+           var cid = $(this).val();
+           if(cid == ''){
+               $('#stname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#stname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_state",
+                   type: "POST",
+                   data: {"cid" : cid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#stname').html(data.replace(/^"|"$/g, ''));
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
+
+
+$('#stname').on('change',function(){
+           var sid = $(this).val();
+           if(sid == ''){
+               $('#citname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#citname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_city",
+                   type: "POST",
+                   data: {"sid" : sid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#citname').html(data.replace(/^"|"$/g, ''));
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
 });
 </script>
 

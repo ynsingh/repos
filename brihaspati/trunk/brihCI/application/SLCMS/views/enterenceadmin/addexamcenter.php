@@ -52,18 +52,26 @@ function calculate() {
 	}
 </script>
  <table width="100%">
-            <tr><td>
-                <?php echo anchor('enterenceadmin/examcenter','Exam Center List',array('title'=>'View Detail','class' => 'top_parent'  ));
-                echo "<td align=\"right\">";
+            <tr>
+                <?php
+                echo "<td align=\"left\" width=\"33%\">"; 
+                echo anchor('enterenceadmin/examcenter','Exam Center List',array('title'=>'View Detail','class' => 'top_parent'  ));
+                echo "</td>";
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Exam Center Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
                 $help_uri = site_url()."/help/helpdoc#ProgramFees";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
                 ?>
-		</td></tr>
-
-                <tr><td>
-                <div>
-
+                </tr>
+           </table>
+           <table width="100%">
+           <tr><td> 
+		<div>
                 <?php
                      echo validation_errors('<div class="isa_warning">','</div>');
                      echo form_error('<div  class="isa_error">','</div>');
@@ -86,64 +94,64 @@ function calculate() {
             <tr>
                 <td><label for="eec_code" class="control-label">Entrance Exam Center Code:</label></td>
                 <td>
-                <input type="text" name="eec_code"  class="form-control" size="30" /><br>
+                <input type="text" name="eec_code"  class="form-control" size="30" />
                 </td>
             </tr>
  		<tr>
                 <td><label for="eec_name" class="control-label">Entrance Exam Center Name:</label></td>
                 <td>
-                <input type="text" name="eec_name"  class="form-control" size="30" /><br>
+                <input type="text" name="eec_name"  class="form-control" size="30" />
                 </td>
             </tr>
  		 <tr>
                  <td><label for="eec_address" class="control-label">Entrance Exam Center Address:</label></td>
                  <td><textarea rows= "" cols="44" name="eec_address" size="30" > </textarea></td>
                  </tr>
-		<tr><td>State: </td><td>
-                <select name="eec_state"  id="state_id">
+		<tr><td><label>State: </label></td><td>
+                <select style="width:100%" name="eec_state"  id="state_id" >
                 <option value="">Select State</option>
                 <?php foreach($this->cresult as $datas): ?>
                 <option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
                 <?php endforeach; ?>
                 </select>
-                <tr><td>City: </td><td>
-                <select style="height:35px;" name="eec_city" id="citname" disabled="">
+                <tr><td><label>City:</label> </td><td>
+                <select style="width:100%" name="eec_city" id="citname" disabled="">
                 <option value="">Select city</option>
                 </select>
 		<tr>
                 <td><label for="eec_incharge" class="control-label">Entrance Exam Center Incharge:</label></td>
                 <td>
-                <input type="text" name="eec_incharge"  class="form-control" size="30" /><br>
+                <input type="text" name="eec_incharge"  class="form-control" size="30" />
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_noofroom" class="control-label">Entrance Exam Center Number of Room:</label></td>
                 <td>
-                <input id="box1" type="text" name="eec_noofroom"  class="form-control" size="30" oninput="calculate()" /><br>
+                <input id="box1" type="text" name="eec_noofroom"  class="form-control" size="30" oninput="calculate()" />
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_capacityinroom" class="control-label">Entrance Exam Center Capacity in Room:</label></td>
                 <td>
-                <input id="box2" type="text" name="eec_capacityinroom"  class="form-control" size="30" oninput="calculate()"/><br>
+                <input id="box2" type="text" name="eec_capacityinroom"  class="form-control" size="30" oninput="calculate()"/>
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_totalcapacity" class="control-label">Entrance Exam Center Total Capacity:</label></td>
                 <td>
-                <input id="result" type="text" name="eec_totalcapacity"  class="form-control" size="30" readonly/><br>
+                <input id="result" type="text" name="eec_totalcapacity"  class="form-control" size="30" readonly/>
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_contactno" class="control-label">Entrance Exam Center Contact No:</label></td>
                 <td>
-                <input type="text" name="eec_contactno"  class="form-control" size="30" /><br>
+                <input type="text" name="eec_contactno"  class="form-control" size="30" />
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_contactemail" class="control-label">Entrance Exam Center Contact Email:</label></td>
                 <td>
-                <input type="text" name="eec_contactemail"  class="form-control" size="30" /><br>
+                <input type="text" name="eec_contactemail"  class="form-control" size="30" />
                 </td>
             </tr>
 		 <tr>

@@ -42,16 +42,28 @@
         <?php $this->load->view('template/menu');?> 
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <table width="100%"> 
-            <tr><td>  
+            <tr>  
                 <div>    
-                <?php echo anchor('map/viewuserrole/', "Map User Role List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
-                echo "<td align=\"right\">";
+                <?php
+                 echo "<td align=\"left\" width=\"33%\">";
+                 echo anchor('map/viewuserrole/', "Map User Role List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                 echo "</td>";
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add User Role Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#EmailSetting";
                  echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                  echo "</td>";
             	?>
                 </div>
-                <div>
+               </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+              <div>
                  <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                   <?php echo form_error('<div class="isa_error">','</div>');?>
                 

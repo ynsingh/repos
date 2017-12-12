@@ -71,22 +71,31 @@ $("#StartDate").datepicker("option","maxDate", selected)
 }); 
 });
 </script>
-  <div id="body">
+  <div>
         <?php $this->load->view('template/header'); ?>
         <?php $this->load->view('template/menu'); ?>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </div>
 <table style="width:100%;">
-                <tr colspan="2"><td>
-                <?php echo anchor('map/viewauthuser',' Map Authority and User List',array('title'=>'View Detail','class' => 'top_parent'  ));
-                echo "<td align=\"right\">";
+                <tr>
+                <?php 
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('map/viewauthuser',' Map Authority and User List',array('title'=>'View Detail','class' => 'top_parent'  ));
+                echo "</td>";
+     
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Authority and User Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
                 $help_uri = site_url()."/help/helpdoc#ProgramFees";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 ?>
-</tr></td>
-</table>
+                 </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
                 <div>
-                <tr colspan="2"><td>
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
@@ -101,6 +110,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
  <div>
      <form action="<?php echo site_url('map/authusertype');?>" method="POST" class="form-inline">   
                       <table>
+                        <tr>
                         <td> Authority Name: </td><td>
                         <select name="authorities" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select authority ---------</option>
@@ -108,9 +118,10 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         <option value="<?php echo $datas->id;?>"><?php echo $datas->name; ?></option>
                         <?php endforeach; ?>
                         </select>
-                        </td></tr>
+                        </td>
+                        
                         <tr>
-                                                
+                                        
                         <td> User Name: </td><td>
                         <select name="edrpuser" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select Name ---------</option>                        
@@ -118,7 +129,8 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         <option value="<?php echo $datas->id; ?>"><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $datas->id)->firstname .' '. $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $datas->id)->lastname; ?></option>
                         <?php endforeach; ?>
                         </select>
-                        </td></tr>
+                        </td>
+                        </tr>
                         <tr>
 
 			<tr>
@@ -128,25 +140,21 @@ $("#StartDate").datepicker("option","maxDate", selected)
 			<option value="Full Time" class="dropdown-item">Full Time</option>
                         <option value="Acting" class="dropdown-item">Acting</option>
                         </select>
-                        </td></tr>
+                        </td>
+                        </tr>
                          <tr>
                         
-                        <td><label>From Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="From Date" name="map_date" id="StartDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td>
-                        </tr>
-                        <tr>
-
+                        <td>From Date:<font color='Red'>*</font></td>
+                        <td><input type="text"placeholder="From Date" name="map_date" id="StartDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td></tr>
                         
+                        <tr>
+                        <td>Till Date:<font color='Red'>*</font></td>
+                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td></tr>
                         
-                        <td><label>Till Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td>
-                        </tr>
                         <tr>
-
-
-                        <tr>
-                        <td colspan="2" style="margin-left:30px;">
-                        <button name="authusertype" style="margin-left:115px;">Add Authorities </button>
+                        <td></td>
+                        <td>
+                        <button name="authusertype">Add Authorities </button>
                         <button name="clear">Clear</button>
                         </td>
                         </tr>

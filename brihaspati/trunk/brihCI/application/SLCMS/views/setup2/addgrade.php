@@ -21,15 +21,28 @@
         ?>-->
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
      <table width="100%" >
-            <tr><td>
+            <tr>
                 <div>
-                <?php echo anchor('setup2/grademaster/', "View Grade Master ", array('title' => 'View Grade Master' ,'class' =>'top_parent'));
-                echo "<td align=\"right\">"; 
+                <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup2/grademaster/', "View Grade Master ", array('title' => 'View Grade Master' ,'class' =>'top_parent'));
+                echo "</td>"; 
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Grade Master Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
                 $help_uri = site_url()."/help/helpdoc#GradeMaster";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";		
                 echo "</td>";  
 
              ?>
+               </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -51,10 +64,7 @@
             <tr>
                 <td><label for="gm_gradename" class="control-label">Grade Name:</label></td>
                 <td>
-                <input type="text" name="gm_gradename"  class="form-control" size="30" /><br>
-                </td>
-                <td>
-                    <?php echo form_error('gm_gradename')?>
+                <input type="text" name="gm_gradename"  class="form-control" size="30" />
                 </td>
                 <td>
                    Example: A, B, C, D, E etc
@@ -63,10 +73,7 @@
 	    <tr>
                 <td><label for="gm_gradepoint" class="control-label">Grade Point:</label></td>
                 <td>
-                <input type="text" name="gm_gradepoint"  class="form-control" size="30" /><br>
-                </td>
-                <td>
-                    <?php echo form_error('gm_gradepoint')?>
+                <input type="text" name="gm_gradepoint"  class="form-control" size="30" />
                 </td>
                 <td>
                    Example: 10, 8, 6, 4, 2 etc
@@ -77,10 +84,7 @@
                 <label for="gm_short" class="control-label">Grade Short:</label>
                 </td>
                 <td>
-                    <input type="text" name="gm_short" size="30"  class="form-control" /> <br>
-                </td>
-                <td>
-                    <?php echo form_error('gm_short')?>
+                    <input type="text" name="gm_short" size="30"  class="form-control" /> 
                 </td>
                 <td>
 			Example: Good, Fair, Poor etc.
@@ -92,10 +96,7 @@
                 <label for="gm_desc" class="control-label">Grade Description:</label>
                 </td>
                 <td>
-                    <input type="text" name="gm_desc" size="30"  class="form-control" /> <br>
-                </td>
-                <td>
-                    <?php echo form_error('gm_desc')?>
+                    <input type="text" name="gm_desc" size="30"  class="form-control" /> 
                 </td>
                 <td>
                  

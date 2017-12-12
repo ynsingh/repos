@@ -35,17 +35,27 @@ echo "<body>";
 ?>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%;">
-<tr><td>
+<tr>
 <div>
-	<?php echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
-	 echo "<td align=\"right\">";
+	<?php 
+         echo "<td align=\"left\" width=\"33%\">";
+         echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+	 echo "</td>";
+
+        echo "<td align=\"center\" width=\"34%\">";
+        echo "<b>Add Subject Details</b>";
+        echo "</td>";
+
+        echo "<td align=\"right\" width=\"33%\">";
 	$help_uri = site_url()."/help/helpdoc#Subject";
 	echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
 	echo"</td>"
 	?>
-</td></tr>
-</table></div>
-<table><tr>
+</div>
+           </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
     <div>
 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
     <?php echo form_error('<div  class="isa_error">','</div>');?>
@@ -121,7 +131,8 @@ echo "<body>";
     echo form_label('Subject Name', 'subname');
     echo"</td><td>";
     echo form_input($subname);
-    echo "</td><td>";echo form_error('subname');echo"</td></tr>";
+    echo "</td>";
+    echo"</tr>";
     echo "</p>";
 
     echo "<p>";
@@ -129,7 +140,8 @@ echo "<body>";
     echo form_label('Subject Credits', 'subext1');
     echo"</td><td>";
     echo form_input($subext1);
-    echo "</td><td>";echo form_error('subext1');echo"</td></tr>";
+    echo "</td>";
+    echo "</tr>";
     echo "</p>";
 
     echo "<p>";
@@ -138,8 +150,8 @@ echo "<body>";
     echo"</td><td>";
     echo form_input($subcode);
     echo "</td><td>";
-    echo form_error('subcode');  
-    echo"</td><td>";
+    echo"</td>";
+    echo"</tr>";
     echo "</p>";
 
     echo "<p>";
@@ -147,7 +159,8 @@ echo "<body>";
     echo form_label('Subject Short', 'subshort');
     echo"</td><td>";
     echo form_input($subshort);
-    echo "</td><td>";echo form_error('subshort');echo"</td></tr>";
+    echo "</td>";
+    echo"</tr>";
     echo "</p>";
 
     echo "<p>";
@@ -155,7 +168,8 @@ echo "<body>";
     echo form_label('Subject Description', 'subdesc');
     echo"</td><td>";
     echo form_input($subdesc);
-    echo "</td><td>";echo form_error('subdesc');echo"</td></tr>";
+    echo "</td>";
+    echo"</tr>";
     echo "</p>";
 
 
@@ -164,7 +178,8 @@ echo "<body>";
     echo form_label('Subject Ext1', 'subext2');
     echo"</td><td>";
     echo form_input($subext2);
-    echo "</td><td>";echo form_error('subext2');echo"</td></tr>";
+    echo "</td>";
+    echo"</tr>";
     echo "</p>";
 
   //  echo "<p>";

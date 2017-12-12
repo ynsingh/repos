@@ -32,15 +32,26 @@
         ?-->
 
               <table width="100%">
-             <tr><td>
-                <?php echo anchor('setup/displaycontact/', "View Contact Us" ,array('title' => 'Contact Us Detail ' , 'class' => 'top_parent'));?>
-                 <?php
-                  echo "<td align=\"right\">";
-                 $help_uri = site_url()."/help/helpdoc#Contact Us";
-                 //echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-                 echo "</td>";
-                 ?>
-                <div>
+             <tr>
+                <?php 
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/displaycontact/', "View Contact Us" ,array('title' => 'Contact Us Detail ' , 'class' => 'top_parent'));
+                echo "</td>";
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Contact Us Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
+                $help_uri = site_url()."/help/helpdoc#Contact Us";
+                //echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
+                ?>
+          </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+                  <div>
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -62,23 +73,23 @@
                     <table>
                         <tr>  
                             <td><label for="ascu_name" class="control-label">Name:</label></td>
-                            <td><input type="text" name="ascu_name" size="50"  class="form-control" /> <br></td>
+                            <td><input type="text" name="ascu_name" size="40"  class="form-control" /></td>
                         </tr>
                         <tr>
                             <td><label for="ascu_emailid" class="control-label">Email Id:</label></td>
-                            <td><input type="text" name="ascu_emailid"size="50"  class="form-control"/> <br></td>
+                            <td><input type="text" name="ascu_emailid"size="40"  class="form-control"/></td>
                         </tr>
                         <tr>
                         <tr>
                             <td><label for="ascu_phoneno" class="control-label">Mobile No:</label></td>
-                            <td><input type="text" name="ascu_phoneno"  size="50" /> <br></td>
+                            <td><input type="text" name="ascu_phoneno"  size="40" /></td>
                         </tr>
                             <td><label for="ascu_regards" class="control-label">Regarding:</label></td>
-                            <td><input type="text" name="ascu_regards"  size="50" /> <br></td>
+                            <td><input type="text" name="ascu_regards"  size="40" /></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td colspan="2">   
+                            <td>   
                             <button name="contact" >Submit</button>
                             <button name="reset" >Clear</button>
                             </td>

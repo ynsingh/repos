@@ -126,14 +126,26 @@ function getpaperName(idcomb){
    </script>	
 
    <table style="width:100%;">
-     <tr colspan="2"><td>
+     <tr>
       <div>
          <?php
+            echo "<td align=\"left\" width=\"33%\">";
             echo anchor('map/listsubjectteacher/', "List of Subject and Paper With Teacher" ,array('title' => 'List of Subject and Paper With Teacher' , 'class' => 'top_parent'));
+            echo "</td>";
+
+            echo "<td align=\"center\" width=\"34%\">";
+            echo "<b>Add Subject and Paper With Teacher Details</b>";
+            echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
 	    $help_uri = site_url()."/help/helpdoc#MapSubjectandPaperwithTeacher";
             echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
          ?>
       </div>
+      </tr>
+           </table>
+           <table width="100%">
+          <tr><td>
       <div>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>

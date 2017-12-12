@@ -56,14 +56,28 @@
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 
      <table width="100%">
-            <tr><td>
+            <tr>
                 <div>
-                <?php echo anchor('setup2/designation/', "View Designation list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
-                echo "<td align=\"right\">";
+                <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup2/designation/', "View Designation list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
+                echo "</td>";
+
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Designation Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
 		$help_uri = site_url()."/help/helpdoc#Designation";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
  		?>
+                </div>
+               </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -76,8 +90,7 @@
                 <?php
                 };
                ?>
-              </div>
-        </div>
+             </div>
          </td></tr>
     </table>
     <div>
@@ -86,10 +99,10 @@
 	<table>
         	<tr>
                 	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
-                	<td><input type="text" name="desig_code" class="form-control" size="33" /><br></td>
+                	<td><input type="text" name="desig_code" class="form-control" size="33" /></td>
 	     	</tr>	
 		<tr>
-	     		<td>Designation Type</td>
+	     		<td><label for= "tnt" class="control-label">Designation Type</lable></td>
                		<td>
 				<select name="tnt" id="tnt" class="my_dropdown" style="width:100%;">
                 			<option value="" disabled selected >------Select----------------</option>
@@ -107,7 +120,7 @@
                         </td>
 		</tr>
 
-                 <td>Designation Payscale: <font color='Red'> *</font> </td>
+                 <td><label for= "tnt" class="control-label">Designation Payscale: <font color='Red'> *</font></label></td>
                 <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:100%;">
                 <option selected="selected" disabled selected>--------Select-------------</option>
                 <?php foreach($this->payresult as $datas): ?>
@@ -121,10 +134,7 @@
                 <tr>
                <td><label for="desig_name" class="control-label">Designation Name:</label></td>
                <td>
-               <input type="text" name="desig_name"  class="form-control" size="33%" /><br>
-               </td>
-               <td>
-                  <?php //echo form_error('dr_mincredit')?>
+               <input type="text" name="desig_name"  class="form-control" size="33%" />
                </td>
             </tr>
               
@@ -140,34 +150,27 @@
                         </select>
                         </td></tr>
             <tr>
-
-                      
+                     
               <tr>
-                <td><label for="desig_short" class="control-label">Designation short :</label></td>
+                <td><label for="desig_short" class="control-label">Designation Short :</label></td>
                 <td>
-                <input type="text" name="desig_short" class="form-control" size="33%" /><br>
+                <input type="text" name="desig_short" class="form-control" size="33%" />
                 </td>
                 <tr>
                 <td><label for="desig_desc" class="control-label">Designation Description :</label></td>
                 <td>
-                <input type="text" name="desig_desc" class="form-control" size="33%" /><br>
-                </td>
-                <td>
-                    <?php //echo form_error('dr_minsubcredit')?>
-                </td>
+                <input type="text" name="desig_desc" class="form-control" size="33%" /></td>
             </tr>
             <tr>
 		<td></td>
                 <td>
                 <button name="adddesignation">Add Designation</button>
                 <button name="reset" >Clear</button>
-
                 </td>
             </tr>
             </table>
            </form>
     </div>
-<p><br><p>
 </body>
     <div align="left"> <?php $this->load->view('template/footer');?></div>
     </html>

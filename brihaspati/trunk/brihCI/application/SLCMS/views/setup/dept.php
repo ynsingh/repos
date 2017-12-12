@@ -8,7 +8,7 @@
 <head>
 <title>Add Department</title>
 </head>
-  <div id="body">
+  <div>
 	<?php $this->load->view('template/header'); ?> 
     	<?php $this->load->view('template/menu'); ?>
 </div>
@@ -33,15 +33,26 @@
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 
       	<table width="100%">
-		<tr><td>  
+		<tr>
   	        <div>
-  		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
-                echo "<td align=\"right\">";
+                <?php     
+                echo "<td align=\"left\" width=\"33%\">";
+  	 	echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
+                echo "</td>";
+                
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Department Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
 		$help_uri = site_url()."/help/helpdoc#Department";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
 		?>
 		</div>
+               </tr>
+              </table>
+           <table width="100%">
+           <tr><td>
                 <div>
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -59,18 +70,17 @@
                 <div>
                 <form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
       		<table> 
-
-		<tr><td>
-                          
-        		Choose your University:</td><td>
+    			<tr><td>
+                	<label>Choose your University:</label></td><td>
     			<select name="orgprofile" style="width:100%;">
     			<option value=""disabled selected>--------------------Select university------------------</option>
 			<?php foreach($this->uresult as $datas): ?>	
    				<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
  			<?php endforeach; ?>
    			</select>          
-   			</td></tr><tr><td>    
- 			Choose your Campus: </td><td>         
+   			</td></tr>
+                        <tr><td>    
+ 			<label>Choose your Campus:</label></td><td>         
  			<select name="studycenter" style="width:100%;">
  			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
@@ -79,19 +89,15 @@
 			<?php endforeach; ?>
 			</select>   
 			</td></tr>                 
-
-                         <tr><td>
-                        Choose your Authorities Name: </td><td>
-                        <select name="authorities" style="width:100%;">
+                       <tr><td><label>Choose your Authorities Name:</label> </td><td>
+                        <select name="authorities" style="width:100%;">    
                         <option value=""disabled selected>-------------------Select authorities-----------------</option>
                         <?php foreach($this->authresult as $datas): ?>
                                 <option value="<?php echo $datas->id; ?>"><?php echo $datas-> name; ?></option>
                         <?php endforeach; ?>
                         </select>
                         </td></tr>
-
-                          
-          		<tr>  
+                                <tr>  
                                 <td><label>School/Faculty Code:</label></td>
                                 <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="40" value="<?php echo isset($_POST["dept_schoolcode"]) ? $_POST["dept_schoolcode"] : ''; ?>" /></td> 
                                  <td>Example: Sbs</td>

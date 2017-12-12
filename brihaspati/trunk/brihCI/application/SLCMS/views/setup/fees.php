@@ -16,17 +16,28 @@
 </div>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <table width= "100%"> 
-            <tr><td>
+            <tr>
                 <div>
-                <?php echo anchor('setup/displayfees',' Program Fees with Head List',array('title'=>'View Detail','class' => 'top_parent'  )); 
-                echo "<td align=\"right\">";
+                <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/displayfees',' Program Fees with Head List',array('title'=>'View Detail','class' => 'top_parent'  )); 
                 echo "</td>";
-                echo "<td>";
+                
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Program Fees Details</b>";
+                echo "</td>";
+
+                echo "<td align=\"right\" width=\"33%\">";
 		$help_uri = site_url()."/help/helpdoc#ProgramFees";
 		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
                 echo "</td>";
 		?>
      </div>
+          </tr>
+           </table>
+           <table width="100%">
+           <tr><td>
+
                 <div>
 		<?php 
 		     echo validation_errors('<div class="isa_warning">','</div>');
@@ -48,7 +59,7 @@
  <div>
      <form action="<?php echo site_url('setup/fees');?>" method="POST" class="form-inline">    
                 <table>
-                	<tr><td> Program Name: </td><td>
+                	<tr><td><label> Program Name:</label> </td><td>
 			<select name="program" style="width:100%;">
                         <option value=""disabled selected>---------Select program ---------</option>
                         <?php foreach($this->prgresult as $datas): ?>
@@ -72,7 +83,7 @@
         	        echo " </select>";
 			?>
 			<tr>
-			<td>Semester :</td>
+			<td><label>Semester :</label></td>
                 	<td>
                 	<select name="semester" id="" class="my_dropdown" style="width:100%;">
                     	<option value="" disabled selected >------Select Semester------</option>
@@ -87,7 +98,7 @@
                     	</select>
                 	</td></tr>
 
-			<tr><td> Category: </td><td>
+			<tr><td><label> Category:</label> </td><td>
                         <select name="category" style="width:100%;">
                         <option value=""disabled selected>----Select Category----</option>
 			<?php foreach($this->catresult as $datas): ?>
@@ -96,7 +107,7 @@
                         </select>
                         </td></tr>
 			<tr>
-                        <td>Gender :</td>
+                        <td><label>Gender :</label></td>
                         <td>
                         <select name="gender" id="" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select Gender------</option>
@@ -136,7 +147,7 @@
 			
                         <tr>
                         <td></td>
-                        <td colspan="2">
+                        <td>
                         <button name="fees">Add Fees </button>
 			<button name="clear">Clear</button>
                         </td>

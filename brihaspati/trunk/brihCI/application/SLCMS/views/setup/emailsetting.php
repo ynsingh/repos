@@ -33,16 +33,25 @@
         
         ?-->
         <table width="100%"> 
-                 <tr colspan="2"><td>  
+                 <tr>  
             <?php
-           
+                    echo "<td align=\"left\" width=\"33%\">";        
                     echo anchor('setup/dispemailsetting/', "View Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
-                    echo "<td align=\"right\">";
-                    $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
+                    echo "</td>";
+                    
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Add Email Setting Details</b>";
+                    echo "</td>";
+                                                
+                    echo "<td align=\"right\" width=\"33%\">";
+                    $help_uri = site_url()."/help/helpdoc#AddEmailSetting";
                     echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
-          
-            ?>        
+           ?>
+		</tr>
+           </table>
+           <table width="100%">
+           <tr><td>
             <div>
 		<?php echo validation_errors('<div class="isa_warning">','</div>');?>  
 		<?php echo form_error('<div class="isa_error">','</div>');?>
@@ -58,10 +67,10 @@
                 <?php
                 };
                 ?>
-  
+           </td></tr>
+           </table>
             </div>
-            </td></tr> 
-        </table>
+            </table>
                 <form action="<?php echo site_url('setup/emailsetting');?>" method="POST" class="form-inline"></div>
                     <table>
                         <tr>  
@@ -76,44 +85,37 @@
                                 </select>
 
                             </td>
-                            <td><?php echo form_error('emailporotcol')?></td>
                             <td>Example: smtp</td>
                 
                         </tr>
                         <tr> 
                             <td><label for="emailhost" class="control-label">Email Host:</label></td>
-                            <td><input type="text" name="emailhost" size="50"  class="form-control" /> <br></td>
-                            <td><?php echo form_error('emailhost')?></td>
+                            <td><input type="text" name="emailhost" size="50"  class="form-control" /></td>
                             <td>Example : smtp.cc.iitk.ac.in  or  IP Address: 172.3.1.5</td>
                         </tr>
                         <tr>
                             <td><label for="emailport" class="control-label">Email Port:</label></td>
-                            <td><input type="text" name="emailport"size="50"  class="form-control"/> <br></td>
-                            <td><?php echo form_error('emailport')?></td>
+                            <td><input type="text" name="emailport"size="50"  class="form-control"/></td>
                             <td>Example : 25</td>
                         </tr>
                         <tr>
                             <td><label for="username" class="control-label">User Name:</label></td>
-                            <td><input type="text" name="username"  size="50"  /> <br></td>
-                            <td><?php echo form_error('username')?></td>
+                            <td><input type="text" name="username"  size="50"  /></td>
                             <td>Example : palseema30     or    palseema30@gmail.com</td>
                         </tr>
                         <tr>
                             <td><label for="password" class="control-label">Password:</label></td>
-                            <td><input type="password" name="password" size="50"  /> <br></td>
-                            <td><?php echo form_error('password')?></td>
+                            <td><input type="password" name="password" size="50"  /> </td>
                             <td> Example : ****** </td>
                         </tr>
                         <tr>
                             <td><label for="sendername" class="control-label">Sender Name:</label></td>    
-                            <td><input type="text" name="sendername" size="50"  /> <br></td>
-                            <td><?php echo form_error('sendername')?></td>
+                            <td><input type="text" name="sendername" size="50"  /></td>
                             <td> Example : Seema Pal    or    palseema30@gmail.com </td>
                         </tr>
                         <tr>
                             <td><label for="senderemail" class="control-label">Sender Email:</label></td>    
-                            <td><input type="text" name="senderemail" size="50"  /> <br></td>
-                            <td><?php echo form_error('senderemail')?></td>
+                            <td><input type="text" name="senderemail" size="50"  /></td>
                             <td> Example : Finance Officer    or    fo@igntu.ac.in </td>
                         </tr>
                         <tr>
@@ -131,20 +133,17 @@
 
                             </td>  
                             <!--<td><input type="text" name="modulename" size="50"  /> <br></td> -->
-                            <td><?php echo form_error('modulename')?></td>
                             <td> Example : Account Section </td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td colspan="2">   
+                            <td>   
                             <button name="emailsetting" >Submit</button>
                             <button name="reset" >Clear</button>
                             </td>
                         </tr>
-                     </tr>
                     </table>
                 </form>
-	<p><br><p>
-    </body>
+	   </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

@@ -79,11 +79,27 @@ echo "<body>";?>
 
 <div>
 <table style="width:100%">
-<tr><td>
-<?php echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
-$help_uri = site_url()."/help/helpdoc#MapProgramwithSubjectandPaper";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
-?>
+<tr>
+        <div> 
+        <?php 
+          echo "<td align=\"left\" width=\"33%\">";
+          echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+          echo "</td>";
+
+          echo "<td align=\"center\" width=\"34%\">";
+          echo "<b>Add Subject Paper Details</b>";
+          echo "</td>";
+
+          echo "<td align=\"right\" width=\"33%\">";
+          $help_uri = site_url()."/help/helpdoc#MapProgramwithSubjectandPaper";
+          echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
+          echo"</td>";
+          ?>
+           </div>
+</tr>
+           </table>
+           <table width="100%">
+          <tr><td>
     <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -98,7 +114,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
         }
         ?>
     </div>
-</div>
     </td></tr>
 </table>
 <?php
@@ -244,7 +259,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_dropdown('acadyear',$acadyear,'','class="abc"');
    echo "</td>";
-    echo form_error('subjectcode');
     echo"</td><td>"; //echo "Optional";
     echo "</tr>";
     echo "</p>";
@@ -255,7 +269,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_input($subjectno,'class="text"');    
     echo "</td><td>";
-    //echo form_error('subjectno');
     echo"</td><td>"; echo "Example : 1, Numeric values only ";
     echo "</td></tr>";
     echo "</p>";
@@ -266,7 +279,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_input($papername,'class="text"');        
     echo "</td><td>";
-    //echo form_error('papername');
     echo"</td><td>"; echo "Example : Physics";
     echo "</td></tr>";
     echo "</p>";
@@ -277,7 +289,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_input($subjectcode,'class="text"');
     echo "</td><td>";
-    echo form_error('subjectcode');
     echo"</td><td>"; echo "Example : Phy01";
     echo "</td></tr>";
     echo "</p>";
@@ -288,7 +299,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_input($subjectshrname,'class="text"');
     //echo "</td><td>";
-    //echo form_error('subjectcode');
     //echo"</td><td>"; echo "Optional";
     echo "</td></tr>";
     echo "</p>";
@@ -299,7 +309,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for He
     echo "</td><td>";
     echo form_input($subjectdesc,'class="text"');
     //echo "</td><td>";
-    //echo form_error('subjectcode');
     //echo"</td><td>"; echo "Optional";
     echo "</td></tr>";
     echo "</p>";
