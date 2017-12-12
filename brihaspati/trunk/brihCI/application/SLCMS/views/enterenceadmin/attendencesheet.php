@@ -78,22 +78,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$year=date('Y');
 			$i=0;
 			if(!empty($this->centerlist)){
+			
 				foreach($this->centerlist as $row){
 					$centerid = $row->ca_centername;
 					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
 					
-		?>
-					<td style="border:1px solid black;">
-				<?php if(!empty($cname)){?>
+		if((!empty($centerid)) && (!empty($row->ca_attendencesheetstatus))){ ?>
+			<td style="border:1px solid black;">
+				<?php //if(!empty($row->ca_attendencesheetstatus)){?>
 						<a href="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf');?>" target=_blank style="font-size:20px;">
 		<?php echo $cname;?>  Attendance Sheet</br>
 							<embed src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf');?>" type="application/pdf"   height="350px" width="100%">
-						</a>	
-					<?php } ?>
-					</td>	
-			
-				<?php 
+						</a><?php //} ?>	
 					
+			</td>	
+			<?php } 
 					$i++;
 					if($i%6 == 0){?>
 						</tr>
