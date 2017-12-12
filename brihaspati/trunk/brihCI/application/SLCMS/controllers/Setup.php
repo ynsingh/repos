@@ -318,7 +318,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
             $this->form_validation->set_rules('prgcredit','Program Credit','trim|xss_clean|numeric');
             $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
-            $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean');
             $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean');
             $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
             $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
@@ -461,7 +461,7 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
         $this->form_validation->set_rules('prgcredit','Program Credit','trim|xss_clean|numeric');
         $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
-        $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean');
         $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean');
         $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
         $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');

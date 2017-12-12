@@ -56,7 +56,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('request/exam_regi', 'Exam Registration', array('title' => 'Semester Exam Form'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('request/fees_deposit', 'Fees deposit', array('title' => 'Semester Fees Deposit'));
+						echo anchor('request/fees_deposit', 'Fees Deposit', array('title' => 'Semester Fees Deposit'));
 					echo "</li>";
 				echo "</ul>";
 			

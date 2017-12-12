@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    </table>		
 <center>
 <form action="<?php echo site_url('enterenceadmin/generateattendence'); ?>" method="POST">
-	<table style="width:70%;margin-top:-1%;" border=0>
+	<table style="margin-top:-1%;" border=0>
 		<tr>
 			<td style="height:35px;font-size:18px;"  align=center><h2>Generate Attendance Sheet</h2></td>
 			<td align=right valign="top">

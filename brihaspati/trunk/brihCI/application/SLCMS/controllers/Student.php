@@ -1058,7 +1058,7 @@ class Student extends CI_Controller {
 		// in future we add acdamic year
 		//$wharray = array('fm_programid' => $this->prgid,('fm_gender' => (All)||($this->gender))&&('fm_category'=>(All)||($this->catid)));
 		// display fees detail on the basis of gender, category and program with semester
-		$wharray = array('fm_programid' => $prgid, 'fm_semester' => 1);
+		$wharray = array('fm_programid' => $prgname, 'fm_semester' => 1);
 		$sarray = 'fm_head,fm_amount';
 		$wgenr = array('All', $this->gender);
 		$wcateid = array('1', $this->catid);

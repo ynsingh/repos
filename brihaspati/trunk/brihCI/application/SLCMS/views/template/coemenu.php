@@ -159,7 +159,7 @@ echo "<ul class=\"sf-menu\">";
                                       //echo anchor('enterenceadmin/viewcenterallocationlist', 'Center Allocation ', array('title' => 'Center Allocation'));
                                      // echo "</li>";
 				      echo "<li>";
-                                      echo anchor('enterenceadmin/fees_nonreconcile', 'Enterance Fees Reconcile ', array('title' => 'Enterence Fees Reconcile'));
+                                      echo anchor('enterenceadmin/fees_nonreconcile', 'Entrance Fees Reconcile ', array('title' => 'Entrance Fees Reconcile'));
                                       echo "</li>";
                                       echo "<li>";
                                       echo anchor('enterenceadmin/viewcentrollno', 'Roll No Generation ', array('title' => 'Center wise roll number generation'));
