@@ -3,7 +3,7 @@
 /* 
  * @name Setup2.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
- * @author Om Prakash(omprakashkgp@gmail.com) Designation  
+ * @author Om Prakash(omprakashkgp@gmail.com) Designation  and check for duplicate entry
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1187,13 +1187,27 @@ class Setup2 extends CI_Controller
                  $this->form_validation->set_rules('nickname','Authority Nickname','trim|xss_clean|required');
                  $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
                  if($this->form_validation->run()==TRUE){
-                 //echo 'form-validated';
-                        $data = array(
+                //echo 'form-validated';
+            	$authcode = $this->input->post('code', TRUE);
+            	$authname = $this->input->post('name', TRUE);
+            	$authnname = $this->input->post('nickname', TRUE);
+            	$authemail = $this->input->post('authority_email', TRUE);
+                
+			$data = array(
                                 'code'=>strtoupper($_POST['code']),
-                                'name'=>ucfirst(strtolower($_POST['name'])),
-                                'nickname'=>($_POST['nickname']),
+                                'name'=>ucwords(strtolower($_POST['name'])),
+                                'nickname'=>strtoupper($_POST['nickname']),
                                 'authority_email'=>($_POST['authority_email']),
                                 );
+		$authdatadup = $this->logmodel->isduplicatemore('authorities', $data);
+
+                if($authdatadup == 1 ){
+
+                      $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Authority Code' = $authcode  , 'Authority Name' = $authname , 'Authority Nickname' = $authnname, 'Authority Email'= $authemail .");
+                      redirect('setup2/addauthority');
+                      return;
+                     }
+                else{
                            $rflag=$this->logmodel->insertrec('authorities', $data);
                            if (!$rflag)
                         {
@@ -1208,6 +1222,7 @@ class Setup2 extends CI_Controller
                                 $this->session->set_flashdata("success", " Authority  add successfully...");
                                 redirect("setup2/authority");
                         }
+		    }
                 }//close if vallidation
         }//
         $this->load->view('setup2/addauthority');
@@ -1303,7 +1318,7 @@ class Setup2 extends CI_Controller
                 'maxlength' => '50',
                 'size' => '40',
                 'value' => $edit_data->authority_email,
-                'readonly' => 'readonly'
+                
                 );                      
         $data['id'] = $id;
         /*Form Validation*/
@@ -1311,6 +1326,7 @@ class Setup2 extends CI_Controller
         $this->form_validation->set_rules('code','Authorities Code','trim|xss_clean');
         $this->form_validation->set_rules('name','Authorities Name','trim|xss_clean');
         $this->form_validation->set_rules('nickname ','Authorities Nickname ','trim|xss_clean');
+        $this->form_validation->set_rules('authority_email ','Authorities email ','trim|xss_clean');
         
         /* Re-populating form */
 
@@ -1319,6 +1335,7 @@ class Setup2 extends CI_Controller
             $data['code']['value'] = $this->input->post('code', TRUE);
             $data['name']['value'] = $this->input->post('name', TRUE);
             $data['nickname']['value'] = $this->input->post('nickname', TRUE);
+            $data['authority_email']['value'] = $this->input->post('authority_email', TRUE);
             
         }
 
@@ -1329,8 +1346,9 @@ class Setup2 extends CI_Controller
         }
         else{
 	    $code = strtoupper($this->input->post('code', TRUE));
-            $name = ucfirst(strtolower($this->input->post('name', TRUE)));
-            $nickname = ($this->input->post('nickname', TRUE));
+            $name = ucwords(strtolower($this->input->post('name', TRUE)));
+            $nickname = strtoupper($this->input->post('nickname', TRUE));
+            $authority_email = $this->input->post('authority_email', TRUE);
 //          echo"this is testing code".$code;  
             $logmessage = "";
             if($edit_data->code != $code)
@@ -1339,30 +1357,42 @@ class Setup2 extends CI_Controller
                      $logmessage = "Edit Authorities Name " .$edit_data->name. " changed by " .$name;
             if($edit_data->nickname != $nickname)
                 $logmessage = "Edit Authorities Nickname   " .$edit_data->nickname. " changed by " .$nickname;
+            if($edit_data->authority_email != $authority_email)
+                $logmessage = "Edit Authority Email " .$edit_data->authority_email. " changed by " .$authority_email;
             //'desig_name' => $data_edesignationname,
             $update_data = array(
                'code' => $code,
                'name' => $name,
-               'nickname' => $nickname
+               'nickname' => $nickname,
+               'authority_email' => $authority_email
                );
                //'modifierid'=>$this->session->userdata('username'),
                //'modifydate'=>date('y-m-d')
             
+	    $authdatadup = $this->logmodel->isduplicatemore('authorities', $update_data);
 
-       $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
-        if(!$gradedflag)
-            {
+            if($authdatadup == 1 ){
+
+                      $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Authority Code' = $code  , 'Authority Name' = $name , 'Authority Nickname' = $nickname , 'Authority Email'=$authority_email  .");
+                      redirect('setup2/authority');
+                      return;
+                     }
+             else{
+       	     $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
+             if(!$gradedflag)
+             {
                 $this->logger->write_logmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
                 $this->session->set_flashdata('err_message','Error updating authorities - ' . $logmessage . '.', 'error');
                 $this->load->view('setup2/editauthority', $data);
-            }
+             }
             else{
                 $this->logger->write_logmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
                 $this->session->set_flashdata('success','Authority detail updated successfully..');
                 redirect('setup2/authority');
-               }                
+             }
+	   }                
         }//else
         redirect('setup2/editauthority');
     }//Edit Authority function end

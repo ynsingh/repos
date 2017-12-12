@@ -75,12 +75,12 @@ class Dependrop_model extends CI_Model
     /* This function for get schemelist on the basis of department */
     public function get_deptschemelist($deptid){
          $schemes=$this->sismodel->get_listrow('scheme_department','sd_deptid',$deptid);
-         $scheme_data = $schemes->result();
+	 $scheme_data = $schemes->result();
          if(count($scheme_data)>0){
          $schm_select_box ='';
          $schm_select_box.='<option value="">-------Scheme Name --------';
          foreach($scheme_data as $schmid){
-            $schm_select_box.='<option value='.$schmid->sd_id.'>'.$schmid->sd_name.' ';
+            $schm_select_box.='<option value='.$schmid->sd_id.'>'.$schmid->sd_name. '('.$schmid->sd_code.')'.' ';
         }
                 echo json_encode($schm_select_box);
    }

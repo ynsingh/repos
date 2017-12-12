@@ -1,5 +1,6 @@
-<!---@name Authorities.php                                                                                                
+<!---@name authority.php                                                                                                
   @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+  @modification: Om Prakash (omprakashkgp@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -36,7 +37,7 @@
                 echo "</td>";
                 ?>
                   </div>
-                <div>
+                <div align="left" style="margin-left:0%;width:95%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>

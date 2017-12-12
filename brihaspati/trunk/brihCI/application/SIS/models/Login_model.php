@@ -116,6 +116,19 @@ class Login_model extends CI_Model
                   }
     }
 
+// check the record is already exist with as many field you want
+//$data = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function isduplicatemore($tbname,$data) {
+                $this->db1->flush_cache();
+                $this->db1->from($tbname);
+                $this->db1->where($data);
+        $query = $this->db1->get();
+        if ($query->num_rows() > 0) {
+                return true;
+        } else {
+                return false;
+        }
+    }
 
 //get the list of all records with  two specific fields for specific values
     public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue='',$grpby=''){
@@ -131,7 +144,7 @@ class Login_model extends CI_Model
                 }
        // print_r($this->db->get()->result());
         return $this->db1->get()->result();
-    }
+	}
 
 
     function __destruct() {

@@ -1,5 +1,6 @@
 <!--@name newddo.php
     @author Om Prakash(omprakashkgp@gmail.com)
+	  and Modification according to TANUVAS in Dec-2017
  -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
@@ -45,7 +46,7 @@
          <?php
           echo anchor('setup/listddo/', 'List of DDO', array('class' => 'top_parent'));
          ?>
-          <div>
+          <div align="left" style="margin-left:0%;width:95%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>

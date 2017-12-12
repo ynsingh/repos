@@ -1,5 +1,6 @@
  <!--@name updateddo.php
     @author Om Prakash(omprakashkgp@gmail.com)
+	and Modification according to TANUVAS in Dec-2017
  -->
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
  <html>
@@ -17,8 +18,40 @@
         	window.history.back();
         }
 	</script>
+    <script>
+        function getdepartment(val){
+                var val=val;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>sisindex.php/map/getdeptlist",
+                data: {"campusname" : val},
+                dataType:"html",
+                success: function(data){
+                $('#deptname').html(data.replace(/^"|"$/g, ''));
+                }
+             });
+           }
+ 
+        function getschemename(val){
+                var val=val;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>sisindex.php/map/getdeptschemelist",
+                data: {"deptid" : val},
+                dataType:"html",
+                success: function(data){
+                $('#schemecode').html(data.replace(/^"|"$/g, ''));
+                }
+             });
+           }
+    </script>
+
    <table width="100%">
      <tr colspan="2"><td>
+	  <?php
+ 		echo anchor('setup/listddo/', 'List of DDO', array('class' =>'top_parent'));
+	  ?>
+	   <div align='left' style='margin-left:0%;width:95%;'>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
              <?php echo form_error('<div class="isa_error">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
@@ -31,6 +64,7 @@
                  <?php
                  };
                ?>
+		</div>
            </td></tr>
      </table>
      <table>
@@ -38,18 +72,27 @@
        <tr>
              <td> Campus Name </td>
              <td>
-                 <?php echo form_input($campusname); ?>
+                <!-- <?php echo form_input($campusname); ?>-->
+             <select required name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">
+             <option value="<?php echo $this->common_model->get_listspfic1('study_center', 'sc_id', 'sc_name', $campusname["value"])->sc_id ?>" ><?php echo $campusname["value"] ?> </option>
+                <?php foreach($this->scresult as $dataspt): ?>
+                <option value="<?php echo $dataspt->sc_id; ?>"><?php echo $dataspt->sc_name; ?></option>
+                <?php endforeach; ?>
              </td>
        </tr>
              <td> Department Name</td>
              <td>
-                 <?php echo form_input($deptname); ?>
+               <!--  <?php echo form_input($deptname); ?> -->
+               <select name="deptname" id="deptname" class="my_dropdown" style="width:300px;" onchange="getschemename(this.value)" >
+               <option value="<?php echo $this->common_model->get_listspfic1('Department', 'dept_id', 'dept_name', $deptname["value"])->dept_id; ?>" > <?php echo $deptname["value"]?> </option>
              </td>
        </tr>
        <tr>
              <td> Scheme Name </td>
              <td>
-                 <?php echo form_input($schemecode); ?>
+                <!-- <?php echo form_input($schemecode); ?>-->
+               <select name="schemecode" id="schemecode" class="my_dropdown" style="width:300px;" >
+               <option value="<?php echo $this->SIS_model->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $schemecode["value"])->sd_id; ?>" ><?php echo $schemecode["value"]?></option>
              </td>
        </tr>  
              <td> DDO Code </td>

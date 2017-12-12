@@ -1,5 +1,6 @@
 <!---@name addauthority.php                                                                                                                                                               
     @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+    @modification: Om Prakash (omprakashkgp@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -23,14 +24,14 @@
         ?>-->
 
      <table width="100%">
-            <tr><td>
-                <div>
+            <tr><td >
                 <?php echo anchor('setup2/authority/', "View Authority list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
                  echo "<td align=\"right\">";
 		 $help_uri = site_url()."/help/helpdoc#Authority";
                  echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                  echo "</td>";
 		?>
+                <div align="left" style="margin-left:0%;width:95%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                  <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -50,7 +51,7 @@
             <tr>
                <td><label for="code" class="control-label">Authority Code:</label></td>
                <td>
-               <input type="text" name="code"  class="form-control" size="33" /><br>
+               <input type="text" name="code"  class="form-control" size="33" placeholder="Authority Code" /><br>
                </td>
                <td>
                   <?php //echo form_error('dr_mincredit')?>
@@ -59,7 +60,7 @@
             <tr>
                <td><label for="name" class="control-label">Authority Name:</label></td>
                <td>
-               <input type="text" name="name"  class="form-control" size="33" /><br>
+               <input type="text" name="name"  class="form-control" size="33" placeholder="Authority Name" /><br>
                </td>
                <td>
                   <?php //echo form_error('dr_mincredit')?>
@@ -68,7 +69,7 @@
             <tr>
                 <td><label for="nickname" class="control-label">Authority Nickname:</label></td>
                 <td>
-                <input type="text" name="nickname" class="form-control" size="33" /><br>
+                <input type="text" name="nickname" class="form-control" size="33" placeholder="Authority Nickname" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minsubcredit')?>
@@ -77,7 +78,7 @@
               <tr>
                 <td><label for=" authority_email" class="control-label">Authority Email :</label></td>
                 <td>
-                <input type="text" name=" authority_email" class="form-control" size="33" /><br>
+                <input type="text" name=" authority_email" class="form-control" size="33" placeholder="Authority Email" /><br>
                 </td>
               </tr>
               <tr>

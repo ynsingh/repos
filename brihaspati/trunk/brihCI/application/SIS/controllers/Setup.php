@@ -3797,7 +3797,18 @@ public function displayleavetype(){
 
             if($this->form_validation->run()==TRUE){
 
-            $data = array(
+	$campid = $this->input->post("campusname"); 
+	$campname = $this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $campid)->sc_name;
+	$deptid = $this->input->post("deptname");
+	$deptname = $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $deptid)->dept_name;
+	$schid = $this->input->post("schemecode");
+	$schname = $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $schid)->sd_name;
+	$ddocode = $this->input->post("ddocode");
+	$ddoname = $this->input->post("ddoname");
+
+	$ddodata = array('ddo_scid'=>$campid, 'ddo_deptid'=>$deptid, 'ddo_schid'=>$schid, 'ddo_code'=>strtoupper($ddocode), 'ddo_name'=>strtoupper($ddoname) );
+          
+	 $data = array(
                 'ddo_scid'=>$_POST['campusname'],
                 'ddo_deptid'=>$_POST['deptname'],
                 'ddo_schid'=>$_POST['schemecode'],
@@ -3805,6 +3816,17 @@ public function displayleavetype(){
                 'ddo_name'=>strtoupper($_POST['ddoname']),
                 'ddo_remark'=>$_POST['remark']
             );
+ 
+         $ddodatadup = $this->SIS_model->isduplicatemore('ddo', $ddodata);
+
+          if($ddodatadup == 1 ){
+
+                   $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname  , 'Department Name' = $deptname , 'Scheme Name' = $schname, 'ddo_code' = $ddocode, 'ddo_name' = $ddoname  .");
+
+                   redirect('setup/newddo');
+                   return;
+              }
+         else{
 	   $ddoflag=$this->SIS_model->insertrec('ddo', $data) ;
 	   if(!$ddoflag)
 	   {
@@ -3820,7 +3842,7 @@ public function displayleavetype(){
             	redirect("setup/listddo", "refresh");
 	      }
            }
-
+	 }
         }
       $this->load->view('setup/newddo');
    }
@@ -3840,6 +3862,7 @@ public function displayleavetype(){
    * @return type
    */
     public function updateddo($ddo_id) {
+	$this->scresult= $this->common_model->get_listspfic2('study_center', 'sc_id', 'sc_name');
 	$ddo_data_q=$this->SIS_model->get_listrow('ddo','ddo_id', $ddo_id);
         if ($ddo_data_q->num_rows() < 1)
         {
@@ -3929,8 +3952,11 @@ public function displayleavetype(){
         {
 
             $data_scid = $this->input->post('campusname', TRUE);
+	    $campid = $this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $data_scid)->sc_name;	
             $data_deptid = $this->input->post('deptname', TRUE);
+	    $deptid = $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $data_deptid)->dept_name;	
             $data_schid = $this->input->post('schemecode', TRUE);
+	    $schid = $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $data_schid)->sd_name;
             $data_code = $this->input->post('ddocode', TRUE);
             $data_name = $this->input->post('ddoname', TRUE);
             $data_remark = $this->input->post('remark', TRUE);
@@ -3949,6 +3975,9 @@ public function displayleavetype(){
             if($ddo_data->ddo_remark != $data_remark)
                 $logmessage = "Add DDO " .$ddo_data->ddo_remark. " changed by " .$data_remark;
 
+	   //$dataeditddo = array('ddo_scid'=>$campid, 'ddo_deptid'=>$deptid, 'ddo_schid'=>$schid, 'ddo_code'=>$data_code, 'ddo_name'=>$data_name);
+	   $dataeditddo = array('ddo_scid'=>$data_scid, 'ddo_deptid'=>$data_deptid, 'ddo_schid'=>$data_schid, 'ddo_code'=>$data_code, 'ddo_name'=>$data_name, 'ddo_remark'=>$data_remark);
+
             $updatea_data = array(
 		'ddoa_ddoid'=>$ddo_id,
                 'ddoa_scid'=> $ddo_data->ddo_scid,
@@ -3960,6 +3989,14 @@ public function displayleavetype(){
                 'ddoa_archuserid'=>$this->session->userdata('id_user'),
                 'ddoa_archdate'=>date('y-m-d')
             );
+	$ddodatadup = $this->SIS_model->isduplicatemore('ddo', $dataeditddo);
+	if($ddodatadup == 1){
+
+                   $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campid  , 'Department Name' = $deptid , 'Scheme Name' = $schid, 'ddo Code' = $data_code, 'ddo name' = $data_name  .");
+		redirect('setup/listddo/');
+ 		return;
+           }
+	else{
 	 $ddoflag=$this->SIS_model->insertrec('ddo_archive', $updatea_data);
          if(!$ddoflag)
          {
@@ -3969,9 +4006,12 @@ public function displayleavetype(){
          }
 
             $update_data = array(
-                'ddo_scid'=> $this->common_model->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_scid)->sc_id,
-                'ddo_deptid'=> $this->common_model->get_listspfic1('Department', 'dept_id', 'dept_name', $data_deptid)->dept_id,
-                'ddo_schid'=> $this->SIS_model->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $data_schid)->sd_id,
+                //'ddo_scid'=> $this->common_model->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_scid)->sc_id,
+                'ddo_scid'=> $data_scid,
+                //'ddo_deptid'=> $this->common_model->get_listspfic1('Department', 'dept_id', 'dept_name', $data_deptid)->dept_id,
+                'ddo_deptid'=> $data_deptid,
+                //'ddo_schid'=> $this->SIS_model->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $data_schid)->sd_id,
+                'ddo_schid'=> $data_schid,
                 'ddo_code'=>strtoupper($data_code),
                 'ddo_name'=>strtoupper($data_name),
                 'ddo_remark'=>$data_remark
@@ -3991,6 +4031,7 @@ public function displayleavetype(){
                 $this->session->set_flashdata('success','DDO record updated successfully...');
                 redirect('setup/listddo/');
                 }
+	   }
         }//else
         redirect('setup/updateddo/');
     }

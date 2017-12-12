@@ -23,7 +23,7 @@
             echo "<td align=\"right\" width=\"33%\">";
             echo "</td>";
             ?>
-      	  <div>
+      	  <div align="left" style="margin-left:0%;width:95%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -32,7 +32,7 @@
              };
              ?>
       <?php if (isset($_SESSION['err_message'])){?>
-             <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+           <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 	<?php
 	};
 	?>

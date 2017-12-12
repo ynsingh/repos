@@ -1,5 +1,6 @@
 <!---@name editauthority.php                                                                                                                                                               
     @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+    @modification: Om Prakash (omprakashkgp@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -38,7 +39,8 @@
         ?>--!>
         <table width="100%">
                 <tr><td>
-                        <div>
+			<?php echo anchor('setup2/authority/', "View Authority list", array('title' => 'View Designation list' ,'class' =>'top_parent'));?>
+                        <div align="left" style="margin-left:0%;width:95%;">
                         <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                         <?php echo form_error('<div class="isa_error">','</div>');?>
                         <?php if(isset($_SESSION['success'])){?>
