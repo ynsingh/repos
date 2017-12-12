@@ -3,30 +3,39 @@
   @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
   @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
+  @author Om Prakash (omprakashkgp@gmail.com)  upload csv file for staff profile registration in SIS  
+  @author Manorama Pal (palseema30@gmail.com) 06 Dec 2017 modification in upload staff profile csv file
  -->
 <html>
     <head>
         <title>Upload Staff List</title>
-	<?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu'); ?>        
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#btnUpload").on('click',function(){
+                    var allowedFiles = [".csv", "text/csv"];
+                    var fileUpload = $("#fileUpload");
+                    var lblError = $("#lblError");
+                    var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+                    if (!regex.test(fileUpload.val().toLowerCase())) {
+                        lblError.html("Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.");
+                        return false;
+                    }
+                    lblError.html('');
+                    return true;
+                });
+            });
+        </script>  
     </head>
     <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-                   <!--?php
-                    echo "<table align=\"right\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#UploadStaffList";
-                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b style=\"font-size:17px;margin-top:-1%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?-->
-
-           <div>
-<table width="100%;">
+        <?php $this->load->view('template/header'); ?>
+        <?php $this->load->view('template/menu'); ?>     
+        <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+                  
+        <div>
+        <table width="100%;">
             <tr>
-<?php
+                <?php
                     echo "<td align=\"left\" width=\"33%\">";
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
@@ -36,77 +45,62 @@
                     $help_uri = site_url()."/help/helpdoc#UploadStaffList";
                     echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
-echo "</tr>";
-echo "</table>";
-?>
-<?php
-//      echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
-//        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
-//       echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
-//      echo "Upload"; 
-//      echo "<span  style='padding: 8px 8px 8px 20px;'>";
-//      echo "|"; 
-//      echo "<span  style='padding: 8px 8px 8px 20px;'>";
-//      echo "Upload Staff List";
-//        echo "</td>";
-//        echo "</tr>";
-        echo "<tr>";
-        echo "<td>";
-        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
-        echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-        echo "<tbody align=\"left\">";
-
-        echo "<div align=\"left\">";
-// display user message area
-        if(isset($_SESSION)) {
-                echo $this->session->flashdata('flash_data');
-        }
-        if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-                echo "<div  class=\"isa_success\">";
-                echo $_SESSION['success'];
-                echo "</div>";
-        }
-        if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-                echo "<div  class=\"isa_error\">";
-                echo $_SESSION['error'];
-                echo "</div>";
-        }
-        /*foreach ($error as  &$value):
-                         echo  $value;
-                        echo "</br>";
-        endforeach;
-*/
-	/* OP: instruction for upload csv file for staff profile  ragistration */
-	echo "<div style=\"margin-left:30px;\">";
-        echo "<b>";
-        echo " Note : The file extension should be in csv. The format of Staff list file is ";
-        echo "<br>";
-        echo " | employee_pfno &nbsp;| emp_name &nbsp;| campus name &nbsp;&nbsp;| UOC &nbsp;| UOC UserId  &nbsp;| DDO UserId &nbsp;| Department &nbsp;| Scheme Name &nbsp;| Designation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Payband | Date of Appoint | Date of Birth &nbsp;| Bank Acc No &nbsp;| Aadhar No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Email Id ";
-        echo "<br>";
-        echo "</b>";
-        echo " | 20041201 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Gautam b &nbsp;&nbsp;&nbsp;&nbsp;| Atmospheric Sc &nbsp;| Dev &nbsp;&nbsp;&nbsp;| 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Electrical &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| UPS-Embryo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Project Associate &nbsp;| PB1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2017/08/14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1975/01/10 &nbsp;&nbsp;&nbsp;&nbsp;| 20040183598 &nbsp;| 632004183598 &nbsp;| op@gmail.com ";
-        echo "</div>";
-        echo "</div>";
-
-         //echo $error;
-        echo form_open_multipart('upl/uploadslist');
-        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><input type='file' name='userfile' size='20' />";
-        echo "<input type='submit' name='uploadslist' value='upload' /> ";
-        echo "</td></tr>";
-        echo "</form>";
-
-        //echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Administrator</td><td>";
-
-        echo "</tbody>";
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
-	?>
+                 
+                ;?>
+            </tr>
+        </table>
+        <div>  
+            <?php
+                // display user message area
+                /*if(isset($_SESSION)) {
+                    echo $this->session->flashdata('flash_data');
+                }*/
+                if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
+                    echo "<div  class=\"isa_success\">";
+                    echo $_SESSION['success'];
+                    echo "</div>";
+                }
+                if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
+                    echo "<div  class=\"isa_error\">";
+                    echo $_SESSION['error'];
+                    echo "</div>";
+                }
+            ;?>
         </div>
+         <table   style="font-size:13px;" >
+            <!-- OP: instruction for upload csv file for staff profile  ragistration -->
+            <tr><td align="left"><b>Note : The file extension should be in csv. The format of Staff list file is </b>
+                </td>
+            </tr>
+            <tr><td align="left"><br/><b>Employee PF NO &nbsp; Employee Name &nbsp; Campus Code &nbsp;&nbsp; Authority(UCO)Code &nbsp;&nbsp; Department Code &nbsp; Scheme Code &nbsp;&nbsp;&nbsp;&nbsp;DDO Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Working Type 
+                        &nbsp;&nbsp;&nbsp;Group&nbsp;&nbsp;&nbsp;Designation Code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shown against Post</b><br/>
+                        V1418&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VIJAYARANI,K&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CU002
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DEAN-FBS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVC-ABT
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Teaching
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14<br/>
+                        <b>Employee Type&nbsp;&nbsp;&nbsp;AGP Code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of Birth &nbsp;&nbsp;&nbsp;&nbsp Date of Appointment &nbsp;&nbsp;&nbsp;&nbsp;  Email Id
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bank Acc No &nbsp; Aadhar No</b><br/>
+                        Temporary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1965-05-24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1991-07-22
+                        &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; sms429329@gmail.com  &nbsp;&nbsp;&nbsp;&nbsp;22222222222 &nbsp;&nbsp;&nbsp;&nbsp;333333333333
+                        <!--20041201 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Gautam b &nbsp;&nbsp;&nbsp;&nbsp;| Atmospheric Sc &nbsp;| Dev &nbsp;&nbsp;&nbsp;| 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Electrical &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| UPS-Embryo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Project Associate &nbsp;| PB1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2017/08/14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1975/01/10 &nbsp;&nbsp;&nbsp;&nbsp;| 20040183598 &nbsp;| 632004183598 &nbsp;| op@gmail.com ";--->
+                </td>
+            </tr>
+            <?php echo form_open_multipart('upl/uploadslist');?>
+             <tr>
+                    <td align="left">
+                        <span id="lblError" style="color: red;font-size:15px;"></span><br/>
+                        <div><label for="file" style="font-size:15px;"><b>Select File</b></label>
+                        <input type='file'  id="fileUpload" name='userfile' size='20' accept=".csv, text/csv" />
+                        <input type='submit' name="uploadslist" id="btnUpload"  value='upload'/></div>
+                    </td> 
+                                 
+                </tr>
+            
+            <?php echo form_close();?>
+        </table>    
+        <p> &nbsp; </p>
         <?php $this->load->view('template/footer'); ?>
 
-</div>
     </body>
 </html>
 

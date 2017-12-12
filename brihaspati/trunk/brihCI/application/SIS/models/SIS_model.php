@@ -185,6 +185,69 @@ class SIS_model extends CI_Model
        $this->db2->select('emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no')->from('employee_master')->where("emp_name LIKE '$keyword%'")->where("emp_worktype", $worktype);
         return $this->db2->get()->result();
     }
+    
+    /*************************************updating the staff position table*****************/
+    public function updatestaffposition($campus,$uocid,$deptid,$emppost,$worktype,$emptype){
+    // public function updatestaffposition($campus,$uocid,$deptid,$schmid,$emppost,$worktype,$emptype){
+        /*$datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
+            'sp_schemecode'=> $schmid,'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);*/
+        $datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
+            'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);
+        $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
+        if(!empty($emppost_data)){
+            $update_data = array();
+            $upempdata_flag='';
+            foreach($emppost_data as $empdata){
+                
+                if($empdata->sp_type == 'Permanent'){
+                    
+                    $position = $empdata->sp_position+1;
+                    $vacant   = $empdata->sp_vacant-1;
+                    $pospermanent=$empdata->sp_pospermanent+1;
+                    $vpermanenet =$empdata->sp_vpermanenet-1;
+                    $update_data = array(
+                        'sp_position'=>$position,
+                        'sp_vacant'=>$vacant,
+                        'sp_pospermanent'=>$pospermanent,
+                        'sp_vpermanenet'=>$vpermanenet,
+                        'sp_org_id'=> '1'
+                    );
+                    //echo "vacacny=per==".$position.$vacant.$pospermanent.$vpermanenet;
+                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                }
+                if($empdata->sp_type == 'Temporary'){
+                    
+                    $position = $empdata->sp_position+1;
+                    $vacant   = $empdata->sp_vacant-1;
+                    $postemporary =$empdata->sp_postemporary+1;
+                    $vtemporary = $empdata->sp_vtemporary-1;
+                    $update_data = array(
+                       'sp_position'=>$position,
+                       'sp_vacant'=>$vacant,
+                       'sp_postemporary'=>$postemporary,
+                       'sp_vtemporary'=>$vtemporary,
+                       'sp_org_id'=> '1'
+                    );
+                   // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
+                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                }
+               
+            } //foreach   
+            if(!upempdata_flag){
+                $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
+                $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
+            
+            }
+            else{
+                $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ");
+                $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully");
+            
+            }
+           
+        }  //ifempty  
+        
+    }//function close
+    /***********************************close of staff position*********************************************/   
 
     function __destruct() {
         $this->db2->close();

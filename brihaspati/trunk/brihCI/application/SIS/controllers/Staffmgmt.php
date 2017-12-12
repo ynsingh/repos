@@ -258,7 +258,7 @@ class Staffmgmt extends CI_Controller
                     
                     $dataems = array(
                        'ems_code'              =>$_POST['empcode'],
-                       'ems_working_type'      =>$_POST['workingtype']
+                      // 'ems_working_type'      =>$_POST['workingtype']
 		    );
                     /* insert record in  employe_emaster_support */
                     $this->sismodel->insertrec('employee_master_support', $dataems);
@@ -280,7 +280,7 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in user_role_type table." );
                     /*************************************updating the staff position table*****************/
                    
-                    $this->updatestaffposition($_POST['campus'],$_POST['uocontrol'], $_POST['department'],$_POST['emppost'],$_POST['workingtype'],$_POST['emptype']) ;
+                    $this->sismodel->updatestaffposition($_POST['campus'],$_POST['uocontrol'], $_POST['department'],$_POST['emppost'],$_POST['workingtype'],$_POST['emptype']) ;
                    
                     /*************************************close updating the staff position table*****************/
                     /* upload photo*/
@@ -1433,7 +1433,7 @@ class Staffmgmt extends CI_Controller
     /* This function has been created for get the vacant shown against position */
     public function getemppostposition(){
         $combval = $this->input->post('combsix');
-        	echo json_encode("post=vaccancy==3=".$combval);
+        	//echo json_encode("post=vaccancy==3=".$combval);
         $parts = explode(',',$combval);
         /******************Query for filteraion the post************************************/
         /*$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
@@ -1470,11 +1470,11 @@ class Staffmgmt extends CI_Controller
     }
     
     /*************************************updating the staff position table*****************/
-    public function updatestaffposition($campus,$uocid,$deptid,$emppost,$worktype,$emptype){
+    //public function updatestaffposition($campus,$uocid,$deptid,$emppost,$worktype,$emptype){
     // public function updatestaffposition($campus,$uocid,$deptid,$schmid,$emppost,$worktype,$emptype){
         /*$datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
             'sp_schemecode'=> $schmid,'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);*/
-        $datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
+        /*$datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
             'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
         if(!empty($emppost_data)){
@@ -1529,7 +1529,7 @@ class Staffmgmt extends CI_Controller
            
         }  //ifempty  
         
-    }//function close
+    }*/ //function close
     /***********************************close of staff position*********************************************/   
     
     /***********************************Employee type from staff position*********************************************/   
