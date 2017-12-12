@@ -30,7 +30,7 @@
 ?>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%">
-	<tr><td>
+	<tr>
 		<?php 
                 echo "<td align=\"left\" width=\"33%\">";
                 echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
@@ -43,18 +43,21 @@
 		echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
 		?>
-</td></tr>
+</tr>
 </table>
             <table width="100%"> 
+               <tr><td>
                 <div>
-                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
+                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
             </div>
-        </table>
+	</td>
+       </tr>
+     </table>
     <div class="scroller_sub_page">   
     <table  class="TFtable">
     <!--<table border=0 cellpadding=16 style="padding: 8px 8px 8px 25px;margin-left:30px;" class="TFtable">

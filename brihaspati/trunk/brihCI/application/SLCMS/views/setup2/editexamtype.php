@@ -6,7 +6,7 @@
 <title>Edit Exam</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
@@ -15,9 +15,19 @@
         window.history.back();
         }
     </script>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <table width="100%">
-            <tr><td>
-              <div align="left">
+            <tr>
+ 		<?php
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Exam Type Details</b>";
+                    echo "</td>";
+            	?>
+     </tr>
+  </table>
+		<table width="100%">
+                <tr><td>
+                 <div>
                     <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?></div>
 
@@ -27,10 +37,10 @@
                     <?php
                     };
                     ?>
-                </div> </br>
+                </div>
         </td></tr>
         </table>
-<table style="padding: 8px 8px 8px 30px;">
+<table>
          <?php
 
             echo form_open('setup2/editexamtype/' . $id);

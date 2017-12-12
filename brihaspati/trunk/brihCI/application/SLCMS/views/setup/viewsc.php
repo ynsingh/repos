@@ -11,8 +11,7 @@
     <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%">
-
-            <tr><td>
+            <tr>
             <?php
                     echo "<td align=\"left\" width=\"33%\">";
                     echo anchor('setup/sc/', "Add Study Center " ,array('title' => ' Add study center Configuration Detail ' , 'class' => 'top_parent'));                   
@@ -23,12 +22,16 @@
                     echo "<td align=\"right\" width=\"33%\">";
                     $help_uri = site_url()."/help/helpdoc#ViewStudyCenter";
                     echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		    echo "</td>";
             ?>
-
+      </tr>
+ </table>
+	    <table width="100%">
+            <tr><td>
             <div>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
@@ -43,6 +46,7 @@
         <div class="scroller_sub_page">
         <table class="TFtable" >
                <thead>
+                        <tr>
                         <th>University Name</th>
                         <th>Campus Name</th>
 			<th>Address</th>

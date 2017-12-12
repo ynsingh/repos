@@ -13,7 +13,7 @@
 <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width= "100%">
-<tr colspan="2"><td>
+<tr>
                 <?php  
                  echo "<td align=\"left\" width=\"33%\">";
                  echo anchor('announcement/addannouncement/', "Add Announcement", array('title' => 'Add Announcement Detail','class' =>'top_parent'));
@@ -24,7 +24,12 @@
                  echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#ViewExamtype";
                  echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		 echo "</td>";
                 ?>
+                </tr>
+	</table>
+	      <table width= "100%">
+               <tr><td>
 		<div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
@@ -38,7 +43,7 @@
                 };
                 ?>
               </div>
-             </td></tr>
+            </td></tr>
        </table>
 <div class="scroller_sub_page">
         <table class="TFtable" >
@@ -50,7 +55,7 @@
         foreach ($this->annoresult as $row)
         {
          ?>
-             <tr align="center">
+             <tr>
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row-> anou_cname ?></td>
             <td> <?php echo $row-> anou_type ?></td>

@@ -8,14 +8,11 @@
   <head>    
     <title>Edit Department</title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
-         <center>
-        <table width="70%">
-            <tr colspan="2"><td>
 
 
-                                  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+                                  <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
                                   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
                                   <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
                                   <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
@@ -56,6 +53,55 @@ dateFormat: 'yy-mm-dd',
 //defaultDate: '1yr',
 yearRange: 'c-47:c+50',
 });
+
+       $('#country_id').on('change',function(){
+           var cid = $(this).val();
+           if(cid == ''){
+               $('#stname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#stname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_state",
+                   type: "POST",
+                   data: {"cid" : cid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#stname').html(data.replace(/^"|"$/g, ''));
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
+
+
+$('#stname').on('change',function(){
+           var sid = $(this).val();
+           if(sid == ''){
+               $('#citname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#citname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_city",
+                   type: "POST",
+                   data: {"sid" : sid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#citname').html(data.replace(/^"|"$/g, ''));
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
 });
 </script>
     </head>
@@ -65,33 +111,31 @@ yearRange: 'c-47:c+50',
         window.history.back();
         }
     </script>
-  <table>
-   <font color=blue size=4pt>
-   <div style="margin-left:25%;">
-      <br>
-<div align="left">
-<table style="margin-left:25%;">
-<tr><td>
-<?php echo anchor('setup/viewsc/', "Study Center List" ,array('title' => 'Study Center List' , 'class' => 'top_parent'));?>
-</td></tr>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
+            <tr>
+	     <?php
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Study Center Details</b>";
+                    echo "</td>";
+            ?>
+	<tr>
 </table>
-</div>
-
-
-     <style="margin-left:2%;">
-            <tr><td>
-                <div style="margin-left:2%;width:70%;">
-                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+		<table width="100%">
+            	<tr><td>
+                <div>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
                     ?>
                 </div>
-            </td></tr>
+            </td>
+	  </tr>
         </table>
         <table>
         <?php
@@ -157,7 +201,7 @@ yearRange: 'c-47:c+50',
                <tr>
                <td><label class="control-label">Country:</label></td>
                <td>
-                <select name="country"  id="country_id">
+                <select name="country"  id="country_id" style="width:100%">
 		<?php //if();?>
                <option value="<?php echo $country['value'];?>"><?php echo$this->common_model->get_listspfic1('countries','name','id',$country['value'])->name ;?></option>;
                 <?php foreach($this->cresult as $datas): ?>
@@ -165,13 +209,13 @@ yearRange: 'c-47:c+50',
                 <?php endforeach; ?>
                 </select>
   		<tr><td><label class="control-label">State:</label></td><td>
-                <select style="height:35px;" name="state" id="stname" disabled="">
+                <select style="height:35px;width:100%" name="state" id="stname" disabled="">
                 
                 <option value="<?php echo $state['value'];?>"><?php echo$this->common_model->get_listspfic1('states','name','id',$state['value'])->name ;?></option>;
                 </select>
                 </tr></td>
                 <tr><td><label class="control-label">City:</label></td><td>
-	        <select style="height:35px;" name="city" id="citname" disabled="">
+	        <select style="height:35px;width:100%" name="city" id="citname" disabled="" >
                  <option value="<?php echo $city['value'];?>"><?php echo$this->common_model->get_listspfic1('cities','name','id',$city['value'])->name ;?></option>;
                 </select>
                 </tr></td>
@@ -295,11 +339,8 @@ yearRange: 'c-47:c+50',
                 echo "<button onclick=\"goBack()\" >Back</button>";
                 echo "</td>";
                 echo "</tr>";
-
         ?>
-
         </table>
-
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

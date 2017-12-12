@@ -426,7 +426,7 @@ class Setup extends CI_Controller
         $data['prgcampus'] = array(
             'name' => 'prgcampus',
             'id' => 'prgcampus',
-            'size' => '35',
+            'size' => '40',
             'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$program_data->prg_scid)->sc_name,
             'readonly'=>'true',
             );
@@ -1293,7 +1293,7 @@ class Setup extends CI_Controller
                 $this->logger->write_logmessage("update","Edit Department", "Department record updated successfully..". $logmessage );
                 $this->logger->write_dblogmessage("update","Edit Department", "Department record updated successfully..". $logmessage );
                 $this->session->set_flashdata('success','Department record updated successfully...');
-                redirect('setup/editdepartment', $data);
+                redirect('setup/dispdepartment', $data);
                 }
             }         
         }

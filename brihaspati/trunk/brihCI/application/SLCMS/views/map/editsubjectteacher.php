@@ -7,7 +7,7 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
 
     </head>
@@ -17,10 +17,19 @@
          window.history.back();
         }
         </script>
-
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
        <table  width="100%">
-          <tr colspan="2"><td>
-          <div style="margin-left:2%;">
+          <tr>
+	 <?php
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Subject and Paper with Teacher Details</b>";
+                    echo "</td>";
+            ?>
+	</tr>
+</table>
+		<table width="100%">
+		<tr><td>
+          	<div>
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                <?php echo form_error('<div class="isa_error">','</div>');?>
                <?php if(isset($_SESSION['success'])){?>
@@ -33,10 +42,10 @@
                   <?php
                   };
                 ?>
-               </div></br>
+               </div>
             </td></tr>
         </table>
-    <table style="margin-left:2%;">
+    <table>
         <form action="<?php echo site_url('map/editsubjectteacher/' . $pstp_id);?>" method="POST" class="form-inline">
             <tr>
                 <td> Campus Name </td>
@@ -90,7 +99,7 @@
             <tr>
                 <td>Teacher Name</td>
                 <td> 
-                    <select name="teachername" id="" class="my_dropdown" style="width:350px;">
+                    <select name="teachername" id="" class="my_dropdown" style="width:100%">
                     <option value="<?php echo $teachername['value'];?>" style="display:none"><?php echo $teachername['value'];?></option>
                     <?php foreach($this->tresult as $dataspt): ?>
                         <?php if ((($dataspt->roleid)==2)&&(($this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $dataspt->userid)->deptid)== $this->commodel->get_listspfic1('Department', 'dept_id', 'dept_name', ($deptname['value']))->dept_id)) { ?>

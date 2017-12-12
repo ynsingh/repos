@@ -19,10 +19,18 @@
         }
     </script>
 
-        <table>
-           <tr><td>
-                <?php //echo anchor('setup/viewentranceexamfees/', " Edit Entrance Exam Fees" ,array('title' => ' Entrance Exam Fees Configuration Detail ' , 'class' => 'top_parent'));?>
-                    <div>
+        <table width="100%">
+           <tr>
+                <?php //echo anchor('setup/viewentranceexamfees/', " Edit Entrance Exam Fees" ,array('title' => ' Entrance Exam Fees Configuration Detail ' , 'class' => 'top_parent'));
+		echo "<td align=\"center\" width=\"100%\">";
+                echo "<b>Update Entrance Exam Fees Details</b>";
+                echo "</td>";
+		?>
+		</tr>
+	</table>
+		 <table width="100%">
+        	      <tr><td>
+                        <div>
                     <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                     <?php echo form_error('<div  class="isa_error">','</div>');?>
 
@@ -41,14 +49,6 @@
                 </div>
             </td></tr>
         </table>
-<div>
-<table>
-<tr><td>
-<?php echo anchor('setup/viewentranceexamfees/', "Edit Entrance Exam Fees" ,array('title' => 'Edit Fees' , 'class' => 'top_parent'));?>
-</td></tr>
-</table>
-</div>
-
         <table>
     
         <?php

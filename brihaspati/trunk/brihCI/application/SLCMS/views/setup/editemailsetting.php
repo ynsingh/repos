@@ -6,7 +6,7 @@
 
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
        
     </head>
@@ -35,15 +35,24 @@
             echo "</tr>";
             echo "</table>";
         ?-->
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <table width="100%"> 
-            <tr><td>
-                <?php echo anchor('setup/dispemailsetting/', "View Email Configuration" ,array('title' => ' Email Configuration Detail ' , 'class' => 'top_parent'));?>    
-                <div style="margin-left:10%;width:80%;">
-                    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+            <tr>
+                <?php //echo anchor('setup/dispemailsetting/', "View Email Configuration" ,array('title' => ' Email Configuration Detail ' , 'class' => 'top_parent'));
+		echo "<td align=\"center\" width=\"100%\">";
+                echo "<b>Update Email Setting Details</b>";
+                echo "</td>";
+		?> 
+	</tr>
+</table>   
+<table width="100%">
+            <tr><td>        
+       		 <div>
+                    <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -54,10 +63,10 @@
                     <?php
                     };
                     ?>    
-                </div> </br> 
-            </td></tr>  
+                </div> 
+           </td></tr> 
         </table>    
-        <table style="margin-left:1%;">  
+        <table>  
  
         <?php
 
@@ -70,7 +79,7 @@
                 echo "</td>";
                 echo "<td>";
                    // echo form_input($emailprotocol);
-                echo "<select name='emailprotocol' style=\"width:62%;\">;
+                echo "<select name='emailprotocol' style=\"width:100%;\">;
                 <option value=\"$emailprotocol[value]\">$emailprotocol[value]</option>;  
                 <option value=\"smtp\">SMTP</option>;
                 <option value=\"imap\">IMAP</option>;

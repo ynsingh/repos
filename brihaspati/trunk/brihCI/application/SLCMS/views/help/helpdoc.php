@@ -11,29 +11,12 @@
 <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%">
-            <tr colspan="2"><td>
             <?php
             echo "<td align=\"center\" width=\"100%\">";
-            echo "<b>User Manaul Details</b>";
+            echo "<b>User Manual</b>";
             echo "</td>";
              ?>
-                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
-
-                <?php if(isset($_SESSION['success'])){?>
-                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-
-                <?php
-                };
-                ?>
-                <?php if(isset($_SESSION['err_message'])){?>
-                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
-
-                <?php
-                };
-                ?>
-</div>
-            </td></tr>
-        </table>
+</table>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
 	<div class="head">Online Addmision System</div>
 	<div class="content">

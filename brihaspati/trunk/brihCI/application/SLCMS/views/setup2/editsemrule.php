@@ -6,7 +6,7 @@
 <title>Edit Semester Rule</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
@@ -35,18 +35,28 @@
             echo "</tr>";
             echo "</table>";
         ?>--!>
-        <table> 
-        	<tr><td>    
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+        <table width="100%"> 
+        	<tr>
+               <?php   
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Semester Rules Details</b>";
+                    echo "</td>";
+             ?>
+	</tr>
+   </table>
+ <table width="100%">
+                <tr><td>
                 	<div>
-                    	<?php echo validation_errors('<div  class="isa_warning">','</div>');?>
+                   	<?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                     	<?php echo form_error('<div class="isa_error">','</div>');?>
 	                <?php if(isset($_SESSION['success'])){?>			
-                        	<div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        	<div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     	<?php }; ?>
-                	</div> </br> 
+                	</div> 
        	 	</td></tr>  
         </table>
-        <table style="padding: 8px 8px 8px 30px;">  
+        <table>  
         <?php
 	    echo form_open('setup2/editsemrule/' . $id);
 	     	echo "<tr>";

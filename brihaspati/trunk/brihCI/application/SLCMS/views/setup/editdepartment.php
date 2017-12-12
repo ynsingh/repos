@@ -9,7 +9,7 @@
   <head>    
     <title>Edit Department</title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
       
     </head>
@@ -19,7 +19,7 @@
         window.history.back();
         }
     </script>
-
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <!--
         <?php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -40,17 +40,23 @@
             echo "</table>";
         ?>-->
         <table width="100%">
-    <div style="margin-left:4%; width:100%;">
       <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
-      
-     <style="margin-left:4%;"> 
-            <tr><td>    
-                <div style="margin-left:4%;width:100%;">
-                    <?php echo validation_errors('<div style="margin-left:4%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:4%;" class="isa_error">','</div>');?>
+            <tr>   
+	<?php
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Department Details</b>";
+                    echo "</td>";
+            ?>
+</tr>
+</table>
+		<table width="100%"> 
+		<tr><td>
+                <div>
+                    <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div  class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:4%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -58,7 +64,7 @@
                 </div>  
             </td></tr>  
         </table>    
-        <table style="padding: 8px 8px 8px 50px;">  
+        <table>  
  
         <?php
 

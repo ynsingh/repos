@@ -5,30 +5,30 @@
 
   <head>
 	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-<style type="text/css">
-tr td{font-size:15px;}
-</style>
    	<?php $this->load->view('template/header'); ?>
    	 <?php $this->load->view('template/menu');?>
 </head>
 <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-
 	<table width="100%">
-            <tr><td>
-                <div>
+            <tr>
                 <?php 
                  echo "<td align=\"left\" width=\"33%\">";
                  echo anchor('enterence/addadmissionopen/', "Add Admission Open", array('title' => 'Add Admission Open','class' =>'top_parent')); 
                  echo "</td>";
                  echo "<td align=\"center\" width=\"34%\">";
-                 echo "<b>Admission Open Details</b>";
+                 echo "<b>Entrance Admission Open Details</b>";
                  echo "</td>";
                  echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#viewadmissionopen";
                  echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
                  ?>
-                <div  style="width:90%;margin-left:2%">
+	</tr>
+</table>
+                <table width="100%">
+		<tr><td>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -40,15 +40,10 @@ tr td{font-size:15px;}
                 <?php
                 };
                ?>
-              </div>
-          </div>
-             </td></tr>
+          	</div>
+            </td></tr>
        </table>
 <div class="scroller_sub_page">
-<table>
-<tr>
-<div>
-
 <table class="TFtable" >
 <tr>
 <thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><!--<th>Entrance Exam Fees </th>--> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th><th>Action</th></tr></thead>
@@ -58,7 +53,7 @@ tr td{font-size:15px;}
         foreach ($this->result as $row)
         {
          ?>
-             <tr align="center">
+             <tr>
             <td> <?php echo ++$count; ?> </td>
 	    <td> <?php echo $row->admop_acadyear;?></td>
        	    <td> <?php 
@@ -83,22 +78,15 @@ tr td{font-size:15px;}
         <?php	echo anchor('enterence/editadmissionopen/' . $row->admop_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
        
             echo "</td>";
-            echo "</tr>";
 }
         
         else :
         echo "<tr>";
-            echo "<td colspan= \"8\" align=\"center\"> No Records found...!</td>";
+            echo "<td colspan= \"13\" align=\"center\"> No Records found...!</td>";
         echo "</tr>";
         endif;
-
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
            ?>
 
-</div>
 </tr>
 </table>
 </div><!------scroller div------>

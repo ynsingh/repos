@@ -8,8 +8,9 @@
         <?php $this->load->view('template/menu');?>
 		 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
        		 <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
-		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
-				
+		 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>				
+		 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
+                 <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
 
 <script>
               function program(program){
@@ -26,46 +27,37 @@
         }
 </script>
 </head>
-
   <body>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 
 <script>
         function goBack() {
         window.history.back();
         }
     </script>
-  <table>
-   <font color=blue size=4pt>
-   <div style="margin-left:2%; width:100%;">
- 
-<div >
-<table>
-<tr><td>
-<?php echo anchor('enterence/viewadmissionopen/', "Open Admission List" ,array('title' => 'Open Admission List' , 'class' => 'top_parent'));?>
-</td></tr>
+<table width="100%">
+<tr>
+<?php //echo anchor('enterence/viewadmissionopen/', "Open Admission List" ,array('title' => 'Open Admission List' , 'class' => 'top_parent'));
+	 echo "<td align=\"center\" width=\"100%\">";
+         echo "<b>Update Entrance Admission Announcement Details</b>";
+         echo "</td>";
+?>
+</tr>
 </table>
-</div>
-   
-            <tr><td>
-                <div style="margin-left:2%;width:90%;">
-	    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
-                          <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
-<?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
-
+		<table width="100%">
+		<tr><td>
+                <div>
+		<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                <?php echo form_error('<div class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
-
+                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     <?php
                     };
                     ?>
                 </div>
-            </td></tr>
+           </td></tr>
         </table>
-        <table style="padding: 8px 8px  8px 50px;">
+        <table>
 	<?php
 
            echo form_open('enterence/editadmissionopen/' . $id);
@@ -85,8 +77,6 @@
                       }
                echo " </select>";
                echo "</td>";
-               echo "<td>";
-               echo "</td>";
                echo "</tr>";
 		
 		 echo "<tr>";
@@ -95,8 +85,6 @@
                 echo "</td>";
                 echo "<td>";
                 echo form_input($admop_prgcat);
-                echo "</td>";
-                echo "<td>";
                 echo "</td>";
                 echo "</tr>";
 
@@ -107,20 +95,8 @@
                 echo "<td>";
                 echo form_input($admop_prgname_branch);
                 echo "</td>";
-                echo "<td>";
-                echo "</td>";
                 echo "</tr>";
 /*		
-		 echo "<tr>";
-                echo "<td>";
-                echo form_label('Entrance Exam Fees', 'admop_entexam_fees');
-                echo "</td>";
-                echo "<td>";
-                echo form_input($admop_entexam_fees);
-                echo "</td>";
-                echo "<td>";
-                echo "</td>";
-                echo "</tr>";
 */
 		echo "<tr>";
                 echo "<td>";

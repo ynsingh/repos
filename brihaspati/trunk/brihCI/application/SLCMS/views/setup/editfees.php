@@ -8,7 +8,7 @@
    <head>    
    <title>Edit Fees</title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
       
     </head>
@@ -18,16 +18,24 @@
     	window.history.back();
 	}
     </script>
-
-	<table style="margin-left:2%;width:100%;">
-           <tr><td>
-                <?php //echo anchor('setup/displayfees/', " Edit Program Fees" ,array('title' => ' Fees Configuration Detail ' , 'class' => 'top_parent'));?>
-                <div style="margin-left:2%;">
-                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+	<table width="100%">
+           <tr>
+                <?php //echo anchor('setup/displayfees/', " Edit Program Fees" ,array('title' => ' Fees Configuration Detail ' , 'class' => 'top_parent'));
+		    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Program Fees Details</b>";
+                    echo "</td>";
+	    ?>
+		</tr>
+	</table>
+		 <table width="100%">
+		   <tr><td>
+                     <div>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -41,9 +49,7 @@
                 </div> 
             </td></tr>
         </table>
-	
-      	<table style="padding: 8px 8px 8px 50px;">  
- 
+      	<table>  
         <?php
 
            echo form_open('setup/editfees/' . $id);

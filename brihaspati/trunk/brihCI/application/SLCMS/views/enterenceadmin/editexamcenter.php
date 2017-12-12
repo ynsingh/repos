@@ -10,9 +10,7 @@
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
  <script>
         function goBack() {
         window.history.back();
@@ -29,21 +27,30 @@ function calculate() {
         }
 </script>
  <table width="100%">
-            <tr><td>
-              <div align="left">
+            <tr>
+		 <?php
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Entrance Exam Center Details</b>";
+                    echo "</td>";
+            	?>
+	</tr>
+</table>
+		<table width="100%">
+            		<tr><td>
+              			<div>
                     <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?></div>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
                     ?>
-                </div> </br>
+                </div>
         </td></tr>
         </table>
-<table style="padding: 8px 8px 8px 30px;">
+<table>
          <?php
 
             echo form_open('enterenceadmin/editexamcenter/' . $id);
@@ -74,16 +81,19 @@ function calculate() {
                 echo "</td>";
             	echo "</tr>";
 		?>
-		<tr><td>State: </td><td>
-                <select name="eec_state"  id="state_id" disabled="">
+		<tr>
+		<td><label for="eec_state" class="control-label">State</label></td>
+                <td>
+                <select style="height:35px;width:100%" name="eec_state"  id="state_id" disabled="">
                <option value="<?php echo $eec_state['value'];?>"><?php echo$this->commodel->get_listspfic1('states','name','id',$eec_state['value'])->name ;?></option>;
                 <?php foreach($this->cresult as $datas): ?>
                 <option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
                 <?php endforeach; ?>
                 </select>
                 </tr></td>
-                <tr><td>City: </td><td>
-                <select style="height:35px;" name="eec_city" id="citname" disabled="">
+		<td><label for="eec_city" class="control-label">City</label></td>
+                <td>
+                <select style="height:35px;width:100%" name="eec_city" id="citname" disabled="">
                  <option value="<?php echo $eec_city['value'];?>"><?php echo$this->commodel->get_listspfic1('cities','name','id',$eec_city['value'])->name ;?></option>;
                 </select>
                 </tr></td>
@@ -101,7 +111,7 @@ function calculate() {
                 echo "</td>";
                 echo "<td>";
 		$numroom=$eec_noofroom['value'];
- 		echo "<input id=\"box1\" type=\"text\" name=\"eec_noofroom\" size=\"37\"  class=\"form-control\" oninput=\"calculate();\" value=$numroom />";
+ 		echo "<input id=\"box1\" type=\"text\" name=\"eec_noofroom\" size=\"40\"  class=\"form-control\" oninput=\"calculate();\" value=$numroom />";
                 echo "</td>";
             	echo "</tr>";
 		echo "<tr>";
@@ -110,7 +120,7 @@ function calculate() {
                 echo "</td>";
                 echo "<td>";
 		$totalroom=$eec_capacityinroom['value'];
-		echo "<input id=\"box2\" type=\"text\" name=\"eec_capacityinroom\" size=\"37\"  class=\"form-control\" oninput=\"calculate();\" value=$totalroom />";
+		echo "<input id=\"box2\" type=\"text\" name=\"eec_capacityinroom\" size=\"40\"  class=\"form-control\" oninput=\"calculate();\" value=$totalroom />";
                 echo "</td>";
                 echo "</tr>";
 		echo "<tr>";
@@ -119,7 +129,7 @@ function calculate() {
                 echo "</td>";
                 echo "<td>";
 		$totalcapacity=$eec_totalcapacity['value'];
-                echo "<input id=\"result\" type=\"text\" name=\"eec_totalcapacity\" size=\"37\"  class=\"form-control\" value=$totalcapacity readonly />";
+                echo "<input id=\"result\" type=\"text\" name=\"eec_totalcapacity\" size=\"40\"  class=\"form-control\" value=$totalcapacity readonly />";
                 echo "</td>";
                 echo "</tr>";
 		echo "<tr>";

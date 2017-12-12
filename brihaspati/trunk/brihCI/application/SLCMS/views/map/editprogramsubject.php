@@ -11,24 +11,17 @@ echo "<head>";
      $this->load->view('template/menu');
 ?>
 <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">-->
-    <style>
-    .abc{
-        width:265px;
-    }
-    </style>
 
 <?php
 echo "</head>";
 echo "<body>";?>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
-<?php
-	echo "<script>";
+<script>
         function goBack() {
          window.history.back();
         }
-        echo "</script>";
+      </script>
+<?php
 /*
     echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
     echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -48,38 +41,37 @@ echo "<body>";?>
     echo"</br>";
 */
 ?>
-
-<div >
 <table style="width:100%;">
-<tr><td>
-<?php echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
-           $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
+<tr>
+<?php //echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+       //    $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
+         //  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
+	echo "<td align=\"center\" width=\"100%\">";
+        echo "<b>Update Program with Subject and Paper Details</b>";
+        echo "</td>";
+
 ?>
-</td></tr>
+</tr>
 </table>
-</div>
-<table>
-    <tr><td>
-    <div align="left" style="margin-left:2%;">
+<table style="width:100%">
+<tr><td>
+    <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+        <?php echo form_error('<div  class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
         <?php
         };
         if(isset($_SESSION['error']))
         {
-        ?> <div style="margin-left:2%"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+        ?> <div class="isa_success">"<?php echo $_SESSION['error'];?> </div>
         <?php
         }
         ?>
     </div>
-    </td></tr>
+   </td></tr>
 </table>
-
 <?php
-    echo "<div align=\"left\";>";
     //echo "<div style=\"margin-left:10px;\">";
 
 /* Form */
@@ -93,7 +85,7 @@ echo "<body>";?>
         $acadyear[$temp ] = $temp;
     }
 */
-    echo "<table style= \"margin-left:2%;\">";
+    echo "<table>";
     echo form_open('map/editprogramsubject/'.$paperid);
 
     echo "<p>";

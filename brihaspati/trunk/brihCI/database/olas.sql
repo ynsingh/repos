@@ -453,7 +453,7 @@ CREATE TABLE `announcement_archive` (
   `anoua_remark` blob NOT NULL,
   `anoua_creatordate` date NOT NULL,
   `anoua_creatorid` varchar(255) NOT NULL,
-  `annua_archivename`  varchar(255) DEFAULT NULL, 
+  `anoua_archivename`  varchar(255) DEFAULT NULL, 
   `anoua_archivedate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

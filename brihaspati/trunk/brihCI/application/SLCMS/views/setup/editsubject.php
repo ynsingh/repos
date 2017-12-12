@@ -9,9 +9,9 @@ echo"<title>Edit Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
-    echo "<h1>"; 
-    echo "Welcome "; echo$this->session->userdata('username'); 
-    echo"</h1>";
+    //echo "<h1>"; 
+    //echo "Welcome "; echo$this->session->userdata('username'); 
+    //echo"</h1>";
     $this->load->view('template/menu');
 ?>
 <?php
@@ -42,38 +42,40 @@ echo "<body>";
         }
     </script>
 
-</body>
-<br>
-<div align="left">
-<table style="margin-left:10px;">
-<tr><td>
-<?php echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));?>
-</td></tr>
-</table>
-</div>
+	<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+	<table width="100%">
+	<tr>
+	            <?php //echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+		    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Subject Details</b>";
+                    echo "</td>";
+		    ?>
+		</tr>
+	</table>
+		   <table width="100%">
+		   <tr><td>
+		    <div>
+                    <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
-    <table>
-    <tr colspan=2><td>
-    <div  style="margin-left:30px;width:1000px;">
+                    <?php if(isset($_SESSION['success'])){?>
+                        <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
-    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
-    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php
+                    };
+                    ?>
+                    <?php if(isset($_SESSION['error'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['error'];?></div>
 
-     <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:30px" class="isa_success"><?php echo $_SESSION['success'];?></div>
-<?php    }
-    if(isset($_SESSION['error']))
-    {
-?>        <div style="margin-left:30px"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+                    <?php
+                    };
+                    ?>
+                </div>
+              </td>
+            </tr>
+        </table>
+
 <?php
-    }
-
-    echo "</td></tr>";
-    echo "</table>";
-    echo "<div style=\"margin-left:30px;\">";
-
-    /* Form */
-
     echo "<table>";
     echo form_open('setup/editsubject/'.$subid);
 
@@ -86,7 +88,7 @@ echo "<body>";
     $prgbranch = $this->common_model->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
     echo  $prgname ." ( ".$prgbranch ." )";
    // echo form_input($degree);
-    echo "</td><td>";echo form_error('subprg');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -102,7 +104,7 @@ echo "<body>";
     echo form_label('Subject Type', 'subtype');
     echo"</td><td>";
     echo form_input($subtype);
-    echo "</td><td>";echo form_error('subtype');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -110,7 +112,7 @@ echo "<body>";
     echo form_label('Subject Name', 'subname');
     echo"</td><td>";
     echo form_input($subname);
-    echo "</td><td>";echo form_error('subname');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -119,7 +121,7 @@ echo "<body>";
     echo"</td><td>";
     echo form_input($subcode);
     echo "</td><td>";
-    echo form_error('subcode');  
+  //  echo form_error('subcode');  
     echo"</td><td>";
     echo "</p>";
 
@@ -128,7 +130,7 @@ echo "<body>";
     echo form_label('Subject Short', 'subshort');
     echo"</td><td>";
     echo form_input($subshort);
-    echo "</td><td>";echo form_error('subshort');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -136,7 +138,7 @@ echo "<body>";
     echo form_label('Subject Description', 'subdesc');
     echo"</td><td>";
     echo form_input($subdesc);
-    echo "</td><td>";echo form_error('subdesc');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -144,7 +146,7 @@ echo "<body>";
     echo form_label('Subject Credit', 'subext1');
     echo"</td><td>";
     echo form_input($subext1);
-    echo "</td><td>";echo form_error('subext1');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -152,7 +154,7 @@ echo "<body>";
     echo form_label('Subject Ext1', 'subext2');
     echo"</td><td>";
     echo form_input($subext2);
-    echo "</td><td>";echo form_error('subext2');echo"</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";

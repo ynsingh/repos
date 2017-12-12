@@ -53,22 +53,27 @@ yearRange: 'c-47:c+50',
 
 </head> 
  <body>
- <div id="body">
         <?php $this->load->view('template/header'); ?>
         <?php $this->load->view('template/menu'); ?>
-</div>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-
-
      <table width="100%">
-            <tr><td>
-                <div>
-                <?php echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
-                echo "<td align=\"right\">";
+            <tr>
+               <?php
+                echo "<td align=\"left\" width=\"33%\">";
+                echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                echo "</td>";
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Add Study Center Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
                 $help_uri = site_url()."/help/helpdoc#StudyCenter";
                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
                 ?>
+            </tr>
+</table>
+ <table width="100%">
+            <tr><td>
                 <div> 
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -84,12 +89,10 @@ yearRange: 'c-47:c+50',
               </div>
            </td></tr>
         </table>
-                <div>
                 <form action="<?php echo site_url('setup/sc');?>" method="POST" class="form-inline">
                  <table>
-                          <tr><td>
-                        Choose your University:</td><td>
-                        <select name="orgprofile" style="width:70%">
+                          <tr><td><label for="orgprofile" class="control-label">Choose your University:</td><td>
+                        <select name="orgprofile" style="width:100%">
                         <option value=""disabled selected>---------Select university---------</option>
                         <?php foreach($this->uresult as $datas): ?>
                        <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
@@ -100,7 +103,7 @@ yearRange: 'c-47:c+50',
                  <tr>
              <td><label for="institutecode" class="control-label">Campus Code:</label></td>
              <td><input type="text" name="institutecode"  class="form-control" size="26"  value="<?php echo isset($_POST["institutecode"]) ? $_POST["institutecode"] : ''; ?>" /><br></td>
-           <td><?php echo form_error('institutecode')?></td>
+           <td><?php //echo form_error('institutecode')?></td>
               <td>
 								
                   Example: CU001,CU002,etc
@@ -110,7 +113,7 @@ yearRange: 'c-47:c+50',
                                 <tr>
                                 <td><label for="name" class="control-label"> Campus Name:</label></td>
                                 <td><input type="text" name="name"  class="form-control" size="26"  value="<?php echo isset($_POST["name"]) ? $_POST["name"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('name')?></td>
+                                <td><?php //echo form_error('name')?></td>
                                 <td>
                                  Example: Regional Campus, Manipur, etc
                                 </td>
@@ -120,7 +123,7 @@ yearRange: 'c-47:c+50',
                                 <tr>
                                 <td><label for="nickname" class="control-label">Campus Nick Name:</label></td>
                                 <td><input type="text" name="nickname"  class="form-control" size="26"  value="<?php echo isset($_POST["nickname"]) ? $_POST["nickname"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('nickname')?></td>
+                                <td><?php //echo form_error('nickname')?></td>
                                  <td>
                                  Example: IGNTU
                                 </td>
@@ -143,7 +146,7 @@ yearRange: 'c-47:c+50',
                                 <tr>
                                 <td><label class="control-label">State:</label></td> 
                                 <td>                        
-				<select style="height:35px;" name="state" id="stname" disabled="">
+				<select style="height:35px;width:100%" name="state" id="stname" disabled="">
 					<option value="">Select state</option>
 				</select>
                                 </td></tr>
@@ -151,7 +154,7 @@ yearRange: 'c-47:c+50',
                                 <tr>
                                 <td><label class="control-label">City:</label></td>                              
                                 <td>
-				<select style="height:35px;" name="city" id="citname" disabled="">
+				<select style="height:35px;width:100%" name="city" id="citname" disabled="">
                                     <option value="">Select city</option>
                                 </select>
                                  </tr></td>
@@ -166,25 +169,25 @@ yearRange: 'c-47:c+50',
                               	<tr>
                                 <td><label for="pincode" class="control-label">Pincode:</label></td>		
                                 <td><input type="text" name="pincode"  class="form-control" size="26"  value="<?php echo isset($_POST["pincode"]) ? $_POST["pincode"] : ''; ?>" /></td><br>
-                                <td><?php echo form_error('pincode')?></td>
+                                <td><?php //echo form_error('pincode')?></td>
                                 </tr>
 
 				<tr>   
                                 <td><label for="phone" class="control-label">Phone:</label></td>
                                 <td><input type="text" name="phone"  class="form-control" size="26"  value="<?php echo isset($_POST["phone"]) ? $_POST["phone"] : ''; ?> "/><br></td>
-                                <td><?php echo form_error('phone')?></td>
+                                <td><?php //echo form_error('phone')?></td>
                                 </tr>
              
 				<tr>
                                 <td><label for="fax" class="control-label">Fax:</label></td>
                                 <td><input type="text" name="fax"  class="form-control" size="26"  value="<?php echo isset($_POST["fax"]) ? $_POST["fax"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('fax')?></td>
+                                <td><?php //echo form_error('fax')?></td>
                                 </tr>
  
 				<tr>
                                 <td><label for="status" class="control-label">Status:</label></td>
                                 <td><input type="text" name="status"  class="form-control" size="26"  value="<?php echo isset($_POST["status"]) ? $_POST["status"] : ''; ?>"/><br></td>
-                                <td><?php echo form_error('status')?></td>
+                                <td><?php //echo form_error('status')?></td>
                                  <td>
                                  Example: Active
                                 </td>
@@ -202,14 +205,14 @@ yearRange: 'c-47:c+50',
                                 <td><label for="closedate" class="control-label">Close Date:</label></td>
                                 <td><input type="text" name="closedate" id="EndDate" class="form-control" size="26"  value="<?php echo isset($_POST["closedate"]) ? $_POST["closedate"] : ''; ?>"/><br>
                                 </td>
-                                <td><?php echo form_error('closedate')?></td>
+                                <td><?php //echo form_error('closedate')?></td>
                                 </tr>
 
 
                                 <tr>
                                 <td><label for="website" class="control-label">Website:</label></td>
                                 <td><input type="text" name="website"  class="form-control" size="26"  value="<?php echo isset($_POST["website"]) ? $_POST["website"] : ''; ?>"/><br></td>
-                                <td><?php echo form_error('website')?></td>
+                                <td><?php //echo form_error('website')?></td>
                                 <td>
                                  Example: http://www.igntu.nic.in
                                 </td>
@@ -228,7 +231,7 @@ yearRange: 'c-47:c+50',
 				<tr>
                                 <td><label for="mobile" class="control-label">Mobile:</label></td>
                                 <td><input type="text" name="mobile"  class="form-control" size="26"  value="<?php echo isset($_POST["mobile"]) ? $_POST["mobile"] : ''; ?>"/><br></td>
-                                <td><?php echo form_error('mobile')?></td>
+                                <td><?php //echo form_error('mobile')?></td>
                                 </tr>
                                 
                                     <tr>
@@ -238,8 +241,7 @@ yearRange: 'c-47:c+50',
 					 <input type="reset" name="Reset" value="Clear"/>
 					 </td>
                                       </tr>
-		</table></div>
-<p><br></p>
+		</table>
 <div>
 <?php $this->load->view('template/footer'); ?>
 </div>

@@ -37,15 +37,23 @@
             echo "</table>";
         ?>--!>
         <table width="100%">
-                <tr><td>
-                        <?php echo anchor('setup/displaycontact/', "View Contact Us" ,array('title' => ' Contact Us Detail ' , 'class' => 'top_parent'));?>
+                <tr>
+                        <?php //echo anchor('setup/displaycontact/', "View Contact Us" ,array('title' => ' Contact Us Detail ' , 'class' => 'top_parent'));
+			 echo "<td align=\"center\" width=\"100%\">";
+                    	 echo "<b>Update Contact Details</b>";
+                    	 echo "</td>";
+			 ?>
+	       </tr>
+    </table>
+		<table width="100%">
+			<tr><td>
                         <div>
                         <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                         <?php echo form_error('<div class="isa_error">','</div>');?>
                         <?php if(isset($_SESSION['success'])){?>
                                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                         <?php }; ?>
-                        </div> </br>
+                        </div>
                 </td></tr>
         </table>
         <table>

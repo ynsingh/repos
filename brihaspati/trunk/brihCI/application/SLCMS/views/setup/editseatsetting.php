@@ -32,7 +32,7 @@
 			
 	
 	    <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
 	    <?php $this->load->view('template/menu');?>
       
          
@@ -43,26 +43,32 @@
 		window.history.back();
 	}
 	</script>
-	<table style="margin-left:30px;"> 
-	<font size=3pt>
-	<div style="margin-left: 10px; width:200px;">
-	<?php echo anchor('setup/dispseatsetting/', "View Seat Reservation", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " "; ?>
-	</font>
-            <tr colspan="2"><td>    
-            <div style="margin-left:30px;width:1000px;">
-            <?php  echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-            <?php  echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+	<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+	<table width= "100%"> 
+	<tr>
+		<?php
+                    echo "<td align=\"center\" width=\"100%\">";
+                    echo "<b>Update Seat Reservation Details</b>";
+                    echo "</td>";
+            ?>
+        </tr>
+</table>
+	<table width="100%">
+               <tr><td>
+                 <div>
+            <?php  echo validation_errors('<div  class="isa_warning">','</div>');?>
+            <?php  echo form_error('<div class="isa_error">','</div>');?>
 
             <?php if(isset($_SESSION['success'])){?>
-            <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+            <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
              <?php
             };
             ?>
-            </div> </br> 
+            </div> 
             </td></tr>  
       </table>    
-	<table style="padding: 8px 8px 8px 30px;">  
+	<table>  
             <?php
 		echo form_open('setup/editseatsetting/' . $id);
 
@@ -96,7 +102,7 @@
 		echo "</td>";
 		echo "<td>";
 		$perv=$percentage['value'];
-		echo "<input id=\"percent\" type=\"text\" name=\"percentage\" size=\"37\"  class=\"form-control\" onkeyup=\"function();\" value=$perv />";
+		echo "<input id=\"percent\" type=\"text\" name=\"percentage\" size=\"40\"  class=\"form-control\" onkeyup=\"function();\" value=$perv />";
 		echo "</td>";
 		echo "</tr>";
 
@@ -106,7 +112,7 @@
 		echo "</td>";
 		echo "<td>";
 		$seatv=$numberofseat['value'];
-		echo "<input type=\"text\" id=\"noofseat\" name=\"numberofseat\" var=\'calp\' size=\"37\" class=\"from-control\" onkeyup=\"function();\" value=$seatv />";
+		echo "<input type=\"text\" id=\"noofseat\" name=\"numberofseat\" var=\'calp\' size=\"40\" class=\"from-control\" onkeyup=\"function();\" value=$seatv />";
 		echo "</td>";
 		echo "</tr>";
 

@@ -13,11 +13,8 @@
   </head>
  <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-
-
 <table width= "100%">
-            <tr><td>
-                <div>
+            <tr>
                 <?php  
                   echo "<td align=\"left\" width=\"33%\">";
                   echo anchor('enterenceadmin/addexamcenter/', "Add  Exam Center", array('title' => 'Add   Exam Center  Detail','class' =>'top_parent'));
@@ -26,11 +23,15 @@
                   echo "<b>Exam Center Details</b>";
                   echo "</td>";
                   echo "<td align=\"right\" width=\"33%\">";
-                 $help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                  $help_uri = site_url()."/help/helpdoc#ViewExamtype";
+                  echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                  echo "</td>";
                 ?>
-                  </div>
-                <div  style="width:90%;">
+	</tr>
+</table>
+	<table width= "100%">
+		<tr><td>
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,23 +44,20 @@
                 };
                 ?>
               </div>
-             </td></tr>
+            </td></tr>
        </table>
 <div class="scroller_sub_page">
-<table>
+<table class="TFtable" >
 <tr>
-<div>
-
-<table cellpadding="16" class="TFtable" >
-<tr align="center">
 <thead><th>Sr.No</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Action</th></tr></thead>
+<tbody>
  <?php
         $count =0;
         if( count($this->result) ):
         foreach ($this->result as $row)
         {
          ?>
-             <tr align="center">
+             <tr>
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row-> eec_code ?></td>
             <td> <?php echo $row-> eec_name ?></td>
@@ -76,28 +74,17 @@
 	    <?php
 		echo anchor('enterenceadmin/editexamcenter/' . $row-> eec_id  , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
 		 echo "</td>";
-           	 echo "</tr>";
         }
         else :
         echo "<tr>";
             echo "<td colspan= \"13\" align=\"center\"> No Records found...!</td>";
         echo "</tr>";
         endif;
-
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
            ?>
-
-</div>
+</tbody>
 </tr>
 </table>
 </div><!------scroller div------>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>
-
-
-
-
