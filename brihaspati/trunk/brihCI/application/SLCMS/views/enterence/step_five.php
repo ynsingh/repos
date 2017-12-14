@@ -260,7 +260,10 @@ echo "</center>";
 			</thead>
 						
 				<tbody>
-				<?php foreach ($admission_academic as $row) {?>				
+				<?php 
+				foreach ($admission_academic as $row) {
+				if(!empty($row->asedu_board)){ 
+				?>				
 				<tr><td><?php echo $row->asedu_class;?></td>
 				<td><?php  echo $row->asedu_board; ?></td>
 				<td><?php echo $row->asedu_passingyear; ?></td>
@@ -268,7 +271,7 @@ echo "</center>";
 				<td><?php echo $row->asedu_marksobtained; ?></td>
 				<td><?php echo $row->asedu_maxmarks; ?></td>
 				<td><?php echo $row->asedu_percentage; ?></td></tr>
-				<?php }?>
+				<?php }}?>
 								
 			</tbody>
 		</table>

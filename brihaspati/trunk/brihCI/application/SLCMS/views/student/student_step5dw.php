@@ -16,7 +16,10 @@
 <tr><th>
 	<center style="background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;font-weight:bold;">Admission Application Form Details</center>
 </th></tr></table>
-		
+	<table style="width:100%;">
+		<tr>
+
+		<td width=77%;>	
 
         <table style="width:100%;border:1px solid black;">
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;width:100%;"><tr><th colspan=5 style="text-align:justify;">Personal Details</th></tr></thead>
@@ -64,7 +67,13 @@
 				<td ><?php echo $this->rollno;?></td>
 			</tr>
 		</table>
+		</td>
 		
+		<td valign=top >
+			<img src="<?php echo base_url('uploads/student_sign_photo/student_photo/'.$this->phresult); ?>" height=170 style="width:150px;">
+		</td>
+		</tr>
+	</table>
 
 		<table  style="width:100%;margin-top:30px;border:1px solid black;" class="TFtable" >
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;">

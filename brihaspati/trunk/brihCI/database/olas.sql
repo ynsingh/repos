@@ -495,28 +495,7 @@ CREATE TABLE `admissionmeritlist` (
         UNIQUE (`application_no`, `course_name`, `student_email`)
 ) ENGINE = InnoDB;
 
--- --------------------------------------------------------
---
--- Table structure for table `AdmissionStep`
---
 
-CREATE TABLE `admissionstep` ( 
-	`id` INT(11) NOT NULL AUTO_INCREMENT , 
-	`application_no` VARCHAR(255) NOT NULL , 
-	`student_masterid` VARCHAR(255) NOT NULL , 
-	`step1_status` VARCHAR(255) NOT NULL , 
-	`step1_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
-	`step2_status` VARCHAR(255) NOT NULL , 
-	`step2_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
-	`step3_status` VARCHAR(255) NOT NULL , 
-	`step3_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
-	`step4_status` VARCHAR(255) NOT NULL , 
-	`step4_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
-	`step5_status` VARCHAR(255) NOT NULL , 
-	`step5_date` DATETIME DEFAULT CURRENT_TIMESTAMP , 
-	`ext1` VARCHAR(255) NULL , 
-	PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
 
 
 -- --------------------------------------------------------
@@ -1103,6 +1082,46 @@ CREATE TABLE IF NOT EXISTS `states` (
   `country_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4121 ;
+-- --------------------------------------------------------
+--
+-- Table structure for table `student_admissionStep`
+--
+
+CREATE TABLE `student_admissionstep` ( 
+	`id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`application_no` VARCHAR(255) NOT NULL , 
+	`student_masterid` VARCHAR(255) NOT NULL , 
+	`step1_status` VARCHAR(255) NOT NULL , 
+	`step1_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
+	`step2_status` VARCHAR(255) NOT NULL , 
+	`step2_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
+	`step3_status` VARCHAR(255) NOT NULL , 
+	`step3_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
+	`step4_status` VARCHAR(255) NOT NULL , 
+	`step4_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
+	`step5_status` VARCHAR(255) NOT NULL , 
+	`step5_date` DATETIME DEFAULT CURRENT_TIMESTAMP , 
+	`ext1` VARCHAR(255) NULL , 
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_admissionstatus`
+--
+
+CREATE TABLE IF NOT EXISTS `student_admissionstatus` ( 
+	`sas_id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`sas_hallticketno` INT(11) NOT NULL , 
+	`sas_studentmasterid` INT(11) NOT NULL , 
+	`sas_prgid` INT(11) NOT NULL , 
+	`sas_admissiondate` DATE NOT NULL , 
+	`sas_admissionstatus` VARCHAR(255) NOT NULL DEFAULT 'Provisional' , 
+	`sas_confirmdate` DATE NULL , 
+	`sas_remark` VARCHAR(255) NULL , 
+	PRIMARY KEY (`sas_id`), 
+	UNIQUE (`sas_hallticketno`)
+) ENGINE = InnoDB;
 
 -- --------------------------------------------------------
 
@@ -1483,6 +1502,46 @@ CREATE TABLE `student_program` (
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `student_transfer`
+--
+
+CREATE TABLE `student_transfer` (
+    `st_id` INT(11) NOT NULL AUTO_INCREMENT , 
+    `st_hallticketno` INT(11) NULL , 
+    `st_smid` INT(11) NULL , 
+    `st_progid` INT(11) NULL ,
+    `st_newprogid` INT(11) NULL ,
+    `st_deptid` INT(11) NULL ,
+    `st_newdeptid` INT(11) NULL ,
+    `st_creatorid` VARCHAR(255) NULL ,
+    `st_createdate` DATE NOT NULL , 
+     PRIMARY KEY (`st_id`),
+     UNIQUE (`st_hallticketno`)
+) ENGINE = InnoDB;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_admission_cancel`
+--
+
+CREATE TABLE `student_admission_cancel` ( 
+        `sac_id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`sac_hallticketno` INT(21) NOT NULL , 
+	`sac_smid` INT(11) NOT NULL , 
+	`sac_progid` INT(11) NOT NULL , 
+	`sac_reson` VARCHAR(500) NOT NULL , 
+	`sac_feesrefundamount` VARCHAR(255) NOT NULL , 
+	`sac_feesrefundstatus` VARCHAR(255) NOT NULL ,
+	 `sac_canceldate` DATE NOT NULL , 
+	`sac_creatorid` VARCHAR(255) NOT NULL , 
+	`sac_createdate` DATE NOT NULL , 
+	PRIMARY KEY (`sac_id`), 
+	UNIQUE (`sac_hallticketno`)
+) ENGINE = InnoDB;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `study_center`
 --

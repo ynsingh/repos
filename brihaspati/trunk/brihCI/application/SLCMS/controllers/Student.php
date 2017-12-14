@@ -86,9 +86,9 @@ class Student extends CI_Controller {
 	//check for completed admission step
 	public function studentstep($applicationno){
 
-		//check the existence of entry in admissionstep table 
-		//$this->resstep=$this->commodel->get_listrow('admissionstep','sm_application',$applicationno)->result();
-		$this->resstep=$this->commodel->get_listrow('admissionstep','application_no',$applicationno)->result();
+		//check the existence of entry in student_admissionstep table 
+		//$this->resstep=$this->commodel->get_listrow('student_admissionstep','sm_application',$applicationno)->result();
+		$this->resstep=$this->commodel->get_listrow('student_admissionstep','application_no',$applicationno)->result();
 		//print_r($this->resstep);
 		if(!empty($this->resstep)) {
 
@@ -261,7 +261,7 @@ class Student extends CI_Controller {
                 }
 
 		$data1 = array('step1_status' => '1', 'application_no' => $number);
-		$recheckstustep_exist1 = $this->commodel->isduplicatemore('admissionstep',$data1);
+		$recheckstustep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$data1);
 		if($recheckstustep_exist1){
 			redirect('student/student_step2');
 		}
@@ -412,7 +412,7 @@ class Student extends CI_Controller {
 	   		$this->form_validation->set_rules('Scity','City','trim|xss_clean|required');
 			$this->form_validation->set_rules('Sstate','State','trim|xss_clean|required');
           		$this->form_validation->set_rules('Scountry','Country','trim|xss_clean|required');
-           		$this->form_validation->set_rules('Spincode','Pincode','trim|xss_clean|max_length[6]|required|is_numeric');
+           		$this->form_validation->set_rules('Spincode','Pincode','trim|xss_clean|required|is_numeric');
 
 			/*$this->form_validation->set_rules('classname','Class Name','trim|xss_clean|required');
           		$this->form_validation->set_rules('institutename','Institute Name','trim|xss_clean|required');
@@ -699,6 +699,13 @@ class Student extends CI_Controller {
                 );	
 		$this->db->insert('student_fees',$stufees);
 
+		//insert into student_admissionstatus
+		$stu_status = array(
+			'sas_hallticketno'	=>	$number,
+			'sas_studentmasterid'	=>	$insertid,
+                );
+		$this->db->insert('student_admissionstatus',$stu_status);
+
 		//insert into admission step
 		$no=1;
 		$cdate = date('Y-m-d H:i:s');
@@ -709,7 +716,7 @@ class Student extends CI_Controller {
                 	'step1_date'  		=>	$cdate
                 	
                 );
-		$this->db->insert('admissionstep', $stuadmission);
+		$this->db->insert('student_admissionstep', $stuadmission);
 		
 		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$number)->id;
 		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$number)->entexamname;
@@ -785,14 +792,14 @@ class Student extends CI_Controller {
 		$data['email'] = $email;
 
 		$rsdata = array('step1_status' => '1', 'student_masterid' => $insertid);
-		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstep',$rsdata);
+		$recheckstep_exist = $this->commodel->isduplicatemore('student_admissionstep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('welcome');	
 		}
 
 		$rsdata1 = array('step2_status' => '1', 'student_masterid' => $insertid);
-		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstep',$rsdata1);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$rsdata1);
 		if($recheckstep_exist1){
 			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('student/student_step3');
@@ -808,7 +815,7 @@ class Student extends CI_Controller {
 					$this->load->view('student/student_step2');
 				} 
 			}else{
-				//if yes then update admissionstep table
+				//if yes then update student_admissionstep table
 				//start the transaction
        	// 			$this->db->trans_begin();
 				$cdate = date('Y-m-d H:i:s');
@@ -817,9 +824,9 @@ class Student extends CI_Controller {
 					'step2_status'	       =>		 1,
 					'step2_date'	       =>		 $cdate,
 				);
-				$updatst2 = $this->commodel->updaterec('admissionstep', $step2,'student_masterid',$insertid);
+				$updatst2 = $this->commodel->updaterec('student_admissionstep', $step2,'student_masterid',$insertid);
 				//$this->db->where('student_masterid',$insertid);
-				//$this->db->update('admissionstep', $step2);		
+				//$this->db->update('student_admissionstep', $step2);		
 				//set flag for each step, if any step fails revert all steps and return to same step
 				//make transaction complete
         //			$this->db->trans_complete();
@@ -860,14 +867,14 @@ class Student extends CI_Controller {
 		//$array_items = array('success' => '', 'error' => '', 'warning' =>'');
         	//$this->session->set_flashdata($array_items);
 		$rsdata = array('step2_status' => '1', 'student_masterid' => $id);
-		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstep',$rsdata);
+		$recheckstep_exist = $this->commodel->isduplicatemore('student_admissionstep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('welcome');	
 		}
 
 		/*$rsdata1 = array('step3_status' => '1', 'student_masterid' => $id);
-		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstep',$rsdata1);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$rsdata1);
 		if($recheckstep_exist1){
 			$this->session->set_flashdata('err_message', 'Your back step missed.');
 			redirect('student/student_step4');
@@ -960,7 +967,7 @@ class Student extends CI_Controller {
 				$this->logger->write_logmessage("update", "Step 3 student_master table upload file updated.");
                     		$this->logger->write_dblogmessage("update", "Step 3 student_master table upload file updated." );
 				
-        	    		//Storing insertion status message. update admissionstep table
+        	    		//Storing insertion status message. update student_admissionstep table
 				//update student master
 				$cdate = date('Y-m-d H:i:s');				
 				$step3 = array(
@@ -968,8 +975,8 @@ class Student extends CI_Controller {
 					'step3_date'	       =>		 $cdate
 				);
 				$this->db->where('student_masterid',$id);
-				$this->db->update('admissionstep', $step3);
-				//$updst3 = $this->commodel->updaterec('admissionstep', $step3,'student_masterid',$id);
+				$this->db->update('student_admissionstep', $step3);
+				//$updst3 = $this->commodel->updaterec('student_admissionstep', $step3,'student_masterid',$id);
 
 				$this->logger->write_logmessage("update", "Step 3 admission step table updated.");
                     		$this->logger->write_dblogmessage("update", "Step 3 admission step table updated." );
@@ -1144,14 +1151,14 @@ class Student extends CI_Controller {
 		
 		$Sid = $this->session->userdata['sm_id'];
 		$rsdata = array('step3_status' => '1', 'student_masterid' => $Sid);
-		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstep',$rsdata);
+		$recheckstep_exist = $this->commodel->isduplicatemore('student_admissionstep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('welcome');	
 		}
 
 		$rsdata1 = array('step4_status' => '1', 'student_masterid' => $Sid);
-		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstep',$rsdata1);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$rsdata1);
 		if($recheckstep_exist1){
 			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('student/student_step5');
@@ -1364,7 +1371,7 @@ class Student extends CI_Controller {
 			
 			$email= $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Sid)->sm_email;
 				$mobile= $this->commodel->get_listspfic1('student_master','sm_mobile','sm_id',$Sid)->sm_mobile;
-				$name= $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Sid)->sm_fname;	
+				$name = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Sid)->sm_fname;	
 				
 					$ano = $this->session->userdata['app_no'];
 					//update data in admissionmeritlist 
@@ -1399,6 +1406,19 @@ class Student extends CI_Controller {
     					$this->db->update('student_entry_exit',$stuentpdate);
 					$this->logger->write_logmessage("update", "Step 4 user id update in student_entry_exit table.");
                     			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_entry_exit table." );
+
+				//update student admission status table
+				$prgid =  $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;		
+				$stu_stupdate = array(
+		                		'sas_prgid'           =>	$prgid,
+						'sas_admissiondate'   =>	$sdate,
+						//'modifierid'	      =>	$Sid  	
+	           	     		);
+					
+		             	$this->db->where('sas_studentmasterid',$Sid);
+    				$this->db->update('student_admissionstatus',$stu_stupdate);
+				$this->logger->write_logmessage("update", "Step 4 student admission status update.");
+                    		$this->logger->write_dblogmessage("update", "Step 4 student admission status update." );
 
 					
                             	$isdupl= $this->logmodel->isduplicate('edrpuser','username',$email);
@@ -1472,7 +1492,7 @@ class Student extends CI_Controller {
                     			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_master table." );
 						
 
-					//update admissionstep table
+					//update student_admissionstep table
 					$cdate = date('Y-m-d H:i:s');
  					$step4 = array(
 						'step4_status'	       =>		 1,
@@ -1480,10 +1500,10 @@ class Student extends CI_Controller {
 					);
 					//print_r($step3);
 					//$this->db->where('student_masterid',$Sid);
-					//$this->db->update('admissionstep', $step4);
-					$updast4 = $this->commodel->updaterec('admissionstep', $step4,'student_masterid',$Sid);
-					$this->logger->write_logmessage("update", "Step 4 update admissionstep table.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 update admissionstep table.");
+					//$this->db->update('student_admissionstep', $step4);
+					$updast4 = $this->commodel->updaterec('student_admissionstep', $step4,'student_masterid',$Sid);
+					$this->logger->write_logmessage("update", "Step 4 update student_admissionstep table.");
+                    			$this->logger->write_dblogmessage("update", "Step 4 update student_admissionstep table.");
 
 					//make transaction complete
 					
@@ -1753,7 +1773,7 @@ class Student extends CI_Controller {
 					$this->logger->write_logmessage("update", "Step 4 user id update in student_master table.");
                     			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_master table." );
 
-					//update admissionstep table
+					//update student_admissionstep table
 					$cdate = date('Y-m-d H:i:s');
  					$step4 = array(
 						'step4_status'	       =>		 1,
@@ -1761,10 +1781,10 @@ class Student extends CI_Controller {
 					);
 					//print_r($step3);
 					//$this->db->where('student_masterid',$Sid);
-					//$this->db->update('admissionstep', $step4);
-					$updast4 = $this->commodel->updaterec('admissionstep', $step4,'student_masterid',$Sid);
-					$this->logger->write_logmessage("update", "Step 4 update admissionstep table.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 update admissionstep table.");
+					//$this->db->update('student_admissionstep', $step4);
+					$updast4 = $this->commodel->updaterec('student_admissionstep', $step4,'student_masterid',$Sid);
+					$this->logger->write_logmessage("update", "Step 4 update student_admissionstep table.");
+                    			$this->logger->write_dblogmessage("update", "Step 4 update student_admissionstep table.");
 
 					//make transaction complete
 					
@@ -1888,15 +1908,15 @@ class Student extends CI_Controller {
 		//set the new values in session(role,student user_id and status login)
 		//redirect to student home page for subject selection after 5 minute/give the button move to student home page
 		
-		//update admissionstep table
+		//update student_admissionstep table
 			$cdate = date('Y-m-d H:i:s');
 			$step5 = array(
 				'step5_status'	       =>		 1,
 				'step5_date'	       =>		 $cdate
 			);
-			$updst5 = $this->commodel->updaterec('admissionstep', $step5,'student_masterid',$id);
+			$updst5 = $this->commodel->updaterec('student_admissionstep', $step5,'student_masterid',$id);
 			//$this->db->where('student_masterid',$id);
-			//$this->db->update('admissionstep', $step5);
+			//$this->db->update('student_admissionstep', $step5);
 			$this->logger->write_logmessage("update", "Step 5 admission step updated successfully.");
                     	$this->logger->write_dblogmessage("update", "Step 5 admission step updated successfully." );
 			$this->load->view('student/student_step5');

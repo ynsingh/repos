@@ -46,7 +46,7 @@
 	<form action="<?php echo site_url('enterenceadmin/search_rollnumber'); ?>" method="POST">
 		<table style="width:100%;" border=0>
 		<tr>
-			<td align=center><h2>Search Center Wise / Program Wise Roll Number </h2></td>
+			<td align=center><h2>Search Center / Program Wise Roll Number </h2></td>
 			
 			<td align=right  valign="top">
 			

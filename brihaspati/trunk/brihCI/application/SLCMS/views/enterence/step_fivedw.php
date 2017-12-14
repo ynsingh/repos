@@ -31,9 +31,9 @@
                                 <td><?php echo $exname ." ( ".$excode ." )";?></td>
                         </tr>
                         </table>
-                </td><td>
+                </td><td width=80>
                         <div id="photo">
-                        <img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
+                        <img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" style="width:100%;height:80px;">
                         </div>
                 </td></tr>
                 </table>
@@ -164,7 +164,10 @@
 			</thead>
 						
 				<tbody>
-				<?php foreach ($admission_academic as $row) {?>				
+				<?php 
+				foreach ($admission_academic as $row) {
+				if(!empty($row->asedu_board)){ 
+				?>			
 				<tr><td><?php echo $row->asedu_class;?></td>
 				<td><?php  echo $row->asedu_board; ?></td>
 				<td><?php echo $row->asedu_passingyear; ?></td>
@@ -172,7 +175,7 @@
 				<td><?php echo $row->asedu_marksobtained; ?></td>
 				<td><?php echo $row->asedu_maxmarks; ?></td>
 				<td><?php echo $row->asedu_percentage; ?></td></tr>
-				<?php }?>
+				<?php }}?>
 								
 			</tbody>
 		</table>
