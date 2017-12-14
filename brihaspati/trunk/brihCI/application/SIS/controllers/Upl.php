@@ -5,6 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com)  upload csv file for staff profile registration in SIS
  * @author Manorama Pal(palseema30@gmail.com) upload csv file for staff tranfer orders and service particulars.
+ * csv file for staff employee list and upload zip folder for staff photo.
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -633,4 +634,84 @@ class Upl extends CI_Controller
         }
     }
     /******************************* closer vacancy available check from staff position ******************************/
+    
+    /******************************* upload staff photo ******************************/
+    public function uplstaffphoto(){
+        if(isset($_POST['staffphoto']))
+        {
+            if ( isset($_FILES["userfile"]))
+            {
+                
+                $filename = $_FILES["userfile"]["name"];
+                $source = $_FILES["userfile"]["tmp_name"];
+                $type = $_FILES["userfile"]["type"];
+	
+                $name = explode(".", $filename);
+                $accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
+                foreach($accepted_types as $mime_type) {
+                    if($mime_type == $type) {
+			$okay = true;
+			break;
+                    } 
+                }
+	
+                $continue = strtolower($name[1]) == 'zip' ? true : false;
+                if(!$continue) {
+                    $message = "The file you are trying to upload is not a .zip file. Please try again.";
+                    $this->session->set_flashdata('error',$message);
+                }else{
+                $target="./uploads/SIS/empphoto/";
+                $target_path = "./uploads/SIS/empphoto/".$filename;  // change this to the correct site path
+                if(move_uploaded_file($source, $target_path)) {
+                    $zip = new ZipArchive();
+                    $x = $zip->open($target_path);
+                    if ($x === true) {
+			$zip->extractTo($target); // change this to the correct site path
+                       	$zip->close();
+                       
+                        chmod($target_path, 0777);
+			unlink($target_path);
+                    }                
+                    if (is_dir($target)){
+                        if ($dh = opendir($target)){
+                            while (($file = readdir($dh)) !== false){
+                                $fname = basename($file); 
+                                $filepart1 = explode('.', $fname);
+                                $emrecord=$this->sismodel->get_listspfic2('employee_master','emp_id','emp_code');
+                                foreach($emrecord as $empdata){
+                                    if($empdata->emp_code == $filepart1[0]){
+                                    /****update employee photo*****************************/
+                                        $id=$empdata->emp_id;
+                                        $data = array(
+                                            'emp_photoname' => $fname
+                                        ); 
+                                        if(empty($empdata->emp_photoname)){
+                                            $upempdata_flag=$this->sismodel->updaterec('employee_master',$data,'emp_id',$id);
+                                        }
+                                        /****update employee photo*****************************/
+                                            
+                                    }//match
+                                        
+                                }//foreach
+                                //echo "filename:" . $file . "<br>".$fname;
+                            }//while
+                            closedir($dh);
+                        }//if
+                    }//ifdircheck
+                
+                $message = "Your .zip file was uploaded and unpacked.";
+                $this->session->set_flashdata('success',$message);
+                }//moveclose    
+                else {	
+                    $message = "There was a problem with the upload. Please try again.";
+                    $this->session->set_flashdata('error',$message);
+                }
+     		}         
+            } //userfile   
+        }//bottonclick
+        $this->load->view('upl/uploadphoto');
+    }
+    /******************************* closer upload staff photo******************************/
+ 
 }
+
