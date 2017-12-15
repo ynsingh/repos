@@ -18,12 +18,12 @@
              ?>
 </table>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
-	<div class="head">Online Addmision System</div>
+	<div class="head">Online Addmission System</div>
 	<div class="content">
 	<div class="sideleft">
         <div id="cssmenu">
         	<ul>
-<li><a href="#AboutOnlineAddmisionSystem">About Online Addmision System</a></li>
+<li><a href="#AboutOnlineAddmissionSystem">About Online Addmission System</a></li>
 	     <li><a href="#Dashboard">Dashboard</a></li>
 	     <li class='has-sub'><a href="#Setup">Setup</a>
 			<ul>
@@ -85,9 +85,9 @@
                 </div>
             </div>
                 <div class="sideright">
-					<section id="AboutOnlineAddmisionSystem">
+					<section id="AboutOnlineAddmissionSystem">
 					<div class="row-fluid">
-						<h2>About Online Addmision System</h2>
+						<h2>About Online Addmission System</h2>
 					</div>
 					<div class="row-fluid">
 						<font size="4">
@@ -290,7 +290,8 @@ The format of Add category are given below:-
                                         </section>
 
 
-			<section id="ViewCategaryDetail">
+			<section id="ViewCategoryDetail">
+
                                         <div class="row-fluid">
                                                 <h2>View Category Detail</h2>
                                         </div>
@@ -1630,7 +1631,7 @@ This module will display the earlier data. which is not used now.
 <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/fmarchive.png" height="60%" width="100%">
                                          </div>
                                     </section>
-<section id="ProgramSubjectPapaerArchive">
+<section id="ProgramSubjectPaperArchive">
                                         <div class="row-fluid">
                                                 <h2>Program Subject Papaer Archive</h2>
                                         </div>
@@ -1726,7 +1727,7 @@ This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trail
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-    User Profile display of personal data associted with specific user. From here user see Login Information and Other Information.
+    User Profile display of personal data associated with specific user. From here user see Login Information and Other Information.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1741,7 +1742,8 @@ This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trail
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-    Password can be changed from the Change Password link. Each user must enter the old password and new password after then Retype New Password for the user.
+    Password can be changed from Change Password link. Each user must enter the old password first and then new password after that Re-type New Password for the user.
+
                                                                  </p>
                                                         </ol>
                                                 </font>

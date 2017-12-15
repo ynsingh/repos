@@ -187,7 +187,7 @@ function getcatelist(studycid){
 				</tr>
 				<tr height=15></tr>
 				<tr>
-					<td style="text-align:right;font-size:20px;"><a href="<?php echo base_url('uploads/SLCMS/Prospectus1718.pdf');?>" title="Eligibility Crieteria" target=_blank>Eligibility Crieteria
+					<td style="text-align:right;font-size:20px;"><a href="<?php echo base_url('uploads/SLCMS/Prospectus1718.pdf');?>" title="Eligibility Criteria" target=_blank>Eligibility Criteria
 					<img src="<?php echo base_url(); ?>uploads/SLCMS/pdf-icon.png" alt="logo" style="height:25px;"></a></td>	
 				</tr>
 			<table>

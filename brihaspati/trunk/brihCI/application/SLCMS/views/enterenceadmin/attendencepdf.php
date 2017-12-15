@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body style="">
 <?php //$this->load->view('template/watermark.php');?>				
 <img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
-<center><h3>Attendence Sheet For All India Enterance Examination - <?php echo $this->acadyear;?></h3></center>
+<center><h3>Attendence Sheet For All India Entrance Examination - <?php echo $this->acadyear;?></h3></center>
 					
 <center>
 

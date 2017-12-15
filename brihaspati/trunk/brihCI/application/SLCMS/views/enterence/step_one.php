@@ -376,7 +376,7 @@ function filladd()
 		<td/>
 				
 		<td>	
-			<label for="nnumber">Mother name</label></br>
+			<label for="nnumber">Mother's Name</label></br>
 			<input type="text" name="entmothername" placeholder="Enter Mother Name" value="<?php echo isset($_POST["entmothername"]) ? $_POST["entmothername"] : ''; ?>"/>
 		<td/>
 
@@ -385,7 +385,7 @@ function filladd()
 			<input type="text" name="entfathermono" placeholder="Enter father mo. no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo isset($_POST["entfathermono"]) ? $_POST["entfathermono"] : ''; ?>"/>		
 		<td/>
 		<td>	
-			<label for="nnumber">Mother Mobile No.</label></br>
+			<label for="nnumber">Mother's Mobile No.</label></br>
 			<input type="text" name="entmothermono" placeholder="Enter mother mo. no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo isset($_POST["entmothermono"]) ? $_POST["entmothermono"] : ''; ?>"/>	
 		<td/>
 	</tr>
@@ -398,7 +398,7 @@ function filladd()
 		<td/>
 				
 		<td>	
-			<label for="nnumber">Mother Occupation</label></br>
+			<label for="nnumber">Mother's Occupation</label></br>
 			<input type="text" name="entmotheroccu" placeholder="Enter mother occupation" value="<?php echo isset($_POST["entmotheroccu"]) ? $_POST["entmotheroccu"] : ''; ?>"/>
 		<td/>
 

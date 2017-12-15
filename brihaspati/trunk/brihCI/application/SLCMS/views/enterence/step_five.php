@@ -169,7 +169,7 @@ echo "</center>";
 		</table>
 	
 		<table class="TFtable" id="personal" style="width:100%;">
-			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Parent Informations</th></thead>
+			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Parents Informations</th></thead>
 			<tr>
 				<td>Mother Name :</td>
 				<td><?php echo $mname;?></td>
@@ -279,7 +279,7 @@ echo "</center>";
 	<?php if(!empty($admission_entexm)){ ?>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
-			Enterance Exam Details
+			Entrance Exam Details
 			</th></thead>
 			<thead id="acadhead2">
 			<tr>
@@ -313,7 +313,7 @@ echo "</center>";
 	<?php if(!empty($admission_employment)){ ?>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
-			Employement Details
+			Employment Details
 			</th></thead>
 			<thead id="acadhead2">
 			<tr>

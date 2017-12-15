@@ -78,7 +78,7 @@ function myFunction() {
 			</td>
 
 			<td>	
-				<label>Mobile/Phone no.</label></br>
+				<label>Mobile/Phone No.</label></br>
 				<input type="text" name="appstumobile" placeholder="Enter Mobile Number" MaxLength="12" pattern="/^+91(7\d|8\d|9\d)\d{9}$/"> 				
 			</td>
 
@@ -119,7 +119,7 @@ function myFunction() {
 		<td>	<label for="nnumber">Exam Center</label></br>
 			<select name="appstuexamcenter" class="form-control" style="width:300px;height:37px;font-size:18px;font-weight:bold;">
 
-			<option selected="true" disabled="disabled" style="font-size:18px;">Select exam center</option>
+			<option selected="true" disabled="disabled" style="font-size:18px;">Select Exam Center</option>
 					<?php foreach($this->examcenter as $row): ?>	
 					<option value="<?php echo $row->eec_id;?>"><?php echo $row->eec_name; ?></option>
 					<?php endforeach; ?>
@@ -151,7 +151,7 @@ function myFunction() {
 		</td>-->
 		<td>	
 			<label for="nnumber">Application No.</label></br>	
-			<input type="text" name="appstuapplino" placeholder="Enter Application no"/>
+			<input type="text" name="appstuapplino" placeholder="Enter Application No"/>
 		</td>
 
 		<td>	

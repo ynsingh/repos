@@ -184,7 +184,7 @@
 <?php if(!empty($admission_entexm)){ ?>
 		<table style="width:100%;margin-top:30px;border:1px solid black;">	
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;"><tr><th colspan=7  style="text-align:justify;">
-			Enterance Exam Details
+			Entrance Exam Details
 			</th></tr></thead>
 			<thead id="acadhead2">
 			<tr>
