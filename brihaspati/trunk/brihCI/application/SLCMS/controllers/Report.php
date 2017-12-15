@@ -16,6 +16,7 @@ class Report  extends CI_Controller
         $this->load->model("Login_model", "logmodel");
         $this->load->model("Common_model", "commodel");
         $this->load->model("User_model", "usrmodel");
+	$this->load->model("Student_model","stumodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -247,6 +248,33 @@ class Report  extends CI_Controller
         	$this->pdf->render();
         	$this->pdf->stream("Student Record.pdf");
 	}
+
+	/*public function admission_studentlist(){
+		$data['admissionstu_data'] = $this->commodel->get_list('student_master');
+				
+		$this->load->view('report/admission_studentlist',$data);
+	}*/
+
+
+	public function admission_student(){
+		$date1 = $this->input->post('stadate');
+		$date2 = $this->input->post('enddate');
+		$admrecrd='';
+		$data = array(
+			'date1' => $date1,
+			'date2' => $date2
+			);
+		if ($date1 == "" || $date2 == "") {
+			$data['err_message'] = "Both date fields are required";
+		} else {
+			$result = $this->stumodel->show_data_by_date_range($data);
+			//print_r($result);die;
+			$data['student_data']=$result;
+		}
+			$this->load->view('report/admission_studentlist', $data);
+	}
+
+	
 
 }
 

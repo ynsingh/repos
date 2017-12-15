@@ -96,6 +96,33 @@ class Student_model extends CI_Model
     function __destruct() {
         $this->db->close();
     }
+
+    public function show_data_by_date_range($data) {
+		$condition = "sas_admissiondate BETWEEN " . "'" . $data['date1'] . "'" . " AND " . "'" . $data['date2'] . "'";
+		$this->db->select('sas_studentmasterid');
+		$this->db->from('student_admissionstatus');
+		$this->db->where($condition);
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+
+	 public function show_data_by_date_range1($data) {
+		$condition = "asreg_verificationdate BETWEEN " . "'" . $data['date1'] . "'" . " AND " . "'" . $data['date2'] . "'";
+		$this->db->select('asreg_id');
+		$this->db->from('admissionstudent_registration');
+		$this->db->where($condition);
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+
     
     public function getStudentsWhereLike($field, $search,$data)
     {
