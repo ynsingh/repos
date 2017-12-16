@@ -28,11 +28,9 @@ function myFunction() {
 <body>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        <?php //$this->load->view('template/menu');?>
 
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table> -->
 
 
 <table align=center style="width:100%;">
@@ -51,7 +49,6 @@ function myFunction() {
         };
 	?>  
 </tr>
-   </table>	
    </table>	
 	<form action="<?php echo site_url('enterenceadmin/generatesticker'); ?>" method="POST">
 	<table style="width:70%;margin-top:-1%;" border=0>

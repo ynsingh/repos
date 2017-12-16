@@ -6,9 +6,9 @@
 <title>Edit Profile</title>
     <head>    
         	<?php $this->load->view('template/header'); ?>
-            	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+   <!--         	<h1>Welcome <?//= $this->session->userdata('username') ?>  </h1>-->
 		<?php
-                        if($this->session->userdata('id_role') == 1){
+/*                        if($this->session->userdata('id_role') == 1){
                                 $this->load->view('template/menu');
                         }
                         if($this->session->userdata('id_role') == 2){
@@ -17,7 +17,7 @@
                         if($this->session->userdata('id_role') == 3){
                                 $this->load->view('template/stumenu');
                         }
-                ?>
+ */              ?>
     </head>
     <body>
 <script>

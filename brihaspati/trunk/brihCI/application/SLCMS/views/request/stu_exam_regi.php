@@ -37,7 +37,7 @@ select{width:100%;font-size:17px;height:40px;}
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
 </br>
-	<?php $this->load->view('template/stumenu'); ?>
+	<?php //$this->load->view('template/stumenu'); ?>
 	<?php //if(isset($_SESSION)) {
         	//echo $this->session->flashdata('flash_data');
     	//} ?>
@@ -70,7 +70,7 @@ echo "</center>";
       </div>
 <?php //$uid=($this->session->userdata['id_user']); print_r($uid);?>
 
-	<!---<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
+	<!---<h1>Welcome <?=// $this->session->userdata('username') ?>  </h1>-->
 	<h1>Exam Registration</h1>
 <center>
 	  <table  style="background-color:#f1f1f1;" align="">

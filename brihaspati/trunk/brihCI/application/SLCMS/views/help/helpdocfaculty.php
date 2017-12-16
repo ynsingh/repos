@@ -6,8 +6,8 @@
 <head>
 <title>User Manual</title>  
         <?php $this->load->view('template/header'); ?>
-        <h1> Welcome <?= $this->session->userdata('username') ?></h1>
-        <?php $this->load->view('template/facultymenu');?>
+<!--        <h1> Welcome <?//= $this->session->userdata('username') ?></h1>-->
+        <?php //$this->load->view('template/facultymenu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
 </head>
 <body>

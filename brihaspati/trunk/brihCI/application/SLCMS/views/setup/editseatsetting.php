@@ -3,12 +3,7 @@
  -->
 <html>
 	<head>    
-	
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-	$(document).ready(function(){																			
-//	var totseat=$this->totalseat;
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>	
 	<script>
 	 $(document).ready(function(){
 		$("#totseat, #percent").keyup(function() {
@@ -28,12 +23,10 @@
 		});
 	})
 	</script>
-</script>
-			
 	
 	    <?php $this->load->view('template/header'); ?>
-            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
-	    <?php $this->load->view('template/menu');?>
+            <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
+	    <?php// $this->load->view('template/menu');?>
       
          
     </head>
@@ -43,7 +36,7 @@
 		window.history.back();
 	}
 	</script>
-	<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--	<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 	<table width= "100%"> 
 	<tr>
 		<?php

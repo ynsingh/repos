@@ -7,7 +7,7 @@
 <title>Subject Semester Program with Department List</title>
     <head>    
             <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        <?php //$this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
        <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
@@ -35,7 +35,7 @@
             echo "</table>";
         ?>-->
         <!-- </br>   -->
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
         <table width="100%;"> 
            
             <tr><td> 

@@ -29,11 +29,11 @@ function myFunction() {
 <body>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        <?php //$this->load->view('template/menu');?>
 
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+<!--<p>
+<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>
+</p> -->
 
 <center><span style="font-size:20px;"><b>Search Student Admission Details</b></span></center>
 

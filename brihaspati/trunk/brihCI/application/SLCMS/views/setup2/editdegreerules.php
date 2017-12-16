@@ -6,8 +6,8 @@
 <title>Edit degree Rule</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
-        <?php $this->load->view('template/menu');?>
+            <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
+        <?php //$this->load->view('template/menu');?>
     </head>
     <body>
  <script>
@@ -15,7 +15,7 @@
         window.history.back();
         }
     </script>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
         <!--<//?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";

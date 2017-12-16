@@ -5,7 +5,7 @@
 <html>
     <head>    
        <?php $this->load->view('template/header'); ?>
-       <?php $this->load->view('template/menu');?> 
+       <?php //$this->load->view('template/menu');?> 
         <style>
                 .abc{
                     width:100%;
@@ -34,7 +34,7 @@
             echo "</table>";
         ?>-->
 
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
              
         <table width="100%"> 

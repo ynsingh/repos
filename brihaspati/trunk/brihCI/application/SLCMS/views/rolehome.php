@@ -8,7 +8,7 @@
     <head>
         <title>Welcome  </title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+<!--        <h1>Welcome <? //$this->session->userdata('username') ?>  </h1>-->
             
         <!--<link rel="stylesheet" type="text/css" href="<//?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <script type="text/javascript" src="<//?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>

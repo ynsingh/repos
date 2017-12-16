@@ -12,7 +12,7 @@ echo "<head>";
     //echo "<h1>"; 
     //echo "Welcome "; echo$this->session->userdata('username'); 
     //echo"</h1>";
-    $this->load->view('template/menu');
+//    $this->load->view('template/menu');
 ?>
 <?php
 echo "</head>";
@@ -42,7 +42,7 @@ echo "<body>";
         }
     </script>
 
-	<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--	<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 	<table width="100%">
 	<tr>
 	            <?php //echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));

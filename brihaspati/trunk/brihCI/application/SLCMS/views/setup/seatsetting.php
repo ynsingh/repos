@@ -2,12 +2,9 @@
    @author Abhay(kumar.abhay.4187@gmail.com)
  -->
 <html>
-<head> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<head>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <script>
-	$(document).ready(function(){																			
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script>
 	$(document).ready(function(){
 		$("#totseat, #percent").keyup(function() {
   			var totseat1 = parseInt($("#totseat").val());
@@ -28,10 +25,10 @@
 	})
 	</script>
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        <?php// $this->load->view('template/menu');?>
 </head>    
 <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table> 	
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table> -->	
 <table width= "100%"> <tr>
             <?php
                         echo "<td align=\"left\" width=\"33%\">";

@@ -75,7 +75,7 @@ $(document).ready(function(){
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
 	</br>
-	<?php $this->load->view('template/stumenu'); ?>
+	<?php //$this->load->view('template/stumenu'); ?>
 	
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <?php

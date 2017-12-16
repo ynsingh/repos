@@ -13,10 +13,10 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
 
      <?php $this->load->view('template/header'); ?>
-     <?php $this->load->view('template/menu');?>
+     <?php //$this->load->view('template/menu');?>
  </head>
  <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table> -->
 <script>
 $( function() {
 	   $( "#StartDate,#EndDate" ).datepicker({

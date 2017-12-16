@@ -7,7 +7,7 @@
 
  <head>
       <?php $this->load->view('template/header'); ?>
-      <?php $this->load->view('template/menu');?>
+      <?php //$this->load->view('template/menu');?>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
@@ -53,7 +53,7 @@
         echo "</tr>";
         echo "</table>";
         ?>-->
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
      <table width="100%">
             <tr>

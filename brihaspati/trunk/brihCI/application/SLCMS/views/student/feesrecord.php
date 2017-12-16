@@ -5,8 +5,8 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-          <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-          <?php $this->load->view('template/stumenu'); ?>
+          <!--<h1>Welcome <?//= $this->session->userdata('username') ?>  </h1>-->
+          <?php //$this->load->view('template/stumenu'); ?>
           <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <style>
             thead th{

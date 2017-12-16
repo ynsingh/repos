@@ -29,11 +29,12 @@ function myFunction() {
 <body>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
-
+        <?php //$this->load->view('template/menu');?>
+<!--
 <p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+ <table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>
 </p>
+-->
 <center><span style="font-size:20px;"><b>Search & Download Student Admission Data</b></span></center>
 
 <table align=center style="width:100%;">
@@ -175,28 +176,16 @@ function myFunction() {
 				<td><?php echo $address; ?></td>
 				<td><?php echo $prgcatname; ?></td>
 				<td><?php echo $prgbranch?></td>
-				
 			</tr>		
-			
-	<?php }	}else{ ?><td colspan=12 style="text-align:center;">No Record Found !!!!</td><?php }?>
+	<?php }	if (!empty ($admrecrd)){ ?>
 			<tr>
-
 				<td colspan=12 ><center>
-
-<?php 
-	
-	//foreach($student_data as $row){
-			
-			//$asmid1 = $row->senex_smid;?>
-				<!--<a href="<?php //echo site_url('downloads/admission_studentdw/');//echo $row->senex_smid.'/';?>" style="text-decoration:none;">-->
-<?php //}?>
-
-				<a href="<?php echo site_url('downloads/admission_studentdw/');echo $admrecrd;?>" style="text-decoration:none;"><?php //}?>
-
+				<a href="<?php echo site_url('downloads/admission_studentdw/');echo $admrecrd;?>" style="text-decoration:none;">
 				<input type="button" style="font-weight:lighter;" value="Download"></a>
 				</center>
 				</td>
 			</tr>
+	<?php	}}else{ ?><tr><td colspan=12 style="text-align:center;">No Record Found !!!!</td></tr><?php }?>
 	</tbody>
 </table>
 

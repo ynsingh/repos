@@ -5,8 +5,8 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
-        <?php $this->load->view('template/menu');?> 
+            <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
+        <?php// $this->load->view('template/menu');?> 
 	 <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
  	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
@@ -38,7 +38,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
         window.history.back();
         }
         </script>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
         <table width="100%">
             <tr>
 	 <?php

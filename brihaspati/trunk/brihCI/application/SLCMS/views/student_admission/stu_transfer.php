@@ -8,7 +8,7 @@
 <title>Student Transfer</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        <?php //$this->load->view('template/menu');?>
 	
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
@@ -47,7 +47,7 @@
 	</style>	
     </head>
     <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
  <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>

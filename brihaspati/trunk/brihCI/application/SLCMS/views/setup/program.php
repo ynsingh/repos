@@ -2,7 +2,7 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php $this->load->view('template/header.php');?>
-<?php $this->load->view('template/menu.php');?>
+<?php //$this->load->view('template/menu.php');?>
 <html>
 <title>Add Program</title>
 <?php
@@ -24,7 +24,7 @@
     echo "</table>";
 */
 ?>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 <div>
 <table style="width:100%;">
 <tr>

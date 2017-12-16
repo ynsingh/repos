@@ -20,8 +20,8 @@
     </head>    
     <body>	
 		 <?php $this->load->view('template/header'); ?>
-          	<h2>Welcome <?= $this->session->userdata('username') ?>  </h2>
-       		 <?php $this->load->view('template/facultymenu');?>
+          	<!--<h2>Welcome <?//= $this->session->userdata('username') ?>  </h2>-->
+       		 <?php //$this->load->view('template/facultymenu');?>
 		<?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;width:90%;\">";
                     echo "<tr valign=\"top\">";

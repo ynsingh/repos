@@ -10,7 +10,7 @@
 </head>
   <div>
 	<?php $this->load->view('template/header'); ?> 
-    	<?php $this->load->view('template/menu'); ?>
+    	<?php //$this->load->view('template/menu'); ?>
 </div>
 <!-- <//?php 
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -30,7 +30,7 @@
             echo "</table>";
          
 	?>-->
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
       	<table width="100%">
 		<tr>

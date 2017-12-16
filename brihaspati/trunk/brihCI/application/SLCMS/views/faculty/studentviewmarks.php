@@ -46,7 +46,7 @@ select{width:100%;font-size:17px;height:40px;}
 <div>
 	<?php $this->load->view('template/header'); ?>
 	</br>
-	<?php $this->load->view('template/facultymenu'); ?>
+	<?php //$this->load->view('template/facultymenu'); ?>
 </div>	
 <?php           
 $unique = array();    

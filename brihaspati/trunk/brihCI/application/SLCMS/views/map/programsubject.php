@@ -9,7 +9,7 @@ echo "<head>";
 echo "<title>".'IGNTU - Program Subject List'."</title>";
     $this->load->view('template/header');
    
-    $this->load->view('template/menu');
+//    $this->load->view('template/menu');
 ?>
    <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
@@ -23,7 +23,7 @@ echo "<title>".'IGNTU - Program Subject List'."</title>";
 echo "</head>";
 echo "<body>";
 ?>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
 
 <?php

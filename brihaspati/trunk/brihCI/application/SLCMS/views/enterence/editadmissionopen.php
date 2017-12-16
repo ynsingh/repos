@@ -5,7 +5,7 @@
     <title>Edit Admission Open</title>
         <?php $this->load->view('template/header'); ?>
       
-        <?php $this->load->view('template/menu');?>
+        <?php //$this->load->view('template/menu');?>
 		 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
        		 <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
 		 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>				
@@ -28,7 +28,7 @@
 </script>
 </head>
   <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
 <script>
         function goBack() {

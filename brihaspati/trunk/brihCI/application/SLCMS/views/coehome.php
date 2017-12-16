@@ -48,8 +48,8 @@
         <body>
             <div>
                 <?php $this->load->view('template/header'); ?>
-                <h3>Welcome <?= $this->session->userdata('username') ?></h3>
-                <?php $this->load->view('template/coemenu');?>
+<!--                <h3>Welcome <? //$this->session->userdata('username') ?></h3> -->
+                <?php //$this->load->view('template/coemenu');?>
                    
             </div><br/>
             <table>

@@ -4,7 +4,7 @@
 <body>
 <div>
 <?php $this->load->view('template/header.php');?>
-<?php $this->load->view('template/menu.php');?>
+<?php //$this->load->view('template/menu.php');?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 </div>
 
@@ -28,7 +28,7 @@
     echo "</table>";
 */
 ?>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 <table width="100%">
 	<tr>
 		<?php 

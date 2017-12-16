@@ -7,7 +7,7 @@
     <head>    
        	<?php $this->load->view('template/header'); ?>
      
-	<?php $this->load->view('template/menu');?> 
+	<?php //$this->load->view('template/menu');?> 
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<script>
 	function getsubname(branch){
@@ -84,7 +84,7 @@
 	</script>
     </head>    
     <body>
-       <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--       <table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
         <!--<//?php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";

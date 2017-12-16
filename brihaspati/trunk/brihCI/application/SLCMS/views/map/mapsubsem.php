@@ -6,7 +6,7 @@
 <title>Subject Semester Program with Department List</title>
     <head>    
        	<?php $this->load->view('template/header'); ?>
-	<?php $this->load->view('template/menu');?> 
+	<?php //$this->load->view('template/menu');?> 
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<script>
 	function getbranchname(branch){
@@ -45,7 +45,7 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
         <table width="100%"> 
         <div>    
             <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -95,16 +95,19 @@
 		</tr>
 
 		<tr>
+
            	<td>Program Name :</td>
            	<td>
-                <select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" >
+                <!--<select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" > -->
+                <select name="subsem_prgid" id="subsem_prgid" class="my_dropdown" style="width:100%;" >
                 <option value="" disabled selected >------Select Program Name--------------</option>
-                <?php foreach($prgresult as $dataspt): ?>
-                <option value="<?php echo $dataspt->prg_name ?>"><?php echo $dataspt->prg_name; ?></option>
+		<?php 
+		foreach($prgresult as $dataspt): ?>
+                <option value="<?php echo $dataspt->prg_id ?>"><?php echo $dataspt->prg_name.' ('. $dataspt->prg_branch .')'; ?></option>
                 <?php endforeach; ?>
            	</td>
 		</tr>
-
+<!--
         	<tr>
            	<td>Branch Name :</td>
            	<td>
@@ -112,7 +115,7 @@
                 <option value="" disabled selected >------Select Branch Name--------------</option>
            	</td>
 		</tr>
-
+-->
 		<tr>
                 <td>Semester/Year :</td>
                 <td>

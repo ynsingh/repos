@@ -20,8 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
 	
-        <?php $this->load->view('template/menu');?>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+        <?php //$this->load->view('template/menu');?>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table> -->
 <?php
 echo "<center>";
 

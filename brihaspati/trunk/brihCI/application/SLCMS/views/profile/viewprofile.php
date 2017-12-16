@@ -13,7 +13,7 @@
             <div>
                 <?php $this->load->view('template/header'); ?>
                 <?php 
-			if($this->session->userdata('id_role') == 1){
+/*			if($this->session->userdata('id_role') == 1){
 				$this->load->view('template/menu');
 			}
 			if($this->session->userdata('id_role') == 2){
@@ -22,10 +22,10 @@
 			if($this->session->userdata('id_role') == 3){
 				$this->load->view('template/stumenu');
 			}
-
+ */
 		?>
 
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
 
             </div> 		    

@@ -9,9 +9,6 @@
         <?php $this->load->view('template/header'); ?>
     </head>
 <body>
-<br>
-<nav>   <h1>Welcome to IGNTU </h1></nav>
-<br><br><br>
 <table>
             <tr colspan="2">
                 <td>
