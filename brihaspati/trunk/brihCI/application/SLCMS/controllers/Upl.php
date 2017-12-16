@@ -233,7 +233,7 @@ class Upl extends CI_Controller
 					$userflagurt=$this->commodel->insertrec('admissionmeritlist', $dataurt) ;
 					if($userflagurt){
                                             $sub='You are eligible for the admission' ;
-                                            $mess="You are eligible for the admission. Kindly chek with website" ;
+                                            $mess="Congrate. You are eligible for the admission. Your admissions detailas are given below - \n Hall ticket number - ".$entexamrollno."\n Program name - ".$course_name ." ( ".$branchname ." )  \n  Merit list number - ".$meritlist_no."\n Last date of admission - ".$lastdate_admission."\n Kindly check with website" ;
                                             $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 					    //  mail flag check 			
 					    if($mails){

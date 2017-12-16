@@ -437,8 +437,8 @@ class Enterenceadmin extends CI_Controller
 			foreach($clist as $row1){
 				$exmceter1 = $row1->ca_centername;
 				if(!empty($exmceter1)){
-					$attselectdata=array('ca_hallticketstatus' => 'Y','ca_asmid','ca_rollno','ca_centername','ca_prgid');
-					$attrecord=array('ca_centername'  => $exmceter1,'ca_rollno !=' => NULL);
+					$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+					$attrecord=array('ca_hallticketstatus' => 'Y','ca_centername'  => $exmceter1,'ca_rollno !=' => NULL);
        					$getsticker1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 					$this->logger->write_logmessage("update", "Attendence sheet data for each enter".$getsticker1);
 					//print_r($getatt1);
