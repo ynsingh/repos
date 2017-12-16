@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
-
+        <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 
 	
@@ -34,7 +34,7 @@ function myFunction() {
 <p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </p>
-<center><span style="font-size:20px;"><b>Download & Search Student Admission Details</b></span></center>
+<center><span style="font-size:20px;"><b>Search & Download Student Admission Data</b></span></center>
 
 <table align=center style="width:100%;">
 <tr>
@@ -112,8 +112,8 @@ function myFunction() {
    </form>	
 
 <?php if (isset($student_data)) {?>
-      <table class="TFtable" style="width:100%;">
-	<thead>
+      <table class="TFtable" style="width:100%;font-size:16px;">
+	<thead style="">
 		<tr>
 			<th>Sr. No.</th>
 			<th>Hall Ticket Number</th>

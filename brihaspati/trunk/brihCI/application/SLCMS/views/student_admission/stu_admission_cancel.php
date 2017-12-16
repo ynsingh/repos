@@ -5,7 +5,7 @@
 
  -->
 <html>
-<title>View Faculty list</title>
+<title>Student Admission Cancellation</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         <?php $this->load->view('template/menu');?>
@@ -18,7 +18,7 @@
     </head>
     <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table><br>
-<center><span style="font-size:20px;"><b>Student Admission Cancelation & Cancelation Report</b></span></center>
+<center><span style="font-size:20px;"><b>Student Admission Cancellation</b></span></center>
  <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -37,7 +37,7 @@
 	<form action="<?php echo site_url('admissionstu/stu_admissioncancel'); ?>"  method="POST">
 		<table style="width:100%;">
 			<tr>
-				<td><input type="text" name="halltinumber" style="width:20%;" placeholder="Enter Hall Ticket Number" value="<?php echo isset($_POST["hallnumber"]) ? $_POST["hallnumber"] :  ''; ?>" required><input type="submit" name="cancelsearch" value="Search"></td>
+				<td><input type="text" name="halltinumber" style="width:20%;" placeholder="Enter Hall Ticket Number" value="<?php echo isset($_POST["halltinumber"]) ? $_POST["halltinumber"] :  ''; ?>" required><input type="submit" name="cancelsearch" value="Search"></td>
 				<td></td>
 			</tr>
 		</table>
@@ -97,6 +97,8 @@
 					</tr>
 					
 					<tr>
+						<?php if(!empty($deptid)){?>
+						<input type="hidden" name="stu_deptid" value="<?php echo $deptid;?>" readonly><?php }?>
 						<input type="hidden" name="stu_smid" value="<?php echo $row->sas_studentmasterid;?>" readonly>
 						<input type="hidden" name="stu_hallticketno" value="<?php echo $hallnumber;?>" readonly>
 						<input type="hidden" name="stu_prgid" value="<?php echo $prgid;?>" readonly>
@@ -111,9 +113,9 @@
 	<table style="width:100%;" class="TFtable">
 		<thead>
 			<tr>
-				<th>Sr. No.</th><th>Hall Ticket Number</th><th>Student Name</th><th>Program(Branch)</th><th>Reson</th><th>Fees Refund Amount</th>
+				<th>Sr. No.</th><th>Hall Ticket Number</th><th>Student Name</th><th>Program(Branch)</th><th>Reason</th><th>Fees Refund Amount</th>
 				<th>Student Admission Status</th>
-				<th>Cancel Date</th>
+				<th>Cancel Date</th><th>Action</th>
 			</tr>
 			<tbody>
 				<?php 
@@ -133,6 +135,7 @@
 					<td><?php echo $data->sac_feesrefundamount;?></td>
 					<td><?php echo $this->commodel->get_listspfic1('student_admissionstatus','sas_admissionstatus','sas_studentmasterid',$data->sac_smid)->sas_admissionstatus;?></td>
 					<td><?php echo $data->sac_canceldate;?></td>
+					<td><a href="<?php echo site_url('admissionstu/stu_cancelreceiptpdfdw/');echo $data->sac_smid;?>">Download</a></td>
 				</tr>	
 				<?php }}?>
 			</tbody>

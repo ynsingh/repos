@@ -941,7 +941,7 @@ class Enterence extends CI_Controller {
 					$this->commodel->insertrec('admissionstudent_education', $Iedu);
 				}
 
-				$gran =$_POST['Gcname'];
+				$gran =$_POST['Gsubject'];
 				$Gedu = array(
 					'asedu_asmid'		=>	$asmid,
 					'asedu_class'   	=>	$_POST['Gcname'],
@@ -960,7 +960,7 @@ class Enterence extends CI_Controller {
 					$this->commodel->insertrec('admissionstudent_education', $Gedu);
 				}
 
-				$pron =$_POST['Pcname'];
+				$pron =$_POST['Psubject'];
 					$Pgedu = array(
 					'asedu_asmid'		=>	$asmid,
 					'asedu_class'   	=>	$_POST['Pcname'],
@@ -980,7 +980,7 @@ class Enterence extends CI_Controller {
 					$this->commodel->insertrec('admissionstudent_education', $Pgedu);
 				}
 
-				$anyn =$_POST['Acname'];
+				$anyn =$_POST['Asubject'];
 				$Aedu = array(
 					'asedu_asmid'		=>	$asmid,
 					'asedu_class'   	=>	$_POST['Acname'],

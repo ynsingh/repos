@@ -63,7 +63,7 @@
 	?>  
   
 </br>
-<center><span style="font-size:20px;"><b>Student Transfer & Transfer Details</b></span></center>
+<center><span style="font-size:20px;"><b>Student Transfer</b></span></center>
 	<form action="<?php echo site_url('admissionstu/student_transfer'); ?>"  method="POST">
 		<table style="width:100%;">
 			<tr>
@@ -94,9 +94,9 @@
 							$pname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
 							$pbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
 ?>
-						<td><b>Prgrame & Branch </b> </td><td> <?php echo $pname.'( '.$pbranch.' )';?></td>
+						<td><b>Program & Branch </b> </td><td> <?php echo $pname.'( '.$pbranch.' )';?></td>
 					</tr>
-					<?php }else{?><tr><td><b>Prgrame & Branch</b>  </td><td>Program and branch record not available</td></tr>
+					<?php }else{?><tr><td><b>Program & Branch</b>  </td><td>Program and branch record not available</td></tr>
 
 					<?php }?>
 
@@ -147,6 +147,7 @@
 				<input type="hidden" name="stu_smid" value="<?php echo $row->sas_studentmasterid;?>" readonly>
 				<input type="hidden" name="stu_oldprgid" value="<?php echo $prgid;?>">
 				<input type="hidden" name="stu_olddeptid" value="<?php echo $deptid; ?>">
+				<input type="hidden" name="stu_elicrie" value="<?php echo $data->admop_min_qual;; ?>">
 				<table style="width:100%;" class="TFtable">
 					<tr>
 						
@@ -155,7 +156,7 @@
 						<td><b>Student Name </b> </br><input type="text" name="stu_stuname" value="<?php echo $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$row->sas_studentmasterid)->sm_fname;?>" readonly></td>
 	
 
-						<td><b>Prgrame & Branch </b> </br>
+						<td><b>Program & Branch </b> </br>
 							<select name="stu_prgname" id="stu_prgname" onchange="getdeptname(this.value);geteligible(this.value);">
 								<option value="" disabled selected >Select Program</option>
                							 <?php foreach($prgresult as $dataspt): ?>

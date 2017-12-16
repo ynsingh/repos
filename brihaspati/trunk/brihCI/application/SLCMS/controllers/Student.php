@@ -48,7 +48,7 @@ class Student extends CI_Controller {
 					}else{	
 											
 						$data = array(
-							'application_no' => $this->input->post('Sanumber'),
+							'entexamrollno' => $this->input->post('Sanumber'),
 							'course_name'    => $this->input->post('Sprogramname'),
 							//'branchname'     => $this->input->post('Sbranchname'),
 							'student_email'  => $this->input->post('Semail')				
@@ -250,7 +250,7 @@ class Student extends CI_Controller {
 		
 		$number = $this->session->userdata['app_no'];
 		$data['number']	= $number;
-		
+		//print_r($number);echo "step 1";die;
 	//	$whdata = array( 'asm_applicationno' => $number );
                 $resultap = $this->commodel->isduplicate('admissionstudent_master','asm_applicationno', $number);
 		
@@ -382,7 +382,8 @@ class Student extends CI_Controller {
 		$this->semail=$this->commodel->get_listspfic1("admissionmeritlist","student_email","application_no",$this->number)->student_email;*/
 
 
-		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$number)->lastdate_admission;
+		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
+		//print_r($ldate);die;
 		$admidate = $this->datmodel->comparedate($ldate);
 	//	if($admidate == $cdate)
 		if($admidate)
@@ -396,7 +397,7 @@ class Student extends CI_Controller {
 	    		$this->form_validation->set_rules('Saadharnumber','aadhar number','trim|xss_clean|is_numeric|max_length[12]|callback_aadharexist');
             		$this->form_validation->set_rules('Sabgroup','blood group','trim|xss_clean');
            		$this->form_validation->set_rules('Sreligion','religion','trim|xss_clean|required');
-            		$this->form_validation->set_rules('Smobile','mobile number','trim|xss_clean|is_numeric|max_length[10]|required');
+            		$this->form_validation->set_rules('Smobile','mobile number','trim|xss_clean|is_numeric|max_length[12]|required');
 	    		$this->form_validation->set_rules('Semail','email-id','trim|xss_clean|required|valid_email');
 			$this->form_validation->set_rules('Snameprogramme','Program/Course name','trim|xss_clean');
 			$this->form_validation->set_rules('Scenters','Study center','trim|xss_clean|required');
@@ -718,10 +719,11 @@ class Student extends CI_Controller {
                 );
 		$this->db->insert('student_admissionstep', $stuadmission);
 		
-		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$number)->id;
-		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$number)->entexamname;
-		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$number)->entexamrollno;
-		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$number)->meritlist_no;	
+		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
+		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","entexamrollno",$number)->entexamname;
+		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;
+		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	
+		//print_r($ameritid.' '.$ameritexname.' '.$ameritrollno.' '.$ameritno);die;
 		//insert  into student entry exit
 		$stuentry = array(
 				'senex_prgid'			=>	$_POST['Snameprogramme'],
@@ -1381,7 +1383,7 @@ class Student extends CI_Controller {
 		                		'admission_taken'           =>	$sdate,
 						'admission_date'	    =>	$sdate,
 	           	     		);
-		             		$this->db->where('application_no',$ano);
+		             		$this->db->where('entexamrollno',$ano);
     					$this->db->update('admissionmeritlist',$stuentmerit);
 
 

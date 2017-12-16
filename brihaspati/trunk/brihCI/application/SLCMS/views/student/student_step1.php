@@ -272,7 +272,9 @@ function change_getcat(){
 	<tbody>
 		<?php  $i=1;
 			if(!empty($studedu)){
-			  foreach($studedu as $row){ ?>
+			  foreach($studedu as $row){ 
+			if(!empty($row->asedu_institution)){			
+		?>
 		<tr>
 			
 			<td><input type="text" placeholder="Enter Class Name" name="classname<?php echo $i;?>1" value="<?php echo $row->asedu_class;?>" readonly></td>
@@ -285,7 +287,7 @@ function change_getcat(){
 			<td><input type="text" placeholder="Enter Marks Obtained" name="marksobtained<?php  echo $i;?>8" value="<?php echo $row->asedu_marksobtained;?>" readonly></td>
 			<td><input type="text" placeholder="Enter Percentage" name="percentage<?php  echo $i;?>9" value="<?php echo $row->asedu_percentage;?>" readonly></td>
 		</tr>
-		<?php $i++;}}?>
+		<?php $i++;}}}?>
 	</tbody>
 </table>
 <br><br>

@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           		
 <center>
 	<div class="panel panel-primary" style="width:80%;">
-      		<div class="panel-heading"><h4>Student Admission Cancel Receipt</h4></div>
+      		<div class="panel-heading"><h4>Student Admission Cancellation Receipt</h4></div>
       		<div class="panel-body">
 	<table border=0 style="width:100%;" >
 		

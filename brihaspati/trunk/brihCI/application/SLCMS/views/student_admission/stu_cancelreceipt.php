@@ -42,7 +42,7 @@ function myFunction() {
 		
 <center>
 	<div class="panel panel-primary" style="width:65%;">
-      		<div class="panel-heading"><h4>Student Admission Cancel Receipt</h4></div>
+      		<div class="panel-heading"><h4>Student Admission Cancellation Receipt</h4></div>
       		<div class="panel-body">
 	<table border=0 style="width:100%;" >
 		

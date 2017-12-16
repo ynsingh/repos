@@ -15,6 +15,7 @@ class Admissionstu extends CI_Controller
 		$this->load->model("user_model","usermodel");
                 $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
+		$this->load->model("Mailsend_model","mailmodel");	
         //if(empty($this->session->userdata('id_user'))) {
         //  $this->session->set_flashdata('flash_data', 'You don\'t have access!');
          //   redirect('welcome');
@@ -74,8 +75,16 @@ class Admissionstu extends CI_Controller
 				$newdeptid = $this->input->post('stu_departname');
 				$oldprgid = $this->input->post('stu_oldprgid');
 				$olddeptid = $this->input->post('stu_olddeptid');
+				$eligible = $this->input->post('stu_elicrie');
 
-				
+				$newcourse_name = $this->commodel->get_listspfic1('program','prg_name','prg_id',$newprgid)->prg_name;
+				$newbranchname  = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$newprgid)->prg_branch;	
+				$oldcourse_name = $this->commodel->get_listspfic1('program','prg_name','prg_id',$oldprgid)->prg_name;
+				$oldbranchname  = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$oldprgid)->prg_branch;	
+				$olddeptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$olddeptid)->dept_name;
+				$newdeptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$newdeptid)->dept_name;
+				$email = $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$smid)->sm_email;
+				$stuname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smid)->sm_fname;
                			 $data = array(
                     			'st_hallticketno'	=>	$hallno,
                     			'st_smid'		=>	$smid,
@@ -103,20 +112,31 @@ class Admissionstu extends CI_Controller
 				$admiupdate = array(
                    			'sas_prgid'	=>	$newprgid,
                 		);
-				 $result1=$this->commodel->updaterec('student_admissionstatus',$admiupdate,'sas_studentmasterid',$smid);
+				$result1=$this->commodel->updaterec('student_admissionstatus',$admiupdate,'sas_studentmasterid',$smid);
 
 				//update program id in student entry exit
 				$stuentupdate = array(
                    			'senex_prgid'	=>	$newprgid,
                 		);
-				 $result2=$this->commodel->updaterec('student_entry_exit',$stuentupdate,'senex_smid',$smid);
+				$result2=$this->commodel->updaterec('student_entry_exit',$stuentupdate,'senex_smid',$smid);
+				
+					
+				//mail function	
+				 $sub='Department/Program Transfer Details' ;
+                                 $mess="Your Department/Program transfer has been approved by CoE.The details are given below - \n Hall Ticket Number - ".$hallno."\n \n Old Department Name- ".$olddeptname. "\n Old Program Name - ".$oldcourse_name ." ( ".$oldbranchname ." )\n\n Current Department Name- ".$newdeptname."\n Current Program Name - ".$newcourse_name ." ( ".$newbranchname ." ) " ;
+                                 $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
+					    //  mail flag check 			
+				 if($mails){
+                                           $error[] ="mail sent sucessfully";
+                        	           $this->logger->write_logmessage("insert","Student Transfer ".$stuname." successfull");
+					   $this->logger->write_dblogmessage("insert","Student Transfer ".$stuname."successfull" );
+				 }
+				  else{
+        	                         $error[] ="insufficient data and mail does sent";
+	                                 $this->logger->write_logmessage("insert","Student Transfer ".$stuname."  not successfull");
+				         $this->logger->write_dblogmessage("insert","Student Transfer  ".$stuname." not successfull" );
 
-				//update program id in student_attendance
-				$stuentupdate = array(
-                   			'satd_prgid'	=>	$newprgid,
-					'satd_deptid'   =>	$newdeptid
-                		);
-				 $result2=$this->commodel->updaterec('student_attendance',$stuentupdate,'satd_smid',$smid);
+					}
 
                			if(!$result2)
                			{
@@ -180,16 +200,22 @@ class Admissionstu extends CI_Controller
             		/*Form Validation*/
 			$this->form_validation->set_rules('stu_hallticketno','Hall Ticket Number','trim|callback_hallticketnoexist');
            		$this->form_validation->set_rules('stu_canreason','Reason','trim|required');
-		 	$this->form_validation->set_rules('stu_canfeerefund','Fees Refund','trim|required');
+		 	//$this->form_validation->set_rules('stu_canfeerefund','Fees Refund','trim|required');
            	 	
            		 if($this->form_validation->run() == TRUE)
            	 	{  
                			$smid   = $this->input->post('stu_smid');
                 		$hallno = $this->input->post('stu_hallticketno');
 				$prgid  = $this->input->post('stu_prgid');
+				$depid  = $this->input->post('stu_deptid');
 				$reson  = $this->input->post('stu_canreason');
 				$feesrefund = $this->input->post('stu_canfeerefund');
-				
+				$course_name = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+				$branchname  = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;	
+				$deptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$depid)->dept_name;
+				$email = $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$smid)->sm_email;
+				$stuname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smid)->sm_fname;
+				//print_r($feesrefund.' '.$deptname);die;
                			 $data = array(
                     			'sac_hallticketno'	=>	$hallno,
                     			'sac_smid'		=>	$smid,
@@ -212,8 +238,8 @@ class Admissionstu extends CI_Controller
                     			
                 		);
 				 $upprog=$this->commodel->updaterec('student_program', $updata,'sp_smid',$smid);
-				 $this->logger->write_logmessage("update","Update record in student program for cancel student", $hallno.$smid);
-                    		 $this->logger->write_dblogmessage("update","Update record in student program for cancel student", $hallno.$smid);
+				 $this->logger->write_logmessage("update","Update record in student program for cancel student", $hallno.$stuname);
+                    		 $this->logger->write_dblogmessage("update","Update record in student program for cancel student", $hallno.$stuname);
 				//update student fees when student admission cancel
 				$updata = array(
                     			
@@ -221,8 +247,8 @@ class Admissionstu extends CI_Controller
                     			
                 		);
 				 $upfees=$this->commodel->updaterec('student_fees', $updata,'sfee_smid',$smid);
-				 $this->logger->write_logmessage("update","Update record in student fees for cancel student", $hallno.$smid);
-                    		 $this->logger->write_dblogmessage("update","Update record in student fees for cancel student", $hallno.$smid);	
+				 $this->logger->write_logmessage("update","Update record in student fees for cancel student", $hallno.$stuname);
+                    		 $this->logger->write_dblogmessage("update","Update record in student fees for cancel student", $hallno.$stuname);	
 				//update student admission status when student admission cancel
 				$updata = array(
                     			
@@ -230,19 +256,36 @@ class Admissionstu extends CI_Controller
                     			
                 		);
 				 $upstustatus = $this->commodel->updaterec('student_admissionstatus', $updata,'sas_studentmasterid',$smid);
-				 $this->logger->write_logmessage("update","Update record in student admission status for cancel student", $hallno.$smid);
-                    		 $this->logger->write_dblogmessage("update","Update record in student admission status fees for cancel student", $hallno.$smid);	
+				 $this->logger->write_logmessage("update","Update record in student admission status for cancel student", $hallno.$stuname);
+                    		 $this->logger->write_dblogmessage("update","Update record in student admission status fees for cancel student", $hallno.$stuname);
+
+				 //mail function	
+				 $sub='Admission Cancelled' ;
+                                 $mess="Your admission has been cancelled .The details are given below - \n Hall Ticket Number - ".$hallno."\n \n Department Name- ".$deptname." \n Program Name - ".$course_name ." ( ".$branchname ." ) \n Admission Cancellation Reason - ".$reson."\n Your Refunded Fees Amount - " .$feesrefund;
+                                 $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
+					    //  mail flag check 			
+				 if($mails){
+                                           $error[] ="mail sent sucessfully";
+                        	           $this->logger->write_logmessage("insert","Student Admission Cancelletion ".$stuname.$hallno."successfull");
+					   $this->logger->write_dblogmessage("insert","Student Admission Cancelletion ".$stuname.$hallno." successfull" );
+				 }
+				  else{
+        	                         $error[] ="insufficient data and mail does sent";
+	                                 $this->logger->write_logmessage("insert",$hallno."Student Admission Cancelletion not successfull");
+				         $this->logger->write_dblogmessage("insert",$hallno."Student Admission Cancelletion not successfull" );
+
+					}
                			if(!$upstustatus)
                			{
-                    			$this->logger->write_logmessage("error","Error  in student admission cancel", $hallno.$smid);
-                    			$this->logger->write_dblogmessage("error","Error  in student admission cancel", $hallno.$smid);
+                    			$this->logger->write_logmessage("error","Error  in student admission cancel", $hallno.$stuname);
+                    			$this->logger->write_dblogmessage("error","Error  in student admission cancel", $hallno.$stuname);
                    			$this->session->set_flashdata('err_message','Some Data Is Incorrect - ' .$hallno);
                     			redirect('admissionstu/stu_addadmissioncancel');
                 		}
                 		else{
-					$this->logger->write_logmessage("insert","Insert in student admission cancel".$hallno.$smid);
+					$this->logger->write_logmessage("insert","Insert in student admission cancel".$hallno.$stuname);
 			
-                    			$this->logger->write_dblogmessage("insert","Insert in student admission cancel" .$hallno.$smid);
+                    			$this->logger->write_dblogmessage("insert","Insert in student admission cancel" .$hallno.$stuname);
                     			$this->session->set_flashdata("success", "This hall ticket number ".$hallno." student admission is cancelled.");
                     			redirect("admissionstu/stu_cancelreceipt/".$smid);
 				}//database error check
@@ -261,10 +304,10 @@ class Admissionstu extends CI_Controller
 	public function stu_cancelreceipt(){
 		$smid = $this->uri->segment(3);
          	$data['smid']=$smid;	
-		$data['hallticketno']= $this->commodel->get_listspfic1('student_admissionstatus','sas_hallticketno','sas_studentmasterid',$smid)->sas_hallticketno;
+		$data['hallticketno']= $this->commodel->get_listspfic1('student_admission_cancel','sac_hallticketno','sac_smid',$smid)->sac_hallticketno;
 		$data['stu_name']= $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smid)->sm_fname;
 		$data['stu_fathername']= $this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$smid)->spar_fathername;
-		$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
+		$prgid = $this->commodel->get_listspfic1('student_admission_cancel','sac_progid','sac_smid',$smid)->sac_progid;
 		$data['stu_progname']= $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )';
 		$data['stu_fees']= $this->commodel->get_listspfic1('student_admission_cancel','sac_feesrefundamount','sac_smid',$smid)->sac_feesrefundamount;
 
@@ -275,10 +318,11 @@ class Admissionstu extends CI_Controller
 		$smid = $this->uri->segment(3);
 		
          	//$data['smid']=$smid;	
-		$data['hallticketno']= $this->commodel->get_listspfic1('student_admissionstatus','sas_hallticketno','sas_studentmasterid',$smid)->sas_hallticketno;
+		$data['hallticketno']= $this->commodel->get_listspfic1('student_admission_cancel','sac_hallticketno','sac_smid',$smid)->sac_hallticketno;
 		$data['stu_name']= $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smid)->sm_fname;
 		$data['stu_fathername']= $this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$smid)->spar_fathername;
-		$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
+
+		$prgid = $this->commodel->get_listspfic1('student_admission_cancel','sac_progid','sac_smid',$smid)->sac_progid;
 		$data['stu_progname']= $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )';
 
 		$data['stu_fees']= $this->commodel->get_listspfic1('student_admission_cancel','sac_feesrefundamount','sac_smid',$smid)->sac_feesrefundamount;

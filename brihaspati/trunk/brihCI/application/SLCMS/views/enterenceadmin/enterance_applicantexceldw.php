@@ -24,7 +24,7 @@
 	</thead>
 	<thead>
 		<tr>
-			<th colspan=28></th>
+			<th colspan=29></th>
 			<th>Name of Institute (10th)</th>
 			<th>Board / University (10th)</th>
 			<th>Year of Passing (10th)</th>
@@ -111,6 +111,7 @@
             <tr>
 
                 <th>Serial No.</th>
+		<th>Hall Ticket No.</th>
 		<th>Study Center</th>
 		<th>Program Category</th>
 		<th>Program & Branch Applied</th>
@@ -178,7 +179,7 @@
 		?>
 				<tr>
 					<td><?php echo $count++;?></td>
-					
+					<td><?php echo $data->asm_applicationno;?></td>
 					<?php $scid = $this->commodel->get_listspfic1('admissionstudent_master','asm_sccode','asm_id',$asmid)->asm_sccode;
 					      $scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;	
 					?>

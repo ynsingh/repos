@@ -61,14 +61,19 @@ class Downloads extends CI_Controller
 		$date1 = $this->input->post('stadate');
 		$date2 = $this->input->post('enddate');
 		$admrecrd='';
-		$data = array(
+		/*$data = array(
 			'date1' => $date1,
 			'date2' => $date2
-			);
+			);*/
 		if ($date1 == "" || $date2 == "") {
 			$data['err_message'] = "Both date fields are required";
 		} else {
-			$result = $this->stumodel->show_data_by_date_range($data);
+			//$result = $this->stumodel->show_data_by_date_range($data);
+			$condition = "sas_admissiondate BETWEEN " . "'" . $date1 . "'" . " AND " . "'" . $date2 . "'";
+			$sarray='sas_studentmasterid';
+			//$wharray = array('prg_id' => $prgid);
+			$result = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+			
 			//print_r($result);die;
 			$data['student_data']=$result;
 		}

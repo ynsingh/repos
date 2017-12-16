@@ -113,7 +113,7 @@ function myFunction() {
    </form>	
 
 <?php if (isset($student_data)) {?>
-      <table class="TFtable" style="width:100%;">
+      <table class="TFtable" style="width:100%;font-size:16px;">
 	<thead>
 		<tr>
 			<th>Sr. No.</th>
