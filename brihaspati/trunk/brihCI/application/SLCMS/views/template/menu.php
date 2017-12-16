@@ -161,7 +161,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('admissionstu/student_transfer', 'Student Department Transfer', array('title' => 'Student Department Transfer'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('admissionstu/stu_admissioncancel', 'Admission Cancellataion', array('title' => 'Admission Cancellataion'));
+						echo anchor('admissionstu/stu_admissioncancel', 'Admission Cancellation', array('title' => 'Admission Cancellation'));
 					echo "</li>";
 /*					echo "<li>";
 						echo anchor('admissionstu/stu_feereimb', 'Admission Fees Reimbursement', array('title' => 'Admission Fees Reimbursement'));

@@ -62,7 +62,7 @@ function myFunction() {
 			<td>
 				<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
   				<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
-        			<input type="text" name="stadate" placeholder="Start Date" value="<?php echo isset($_POST["sdate"]) ? $_POST["sdate"] : ''; ?>" id="sdate" />
+        			<input type="text" name="stadate" placeholder="Start Date" value="<?php echo isset($_POST["sdate"]) ? $_POST["sdate"] : ''; ?>" id="sdate" required />
         
             			<script>
                				 $('#sdate').datepicker({
@@ -85,7 +85,7 @@ function myFunction() {
 
 			<td>
 				
-        		<input type="text" name="enddate" placeholder="End date" value="<?php echo isset($_POST["edate"]) ? $_POST["edate"] : ''; ?>" id="edate" />
+        		<input type="text" name="enddate" placeholder="End date" value="<?php echo isset($_POST["edate"]) ? $_POST["edate"] : ''; ?>" id="edate" required />
         
             			<script>
                				 $('#edate').datepicker({
@@ -183,7 +183,7 @@ function myFunction() {
 				
 			</tr>		
 			
-	<?php }	}else{ ?><td colspan=12 style="text-align:center;">No Record Found !!!!</td><?php }?>
+	<?php }	}else{ ?><td colspan=14 style="text-align:center;">No Record Found !!!!</td><?php }?>
 			<tr>
 
 				<td colspan=14 ><center>

@@ -41,11 +41,11 @@ function myFunction() {
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-<div id="header">
+<!--<div id="header">
 	<img src="<?php echo base_url(); ?>uploads/logo/logo2.jpg" alt="logo" style="height:100px;width:100%;">
-</div> 
+</div> -->
 
-	<?php //$this->load->view('template/header'); ?>
+	<?php $this->load->view('template/header'); ?>
         <?php echo "<span id='foohide'>";
 		//$this->load->view('template/menu');
 	      echo "</span>";	

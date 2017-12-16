@@ -5,7 +5,7 @@
 <title>View SC</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <?php// $this->load->view('template/menu');?>
+        <?php // $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
