@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
-<!--@name editcategory.php 
+<!--@name editscheme.php 
   @author Om Prakash(omprakashkgp@gmail.com)
  -->
 
@@ -21,7 +21,10 @@
 
       <table width="100%">
             <tr colspan="2"><td>
-                <div>
+            <?php
+                echo anchor('setup/displayscheme', 'Scheme List', array('class' => 'top_parent'));
+                ?>
+		<div align="left" style="margin-left:0%;width:95%;">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -48,9 +51,16 @@
                 echo "<td>";
                     echo form_label('Department Name', 'sd_deptid');
                 echo "</td>";
-                echo "<td>";
-                    echo form_input($sd_deptid);
-                echo "</td>";
+                echo "<td><select name=\"sd_deptid\" class=\"my_dropdown\" style=\"width:100%;\">";
+
+                echo "<option value=\"$sd_deptid[value]\">$sd_deptid[value]</option>"; ?>
+                <?php foreach($this->deptresult as $datas): ?>
+                  <option value="<?php echo $datas->dept_name; ?>"><?php echo $datas->dept_name; ?></option>
+                <?php endforeach; ?>
+                </select></td>
+               </td>
+               </tr>
+             <?php
                 echo "<td>";
                 echo "</td>";
             echo "</tr>";

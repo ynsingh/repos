@@ -2,8 +2,8 @@
 
 <!--@name salarygrademaster.php
   @author Rekha Devi Pal(rekha20july@gmail.com)
+  @author: Om Prakash (omprakashkgp@gmail.com), Dec-2017 Modification
  -->
-
 
 <html>
 <title>Salary Grade Master</title>
@@ -43,36 +43,36 @@
             <tr>  
                 <td><label for="sgmname" class="control-label">Salary Grade Name :</label></td>
                 <td>
-                <input type="text" name="sgmname" class="form-control" size="40" /><br>
+                <input type="text" name="sgmname" class="form-control" size="40" placeholder="Salary Grade Name.."/><br>
                 </td>
- 		<td><?php echo form_error('sgmname')?></td> 
+ 		<!--<td><?php echo form_error('sgmname')?></td>--> 
             </tr>
             <tr> 
                 <td>    
                 <label for="sgmmax" class="control-label">Salary Grade Max :</label>
                 </td>
                 <td>
-                    <input type="text" name="sgmmax" size="40" class="form-control"/> <br>
+                    <input type="text" name="sgmmax" size="40" class="form-control" placeholder="Salary Grade Max.."/> <br>
                 </td>
- 		<td><?php echo form_error('sgmmax')?></td>
+ 		<!--<td><?php echo form_error('sgmmax')?></td>-->
             </tr>
             <tr>
                 <td>   
                     <label for="sgmmin" class="control-label">Salary Grade Min :</label>
                 </td>
                 <td>
-                    <input type="text" name="sgmmin" size="40"  class="form-control"/> <br>
+                    <input type="text" name="sgmmin" size="40"  class="form-control" placeholder="Salary Grade Min.."/> <br>
                 </td>
-		 <td><?php echo form_error('sgmmin')?></td>
+		 <!--<td><?php echo form_error('sgmmin')?></td>-->
             </tr>
             <tr>
                 <td>   
                 <label for="sgmgradepay" class="control-label">Salary Grade Pay Band :</label>
                 </td>
                 <td>
-                    <input type="text" name="sgmgradepay"  size="40"/> <br>
+                    <input type="text" name="sgmgradepay"  size="40" placeholder="Salary Grade Pay Band.."/> <br>
                 </td>
- 		<td><?php echo form_error('sgmgradepay')?></td>
+ 		<!--<td><?php echo form_error('sgmgradepay')?></td>-->
             </tr>
             <tr><td></td>
                 <td colspan="2">   

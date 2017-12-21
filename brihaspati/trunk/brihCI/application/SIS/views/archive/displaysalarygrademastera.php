@@ -1,12 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
-<!--@name  displayscheme.php 
-  @author Rekha Devi Pal(rekha20uly@gmail.com)
-  @author Manorama Pal(palseema30@gmail.com) add AGP Code 
+<!--@name  displaysalarygrademastera.php 
+  @author Om Prakash (omprakashkgp@gmail.com) 
  -->
 
 <html>
-<title>displaysalarygrademaster</title>
+<title>Display Salary Grade Master Archive</title>
 <head>    
     <?php $this->load->view('template/header'); ?>
     <?php $this->load->view('template/menu');?>
@@ -17,15 +16,8 @@
 <table width='100%'>
 	<tr colspan="2">
          <?php
-	    echo "<td align=\"left\" width=\"33%\">";
-            echo anchor('setup/salarygrademaster/', 'Add Salary Grade', array('class' => 'top_parent'));
-            echo "</td>";
             echo "<td align=\"center\" width=\"34%\">";
             echo "<b>Salary Grade Details</b>";
-            echo "</td>";
-            echo "<td align=\"right\" width=\"33%\">";
-	    $help_uri = site_url()."/help/helpdoc#ViewSchemeDetail";
-	    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
             echo "</td>";
          ?>
 	<div align="left" style="margin-left:0%;width:95%;">
@@ -55,7 +47,8 @@
         <th>Salary Grade Max </th>
         <th>Salary Grade Min</th>
         <th>Salary Grade Pay Band </th>
-        <th> Action </th>
+        <th>Archiver's Name </th>
+        <th>Archiver's Date </th>
         </thead></tr>
 	<tbody>
 	     <?php
@@ -65,12 +58,14 @@
               ?>    
 		<tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $row->sgm_id;?> </td>
-                    <td><?php echo $row->sgm_name;?> </td>
-                    <td><?php echo $row->sgm_max ;?> </td>
-                    <td><?php echo $row->sgm_min ;?></td>
-		    <td><?php echo $row->sgm_gradepay ?> </td>
-             	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+                    <td><?php echo $row->sgma_sgmid;?> </td>
+                    <td><?php echo $row->sgma_name;?> </td>
+                    <td><?php echo $row->sgma_max ;?> </td>
+                    <td><?php echo $row->sgma_min ;?></td>
+		    <td><?php echo $row->sgma_gradepay ?> </td>
+                    <td><?php echo $this->logmodel->get_listspfic1('edrpuser', 'username', 'id', $row->sgma_archuserid)->username ?> </td>
+                    <td><?php echo $row->sgma_archdate ?> </td>
+
 	       </td>
                </tr>
  	  <?php } ?> 

@@ -13,7 +13,8 @@
  * @author Neha Khullar(nehukhullar@gmail.com) add bankdetails
  * @author Neha Khullar(nehukhullar@gmail.com) department Archive
  * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
- @Modification : Om Prakash(omprakashkgp@gmail.com) Dec-2017, check for duplicate entry 
+ * @Modification : Om Prakash(omprakashkgp@gmail.com) Dec-2017, check for duplicate entry,
+ * Scheme archive, salary grade master archive 
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -2648,13 +2649,20 @@ class Setup extends CI_Controller
  public function scheme(){
         $this->deptresult = $this->common_model->get_list('Department');
         if(isset($_POST['scheme'])) {
-            $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
+            $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
             $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|callback_isSchemeExist');
             $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
             $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean');
 
             if($this->form_validation->run()==TRUE){
+
+	    $schd = $this->input->post("dept_name");
+	    $schname= $this->input->post("sname");
+            $schcode= $this->input->post("scode");
+	    $schsn= $this->input->post("ssname");	
+	    					
+	    $schdata = array('sd_deptid'=>ucwords(strtolower($_POST['dept_name'])), 'sd_name'=>ucwords(strtolower($_POST['sname'])), 'sd_code'=>strtoupper($_POST['scode']), 'sd_short'=>strtoupper($_POST['ssname']) );
 
             $data = array(
                 'sd_deptid'=>ucwords(strtolower($_POST['dept_name'])),
@@ -2664,14 +2672,24 @@ class Setup extends CI_Controller
                 'sd_desc'=>$_POST['sdesc']
 
             );
-           $schflag=$this->SIS_model->insertrec('scheme_department', $data) ;
-           if(!$schflag)
-           {
+
+	   $schdatadup = $this->SIS_model->isduplicatemore('scheme_department', $schdata);		
+           if($schdatadup == 1 ){
+
+                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $schd  , 'Scheme Name' = $schname , 'Scheme Code' = $schcode, 'Scheme Short Name'=$schsn  .");
+                                  redirect('setup/scheme');
+                                  return;
+                  }
+          else{
+
+          $schflag=$this->SIS_model->insertrec('scheme_department', $data) ;
+          if(!$schflag)
+          {
                 $this->logger->write_logmessage("insert"," Error in adding scheme ", " Scheme data insert error . "  );
                 $this->logger->write_dblogmessage("insert"," Error in adding scheme ", " Scheme data insert error . " );
                 $this->session->set_flashdata('err_message','Error in adding scheme - ' . $_POST['sname'] , 'error');
                 $this->load->view('setup/scheme');
-           }
+          }
           else{
                 $this->logger->write_logmessage("insert"," add scheme ", "Scheme record added successfully..."  );
                 $this->logger->write_dblogmessage("insert"," add scheme ", "Scheme record added successfully..." );
@@ -2679,7 +2697,7 @@ class Setup extends CI_Controller
                 redirect("setup/displayscheme", "refresh");
           }
         }
-
+      }
     }
     $this->load->view('setup/scheme');
  }
@@ -2718,6 +2736,7 @@ class Setup extends CI_Controller
      * @return type
      */
     public function editscheme($sd_id) {
+        $this->deptresult = $this->common_model->get_list('Department');
 	$sch_data_q=$this->SIS_model->get_listrow('scheme_department','sd_id', $sd_id);
         if ($sch_data_q->num_rows() < 1)
         {
@@ -2734,7 +2753,7 @@ class Setup extends CI_Controller
             'size' => '40',
             'value' => $this->common_model->get_listspfic1('Department','dept_name', 'dept_id',$scheme_data->sd_deptid)->dept_name,
             //'value' => $scheme_data->sd_name,
-            'readonly' => 'readonly'
+            
         );
         $data['sname'] = array(
             'name' => 'sname',
@@ -2742,7 +2761,7 @@ class Setup extends CI_Controller
             'maxlength' => '50',
             'size' => '40',
             'value' => $scheme_data->sd_name,
-	    'readonly' => 'readonly'	
+	    	
         );
         $data['scode'] = array(
            'name' => 'scode',
@@ -2767,15 +2786,15 @@ class Setup extends CI_Controller
         );
         $data['sd_id'] = $sd_id;
           
-       // $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean'); 
+        $this->form_validation->set_rules('sd_deptid','Department name','trim|xss_clean'); 
         $this->form_validation->set_rules('sname','Scheme Name ','trim|xss_clean|required');
         $this->form_validation->set_rules('scode','Scheme Code ','trim|xss_clean|required|alpha_dash');
         $this->form_validation->set_rules('ssname','Scheme Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
-        $this->form_validation->set_rules('sdesc','Scheme Description ','trim|xss_clean|alpha_numeric_spaces');
+        $this->form_validation->set_rules('sdesc','Scheme Description ','trim|xss_clean');
 
         if ($_POST)
         {
-         //   $data['sd_deptid']['value'] = $this->input->post('sd_deptid', TRUE);
+            $data['sd_deptid']['value'] = $this->input->post('sd_deptid', TRUE);
             $data['sname']['value'] = $this->input->post('sname', TRUE);
             $data['scode']['value'] = $this->input->post('scode', TRUE);
             $data['ssname']['value'] = $this->input->post('ssname', TRUE);
@@ -2788,31 +2807,58 @@ class Setup extends CI_Controller
         }
 	else
         {
-         //   $sd_deptid = ucwords(strtolower($this->input->post('sd_deptid', TRUE)));
+            $sd_deptid = ucwords(strtolower($this->input->post('sd_deptid', TRUE)));
             $data_sname = ucwords(strtolower($this->input->post('sname', TRUE)));
             $data_scode = strtoupper($this->input->post('scode', TRUE));
             $data_ssname = strtoupper($this->input->post('ssname', TRUE));
             $data_sdesc = $this->input->post('sdesc', TRUE);
             $data_sid = $sd_id;
 	    $logmessage = "";
-            //if($scheme_data->sd_deptid != $data_sd_deptid)
-              //  $logmessage = "Add Scheme " .$scheme_data->sd_name. " changed by " .$data_sd_deptid;
+            if($scheme_data->sd_deptid != $sd_deptid)
+                $logmessage = "Add Scheme " .$scheme_data->sd_deptid. " changed by " .$sd_deptid;
             if($scheme_data->sd_name != $data_sname)
                 $logmessage = "Add Scheme " .$scheme_data->sd_name. " changed by " .$data_sname;
             if($scheme_data->sd_code != $data_scode)
                 $logmessage = "Add Scheme " .$scheme_data->sd_code. " changed by " .$data_scode;
-            if($scheme_data->sd_short != $data_csname)
+            if($scheme_data->sd_short != $data_ssname)
                 $logmessage = "Add Scheme " .$scheme_data->sd_short. " changed by " .$data_ssname;
             if($scheme_data->sd_desc != $data_sdesc)
                 $logmessage = "Add Scheme " .$scheme_data->sd_desc. " changed by " .$data_sdesc;
 
+            $instdatasda = array(
+               'sda_sdid' =>$data_sid,
+	       'sda_deptid' =>$scheme_data->sd_deptid,
+               'sda_name' => $scheme_data->sd_name,
+               'sda_code' => $scheme_data->sd_code,
+               'sda_short' => $scheme_data->sd_short,
+               'sda_desc'  => $scheme_data->sd_desc,
+	       'sda_archuserid'=>$this->session->userdata('id_user'),
+               'sda_archdate'=>date('y-m-d')
+            );
+
             $update_data = array(
-             //  'sd_deptid' =>$data_sd_deptid,
+               'sd_deptid' =>$this->common_model->get_listspfic1('Department','dept_id', 'dept_name', $sd_deptid)->dept_id,
                'sd_name' => $data_sname,
                'sd_code' => $data_scode,
                'sd_short' => $data_ssname,
                'sd_desc'  => $data_sdesc
             );
+
+	   $schdatadupe = $this->SIS_model->isduplicatemore('scheme_department', $update_data);		
+           if($schdatadupe == 1 ){
+
+                   $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $sd_deptid, 'Scheme Name' = $data_sname , 'Scheme Code' = $data_scode, 'Scheme Short Name'=$data_ssname .");
+                                  redirect('setup/displayscheme/');
+                                  return;
+               }
+           else{
+	    $sdflag=$this->SIS_model->insertrec('scheme_department_archive', $instdatasda);
+            if(!$sdflag)
+            {
+              $this->logger->write_dblogmessage("error","Error in insert scheme department archive", "Error in  scheme department archive record insert" .$data_id );
+            }else{
+              $this->logger->write_dblogmessage("insert","Insert scheme department archive archive", "Record inserted in scheme department archive successfully.." .$data_id );
+            }
 
 	   $scflag=$this->SIS_model->updaterec('scheme_department', $update_data, 'sd_id', $data_sid);
 	   if(!scflag)	
@@ -2828,6 +2874,7 @@ class Setup extends CI_Controller
                 $this->session->set_flashdata('success','Scheme record updated successfully...');
                 redirect('setup/displayscheme/');
                 }
+	     }	
         }//else
         redirect('setup/editscheme/');
     }
@@ -3440,6 +3487,11 @@ public function salarygrademaster(){
 
             if($this->form_validation->run()==TRUE){
 
+	    $sgmn = $this->input->post("sgmname");		
+	    $sgmmax = $this->input->post("sgmmax");		
+	    $sgmmin = $this->input->post("sgmmin");		
+	    $sgmgrade = $this->input->post("sgmgradepay");		
+	    	
             $data = array(
                 'sgm_name'=>strtoupper($_POST['sgmname']),
                 'sgm_max'=>strtoupper($_POST['sgmmax']),
@@ -3447,6 +3499,16 @@ public function salarygrademaster(){
                 'sgm_gradepay'=>$_POST['sgmgradepay']
 
             );
+           $saldatadup = $this->SIS_model->isduplicatemore('salary_grade_master', $data);
+
+                   if($saldatadup == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Salary Grade Master Name' = $sgmn, 'Salary Grade Master Max' = $sgmmax , 'Salary Grade Master Min' =$sgmmin .");
+                        redirect('setup/salarygrademaster');
+                        return;
+                 }
+           else{
+
            $sgmflag=$this->SIS_model->insertrec('salary_grade_master', $data) ;
            if(!$sgmflag)
            {
@@ -3462,7 +3524,7 @@ public function salarygrademaster(){
                 redirect("setup/displaysalarygrademaster", "refresh");
               }
            }
-
+	 }
         }
       $this->load->view('setup/salarygrademaster');
    }
@@ -3497,7 +3559,6 @@ public function displaysalarygrademaster(){
             'maxlength' => '50',
             'size' => '40',
             'value' => $SalaryGradeMaster_data->sgm_name,
-            'readonly' => 'readonly'
         );
         $data['sgm_max'] = array(
            'name' => 'sgm_max',
@@ -3563,12 +3624,39 @@ public function displaysalarygrademaster(){
             if($SalaryGradeMaster_data->sgm_gradepay != $sgm_gradepay)
                 $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_gradepay. " changed by " .$sgm_gradepay;
 
+            $instdatasgma = array(
+	       'sgma_sgmid'=> $sgm_id,	
+               'sgma_name' => $SalaryGradeMaster_data->sgm_name,
+               'sgma_max' => $SalaryGradeMaster_data->sgm_max,
+               'sgma_min' => $SalaryGradeMaster_data->sgm_min,
+               'sgma_gradepay'=> $SalaryGradeMaster_data->sgm_gradepay,
+               'sgma_archuserid'=>$this->session->userdata('id_user'),
+               'sgma_archdate'=>date('y-m-d')
+            );
+
             $update_data = array(
                'sgm_name' => $sgm_name,
                'sgm_max' => $sgm_max,
                'sgm_min' => $sgm_min,
                'sgm_gradepay'=> $sgm_gradepay,
             );
+
+           $saldatadupe = $this->SIS_model->isduplicatemore('salary_grade_master', $update_data);
+
+                   if($saldatadupe == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Salary Grade Master Name' = $sgm_name, 'Salary Grade Master Max' = $sgm_max , 'Salary Grade Master Min' =$sgm_min .");
+                        redirect('setup/displaysalarygrademaster/');
+                        return;
+                 }
+         else{
+	 $sgflag=$this->SIS_model->insertrec('salary_grade_master_archive', $instdatasgma);
+         if(!$sgflag)
+            {
+              $this->logger->write_dblogmessage("error","Error in insert salary grade master archive ", "Error in  salary grade master archive record insert" .$sgm_id );
+            }else{
+              $this->logger->write_dblogmessage("insert","Insert salary grade master archive", "Record inserted in salary grade master archive successfully.." .$sgm_id );
+            }
 
            $sgmflag=$this->SIS_model->updaterec('salary_grade_master', $update_data, 'sgm_id', $sgm_id);
            if(!$sgmflag)
@@ -3584,6 +3672,7 @@ public function displaysalarygrademaster(){
                 $this->session->set_flashdata('success','Salary Grade Master record updated successfully...');
                 redirect('setup/displaysalarygrademaster/');
                 }
+	    }
         }//else
         redirect('setup/editsalarygrademaster/');
     }

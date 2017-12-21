@@ -13,7 +13,7 @@
 </head>    
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <table width="100%">
-            <tr colspan="2">
+        <tr colspan="2"><td>
          <?php
             echo "<td align=\"left\" width=\"33%\">";
             echo anchor('setup/scheme/', 'Add Scheme', array('class' => 'top_parent'));
@@ -24,8 +24,9 @@
             echo "<td align=\"right\" width=\"33%\">";
 	    $help_uri = site_url()."/help/helpdoc#ViewSchemeDetail";
 	    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+            echo "</td>";
          ?>
-       <div>
+       <div align="left" style="margin-left:0%;width:95%">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>

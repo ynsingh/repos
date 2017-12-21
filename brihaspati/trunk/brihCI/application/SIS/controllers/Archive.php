@@ -4,6 +4,7 @@
  * @name Archive.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive, DDO Archive, map sc with uo archive
+ * Scheme archive, Salary grade master archive
  * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
  */
  
@@ -86,6 +87,20 @@ class Archive extends CI_Controller
 	        $this->logger->write_logmessage("view"," View map sc with uo archive ", "Mapping sc with uo archive details...");
         	$this->logger->write_dblogmessage("view"," View map sc with uo archive", "Mapping sc with uo archive details...");
         	$this->load->view('archive/viewscuoa');
+  	}
+  	/*this function has been created for display the scheme archive records */
+  	public function displayschemea(){
+        	$this->result = $this->sismodel->get_list('scheme_department_archive');
+	        $this->logger->write_logmessage("view"," View scheme archive ", "Setup scheme archive details...");
+        	$this->logger->write_dblogmessage("view"," View scheme archive", "Setup scheme archive details...");
+        	$this->load->view('archive/displayschemea');
+  	}
+  	/*this function has been created for display the Salary grade master archive records */
+  	public function displaysalarygrademastera(){
+        	$this->result = $this->sismodel->get_list('salary_grade_master_archive');
+	        $this->logger->write_logmessage("view"," View salary grade master archive ", "Setup salary grade master archive details...");
+        	$this->logger->write_dblogmessage("view"," View salary grade master archive", "Setup salary grade master archive details...");
+        	$this->load->view('archive/displaysalarygrademastera');
   	}
 	/*this function has been created for display the bank deails archive records */
 	public function bankdetaila() {

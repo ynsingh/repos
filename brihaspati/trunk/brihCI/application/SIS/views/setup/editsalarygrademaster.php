@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
-<!--@name editcategory.php 
+<!--@name editsalarygrademaster.php 
   @author Om Prakash(omprakashkgp@gmail.com)
  -->
 
@@ -21,7 +21,11 @@
 
       <table>
             <tr colspan="2"><td>
-                <div>
+		<?php
+        	   echo anchor('setup/displaysalarygrademaster', 'Salary Grade List', array('class' => 'top_parent'));
+	        ?>
+
+                <div align="left" style="margin-left:0%;width:95%;">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -104,9 +108,7 @@
             echo "<button onclick=\"goBack()\" >Back</button>";
             echo "</td>";
             echo "</tr>";
-
        ?>
- 
         </table>   
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
