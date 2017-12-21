@@ -34,11 +34,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-        <?php
-    	 };
-       	?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
              <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>

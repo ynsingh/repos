@@ -35,18 +35,19 @@ function myFunction() {
 <div>
 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-        <?php
-    	 };
-       	?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
              <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
-	?>
-</div>
+	?>  </div>
 
 <page size="A4">
 	<div id="body">
@@ -211,7 +212,7 @@ function myFunction() {
 			<thead id="styleTable"><th colspan=4 >
 			<span >Fees Detail</span>
 			</th></thead>
-			<tr><td>Programme Name:</td><td><?php echo $this->prog; ?></td>
+			<tr><td>Programme & Branch Name:</td><td><?php echo $this->prog.'( '.$this->brnch.' )'; ?></td>
 			<td>Amount:</td><td><?php echo $this->amnt;?></td><tr>
 			<tr><td>Payment Method:</td><td><?php echo$this->pmethod;?></td>
 			<td>Refference Number:</td><td><?php echo $this->rno;?></td><tr>

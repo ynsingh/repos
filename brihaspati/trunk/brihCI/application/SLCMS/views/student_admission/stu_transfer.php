@@ -132,7 +132,7 @@
 							if(!empty($eligible)){
 							foreach($eligible as $data){?>
 							<td><b>Eligibility Criteria </b> </td><td> <?php echo $data->admop_min_qual; ?></td>
-						<?php }}else{ ?><td>Eligibility Criteria  </td><td>Elgiblity Criteria Not Found</td><?php }?>
+						<?php }}else{ ?><td><b>Eligibility Criteria </b>  </td><td>Elgiblity Criteria Not Found</td><?php }?>
 					</tr>
 
 			<?php //}  }?>
@@ -142,12 +142,16 @@
 			
 
 <!--------------------------------------------ADD ALL STUDENT DATA OF TRANSFER------------------------------------------------------->	
+
 			<td valign=top>
 			<form action="<?php echo site_url('admissionstu/addstudent_transfer'); ?>" method="POST">
+			
 				<input type="hidden" name="stu_smid" value="<?php echo $row->sas_studentmasterid;?>" readonly>
 				<input type="hidden" name="stu_oldprgid" value="<?php echo $prgid;?>">
-				<input type="hidden" name="stu_olddeptid" value="<?php echo $deptid; ?>">
-				<input type="hidden" name="stu_elicrie" value="<?php echo $data->admop_min_qual;; ?>">
+				 <input type="hidden" name="stu_olddeptid" value="<?php echo $deptid; ?>">
+				<?php if(!empty($data->admop_min_qual)){?>
+					<input type="hidden" name="stu_elicrie" value="<?php echo $data->admop_min_qual; ?>">
+				<?php }?>
 				<table style="width:100%;" class="TFtable">
 					<tr>
 						

@@ -65,7 +65,7 @@ Students can submit their fee refund (for cancelled/transferred program) applica
 
 <h3><b>(Must be produced during the time of Verification) </b></h3>
 <ul style="font-size:15px;"><li>
-Document 1 : Enterance Admit Card</br>
+Document 1 : Entrance Admit Card</br>
  </li><li>
 Document 2 : Aadhar Card</br>
  </li><li>

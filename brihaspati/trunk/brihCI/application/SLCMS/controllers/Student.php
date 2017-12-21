@@ -1055,6 +1055,7 @@ class Student extends CI_Controller {
 		//print_r($semesterrec);
 		//$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
 		$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
+		//print_r($prgid);die;
 		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
 		$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
 		$pinfo = $prgname.'('.$prgbranch.')';
@@ -1064,6 +1065,7 @@ class Student extends CI_Controller {
     		$this->resultprg=$this->commodel->get_listarry("program",$sarray,$wharray);
 
 		$this->catid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$Sid)->sm_category;
+		//print_r($this->catid);
 		// in future we add acdamic year
 		//$wharray = array('fm_programid' => $this->prgid,('fm_gender' => (All)||($this->gender))&&('fm_category'=>(All)||($this->catid)));
 		// display fees detail on the basis of gender, category and program with semester
@@ -1339,7 +1341,7 @@ class Student extends CI_Controller {
                 	$this->logger->write_dblogmessage("insert", "failed record insert in admissionstudent_pg table.");
 
 			// set the status message
-                	$this->load->view('enterence/step_four', $data); //this should go to confirmation page for retry to make payment with suitable message
+                	$this->load->view('student/student_step4', $data); //this should go to confirmation page for retry to make payment with suitable message
          	}
      
    	 }
@@ -1359,7 +1361,7 @@ class Student extends CI_Controller {
     }
 	public function payment($post1,$post2,$post3,$post4,$post5){
 		$Sid = $this->session->userdata['sm_id'];
-			
+		
 			$step4 = array(
 		 		'sfee_referenceno'   	=>	$post1,
                 		'sfee_bankname'  	=>	$post2,
@@ -1390,7 +1392,7 @@ class Student extends CI_Controller {
 					// update into student entry exit
 					$sdate = date('Y-m-d H:i:s');
 					$ydate = date('Y');
-					$$rollno = '';
+					$rollno = '';
 					$maxrollno = $this->db->query('SELECT MAX(senex_rollno) AS `maxsenex_rollno` FROM `student_entry_exit`')->row()->maxsenex_rollno;
 					//print_r($maxrollno);
 					if(!empty($maxrollno))
@@ -1532,7 +1534,16 @@ class Student extends CI_Controller {
 						if($rowsno >0){
 							//if sucess send mail to user with login details 
 		 					$sub='Student Registration' ;
-                        				$mess="Your registration is complete. \nThe user id ".$email." and password is ".$passwd ."\n Your fees( ".$post4." ) amount ".$post3." has been paid.The referrence number is ".$post1;
+							$mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+							<tr><td></td></tr>
+							<tr><td colspan=2><b>Your registration is complete. </td></tr>
+							<tr height=15><td colspan=2></td></tr>
+							<tr><td width=370><b>The user id : </b></td><td align=left><span  style='text-decoration:none;'>".$email."</span></td></tr> 
+							<tr><td><b>password:</b> </td><td align=left>".$passwd. "</td><tr>
+							<tr><td colspan=2>Your fees( ".$post4." ) amount ".$post3." has been paid.The referrence number is ".$post1."</td></tr>
+					
+							</table> " ;
+                        				//$mess="Your registration is complete. \nThe user id ".$email." and password is ".$passwd ."\n Your fees( ".$post4." ) amount ".$post3." has been paid.The referrence number is ".$post1;
                 	       				$mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 							 //  mail flag check 			
 							if($mails){
@@ -1564,7 +1575,8 @@ class Student extends CI_Controller {
                                         $this->session->set_flashdata('err_message',$message);
 				}
 
-	$this->load->view('student/student_step4',$data);
+	//$this->load->view('student/student_step4');
+	$this->student_step4($Sid);	
 
 	}
 		
@@ -1893,6 +1905,7 @@ class Student extends CI_Controller {
 
 		//fees detail
 		$this->prog=$this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
+		$this->brnch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$this->ncid)->prg_branch;
 		$this->amnt=$this->commodel->get_listspfic1('student_fees','sfee_feeamount','sfee_smid',$id)->sfee_feeamount;
 		$this->pmethod=$this->commodel->get_listspfic1('student_fees','sfee_paymentmethod','sfee_smid',$id)->sfee_paymentmethod;
 		$this->rno=$this->commodel->get_listspfic1('student_fees','sfee_referenceno','sfee_smid',$id)->sfee_referenceno; 

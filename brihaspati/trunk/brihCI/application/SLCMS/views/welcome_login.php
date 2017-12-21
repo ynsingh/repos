@@ -36,10 +36,12 @@ echo "</center>"; ?>
                     <div align="left" style="">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
-                    <?php if(isset($_SESSION['success'])){?>
+                    <?php 
+		    if(!empty($_SESSION['success'])){	
+			if(isset($_SESSION['success'])){?>
                     <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
                     <?php
-                    };
+                    } };
                     ?>
                     <?php if(isset($_SESSION['err_message'])){?>
                     <div class="isa_error" style="font-size:18px;"><?php echo $_SESSION['err_message'];?></div>
@@ -56,7 +58,7 @@ echo "</center>"; ?>
 <?php //$this->load->view('enterence/enterence_head');?>
 
 </br>
-<table style="width:100%;border:0px solid black;" align=center border=0> 
+<table style="width:100%;border:0px solid black;"align=center border=0> 
 	
 	<tr>
 		<td align=center style="width:30%;" valign="top">
@@ -94,23 +96,26 @@ echo "</center>"; ?>
 		<form action="<?= site_url('welcome') ?>" method="post">
         		<table border=2>
 			<tr>
-			<td align=left>	
+			<td align=left colspan=2>	
 				<label>Username</label></br>	
-        			<input type="text" name="username" size="33%" style="height:33px;"/>
+        			<input type="text" name="username" size="33%" />
 			</td>
 			</tr>
 			<tr>
-				<td align=left><label>Password</label></br>
+				<td align=left colspan=2><label>Password</label></br>
         			<input type="password" name="password" size="33%"  placeholder="********"/></td>
 			</tr>
 			<tr>
 				<td>
-        			<input type="submit"  style="width:49%" id="button" value="Login"><b></b>
+        			<input type="submit"  style="width:100%" id="button" value="Login" name="login"><b></b>
+				</td>
+				<td align=right>
 				<a href="<?php echo site_url('Student/student_step0');?>" style="text-decoration:none;" title="Click to open student detail form">
-				<input type="button" value="New Student" style="width:49%" id="button"></a></td>
+				<input type="button" style="width:100%;font-weight:normal;" id="button" value="New Student"></button></a>
+				</td>
 			</tr>
 			<tr>
-               			 <td><br> 
+               			<td colspan=2 align=right>
 				<a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
                 		<font size=4>Forgot Password</font></a></td>
 			</tr>

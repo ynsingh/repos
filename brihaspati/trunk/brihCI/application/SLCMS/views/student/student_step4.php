@@ -46,23 +46,25 @@ select{width:100%;font-size:17px;height:40px;}
 
 <div>
 	<div id="body">
-	<?php $this->load->view('template/header'); ?>
+	<?php $this->load->view('template/header2'); ?>
 	<div class="welcome"><h2>Welcome : <?php echo $mailid;?></h2></div>
 	<?php $this->load->view('student/stuStepshead');?>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-        <?php
-    	 };
-       	?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+	
         <?php if(isset($_SESSION['err_message'])){?>
              <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
-
 <h1>Fees Submission</h1>
 <center>
 <div id="form"  style="width:80%;">
@@ -105,6 +107,7 @@ select{width:100%;font-size:17px;height:40px;}
 	<td>Gender</td><td><?php echo $this->gender;?></td>
 	<td></td>
 	<td>Programme</td><td>
+	
 	<?php echo $productinfo;?>
 	</td>
 	</tr>

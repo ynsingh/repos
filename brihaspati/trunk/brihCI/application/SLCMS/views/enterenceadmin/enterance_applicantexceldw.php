@@ -5,21 +5,21 @@
 			<th colspan=13></th>
 			<th colspan=2>Are You Physically Handicapped</th>
 			<th colspan=13></th>
-			<th colspan=6>High School Qulification  Detail</th>
-			<th colspan=6>Intermediate Qulification Detail</th>
-			<th colspan=6>Graduation Qulification  Detail</th>
-			<th colspan=6>Post Graduation Qulification Detail</th>
-			<th colspan=7>Any other Qulification Detail</th>
+			<th colspan=6>High School Qualification  Details</th>
+			<th colspan=6>Intermediate Qualification Details</th>
+			<th colspan=6>Graduation Qualification  Details</th>
+			<th colspan=6>Post Graduation Qualification Details</th>
+			<th colspan=7>Any other Qualification Details</th>
 			
 			<!--<th colspan=6>MPhil. Qulification Detail</th>
 			<th colspan=6>(UGC/NET/SET/SLET/GATE) Qulification Detail</th>
 			<th colspan=3></th>-->
-			<th colspan=4>JEE Main Exam Detail</th>
-			<th colspan=4>CMAT Exam Detail</th>
-			<th colspan=4>GATE Exam Detail</th>
-			<th colspan=4>M.Phil Exam Detail</th>
-			<th colspan=4>NET Exam Detail</th>
-			<th colspan=4>SLET Exam Detail</th>
+			<th colspan=4>JEE Main Exam Details</th>
+			<th colspan=4>CMAT Exam Details</th>
+			<th colspan=4>GATE Exam Details</th>
+			<th colspan=4>M.Phil Exam Details</th>
+			<th colspan=4>NET Exam Details</th>
+			<th colspan=4>SLET Exam Details</th>
 		</tr>
 	</thead>
 	<thead>
@@ -126,7 +126,7 @@
 		<th>Category</th>
 		
 		<th>% of Disibility</th>
-		<th>Disability Type</th>
+		<th>Disibility Type</th>
 		
 		<th>Religion</th>
 		<th>Nationality</th>
@@ -148,13 +148,13 @@
 		<th>Nature of Appointment</th>
 		<th>Date of Joining</th>
 		<th>Remarks</th>
-		<th>Previous Expierience If Any ?</th>
+		<th>Previous Experience If Any ?</th>
 		<th>Name of The University/Institute</th>
 		<th>Subject For Which Registration</th>
 		<th>Name of the Supervisor</th>
 		<th>Period</th>
 		<th>Topic of research</th>
-		<th>Reasons for  leaving</th>
+		<th>Reasons for leaving</th>
 		<th>Area(s) of interest for research</th>
 		<th>Payment Mode</th>
 		
@@ -461,7 +461,7 @@
 	}
 	
 	// file name for download
-	$fileName = "Enterance Applicant Details" . date('Y-m-d') . ".xls";
+	$fileName = "Entrance Applicant Details" . date('Y-m-d') . ".xls";
 	
 	// headers for download
 	header("Content-Disposition: attachment; filename=\"$fileName\"");

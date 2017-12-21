@@ -30,7 +30,7 @@ input[type='button']{font-size:16px;}
 
 <div>
 	<div id="body">
-	<?php $this->load->view('template/header'); ?>
+	<?php $this->load->view('template/header2'); ?>
 	<div class="welcome"><h2>Welcome : <?php echo $email?></h2></div>
 
 	<?php $this->load->view('student/stuStepshead');?>

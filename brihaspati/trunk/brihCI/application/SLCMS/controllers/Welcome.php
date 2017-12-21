@@ -40,6 +40,7 @@ class Welcome extends CI_Controller {
        	   $this->load->view('enterence/declaration',$data);
 	 }
 
+
 	public function welcome_login(){
 		$cdate = date('Y-m-d');
         	$wharray = array('anou_cname=' => 'SLCMS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
@@ -86,7 +87,7 @@ class Welcome extends CI_Controller {
 		$data['annoresult'] = $annoresult;
 		//get certificate list in add_admission open
 		
-            if($_POST) {
+            if(isset($_POST['login'])) {
                 $result = $this->login->validate_user($_POST);
 		//print_r($result);die;
                 /*get role by using model class and set templates according to role*/

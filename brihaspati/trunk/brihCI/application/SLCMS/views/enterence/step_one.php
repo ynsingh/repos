@@ -70,26 +70,26 @@ function filladd()
 
 <div>
  	<div id="body">
-	<?php  // $thisPage2="studentaddDetail"; 
-		$this->load->view('template/header'); ?>
+	<?php $this->load->view('template/header'); ?>
 	<nav> 	<h2><?php echo "Welcome ".$email;?></h2></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
-        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+<?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-        <?php
-    	 };
-       	?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
              <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
-	?>  
-	</br> 
+	?>  	</br> 
 <center><?php //echo $scname;?>
 <form action="<?php echo site_url('enterence/step_one'); ?>"  method="POST">
 
@@ -419,7 +419,6 @@ function filladd()
 </center>
 
 
-<?php //$thisPage2="studentaddDetail";
-	$this->load->view('template/footer'); ?>
+<?php $this->load->view('template/footer'); ?>
 </body>
 </html>

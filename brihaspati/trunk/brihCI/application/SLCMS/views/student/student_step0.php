@@ -50,7 +50,7 @@ input[type='button']{font-size:16px;}
 <center>
 <div>
 	<div id="body">
-	<?php $this->load->view('template/header'); ?>
+	<?php $this->load->view('template/header2'); ?>
 	<div class="welcome"><h2>Welcome</h2></div>
 	<?php $this->load->view('student/stuStepshead');?>
 
