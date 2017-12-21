@@ -52,9 +52,9 @@ $!data.getMessage()
         	</td>
 	</tr>
 </table>
-  <table width=100% bgcolor="$ui.tableColor">
+  <table width=100%>
 #if($user_role == "instructor")
-        <tr>
+        <tr bgcolor="$ui.menuColor">
                 #if($tdcolor != "1")
                 <td>
                 #elseif($tdcolor == "1")
@@ -66,7 +66,7 @@ $!data.getMessage()
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")>$brih_course $Profile_user</a></td><td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")>$brih_course $Profile_user</a></td>
 
 
 

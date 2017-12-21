@@ -11,6 +11,7 @@
 
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+
 </head>
 
 #set($lang=$data.getUser().getTemp("lang").toString())
@@ -92,7 +93,7 @@ $!data.getMessage()
 		 	#if($allTopics1.size() >0)
 				<td width=15%> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
 				<td>
-	        		<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+	        		<SELECT  style= "width:30%" name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 			         	<option value="" ></option>
 					#foreach($topic in $allTopics1)
 						<option value="$topic" >$topic</option>
@@ -111,7 +112,7 @@ $!data.getMessage()
 	#else
 		<td>$brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
 		<td>
-			<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+			<SELECT  style= "width:30%" name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
                 
 			#if($answerfilecheck == "notchecked")
 				<option value="$topicList" >$topicList</option>	

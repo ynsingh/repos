@@ -90,7 +90,7 @@ $!data.getMessage()
 	<tr>
 	#if($allTopics.size() >0)
 		<td>$brih_topic $brih_name</td>
-		<td><SELECT class='drop' name='topicList' onFocus=changeTopic(document.uploadform) onChange='changeTopic(document.uploadform)'>
+		<td><SELECT  class='drop' name='topicList' onFocus=changeTopic(document.uploadform) onChange='changeTopic(document.uploadform)'>
         	<option value="" ></option>
 		#foreach($topic in $allTopics)
 			<option value="$topic" >$topic</option>

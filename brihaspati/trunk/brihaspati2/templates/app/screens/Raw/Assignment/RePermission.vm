@@ -87,16 +87,16 @@ $!data.getMessage()
 	<td> <b> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name </b> </td>  
 	<td> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da</b> </td>
 <tr>
-       	<td width="15%"> 
-	<SELECT id='std_name' class='drop' name='topicList1' onFocus='changeTopic1(document.uploadform)' onChange='changeTopic1(document.uploadform)'>
+       	<td width="20%"> 
+	<SELECT style= "width:100%" id='std_name' class='drop' name='topicList1' onFocus='changeTopic1(document.uploadform)' onChange='changeTopic1(document.uploadform)'>
         <option>$brih_all</option>
         #foreach($topic1 in $userList)
 	<option> $!topic1.getLoginName() </option>
 	#end
         </SELECT>			
 	</td>
-	<td width="1%">
-	<SELECT  class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
+	<td width="20%">
+	<SELECT style= "width:100%;"  class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
         #foreach($topic in $allTopics)
         <option>$topic</option>
         #end

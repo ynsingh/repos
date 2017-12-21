@@ -24,9 +24,9 @@ $!data.getMessage()
         <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | $brih_scorm $brih_packager
 </td></tr>
 </table>
-<table width="100%" bgcolor="$ui.tableColor" > ##table 2 start
+<table width="100%"> ##table 2 start
 #if($user_role=="instructor")
-<tr>
+<tr bgcolor="$ui.menuColor">
 #if($tdcolor != "1")
 <td>
 #elseif($tdcolor == "1")
@@ -38,7 +38,7 @@ $!data.getMessage()
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td><td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td>
 
 #if($tdcolor != "2")
 <td>

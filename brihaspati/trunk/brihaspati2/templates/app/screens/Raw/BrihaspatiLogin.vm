@@ -22,6 +22,7 @@ $page.setBgColor($ui.bgcolor)
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
+<link type="text/css" href="$content.getURI("/scrpts/fixedstyle.css")" rel="stylesheet"></script>
 </head>
 <div class="main" style="width:1100px; margin:-10px auto; background:$ui.tableColor;">
 <table align=center style= "font-size:16px;font-family:Times New Roman;font-weight:bold;">
@@ -58,9 +59,9 @@ $!msg
                                 #set($count = $count + 1)
                         #else
                                 <font size=3>
-                                <table><tr><td>$news.getNews_Subject()   ## 7, 8, 9
+                                <table><tr><td><div  class="fixed" style='width: 275px;'>$news.getNews_Subject()   ## 7, 8, 9
 				<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
-                                </td></tr></table> ## 9, 8, 7
+                              	</div></td></tr></table> ## 9, 8, 7
                                 </font>
                                 #set($count = $count + 1)
                         #end

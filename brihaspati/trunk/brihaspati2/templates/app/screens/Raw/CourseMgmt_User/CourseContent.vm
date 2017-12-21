@@ -77,7 +77,7 @@ $!data.getMessage()
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user </a></td><td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user </a></td>
 	#if($tdcolor != "2")	
         <td>
 	#elseif($tdcolor == "2")

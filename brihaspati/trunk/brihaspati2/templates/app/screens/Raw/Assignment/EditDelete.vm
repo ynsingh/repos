@@ -15,6 +15,7 @@
 
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
+<link type="text/css" href="$content.getURI("/scrpts/fixedstyle.css")" rel="stylesheet"></script>
 
 ## First of row of links is created.
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -30,7 +31,7 @@ $!data.getMessage()
 ## Assignment submission form is created.
 <Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,EditDelete.vm").setAction("Assignments")>   
 <table width=100% bgcolor="$ui.tableColor">
-	<tr>
+	<tr >
 		#if($user_role == "instructor")
 			<td><b>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
@@ -102,7 +103,7 @@ $!data.getMessage()
 			<tr bgcolor="$ui.tableColor">
 		#end
 			<td width="2%" align="Center"> $i  </td>  ## Serial Number
-			<td width="10%" align="Center"> $!e.getStudentname()  </td>  ##get topic name in student name
+			<td>  <div  align="Center" class="fixed" style='width: 375px;'> $!e.getStudentname()</div>  </td>  ##get topic name in student name
 			<td width="10%" align="Center">   ##  Assignment file
 			#if($e.getAssignmentfile() == "")
 			#else

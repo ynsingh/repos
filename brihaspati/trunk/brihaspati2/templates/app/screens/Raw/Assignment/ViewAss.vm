@@ -91,7 +91,7 @@ $!data.getMessage()
 	<input type="text" name="GetUser"  size=26 /></td>
         #end
         <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-	<SELECT name=topicList class="drop" >
+	<SELECT style="width:40%" name=topicList class="drop" >
 	#if($topicList!="")
 	        <option value="$topicList" >$topicList</option>
 	#else
