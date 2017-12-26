@@ -9,13 +9,7 @@ echo"<title>Add Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
-    //echo "<h1>"; 
-    //echo "Welcome "; echo$this->session->userdata('username'); 
-    //echo"</h1>";
-    $this->//load->view('template/stumenu'); 
-    //$this->load->view('template/menu');
-?>
-<?php
+
 echo "</head>";
 echo "<body>";
 ?>

@@ -9,7 +9,7 @@ echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
 //				echo "<a href=" . base_url() . ">Dashboard</a>";
-				echo "<a href=" . site_url() ."/home> Dashboard</a>";
+				echo "<a href=" . site_url() ."/coehome> Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
 			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
@@ -139,21 +139,23 @@ echo "<ul class=\"sf-menu\">";
                                       /*  echo "<li>";
                                                 echo anchor('reconcile/fees_nonreconcile', 'Admission Fees Reconcile', array('title' => 'Admission Fees Reconcile'));
                                         echo "</li>";*/
-                                        echo "<li>";
-                                                echo anchor('admissionstu/stu_nonverified', 'Student Data Verification', array('title' => 'Student Data Verification'));
-                                        echo "</li>";
-                                        echo "<li>";
-                                                echo anchor('admissionstu/stu_depttrf', 'Student Department Transfer', array('title' => 'Student Department Transfer'));
-                                        echo "</li>";
-                                        echo "<li>";
-                                                echo anchor('admissionstu/stu_admcancle', 'Admission Cancellataion', array('title' => 'Admission Cancellataion'));
-                                        echo "</li>";
+					echo "<li>";
+						echo anchor('adminadmissionstu/adminstu_nonverified', 'Student Data Verification', array('title' => 'Student Data Verification'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('adminadmissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('adminadmissionstu/student_transfer', 'Student Department Transfer', array('title' => 'Student Department Transfer'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('adminadmissionstu/stu_admissioncancel', 'Admission Cancellation', array('title' => 'Admission Cancellation'));
+					echo "</li>";
+                                   /*     
                                         echo "<li>";
                                                 echo anchor('admissionstu/stu_feereimb', 'Admission Fees Reimbursement', array('title' => 'Admission Fees Reimbursement'));
                                         echo "</li>";
-                                        echo "<li>";
-                                                echo anchor('admissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
-                                        echo "</li>";
+                                     */   
                                 echo "</ul>";
                         echo "</li>";
 

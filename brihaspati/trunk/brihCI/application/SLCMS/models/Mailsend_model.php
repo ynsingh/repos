@@ -42,7 +42,8 @@ class Mailsend_model extends CI_Model
 		$username=$this->emresult->sendername;
 		// Sender email address
 		$this->email->from($sender_email, $username);
-
+		//add html content
+		$this->email->set_mailtype("html");
 		// Receiver email address.for single email
 		$this->email->to($tomal);
 		//send multiple email

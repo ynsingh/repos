@@ -75,7 +75,7 @@ class Student extends CI_Controller {
 						}	
 						 else {
 							
-							$this->session->set_flashdata("err_message",'Your details are inavalid');
+							$this->session->set_flashdata("err_message",'Your details are invalid');
 							redirect('student/student_step0');
 							}
 					}
@@ -256,7 +256,7 @@ class Student extends CI_Controller {
 		
                 if (!$resultap) {
 			print_r($resultap.','.$number);die;
-                        $this->session->set_flashdata('err_message', 'Your data is not exist, So you contact to administrator or department.');
+                        $this->session->set_flashdata('err_message', 'Your data does not exist, So you contact to administrator or department.');
                         redirect('welcome');
                 }
 
@@ -778,7 +778,7 @@ class Student extends CI_Controller {
 	$this->load->view('student/student_step1',$data);
 	}//check admission last date
 		else
-		{	$this->session->set_flashdata("err_message",'Your admission last date is over so contact your administrator department');
+		{	$this->session->set_flashdata("err_message",'Your last date of admission is over so contact your administration department');
 			//$this->session->set_flashdata('flash_data', 'Your admission last date is over so contact your administrator department');
 			redirect('welcome');
 		}

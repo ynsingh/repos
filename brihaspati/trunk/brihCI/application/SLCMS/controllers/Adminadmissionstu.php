@@ -8,7 +8,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Admissionstu extends CI_Controller
+class Adminadmissionstu extends CI_Controller
     {
     function __construct() {
         parent::__construct();
@@ -16,10 +16,11 @@ class Admissionstu extends CI_Controller
                 $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
 		$this->load->model("Mailsend_model","mailmodel");	
-        //if(empty($this->session->userdata('id_user'))) {
-        //  $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-         //   redirect('welcome');
-        // }
+		 $this->load->model("Login_model", "login");
+        if(empty($this->session->userdata('id_user'))) {
+          $this->session->set_flashdata('flash_data', 'You don\'t have access!');
+           redirect('welcome');
+         }
     }
 
 	public function student_transfer(){
@@ -119,12 +120,33 @@ class Admissionstu extends CI_Controller
                    			'senex_prgid'	=>	$newprgid,
                 		);
 				$result2=$this->commodel->updaterec('student_entry_exit',$stuentupdate,'senex_smid',$smid);
+
+ 				//$cid = 'http://172.26.82.18/~ehelpy/brihCI/uploads/logo/logo2.jpg';
+				//$img = '<img src="cid:'. $cid .'" alt="photo1" />';
+				//$mess = $this->load->view('template/header2');
+				//$image = 'http://172.26.82.18/~ehelpy/brihCI/uploads/logo/logo2.jpg';
+				//$upimg = '<img src="base_url()uploads/logo/logo2.jpg" style="width:100%;height:60px;" >';
+				//$img = '<img src="http://172.26.82.18/~ehelpy/brihCI/uploads/logo/logo2.jpg" style="width:100%;height:60px;" >';
+				$upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
+
+				$mess = "
+					<table width='50%'; style='border-radius:10px;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+					    <tr><td colspan=2>".$upimg."<hr></td></tr>
+					    <tr><td colspan=2><b>Your Department/Program transfer has been approved by CoE.The details are given below. </td></tr>
+					    <tr height=15><td colspan=2></td></tr>
+					    <tr><td width=280><b>Hall Ticket Number : </b></td><td align=left>".$hallno."</td></tr> 
+					    <tr><td><b>Old Department Name :</b> </td><td align=left>".$olddeptname. "</td><tr>
+					    <tr><td><b>Old Program Name : </b> </td><td align=left>".$oldcourse_name ." ( ".$oldbranchname ." )</td></tr>
+					    <tr><td><b>Current Department Name :</b></td><td align=left>".$newdeptname."</td></tr>
+					    <tr><td><b>Current Program Name : </b></td><td align=left> ".$newcourse_name ." ( ".$newbranchname ." )</td></tr>
+					</table> " ;
+				//$mess = $this->load->view('sample');
+				$sub = 'Department/Program Transfer Details';
+
+                               //  $mess="Your Department/Program transfer has been approved by CoE.The details are given below - \n Hall Ticket Number - ".$hallno."\n \n Old Department Name- ".$olddeptname. "\n Old Program Name - ".$oldcourse_name ." ( ".$oldbranchname ." )\n\n Current Department Name- ".$newdeptname."\n Current Program Name - ".$newcourse_name ." ( ".$newbranchname ." ) " ;
 				
-					
-				//mail function	
-				 $sub='Department/Program Transfer Details' ;
-                                 $mess="Your Department/Program transfer has been approved by CoE.The details are given below - \n Hall Ticket Number - ".$hallno."\n \n Old Department Name- ".$olddeptname. "\n Old Program Name - ".$oldcourse_name ." ( ".$oldbranchname ." )\n\n Current Department Name- ".$newdeptname."\n Current Program Name - ".$newcourse_name ." ( ".$newbranchname ." ) " ;
                                  $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
+				
 					    //  mail flag check 			
 				 if($mails){
                                            $error[] ="mail sent sucessfully";
@@ -132,9 +154,9 @@ class Admissionstu extends CI_Controller
 					   $this->logger->write_dblogmessage("insert","Student Transfer ".$stuname."successfull" );
 				 }
 				  else{
-        	                         $error[] ="insufficient data and mail does sent";
-	                                 $this->logger->write_logmessage("insert","Student Transfer ".$stuname."  not successfull");
-				         $this->logger->write_dblogmessage("insert","Student Transfer  ".$stuname." not successfull" );
+        	                          $error[] ="insufficient data and mail does sent";
+	                                  $this->logger->write_logmessage("insert","Student Transfer ".$stuname."  not successfull");
+				          $this->logger->write_dblogmessage("insert","Student Transfer  ".$stuname." not successfull" );
 
 					}
 
@@ -143,14 +165,14 @@ class Admissionstu extends CI_Controller
                     			$this->logger->write_logmessage("error","Error  in transfer student", $hallno.$smid);
                     			$this->logger->write_dblogmessage("error","Error  in transfer student", $hallno.$smid);
                    			 $this->session->set_flashdata('err_message','Some Data Is Incorrect - ' .$hallno);
-                    			redirect('admissionstu/addstudent_transfer');
+                    			redirect('adminadmissionstu/addstudent_transfer');
                 		}
                 		else{
 					$this->logger->write_logmessage("insert","ADD in transfer student".$hallno.$smid);
 			
                     			$this->logger->write_dblogmessage("insert","ADD in transfer student" .$hallno.$smid);
                     			$this->session->set_flashdata("success", "This hall ticket number ".$hallno." student transfer successfully.");
-                    			redirect("admissionstu/addstudent_transfer");
+                    			redirect("adminadmissionstu/addstudent_transfer");
 				}//database error check
 	    
             		}//if validation
@@ -258,10 +280,22 @@ class Admissionstu extends CI_Controller
 				 $upstustatus = $this->commodel->updaterec('student_admissionstatus', $updata,'sas_studentmasterid',$smid);
 				 $this->logger->write_logmessage("update","Update record in student admission status for cancel student", $hallno.$stuname);
                     		 $this->logger->write_dblogmessage("update","Update record in student admission status fees for cancel student", $hallno.$stuname);
+				  $upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
 
-				 //mail function	
+				 //mail function
+				$mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+					   <tr><td colspan=2>".$upimg."</br><hr></td></tr>
+					   <tr><td colspan=2><b>Your admission has been cancelled .The details are given below. </td></tr>
+					   <tr height=15><td colspan=2></td></tr>
+					   <tr><td width=370><b>Hall Ticket Number : </b></td><td align=left>".$hallno."</td></tr> 
+					   <tr><td><b>Department Name :</b> </td><td align=left>".$deptname. "</td><tr>
+					   <tr><td><b>Program Name : </b> </td><td align=left>".$course_name ." ( ".$branchname ." )</td></tr>
+					   <tr><td><b>Admission Cancellation Reason :</b></td><td align=left>".$reson."</td></tr>
+					   <tr><td><b>Your Refunded Fees Amount : </b></td><td align=left> ".$feesrefund ."</td></tr>
+					</table> " ;
+
 				 $sub='Admission Cancelled' ;
-                                 $mess="Your admission has been cancelled .The details are given below - \n Hall Ticket Number - ".$hallno."\n \n Department Name- ".$deptname." \n Program Name - ".$course_name ." ( ".$branchname ." ) \n Admission Cancellation Reason - ".$reson."\n Your Refunded Fees Amount - " .$feesrefund;
+                                // $mess="Your admission has been cancelled .The details are given below - \n Hall Ticket Number - ".$hallno."\n \n Department Name- ".$deptname." \n Program Name - ".$course_name ." ( ".$branchname ." ) \n Admission Cancellation Reason - ".$reson."\n Your Refunded Fees Amount - " .$feesrefund;
                                  $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 					    //  mail flag check 			
 				 if($mails){
@@ -280,14 +314,14 @@ class Admissionstu extends CI_Controller
                     			$this->logger->write_logmessage("error","Error  in student admission cancel", $hallno.$stuname);
                     			$this->logger->write_dblogmessage("error","Error  in student admission cancel", $hallno.$stuname);
                    			$this->session->set_flashdata('err_message','Some Data Is Incorrect - ' .$hallno);
-                    			redirect('admissionstu/stu_addadmissioncancel');
+                    			redirect('adminadmissionstu/stu_addadmissioncancel');
                 		}
                 		else{
 					$this->logger->write_logmessage("insert","Insert in student admission cancel".$hallno.$stuname);
 			
                     			$this->logger->write_dblogmessage("insert","Insert in student admission cancel" .$hallno.$stuname);
                     			$this->session->set_flashdata("success", "This hall ticket number ".$hallno." student admission is cancelled.");
-                    			redirect("admissionstu/stu_cancelreceipt/".$smid);
+                    			redirect("adminadmissionstu/stu_cancelreceipt/".$smid);
 				}//database error check
 	    
             		}//if validation
@@ -364,6 +398,174 @@ class Admissionstu extends CI_Controller
   		endforeach;
 	 }
 
+/****************************************************Admin admission Panel Work Start****************************************************************/
+
+	public function adminstu_nonverified(){
+
+		$date1 = $this->input->post('stu_sdate');
+		$date2 = $this->input->post('stu_edate');
+		
+		$data = array(
+			'date1' => $date1,
+			'date2'=> $date2
+			);
+		if ($date1 == "" || $date2 == "") {
+			$condition = array('sas_admissionstatus' => 'Provisional');
+			$sarray = 'sas_studentmasterid,sas_hallticketno';
+			$data['stusmid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+		} else {
+			$condition = array('sas_admissiondate >=' =>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Provisional');
+			$sarray = 'sas_studentmasterid,sas_hallticketno';
+			$data['stu_smid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+		}
+		$this->load->view('student_admission/adminstu_nonverified',$data);
+	}
+
+	public function adminstu_verified(){
+		
+		$date1 = $this->input->post('stu_sdate');
+		$date2 = $this->input->post('stu_edate');
+		
+		$data = array(
+			'date1' => $date1,
+			'date2'=> $date2
+			);
+		if ($date1 == "" || $date2 == "") {
+			$condition = array('sas_admissionstatus' => 'Confirmed');
+			$sarray = 'sas_studentmasterid,sas_hallticketno';
+			$data['stusmid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+		} else {
+			$condition = array('sas_admissiondate >='=>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Confirmed');
+			$sarray = 'sas_studentmasterid,sas_hallticketno';
+			$data['stu_smid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+		}
+
+		$this->load->view('student_admission/adminstu_verified',$data);
+	}
+
+	public function adminstu_verifidata(){
+		$smid = $this->uri->segment(3);
+		$data['smid']=$smid;
+		$hlno = $this->commodel->get_listspfic1('student_admissionstatus','sas_hallticketno','sas_studentmasterid',$smid)->sas_hallticketno;
+		$data['hlno'] = $hlno;
+		$progid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
+		$data['progid']=$progid;
+		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$progid)->prg_name;
+		$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$progid)->prg_branch;
+		$data['prgname'] = $prgname;
+		$data['prgbranch'] = $prgbranch;
+
+		$stu_data = $this->commodel->get_listrow('student_master','sm_id',$smid)->row();
+		if(!empty($stu_data)) {
+			$name = $stu_data->sm_fname;
+			$data['name']=$name;
+			$dob = $stu_data->sm_dob;
+			$data['dob'] = $dob;
+			
+
+			$prgcat = $this->commodel->get_listspfic1('program','prg_category','prg_id',$progid)->prg_category;
+			$data['prgcat'] = $prgcat;
+			$prgcatid = $this->commodel->get_listspfic1('programcategory','prgcat_id','prgcat_name',$prgcat)->prgcat_id;
+			$data['prgcatid'] = $prgcatid;
+			$bloodgroup = $stu_data->sm_bloodgroup;
+			$data['blgroup'] =$bloodgroup;
+			$gender = $stu_data->sm_gender;
+			$data['gender'] = $gender;
+			$mobile = $stu_data->sm_mobile;
+			$data['mobile'] = $mobile;
+			$email = $stu_data->sm_email;
+			$data['email'] = $email;
+			$categoryid = $stu_data->sm_category;
+			$data['categoryid'] = $categoryid;
+			$categoryname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$categoryid)->cat_name;
+			$data['categoryname'] = $categoryname;
+			//$rollno = $stu_data->sm_applicationno;
+			//$data['rollno'] = $rollno;
+			$sccode = $stu_data->sm_sccode;
+			$data['sccode'] = $sccode;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
+			$data['scname'] = $scname;
+			//$excode = $stu_data->sm_enterenceexamcenter;
+			//$exname =  $this->commodel->get_listspfic1('adminadmissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
+			//$data['exname'] = $exname;
+			
+			//$age = $stu_data->sm_age;
+			//$data['age'] = $age;
+			$mastatus = $stu_data->sm_mstatus;
+			$data['mastatus'] = $mastatus;
+			$nationality = $stu_data->sm_nationality;
+			$data['nationality'] = $nationality;
+			$phyhandi = $stu_data->sm_phyhandicaped;
+			$data['phyhandi'] = $phyhandi;
+			$religion = $stu_data->sm_religion;
+			$data['religion'] = $religion;
+			$reservation = $stu_data->sm_reservationtype;
+			$data['reservation'] = $reservation;
+			$aadhar = $stu_data->sm_uid;
+			$data['aadhar'] = $aadhar;
+			
+
+		}
+		$studparent_admission = $this->commodel->get_listrow('student_parent','spar_smid',$smid)->row();
+		
+		if(!empty($studparent_admission)){
+			$mname = $studparent_admission->spar_mothername;
+			$data['mname'] = $mname;
+			$fname =  $studparent_admission->spar_fathername;
+			$data['fname'] = $fname;
+			
+			//get permanant address detail
+			$paddress = $studparent_admission->spar_paddress;
+			$data['paddress'] = $paddress;
+			$pcity=$studparent_admission->spar_pcity;
+			$data['pcity']=$pcity;
+			$pstate = $studparent_admission->spar_pstate;
+			$data['pstate'] = $pstate;
+			$pcountry = $studparent_admission->spar_pcountry;
+			$data['pcountry'] = $pcountry;
+			$ppincode = $studparent_admission->spar_ppincode;	
+			$data['ppincode'] = $ppincode;
+			
+		}
+
+		$studedu = $this->commodel->get_listrow('student_education','sedu_smid',$smid)->result();
+		$data['studedu'] = $studedu;
+		
+		if(isset($_POST['stuverify'])) {
+		
+		//student status update	
+			$stusmid = $this->input->post('stu_smid');
+			$stuhlno = $this->input->post('stu_hlno');
+
+			$upstudata = array(
+                 		'sas_admissionstatus'	=> 'Confirmed',
+                		);
+			//print_r($updata);die;
+			//$upstatusconf = $this->commodel->updaterec('student_admissionstatus',$upstudata,'sas_studentmasterid',$smid);
+			$sasid=$this->db->where('sas_studentmasterid',$stusmid);
+			$upstatusconf = $this->db->update('student_admissionstatus', $upstudata);
+		//	print_r($smid);die;
+			$this->logger->write_logmessage("update","Update record in student admission status ", $data['hlno']);
+               		$this->logger->write_dblogmessage("update","Update record in  student admission status ", $data['hlno']);
+			
+			if(!$upstatusconf)
+               		{
+                    		$this->logger->write_logmessage("error","Error  in student admission status".$stuhlno);
+                    		$this->logger->write_dblogmessage("error","Error  in student admission status".$stuhlno);
+                   		$this->session->set_flashdata('err_message','Some Data Is Incorrect - '.$stuhlno);
+                    		redirect('adminadmissionstu/adminstu_verifiedata');
+                	}
+                	else{
+				$this->logger->write_logmessage("insert","Insert in student admission cancel".$data['hlno']);
+			        $this->logger->write_dblogmessage("insert","Insert in student admission cancel" .$stuhlno);
+                    		$this->session->set_flashdata("success", "This hall ticket number ".$stuhlno." student verify successfully!");
+                    		redirect('adminadmissionstu/adminstu_nonverified');
+				}
+			
+		}
+		
+		$this->load->view('student_admission/adminstu_verifiedata',$data);
+	}
 
 
 }//end class

@@ -9,7 +9,7 @@ echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
 //				echo "<a href=" . base_url() . ">Dashboard</a>";
-				echo "<a href=" . site_url() ."/home> Dashboard</a>";
+				echo "<a href=" . site_url() ."/hodhome> Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
 			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
@@ -120,7 +120,7 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('reconcile/fees_nonreconcile', 'Admission Fees Reconcile', array('title' => 'Admission Fees Reconcile'));
                                         echo "</li>";*/
                                         echo "<li>";
-                                                echo anchor('admissionstu/stu_nonverified', 'Student Data Verification', array('title' => 'Student Data Verification'));
+                                                echo anchor('hodadmissionstu/stu_nonverified', 'Student Data Verification', array('title' => 'Student Data Verification'));
                                         echo "</li>";
 /*                                        echo "<li>";
                                                 echo anchor('admissionstu/stu_depttrf', 'Student Department Transfer', array('title' => 'Student Department Transfer'));
@@ -132,7 +132,7 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('admissionstu/stu_feereimb', 'Admission Fees Reimbursement', array('title' => 'Admission Fees Reimbursement'));
                                         echo "</li>";*/
                                         echo "<li>";
-                                                echo anchor('admissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
+                                                echo anchor('hodadmissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
                                         echo "</li>";
                                 echo "</ul>";
                         echo "</li>";

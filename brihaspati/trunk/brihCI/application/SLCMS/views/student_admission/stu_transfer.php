@@ -64,7 +64,7 @@
   
 </br>
 <center><span style="font-size:20px;"><b>Student Transfer</b></span></center>
-	<form action="<?php echo site_url('admissionstu/student_transfer'); ?>"  method="POST">
+	<form action="<?php echo site_url('adminadmissionstu/student_transfer'); ?>"  method="POST">
 		<table style="width:100%;">
 			<tr>
 				<td><input type="text" name="hallnumber" style="width:20%;" placeholder="Enter Hall Ticket Number" value="<?php echo isset($_POST["hallnumber"]) ? $_POST["hallnumber"] :  ''; ?>" required><input type="submit" name="hnsearch" value="Search"></td>
@@ -144,7 +144,7 @@
 <!--------------------------------------------ADD ALL STUDENT DATA OF TRANSFER------------------------------------------------------->	
 
 			<td valign=top>
-			<form action="<?php echo site_url('admissionstu/addstudent_transfer'); ?>" method="POST">
+			<form action="<?php echo site_url('adminadmissionstu/addstudent_transfer'); ?>" method="POST">
 			
 				<input type="hidden" name="stu_smid" value="<?php echo $row->sas_studentmasterid;?>" readonly>
 				<input type="hidden" name="stu_oldprgid" value="<?php echo $prgid;?>">

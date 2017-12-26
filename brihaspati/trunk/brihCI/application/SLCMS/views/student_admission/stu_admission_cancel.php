@@ -34,7 +34,7 @@
 	?>  
   
 
-	<form action="<?php echo site_url('admissionstu/stu_admissioncancel'); ?>"  method="POST">
+	<form action="<?php echo site_url('adminadmissionstu/stu_admissioncancel'); ?>"  method="POST">
 		<table style="width:100%;">
 			<tr>
 				<td><input type="text" name="halltinumber" style="width:20%;" placeholder="Enter Hall Ticket Number" value="<?php echo isset($_POST["halltinumber"]) ? $_POST["halltinumber"] :  ''; ?>" required><input type="submit" name="cancelsearch" value="Search"></td>
@@ -43,7 +43,7 @@
 		</table>
 	</form>
 
-<form action="<?php echo site_url('admissionstu/stu_addadmissioncancel'); ?>" method="POST">
+<form action="<?php echo site_url('adminadmissionstu/stu_addadmissioncancel'); ?>" method="POST">
 				
 	<?php if(isset($getstuid)){?>
 			<table style="width:100%;"  class="TFtable">
@@ -135,7 +135,7 @@
 					<td><?php echo $data->sac_feesrefundamount;?></td>
 					<td><?php echo $this->commodel->get_listspfic1('student_admissionstatus','sas_admissionstatus','sas_studentmasterid',$data->sac_smid)->sas_admissionstatus;?></td>
 					<td><?php echo $data->sac_canceldate;?></td>
-					<td><a href="<?php echo site_url('admissionstu/stu_cancelreceiptpdfdw/');echo $data->sac_smid;?>">Download</a></td>
+					<td><a href="<?php echo site_url('adminadmissionstu/stu_cancelreceiptpdfdw/');echo $data->sac_smid;?>">Download</a></td>
 				</tr>	
 				<?php }}?>
 			</tbody>

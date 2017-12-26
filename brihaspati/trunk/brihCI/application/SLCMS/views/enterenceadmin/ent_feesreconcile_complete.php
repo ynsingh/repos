@@ -36,7 +36,7 @@ echo "</center>";
 <table width="100%;" style="font-size:18px;">
 	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="">Entrance Admission Reconcile  Fees
 		<a href="<?php echo site_url('enterenceadmin/viewentfeereconcile_complete');?>" style=" margin-left:50px;">All Entrance Admission Reconcile Fees
-		<a href="<?php echo site_url('enterenceadmin/fees_nonreconcile');?>" style=" margin-left:50px;" > Entrance Admission Non Reconcile Non
+		<a href="<?php echo site_url('enterenceadmin/fees_nonreconcile');?>" style=" margin-left:50px;" > Entrance Admission Non Reconcile
 	</td>
 	<td style=""></td>
 	<td style=""></td>

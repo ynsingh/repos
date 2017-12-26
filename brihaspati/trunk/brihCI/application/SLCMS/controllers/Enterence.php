@@ -570,7 +570,21 @@ class Enterence extends CI_Controller {
                         $this->load->model("Mailsend_model","mailmodel");
                         $subject = "Registered Successfully.";
 			$prgname =  $this->commodel->get_listspfic1('program','prg_category','prg_id',$prg_name)->prg_category.'('.$this->commodel->get_listspfic1('program','prg_name','prg_id',$prg_name)->prg_name.'-'. $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prg_name)->prg_branch.')';
-                        $message = "Your are registered successfully, Your details are given below - \n Email -". $applicant_email ." \nMobile Number- ". $applicant_mobile  ." \nDate of Birth -". $applicant_dob . "\nProgram Name -". $prgname ." \nVerification code for further step is ".$generate_code.".";
+
+			$message  = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+					<tr><td></td></tr>
+					<tr><td colspan=2><b>Your are registered successfully, Your details are given below. </td></tr>
+					<tr height=15><td colspan=2></td></tr>
+					<tr><td width=370><b>Email: </b></td><td align=left>".$applicant_email."</td></tr> 
+					<tr><td><b>Mobile Number:</b> </td><td align=left>".$applicant_mobile. "</td><tr>
+					<tr><td><b>Date of Birth: </b> </td><td align=left>".$applicant_dob ."</td></tr>
+					<tr><td><b>Program Name:</b></td><td align=left>".$prgname."</td></tr>
+					<tr><td><b>Verification code for further step is: </b></td><td align=left> ".$generate_code ."</td></tr>
+					
+					</table> " ;
+
+                       // $message = "Your are registered successfully, Your details are given below - \n Email -". $applicant_email ." \nMobile Number- ". $applicant_mobile  ." \nDate of Birth -". $applicant_dob . "\nProgram Name -". $prgname ." \nVerification code for further step is ".$generate_code.".";
+
                         $mails=$this->mailmodel->mailsnd($applicant_email,$subject,$message,'');
                         $this->load->view('enterence/step_zero',$data);
 

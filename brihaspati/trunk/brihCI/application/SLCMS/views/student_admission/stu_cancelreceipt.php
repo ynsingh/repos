@@ -72,7 +72,7 @@ function myFunction() {
 </td></tr></table>		
 	<table><tr><td>
 
-<a href="<?php echo site_url('admissionstu/stu_cancelreceiptpdfdw/');echo $smid;?>" style="text-decoration:none;color:black;" id="b1"><input type="submit" value="Save" title="Click for save"  id="b1"></a>
+<a href="<?php echo site_url('adminadmissionstu/stu_cancelreceiptpdfdw/');echo $smid;?>" style="text-decoration:none;color:black;" id="b1"><input type="submit" value="Save" title="Click for save"  id="b1"></a>
 </td>
 <td>
 
@@ -80,7 +80,7 @@ function myFunction() {
 
 </td>
 <td>
-<form action="<?php echo site_url('admissionstu/stu_admissioncancel'); ?>" method="POST">
+<form action="<?php echo site_url('adminadmissionstu/stu_admissioncancel'); ?>" method="POST">
  <input type="submit" name="submit" value="Back" title="Click for home" id="b1">
 </form>
 </td>

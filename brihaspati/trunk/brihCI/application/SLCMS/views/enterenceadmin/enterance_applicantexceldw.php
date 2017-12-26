@@ -2,18 +2,14 @@
    <table class="table table-bordered" style="background-color:white;">
 	<thead>
 		<tr>
-			<th colspan=13></th>
-			<th colspan=2>Are You Physically Handicapped</th>
+			<th colspan=19></th>
+			
 			<th colspan=13></th>
 			<th colspan=6>High School Qualification  Details</th>
 			<th colspan=6>Intermediate Qualification Details</th>
 			<th colspan=6>Graduation Qualification  Details</th>
 			<th colspan=6>Post Graduation Qualification Details</th>
 			<th colspan=7>Any other Qualification Details</th>
-			
-			<!--<th colspan=6>MPhil. Qulification Detail</th>
-			<th colspan=6>(UGC/NET/SET/SLET/GATE) Qulification Detail</th>
-			<th colspan=3></th>-->
 			<th colspan=4>JEE Main Exam Details</th>
 			<th colspan=4>CMAT Exam Details</th>
 			<th colspan=4>GATE Exam Details</th>
@@ -22,9 +18,48 @@
 			<th colspan=4>SLET Exam Details</th>
 		</tr>
 	</thead>
-	<thead>
-		<tr>
-			<th colspan=29></th>
+		
+        <thead>
+            <tr>
+
+		
+                <th>Sr. No.</th>
+		<th>Hall Ticket No.</th>
+		<th>Application No</th>
+		<th>Entrance Exam Center</th>
+		<th>Study Center</th>
+		<th>Program Category</th>
+		<th>Program & Branch Applied</th>
+		<th>Entrance Exam Center</th>
+		<th>Name of The Applicant</th>
+		<th>Email</th>
+		<th>Mobile</th>
+		<th>Gender</th>
+		<th>Date of Birth</th>
+		<th>Age</th>
+		<th>Maritial Status</th>
+		<th>Category</th>
+
+		<th>Are You Physically Handicapped</th>
+		<th>% of Disibility</th>
+		<th>Disibility Type</th>
+		
+		<th>Religion</th>
+		<th>Nationality</th>
+		<th>Present State</th>
+
+		<th>Address for Correspondence</th>
+		<th>Permanant Address</th>
+		<th>Father's Name</th>
+		<th>Mother's Name</th>	
+		<th>Father's Mobile No.</th>
+		<th>Mother's Mobile No.</th>
+		<th>Father's Occupation</th>
+		<th>Mother's Occupation</th>
+		<th>Father's Email-id</th>
+		<th>Mother's Email-id</th>
+		<!--<th colspan=55></th>-->
+		
 			<th>Name of Institute (10th)</th>
 			<th>Board / University (10th)</th>
 			<th>Year of Passing (10th)</th>
@@ -105,44 +140,7 @@
 			<th>SLET Score</th>
 			<th>SLET State</th>
 
-		</tr>
-	</thead>		
-        <thead>
-            <tr>
-
-                <th>Serial No.</th>
-		<th>Hall Ticket No.</th>
-		<th>Study Center</th>
-		<th>Program Category</th>
-		<th>Program & Branch Applied</th>
-		<th>Entrance Exam Center</th>
-		<th>Name of The Applicant</th>
-		<th>Email</th>
-		<th>Mobile</th>
-		<th>Gender</th>
-		<th>Date of Birth</th>
-		<th>Age</th>
-		<th>Maritial Status</th>
-		<th>Category</th>
 		
-		<th>% of Disibility</th>
-		<th>Disibility Type</th>
-		
-		<th>Religion</th>
-		<th>Nationality</th>
-		<th>Present State</th>
-
-		<th>Address for Correspondence</th>
-		<th>Permanant Address</th>
-		<th>Father's Name</th>
-		<th>Mother's Name</th>	
-		<th>Father's Mobile No.</th>
-		<th>Mother's Mobile No.</th>
-		<th>Father's Occupation</th>
-		<th>Mother's Occupation</th>
-		<th>Father's Email-id</th>
-		<th>Mother's Email-id</th>
-		<th colspan=55></th>
 		<th>Name of Post</th>	
 		<th>Present Pay & Grade</th>
 		<th>Nature of Appointment</th>
@@ -160,12 +158,11 @@
 		
 		<th>Payment Date</th>
 		<th>Amount </th>
-		<th>Application No</th>
+		
 		<th>Published</th>
 		<!--<th colspan=30></th>
 		<th colspan=3>Are You NET/UGC-JRF/CSIR-NET/CSIR-JRF/SET/SLET Qualified?</th>-->
-
-
+		
             </tr>
 
         </thead>
@@ -179,36 +176,91 @@
 		?>
 				<tr>
 					<td><?php echo $count++;?></td>
-					<td><?php echo $data->asm_applicationno;?></td>
+					<?php if(!empty($data->asm_applicationno)){?>
+						<td><?php echo $data->asm_applicationno;?></td>
+					<?php }else{?><td></td><?php }?>
+		
+					<?php if(!empty($asmid)){?>
+						<td><?php echo $asmid; ?></td>
+					<?php }else{?><td></td><?php }?>
+					
+					<td>University Exam</td>
 					<?php $scid = $this->commodel->get_listspfic1('admissionstudent_master','asm_sccode','asm_id',$asmid)->asm_sccode;
-					      $scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;	
+					if(!empty($scid)){
+					      $scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+					}	
 					?>
-					<td><?php echo $scname;?></td>
+					<?php if(!empty($scname)){?>
+						<td><?php echo $scname;?></td>
+					<?php }else{?><td></td><?php }?>
 
 					<?php $progbrid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
-						$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$progbrid)->prg_name."( ".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$progbrid)->prg_branch." )";
+					if(!empty($progbrid)){	
+					      	$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$progbrid)->prg_name."( ".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$progbrid)->prg_branch." )";
 
-					$progcatname =  $this->commodel->get_listspfic1('program','prg_category','prg_id',$progbrid)->prg_category;
+						$progcatname =  $this->commodel->get_listspfic1('program','prg_category','prg_id',$progbrid)->prg_category;
+					}
 					?>
+					<?php if(!empty($progcatname)){?>
+						<td><?php echo $progcatname;?></td>
+					<?php }else{?><td></td><?php }?>
 
-					<td><?php echo $progcatname;?></td>
-					<td><?php echo $progname;?></td>
+					<?php if(!empty($progname)){?>
+						<td><?php echo $progname;?></td>
+					<?php }else{?><td></td><?php }?>
 					<?php $entexid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$asmid)-> 	asm_enterenceexamcenter;
 					      $entexname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$entexid)->eec_name;	
 					?>
-					<td><?php echo $entexname;?></td>
-					<td><?php echo $data->asm_fname;?></td>
-					<td><?php echo $data->asm_email;?></td>
-					<td><?php echo $data->asm_mobile;?></td>
-					<td><?php echo $data->asm_gender;?></td>
-					<td><?php echo $data->asm_dob;?></td>
-					<td><?php echo $data->asm_age;?></td>
-					<td><?php echo $data->asm_mstatus;?></td>		
-					<td><?php echo $data->asm_caste;?></td>
-					<td><?php echo $data->asm_phyhandicaped;?></td>
-					<td><?php echo $data->asm_religion;?></td>
-					<td><?php echo $data->asm_nationality;?></td>
-					<td><?php echo $data->asm_phyhandicaped;?></td>
+					<?php if(!empty($entexname)){?>
+						<td><?php echo $entexname;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_fname)){?>
+						<td><?php echo $data->asm_fname;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_email)){?>
+						<td><?php echo $data->asm_email;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_mobile)){?>
+						<td><?php echo $data->asm_mobile;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_gender)){?>
+						<td><?php echo $data->asm_gender;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_dob)){?>
+						<td><?php echo $data->asm_dob;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_age)){?>
+						<td><?php echo $data->asm_age;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_mstatus)){?>
+						<td><?php echo $data->asm_mstatus;?></td>		
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_caste)){?>
+						<td><?php echo $data->asm_caste;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($data->asm_phyhandicaped)){?>
+						<td><?php echo $data->asm_phyhandicaped;?></td>
+					<?php }else{?><td></td><?php }?>	
+					<td></td>
+					<td></td>
+					<?php if(!empty($data->asm_religion)){?>
+						<td><?php echo $data->asm_religion;?></td>
+					<?php }else{?><td></td><?php }?>
+
+
+					<?php if(!empty($data->asm_nationality)){?>
+						<td><?php echo $data->asm_nationality;?></td>
+					<?php }else{?><td></td><?php }?>
+
 					<?php $pestate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$asmid)->aspar_pstate;
 					$coadd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_caddress','aspar_asmid',$asmid)->aspar_caddress;
 					$cocity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_ccity','aspar_asmid',$asmid)->aspar_ccity;
@@ -220,15 +272,54 @@
 					$pestate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$asmid)->aspar_pstate;				
 					$pecountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$asmid)->aspar_pcountry;
 					?>
-					<td><?php echo $pestate;?></td>
-					<td><?php echo $coadd.','.$cocity.','.$costate.','.$cocountry ;?></td>
-					<td><?php echo $peadd.','.$pecity.','.$pestate.','.$pecountry ;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$asmid)->aspar_fathername;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$asmid)->aspar_mothername;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fatherphoneno','aspar_asmid',$asmid)->aspar_fatherphoneno;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_motherphoneno','aspar_asmid',$asmid)->aspar_motherphoneno;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fatheroccupation','aspar_asmid',$asmid)->aspar_fatheroccupation;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_motheroccupation','aspar_asmid',$asmid)->aspar_motheroccupation;?></td>
+					<?php if(!empty($pestate)){?>
+						<td><?php echo $pestate;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php if(!empty($cocity)){?>
+						<td><?php echo $coadd.','.$cocity.','.$costate.','.$cocountry ;?></td>
+					<?php }else{?><td></td><?php }?>
+					
+					<?php if(!empty($pecity)){?>
+						<td><?php echo $peadd.','.$pecity.','.$pestate.','.$pecountry ;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php	 
+					$stufname = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$asmid)->aspar_fathername;
+					if(!empty($stufname)){?>
+						<td><?php echo $stufname;?></td>
+					<?php }else{?><td></td><?php }?>
+		
+					<?php	 
+					$stumoname = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$asmid)->aspar_mothername;
+					if(!empty($stumoname)){?>
+						<td><?php echo $stumoname;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php	 
+					$stufamono = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fatherphoneno','aspar_asmid',$asmid)->aspar_fatherphoneno;
+					if(!empty($stufamono)){?>
+						<td><?php echo $stufamono; ?></td>
+					<?php }else{?><td></td><?php }?>	
+
+					<?php	 
+					$stumono = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_motherphoneno','aspar_asmid',$asmid)->aspar_motherphoneno;
+					if(!empty($stumono)){?>
+						<td><?php echo $stumono?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php	 
+					$stufaoccu = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fatheroccupation','aspar_asmid',$asmid)->aspar_fatheroccupation;
+					if(!empty($stufaoccu)){?>	
+						<td><?php echo $stufaoccu;?></td>
+					<?php }else{?><td></td><?php }?>
+
+					<?php	 
+					$stumooccu = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_motheroccupation','aspar_asmid',$asmid)->aspar_motheroccupation;
+					if(!empty($stumooccu)){?>
+						<td><?php echo $stumooccu;?></td>
+					<?php }else{?><td></td><?php }?>
+
 					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_fatheremail','aspar_asmid',$asmid)->aspar_fatheremail;?></td>
 					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_parent','aspar_motheremail','aspar_asmid',$asmid)->aspar_motheremail;?></td>
 				<?php
@@ -438,11 +529,19 @@
 					$feedatalist = $this->commodel->get_listspficemore('admissionstudent_fees',$selectfee,$wfeedata);
 					if(!empty($feedatalist)){
 					foreach($feedatalist as $row){
-				?>
+				if(!empty($row->asfee_paymentmethod)){?>
 					<td><?php echo $row->asfee_paymentmethod;?></td>
-					<td><?php echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;?></td>
+				<?php }else{?><td></td><?php }?>
+				<?php	
+					$paydate =$this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
+					if(!empty($paydate)){?>				
+						<td><?php echo $paydate;?></td>
+				<?php }else{?><td></td><?php }?>
+
+				<?php if(!empty($row->asfee_feeamount)){?>
 					<td><?php echo $row->asfee_feeamount;?></td>
-					<td><?php echo $asmid; ?></td>
+				<?php }else{?><td></td><?php }?>
+	
 				<?php }}else{?><td></td><td></td><td></td><td></td><?php }?>
 				
 		</tr>

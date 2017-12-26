@@ -85,7 +85,7 @@ function myFunction() {
 
 			<td>
 				
-        		<input type="text" name="enddate" placeholder="End date" value="<?php echo isset($_POST["edate"]) ? $_POST["edate"] : ''; ?>" id="edate" required />
+        		<input type="text" name="enddate" placeholder="End Date" value="<?php echo isset($_POST["edate"]) ? $_POST["edate"] : ''; ?>" id="edate" required />
         
             			<script>
                				 $('#edate').datepicker({

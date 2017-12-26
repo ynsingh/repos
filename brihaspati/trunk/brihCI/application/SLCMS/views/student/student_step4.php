@@ -68,7 +68,7 @@ select{width:100%;font-size:17px;height:40px;}
 <h1>Fees Submission</h1>
 <center>
 <div id="form"  style="width:80%;">
-	<div id="text">Student Detail</div>
+	<div id="text">Student Details</div>
 	</br>
 
 <table >
@@ -104,9 +104,9 @@ select{width:100%;font-size:17px;height:40px;}
 	</tr>
 	<tr height="10"></tr>
 	<tr >
-	<td>Gender</td><td><?php echo $this->gender;?></td>
+	<td>Gender :</td><td><?php echo $this->gender;?></td>
 	<td></td>
-	<td>Programme</td><td>
+	<td>Programme :</td><td>
 	
 	<?php echo $productinfo;?>
 	</td>
@@ -118,9 +118,9 @@ select{width:100%;font-size:17px;height:40px;}
 <table class="TFtable">
 	<thead>
 		<tr>		
-		<th><span style="float:left;">Details</span></th>
+		<th><span style="float:left;">Details :</span></th>
 		
-		<th><span style="float:left;">Amount</span></th>
+		<th><span style="float:left;">Amount :</span></th>
 		
 		</tr>
 	</thead>
@@ -139,7 +139,7 @@ select{width:100%;font-size:17px;height:40px;}
 		</tr>
 		
 	<?php } ?>
-		<thead style="font-size:18px;"><tr><th>Total</th><th><span style="float:left;"><?php echo $amount;?></span></th></tr></thead>		
+		<thead style="font-size:18px;"><tr><th>Total :</th><th><span style="float:left;"><?php echo $amount;?></span></th></tr></thead>		
 		
 	</tbody>
 

@@ -88,13 +88,13 @@ function change_getcat(){
 	    <tr>	
 
 		<td>	
-			<label for="nnumber">Application number</label></br>
+			<label for="nnumber">Application Number</label></br>
 			<input type="text" name="Sanumber" placeholder="Enter Application Number" value="<?php echo $number;?>" readonly>	
 		</td>
 
 		<td>
 			
-			<label>Name of the applicant</label></br>
+			<label>Name of the Applicant</label></br>
 			<input type="text" name="Sname" placeholder="Enter your name" value="<?php echo $name;?>" readonly>	
 		</td>		
 		<td>	
@@ -114,7 +114,7 @@ function change_getcat(){
 			</select>		
 		</td>
 		<td>	
-			<label for="nnumber">Name of programme/course</label></br>
+			<label for="nnumber">Name of Programme/Course</label></br>
 			<select name="Snameprogramme"  style="font-size:18px;">
 				<option value="<?php echo $progid;?>"><?php echo $prgname.'('.$prgbranch.')'; ?></option>
 	  		</select>
@@ -137,7 +137,7 @@ function change_getcat(){
 			
 		</td>-->
 		<td>	
-			<label for="nnumber">Mother name</label></br>	
+			<label for="nnumber">Mother Name</label></br>	
 			<input type="text" name="Smothername" placeholder="Enter Mother Name" value="<?php echo $mname; ?>" readonly />		
 		</td>
 
@@ -161,7 +161,7 @@ function change_getcat(){
 		
 		<td>	
 			 
-		<label>Select date of birth</label></br>
+		<label>Select Date of Birth</label></br>
 		<input type="text" name="Sdob" placeholder="Enter Your Dob" value="<?php echo $dob; ?>" readonly>
 		</td>
 
@@ -171,14 +171,14 @@ function change_getcat(){
 	<tr>	
 		
 		<td>	
-			<label for="nnumber">Aadhar number</label></br>	
+			<label for="nnumber">Aadhar Number</label></br>	
 			<input type="text" name="Saadharnumber" placeholder="Enter Aadhar Number" MaxLength="12" value="<?php echo $aadhar; ?>"/>		
 		</td>
 
 		
 	
 		<td>	
-			<label>Blood group</label></br>
+			<label>Blood Group</label></br>
 		
 			<select name="Sabgroup"  style="font-size:18px;" >
 				<option value="" style="font-size:18px;">Select Blood Group</option>
@@ -198,7 +198,7 @@ function change_getcat(){
 			<input type="text"  name="Sreligion" placeholder="Enter Aadhar Number" value="<?php echo $religion; ?>" readonly/>
 		</td>
 		<td>	
-			<label>Mobile/Phone no.</label></br>
+			<label>Mobile/Phone No.</label></br>
 			<input type="text" name="Smobile" placeholder="Enter Mobile Number" MaxLength="10"  value="<?php echo $mobile?>" readonly />		
 		</td>
 		<td>	
@@ -268,7 +268,7 @@ function change_getcat(){
 	</thead>
 	<thead  style="background-color:#067eb7;color:white;font-size:20px;">
 		<tr>
-			<th>Class Name</th><th>Intitute Name</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>
+			<th>Class Name</th><th>Institute Name</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>
 		<tr>
 	</thead>	
 	<tbody>

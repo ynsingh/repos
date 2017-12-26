@@ -233,7 +233,22 @@ class Upl extends CI_Controller
 					$userflagurt=$this->commodel->insertrec('admissionmeritlist', $dataurt) ;
 					if($userflagurt){
                                             $sub='You are eligible for the admission' ;
-                                            $mess="Congrate. You are eligible for the admission. Your admissions detailas are given below - \n Hall ticket number - ".$entexamrollno."\n Program name - ".$course_name ." ( ".$branchname ." )  \n  Merit list number - ".$meritlist_no."\n Last date of admission - ".$lastdate_admission."\n Kindly check with website" ;
+					     $upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
+
+				 //mail function
+				$mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+					   <tr><td colspan=2>".$upimg."</br><hr></td></tr>
+					   <tr><td colspan=2><b>Congrats!  Now you are eligible for taking the admission.</td></tr>
+					   <tr><td colspan=2><b>Your admissions details are given below.</td></tr>	
+					   <tr height=15><td colspan=2></td></tr>
+					   <tr><td width=370><b>Hall Ticket Number : </b></td><td align=left>".$entexamrollno."</td></tr> 
+					   <tr><td><b>Program Name : </b> </td><td align=left>".$course_name ." ( ".$branchname ." )</td></tr>
+					   <tr><td><b>Merit list number :</b></td><td align=left>".$meritlist_no."</td></tr>
+					   <tr><td><b>Last date of admission : </b></td><td align=left> ".$lastdate_admission ."</td></tr>
+				   	   <tr><td colspan=2 align=right><a href='".site_url()."' style='color:yellow;' title='Click to link'>Click To Link For Admission</a></td><tr>
+					</table> " ;
+
+                                           // $mess="Congrats!  Now you are eligible for taking the admission. \n Your admissions details are given below - \n Hall ticket number - ".$entexamrollno." \n Program name - ".$course_name ." ( ".$branchname ." )  \n  Merit list number - ".$meritlist_no." \n Last date of admission - ".$lastdate_admission." \n Kindly check the website - base_url()";
                                             $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 					    //  mail flag check 			
 					    if($mails){

@@ -1141,16 +1141,16 @@ CREATE TABLE `student_attendance` (
   `satd_papid` int(11) NOT NULL,
   `satd_astatus` varchar(55) DEFAULT NULL,
   `satd_classtype` varchar(55) DEFAULT 'R',
-  `satd_adate`  DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `satd_adate` date DEFAULT NULL,
   `satd_creatorid` varchar(50) NOT NULL,
-  `satd_createdate`  DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `satd_createdate` datetime DEFAULT CURRENT_TIMESTAMP,
   `satd_modifierid` varchar(50) NOT NULL,
-  `satd_modifydate`  DATETIME DEFAULT CURRENT_TIMESTAMP
+  `satd_modifydate` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `student_attendance`
   ADD PRIMARY KEY (`satd_id`),
-  ADD UNIQUE KEY `satd_smid` (`satd_smid`,`satd_scid`,`satd_prgid`,`satd_subid`,`satd_papid`,`satd_acadyear`,`satd_sem`,`satd_adate`,`satd_classtype`);
+  ADD UNIQUE KEY `satd_smid` (`satd_smid`,`satd_scid`,`satd_acadyear`,`satd_prgid`,`satd_sem`,`satd_subid`,`satd_papid`,`satd_classtype`,`satd_adate`);
 
 ALTER TABLE `student_attendance`
   MODIFY `satd_id` int(11) NOT NULL AUTO_INCREMENT;

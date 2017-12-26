@@ -55,7 +55,7 @@ Students can submit their fee refund (for cancelled/transferred program) applica
 <tr>
 <td>
 <p>
-<h1 style="text-align:left;"><b>Eligibility Criteria to take the Admission</b></h1>
+<h1 style="text-align:left;"><b>Eligibility Criteria for Taking the Admission</b></h1>
 
 <p style="font-size:15px; text-align: justify;">Students who have passed plus two examination [or Result is awaited] in any subject from a recognized Indian or foreign University / Board (as per the AIU foreign equivalence list) with a minimum of 40% aggregate (35% for SC/ST/PWD/ Transgender and Kashmiri Migrant Students) are eligible to apply for Honors programs. To pass the entrance examination conducted by the University the candidates belonging to open category have to secure a minimum of 40% marks [35% for SC/ST and Kashmiri Migrant students/ Transgender]. </p>
 </td></tr>
@@ -73,7 +73,7 @@ Document 3 : All Mark Sheets</br>
  </li><li>
 Document 4 : All Degree Certificates</br>
  </li><li>
-Document 5 : Reservation certificates</br>
+Document 5 : Reservation Certificates</br>
 </li>
 </tr></td>
 
