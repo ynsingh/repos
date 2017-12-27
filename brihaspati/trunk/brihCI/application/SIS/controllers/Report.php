@@ -119,7 +119,25 @@ public function disciplinewiselist(){
     }
 
 
-
+    public function desigemployeelist(){
+        $selectfield ="emp_desig_code,emp_dept_code,emp_name";
+        $whdata = array ('emp_worktype' => 'Teaching');
+        $whorder = "emp_desig_code  asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+        $this->logger->write_logmessage("view"," view designation wise employee list" );
+        $this->logger->write_dblogmessage("view"," view designation wise employee list");
+        $this->load->view('report/desigemployeelist',$data);
+    }
+    public function positionsummary(){
+        $selectfield ="sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
+        $whdata = array ('sp_tnt' => 'Non Teaching');
+        $whorder = "sp_emppost asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        
+        $this->logger->write_logmessage("view"," view position Summary" );
+        $this->logger->write_dblogmessage("view"," view position Summary");
+        $this->load->view('report/positionsummary',$data);
+    }   
 // view students list 
 /*
     public function liststu() {
