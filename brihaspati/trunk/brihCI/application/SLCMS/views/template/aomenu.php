@@ -9,7 +9,7 @@ echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
 //				echo "<a href=" . base_url() . ">Dashboard</a>";
-				echo "<a href=" . site_url() ."/home> Dashboard</a>";
+				echo "<a href=" . site_url() ."/aohome> Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
 			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
