@@ -321,11 +321,11 @@ class Staffmgmt extends CI_Controller
                         } 
                     }//check for empphoto
                     //if sucess send mail to user with login details 
-                    $sub='User Registration in Staff information System' ;
-                    $mess="Your registration is completed. The user id ".$_POST['emailid']." and password is ".$passwd ;
-                    // $this->mailstoperson =$this->mailmodel->mailsnd('$_POST['emailid']', $sub, $mess,'','Sis');
+                    $sub='User Registration in Staff information System';
+                    $mess="Your registration is completed. The user id ".$_POST['emailid']." and password is ".$passwd ."\r\n".'Kindly check with website:'."\r\n". site_url('welcome');
+                    $mailstoperson =$this->mailmodel->mailsnd($_POST['emailid'], $sub, $mess,'');
                     //  mail flag check 	
-                    if($this->mailstoperson){
+                    if($mailstoperson){
                         //echo "in if part mail";
                         $mailmsg='Please check your mail for username and password....Mail send successfully';
                         $this->logger->write_logmessage("insert"," add user profile in edrpuser,profile and user role type ",'mail send successfully  to '.$_POST['emailid'] );
@@ -593,6 +593,10 @@ class Staffmgmt extends CI_Controller
             }//check for empphoto
            
             $upempdata_flag=$this->sismodel->updaterec('employee_master', $data,'emp_id',$id);
+	    $mess = 'Your Employee data updated Successfully.';
+            $sub = 'Employee Profile Updated';
+            $this->mailmodel->mailsnd($_POST['emailid'],$sub,$mess,'');
+
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
                 $this->logger->write_dblogmessage("error","Error in update staff profile", "Error in staff profile record update");

@@ -27,6 +27,7 @@ class Welcome extends CI_Controller {
         	$this->load->model("login_model", "login");
                 $this->load->model("User_model", "usrmodel");
                 $this->load->model("Common_model", "commodel");
+		$this->load->model("SIS_model", "sismodel");
         	//if(!empty($_SESSION['id_user'])){
                     
                 //}
@@ -41,7 +42,9 @@ class Welcome extends CI_Controller {
             if($_POST) {
                 $result = $this->login->validate_user($_POST);
                 /*get role by using model class and set templates according to role*/
-                $roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
+                //$roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
+                $wharray=array('userid'=>$result->id);
+		$roles=$this->sismodel->get_listspficemore('user_role_type','roleid',$wharray);
                 if(!empty($result)) {
              		if(!empty($roles)){   
                     		if(count($roles) == 1){
