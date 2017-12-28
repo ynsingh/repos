@@ -611,7 +611,8 @@ class Enterence extends CI_Controller {
 			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('enterence/step_two');
 		}
-
+		
+		$data['categorylist'] = $this->commodel->get_list('category');
 		$email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_emailid','asreg_id',$regisid)->asreg_emailid;		
 		$data['email'] = $email;
 		$mobile = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_mobile','asreg_id',$regisid)->asreg_mobile;		
@@ -790,12 +791,12 @@ class Enterence extends CI_Controller {
 				{
                    			$this->logger->write_logmessage("insert", "Student admission address or parent record not add successfully." );
                     			$this->logger->write_dblogmessage("insert", "Student admission address or parent record not add successfully." );
-                   	 		$this->session->set_flashdata("err_message",'Error to add admission detail' );
+                   	 		$this->session->set_flashdata("err_message",'Error in adding admission details' );
                 		}
                 		else{
                     			$this->logger->write_logmessage("insert","Student admission address or parent record add successfully.");
                     			$this->logger->write_dblogmessage("insert", "Student admission address or parent record add successfully.");
-                   			$this->session->set_flashdata("success", "Your admission personal detail add successfully.");
+                   			$this->session->set_flashdata("success", "Your admission personal details has been added successfully.");
 					redirect('enterence/step_two');
                 		}
 					
@@ -1072,13 +1073,13 @@ class Enterence extends CI_Controller {
 				{
                    			$this->logger->write_logmessage("insert", "Student admission education and employment record not add successfully." );
                     			$this->logger->write_dblogmessage("insert", "Student admission education and employment record not add successfully." );
-                   	 		$this->session->set_flashdata("err_message",'Error to add admission education detail');
+                   	 		$this->session->set_flashdata("err_message",'Error in adding admission education details');
 					redirect('enterence/step_two');
                 		}
                 		else{
                     			$this->logger->write_logmessage("insert","Student admission education and employment record add successfully.");
                     			$this->logger->write_dblogmessage("insert", "Student admission education and employment record add successfully.");
-                   			$this->session->set_flashdata("success", "Your admission education detail add successfully.");
+                   			$this->session->set_flashdata("success", "Your admission education details has been  added successfully.");
 					redirect('enterence/step_three');
                 		}	
 			}//if validation close
@@ -1180,7 +1181,7 @@ class Enterence extends CI_Controller {
                                                  );
                                                 //$query = $this->db->insert('admissionstudent_uploaddata',$insertPhoto);
 						$this->commodel->updaterec('admissionstudent_uploaddata',$insertPhoto,'asupd_asmid',$id);
-						$filesuccess[$k] = " Photo has been upload successfully. ";
+						$filesuccess[$k] = " Photo has been uploaded successfully. ";
 						$k++;
 						$filesuccess[$k] = " Signature has been uploaded successfully. ";
 						$k++;
@@ -1339,7 +1340,8 @@ class Enterence extends CI_Controller {
 		//online payment student enterence record get
 		
 		//get category name
-		$catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
+		$catid = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
+		$catname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$catid)->cat_name;
 		$this->catname = $catname;
 		if($this->catname == "General" || $this->catname == "OBC"){
 			$amount='300.00';
@@ -1555,8 +1557,8 @@ class Enterence extends CI_Controller {
 		$Sid = $this->session->userdata['asm_id'];
 		$data['Sid'] = $Sid;
 		//get category name 	
-		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
-		
+		$catid = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
+		$this->catname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$catid)->cat_name;
 		//fees paid by offline
 					
 		if(isset($_POST['offline'])) {	
@@ -1647,7 +1649,7 @@ class Enterence extends CI_Controller {
                		else{
             			$this->logger->write_logmessage("update","Student entrance admission fees add.".$Sid);
                			$this->logger->write_dblogmessage("update", "Student entrance admission fees add.".$Sid);
-				$this->session->set_flashdata("success", "Your".' ' .$post5 .' '."entrance fees submitted successfully.");
+				$this->session->set_flashdata("success", "Your".' ' .$post5 .' '."entrance fees has been submitted successfully.");
 				redirect('enterence/step_five');
                		}
 		//}//if duplicate close
@@ -1702,8 +1704,9 @@ class Enterence extends CI_Controller {
 			$data['mobile'] = $mobile;
 			$email = $stud_admission->asm_email;
 			$data['email'] = $email;
-			$category = $stud_admission->asm_caste;
-			$data['category'] = $category;
+			$categoryid = $stud_admission->asm_caste;
+			$catname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$categoryid)->cat_name;
+			$data['catname'] = $catname;
 			$rollno = $stud_admission->asm_applicationno;
 			$data['rollno'] = $rollno;
 			$sccode = $stud_admission->asm_sccode;
@@ -1821,8 +1824,9 @@ class Enterence extends CI_Controller {
 			$data['mobile'] = $mobile;
 			$email = $stud_admission->asm_email;
 			$data['email'] = $email;
-			$category = $stud_admission->asm_caste;
-			$data['category'] = $category;
+			$categoryid = $stud_admission->asm_caste;
+			$catname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$categoryid)->cat_name;
+			$data['catname'] = $catname;
 			$rollno = $stud_admission->asm_applicationno;
 			$data['rollno'] = $rollno;
 			$sccode = $stud_admission->asm_sccode;
@@ -2058,7 +2062,9 @@ class Enterence extends CI_Controller {
 			$data['asmid'] = $asmid;
 			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$asmid)->asm_gender;
 			$data['gender'] = $gender;
-			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$asmid)->asm_caste;
+			$castid=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$asmid)->asm_caste;
+			$caste = $this->commodel->get_listspfic1('category','cat_name','cat_id',$castid)->cat_name;
+		
         		$data['caste'] = $caste;               
 			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
 			$data['prgid'] = $prgid;                        
@@ -2114,8 +2120,10 @@ class Enterence extends CI_Controller {
 			$data['asmid'] = $asmid;
 			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$asmid)->asm_gender;
 			$data['gender'] = $gender;
-			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$asmid)->asm_caste;
-        		$data['caste'] = $caste;               
+			$castid=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$asmid)->asm_caste;
+			$caste = $this->commodel->get_listspfic1('category','cat_name','cat_id',$castid)->cat_name;
+		
+        		$data['caste'] = $caste;                
 			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
 			$data['prgid'] = $prgid;                        
 			$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';

@@ -51,6 +51,43 @@ class University_model extends CI_Model
                 return $seattmp;
         }
 
+	public function generat_rollnumber($tablename,$prgid,$field,$whfield,$Sid){
+		
+                if($prgid<=9){
+                        $prgid = '0'.$prgid;
+                }
+                $ydate = date('Y');
+                $rollno = '';
+                $datas = $ydate.$prgid;
+		
+                $max = $this->commodel->get_listspficemore($tablename,"MAX($field) AS maxca_rollno","$field LIKE '$datas%'");
+		
+                foreach($max as $row){
+                        $maxrollno = $row->maxca_rollno;
+                }
+                if((!empty($maxrollno))||$maxrollno>0)
+                {
+                        $rollno = $maxrollno+1;
+                }
+                else{
+                        $rollno = $ydate.$prgid.'0001';
+                }
+
+                $is_rollno = $this->commodel->isduplicate($tablename,$field,$rollno);
+                if(!($is_rollno)){
+                        $center = array(
+                                $field         => $rollno,
+                         );
+
+                //update student master table(application_no)
+                $updata = $this->commodel->updaterec($tablename,$center,$whfield,$Sid);
+		
+                $this->logger->write_logmessage("update", "update enrollment number in ".$tablename . " table - ".$Sid.' Enrollment No '.$rollno);
+                $this->logger->write_dblogmessage("update", "update enrollment number in ". $tablename ." table - ".$Sid .' Enrollment No '.$rollno);
+
+                }//ducplicate if close
+        }
+
 
     function __destruct() {
         $this->db->close();

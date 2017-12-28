@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           } };
          ?>
         <?php 
-	   if(!empty($_SESSION['success'])){		
+	   if(!empty($_SESSION['err_message'])){		
 		if(isset($_SESSION['err_message'])){?>
         <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php

@@ -289,10 +289,10 @@ class Student extends CI_Controller {
 			$data['mobile'] = $mobile;
 			$email = $stu_data->asm_email;
 			$data['email'] = $email;
-			$category = $stu_data->asm_caste;
-			$data['category'] = $category;
-			$categoryid = $this->commodel->get_listspfic1('category','cat_id','cat_name',$category)->cat_id;
+			$categoryid = $stu_data->asm_caste;
 			$data['categoryid'] = $categoryid;
+			$category = $this->commodel->get_listspfic1('category','cat_name','cat_id',$categoryid)->cat_name;
+			$data['category'] = $category;
 			$rollno = $stu_data->asm_applicationno;
 			$data['rollno'] = $rollno;
 			$sccode = $stu_data->asm_sccode;
@@ -529,7 +529,7 @@ class Student extends CI_Controller {
 		//get the code of studyceneter
 		$scno = $_POST['Scenters'];
 		// generate the enrollnomber
-		$enroollno = date("Y").$scno.$seqno;
+		//$enroollno = date("Y").$scno.$seqno;
 			
 		//insert into student master
 
@@ -544,7 +544,7 @@ class Student extends CI_Controller {
 			'sm_email'   		=>	$_POST['Semail'],
 			'sm_category'		=>	$_POST['Scategory'],
 			'sm_sccode'		=>	$_POST['Scenters'],
-			'sm_enrollmentno'	=>	$enroollno
+			//'sm_enrollmentno'	=>	$enroollno
                 );
 	 	//start the transaction
        	 	$this->db->trans_begin();
@@ -559,14 +559,14 @@ class Student extends CI_Controller {
 			'spar_smid'		=>	$insertid,
 			'spar_mothername'	=>	$_POST['Smothername'],
 			'spar_fathername'   	=>	$_POST['Sfathername'],
-                	'spar_paddress'  	=>	$_POST['Spaddress'],
+                	'spar_paddress'  	=>	$_POST['Saddress'],
 			//'spar_pdistrict'  	=>	$_POST['Sdist'],
 			//'spar_ppostoffice'  	=>	$_POST['Spost'],
                 	'spar_pcity'  		=>	$_POST['Scity'],
-                	//'spar_pstate'   	=>	$_POST['Sstate'],
+                	'spar_pstate'   	=>	$_POST['Sstate'],
 			'spar_pcountry'   	=>	$_POST['Scountry'],
 			'spar_ppincode'   	=>	$_POST['Spincode'],
-			'spar_caddress'  	=>	$_POST['Spaddress'],
+			'spar_caddress'  	=>	$_POST['Saddress'],
 			//'spar_cdistrict'  	=>	$_POST['Sdist'],
 			//'spar_cpostoffice'  	=>	$_POST['Spost'],
                 	'spar_ccity'  		=>	$_POST['Scity'],
@@ -675,7 +675,7 @@ class Student extends CI_Controller {
 		$this->db->insert('student_entrance_exam',$enterence);
 
 		//insert into student program
-		$cdate = date("Y-m-d h:i:sa");
+		$cdate = date("Y-m-d");
 		$sem=1;
 		$dept = $_POST['Sdepart'];
 		$stuprog = array(
@@ -1051,7 +1051,8 @@ class Student extends CI_Controller {
 		$name=$this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Sid)->sm_fname;
 		$this->fname=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$Sid)->spar_fathername;
 		$this->gender=$this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$Sid)->sm_gender;
-		$this->acadyear=$this->user_model->getcurrentAcadYearfadm();
+		//$this->acadyear = $this->user_model->getcurrentAcadYearfadm();
+		$this->acadyear = $this->commodel->get_listspfic1('student_program','sp_acadyear','sp_smid',$Sid)->sp_acadyear;
 		//print_r($semesterrec);
 		//$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
 		$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;

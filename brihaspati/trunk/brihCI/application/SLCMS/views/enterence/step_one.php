@@ -107,7 +107,7 @@ function filladd()
 			<?php ?>
 			<label for="ennumber">Study Centers</label></br>
 			<select name="entcenter" style="height:37px;font-size:18px;font-weight:bold;" >
- 			<option  disabled selected>Study Centers</option>
+ 			<!--<option  disabled selected>Study Centers</option>-->
 				<?php foreach($this->scresult as $scrow): 
 					$scid = $this->commodel->get_listspfic1('study_center','sc_id','sc_id',$scrow->prg_scid)->sc_id;
 					$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
@@ -219,10 +219,9 @@ function filladd()
 			<label>Category</label></br>
 			<select name="entcate" style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled>Select your category</option>
-				<option value="SC">SC</option>
-				<option value="ST">ST</option>
-				<option value="OBC">OBC</option>
-				<option value="General">General</option>
+				<?php foreach($categorylist as $row){?>
+					<option value="<?php echo $row->cat_id; ?>"><?php echo $row->cat_name;?></option>
+				<?php }?>	
 			</select>
 		<td/>
 

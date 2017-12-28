@@ -213,7 +213,7 @@ function change_getcat(){
 	<tr>
 		<td>
 			<label>Postal Address</label></br>
-			<input type="text" name="Spaddress" placeholder="Enter Postal Address" value="<?php echo $paddress; ?>" readonly/>		
+			<input type="text" name="Saddress" placeholder="Enter Postal Address" value="<?php echo $paddress; ?>" readonly/>		
 		</td>
 	
 		<!--<td>

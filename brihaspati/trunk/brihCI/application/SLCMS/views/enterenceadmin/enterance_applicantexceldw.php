@@ -243,8 +243,10 @@
 						<td><?php echo $data->asm_mstatus;?></td>		
 					<?php }else{?><td></td><?php }?>
 
-					<?php if(!empty($data->asm_caste)){?>
-						<td><?php echo $data->asm_caste;?></td>
+					<?php if(!empty($data->asm_caste)){
+						$catid = $data->asm_caste;
+					?>
+						<td><?php echo $this->commodel->get_listspfic1('category','cat_name','cat_id',$catid)->cat_name;?></td>
 					<?php }else{?><td></td><?php }?>
 
 					<?php if(!empty($data->asm_phyhandicaped)){?>

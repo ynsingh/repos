@@ -16,8 +16,10 @@ class Adminadmissionstu extends CI_Controller
                 $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
 		$this->load->model("Mailsend_model","mailmodel");	
-		 $this->load->model("Login_model", "login");
-        if(empty($this->session->userdata('id_user'))) {
+		$this->load->model("University_model","univmodel");
+		$this->load->model("Login_model", "logmodel");
+		$this->load->model("DateSem_model","datesemmodel");
+	if(empty($this->session->userdata('id_user'))) {
           $this->session->set_flashdata('flash_data', 'You don\'t have access!');
            redirect('welcome');
          }
@@ -121,12 +123,7 @@ class Adminadmissionstu extends CI_Controller
                 		);
 				$result2=$this->commodel->updaterec('student_entry_exit',$stuentupdate,'senex_smid',$smid);
 
- 				//$cid = 'http://172.26.82.18/~ehelpy/brihCI/uploads/logo/logo2.jpg';
-				//$img = '<img src="cid:'. $cid .'" alt="photo1" />';
-				//$mess = $this->load->view('template/header2');
-				//$image = 'http://172.26.82.18/~ehelpy/brihCI/uploads/logo/logo2.jpg';
-				//$upimg = '<img src="base_url()uploads/logo/logo2.jpg" style="width:100%;height:60px;" >';
-				//$img = '<img src="http://172.26.82.18/~ehelpy/brihCI/uploads/logo/logo2.jpg" style="width:100%;height:60px;" >';
+ 				
 				$upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
 
 				$mess = "
@@ -399,46 +396,163 @@ class Adminadmissionstu extends CI_Controller
 	 }
 
 /****************************************************Admin admission Panel Work Start****************************************************************/
+	
+
+	public function listenrolladminstu(){
+		$data['deptlist'] = $this->commodel->get_list('Department');
+		$currentacadyear =$this->datesemmodel->getcurrentAcadYear();
+                $semester = 1;
+		if(isset($_POST['search'])) 
+ 		{
+			$date1 = $this->input->post('stu_sdate');
+			$date2 = $this->input->post('stu_edate');
+			$department = $this->input->post('stu_dept',TRUE);
+			if($date1 == '' && $date2 == '' && $department == ''){
+				$this->session->set_flashdata('err_message', 'Please Select The Date or Department.');
+				redirect('adminadmissionstu/listenrolladminstu');
+			}else{
+				if(($date1 != "" && $date2 == "") || ($date1 == "" && $date2 != "")){
+					$this->session->set_flashdata('err_message', 'Both date fields are required.');
+					redirect('adminadmissionstu/listenrolladminstu');
+				}
+				
+				if(($date1 != "" && $date2 != "") && $department != ''){
+					$wharray = array('sp_semregdate >=' =>$date1 , 'sp_semregdate <=' => $date2 ,'sp_deptid' => $department,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+				}
+				elseif(($date1 != "" && $date2 != "") && $department == ''){
+					$wharray = array('sp_semregdate >=' =>$date1 , 'sp_semregdate <=' => $date2 ,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);	
+				}
+				elseif(($date1 == "" && $date2 == "") && $department != ''){
+					$wharray = array('sp_deptid' => $department,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);		
+				}
+			
+			}
+		}
+		else{
+			$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+		}
+		$selectdata = 'sp_smid,sp_programid,sp_semregdate';	
+		$getstuid = $this->commodel->get_listspficemore('student_program',$selectdata,$wharray);
+               	$data['getstuid'] = $getstuid;		
+	
+		
+                $this->load->view('student_admission/adminstu_enrollment',$data);
+
+        }
+	
+	public function genenrolladminstu(){
+		//get the list of student  from student program  where enrollment number is null in student master
+			$wharray = array('sm_enrollmentno' => NULL);
+			$this->db->select('sp_smid,sp_programid');
+			$this->db->from('student_program');
+			$this->db->join('student_master', 'student_master.sm_id = student_program.sp_smid');
+			$this->db->where($wharray);
+			$query = $this->db->get()->result();
+			
+		//get all student
+			foreach($query as $row){
+				$Sid = $row->sp_smid;
+				$prgid = $row->sp_programid;	
+				// call the function from university model generat_rollnumber($tablename,$prgid,$field,$whfield,$Sid)
+				$this->univmodel->generat_rollnumber('student_master',$prgid,'sm_enrollmentno','sm_id',$Sid);
+				$this->logger->write_logmessage("update","Update record in student enrollment ", $prgid.' '.$Sid);
+				$this->session->set_flashdata('success', 'Student Enrollment Number has been Successfully Generated .');
+			}
+
+		$currentacadyear =$this->datesemmodel->getcurrentAcadYear();
+                $semester = 1;
+		$selectdata = 'sp_smid,sp_programid,sp_semregdate';
+                $whdata = array('sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+		$getstuid = $this->commodel->get_listspficemore('student_program',$selectdata,$whdata);
+                $data['getstuid'] = $getstuid;
+		
+                $this->load->view('student_admission/adminstu_enrollment',$data);
+	}
 
 	public function adminstu_nonverified(){
-
-		$date1 = $this->input->post('stu_sdate');
-		$date2 = $this->input->post('stu_edate');
+		$data['deptlist'] = $this->commodel->get_list('Department');
+		if(isset($_POST['nonsearch'])) 
+ 		{	
+			$date1 = $this->input->post('stu_sdate');
+			$date2 = $this->input->post('stu_edate');
+			$department = $this->input->post('stu_nondept');
 		
-		$data = array(
-			'date1' => $date1,
-			'date2'=> $date2
-			);
-		if ($date1 == "" || $date2 == "") {
-			$condition = array('sas_admissionstatus' => 'Provisional');
-			$sarray = 'sas_studentmasterid,sas_hallticketno';
-			$data['stusmid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
-		} else {
-			$condition = array('sas_admissiondate >=' =>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Provisional');
-			$sarray = 'sas_studentmasterid,sas_hallticketno';
-			$data['stu_smid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+			if($date1 == '' && $date2 == '' && $department == ''){
+				$this->session->set_flashdata('err_message', 'Please Select The Date or Department.');
+				redirect('adminadmissionstu/adminstu_nonverified');
+			}else{
+				if(($date1 != "" && $date2 == "") || ($date1 == "" && $date2 != "")){
+					$this->session->set_flashdata('err_message', 'Both date fields are required.');
+					redirect('adminadmissionstu/adminstu_nonverified');
+				}
+				$currentacadyear =$this->datesemmodel->getcurrentAcadYear();
+                		$semester = 1;
+				if(($date1 != "" && $date2 != "") && $department != ''){
+					$wharray = array('sas_admissiondate >=' =>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Provisional','sp_deptid' => $department,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+				}
+				elseif(($date1 != "" && $date2 != "") && $department == ''){
+					$wharray = array('sas_admissiondate >=' =>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Provisional','sp_acadyear' => $currentacadyear,'sp_semester' => $semester);	
+				}
+				elseif(($date1 == "" && $date2 == "") && $department != ''){
+					$wharray = array('sp_deptid' => $department,'sas_admissionstatus' => 'Provisional','sp_acadyear' => $currentacadyear,'sp_semester' => $semester);		
+				}
+			
+			}
 		}
+		else{
+			$wharray = array('sas_admissionstatus' => 'Provisional');
+		}		
+
+		$this->db->select('sp_smid,sas_studentmasterid,sas_hallticketno');
+		$this->db->from('student_program');
+		$this->db->join('student_admissionstatus','student_admissionstatus.sas_studentmasterid = student_program.sp_smid');
+		$this->db->where($wharray);
+		$stusmid = $this->db->get()->result();
+		$data['stusmid'] = $stusmid;
+		
 		$this->load->view('student_admission/adminstu_nonverified',$data);
 	}
 
 	public function adminstu_verified(){
+		$data['deptlist'] = $this->commodel->get_list('Department');
+		if(isset($_POST['verisearch'])) 
+ 		{	
+			$date1 = $this->input->post('stu_sdate');
+			$date2 = $this->input->post('stu_edate');
+			$department = $this->input->post('stu_veridept');
 		
-		$date1 = $this->input->post('stu_sdate');
-		$date2 = $this->input->post('stu_edate');
-		
-		$data = array(
-			'date1' => $date1,
-			'date2'=> $date2
-			);
-		if ($date1 == "" || $date2 == "") {
-			$condition = array('sas_admissionstatus' => 'Confirmed');
-			$sarray = 'sas_studentmasterid,sas_hallticketno';
-			$data['stusmid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
-		} else {
-			$condition = array('sas_admissiondate >='=>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Confirmed');
-			$sarray = 'sas_studentmasterid,sas_hallticketno';
-			$data['stu_smid'] = $this->commodel->get_listarry('student_admissionstatus',$sarray,$condition);
+			if($date1 == '' && $date2 == '' && $department == ''){
+				$this->session->set_flashdata('err_message', 'Please Select The Date or Department.');
+				redirect('adminadmissionstu/adminstu_verified');
+			}else{
+				if(($date1 != "" && $date2 == "") || ($date1 == "" && $date2 != "")){
+					$this->session->set_flashdata('err_message', 'Both date fields are required.');
+					redirect('adminadmissionstu/adminstu_verified');
+				}
+				$currentacadyear =$this->datesemmodel->getcurrentAcadYear();
+                		$semester = 1;
+				if(($date1 != "" && $date2 != "") && $department != ''){
+					$wharray = array('sas_admissiondate >=' =>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Confirmed','sp_deptid' => $department,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+				}
+				elseif(($date1 != "" && $date2 != "") && $department == ''){
+					$wharray = array('sas_admissiondate >=' =>$date1 , 'sas_admissiondate <=' => $date2 , 'sas_admissionstatus' => 'Confirmed','sp_acadyear' => $currentacadyear,'sp_semester' => $semester);	
+				}
+				elseif(($date1 == "" && $date2 == "") && $department != ''){
+					$wharray = array('sp_deptid' => $department,'sas_admissionstatus' => 'Confirmed','sp_acadyear' => $currentacadyear,'sp_semester' => $semester);		
+				}
+			
+			}
 		}
+		else{
+			$wharray = array('sas_admissionstatus' => 'Confirmed');
+		}		
+
+		$this->db->select('sp_smid,sas_studentmasterid,sas_hallticketno');
+		$this->db->from('student_program');
+		$this->db->join('student_admissionstatus','student_admissionstatus.sas_studentmasterid = student_program.sp_smid');
+		$this->db->where($wharray);
+		$stusmid = $this->db->get()->result();
+		$data['stusmid'] = $stusmid;
 
 		$this->load->view('student_admission/adminstu_verified',$data);
 	}

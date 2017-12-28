@@ -132,7 +132,7 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('admissionstu/stu_feereimb', 'Admission Fees Reimbursement', array('title' => 'Admission Fees Reimbursement'));
                                         echo "</li>";*/
                                         echo "<li>";
-                                                echo anchor('hodadmissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
+                                                echo anchor('hodadmissionstu/listenrolledstu', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
                                         echo "</li>";
                                 echo "</ul>";
                         echo "</li>";

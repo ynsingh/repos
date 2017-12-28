@@ -65,7 +65,7 @@
 				<td>Maritial Status :</td>
 				<td><?php echo $mastatus;?></td>
 				<td>Category :</td>
-				<td><?php echo $category;?></td>
+				<td><?php echo $catname;?></td>
 
 			</tr>
 			<tr>

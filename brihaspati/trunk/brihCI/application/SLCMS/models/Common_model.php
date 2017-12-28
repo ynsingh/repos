@@ -175,41 +175,6 @@ class Common_model extends CI_Model
         return $this->db->get()->result();
     }
 
-//get the list of all records with  five specific fields for specific values
-/*    public function get_listspfic($tbname,$selfield1='',$selfield2='',$selfield3='',$selfield4='',$selfield5='',$fieldname='',$fieldvalue=''){
-		$this->db->flush_cache();
-		$this->db->from($tbname);
-		if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') && ($selfield4 != '') && ($selfield5 != '')){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-			$this->db->select($selfield3);
-			$this->db->select($selfield4);
-			$this->db->select($selfield5);
-		}
-		else if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') && ($selfield4 != '')){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-			$this->db->select($selfield3);
-			$this->db->select($selfield4);
-		}
-		else if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') ){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-			$this->db->select($selfield3);
-		}
-		else if (($selfield1 != '') && ($selfield2 != '') ){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-		}
-		else if (($selfield1 != '')  ){
-			$this->db->select($selfield1);
-		}
-
-		if (($fieldname != '') && ($fieldvalue !='')){
-			$this->db->where($fieldname, $fieldvalue);
-		}
-     return $this->db->get()->result();
-}*/
 	//get the list of all/specific  records with  one or many specific fields for specific values
 	//$sarray='name,age';	
 	//$wharray = array('name' => $name, 'title' => $title, 'status' => $status);
@@ -253,6 +218,7 @@ class Common_model extends CI_Model
     //$data = array('name' => $name, 'title' => $title, 'status' => $status);
     //    getting different field from table - $selectfield ('a,b,c');
     public function get_listspficemore($tbname,$selectfield,$data){
+	
 	    $this->db->flush_cache();
 	    $this->db->from($tbname);
 		$this->db->select($selectfield);
@@ -260,7 +226,6 @@ class Common_model extends CI_Model
         	$this->db->where($data);
 		}
        
-	
         return $this->db->get()->result();
     }
 //    getting different field from table - $selectfield ('a,b,c');
@@ -304,17 +269,17 @@ class Common_model extends CI_Model
    	$b = array(); $c = array();
 	foreach ($array as $k => $v)
 	{
-        				$b[$k] = strtolower($v->$subkey);
-   				 }
+        	$b[$k] = strtolower($v->$subkey);
+   	 }
 
-    				asort($b);
-    				foreach ($b as $key => $val)
-    				{
-        				$c[] = $array[$key];
-   				 }
+    	asort($b);
+    	foreach ($b as $key => $val)
+    	{
+        	$c[] = $array[$key];
+   	 }
 
-    				return $c;
-			}   	
+    return $c;
+     }   	
 
     function __destruct() {
         $this->db->close();

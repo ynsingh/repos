@@ -337,7 +337,8 @@ class Enterenceadmin extends CI_Controller
 			$data['asmid'] = $asmid;
 			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$row->ca_asmid)->asm_gender;
 			$data['gender'] = $gender;
-			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
+			$casteid=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
+			$caste=$this->commodel->get_listspfic1('category','cat_name','cat_id',$casteid)->cat_name;
         		$data['caste'] = $caste;               
 			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
 			$data['prgid'] = $prgid;                        

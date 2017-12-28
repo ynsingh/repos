@@ -159,7 +159,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('adminadmissionstu/adminstu_nonverified', 'Student Data Verification', array('title' => 'Student Data Verification'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('adminadmissionstu/stu_enrollment', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
+						echo anchor('adminadmissionstu/listenrolladminstu', 'Student Enrollment Number', array('title' => 'Student Enrollment Number'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('adminadmissionstu/student_transfer', 'Student Department Transfer', array('title' => 'Student Department Transfer'));

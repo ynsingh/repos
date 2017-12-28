@@ -14,12 +14,82 @@ class Hodadmissionstu extends CI_Controller
                 $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
 		$this->load->model("Mailsend_model","mailmodel");	
-		 $this->load->model("Login_model", "login");
+		$this->load->model("Login_model", "logmodel");
+		$this->load->model("DateSem_model","datesemmodel");
+		$this->load->model("University_model","univmodel");
         if(empty($this->session->userdata('id_user'))) {
           $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-           redirect('welcome');
+          redirect('welcome');
          }
+		
     }
+
+	public function listenrolledstu(){
+                $roleid = $this->session->userdata('id_role');
+                $usrid = $this->session->userdata('id_user');
+                $whdata = array ('userid' => $usrid,'roleid' => $roleid );
+                $resdept = $this->commodel->get_listspficemore ('user_role_type','deptid',$whdata);
+                foreach($resdept as $datas):
+                                $deptid = $datas->deptid;
+                endforeach;
+
+                $currentacadyear =$this->datesemmodel->getcurrentAcadYear();
+                $semester = 1;
+
+                $selectdata = 'sp_smid,sp_programid,sp_semregdate';
+                $whdata = array('sp_deptid' => $deptid,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+
+                $getstuid = $this->commodel->get_listspficemore('student_program',$selectdata,$whdata);
+                $data['getstuid'] = $getstuid;
+                $this->load->view('hod_admissionstu/stu_enrollment',$data);
+        }
+	
+	public function genenrollmentnumber(){
+		$roleid = $this->session->userdata('id_role');
+                $usrid = $this->session->userdata('id_user');
+		$whdata = array ('userid' => $usrid,'roleid' => $roleid );
+                $resdept = $this->commodel->get_listspficemore ('user_role_type','deptid',$whdata);
+		
+                foreach($resdept as $datas):
+                                $deptid = $datas->deptid;
+                endforeach;
+		
+                $currentacadyear =$this->datesemmodel->getcurrentAcadYear();
+                $semester = 1;
+
+		//get the list of student  from student program  where enrollment number is null in student master
+			$wharray = array('sm_enrollmentno' => NULL,'sp_deptid' => $deptid);
+			$this->db->select('sp_smid,sp_programid');
+			$this->db->from('student_program');
+			$this->db->join('student_master', 'student_master.sm_id = student_program.sp_smid');
+			$this->db->where($wharray);
+			$query = $this->db->get()->result();
+			//print_r($query);die;
+
+		//get one by one student
+			foreach($query as $row){
+				$Sid = $row->sp_smid;
+				$prgid = $row->sp_programid;	
+				//print_r($Sid .' '. $prgid);die;
+			}
+		
+		// call the function from university model generat_rollnumber($tablename,$prgid,$field,$whfield,$Sid)
+		$genenrollment = $this->univmodel->generat_rollnumber('student_master',$prgid,'sm_enrollmentno','sm_id',$Sid);
+	//	print_r($genenrollment);die;
+		// load the page 
+		$stu_name = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Sid)->sm_fname;
+		$stu_enroll = $this->commodel->get_listspfic1('student_master','sm_enrollmentno','sm_id',$Sid)->sm_enrollmentno;	
+		$this->session->set_flashdata('success', 'Student' .' '.$stu_name.' '. 'Enrollment Number' .' '.$stu_enroll.' '. 'Successfully Generated .');
+		redirect('hodadmissionstu/listenrolledstu');
+
+		$selectdata = 'sp_smid,sp_programid,sp_semregdate';
+                $whdata = array('sp_deptid' => $deptid,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
+
+                $getstuid = $this->commodel->get_listspficemore('student_program',$selectdata,$whdata);
+                $data['getstuid'] = $getstuid;
+                $this->load->view('hod_admissionstu/stu_enrollment',$data);
+	}
+
 
 	public function stu_nonverified(){
 		$hodid = $this->session->userdata('id_user');
@@ -29,7 +99,7 @@ class Hodadmissionstu extends CI_Controller
 		foreach($hoddptid as $hodid){
 			$sarray='sp_smid';
 			$wharray = array('sp_deptid' => $hodid);
-			$data['stusmid'] = $this->commodel->get_listarry('student_program',$sarray,$wharray);
+			$data['stusmid'] = $this->commodel->get_listspficemore('student_program',$sarray,$wharray);
 			
 		}
 		$this->load->view('hod_admissionstu/stu_nonverified',$data);
@@ -43,7 +113,7 @@ class Hodadmissionstu extends CI_Controller
 		foreach($hoddptid as $hodid){
 			$sarray='sp_smid';
 			$wharray = array('sp_deptid' => $hodid);
-			$data['stusmid'] = $this->commodel->get_listarry('student_program',$sarray,$wharray);
+			$data['stusmid'] = $this->commodel->get_listspficemore('student_program',$sarray,$wharray);
 			
 		}
 		$this->load->view('hod_admissionstu/stu_verified',$data);
