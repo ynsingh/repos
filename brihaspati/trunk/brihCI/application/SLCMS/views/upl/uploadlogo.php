@@ -5,30 +5,27 @@
 	
     </head>
     <body>
-<div >
-<div id="body">
+<div>
 	<?php $this->load->view('template/header'); ?>
 	<?php //$this->load->view('template/menu'); ?>
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 </div>
  <?php
+                    echo "<table width=\"100%\">";
+                    echo "<tr>";
                     echo "<td align=\"left\" width=\"33%\">";
-                    echo "<table style=\"width:100%;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
                     echo "<b>Upload Logo Details</b>";
                     echo "</td>";
-                    echo "<td align=\"right\" width=\"33%\"style=\"font-size:16px\">";
+                    echo "<td align=\"right\" width=\"33%\" style=\"font-size:16px\">";
                     $help_uri = site_url()."/help/helpdoc#UploadLogo";
-                    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";                   
+                    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
                     ?>
 
-	<div>
 <?php
 //	echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
 //        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";

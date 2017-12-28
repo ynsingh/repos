@@ -39,7 +39,7 @@
 echo "</tr>";
 echo "</table>";
 ?>
-
+          <div class="scroller_sub_page">
            <table class="TFtable" >
             <thead>
                 <tr align="center"> 
@@ -121,6 +121,7 @@ echo "</table>";
 		
             </tbody>
         </table>
+</div>
 </br></br></br></br>
  </div><?php $this->load->view('template/footer'); ?></div>
     </body>

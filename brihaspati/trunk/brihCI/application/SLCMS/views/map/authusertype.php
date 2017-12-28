@@ -110,16 +110,15 @@ $("#StartDate").datepicker("option","maxDate", selected)
  <div>
      <form action="<?php echo site_url('map/authusertype');?>" method="POST" class="form-inline">   
                       <table>
-                        <tr>
-                        <td> Authority Name: </td><td>
+                       <td> Authority Name: </td><td>
                         <select name="authorities" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select authority ---------</option>
                         <?php foreach($this->authuserresult as $datas): ?>
                         <option value="<?php echo $datas->id;?>"><?php echo $datas->name; ?></option>
                         <?php endforeach; ?>
                         </select>
-                        </td>
-                        
+                        </td></tr>
+ 
                         <tr>
                                         
                         <td> User Name: </td><td>

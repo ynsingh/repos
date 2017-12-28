@@ -5,9 +5,6 @@
 	
     </head>
     <body>
-
-<div >
-<div id="body">
 	<?php $this->load->view('template/header'); ?>
 	<?php // $this->load->view('template/menu'); ?>
 
@@ -15,7 +12,6 @@
 
 
 
-	</div>
 		   <?php
                     echo "<td align=\"left\" width=\"33%\">";
                     echo "<table style=\"width:100%;\">";
@@ -72,6 +68,7 @@
         endforeach;
 	 */
 //	echo "<div>";
+        echo "<br>";
         echo "<div style=\"text-align:left;font-size:16px\">";
 	echo "<b>";
 	echo " Note :The file should be in csv or txt file. The format of admission merit list file is : ";
@@ -85,6 +82,7 @@
 
 	//echo $error;
 	echo form_open_multipart('upl/uploadstumerit');
+        echo "<br>";
 	echo "<tr><td><input type='file' name='userfile' size='20' />";
 	echo "<input type='submit' name='uploadstumerit' value='upload' /> ";
 	echo "</td></tr>";

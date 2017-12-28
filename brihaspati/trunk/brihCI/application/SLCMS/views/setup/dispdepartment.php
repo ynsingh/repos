@@ -49,9 +49,9 @@
            echo "</td>";
            ?>
                 <div>
-                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
+                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                	echo $this->session->flashdata('flash_data');

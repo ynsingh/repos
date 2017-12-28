@@ -73,11 +73,11 @@ echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Clic
     <!--?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?-->
 
      <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:2%" class="isa_success"><?php echo $_SESSION['success'];?></div>
+       <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 <?php    }
     if(isset($_SESSION['error']))
     {
-?>        <div style="margin-left:2%"; class="isa_error">"<?php echo $_SESSION['error'];?> </div>
+?>        <div class="isa_error">"<?php echo $_SESSION['error'];?> </div>
 <?php
     }
     echo "</td></tr>";
