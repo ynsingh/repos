@@ -854,7 +854,9 @@ class Setup2 extends CI_Controller
   * @return type
   */
 
-     public function designation() {
+    public function designation() {
+	$array_items = array('success' => '', 'error' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
         $this->result = $this->commodel->get_list('designation');
         $this->logger->write_logmessage("view"," View Designation ", "Designation details...");
         $this->logger->write_dblogmessage("view"," View Designation" , "Designation record display successfully..." );

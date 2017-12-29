@@ -712,6 +712,93 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploadphoto');
     }
     /******************************* closer upload staff photo******************************/
- 
+	 public function uploaddeglist(){
+		 $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+		 $this->session->set_flashdata($array_items);
+		 $error =array();
+		 if(isset($_POST['uploaddeglist'])) {
+			 $ferror='';
+//			 echo "I am here"; die;
+        	    	if ( isset($_FILES["userfile"]))
+            		{
+                		$errors= array();
+                		$file_name = $_FILES['userfile']['name'];
+                		$file_ext=strtolower(end((explode('.',$file_name))));
+		                $expensions= array("txt","csv");
+		                if(in_array($file_ext,$expensions)=== false){
+                    			$ferror="extension not allowed, please choose a txt or csv file.";
+			                $this->session->set_flashdata('error', $ferror);
+			                $this->load->view('upl/uploaddeglist');
+                    			return;
+                		}
+                		else{
+                			$flag=true;
+                			$datal = array();
+	                		$uploadedfile = $_FILES['userfile']['tmp_name'];
+        	        		$h = fopen($uploadedfile,"r");
+                			fgetcsv($h);
+                			$i=1;//$kk;
+                			while (false !== ($line = fgets($h)))
+                			{
+						$datal = explode(",", $line);
+	                    			$flag=false;
+						if(count($datal) >= 5){
+							$code = trim($datal[0]);
+                            				$type = trim($datal[1]);
+			                            	$subtype = trim($datal[2]);
+                        			    	$name = trim($datal[3]);
+			                            	$payscale = trim($datal[4]);
+							$group = trim($datal[5]);
+				//		$kk=$kk .'='.$code;
+							$datadeg = array('desig_code' => $code, 'desig_name' => $name,'desig_payscale'=> $payscale);
+							 // check for duplicate
+                            				$isdup= $this->commodel->isduplicatemore('designation',$datadeg );
+							if(!$isdup){
+								$dataurt = array(
+			                                           'desig_code'=> $code,
+                        			                   'desig_type'=> $type,
+			                                           'desig_subtype'=> $subtype,
+                        			                   'desig_name'=> $name,
+			                                           'desig_payscale'=> $payscale,
+                        			                   'desig_group'=> $group
+		                	                        );
+                		        	                $userflagurt=$this->commodel->insertrec('designation', $dataurt) ;
+							}else{
+								//duplicate data
+								$error[] ="At row".$i."duplicate data";
+				                                $this->logger->write_logmessage("insert"," Error in adding designation list ", "At row".$i."duplicate data"  );
+                                				$this->logger->write_dblogmessage("insert"," Error in adding designation list ", "At row".$i."duplicate data" );
+							}
+							$i++;
+						}else{
+								//insufficient data
+								$error[] ="At row".$i."insufficient data";
+					                        $this->logger->write_logmessage("insert"," Error in adding designation list ", "At row".$i."insufficient data"  );
+								$this->logger->write_dblogmessage("insert"," Error in adding designation list ", "At row".$i."insufficient data" );
+								$i++;
+						}
+					}//end of while
+					//echo $kk; die;
+					fclose($h);	
+					if($flag){
+			                    	$this->session->set_flashdata('error', ' File without data');
+						$this->load->view('upl/uploaddeglist');
+                    				return;
+                			}else{
+                    				//display error of array
+                    				foreach ($error as $item => $value):
+                    					$ferror = $ferror ."</br>". $item .":". $value;
+                    				endforeach;
+                    				$this->session->set_flashdata('success', $ferror);
+						$this->load->view('upl/uploaddeglist');
+                    				return;
+                			}
+				}
+			}//end of user file
+		 }//button pressed
+		 $this->load->view('upl/uploaddeglist');
+	  }
+
+
 }
 
