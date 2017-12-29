@@ -138,13 +138,11 @@ public function disciplinewiselist(){
         $this->logger->write_dblogmessage("view"," view position Summary");
         $this->load->view('report/positionsummary',$data);
     }   
-// view students list 
-/*
-    public function liststu() {
-        $datawh = array('roleid' => '3');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',3);
-        $this->load->view('report/liststu');
-   } 
-*/ 
+    public function positionvacancy(){
+        $data['allpost']=$this->sismodel->get_distinctrecord('staff_position','sp_emppost','');
+        $this->logger->write_logmessage("view"," view position vacancy" );
+        $this->logger->write_dblogmessage("view"," view position vacancy");
+        $this->load->view('report/positionvacancy',$data);
+    }   
 }
 

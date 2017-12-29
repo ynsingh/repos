@@ -248,6 +248,16 @@ class SIS_model extends CI_Model
         
     }//function close
     /***********************************close of staff position*********************************************/   
+    public function get_distinctrecord($tbname,$selectfield,$whdata){
+            $this->db2->flush_cache();
+            $this->db2->distinct();
+            $this->db2->select($selectfield);
+            $this->db2->from($tbname);
+            if($whdata != ''){
+                        $this->db2->where($whdata);
+            }
+        return $this->db2->get()->result();
+    }
 
     function __destruct() {
         $this->db2->close();
