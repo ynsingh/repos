@@ -255,6 +255,17 @@ class Common_model extends CI_Model
         return $this->db->get()->result();
     }
 
+    // get the join  table result value
+    public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$whdata){
+	    $this->db->flush_cache();
+	    $this->db->select($selectfield);
+	    $this->db->from($tbname);
+	    $this->db->join($jointbname,$joincond);
+	    if($whdata != ''){
+                        $this->db->where($whdata);
+	    }
+	    return $this->db->get()->result();
+    }
     // get the sum of values
     public function get_sumofvalue($tbname,$selectfield,$whdata){
 	    $this->db->flush_cache();
