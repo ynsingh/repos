@@ -5,7 +5,8 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
- * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars
+ * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars,Reports(Designation wise,position-summary
+ *  vacancy position,professorlist.) 
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[view employee profile]
  * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List, List Staff Position 
  */
@@ -143,6 +144,17 @@ public function disciplinewiselist(){
         $this->logger->write_logmessage("view"," view position vacancy" );
         $this->logger->write_dblogmessage("view"," view position vacancy");
         $this->load->view('report/positionvacancy',$data);
+    }
+    /*Professor list report and service period*/
+    public function professorlist(){
+        $getdesgid=$this->commodel->get_listspfic1('designation','desig_id','desig_name','Proffessor')->desig_id;
+        $selectfield ="emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";
+        $whdata=array('emp_desig_code' => $getdesgid);
+        $whorder = "emp_doj asc";
+        $data['emplist'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+        $this->logger->write_logmessage("view"," view list of professors in report " );
+        $this->logger->write_dblogmessage("view"," view list of professors in report");
+        $this->load->view('report/professorlist',$data);
     }   
 }
 
