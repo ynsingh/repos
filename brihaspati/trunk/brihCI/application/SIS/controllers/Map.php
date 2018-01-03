@@ -1096,7 +1096,8 @@ class Map extends CI_Controller
 
     public function viewuserrole()
      {
-        $this->result = $this->commodel->get_list('user_role_type');
+        //$this->result = $this->commodel->get_list('user_role_type');
+        $this->result = $this->sismodel->get_list('user_role_type');
         $this->logger->write_logmessage("view"," View map user with role setting", "user map setting details...");
         $this->logger->write_dblogmessage("view"," View map user with role setting", "Role setting details...");
         $this->load->view('map/viewuserrole',$this->result);
@@ -1133,7 +1134,7 @@ class Map extends CI_Controller
                 		'userid'=>$_POST['username'],
                 		'ext1'=>'null',
           		);
-       	$this->is_exist = $this->commodel->isduplicatemore('user_role_type',$datadup);
+       	$this->is_exist = $this->sismodel->isduplicatemore('user_role_type',$datadup);
       	if ($this->is_exist == 1)
         	{
             		//$this->form_validation->set_message('isduplicateuserrole', 'Map user role already exit');
@@ -1144,9 +1145,9 @@ class Map extends CI_Controller
 
           else{
 
-            $userrole=$this->commodel->insertrec('user_role_type', $datauserrole);
+            $userrole=$this->sismodel->insertrec('user_role_type', $datauserrole);
           /**Geting value according to 'id' and using these values for maintaing logs*/
-             $this->username = $this->commodel->loginmodel->get_listspfic1('edrpuser','username','id',$_POST['username'])->username;
+             $this->username = $this->loginmodel->get_listspfic1('edrpuser','username','id',$_POST['username'])->username;
              $this->rolename = $this->commodel->get_listspfic1('role','role_name', 'role_id', $_POST['role_name'])->role_name;
             if(! $userrole )
             {
@@ -1178,10 +1179,10 @@ class Map extends CI_Controller
       {
            /**Geting value according to 'id' and using these values for maintaing logs*/
           $username = $this->input->post('username',TRUE);
-          $this->username = $this->commodel->loginmodel->get_listspfic1('edrpuser','username','id',$username)->username;
+          $this->username = $this->loginmodel->get_listspfic1('edrpuser','username','id',$username)->username;
           $rolename= $this->input->post('role_name',TRUE);
           $this->rolename = $this->commodel->get_listspfic1('role','role_name', 'role_id', $rolename)->role_name;
-          $roledflag=$this->commodel->deleterow('user_role_type','id', $id);
+          $roledflag=$this->sismodel->deleterow('user_role_type','id', $id);
           if(!$roledflag)
           {
             $this->logger->write_message("error", "Error in maping with user role deleting  " ."[role_id:" . $id . "]");
@@ -1205,8 +1206,9 @@ class Map extends CI_Controller
 
         public function edituserrole($id){
 	$this->roleresult = $this->commodel->get_listspfic2('role','role_id', 'role_name');
-        $this->db->from('user_role_type')->where('id', $id);
-        $eset_data_q = $this->db->get();
+        $eset_data_q=$this->sismodel->get_listrow('user_role_type','id',$id);
+        //$this->db2->from('user_role_type')->where('id', $id);
+        //$eset_data_q = $this->db2->get();
         $editeset_data = $eset_data_q->row();
         /* Form fields */
         $data['scid']= array(
@@ -1288,7 +1290,7 @@ class Map extends CI_Controller
           
             );
         $datadup = array('roleid' =>$data_roleid,'usertype'=>$data_usertype,'userid'=>$id);  
-        $this->is_exist = $this->commodel->isduplicatemore('user_role_type',$update_data);
+        $this->is_exist = $this->sismodel->isduplicatemore('user_role_type',$update_data);
         if ($this->is_exist == 1)
                 {
                         //$this->form_validation->set_message('isduplicateuserrole', 'Map user role already exit');
@@ -1298,7 +1300,7 @@ class Map extends CI_Controller
                 }
 
           else{
-            $result=$this->commodel->updaterec('user_role_type', $update_data,'id',$id);
+            $result=$this->sismodel->updaterec('user_role_type', $update_data,'id',$id);
              //$this->username = $this->commodel->loginmodel->get_listspfic1('edrpuser','username','id',$_POST['username'])->username;
             // $rolename= $this->input->post('role_name',TRUE);
             $this->rolename = $this->commodel->get_listspfic1('role','role_name', 'role_id', $data_roleid)->role_name;

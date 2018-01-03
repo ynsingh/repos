@@ -5,7 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com)  upload csv file for staff profile registration in SIS
  * @author Manorama Pal(palseema30@gmail.com) upload csv file for staff tranfer orders and service particulars.
- * csv file for staff employee list and upload zip folder for staff photo.
+ * csv file for staff employee list,department list csv and upload zip folder for staff photo.
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -75,7 +75,7 @@ class Upl extends CI_Controller
     public function uploadslist(){
         // for clearing the previous success/error flashdata
         $array_items = array('success' => '', 'error' => '', 'warning' =>'');
-        //$this->session->set_flashdata($array_items);
+        $this->session->set_flashdata($array_items);
        // $error =array();
         if(isset($_POST['uploadslist'])) {
             $ferror='';
@@ -108,27 +108,27 @@ class Upl extends CI_Controller
                     //print_r($datal);
                    // if (count($datal) >= 13){
                     if (count($datal) == 18){
-                        $pfno= $datal[0];
-                        $empname = $datal[1];
-                        $campus = $datal[2];
-                        $uoc = $datal[3];
+                        $pfno= trim($datal[0]);
+                        $empname = trim($datal[1]);
+                        $campus = trim($datal[2]);
+                        $uoc = trim($datal[3]);
                        // $uocuserid = $datal[4];
                         //$ddouserid = $datal[5];
-                        $dept = $datal[4];
-                        $scheme = $datal[5];
-                        $ddocode=$datal[6];
-                        $work_type=$datal[7];
-                        $group=$datal[8];
-                        $desig = $datal[9];
-                        $sa_post=$datal[10];
-                        $emp_type=$datal[11];
-                        $pbcode = $datal[12];
-                        $dob = $datal[13];
-                        $doa = $datal[14];
+                        $dept = trim($datal[4]);
+                        $scheme = trim($datal[5]);
+                        $ddocode=trim($datal[6]);
+                        $work_type=trim($datal[7]);
+                        $group=trim($datal[8]);
+                        $desig = trim($datal[9]);
+                        $sa_post=trim($datal[10]);
+                        $emp_type=trim($datal[11]);
+                        $pbcode = trim($datal[12]);
+                        $dob = trim($datal[13]);
+                        $doa = trim($datal[14]);
                         $email = trim($datal[15]);
                         $email1 = trim($email, " ");
-                        $bankacc = $datal[16];
-                        $aadhar = $datal[17];
+                        $bankacc = trim($datal[16]);
+                        $aadhar = trim($datal[17]);
                         $mobile ='';
                         $role = 4;
                         
@@ -395,27 +395,27 @@ class Upl extends CI_Controller
                         $datuit = array(
                             //'uit_staffname'         => $getData[0], //get id
                             'uit_staffname'         => $empid, 
-                            'uit_registrarname'     => $getData[1],
-                            'uit_desig'             => $getData[2],
-                            'uit_uso_no'            => $getData[3],
+                            'uit_registrarname'     => trim($getData[1]),
+                            'uit_desig'             => trim($getData[2]),
+                            'uit_uso_no'            => trim($getData[3]),
                             'uit_date'              => date('y-m-d'), 
-                            'uit_rc_no'             => $getData[4],
-                            'uit_subject'           => $getData[5], 
-                            'uit_referenceno'       => $getData[6],
-                            'uit_ordercontent'      => $getData[7],
-                            'uit_emptype'           => $getData[8],
-                            'uit_uoc_from'          => $getData[9],
-                            'uit_uoc_to'            => $getData[10], //getid
-                            'uit_workdept_from'     => $getData[11],
-                            'uit_dept_to'           => $getData[12], //getid
-                            'uit_desig_from'        => $getData[13],
-                            'uit_desig_to'          => $getData[14], ///getid
-                            'uit_workingpost_from'  => $getData[15],
-                            'uit_post_to'           => $getData[16],
-                            'uit_tta_detail'        => $getData[17],
-                            'uit_dateofrelief'      => $getData[18],
-                            'uit_dateofjoining'     => $getData[19],
-                            'uit_email_sentto '     => $getData[20],
+                            'uit_rc_no'             => trim($getData[4]),
+                            'uit_subject'           => trim($getData[5]), 
+                            'uit_referenceno'       => trim($getData[6]),
+                            'uit_ordercontent'      => trim($getData[7]),
+                            'uit_emptype'           => trim($getData[8]),
+                            'uit_uoc_from'          => trim($getData[9]),
+                            'uit_uoc_to'            => trim($getData[10]), //getid
+                            'uit_workdept_from'     => trim($getData[11]),
+                            'uit_dept_to'           => trim($getData[12]), //getid
+                            'uit_desig_from'        => trim($getData[13]),
+                            'uit_desig_to'          => trim($getData[14]), ///getid
+                            'uit_workingpost_from'  => trim($getData[15]),
+                            'uit_post_to'           => trim($getData[16]),
+                            'uit_tta_detail'        => trim($getData[17]),
+                            'uit_dateofrelief'      => trim($getData[18]),
+                            'uit_dateofjoining'     => trim($getData[19]),
+                            'uit_email_sentto '     => trim($getData[20]),
                             
                         );
                         $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $datuit);
@@ -531,7 +531,7 @@ class Upl extends CI_Controller
         //echo "getting id=====".$id;
         //$emsdata['dataid']=$id;  
         $array_items = array('success' => '', 'error' => '', 'warning' =>'');
-       //$this->session->set_flashdata($array_items);
+       $this->session->set_flashdata($array_items);
 	$error =array();
         if(isset($_POST['servicerecord']))
         {
@@ -556,12 +556,12 @@ class Upl extends CI_Controller
                   
                    $dataempsd = array(
                         'empsd_empid'       => $id,
-                        'empsd_campuscode'  => $getData[1],
-                        'empsd_desigcode'   => $getData[2],
-                        'empsd_pbid'        => $getData[3], 
-                        'empsd_pbdate'      => $getData[4],
-                        'empsd_dojoin'      => $getData[5], 
-                        'empsd_dorelev'     => $getData[6],
+                        'empsd_campuscode'  => trim($getData[1]),
+                        'empsd_desigcode'   => trim($getData[2]),
+                        'empsd_pbid'        => trim($getData[3]), 
+                        'empsd_pbdate'      => trim($getData[4]),
+                        'empsd_dojoin'      => trim($getData[5]), 
+                        'empsd_dorelev'     => trim($getData[6]),
                     ); 
                     $empsdinput_flag=$this->sismodel->insertrec('employee_servicedetail', $dataempsd);
                     if($empsdinput_flag){
@@ -743,7 +743,7 @@ class Upl extends CI_Controller
                 			{
 						$datal = explode(",", $line);
 	                    			$flag=false;
-						if(count($datal) >= 5){
+						if(count($datal) >= 6){
 							$code = trim($datal[0]);
                             				$type = trim($datal[1]);
 			                            	$subtype = trim($datal[2]);
@@ -764,6 +764,7 @@ class Upl extends CI_Controller
                         			                   'desig_group'=> $group
 		                	                        );
                 		        	                $userflagurt=$this->commodel->insertrec('designation', $dataurt) ;
+                                                                $this->session->set_flashdata('success', 'Designation csv file uploaded successfully.');
 							}else{
 								//duplicate data
 								$error[] ="At row".$i."duplicate data";
@@ -830,7 +831,7 @@ class Upl extends CI_Controller
                 			{
 						$datal = explode(",", $line);
 	                    			$flag=false;
-						if(count($datal) >= 3){
+						if(count($datal) >= 4){
 							$deptcode = trim($datal[0]);
 							$deptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $deptcode)->dept_id;;
                             				$shcode = trim($datal[1]);
@@ -848,6 +849,7 @@ class Upl extends CI_Controller
                         			                   'sd_name'=> $shname
 		                	                        );
                 		        	                $userflagurt=$this->sismodel->insertrec('scheme_department', $dataurt) ;
+                                                                $this->session->set_flashdata('success', 'Department scheme csv file uploaded successfully.');
 							}else{
 								//duplicate data
 								$error[] ="At row".$i."duplicate data";
@@ -913,7 +915,7 @@ class Upl extends CI_Controller
                 			{
 						$datal = explode(",", $line);
 	                    			$flag=false;
-						if(count($datal) >= 4){
+						if(count($datal) >= 5){
                             				$sccode = trim($datal[0]);
 							$scid = $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_code', $sccode)->sc_id;;
 							$deptcode = trim($datal[1]);
@@ -935,6 +937,7 @@ class Upl extends CI_Controller
                         			                   'ddo_name'=> $ddoname
 		                	                        );
                 		        	                $userflagurt=$this->sismodel->insertrec('ddo', $dataurt) ;
+                                                                $this->session->set_flashdata('success', 'DDO csv file uploaded successfully.');
 							}else{
 								//duplicate data
 								$error[] ="At row".$i."duplicate data";
@@ -970,7 +973,7 @@ class Upl extends CI_Controller
 		 }//button pressed
 		 $this->load->view('upl/uploadddolist');
 	}
- 
+        
 /******************************* upload staff position ******************************/
     public function uploadspositionlist(){
         // for clearing the previous success/error flashdata
@@ -1148,6 +1151,108 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploadspositionlist');
     }
  
- /******************************* close upload staff position ******************************/
+    /******************************* close upload staff position ******************************/
+    /*************************upload department csv file**********************************************/
+    public function uploaddepartlist(){
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
+        $error =array();
+        if(isset($_POST['uploaddepartlist']))
+        {
+            
+            $ferror='';
+            if ( isset($_FILES["userfile"]))
+            {
+                $errors= array();
+                $file_name = $_FILES['userfile']['name'];
+                $file_ext=strtolower(end((explode('.',$file_name))));
+                $expensions= array("txt","csv");
+                if(in_array($file_ext,$expensions)=== false)
+                {
+                    $ferror="extension not allowed, please choose a txt or csv file.";
+                    $this->session->set_flashdata('error', $ferror);
+                    $this->load->view('upl/uploaddepartlist');
+                    return;
+                }
+                else{
+                    $flag=true;
+                    $datal = array();
+                    $uploadedfile = $_FILES['userfile']['tmp_name'];
+                    $h = fopen($uploadedfile,"r");
+                    fgetcsv($h);
+                    $i=1;//$kk;
+                    while (false !== ($line = fgets($h)))
+                    {
+                        $datal = explode(",", $line);
+                        $flag=false;
+                        if(count($datal) >= 6)
+                        {
+                            $ucode = trim($datal[0]);
+                            $ccode = trim($datal[1]);
+                            $authcode = trim($datal[2]);
+                            $deptcode = trim($datal[3]);
+                            $deptname = trim($datal[4]);
+                            $deptnn = trim($datal[5]);
+                            $authid = $this->lgnmodel->get_listspfic1('authorities','id','code',$authcode)->id;
+                            $ddatacheck = array(
+                                'dept_uoid'    =>$authid,
+                                'dept_orgcode' =>strtoupper($ucode),
+                                'dept_sccode'  => strtoupper($ccode),
+                                'dept_code'    => strtoupper($deptcode),
+                                'dept_name'    => ucwords(strtolower($deptname))
+                            );
+                            // check for duplicate
+                            $isdup= $this->commodel->isduplicatemore('Department',$ddatacheck);
+                            if(!$isdup){
+                                $dataurt = array(
+                                    'dept_name'       => $deptname,
+                                    'dept_code'       => $deptcode,
+                                    'dept_uoid'       => $authid,
+                                    'dept_short'      => $deptnn,
+                                    'dept_description'=>'',
+                                    'dept_schoolname' =>'',
+                                    'dept_schoolcode' =>'',
+                                    'dept_sccode'     => $ccode,
+                                    'dept_orgcode'    => $ucode
+                                );
+                                $userflagurt=$this->commodel->insertrec('Department', $dataurt) ;
+                    		$this->session->set_flashdata('success', 'Department csv file uploaded successfully.');
+                            }
+                            else{
+                                //duplicate data
+                                $error[] ="At row ". $i ." duplicate data";
+                                $this->logger->write_logmessage("insert"," Error in adding department list ", "At row".$i."duplicate data"  );
+                                $this->logger->write_dblogmessage("insert"," Error in adding department list ", "At row".$i."duplicate data" );
+                            }
+                            $i++;
+                        }//count
+                        else{
+                            //insufficient data
+                            $error[] ="At row".$i."insufficient data";
+                            $this->logger->write_logmessage("insert"," Error in adding department list ", "At row".$i."insufficient data"  );
+                            $this->logger->write_dblogmessage("insert"," Error in adding department list ", "At row".$i."insufficient data" );
+                            $i++;
+                        }
+                    }//end of while
+                    fclose($h);	
+                    if($flag){
+                        $this->session->set_flashdata('error', ' File without data');
+                        $this->load->view('upl/uploaddepartlist');
+                        return;
+                    }else{
+                        //display error of array
+                        foreach ($error as $item => $value):
+                        $ferror = $ferror ."</br>". $item .":". $value;
+                        endforeach;
+                        $this->session->set_flashdata('error', $ferror);
+                        $this->load->view('upl/uploaddepartlist');
+                        return;
+                    }
+                }
+            }//end of user file
+        }//button pressed
+        $this->load->view('upl/uploaddepartlist');
+    }//method close
+    /***********************closer of department csv file****************************************************/
 }
 
