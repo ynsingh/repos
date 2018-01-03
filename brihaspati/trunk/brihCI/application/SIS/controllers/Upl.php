@@ -712,6 +712,7 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploadphoto');
     }
     /******************************* closer upload staff photo******************************/
+
 	 public function uploaddeglist(){
 		 $array_items = array('success' => '', 'error' => '', 'warning' =>'');
 		 $this->session->set_flashdata($array_items);
@@ -969,5 +970,184 @@ class Upl extends CI_Controller
 		 }//button pressed
 		 $this->load->view('upl/uploadddolist');
 	}
+ 
+/******************************* upload staff position ******************************/
+    public function uploadspositionlist(){
+        // for clearing the previous success/error flashdata
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
+        $error =array();
+        if(isset($_POST['uploadsposition'])) {
+            $ferror='';
+            if ( isset($_FILES["userfile"]))
+            {
+                $errors= array();                
+                $file_name = $_FILES['userfile']['name'];
+                $file_ext=strtolower(end((explode('.',$file_name))));
+
+                $expensions= array("txt","csv");
+
+                if(in_array($file_ext,$expensions)=== false){
+                    $ferror="extension not allowed, please choose a txt or csv file.";
+                    $this->session->set_flashdata('error', $ferror);
+                    $this->load->view('upl/uploadspositionlist');
+                    return;
+                }
+                else{ 
+                $flag=true;
+                $dataspl = array();
+                $uploadedfile = $_FILES['userfile']['tmp_name'];
+                $h = fopen($uploadedfile,"r");
+	        fgetcsv($h); 		
+                $i=1;
+                while (false !== ($line = fgets($h)))
+                {
+                    $dataspl = explode(",", $line);
+                    $flag=false;
+                    //print_r(count($dataspl));
+                    if (count($dataspl) >=14 ){
+                        $campus = trim($dataspl[0]);
+                        $uoc = trim($dataspl[1]);
+                        $dept = trim($dataspl[2]);
+                        $scheme = trim($dataspl[3]);
+                        $group=trim($dataspl[4]);
+                        $emppost=trim($dataspl[5]);
+                        $wtype=trim($dataspl[6]);
+                        $gpost = trim($dataspl[7]);
+                        $emptype=trim($dataspl[8]);
+                        $pnplan=trim($dataspl[9]);
+                        $pband = trim($dataspl[10]);
+                        $mor = trim($dataspl[11]);
+                        $pss = trim($dataspl[12]);
+                        $p = trim($dataspl[13]);
+
+			$emptypeflag=false;
+	
+			if($emptype== "Permanent"){
+				$v = ($pss - $p);
+				$ssp = $pss;
+				$sst= 0;
+				$pp = $p;
+				$pt = 0;
+				$vt = 0;
+				$vp = ($pss-$p);	
+			 $emptypeflag=true;
+			}
+			else if($emptype== "Temporary"){
+				$v = ($pss - $p);
+                        	$ssp = 0;
+                        	$sst= $pss;
+                        	$pp = 0;
+                        	$pt = $p;
+                       	 	$vt = ($pss-$p);
+                        	$vp = 0;
+				 $emptypeflag=true;
+                        }
+			else{
+				$error[] ="At row " .$i. " employee type data missing ";
+                        	$this->logger->write_logmessage("insert"," Error in adding staff Position ", "At row".$i." employee Type data missing "  );
+                        	$this->logger->write_dblogmessage("insert"," Error in adding staff Position ", "At row".$i." employee Type data missing " );
+                        	$i++;
+			}
+                        if($emptypeflag){
+                        $campid=$this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_code', $campus)->sc_id;
+                        $uoid=$this->lgnmodel->get_listspfic1('authorities', 'id', 'code', $uoc)->id;
+                        $deptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $dept)->dept_id;
+                        $postid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',$emppost)->desig_id;
+			$schid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code', $scheme)->sd_id;
+
+                        $datadupposition = array('sp_tnt'=>$wtype , 'sp_type'=>$emptype , 'sp_emppost'=>$postid, 'sp_grppost'=>$gpost, 'sp_scale'=>$pband, 'sp_methodRect'=>$mor, 'sp_group'=>$group, 'sp_uo'=>$uoid, 'sp_dept'=>$deptid, 'sp_campusid'=>$campid, 'sp_plan_nonplan'=>$pnplan, 'sp_schemecode'=>$schid, 'sp_org_id'=> '1' );
+ 
+
+
+                         // check for duplicate
+		        $duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
+		        if(!$duppositionflag){
+
+                         $dataposition = array(
+		                'sp_tnt'=>$wtype,
+                		'sp_type'=>$emptype,
+                		'sp_emppost'=>$postid,
+                		'sp_grppost'=>$gpost,
+                		'sp_scale'=>$pband,
+                		'sp_methodRect'=>$mor,
+                		'sp_group'=>$group,
+                		'sp_uo'=>$uoid,
+                		'sp_dept'=>$deptid,
+                		'sp_address1'=>'',
+                		'sp_address2'=>'Null',
+                		'sp_address3'=>'Null',
+                		'sp_campusid'=>$campid,
+                		'sp_per_temporary'=>'Null',
+                		'sp_plan_nonplan'=>$pnplan,
+                		'sp_schemecode'=>$schid,
+                		'sp_sancstrenght'=>$pss,
+                		'sp_position'=>$p,
+                		'sp_vacant'=>$v,
+                		'sp_remarks'=>'',
+                		'sp_ssdetail'=> '',
+                		'sp_sspermanent'=>$ssp,
+                		'sp_sstemporary'=>$sst,
+                		'sp_pospermanent'=>$pp,
+                		'sp_postemporary'=>$pt,
+                		'sp_vpermanenet'=>$vp,
+                		'sp_vtemporary'=>$vt,
+                		'sp_org_id'=> '1'
+        		   );
+ 
+                                /*insert record in staff_position table*/
+				$positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
+                                                              
+                                if($positionflag){
+					$error[] ="At row " .$i. " sufficient data and registration successfully";
+                                        $this->logger->write_logmessage("insert", "data insert in staff_position table.");
+                                        $this->logger->write_dblogmessage("insert", "data insert in staff_position table." );
+                                }//ifuserflageu
+                                else{
+                                    // set the message for error in entering data in staff_position table
+                                    $this->logger->write_logmessage("insert","Error in adding staff_position ", "data insert error . " );
+                                    $this->logger->write_dblogmessage("insert"," Error in adding staff_position ", "data insert error . " );
+                                }
+                                // $this->session->set_flashdata('success', ' sufficient data');        
+                            }//close for is duplicate
+                            else{
+                                $error[] ="At row ". $i ." duplicate data";
+                                $this->logger->write_logmessage("insert"," Error in adding staff Position ", "At row".$i."duplicate data"  );
+                                $this->logger->write_dblogmessage("insert"," Error in adding staff Position ", "At row".$i."duplicate data" );
+                            }
+                            $i++;
+			}
+                    }//count tokens
+                    else{
+                        //  insufficient data
+                        $error[] ="At row " .$i. " insufficient data";
+                        $this->logger->write_logmessage("insert"," Error in adding staff Position ", "At row".$i."insufficient data"  );
+                        $this->logger->write_dblogmessage("insert"," Error in adding staff Position ", "At row".$i."insufficient data" );
+                        $i++;
+                    }                     
+                }//while
+		fclose($h);	
+                if($flag){
+                    $this->session->set_flashdata('error', ' File without data');
+                    $this->load->view('upl/uploadspositionlist');
+                    return;
+                }else{
+                   // print_r($error);
+                    foreach ($error as $item => $value):
+                    $ferror = $ferror ."</br>". $item .":". $value;
+                    endforeach;
+                    //display error of array
+                    //put ferror in log file.
+                    $this->session->set_flashdata('success', $ferror);
+                    $this->load->view('upl/uploadspositionlist');
+                    return;
+                }
+		}
+            }//userfile checks
+        }// check for pressing correct button
+        $this->load->view('upl/uploadspositionlist');
+    }
+ 
+ /******************************* close upload staff position ******************************/
 }
 

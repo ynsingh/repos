@@ -2650,8 +2650,8 @@ class Setup extends CI_Controller
         $this->deptresult = $this->common_model->get_list('Department');
         if(isset($_POST['scheme'])) {
             $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|callback_isSchemeExist');
-            $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean');
+            $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash|callback_isSchemeExist');
             $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean');
 
@@ -2707,12 +2707,12 @@ class Setup extends CI_Controller
      * @return type
     */
 
-    public function isSchemeExist($sd_name) {
+    public function isSchemeExist($sd_code) {
 
-        $is_exist = $this->SIS_model->isduplicate('scheme_department','sd_name',$sd_name);
+        $is_exist = $this->SIS_model->isduplicate('scheme_department','sd_code',$sd_code);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isSchemeExist', 'Scheme is already exist.');
+            $this->form_validation->set_message('isSchemeExist', 'Scheme code is already exist.');
             return false;
         }
         else {
@@ -2773,7 +2773,7 @@ class Setup extends CI_Controller
         $data['ssname'] = array(
            'name' => 'ssname',
            'id' => 'ssname',
-           'maxlength' => '6',
+           'maxlength' => '50',
            'size' => '40',
            'value' => $scheme_data->sd_short,
         );
@@ -3006,7 +3006,7 @@ class Setup extends CI_Controller
         $data['branch_name'] = array(
            'name' => 'branch_name',
            'id' => 'branch_name',
-           'maxlength' => '6',
+           'maxlength' => '50',
            'size' => '40',
            'value' => $bankprofile_data->branch_name,
 
@@ -3982,7 +3982,7 @@ public function displayleavetype(){
         $data['schemecode'] = array(
            'name' => 'schemecode',
            'id' => 'schemecode',
-           'maxlength' => '6',
+           'maxlength' => '50',
            'size' => '40',
            'value' => $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $ddo_data->ddo_schid)->sd_name,
 	    'readonly' => 'readonly'	
