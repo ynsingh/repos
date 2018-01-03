@@ -799,6 +799,175 @@ class Upl extends CI_Controller
 		 $this->load->view('upl/uploaddeglist');
 	  }
 
-
+	 public function uploadschemelist(){
+		 $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+		 $this->session->set_flashdata($array_items);
+		 $error =array();
+		 if(isset($_POST['uploadschemelist'])) {
+			 $ferror='';
+//			 echo "I am here"; die;
+        	    	if ( isset($_FILES["userfile"]))
+            		{
+                		$errors= array();
+                		$file_name = $_FILES['userfile']['name'];
+                		$file_ext=strtolower(end((explode('.',$file_name))));
+		                $expensions= array("txt","csv");
+		                if(in_array($file_ext,$expensions)=== false){
+                    			$ferror="extension not allowed, please choose a txt or csv file.";
+			                $this->session->set_flashdata('error', $ferror);
+			                $this->load->view('upl/uploadschemelist');
+                    			return;
+                		}
+                		else{
+                			$flag=true;
+                			$datal = array();
+	                		$uploadedfile = $_FILES['userfile']['tmp_name'];
+        	        		$h = fopen($uploadedfile,"r");
+                			fgetcsv($h);
+                			$i=1;//$kk;
+                			while (false !== ($line = fgets($h)))
+                			{
+						$datal = explode(",", $line);
+	                    			$flag=false;
+						if(count($datal) >= 3){
+							$deptcode = trim($datal[0]);
+							$deptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $deptcode)->dept_id;;
+                            				$shcode = trim($datal[1]);
+			                            	$shname = trim($datal[2]);
+                        			    	$shshort = trim($datal[3]);
+				//		$kk=$kk .'='.$code;
+							$datadeg = array('sd_deptid' => $deptid, 'sd_code' => $shcode,'sd_name'=> $shname);
+							 // check for duplicate
+                            				$isdup= $this->sismodel->isduplicatemore('scheme_department',$datadeg );
+							if(!$isdup){
+								$dataurt = array(
+			                                           'sd_deptid'=> $deptid,
+                        			                   'sd_code'=> $shcode,
+			                                           'sd_short'=> $shshort,
+                        			                   'sd_name'=> $shname
+		                	                        );
+                		        	                $userflagurt=$this->sismodel->insertrec('scheme_department', $dataurt) ;
+							}else{
+								//duplicate data
+								$error[] ="At row".$i."duplicate data";
+				                                $this->logger->write_logmessage("insert"," Error in adding scheme list ", "At row".$i."duplicate data"  );
+                                				$this->logger->write_dblogmessage("insert"," Error in adding scheme list ", "At row".$i."duplicate data" );
+							}
+							$i++;
+						}else{
+								//insufficient data
+								$error[] ="At row".$i."insufficient data";
+					                        $this->logger->write_logmessage("insert"," Error in adding scheme list ", "At row".$i."insufficient data"  );
+								$this->logger->write_dblogmessage("insert"," Error in adding scheme list ", "At row".$i."insufficient data" );
+								$i++;
+						}
+					}//end of while
+					//echo $kk; die;
+					fclose($h);	
+					if($flag){
+			                    	$this->session->set_flashdata('error', ' File without data');
+						$this->load->view('upl/uploadschemelist');
+                    				return;
+                			}else{
+                    				//display error of array
+                    				foreach ($error as $item => $value):
+                    					$ferror = $ferror ."</br>". $item .":". $value;
+                    				endforeach;
+                    				$this->session->set_flashdata('success', $ferror);
+						$this->load->view('upl/uploadschemelist');
+                    				return;
+                			}
+				}
+			}//end of user file
+		 }//button pressed
+		 $this->load->view('upl/uploadschemelist');
+	}
+	 public function uploadddolist(){
+		 $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+		 $this->session->set_flashdata($array_items);
+		 $error =array();
+		 if(isset($_POST['uploadddolist'])) {
+			 $ferror='';
+//			 echo "I am here"; die;
+        	    	if ( isset($_FILES["userfile"]))
+            		{
+                		$errors= array();
+                		$file_name = $_FILES['userfile']['name'];
+                		$file_ext=strtolower(end((explode('.',$file_name))));
+		                $expensions= array("txt","csv");
+		                if(in_array($file_ext,$expensions)=== false){
+                    			$ferror="extension not allowed, please choose a txt or csv file.";
+			                $this->session->set_flashdata('error', $ferror);
+			                $this->load->view('upl/uploadddolist');
+                    			return;
+                		}
+                		else{
+                			$flag=true;
+                			$datal = array();
+	                		$uploadedfile = $_FILES['userfile']['tmp_name'];
+        	        		$h = fopen($uploadedfile,"r");
+                			fgetcsv($h);
+                			$i=1;//$kk;
+                			while (false !== ($line = fgets($h)))
+                			{
+						$datal = explode(",", $line);
+	                    			$flag=false;
+						if(count($datal) >= 4){
+                            				$sccode = trim($datal[0]);
+							$scid = $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_code', $sccode)->sc_id;;
+							$deptcode = trim($datal[1]);
+							$deptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $deptcode)->dept_id;;
+			                            	$shcode = trim($datal[2]);
+							$shid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code',$shcode)->sd_id;
+			                            	$ddocode = trim($datal[3]);
+                        			    	$ddoname = trim($datal[4]);
+				//		$kk=$kk .'='.$code;
+							$datadeg = array('ddo_scid' => $scid, 'ddo_deptid' => $deptid,'ddo_schid'=> $shid,'ddo_code'=>$ddocode);
+							 // check for duplicate
+                            				$isdup= $this->sismodel->isduplicatemore('ddo',$datadeg );
+							if(!$isdup){
+								$dataurt = array(
+                        			                   'ddo_scid'=> $scid,
+			                                           'ddo_deptid'=> $deptid,
+			                                           'ddo_schid'=> $shid,
+                        			                   'ddo_code'=> $ddocode,
+                        			                   'ddo_name'=> $ddoname
+		                	                        );
+                		        	                $userflagurt=$this->sismodel->insertrec('ddo', $dataurt) ;
+							}else{
+								//duplicate data
+								$error[] ="At row".$i."duplicate data";
+				                                $this->logger->write_logmessage("insert"," Error in adding ddo list ", "At row".$i."duplicate data"  );
+                                				$this->logger->write_dblogmessage("insert"," Error in adding ddo list ", "At row".$i."duplicate data" );
+							}
+							$i++;
+						}else{
+								//insufficient data
+								$error[] ="At row".$i."insufficient data";
+					                        $this->logger->write_logmessage("insert"," Error in adding ddo list ", "At row".$i."insufficient data"  );
+								$this->logger->write_dblogmessage("insert"," Error in adding ddo list ", "At row".$i."insufficient data" );
+								$i++;
+						}
+					}//end of while
+					//echo $kk; die;
+					fclose($h);	
+					if($flag){
+			                    	$this->session->set_flashdata('error', ' File without data');
+						$this->load->view('upl/uploadddolist');
+                    				return;
+                			}else{
+                    				//display error of array
+                    				foreach ($error as $item => $value):
+                    					$ferror = $ferror ."</br>". $item .":". $value;
+                    				endforeach;
+                    				$this->session->set_flashdata('success', $ferror);
+						$this->load->view('upl/uploadddolist');
+                    				return;
+                			}
+				}
+			}//end of user file
+		 }//button pressed
+		 $this->load->view('upl/uploadddolist');
+	}
 }
 

@@ -1129,7 +1129,7 @@ class Setup extends CI_Controller
          $data['deptorgcode'] = array(
             'name' => 'deptorgcode',
             'id' => 'deptorgcode',
-            'maxlength' => '50',
+  //          'maxlength' => '50',
             'size' => '40',
             'value' => $this->common_model->get_listspfic1('org_profile','org_name','org_code',$dept_data->dept_orgcode)->org_name,
 	    'readonly' => 'readonly'
@@ -1137,7 +1137,7 @@ class Setup extends CI_Controller
          $data['deptsccode'] = array(
             'name' => 'deptsccode',
             'id' => 'deptsccode',
-            'maxlength' => '50',
+      //      'maxlength' => '50',
             'size' => '40',
            'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$dept_data->dept_sccode)->sc_name,
 	    'readonly' => 'readonly'
@@ -1147,7 +1147,7 @@ class Setup extends CI_Controller
          $data['authorities'] = array(
             'name' => 'authorities',
             'id' => 'authorities',
-            'maxlength' => '50',
+    //        'maxlength' => '50',
             'size' => '40',
             'value' => $this->login_model->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name,
           'readonly' => 'readonly'
@@ -1157,21 +1157,21 @@ class Setup extends CI_Controller
         $data['deptschoolcode'] = array(
             'name' => 'deptschoolcode',
             'id' => 'deptschoolcode',
-            'maxlength' => '50',
+        //    'maxlength' => '50',
             'size' => '40',
             'value' => $dept_data->dept_schoolcode,
         );
         $data['deptschoolname'] = array(
            'name' => 'deptschoolname',
            'id' => 'deptschoolname',
-           'maxlength' => '50',
+          // 'maxlength' => '50',
            'size' => '40',
            'value' => $dept_data->dept_schoolname,
         );
         $data['deptcode'] = array(
            'name' => 'deptcode',
            'id' => 'deptcode',
-           'maxlength' => '6',
+//           'maxlength' => '6',
            'size' => '40',
            'value' => $dept_data->dept_code,
         );
@@ -1334,7 +1334,7 @@ class Setup extends CI_Controller
                  //echo 'form-validated';
 
                  $data = array(
-                'role_name'=>ucwords(strtolower($_POST['role_name'])),
+                'role_name'=>$_POST['role_name'],
                 'role_desc'=>$_POST['role_desc'],
                  );
                 $rflag=$this->common_model->insertrec('role', $data);
@@ -1432,7 +1432,7 @@ class Setup extends CI_Controller
                 $data['role_name'] = array(
                 'name' => 'role_name',
                 'id' => 'role_name',
-                'maxlength' => '50',
+              //  'maxlength' => '50',
                 'size' => '40',
                 'value' => $editeset_data->role_name,
 
@@ -1440,7 +1440,7 @@ class Setup extends CI_Controller
         $data['role_desc'] = array(
            'name' => 'role_desc',
             'id' => 'role_desc',
-           'maxlength' => '50',
+       //    'maxlength' => '50',
            'size' => '40',
            'value' => $editeset_data->role_desc,
 
@@ -1464,7 +1464,7 @@ class Setup extends CI_Controller
         }
         else{
 
-            $data_erole = ucwords(strtolower($this->input->post('role_name', TRUE)));
+            $data_erole = $this->input->post('role_name', TRUE);
             $data_eroledesc = $this->input->post('role_desc', TRUE);
             $data_eid = $id;
             $logmessage = "";
