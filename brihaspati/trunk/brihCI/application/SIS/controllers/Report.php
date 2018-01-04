@@ -147,7 +147,7 @@ public function disciplinewiselist(){
     }
     /*Professor list report and service period*/
     public function professorlist(){
-        $getdesgid=$this->commodel->get_listspfic1('designation','desig_id','desig_name','Proffessor')->desig_id;
+        $getdesgid=$this->commodel->get_listspfic1('designation','desig_id','desig_name','Professor')->desig_id;
         $selectfield ="emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";
         $whdata=array('emp_desig_code' => $getdesgid);
         $whorder = "emp_doj asc";
