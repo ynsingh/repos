@@ -6,7 +6,7 @@
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
  * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars,Reports(Designation wise,position-summary
- *  vacancy position,professorlist.) 
+ *  vacancy position,professorlist,hodlist.) 
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[view employee profile]
  * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List, List Staff Position 
  */
@@ -155,6 +155,15 @@ public function disciplinewiselist(){
         $this->logger->write_logmessage("view"," view list of professors in report " );
         $this->logger->write_dblogmessage("view"," view list of professors in report");
         $this->load->view('report/professorlist',$data);
-    }   
+    } 
+    public function hodlist(){
+        $whdata=array('roleid' => '5');
+        $data['allsc']=$this->sismodel->get_distinctrecord('user_role_type','scid',$whdata);
+        $this->logger->write_logmessage("view"," view list of HOD in report " );
+        $this->logger->write_dblogmessage("view"," view list of HOD in report");
+        $this->load->view('report/hodlist',$data);
+    } 
+    
+    
 }
 

@@ -258,6 +258,15 @@ class SIS_model extends CI_Model
             }
         return $this->db2->get()->result();
     }
+    /** this function for get hod user list according to study center************************/
+    public function hoduser($scid){
+        $selectfield ="userid,scid,deptid,usertype";
+        $whdata=array('roleid' => '5','scid' => $scid);
+        $whorder = "userid asc";
+        $data = $this->get_orderlistspficemore('user_role_type',$selectfield,$whdata,$whorder);
+        return $data;
+    }
+    /** colse this function for get hod user list according to study center************************/
 
     function __destruct() {
         $this->db2->close();

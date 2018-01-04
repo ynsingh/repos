@@ -1,6 +1,7 @@
 <!---@name authority.php                                                                                                
   @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
   @modification: Om Prakash (omprakashkgp@gmail.com)
+  @modification: Manorama Pal (palseema30@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -39,12 +40,12 @@
                   </div>
                 <div align="left" style="margin-left:0%;width:95%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-              <?php if(isset($_SESSION['success'])){?>
+              <?php if(!empty(isset($_SESSION['success']))){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
-                <?php if(isset($_SESSION['err_message'])){?>
+                <?php if(!empty(isset($_SESSION['err_message']))){?>
                         <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
                 };
@@ -55,7 +56,7 @@
         <div class="scroller_sub_page">
         <table class="TFtable" >
                 <tr>
-<thead><th>Sr.No</th><th>Authority Code</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
+<thead><th>Authority Priority</th><th>Authority Code</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
 <tbody>
  <?php
         $count =0;
@@ -64,9 +65,15 @@
         {
          ?>
              <tr>
-            <td> <?php echo ++$count; ?> </td>
-            <td> <?php echo $row-> code ?></td>
-            <td> <?php echo $row-> name ?></td>
+            <!--<td> <//?php echo ++$count; ?> </td>-->
+            <td> <?php
+                    $count=$row->priority;
+                    echo $count;
+                    //echo $row->priority 
+                ?>
+            </td>  
+            <td> <?php echo $row->code ?></td>  
+             <td> <?php echo $row->name ?></td>
             <td> <?php echo $row->nickname   ?></td>
             <td> <?php echo $row->authority_email  ?></td>
             <td>

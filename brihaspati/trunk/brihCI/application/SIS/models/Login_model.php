@@ -146,7 +146,18 @@ class Login_model extends CI_Model
         return $this->db1->get()->result();
 	}
 
-
+    public function get_orderlistspficemore($tbname,$selectfield,$whdata,$whorder){
+        $this->db1->flush_cache();
+        $this->db1->from($tbname);
+        $this->db1->select($selectfield);
+        if($whdata != ''){
+                $this->db1->where($whdata);
+        }
+        if($whorder != ''){
+                $this->db1->order_by($whorder);
+        }
+        return $this->db1->get()->result();
+    }
     function __destruct() {
         $this->db1->close();
     }

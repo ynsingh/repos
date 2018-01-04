@@ -1,6 +1,7 @@
 <!---@name addauthority.php                                                                                                                                                               
     @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
     @modification: Om Prakash (omprakashkgp@gmail.com)
+    @modification: Manorama Pal (palseema30@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -33,12 +34,12 @@
 		?>
                 <div align="left" style="margin-left:0%;width:95%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                 <?php if(isset($_SESSION['success'])){?>
+                 <?php if(!empty(isset($_SESSION['success']))){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
 
-                if(isset($_SESSION['err_message'])){?>
+                if(!empty(isset($_SESSION['err_message']))){?>
                 <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
                 };
@@ -49,9 +50,18 @@
     <form action="<?php echo site_url('setup2/addauthority');?>" method="POST" class="form-inline">
             <table>
             <tr>
+               <td><label for="priority" class="control-label">Authority Priority:</label></td>
+               <td>
+               <input type="text" name="priority"  class="form-control" value="<?php echo isset($_POST["priority"]) ? $_POST["priority"] : ''; ?>" size="33" placeholder="Authority Priority" /><br>
+               </td>
+               <td>
+                  <?php //echo form_error('dr_mincredit')?>
+               </td>
+            </tr>    
+            <tr>
                <td><label for="code" class="control-label">Authority Code:</label></td>
                <td>
-               <input type="text" name="code"  class="form-control" size="33" placeholder="Authority Code" /><br>
+               <input type="text" name="code"  class="form-control" value="<?php echo isset($_POST["code"]) ? $_POST["code"] : ''; ?>"  size="33" placeholder="Authority Code" /><br>
                </td>
                <td>
                   <?php //echo form_error('dr_mincredit')?>
@@ -60,7 +70,7 @@
             <tr>
                <td><label for="name" class="control-label">Authority Name:</label></td>
                <td>
-               <input type="text" name="name"  class="form-control" size="33" placeholder="Authority Name" /><br>
+               <input type="text" name="name"  class="form-control"  value="<?php echo isset($_POST["name"]) ? $_POST["name"] : ''; ?>" size="33" placeholder="Authority Name" /><br>
                </td>
                <td>
                   <?php //echo form_error('dr_mincredit')?>
@@ -69,7 +79,7 @@
             <tr>
                 <td><label for="nickname" class="control-label">Authority Nickname:</label></td>
                 <td>
-                <input type="text" name="nickname" class="form-control" size="33" placeholder="Authority Nickname" /><br>
+                <input type="text" name="nickname" class="form-control" value="<?php echo isset($_POST["nickname"]) ? $_POST["nickname"] : ''; ?>" size="33" placeholder="Authority Nickname" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minsubcredit')?>
@@ -78,7 +88,7 @@
               <tr>
                 <td><label for=" authority_email" class="control-label">Authority Email :</label></td>
                 <td>
-                <input type="text" name=" authority_email" class="form-control" size="33" placeholder="Authority Email" /><br>
+                <input type="text" name=" authority_email"  value="<?php echo isset($_POST["authority_email"]) ? $_POST["authority_email"] : ''; ?>" class="form-control" size="33" placeholder="Authority Email" /><br>
                 </td>
               </tr>
               <tr>

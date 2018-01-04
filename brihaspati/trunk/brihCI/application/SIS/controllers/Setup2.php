@@ -4,6 +4,7 @@
  * @name Setup2.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
  * @author Om Prakash(omprakashkgp@gmail.com) Designation  and check for duplicate entry
+ * @author Manorama Pal(palseema30@gmail.com) modification in authority and duplicate check for priority added
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1171,7 +1172,12 @@ class Setup2 extends CI_Controller
   */
 
      public function authority() {
-        $this->result = $this->logmodel->get_list('authorities');
+        //$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+        //$this->session->set_flashdata($array_items);
+        $selectfield ="id,priority,code,name,nickname,authority_email";
+        $whorder = "priority asc";
+        $this->result = $this->logmodel->get_orderlistspficemore('authorities',$selectfield,'',$whorder);
+        //$this->result = $this->logmodel->get_list('authorities');
         $this->logger->write_logmessage("view"," View Authorities ", "Authorities details...");
         $this->logger->write_dblogmessage("view"," View Authorities " , "Authorities record display successfully..." );
         $this->load->view('setup2/authority',$this->result);
@@ -1183,19 +1189,24 @@ class Setup2 extends CI_Controller
 
    public function addauthority()
     {
+       // $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+       // $this->session->set_flashdata($array_items);
 	    if(isset($_POST['addauthority'])) {
+                 $this->form_validation->set_rules('priority','Authority Priority','trim|xss_clean|numeric|callback_ispriorityExist');
                  $this->form_validation->set_rules('code','Authority Code','trim|xss_clean|required');
                  $this->form_validation->set_rules('name','Authority Name','trim|xss_clean|required');
                  $this->form_validation->set_rules('nickname','Authority Nickname','trim|xss_clean|required');
                  $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
                  if($this->form_validation->run()==TRUE){
                 //echo 'form-validated';
+              /*  $authpriority = $this->input->post('priority', TRUE);     
             	$authcode = $this->input->post('code', TRUE);
             	$authname = $this->input->post('name', TRUE);
             	$authnname = $this->input->post('nickname', TRUE);
-            	$authemail = $this->input->post('authority_email', TRUE);
+            	$authemail = $this->input->post('authority_email', TRUE);*/
                 
 			$data = array(
+                                'priority'=> $_POST['priority'],
                                 'code'=>strtoupper($_POST['code']),
                                 'name'=>ucwords(strtolower($_POST['name'])),
                                 'nickname'=>strtoupper($_POST['nickname']),
@@ -1283,6 +1294,9 @@ class Setup2 extends CI_Controller
      */
 
     public function editauthority($id) {
+        //$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+        //$this->session->set_flashdata($array_items);
+       // $error =array();
         $data_q=$this->logmodel->get_listrow('authorities','id', $id);
         if ($data_q->num_rows() < 1)
         {
@@ -1291,7 +1305,13 @@ class Setup2 extends CI_Controller
         $edit_data = $data_q->row();
 
         /* Form fields */
-
+        $data['priority'] = array(
+                'name' => 'priority',
+                'id' => 'priority',
+                //'maxlength' => '50',
+                'size' => '40',
+                'value' => $edit_data->priority,
+            );
         $data['code'] = array(
                 'name' => 'code',
                 'id' => 'code',
@@ -1324,7 +1344,7 @@ class Setup2 extends CI_Controller
                 );                      
         $data['id'] = $id;
         /*Form Validation*/
-
+        $this->form_validation->set_rules('priority','Authorities Priority','trim|xss_clean|numeric');
         $this->form_validation->set_rules('code','Authorities Code','trim|xss_clean');
         $this->form_validation->set_rules('name','Authorities Name','trim|xss_clean');
         $this->form_validation->set_rules('nickname ','Authorities Nickname ','trim|xss_clean');
@@ -1334,6 +1354,8 @@ class Setup2 extends CI_Controller
 
         if ($_POST)
         {
+            
+            $data['priority']['value'] = $this->input->post('priority', TRUE);
             $data['code']['value'] = $this->input->post('code', TRUE);
             $data['name']['value'] = $this->input->post('name', TRUE);
             $data['nickname']['value'] = $this->input->post('nickname', TRUE);
@@ -1347,12 +1369,15 @@ class Setup2 extends CI_Controller
             return;
         }
         else{
+            $priority = strtoupper($this->input->post('priority', TRUE));
 	    $code = strtoupper($this->input->post('code', TRUE));
             $name = ucwords(strtolower($this->input->post('name', TRUE)));
             $nickname = strtoupper($this->input->post('nickname', TRUE));
             $authority_email = $this->input->post('authority_email', TRUE);
 //          echo"this is testing code".$code;  
             $logmessage = "";
+            if($edit_data->priority != $priority)
+                     $logmessage = "Edit Authorities Priority " .$edit_data->priority. " changed by " .$priority;
             if($edit_data->code != $code)
                      $logmessage = "Edit Authorities Code " .$edit_data->code. " changed by " .$code;
             if($edit_data->name != $name)
@@ -1363,6 +1388,7 @@ class Setup2 extends CI_Controller
                 $logmessage = "Edit Authority Email " .$edit_data->authority_email. " changed by " .$authority_email;
             //'desig_name' => $data_edesignationname,
             $update_data = array(
+               'priority ' => $priority, 
                'code' => $code,
                'name' => $name,
                'nickname' => $nickname,
@@ -1375,27 +1401,72 @@ class Setup2 extends CI_Controller
 
             if($authdatadup == 1 ){
 
-                      $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Authority Code' = $code  , 'Authority Name' = $name , 'Authority Nickname' = $nickname , 'Authority Email'=$authority_email  .");
-                      redirect('setup2/authority');
-                      return;
-                     }
-             else{
-       	     $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
-             if(!$gradedflag)
-             {
-                $this->logger->write_logmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
-                $this->logger->write_dblogmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
-                $this->session->set_flashdata('err_message','Error updating authorities - ' . $logmessage . '.', 'error');
-                $this->load->view('setup2/editauthority', $data);
-             }
-            else{
-                $this->logger->write_logmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
-                $this->logger->write_dblogmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
-                $this->session->set_flashdata('success','Authority detail updated successfully..');
+                $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Authority Code' = $code  , 'Authority Name' = $name , 'Authority Nickname' = $nickname , 'Authority Email'=$authority_email  .");
                 redirect('setup2/authority');
-             }
-	   }                
-        }//else
+                return;
+            }
+            else{
+                               
+                if($edit_data->priority != $priority){
+                    $check=array(
+                       'priority ' => $priority,  
+                    );
+                    $checkpri=$this->logmodel->isduplicatemore('authorities', $check);
+                    if($checkpri == 1){
+                        $this->session->set_flashdata("err_message", "Authority Priority number ".$priority."  is already exist so please assign any other priority number.");
+                        $this->load->view('setup2/editauthority', $data);
+                        return; 
+                    }
+                    else{
+                        $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
+                        if(!$gradedflag)
+                        {
+                            $this->logger->write_logmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
+                            $this->logger->write_dblogmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
+                            $this->session->set_flashdata('err_message','Error updating authorities - ' . $logmessage . '.', 'error');
+                            $this->load->view('setup2/editauthority', $data);
+                        }
+                        else{
+                            $this->logger->write_logmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
+                            $this->logger->write_dblogmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
+                            $this->session->set_flashdata('success','Authority detail updated successfully..');
+                            redirect('setup2/authority');
+                        }
+                    }
+                }//ifP 
+                else{
+                    $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
+                        if(!$gradedflag)
+                        {
+                            $this->logger->write_logmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
+                            $this->logger->write_dblogmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
+                            $this->session->set_flashdata('err_message','Error updating authorities - ' . $logmessage . '.', 'error');
+                            $this->load->view('setup2/editauthority', $data);
+                        }
+                        else{
+                            $this->logger->write_logmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
+                            $this->logger->write_dblogmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
+                            $this->session->set_flashdata('success','Authority detail updated successfully..');
+                            redirect('setup2/authority');
+                        }
+                    
+                }
+	    } //elsedup               
+        }//elseflage
         redirect('setup2/editauthority');
     }//Edit Authority function end
+    /***********************check for the priority number**************************************************************/
+    public function isPriorityExist($authority_priority) {
+        $is_exist = $this->logmodel->isduplicate('authorities','priority',$authority_priority);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('ispriorityExist', 'Authority Priority number '.$authority_priority.'  is already exist so please assign any other priority number.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }  
+    
+    
 }//end class

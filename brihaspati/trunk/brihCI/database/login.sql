@@ -40,6 +40,7 @@ CREATE TABLE `aggregateaccounts` (
 
 CREATE TABLE `authorities` (
   `id` int(11) NOT NULL,
+  `priority` INT(11) default NULL,
   `code` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `nickname` varchar(255) NOT NULL,

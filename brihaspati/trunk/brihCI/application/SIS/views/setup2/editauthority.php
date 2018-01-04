@@ -1,6 +1,7 @@
 <!---@name editauthority.php                                                                                                                                                               
     @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
     @modification: Om Prakash (omprakashkgp@gmail.com)
+    @modification: Manorama Pal (palseema30@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -43,15 +44,29 @@
                         <div align="left" style="margin-left:0%;width:95%;">
                         <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                         <?php echo form_error('<div class="isa_error">','</div>');?>
-                        <?php if(isset($_SESSION['success'])){?>
+                        <?php if(!empty(isset($_SESSION['success']))){?>
                                 <div class="isa_success" width="90%"><?php echo $_SESSION['success'];?></div>
                         <?php }; ?>
+                        <?php if(!empty(isset($_SESSION['err_message']))){?>
+                        <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                        <?php
+                        };
+                        ?>
                         </div>
                 </td></tr>
         </table>
         <table>
         <?php
                 echo form_open('setup2/editauthority/'. $id);
+                echo "<tr>";
+                echo "<td>";
+                echo form_label('Authority Priority : ', 'priority');
+                echo "</td>";
+                echo "<td>";
+                echo form_input($priority);
+                echo "</td>";
+		echo "</tr>";
+                
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Authority Code : ', 'code');
