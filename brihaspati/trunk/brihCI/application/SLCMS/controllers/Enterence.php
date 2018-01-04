@@ -1342,13 +1342,16 @@ class Enterence extends CI_Controller {
 		//get category name
 		$catid = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
 		$catname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$catid)->cat_name;
-		$this->catname = $catname;
-		if($this->catname == "General" || $this->catname == "OBC"){
-			$amount='300.00';
-		}
-		if($this->catname == "SC" || $this->catname == "ST"){
-			$amount='100.00';
-		}
+		$catname = strtoupper($catname);
+        //      print_r($catname);
+                $this->catname = $catname;
+                if($this->catname == "General" || $this->catname == "OBC" ||  $this->catname == "GENERAL" || $this->catname == "OTHER BACKWARD CLASS" || $this->catname == "OTHER BACKWARD CASTE"){
+                        $amount='300.00';
+                }
+                if($this->catname == "SC" || $this->catname == "ST" || $this->catname == "SCHEDULED CASTE" || $this->catname == "SCHEDULED TRIBES"){
+                        $amount='100.00';
+                }
+
 		$name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
 		//$data['name']=$name;
 		$mailid = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;

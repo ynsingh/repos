@@ -25,6 +25,7 @@ class Setup extends CI_Controller
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
         $this->load->model("Mailsend_model","mailmodel");
+	 $this->load->model("DateSem_model","datemodel");	
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -834,7 +835,7 @@ class Setup extends CI_Controller
             if($this->form_validation->run()==TRUE){
 
             $data = array(
-                'cat_name'=>ucwords(strtolower($_POST['cname'])),
+                'cat_name'=>(strtoupper($_POST['cname'])),
                 'cat_code'=>strtoupper($_POST['ccode']),
                 'cat_short'=>strtoupper($_POST['csname']),
                 'cat_desc'=>$_POST['cdesc']
@@ -963,7 +964,7 @@ class Setup extends CI_Controller
 	else
         {
 
-            $data_cname = ucwords(strtolower($this->input->post('cname', TRUE)));
+            $data_cname = (strtoupper($this->input->post('cname', TRUE)));
             $data_ccode = strtoupper($this->input->post('ccode', TRUE));
             $data_csname = strtoupper($this->input->post('csname', TRUE));
             $data_cdesc = $this->input->post('cdesc', TRUE);
@@ -2979,4 +2980,179 @@ class Setup extends CI_Controller
         }//else 
         redirect('setup/editentranceexamfees');
     }//end funtion
+
+   public function set_datesview() {  
+        $data['getdatelist'] = $this->common_model->get_list('set_date');
+	$data['currentacadyear'] = $this->datemodel->getcurrentAcadYear();	
+        $this->load->view('setup/session_exam_formdates_view',$data);
+    }
+
+	public function set_datesadd(){
+		$data['campuslist'] = $this->common_model->get_list('study_center');  
+		$data['currentacadyear'] = $this->datemodel->getcurrentAcadYear();
+		 if(isset($_POST['adddates'])) {
+			$this->form_validation->set_rules('acad_year','Academeic year','trim|xss_clean|required');
+                        $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
+                        $this->form_validation->set_rules('campus_code','Campus Name','trim|xss_clean|required');
+                        $this->form_validation->set_rules('session_sdate','Session Start Date','trim|xss_clean|required');
+                        $this->form_validation->set_rules('session_edate','Session End Date','trim|xss_clean|required');
+                        $this->form_validation->set_rules('exam_startdate','Exam Start Date','trim|xss_clean|required'); 
+			$this->form_validation->set_rules('exam_enddate','Exam End Date','trim|xss_clean|required');
+                        $this->form_validation->set_rules('form_sdate','Marks-Submission Start Date','trim|xss_clean|required'); 
+			$this->form_validation->set_rules('form_edate','Marks-Submission End Date','trim|xss_clean|required');
+                }
+                //if form validation true
+                if($this->form_validation->run()==TRUE){
+		$cdata = date('Y-m-d');
+		$cid = $this->session->userdata('id_user');
+		$cname = $this->common_model->get_listspfic1('role','role_name','role_id',$cid)->role_name;
+                  $addsetdate = array(
+		       'sed_acadyear'		=>	$_POST['acad_year'],
+                       'sed_sem'		=>	$_POST['semester'],
+                       'sed_campuscode'		=>	$_POST['campus_code'],
+                       'sed_sessionsdate'	=>	$_POST['session_sdate'],
+                       'sed_sessionedate'	=>	$_POST['session_edate'],
+                       'sed_examsdate'		=>	$_POST['exam_startdate'],
+                       'sed_examedate'		=>	$_POST['exam_enddate'],
+                       'sed_formsubmitsdate'	=>	$_POST['form_sdate'],
+                       'sed_formsubmitedate'	=>	$_POST['form_edate'],   
+		       'sed_creatorid'		=>	$cname,
+                       'sed_createdate'		=>	$cdata,
+                              
+                        );
+		//print_r($addsetdate);die;
+                        $eeflagfees=$this->common_model->insertrec('set_date', $addsetdate);
+                        if (!$eeflagfees){
+                   		$this->logger->write_logmessage("insert", " Session / Exam and Form Submission Dates insert error . "  );
+                  		$this->logger->write_dblogmessage("insert"," Session / Exam and Form Submission Dates insert error ." );
+                   		$this->session->set_flashdata('err_message','Session / Exam and Form Submission Dates insert error ');
+                    		redirect('setup/set_datesadd');
+                         } 
+                		else{
+                  			$this->logger->write_logmessage("insert"," Session / Exam and Form Submission Dates insert successfully."  );
+                  			$this->logger->write_dblogmessage("insert"," Session / Exam and Form Submission Dates insert successfully." );
+                  			$this->session->set_flashdata("success", "Session / Exam and Form Submission Dates add successfully");
+                   			redirect("setup/set_datesview");
+                    }
+            }    
+
+		$this->load->view('setup/session_exam_formdates_add',$data);
+	}
+
+    public function set_datesetedit($id) {
+	$data['campuslist'] = $this->common_model->get_list('study_center');  
+	$data['currentacadyear'] = $this->datemodel->getcurrentAcadYear();
+
+	$getdatadata=$this->common_model->get_listrow('set_date','sed_id', $id);
+	if ($getdatadata->num_rows() < 1)
+        {
+            redirect('setup/set_datesetedit');
+        }
+        $setdate_data = $getdatadata->row();
+
+        /* Form fields */
+ 	$data['sem'] = $setdate_data->sed_sem;
+        $data['acady'] = $setdate_data->sed_acadyear;
+	$data['campuscode'] = $setdate_data->sed_campuscode;
+        $data['session_sdate'] = $setdate_data->sed_sessionsdate;
+        $data['session_edate'] = $setdate_data->sed_sessionedate;
+	$data['exam_sdate'] = $setdate_data->sed_examsdate;
+        $data['exam_edate'] = $setdate_data->sed_examedate;
+	$data['marks_sdate'] = $setdate_data->sed_formsubmitsdate;
+        $data['marks_edate'] = $setdate_data->sed_formsubmitedate;
+	$id = $setdate_data->sed_id;
+        $data['id'] = $id;                                                           
+     /*Form Validation*/
+       	   $this->form_validation->set_rules('acad_year','Academeic year','trim|xss_clean');
+           $this->form_validation->set_rules('semester','Semester','trim|xss_clean');
+           $this->form_validation->set_rules('campus_code','Campus Name','trim|xss_clean');
+           $this->form_validation->set_rules('session_sdate','Session Start Date','trim|xss_clean');
+           $this->form_validation->set_rules('session_edate','Session End Date','trim|xss_clean');
+           $this->form_validation->set_rules('exam_startdate','Exam Start Date','trim|xss_clean'); 
+	   $this->form_validation->set_rules('exam_enddate','Exam End Date','trim|xss_clean');
+           $this->form_validation->set_rules('form_sdate','Marks-Submission Start Date','trim|xss_clean'); 
+	   $this->form_validation->set_rules('form_edate','Marks-Submission End Date','trim|xss_clean');
+
+       
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/session_exam_formdates_edit',$data);		
+            return;
+        }
+        else{
+
+           $cdata = date('Y-m-d');
+		$cid = $this->session->userdata('id_user');
+		$cname = $this->common_model->get_listspfic1('role','role_name','role_id',$cid)->role_name;
+	if($_POST['editacad_year'] == ''){
+                  $updateset_date = array(
+		       'sed_acadyear'		=>	$data['acady'],
+                       'sed_sem'		=>	$data['sem'],
+                       'sed_campuscode'		=>	$data['campuscode'],
+                       'sed_sessionsdate'	=>	$data['session_sdate'],
+                       'sed_sessionedate'	=>	$data['session_edate'],
+                       'sed_examsdate'		=>	$data['exam_sdate'],
+                       'sed_examedate'		=>	$data['exam_edate'],
+                       'sed_formsubmitsdate'	=>	$data['marks_sdate'],
+                       'sed_formsubmitedate'	=>	$data['marks_edate'],                     
+		);
+	}
+	else{
+	$updateset_date = array(
+		       'sed_acadyear'		=>	$_POST['editacad_year'],
+                       'sed_sem'		=>	$_POST['editsemester'],
+                       'sed_campuscode'		=>	$_POST['editcampus_code'],
+                       'sed_sessionsdate'	=>	$_POST['editsession_sdate'],
+                       'sed_sessionedate'	=>	$_POST['editsession_edate'],
+                       'sed_examsdate'		=>	$_POST['editexam_startdate'],
+                       'sed_examedate'		=>	$_POST['editexam_enddate'],
+                       'sed_formsubmitsdate'	=>	$_POST['editform_sdate'],
+                       'sed_formsubmitedate'	=>	$_POST['editform_edate'],   
+		       'sed_modifierid'		=>	$cname,
+                       'sed_modifiedate'	=>	$cdata,
+                      
+		);
+
+	}
+        $updatesetdate = $this->common_model->updaterec('set_date',$updateset_date,'sed_id', $id);
+	  $logmessage = "";
+            if($data['acady'] != $_POST['editacad_year'])
+                    $logmessage = "Academic Year " .$data['acady']. " changed by " .$_POST['editacad_year'];
+            if($data['sem'] != $_POST['editsemester'])
+                     $logmessage = "Edit Semester " .$data['sem']. " changed by " .$_POST['editsemester'];
+            if($data['campuscode'] != $_POST['editcampus_code'])
+                $logmessage = "Edit Campus Code" .$data['campuscode']. " changed by " .$_POST['editcampus_code'];
+            if($data['session_sdate'] != $_POST['editsession_sdate'])
+                $logmessage = "Edit Start Session Date" .$data['session_sdate']. " changed by " .$_POST['editsession_sdate'];
+            if($data['session_edate'] != $_POST['editsession_edate'])
+                $logmessage = "Edit End Session Date" .$data['session_edate']. " changed by " .$_POST['editsession_edate'];
+            if($data['exam_sdate'] != $_POST['editexam_startdate'])
+                $logmessage = "Edit Start Exam Date" .$data['exam_sdate']. " changed by " .$_POST['editexam_startdate'];
+            if($data['exam_edate'] != $_POST['editexam_enddate'])
+                $logmessage = "Edit End Exam Date" .$data['exam_edate']. " changed by " .$_POST['editexam_enddate'];
+            if($data['marks_sdate'] != $_POST['editform_sdate'])
+                $logmessage = "Edit Start Marks Submission Date" .$data['marks_sdate']. " changed by " .$_POST['editform_sdate'];
+            if($data['marks_edate'] != $_POST['editform_edate'])
+                $logmessage = "Edit End Marks Submission Date" .$data['marks_edate']. " changed by " .$_POST['editform_edate'];
+		
+        if(!$updatesetdate)
+            {
+                $this->logger->write_logmessage("error","Update record error in set date.".$logmessage);
+                $this->logger->write_dblogmessage("error","Update record error in set date.".$logmessage);
+                $this->session->set_flashdata('err_message','Record Not Updated Successfully.'.$logmessage);
+                redirect('setup/set_datesetedit');
+            }
+            else{
+                $this->logger->write_logmessage("update","Successfully record updated in set dated table.".$logmessage);
+                $this->logger->write_dblogmessage("update","Successfully record updated in set dated table.".$logmessage);
+                $this->session->set_flashdata('success','Record Updated Successfully.'.$logmessage);
+                redirect('setup/set_datesview');
+               }
+
+        }//else 
+        // redirect('setup/set_datessetedit');	
+	$this->load->view('setup/session_exam_formdates_edit',$data);	
+    }//end funtion
+
+
 }//end class

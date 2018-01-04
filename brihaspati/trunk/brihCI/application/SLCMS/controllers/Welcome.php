@@ -33,6 +33,10 @@ class Welcome extends CI_Controller {
                 //}
             	//	redirect('home');
     	}
+	public function work_underprocess(){
+		$this->load->view('template/work_under');
+	}	
+		
 	 public function ginstruction()
 	 {
 	   $prg_id=$this->uri->segment(3);

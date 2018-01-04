@@ -18,7 +18,7 @@
 		//alert (branch);
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/admissionstu/deptlist",
+                url: "<?php echo base_url();?>slcmsindex.php/adminadmissionstu/deptlist",
                 data: {"stu_prgname"  : branch},
                 dataType:"html",
                 success: function(data){
@@ -32,7 +32,7 @@
 		//alert (eligible);
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/admissionstu/getminquali",
+                url: "<?php echo base_url();?>slcmsindex.php/adminadmissionstu/getminquali",
                 data: {"stu_prgname"  : eligible},
                 dataType:"html",
                 success: function(data){

@@ -58,13 +58,10 @@ class Hodadmissionstu extends CI_Controller
                 $semester = 1;
 
 		//get the list of student  from student program  where enrollment number is null in student master
-			$wharray = array('sm_enrollmentno' => NULL,'sp_deptid' => $deptid);
-			$this->db->select('sp_smid,sp_programid');
-			$this->db->from('student_program');
-			$this->db->join('student_master', 'student_master.sm_id = student_program.sp_smid');
-			$this->db->where($wharray);
-			$query = $this->db->get()->result();
-			//print_r($query);die;
+		$wharray = array('sm_enrollmentno' => NULL,'sp_deptid' => $deptid);
+		$sdata = 'sp_smid,sp_programid';
+		$joincondi = 'student_master.sm_id = student_program.sp_smid';
+		$query = $this->commodel->get_jointbrecord('student_program',$sdata,'student_master',$joincondi,$wharray);
 
 		//get one by one student
 			foreach($query as $row){
@@ -75,13 +72,16 @@ class Hodadmissionstu extends CI_Controller
 		
 		// call the function from university model generat_rollnumber($tablename,$prgid,$field,$whfield,$Sid)
 		$genenrollment = $this->univmodel->generat_rollnumber('student_master',$prgid,'sm_enrollmentno','sm_id',$Sid);
-	//	print_r($genenrollment);die;
-		// load the page 
+		
+		//load the page 
 		$stu_name = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Sid)->sm_fname;
 		$stu_enroll = $this->commodel->get_listspfic1('student_master','sm_enrollmentno','sm_id',$Sid)->sm_enrollmentno;	
-		$this->session->set_flashdata('success', 'Student' .' '.$stu_name.' '. 'Enrollment Number' .' '.$stu_enroll.' '. 'Successfully Generated .');
-		redirect('hodadmissionstu/listenrolledstu');
-
+	
+		$this->logger->write_logmessage("insert","Successfully enrollment generated through HOD".$stu_name.$Sid);
+		$this->logger->write_dblogmessage("insert","Successfully enrollment generated through HOD" .$stu_name.$Sid);
+               	$this->session->set_flashdata('success', 'Student' .' '.$stu_name.' '. 'Enrollment Number' .' '.$stu_enroll.' '. 'Successfully Generated .');
+               	redirect('hodadmissionstu/listenrolledstu');
+		
 		$selectdata = 'sp_smid,sp_programid,sp_semregdate';
                 $whdata = array('sp_deptid' => $deptid,'sp_acadyear' => $currentacadyear,'sp_semester' => $semester);
 

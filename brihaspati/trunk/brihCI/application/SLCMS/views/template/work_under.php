@@ -2,6 +2,16 @@
  * @name work_under.php
    @author sumit saxena (sumitsesaxena@gmail.com)
  --->
+
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?><!DOCTYPE html>
+<html>
+<head>
+<title>Sample Page</title>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
+
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">	
 <style>
 body, html {
     
@@ -43,15 +53,23 @@ hr {
     margin: auto;
     width: 40%;
 }
-</style>
+</style>	
+</head>
+
+<body>
+
+<?php $this->load->view('template/header'); ?>
+</br></br></br>
 <div class="bgimg" style="">
 
   <div class="middle">
-    <h1>Work Under Construction</h1>
+    <h2>Work Under Construction</h2>
     <hr>
    <p>Some work is left.</p>
 	<?php echo date('d-m-Y H:i');?>
 
   </div>
-
+<?php $this->load->view('template/footer'); ?>
+</body>
+</html>
 

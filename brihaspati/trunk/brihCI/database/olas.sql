@@ -1541,6 +1541,28 @@ CREATE TABLE `student_admission_cancel` (
 	UNIQUE (`sac_hallticketno`)
 ) ENGINE = InnoDB;
 
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `study_center`
+CREATE TABLE `set_date` ( 
+	`sed_id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`sed_campuscode` INT(11) NOT NULL , 
+	`sed_acadyear` varchar(255) NOT NULL,
+  	`sed_sem` varchar(255) NOT NULL,
+ 	`sed_campuscode` varchar(255) NOT NULL,
+	`sed_sessionsdate` DATE NOT NULL , 
+	`sed_sessionedate` DATE NOT NULL , 
+	`sed_examsdate` DATE NOT NULL , 
+	`sed_examedate` DATE NOT NULL , 
+	`sed_formsubmitsdate` DATE NOT NULL , 
+	`sed_formsubmitedate` DATE NOT NULL , 
+	`sed_creatorid` VARCHAR(255) NOT NULL , 
+	`sed_createdate` DATE NOT NULL , 
+	`sed_modifierid` VARCHAR(255) NOT NULL , 
+	`sed_modifiedate` DATE NOT NULL , 
+	PRIMARY KEY (`sed_id`)) ENGINE = InnoDB;
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `study_center`

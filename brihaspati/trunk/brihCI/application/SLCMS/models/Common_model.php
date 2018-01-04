@@ -295,6 +295,19 @@ class Common_model extends CI_Model
     function __destruct() {
         $this->db->close();
     }
+    //PDF Generate Code
+    public function genpdf($content,$path){
+	$this->load->library('pdf');
+	$this->pdf = new DOMPDF();	
+     	// pass html to dompdf object
+    	$this->pdf->load_html($content);
+	$this->pdf->set_paper("A4", "portrait");
+        $this->pdf->render();
+	//set paper size
+        $pdf = $this->pdf->output();
+	file_put_contents($path, $pdf); 
+   }
+
 
 }
 

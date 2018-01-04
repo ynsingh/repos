@@ -124,8 +124,9 @@ class Adminadmissionstu extends CI_Controller
 				$result2=$this->commodel->updaterec('student_entry_exit',$stuentupdate,'senex_smid',$smid);
 
  				
+				//$upimg = "<img src=base_url('uploads/logo/logo1.jpg');  style='width:100%;height:70px;'>";
+				//$upimg = '<input type="image" src="base_url("/uploads/logo/logo1.png")" alt="Submit" style="width:100%" height="80">';
 				$upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
-
 				$mess = "
 					<table width='50%'; style='border-radius:10px;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
 					    <tr><td colspan=2>".$upimg."<hr></td></tr>
@@ -277,7 +278,8 @@ class Adminadmissionstu extends CI_Controller
 				 $upstustatus = $this->commodel->updaterec('student_admissionstatus', $updata,'sas_studentmasterid',$smid);
 				 $this->logger->write_logmessage("update","Update record in student admission status for cancel student", $hallno.$stuname);
                     		 $this->logger->write_dblogmessage("update","Update record in student admission status fees for cancel student", $hallno.$stuname);
-				  $upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
+				 $upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
+				//$upimg = '<input type="image" src="base_url("/uploads/logo/logo1.png");" alt="Submit" style="width:100%" height="80">';
 
 				 //mail function
 				$mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
@@ -441,13 +443,12 @@ class Adminadmissionstu extends CI_Controller
         }
 	
 	public function genenrolladminstu(){
+		$data['deptlist'] = $this->commodel->get_list('Department');
 		//get the list of student  from student program  where enrollment number is null in student master
-			$wharray = array('sm_enrollmentno' => NULL);
-			$this->db->select('sp_smid,sp_programid');
-			$this->db->from('student_program');
-			$this->db->join('student_master', 'student_master.sm_id = student_program.sp_smid');
-			$this->db->where($wharray);
-			$query = $this->db->get()->result();
+			$whdata = array('sm_enrollmentno' => NULL);
+			$selectfield = 'sp_smid,sp_programid';
+			$joincond = 'student_master.sm_id = student_program.sp_smid';
+			$query = $this->commodel->get_jointbrecord('student_program',$selectfield,'student_master',$joincond,$whdata);
 			
 		//get all student
 			foreach($query as $row){
@@ -503,11 +504,14 @@ class Adminadmissionstu extends CI_Controller
 			$wharray = array('sas_admissionstatus' => 'Provisional');
 		}		
 
-		$this->db->select('sp_smid,sas_studentmasterid,sas_hallticketno');
+		$sdata = 'sp_smid,sas_studentmasterid,sas_hallticketno';
+		$joincondition = 'student_admissionstatus.sas_studentmasterid = student_program.sp_smid';
+		$stusmid = $this->commodel->get_jointbrecord('student_program',$sdata,'student_admissionstatus',$joincondition,$wharray);
+		/*$this->db->select('sp_smid,sas_studentmasterid,sas_hallticketno');
 		$this->db->from('student_program');
 		$this->db->join('student_admissionstatus','student_admissionstatus.sas_studentmasterid = student_program.sp_smid');
 		$this->db->where($wharray);
-		$stusmid = $this->db->get()->result();
+		$stusmid = $this->db->get()->result();*/
 		$data['stusmid'] = $stusmid;
 		
 		$this->load->view('student_admission/adminstu_nonverified',$data);
@@ -546,12 +550,15 @@ class Adminadmissionstu extends CI_Controller
 		else{
 			$wharray = array('sas_admissionstatus' => 'Confirmed');
 		}		
+		$sdata = 'sp_smid,sas_studentmasterid,sas_hallticketno';
+		$joincondi = 'student_admissionstatus.sas_studentmasterid = student_program.sp_smid';
+		$stusmid = $this->commodel->get_jointbrecord('student_program',$sdata,'student_admissionstatus',$joincondi,$wharray);
 
-		$this->db->select('sp_smid,sas_studentmasterid,sas_hallticketno');
+		/*$this->db->select('sp_smid,sas_studentmasterid,sas_hallticketno');
 		$this->db->from('student_program');
 		$this->db->join('student_admissionstatus','student_admissionstatus.sas_studentmasterid = student_program.sp_smid');
 		$this->db->where($wharray);
-		$stusmid = $this->db->get()->result();
+		$stusmid = $this->db->get()->result();*/
 		$data['stusmid'] = $stusmid;
 
 		$this->load->view('student_admission/adminstu_verified',$data);

@@ -28,7 +28,7 @@
         <tr><td>
                 <?php
                 echo "<td align=\"center\" width=\"34%\">";
-                echo "<b>Student List Details</b>";
+                echo "<b>Student Enrollment List Details</b>";
                 echo "</td>";
                 echo "<td align=\"right\" width=\"33%\">";
                 $help_uri = site_url()."/help/helpdoc#ViewStudentlistwithHead";
