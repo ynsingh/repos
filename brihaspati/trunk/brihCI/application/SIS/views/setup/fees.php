@@ -11,9 +11,7 @@
 <title>Fees</title>
   <div id="body">
         <?php $this->load->view('template/header'); ?>
-                <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-
-        <?php $this->load->view('template/menu'); ?>
+               
 </div>
  <table width= "100%">
             <tr><td>

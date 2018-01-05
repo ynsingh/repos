@@ -28,10 +28,9 @@
     <body>
         <div>
              <?php $this->load->view('template/header'); ?>
-            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
-            <?php $this->load->view('template/menu'); ?>
+           
         </div> 
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
         <div>
 <table width="100%;">
             <tr>

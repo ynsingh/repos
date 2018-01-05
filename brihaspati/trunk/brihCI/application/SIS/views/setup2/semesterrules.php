@@ -7,8 +7,7 @@
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-    <?php $this->load->view('template/menu');?>
+   
   </head>
  <body>
     <!--<//?php

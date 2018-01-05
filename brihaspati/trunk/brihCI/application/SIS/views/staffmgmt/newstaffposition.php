@@ -5,9 +5,7 @@
  <html>
    <head>
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
-    <!--        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+        
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
   

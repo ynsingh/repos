@@ -5,12 +5,11 @@
  <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
-        <!--    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
+       
       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
     </head>
     <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
 <table width="100%">
             <tr colspan="2">
          <?php

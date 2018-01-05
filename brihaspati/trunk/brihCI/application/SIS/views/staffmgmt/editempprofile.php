@@ -366,8 +366,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         <div>
            
             <?php $this->load->view('template/header'); ?>
-            <h3>Welcome <?= $this->session->userdata('username') ?></h3>
-            <?php $this->load->view('template/menu');?>
+           
         
         </div>
         <table style="margin-left:4%;width:97%;"><tr><td>

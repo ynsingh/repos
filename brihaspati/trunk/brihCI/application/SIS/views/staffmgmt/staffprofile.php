@@ -429,11 +429,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         <!--<div>-->
            
             <?php $this->load->view('template/header'); ?>
-            <?php $this->load->view('template/menu');?>
-<!--            <h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
+           
  
 <!--        </div> -->
         <table style="margin-left:0%; "><tr><td>

@@ -5,8 +5,7 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
-        <?php $this->load->view('template/menu');?> 
+        
 
 
  <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
@@ -36,7 +35,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
 </script>
     </head>
     <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
         <script>
         function goBack() {
         window.history.back();

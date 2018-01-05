@@ -1,7 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php $this->load->view('template/header.php');?>
- <h1>Welcome <?= $this->session->userdata('username') ?></h1>
- <?php $this->load->view('template/menu.php');?>
+
 <html>
 <title>Add Program</title>
 <?php

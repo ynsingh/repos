@@ -10,9 +10,7 @@
     </head>
     <body>
             <?php $this->load->view('template/header'); ?>
-            <?php $this->load->view('template/menu');?>
-            <!--<h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+           
         <table width="100%"><tr colspan="2">
         <?php 
         echo "<td align=\"left\" width=\"33%\">";

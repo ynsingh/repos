@@ -36,11 +36,7 @@ select{width:100%;font-size:17px;height:40px;}
 	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-</br>
-	<?php $this->load->view('template/stumenu'); ?>
-	<?php //if(isset($_SESSION)) {
-        	//echo $this->session->flashdata('flash_data');
-    	//} ?>
+
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 <?php
 echo "<center>";

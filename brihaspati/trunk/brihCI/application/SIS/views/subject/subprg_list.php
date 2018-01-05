@@ -12,8 +12,7 @@
     <body>
         <div>
          <?php $this->load->view('template/header'); ?>
-        <h3>Welcome <?= $this->session->userdata('username') ?></h3>
-        <?php $this->load->view('template/facultymenu');?>
+       
         </div>
        <!-- <div>-->
         <br/><table style="margin-left:30px;" class="TFtable">

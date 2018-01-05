@@ -47,8 +47,6 @@ select{width:100%;font-size:17px;height:40px;}
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	</br>
-	<?php $this->load->view('template/stumenu'); ?>
 	
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <?php

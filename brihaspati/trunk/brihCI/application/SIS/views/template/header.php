@@ -14,4 +14,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <img src="<?php echo base_url(); ?>uploads/logo/logo1.png" alt="logo">
 </div> 
 
+<?php
+        $role = $this->session->userdata('id_role');
+        if($role == 1){
+                $this->load->view('template/menu');
+        }
+        if($role == 6){
+                $this->load->view('template/coemenu');
+        }
+        if($role == 5){
+                $this->load->view('template/hodmenu');
+        }
+        if($role == 2){
+                $this->load->view('template/facultymenu');
+        }
+        if($role == 4){
+                $this->load->view('template/staffmenu');
+        }
+        if($role == 7){
+                $this->load->view('template/aomenu');
+        }
+        if($role == 3){
+                $this->load->view('template/stumenu');
+        }
+        if (($this->session->userdata('username')) !=''){
+?>
+
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<?php } ?>
 

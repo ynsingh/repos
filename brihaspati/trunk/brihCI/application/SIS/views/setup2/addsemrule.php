@@ -7,8 +7,7 @@
 
  <head>
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-     <?php $this->load->view('template/menu');?>
+   
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <script>
 	function getbranchname(branch){

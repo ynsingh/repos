@@ -26,14 +26,8 @@
     </head>
     <body>
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
-        <p>
-        <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-        </p>
-        <br/>
-        <table>
-            <!--help part -->
-        </table> 
+        
+       
          <div> 
             <?php
                if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){

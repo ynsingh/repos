@@ -5,11 +5,11 @@
  <title>View Email Setting</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
     </head>    
     <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";

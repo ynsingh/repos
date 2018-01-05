@@ -6,8 +6,7 @@
 <title>Edit Grade</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-        <?php $this->load->view('template/menu');?>
+           
     </head>
     <body>
  <script>

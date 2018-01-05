@@ -11,9 +11,7 @@
     </script>
 <div>
 <?php $this->load->view('template/header.php');?>
-<h1>Welcome <?= $this->session->userdata('username')?> </h1>
-<?php $this->load->view('template/menu.php');
-?>
+
 </div>
 <?php
 /*    echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";

@@ -28,9 +28,7 @@ tr td {font-size:17px;font-weight:bold;}
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	</br>
-	<?php $this->load->view('template/stumenu'); ?>
-	<?php //$this->load->view('student/stuStepshead');?>
+	
 	
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <?php

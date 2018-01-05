@@ -8,13 +8,10 @@
 <title>View Faculty list</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <?php $this->load->view('template/menu');?>
+        
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 
 <table style="width:100%;" border=0>
 <tr>

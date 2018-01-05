@@ -9,10 +9,7 @@ echo"<title>Edit Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
-   // echo "<h1>"; 
-   // echo "Welcome "; echo$this->session->userdata('username'); 
-    //echo"</h1>";
-    $this->load->view('template/menu');
+   
 ?>
 <?php
 echo "</head>";
@@ -35,7 +32,7 @@ echo "</head>";
 */
 ?>
 <body>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+
 <script>
         function goBack() {
         window.history.back();

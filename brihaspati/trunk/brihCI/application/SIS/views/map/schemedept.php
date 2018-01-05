@@ -39,9 +39,7 @@
     </head>    
     <body>
        <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-        <?php $this->load->view('template/menu');?> 
-        </br>    
+              
         <table width="100%"> 
        
             <tr><td>  
