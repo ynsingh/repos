@@ -25,7 +25,7 @@
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdocstudent#FeesRecord";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:60%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -50,7 +50,7 @@
         <br/>
       <!--  <a href="<?php echo site_url(); ?>/studentrecord/mypdf">pdf</a>-->
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+            <table cellpadding="16" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Program Name(Branch)</th>

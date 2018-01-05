@@ -49,7 +49,7 @@
 	}
 ?>
            <tr> 
-           <td>Fees Type: <?php echo " ". $fetype;?></td>
+           <td>Fees Type: <?php echo " ". $this->ftype;?></td>
            <td>Payment Mode: <?php echo " ".$this->fstatus;?></td>
            <td>Reference No: <?php echo " ".$this->refno;?></td>
           </tr>
