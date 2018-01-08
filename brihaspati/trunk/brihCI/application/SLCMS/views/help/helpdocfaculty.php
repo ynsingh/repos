@@ -15,7 +15,7 @@
         <div class="head">Online Addmision System (Faculty)</div>
         <div class="content">
         <div class="sideleft">
-        <div style="margin-top:10.5%;">
+        <div style="margin-top:-6%">
         <div id="cssmenu">
 	<ul>
 	     <li><a href="#AboutOnlineAddmisionSystem(Faculty)">About Online Addmision System (Faculty)</a></li>

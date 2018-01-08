@@ -67,7 +67,6 @@ select{width:100%;font-size:17px;height:40px;}
 
 <div>
 	<?php $this->load->view('template/header'); ?>
-	</br>
 	<?php //$this->load->view('template/facultymenu'); ?>
 </div>
 	
@@ -91,33 +90,28 @@ $pap = $sub_pap[1];
 }
 
 ?>
-
-</div>
         <table width="100%">
             <tr><td>
-                <div style="margin-left:10%;width:80%;">
-                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
+                <div>
+                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                     if($this->mst== 1)
                     {
                 ?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['msg'];?></div>
+                        <div class="isa_success"><?php echo $_SESSION['msg'];?></div>
                 <?php    }
                 ?>
     
             </div>
         </td></tr>
         </table>
-</div>
-<div align = left>
-<table><tr align=left><td>
+<table><tr><td>
 <?php echo anchor('faculty/studentviewmarks/', "View Student Marks" ,array('title' => 'Student Marks ' , 'class' => 'top_parent'));?>
 </td>
 </tr></table>
-</div>
 <center>
 	<div id="text">Marks Upload</div>
 	</br>

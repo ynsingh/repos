@@ -76,25 +76,24 @@
             <!--<h3>Welcome <?//= $this->session->userdata('username') ?></h3>-->
             <?php //$this->load->view('template/facultymenu');?>
         </div>
-        <br/>
-        <br>
+<table width="100%">
+            <tr>
 		<?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;width:90%;\">";
-                    echo "<tr valign=\"top\">";
-		    echo "<td>";
+		    echo "<td align=\"left\" width=\"33%\">";
                     $help_uri = site_url()."/studenthome/student_attendence_view";
-                    echo "<a href=$help_uri><b style=\"margin-left:8%;position:absolute;margin-top:-1.6%\">View Student Attendence</b></a>";
+                    echo "<a style=\"text-decoration:none\" href=$help_uri><b>View Student Attendence</b></a>";
                     echo "</td>";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdocfaculty#StudentList";
-                    echo "<a href=$help_uri><b style=\"float:right;margin-top:-1.6%\">Click for Help</b></a>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Student Attendance</b>";
                     echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
+                    echo "<td align=\"right\" width=\"33%\">";
+                    //$help_uri = site_url()."/help/helpdocfaculty#StudentList";
+                    //echo "<a href=$help_uri><b style=\"float:right;margin-top:-1.6%\">Click for Help</b></a>";
+                    echo "</td>";
                  ?>
-	<div align="left" style="margin-left:30px;width:90%;font-size:18px;">
+	<div align="left" style="width:100%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
         <?php
@@ -102,17 +101,17 @@
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class=""><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
-	?>  
-	
-
+	?>  	
       </div>
+</tr>
+</table>
         
 	
 	<form action="<?php echo site_url('Studenthome/student_attendence');?>" method="POST">
-        <table style="margin-left:30px; width:96%;" >
+        <table style="width:100%;" >
 	
             <tr style="font-weight:bold; background-color:lightslategray;">
 
@@ -188,7 +187,7 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 	<td>
                 </td>
 
-	<td style="margin-right:60px;float:right;font-size:20px;">
+	<td style="float:right;font-size:16px;">
 	<form name="tfrm" method="POST" >
 		<span style="color:black;font-weight:bold;">Class Type :</span>
                     <select name="classtype"> 
@@ -209,8 +208,8 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 	</script>
 		
 	</form>
-	</td></tr></table>
-        <table style="margin-left:30px;" class="TFtable" id='getrecord'>
+	</td></tr></table><br>
+        <table class="TFtable" id='getrecord'>
             <thead>
                 <tr style="text-align: center;">
                      <th>Sr.No</th>
@@ -221,7 +220,7 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 				
                 </tr>
             </thead>
-             <tbody align=center>
+             <tbody>
 		               
 		<?php $count=1;
 		 if(!empty($getdata)){
@@ -257,7 +256,8 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 			<?php  $i=0; if(!empty($getdata)){
 				foreach($getdata as $getname):
 				$sccode = $this->commodel->get_listspfic1('student_program','sp_sccode','sp_smid',$getname->sp_smid)->sp_sccode;
-				$scenter = $this->commodel->get_listspfic1('study_center','sc_id','sc_code',$sccode)->sc_id;
+				$scenter = $sccode;
+		//		$scenter = $this->commodel->get_listspfic1('study_center','sc_id','sc_code',$sccode)->sc_id;
 				$studdepart = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$getname->sp_smid)->sp_deptid;
 			?>	
 				<input type="hidden" name="stu_master_id<?php echo $i;?>" value="<?php echo $getname->sp_smid;?>">

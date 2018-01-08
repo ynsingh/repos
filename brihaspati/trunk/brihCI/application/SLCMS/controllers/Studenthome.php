@@ -658,6 +658,7 @@ class Studenthome extends CI_Controller
                     							$this->logger->write_logmessage("insert","Student attendence send successfully ");
                     							$this->logger->write_dblogmessage("insert", "Student attendence send successfully ");
                    							$this->session->set_flashdata("success", "Today Attendence is Submitted.");
+									redirect('studenthome/student_attendence_view');
                 				    		}
 							}//close else	
 						

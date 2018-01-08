@@ -407,7 +407,7 @@ class Student extends CI_Controller {
 			$this->form_validation->set_rules('Smothername','Mother name','trim|xss_clean|required');
           		$this->form_validation->set_rules('Sfathername','Father name','trim|xss_clean|required');
            		$this->form_validation->set_rules('Scategory','Category','trim|xss_clean|required');
-           		$this->form_validation->set_rules('Spaddress','Postal address','trim|xss_clean|required');
+           		$this->form_validation->set_rules('Saddress','Postal address','trim|xss_clean|required');
 			//$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required');
 			//$this->form_validation->set_rules('Spost','Post office','trim|xss_clean|required');
 	   		$this->form_validation->set_rules('Scity','City','trim|xss_clean|required');

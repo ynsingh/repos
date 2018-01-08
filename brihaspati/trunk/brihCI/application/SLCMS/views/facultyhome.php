@@ -10,7 +10,7 @@
                 .panel-primary{
                    // margin-left:20px;
                     //margin-right:5px; 
-                    width:900px;
+                    width:645px;
                     height:500px;
                     background-color: #D0D0D0;
                     
@@ -55,8 +55,8 @@
             <table>
             <tr>
                 <td>   
-                    <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
-                        <div class="panel-heading">User Profile </div>
+                    <div class="panel panel-primary" style="background-color: #D0D0D0; ">
+                        <div class="panel-heading"><b>User Profile</b></div>
                             <div class="panel-body">
                                 <table id="Table">
                                     <tr>
@@ -88,8 +88,8 @@
                         </div>
                     </td>
                     <td>
-                        <div class="panel panel-primary" style="margin-left:10px; margin-right:20px;background-color: #D0D0D0;">
-                            <div class="panel-heading">Course Detail</div>
+                        <div class="panel panel-primary" style="background-color: #D0D0D0;">
+                            <div class="panel-heading"><b>Course Detail</b></div>
                             <div class="panel-body">
                                 <table class="table2" >
                                     <thead >

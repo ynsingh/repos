@@ -12,21 +12,25 @@
          <!--   <h3>Welcome <?//= $this->session->userdata('username') ?></h3>-->
             <?php //$this->load->view('template/facultymenu');?>
         </div>
-        <br/>
-        <br>
+<table width="100%">
+            <tr>
 <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdocfaculty#StudentList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:80%;position:absolute;margin-top:-1.6%\">Click for Help</b></a>";
+		    echo "<td align=\"left\" width=\"33%\">";
                     echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
+
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Student List</b>";
+                    echo "</td>";
+
+                    echo "<td align=\"right\" width=\"33%\">";
+                    $help_uri = site_url()."/help/helpdocfaculty#StudentList";
+                    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
+
                     ?>
 
         <form action="<?php echo site_url('Studenthome/studentlist');?>" method="POST" class="form-inline">
-        <table style="margin-left:30px; width:96%;">
+        <table style="width:100%">
             <tr style="font-weight:bold; background-color:lightslategray;">
                 <td>  Select Program:
                     <?php if (isset($filter) && !empty($search)) :?>
@@ -61,7 +65,7 @@
                     </select>
                 </td>
                 <td>Match String:
-                    <input type="text" name="search" value="" placeholder="Search..." size="25" >
+                    <input type="text" name="search" value="" placeholder="Search..." size="30" >
                 <!--</td>
                 <td>-->
                     <input type="submit" name="filter" value="Search" />
@@ -71,10 +75,10 @@
                 <td >Current Semester:&nbsp;&nbsp;<?php echo $semester;?></td>
                 
             </tr>
-        </table><br/>   
-        <table style="margin-left:30px;" class="TFtable" >
+        </table><br>   
+        <table class="TFtable" >
             <thead>
-                <tr style="text-align: center;">
+                <tr>
                      <th>Sr.No</th>
                     <th>Student Name</th>
                     <th>Enrollment No</th>
@@ -273,7 +277,7 @@
                     </tr>
                  <?php };?>  
                 <?php else : ?>
-                <tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                <tr><td colspan= "10" align="center"> No Records found...!</td></tr>
                 <?php endif;?>
             
             </tbody>  
