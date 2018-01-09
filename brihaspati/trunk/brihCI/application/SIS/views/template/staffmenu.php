@@ -168,7 +168,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Profile</a>";
 				 echo "<ul>";
 					echo "<li>";
-						echo anchor('profile/viewprofile', 'View Profile', array('title' => 'View Profile'));
+						echo anchor('empmgmt/viewempprofile', 'View Profile', array('title' => 'View Profile'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('profile/changepasswd', 'Change Password', array('title' => 'Change Password'));

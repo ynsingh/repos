@@ -410,7 +410,7 @@ class Staffmgmt extends CI_Controller
     /****************************  START UPDATE DATA *************************/
     public function update_profile($id)
     {
-        
+               
         if(isset($_POST['updateprofile'])) {
             /*Form Validation*/
             $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
@@ -604,10 +604,16 @@ class Staffmgmt extends CI_Controller
                 $this->load->view('staffmgmt/editempprofile', $data);
             }
             else{
+                $this->roleid=$this->session->userdata('id_role');
                 $this->logger->write_logmessage("update","update staff profile ", " Employee record updated successfully ");
                 $this->logger->write_dblogmessage("update","staff profile", "Employee record updated successfully");
                 $this->session->set_flashdata('success', 'Employee data' .$msgphoto." ".'updated Successfully......'." "."["." "."Employee PF NO:"." ".$_POST['empcode']." and "."EmailId:"." ".$_POST['emailid']." "."]");
-                redirect('staffmgmt/employeelist');
+                if($this->roleid == 4){
+                    redirect('empmgmt/viewempprofile');
+                }
+                else{
+                    redirect('staffmgmt/employeelist');
+                }    
             }
         }//closeissetform    
     }
