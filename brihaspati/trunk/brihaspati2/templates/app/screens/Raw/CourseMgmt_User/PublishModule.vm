@@ -9,8 +9,9 @@
  * @modified date: 30-03-2010, 13-03-2010, 26-02-2013
 *#
 
+<link type="text/css" href="$content.getURI("/scrpts/fixedstyle.css")" rel="stylesheet"></script>
 $page.setBgColor($ui.bgcolor)
-$page.setTitle("Home | $course | Course Management | Course Content | Publishing Module")
+$page.setTitle("Course Content")
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 #set($lang = $data.getUser().getTemp("lang").toString())
@@ -26,8 +27,8 @@ $!data.getMessage()
  #end*#     
 </b></td></tr>
 </table>
-<table width=100% bgcolor="$ui.tableColor">
-<tr>
+<table width=100%>
+<tr  bgcolor="$ui.tableColor">
 	#if($tdcolor!="1")
         <td>
 	#elseif($tdcolor=="1")
@@ -99,7 +100,7 @@ $!data.getMessage()
 </table>
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,PublishModule.vm").addPathInfo("topic",$topic).setAction("PublishAction")">
 <div style="background-color:$ui.tableColor;text-align:left">
-<b>$topic</b>
+<div  class="fixed" style='width:800px;'><b>$topic</b></div>
 </div>
 <div style="background-color:$ui.menuColor;text-align:left">
 <input type="checkbox" name=delTopic><b>$brih_topicDelete </b>

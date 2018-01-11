@@ -35,7 +35,7 @@ $page.setBgColor("bgcolor")
 
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Preview.vm").addPathInfo("mode","random").addPathInfo("count","1").addPathInfo("type",$type).setAction("OLES_Quiz")>
 ## Adding links for  add category,showing list of Faq category and delete category
-<table width="100%" bgcolor="$ui.tableColor">
+<table width="100%">
 	
 	<tr bgcolor="$ui.tableColor">
 		#if($tdcolor != "1")

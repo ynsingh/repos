@@ -74,20 +74,20 @@ $!data.getMessage()
         </tr>
 </table>
 #end
-<table bgcolor="$ui.tableColor" width=100%>
+<table bgcolor="$ui.menuColor" width=100%>
 #if(($permission=="1") && ($mode == ""))
 <form name=frm method="post" action="$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").setAction("InstructorRegisteration").addPathInfo("cName",$cName)">
-<tr bgcolor="$ui.menuColor">
+<tr>
 	<td><b>$brih_course $brih_ID</b></td>
 	<td><b>$cName</b></td>
 </tr>
-<tr>
+<tr bgcolor="$ui.tableColor">
 	#formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
 </tr>
 <tr bgcolor="$ui.menuColor">
 	#formPasswordCell ("$brih_pwd" "PASSWD" "")
 </tr>
-<tr>
+<tr bgcolor="$ui.tableColor">
         #formCell ("$brih_first $brih_name" "FNAME" "")
 </tr>
 <tr bgcolor="$ui.menuColor">

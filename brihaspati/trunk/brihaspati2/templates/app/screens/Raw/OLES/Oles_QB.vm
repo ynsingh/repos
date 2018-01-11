@@ -56,7 +56,7 @@ $!data.getMessage()
 ##creating form for FAQ
 <form name="frm" method="post" action=$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem")>
 ## Adding links for  add category,showing list of Faq category and delte category
-<table width="100%" bgcolor="$ui.tableColor">
+<table width="100%">
 		<tr bgcolor="$ui.tableColor" width="100%">
 			#if($tdcolor != "1")
                         <td>

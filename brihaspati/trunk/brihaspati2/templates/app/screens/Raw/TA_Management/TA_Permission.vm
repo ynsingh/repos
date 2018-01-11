@@ -20,8 +20,8 @@ $!data.getMessage()
 	    </tr>
 	</table>
 	
-        <table bgcolor="$ui.tableColor" width=100%>
-	        <tr>
+        <table width=100%>
+	        <tr bgcolor="$ui.tableColor">
         	#if($tdcolor != "1")
 	        <td>
         	#elseif($tdcolor == "1")

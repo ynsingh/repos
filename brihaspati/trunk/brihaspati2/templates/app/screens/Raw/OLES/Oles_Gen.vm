@@ -47,9 +47,9 @@ $!data.getMessage()
 #end
 	
 
-<table width="100%" bgcolor="$ui.tableColor">
+<table  width="100%">
 #if($mode == "QuizDetail")
-	<tr bgcolor="$ui.menuColor" width="100%">
+	<tr width="100%">
 		<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_quiz $brih_update</font><b></i></td>
 	</tr>
 #else

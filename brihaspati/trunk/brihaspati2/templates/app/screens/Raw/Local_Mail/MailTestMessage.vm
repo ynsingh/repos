@@ -73,8 +73,8 @@ $!data.getmessage()
 	#end 	
 </tr>
 </table>
-<table align=left width=100% bgcolor="$ui.tableColor">
-<tr>
+<table align=left width=100%>
+<tr bgcolor="$ui.tableColor">
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")

@@ -14,6 +14,8 @@
  * @modified date: 07-04-2010,27-09-2010
  * @modified date: 15-02-2011
 *#
+
+<link type="text/css" href="$content.getURI("/scrpts/fixedstyle.css")" rel="stylesheet"></script>
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
 $page.setBgColor($ui.bgcolor)
@@ -62,8 +64,8 @@ $page.setBgColor($ui.bgcolor)
 </tr>
 </table>
 #if($isInstructor == "true")
-<table width=100% bgcolor="$ui.tableColor">
-<tr>
+<table width=100%>
+<tr bgcolor="$ui.tableColor">
 	#if($tdcolor != "1")
         <td>
 	#elseif($tdcolor=="1")
@@ -114,9 +116,9 @@ $page.setBgColor($ui.bgcolor)
 	<div style="background-color:$ui.menuColor;text-align:left">
 #end
 	#if($lang == "hindi") 
-		<H><b>$topic $brih_contentOf</b></H>
+		<div  class="fixed" style='width: 900px;'><H><b>$topic $brih_contentOf</b></H></div>
 	#else
-		<H><b>$brih_contentOf $topic</b></H>
+		<div  class="fixed" style='width: 900px;'><H><b>$brih_contentOf $topic</b></H></div>
 	#end
 </div>	
 

@@ -9,10 +9,10 @@
  * @modified date: 30-03-2010
 *#
 
-
+<link type="text/css" href="$content.getURI("/scrpts/fixedstyle.css")" rel="stylesheet"></script>
 $page.setBgColor($ui.bgcolor)
 #set($lang=$data.getUser().getTemp("lang").toString())
-$page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $brih_content | $brih_edit $brih_content")
+$page.setTitle("Course Content")
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -28,8 +28,8 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 </td>
 </tr>
 </table>
-<table width=100% bgcolor="$ui.tableColor">
-<tr>
+<table width=100%>
+<tr bgcolor="$ui.tableColor">
 	#if($tdcolor!="1")
         <td>
 	#elseif($tdcolor=="1")
@@ -73,7 +73,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setAction("EditContent_Action").setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("topic",$topic)">
 <table width=100% bgcolor="$ui.tableColor">
 	<tr>
-		<td><font size=3><b>$brih_topic #if($lang =="hindi") $brih_Of1 #end $brih_name: &nbsp;$topic</b></font></td>
+		<td><div  class="fixed" style='width:750px;'><font size=3><b>$brih_topic #if($lang =="hindi") $brih_Of1 #end $brih_name: &nbsp;$topic</b></font></div></td>
 	</tr>
         <tr bgcolor="$ui.menuColor">
 		<td>
@@ -181,7 +181,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 				#if($aliasval.length()==0)				
 					#set ( $aliasval ="$file")
 				#end
-			 	<td><b><input type="text" name=$seqno value="$aliasval" size="$aliasval.length()" onChange="return validate(this);" onFocus="setOldVal(this);"></b></td>
+			 	<td><div  class="fixed" style='width: 245px;'><b><input type="text" name=$seqno value="$aliasval" size="$aliasval.length()" onChange="return validate(this);" onFocus="setOldVal(this);"></b></div></td>
 				<input type="hidden" name="$file.Name" value=$seqno>
 		         	<td>$file.PDate</td>
 	     	     	 	<td align="center"><input type="checkbox" name="$file.CheckboxName" onClick="addDeleteList(this,document.frm);"></td>

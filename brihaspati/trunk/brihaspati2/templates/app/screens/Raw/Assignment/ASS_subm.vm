@@ -34,8 +34,8 @@ $!data.getMessage()
 	#end
         </td></tr>
 </table> ##table 1 end  
-<table width=100% bgcolor="$ui.tableColor">
-<tr>
+<table width=100%>
+<tr bgcolor="$ui.tableColor">
 	#if($user_role == "instructor")
 		#if($tdcolor != "1")
 		<td>
@@ -115,9 +115,9 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 		<td><b>$brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name<font color=Red>*</font></b></td>
 		#if($mode!="Update")
-		<td><input type="text" name="contentTopic" value="$!DB_subject" size=26 onChange="validate1(this)"/> &nbsp;
+		<td><input type="text" name="contentTopic" value="$!DB_subject" size=18 onChange="validate1(this)"/> &nbsp;
 		#else
-		<td><input type="text" name="contentTopic" value="$topic" size=26 onChange="validate1(this)"/ readonly> &nbsp;
+		<td><input type="text" name="contentTopic" value="$topic" size=18 onChange="validate1(this)"/ readonly> &nbsp;
 		#end
 		#if($mode!="Update")
 		<input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_topic $QuestionBank_available" onClick="checkBlank1(document.uploadform,this);"/></td>

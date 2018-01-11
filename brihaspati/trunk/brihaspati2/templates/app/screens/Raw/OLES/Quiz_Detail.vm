@@ -86,7 +86,7 @@ $!data.getMessage()
 </table>
 
 <form name="frm" method="post" action="$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")">
-<table width="100%" bgcolor="$ui.tableColor">	
+<table width="100%">	
 	<tr bgcolor="$ui.tableColor">
 		#if($tdcolor != "1")
         		<td>

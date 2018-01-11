@@ -25,8 +25,8 @@ $!data.getMessage()
         	</td>
 	</tr>
 </table> ##table 1 end
-<table width=100% bgcolor="$ui.tableColor">
-	<tr>
+<table width=100%>
+	<tr bgcolor="$ui.tableColor">
         #if($user_role == "instructor")
         	#if($tdcolor != "1")
 	        <td>
@@ -87,7 +87,7 @@ $!data.getMessage()
         <tr>
 	## #if($user_role == "instructor")
 	#if(($user_role == "instructor")||($user_role == "teacher_assistant"))
-	<td><b>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
+	<td><b>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
 	<input type="text" name="GetUser"  size=26 /></td>
         #end
         <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>

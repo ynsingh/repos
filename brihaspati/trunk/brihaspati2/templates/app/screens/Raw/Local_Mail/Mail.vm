@@ -67,8 +67,8 @@ $!data.getMessage()
 #else
 <form method="GET" action="$link.setPage("call,Local_Mail,MailContent.vm")">
 #end
-<table width=100% align=left bgcolor="$ui.tableColor"> 
-<tr>
+<table width=100% align=left> 
+<tr bgcolor="$ui.tableColor">
 	#if($mode=="adminmail")
 		#if($tdcolor!="1")
 		<td>
@@ -176,8 +176,8 @@ $!data.getMessage()
 
 </u></I></font></b></td>*#
 </tr>
-##</table>
-##<table width=100% align=left bgcolor="$ui.tableColor"> 
+</table>
+<table width=100% align=left bgcolor="$ui.tableColor"> 
 #if($data.getUser().getUserName()!= "guest")
 <tr bgcolor="$ui.menuColor"><td colspan=5 align="left">
 <img src="$content.getURI("/images/newmail1.gif")">
