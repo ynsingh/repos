@@ -19,6 +19,7 @@ class Report  extends CI_Controller
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"lgnmodel"); 
         $this->load->model('SIS_model',"sismodel");
+	$this->load->helper('download');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -90,9 +91,11 @@ class Report  extends CI_Controller
 	  
 	//get id for employee to show data	
 	$emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
 	//get all profile and service data
 	$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $emp_data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
+        $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
         $this->load->view('report/viewfull_profile',$emp_data);
   }
 

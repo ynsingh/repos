@@ -12,8 +12,26 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
+        
 
 <table style="width:100%;" border=0>
+    <div align="left">
+            
+                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                <?php echo form_error('<div class="isa_error">','</div>');?>
+                
+	        <?php if(isset($_SESSION['success'])){?>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                <?php
+                };
+                ?>
+                 <?php if(isset($_SESSION['err_message'])){?>
+                    <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                <?php
+                };
+                ?>    
+                  
+        </div>
 <tr>
 <td valign="top" width=170>
 
@@ -180,6 +198,155 @@
                         <?php endif;?>
                     </tbody>    
 		</table>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+                                if(count($performancedata)){
+                                    echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                }
+                                    else{
+                                    echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                }    
+                            ?>
+                        </td>
+                        
+                    </tr>
+                
+		</table>
+                <table class="TFtable">
+                    
+                    <?php if(count($performancedata)):;?>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Awards and Medals : </b></td></tr>
+                    <tr>
+                        <th>Description</th>
+                        <th colspan="5"> Number of Medals</th>
+                        
+                        <tbody>
+                            <tr>
+                                <td><?php echo "International";?></td>
+                                <td colspan="5"><?php echo $performancedata->spd_int_award;?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "National";?></td>
+                                <td colspan="5"><?php echo $performancedata->spd_nat_award;?></td>
+                            </tr> 
+                            <tr>
+                                <td><?php echo "University";?></td>
+                                <td colspan="5"><?php echo $performancedata->spd_uni_award;?></td>
+                            </tr>   
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Publications : </b></td></tr>
+                    <tr>
+                        <th>Description</th>
+                        <th> National</th>
+                        <th colspan="4"> International</th>
+                        <tbody>
+                            <tr>
+                                <td><?php echo "Research";?></td>
+                                <td><?php echo $performancedata->spd_res_pub_nat;?></td>
+                                <td colspan="3"><?php echo $performancedata->spd_res_pub_int;?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "Popular";?></td>
+                                <td><?php echo $performancedata->spd_pop_pub_nat;?></td>
+                                <td colspan="3"><?php echo $performancedata->spd_pop_pub_int; ?></td>
+                            </tr> 
+                            <tr>
+                                <td><?php echo "Presentation";?></td>
+                                <td><?php echo $performancedata->spd_pre_pub_nat; ?></td>
+                                <td colspan="3"><?php echo $performancedata->spd_pre_pub_int; ?></td>
+                            </tr>   
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Project handled : </b></td></tr>
+                    <tr>
+                        <th>Number of Projects handled</th>
+                        <th colspan="4"> Fund outlay</th>
+                       
+                        <tbody>
+                            <tr>
+                                <td><?php echo $performancedata->spd_noof_project; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_fund_outly_ofproject; ?></td>
+                            </tr>
+                           
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Training attended (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    <tr>
+                        <th></th>
+                        <th colspan="4"> Number of Trainings attended</th>
+                       
+                        <tbody>
+                            <tr>
+                                <td><?php echo "National"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_tr_att_nat; ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "International"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_tr_att_int; ?></td>
+                            </tr>
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Training conducted (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    <tr>
+                        <th></th>
+                        <th colspan="4"> Number of Trainings conducted</th>
+                       
+                        <tbody>
+                            <tr>
+                                <td><?php echo "National"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_tr_con_nat; ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "International"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_tr_con_int; ?></td>
+                            </tr>
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Students Guided : </b></td></tr>
+                    <tr>
+                        <th></th>
+                        <th colspan="4"> Number of students guided</th>
+                       
+                        <tbody>
+                            <tr>
+                                <td><?php echo "MVSc"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_mvsc_stu_guided; ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "Phd"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_phd_stu_guided; ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "Others"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_others_stu_guided; ?></td>
+                            </tr>
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Guest lecture delivered : </b></td></tr>
+                    <tr>
+                        <tbody>
+                            <tr>
+                                <td><?php echo "Number of Guest lecture delivered"; ?></td>
+                                <td colspan="4"><?php echo $performancedata->spd_no_ofguestlecture; ?></td>
+                            </tr>
+                        </tbody>     
+                    </tr>
+                    <tr></tr>
+                    <tr><td><b>File Name</b></td>
+                        <td colspan="4">
+                            <a href="<?php echo base_url().'uploads/SIS/perfattachment/'.$performancedata->spd_per_filename ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php echo $performancedata->spd_per_filename ?>">Download the pdf</a>
+                        </td>
+                    </tr>
+                    <?php else : ?>
+                    <td colspan= "7" align="center"> No Records found...!</td>
+                    <?php endif;?>
+            
+                </table>
 </td>
 </tr>
 
