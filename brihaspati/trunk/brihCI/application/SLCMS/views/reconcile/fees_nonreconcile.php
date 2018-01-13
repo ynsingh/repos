@@ -8,30 +8,37 @@
 <title>Fees Reconcile</title>
  <head>    
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 
  </head>    
    <body>
 <?php $this->load->view('template/header');
-// $this->load->view('template/menu'); ?>
+
+ echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+        <?php 
+	   if(!empty($_SESSION['err_message'])){		
+		if(isset($_SESSION['err_message'])){?>
+        <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+         } };
+	?>  
+
+
 
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 <div>
 
-<?php
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
 
-echo "</center>";
-?>
-
-
-
-
-<table width="100%;" style="" >
-	<tr><td style=""><a href="<?php echo site_url('reconcile/fees_nonreconcile');?>" style="font-weight:bold; margin-left:0px;"> Non Reconcile Fees
+<table  style="width:100%;" >
+	<tr><td><a href="<?php echo site_url('reconcile/fees_nonreconcile');?>" style="font-weight:bold; margin-left:0px;"> Non Reconcile Fees
 		<a href="<?php echo site_url('reconcile/fees_reconcile_complete');?>" style="font-weight:bold; margin-left:4%;" id="allf">All Fees
 		<a href="<?php echo site_url('reconcile/fees_reconcile');?>" style="font-weight:bold; margin-left:5%;" id="reconcile">Reconcile Fees
 	</td>
@@ -44,7 +51,7 @@ echo "</center>";
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th align="left">Non-Reconcile Fees Detail</th></tr></thead>
 
 </table>
-   <table class="TFtable" style="background-color:#38B0DE;border:2px solid #a8a8a8;">
+   <table class="TFtable" style="background-color:#38B0DE;border:2px solid #a8a8a8;width:100%;">
 	<thead >
 	<tr align=left>
 <th>Sr. No.</th>

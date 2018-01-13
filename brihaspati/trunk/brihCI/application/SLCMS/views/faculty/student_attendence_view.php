@@ -26,8 +26,8 @@
             <tr>
 		<?php
 		    echo "<td align=\"left\" width=\"33%\">";
-                    $help_uri = site_url()."/studenthome/student_attendence";
-                    echo "<a style=\"text-decoration:none\" href=$help_uri><b>Student Attendence</b></a>";
+                    $help_uri = site_url()."/facultyhome/student_attendence";
+                    echo "<a style=\"text-decoration:none\" href=$help_uri><b>Add Student Attendence</b></a>";
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
                     echo "<b>Student Attendance List</b>";
@@ -82,10 +82,10 @@
 		//print_r($row);
             	echo "<tr>";
 		echo "<td>".$count++ ."</td>";
-                echo "<td>".$this->stuname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$row->satd_smid)->sm_fname."</td>";
+                echo "<td>".$this->stuname = $this->cmodel->get_listspfic1('student_master','sm_fname','sm_id',$row->satd_smid)->sm_fname."</td>";
 		$scid = $row->satd_scid;
 		if($scid > 0){
-			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+			$scname = $this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
 			if(!empty($scname)){
                     		 echo "<td>".$scname."</td>";
              		 }
@@ -97,12 +97,26 @@
 		else{ 
 		echo "<td></td>";
 		 }
-		echo "<td>".$deptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->satd_deptid)->dept_name."</td>";
+		echo "<td>".$deptname = $this->cmodel->get_listspfic1('Department','dept_name','dept_id',$row->satd_deptid)->dept_name."</td>";
 		echo "<td>".$row->satd_acadyear."</td>";
-		echo "<td>".$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->satd_prgid)->prg_name."(".$branchname = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->satd_prgid)->prg_branch.")"."</td>";
+		echo "<td>".$prgname = $this->cmodel->get_listspfic1('program','prg_name','prg_id',$row->satd_prgid)->prg_name."(".$branchname = $this->cmodel->get_listspfic1('program','prg_branch','prg_id',$row->satd_prgid)->prg_branch.")"."</td>";
 		echo "<td>".$row->satd_sem."</td>";
-		echo "<td>".$subname = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->satd_subid)->sub_name."</td>";
-		echo "<td>".$papname = $this->commodel->get_listspfic1('subject_paper','subp_name','subp_id',$row->satd_papid)->subp_name."</td>";
+		echo "<td>".$subname = $this->cmodel->get_listspfic1('subject','sub_name','sub_id',$row->satd_subid)->sub_name."</td>";
+		//echo "<td>".$papname = $this->cmodel->get_listspfic1('subject_paper','subp_name','subp_id',$row->satd_papid)->subp_name."</td>";
+		$paperid = $row->satd_papid;
+		if($paperid > 0){
+			$papname = $this->cmodel->get_listspfic1('subject_paper','subp_name','subp_id',$paperid)->subp_name;
+			if(!empty($papname)){
+                    		 echo "<td>".$papname."</td>";
+             		 }
+               		 else{
+               			 echo "<td></td>";
+                	 }
+
+		}
+		else{ 
+		echo "<td></td>";
+		 }
 		echo "<td style='text-align:center;'>".$row->satd_astatus."</td>";
 		echo "<td>".$row->satd_classtype."</td>";
 		echo "<td>".$row->satd_adate."</td>";

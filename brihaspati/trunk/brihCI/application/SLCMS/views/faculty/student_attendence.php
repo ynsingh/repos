@@ -17,7 +17,7 @@
 		//alert(sem);
                 $.ajax({
                 type: "POST",
-		url: "<?php echo base_url();?>slcmsindex.php/studenthome/semester_get",
+		url: "<?php echo base_url();?>slcmsindex.php/facultyhome/semester_get",
                 data: {"program_branch" : sem},
                 dataType:"html",
                 success: function(data){
@@ -26,13 +26,15 @@
              });
         }
 
-	function getsubject(sub){
-	        var sub = sub;
-		//alert(sem);
+	function getsubject(combid){
+		var prgid = $('#program_branch').val();
+                var semid = $('#semester').val();
+                var combid = prgid+","+semid;
+		//alert(combid);
                 $.ajax({
                 type: "POST",
-		url: "<?php echo base_url();?>slcmsindex.php/studenthome/subject_get",
-                data: {"semester" : sub},
+		url: "<?php echo base_url();?>slcmsindex.php/facultyhome/subject_get",
+                data: {"semprg" : combid},
                 dataType:"html",
                 success: function(data){
                 	$('#subjectname').html(data.replace(/^"|"$/g, ''));
@@ -40,13 +42,16 @@
              });
         }
 
-	function getpaper(pap){
-	        var pap = pap;
-		//alert(sem);
+	function getpaper(prgsemsubid){
+	        var prgid = $('#program_branch').val();
+                var semid = $('#semester').val();
+		var subid = $('#subjectname').val();
+                var prgsemsubid = prgid+","+semid+","+subid;
+		//alert(prgsemsubid);
                 $.ajax({
                 type: "POST",
-		url: "<?php echo base_url();?>slcmsindex.php/studenthome/paper_get",
-                data: {"subjectname" : pap},
+		url: "<?php echo base_url();?>slcmsindex.php/facultyhome/paper_get",
+                data: {"prg_sem_sub" : prgsemsubid},
                 dataType:"html",
                 success: function(data){
                 	$('#papername').html(data.replace(/^"|"$/g, ''));
@@ -54,92 +59,76 @@
              });
         }
 
-	/*function getsturecord(stu){
-	        var stu = stu;
-		//alert(sem);
-                $.ajax({
-                type: "POST",
-		url: "<?php echo base_url();?>slcmsindex.php/studenthome/student_record",
-                data: {"papername" : stu},
-                dataType:"html",
-                success: function(data){
-                	$('#getrecord').html(data.replace(/^"|"$/g, ''));
-		}
-             });
-        }*/
-
 	</script>
     </head>
     <body>
         <div>
             <?php $this->load->view('template/header'); ?>
-            <!--<h3>Welcome <?//= $this->session->userdata('username') ?></h3>-->
-            <?php //$this->load->view('template/facultymenu');?>
         </div>
-<table width="100%">
-            <tr>
 		<?php
-		    echo "<td align=\"left\" width=\"33%\">";
-                    $help_uri = site_url()."/studenthome/student_attendence_view";
-                    echo "<a style=\"text-decoration:none\" href=$help_uri><b>View Student Attendence</b></a>";
+                    echo "<table style=\"width:100%;\">";
+                    echo "<tr valign=\"top\">";
+		    echo "<td align=left>";
+                    $help_uri = site_url()."/facultyhome/student_attendence_view";
+                    echo "<a href=$help_uri><b>View Student Attendence</b></a>";
+		    echo "<td>";
+		    echo "<b>Student Attendence</b>";	 
+		    echo "</td>";
                     echo "</td>";
-                    echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Student Attendance</b>";
+                    echo "<td align=right>";
+                    $help_uri = site_url()."/help/helpdocfaculty#StudentList";
+                    echo "<a href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
-                    echo "<td align=\"right\" width=\"33%\">";
-                    //$help_uri = site_url()."/help/helpdocfaculty#StudentList";
-                    //echo "<a href=$help_uri><b style=\"float:right;margin-top:-1.6%\">Click for Help</b></a>";
-                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
                  ?>
-	<div align="left" style="width:100%;font-size:18px;">
-        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div class="">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
-        <?php
-    	 };
-       	?>
+	<?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class=""><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
-	?>  	
+	?> 	
+
       </div>
-</tr>
-</table>
         
 	
-	<form action="<?php echo site_url('Studenthome/student_attendence');?>" method="POST">
+	<form action="<?php echo site_url('facultyhome/student_attendence');?>" method="POST">
         <table style="width:100%;" >
 	
             <tr style="font-weight:bold; background-color:lightslategray;">
 
-                <td> <span style="color:white;margin-left:22px;">Select Program :</span>
-                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);">
+                <td> <span style="color:white;">Select Program :</span>
+                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);" required>
 			<option selected="true" disabled>Select Program</option>
 			 <?php foreach($prgsublist as $prgdata): ?>	
                             <option value="<?php echo $prgdata->pstp_prgid; ?>">
-				<?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgdata->pstp_prgid)->prg_name."&nbsp;"."(".
-                                $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgdata->pstp_prgid)->prg_branch.")" ;?></option> 
+				<?php echo $this->cmodel->get_listspfic1('program','prg_name','prg_id',$prgdata->pstp_prgid)->prg_name."&nbsp;"."(".
+                                $this->cmodel->get_listspfic1('program','prg_branch','prg_id',$prgdata->pstp_prgid)->prg_branch.")" ;?></option> 
  			<?php endforeach; ?>
 		
 		    </select>
                 </td>
                 <td><span style="color:white;">Semester :</span>
-			<select name="semester" id="semester" onchange="getsubject(this.value);">
+			<select name="semester" id="semester" onchange="getsubject(this.value);" required>
 				<option selected="true" disabled>semester</option>
 		
 		   	</select>		
                 </td>
                 <td><span style="color:white;">Subject Name :</span>
-                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);"> 
+                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" required> 
                         <option selected="selected" disabled selected>subject name</option>
 		
                     </select>
                 </td>
 		<td><span style="color:white;">Subject Paper Name :</span>
-                    <select name="papername" id="papername" onchange=""> 
+                    <select name="papername" id="papername" onchange="" required> 
                         <option selected="selected" disabled selected>subject paper name</option>
 		
                     </select>
@@ -162,18 +151,18 @@ $('#adate').datepicker({
 		
    // $("#age").text(age);
     },
-     maxDate: '+0d',
+   //  maxDate: '+0d',
      changeMonth: true,
      changeYear: true,
-      dateFormat: "yy-mm-dd",
+     dateFormat: "yy-mm-dd",
      defaultDate: '1yr',
      yearRange: 'c-37:c+30',
 
 });
 $("#adate").datepicker().datepicker("setDate", new Date());
 </script>
-
-		
+		<td>
+                </td>
 		<td><input type="submit" name="search" value="Search" /></td>
             </tr>
 	<tr>
@@ -182,20 +171,20 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 	
 
         </table><br/>
-	<?php $i=0;?>
-	<table style="width:100%;"><tr>
-	<td>
-                </td>
-
-	<td style="float:right;font-size:16px;">
-	<form name="tfrm" method="POST" >
-		<span style="color:black;font-weight:bold;">Class Type :</span>
-                    <select name="classtype"> 
+<?php $i=0;?>	
+	<table style="width:100%;">
+	<tr>
+	<td style="float:right;font-size:20px;">
+		<span>Select Class :</span>
+                    <select name="classtype" id="cltype" onchange=""> 
                         <option selected="selected" disabled selected>Select Class Type</option>
-			<option value="Reg">Regular</option>
-			<option value="Ext">Extra</option>	
+			<option value="R">Regular</option>
+			<option value="E">Extra</option>	
                     </select>
-		<!--<input type="radio" name="attendence" value="absent">-->Toggle
+	
+	
+	<form name="tfrm" method="POST" >
+		Toggle
 			<select name="attendence<?php echo $i;?>" id="first_box">
 				<option value='P'>P</option>
 				<option value='A'>A</option>
@@ -208,8 +197,9 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 	</script>
 		
 	</form>
-	</td></tr></table><br>
-        <table class="TFtable" id='getrecord'>
+	</td></tr></table>
+	</br>
+        <table style="width:100%" class="TFtable" id='getrecord'>
             <thead>
                 <tr style="text-align: center;">
                      <th>Sr.No</th>
@@ -220,14 +210,14 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 				
                 </tr>
             </thead>
-             <tbody>
+             <tbody align=center>
 		               
 		<?php $count=1;
 		 if(!empty($getdata)){
 		 foreach($getdata as $getname):
-			$studname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$getname->sp_smid)->sm_fname;
-			$studenrollno = $this->commodel->get_listspfic1('student_master','sm_enrollmentno','sm_id',$getname->sp_smid)->sm_enrollmentno;
-			$studrollno = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$getname->sp_smid)->senex_rollno;
+			$studname = $this->cmodel->get_listspfic1('student_master','sm_fname','sm_id',$getname->sp_smid)->sm_fname;
+			$studenrollno = $this->cmodel->get_listspfic1('student_master','sm_enrollmentno','sm_id',$getname->sp_smid)->sm_enrollmentno;
+			$studrollno = $this->cmodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$getname->sp_smid)->senex_rollno;
 		?>
 		<tr>
             	<td><?php echo $count++;?></td>
@@ -255,13 +245,11 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 		<tr>
 			<?php  $i=0; if(!empty($getdata)){
 				foreach($getdata as $getname):
-				$sccode = $this->commodel->get_listspfic1('student_program','sp_sccode','sp_smid',$getname->sp_smid)->sp_sccode;
-				$scenter = $sccode;
-		//		$scenter = $this->commodel->get_listspfic1('study_center','sc_id','sc_code',$sccode)->sc_id;
-				$studdepart = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$getname->sp_smid)->sp_deptid;
+				$sccode = $this->cmodel->get_listspfic1('student_program','sp_sccode','sp_smid',$getname->sp_smid)->sp_sccode;
+				$studdepart = $this->cmodel->get_listspfic1('student_program','sp_deptid','sp_smid',$getname->sp_smid)->sp_deptid;
 			?>	
 				<input type="hidden" name="stu_master_id<?php echo $i;?>" value="<?php echo $getname->sp_smid;?>">
-				<input type="hidden" name="studycenter" value="<?php echo $scenter;?>">
+				<input type="hidden" name="studycenter" value="<?php echo $sccode;?>">
 				<input type="hidden" name="department" value="<?php echo $studdepart;?>">
 				
 			<?php $i++; endforeach; ?>

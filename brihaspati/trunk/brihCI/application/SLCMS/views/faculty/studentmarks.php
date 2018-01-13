@@ -9,24 +9,70 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
+	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">--->
 	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
 <style type="text/css">
 label{font-size:18px;}
-input[type='text']{font-size:17px;height:30px;background-color:white;}
-
 
 tbody tr td{font-size:18px;}
 thead tr th{color:white;font-weight:bold;font-size:18px;}
-select{width:100%;font-size:17px;height:40px;}
 
 #text{background-color:#38B0DE;color:white;font-size:20px;font-weight:bold;opacity:1.5;height:30px;padding:5px;}
 #form{ border:1px solid black;width:60%;}
 </style>
+<script>
+	function getsemester(sem){
+	        var sem = sem;
+		//alert(sem);
+                $.ajax({
+                type: "POST",
+		url: "<?php echo base_url();?>slcmsindex.php/facultyhome/semester_get",
+                data: {"program_branch" : sem},
+                dataType:"html",
+                success: function(data){
+                	$('#semester').html(data.replace(/^"|"$/g, ''));
+		}
+             });
+        }
+
+	function getsubject(combid){
+		var prgid = $('#program_branch').val();
+                var semid = $('#semester').val();
+                var combid = prgid+","+semid;
+		//alert(combid);
+                $.ajax({
+                type: "POST",
+		url: "<?php echo base_url();?>slcmsindex.php/facultyhome/subject_get",
+                data: {"semprg" : combid},
+                dataType:"html",
+                success: function(data){
+                	$('#subjectname').html(data.replace(/^"|"$/g, ''));
+		}
+             });
+        }
+
+	function getpaper(prgsemsubid){
+	        var prgid = $('#program_branch').val();
+                var semid = $('#semester').val();
+		var subid = $('#subjectname').val();
+                var prgsemsubid = prgid+","+semid+","+subid;
+		//alert(prgsemsubid);
+                $.ajax({
+                type: "POST",
+		url: "<?php echo base_url();?>slcmsindex.php/facultyhome/paper_get",
+                data: {"prg_sem_sub" : prgsemsubid},
+                dataType:"html",
+                success: function(data){
+                	$('#papername').html(data.replace(/^"|"$/g, ''));
+		}
+             });
+        }
+
+	</script>
 <script>    $(document).ready(function(){
             
             $('.keyup-numeric').keyup(function() {
@@ -75,55 +121,74 @@ $unique = array();
 $unique2 = array();
 foreach($facprgsublist as $prgdata):
     $prdata = $prgdata->pstp_prgid;
-    $prgsem = $prgdata->pstp_sem;
-
+    //$prgsem = $prgdata->pstp_sem;
+	$prgsem = $this->commodel->get_listspfic1('program_subject_teacher','pstp_sem','pstp_prgid',$prdata)->pstp_sem;
     $unique[] = $prdata;
     $unique2[] = $prgsem;
 endforeach; 
 $unique1 = array_unique($unique); 
 $unique3 = array_unique($unique2);
-if(!empty($subpap))
+/*if(!empty($subpap))
 {
 $sub_pap = explode('#',$subpap);
 $sub = $sub_pap[0];
 $pap = $sub_pap[1];
-}
+}*/
 
 ?>
-        <table width="100%">
-            <tr><td>
-                <div>
-                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
-                <?php if(isset($_SESSION['success'])){?>
-                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-                <?php
-                };
-                    if($this->mst== 1)
-                    {
-                ?>
-                        <div class="isa_success"><?php echo $_SESSION['msg'];?></div>
-                <?php    }
-                ?>
-    
-            </div>
-        </td></tr>
-        </table>
-<table><tr><td>
+
+<table width="100%">
+            <tr>
+		<?php
+		    echo "<td align=\"left\" width=\"33%\">";
+			echo anchor('faculty/studentviewmarks/', "View Student Marks" ,array('title' => 'Student Marks ' , 'class' => 'top_parent'));
+                    echo "</td>";
+
+                    echo "<td align=\"center\" width=\"34%\">";
+			echo "<b>Marks Submission</b>";
+                    
+                    echo "</td>";
+
+                    echo "<td align=\"right\" width=\"33%\">";
+                    $help_uri = site_url()."/help/helpdocfaculty#StudentList";
+                    //echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		?>
+			 <span style="color:black;float:right;font-weight:bold;">Academic Year:&nbsp;&nbsp <?php echo $academicyear;?></span>
+	<?php
+                    echo "</td>";
+		   echo "</tr>";echo "</table>";	
+                    ?>
+       	<?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+	
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?> 	
+
+
+<!--<table style="width:100%;">
+<tr><td align=left width="200">
 <?php echo anchor('faculty/studentviewmarks/', "View Student Marks" ,array('title' => 'Student Marks ' , 'class' => 'top_parent'));?>
 </td>
-</tr></table>
-<center>
-	<div id="text">Marks Upload</div>
+</tr>
+</table>-->
 	</br>
 <form name="marksupload" id="marksupload" action="<?php echo site_url('Faculty/studentmarks');?>" method="POST" class="form-inline">
-<table class="TFtable">
+<!--<table class="TFtable">
 <tr style="font-weight:bold; background-color:lightslategray;">
 </table>
 <table class="TFtable">
     <tr align="center" style="font-weight:bold; background-color:lightslategray;">
         <td width = "30%">Select Program :
             <select name="programname">
-            <!--<select name="programname"  onchange="this.form.submit();">-->
+            --<select name="programname"  onchange="this.form.submit();">--
             <?php
                 foreach ($unique1 as $key=> $value)
                 {
@@ -168,7 +233,47 @@ $pap = $sub_pap[1];
             <input type="hidden" name="prgname" value="<?php //echo $selprg_name;?>">
         </td>
          </tr>
-</table>       
+</table>       -------->
+        <table style="width:100%;" >
+	
+            <tr style="font-weight:bold; background-color:lightslategray;">
+
+                <td align=left> <span style="color:white;">Select Program :</span></br>
+                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);" required>
+			<option selected="true" disabled>Select Program</option>
+			 <?php foreach($facprgsublist as $prgdata): ?>	
+                            <option value="<?php echo $prgdata->pstp_prgid; ?>">
+				<?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgdata->pstp_prgid)->prg_name."&nbsp;"."(".
+                                $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgdata->pstp_prgid)->prg_branch.")" ;?></option> 
+ 			<?php endforeach; ?>
+		
+		    </select>
+                </td>
+                <td align=left><span style="color:white;">Semester :</span></br>
+			<select name="semester" id="semester" onchange="getsubject(this.value);" required>
+				<option selected="true" disabled>semester</option>
+		
+		   	</select>		
+                </td>
+                <td align=left><span style="color:white;">Subject Name :</span></br>
+                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" required> 
+                        <option selected="selected" disabled selected>subject name</option>
+		
+                    </select>
+                </td>
+		<td align=left><span style="color:white;">Subject Paper Name :</span></br>
+                    <select name="papername" id="papername" onchange="" required> 
+                        <option selected="selected" disabled selected>subject paper name</option>
+		
+                    </select>
+                </td>
+
+		<td valign=bottom><input type="submit" name="search" value="Search" style="font-size:17px;" /></td>
+            </tr>
+	
+	
+
+        </table>
 <br>
 <?php //print_r($studentdetail);?>
 <?php
@@ -191,7 +296,8 @@ if(! empty($studentdetail))
 <tr align="center" style="font-weight:bold; background-color:lightslategray;">
 <td width = "20%">
     Exam Type: &nbsp;
-            <select name="examtype">
+            <select name="examtype" required>
+		<option selected="selected" disabled selected>Selecet Exam Type</option>
             <?php
                 foreach($exmtype as $exm_type): ?>
                     <option value="<?php echo $exm_type->exty_id; ?>"><?php
@@ -205,9 +311,9 @@ if(! empty($studentdetail))
     Max Marks :<?php //echo "<input type=\"text\" name=\"mmarks\" value=\"\" />";?>&nbsp;
 <input type="text" name="mmarks"  id="m1" size="5" class="keyup-numeric" value="<?php echo isset($_POST["mmarks"]) ? $_POST["mmarks"] : ''; ?>"/>
 </td>
-<td>
-    Academic Year :&nbsp;<?php echo $acadyear;?>
-</td>
+<!--<td>
+    Academic Year :&nbsp;<?php //echo $acadyear;?>
+</td>-->
 
 </tr>
 </table>
@@ -241,7 +347,7 @@ if(! empty($studentdetail))
 
                             $Rstdata=array(
                                 'senex_smid' =>$record->sp_smid,
-                                'senex_prgid' =>$prgname,
+                                'senex_prgid' =>$prgid,
                             );
                             $stud_rollno = $this->commodel->get_listspficemore('student_entry_exit',$Rfield,$Rstdata);
                             //print_r($stud_rollno);
@@ -269,7 +375,7 @@ if(! empty($studentdetail))
         <td>
             <?php
             ?>
-            <input type="text" name="marks<?php echo $i;?>"  $id="m2" size="5" class="keyup-numeric" value="<?php echo isset($_POST["marks".$i]) ? $_POST["marks".$i] : '0'; ?>" />
+            <input type="text" name="marks<?php echo $i;?>"  id="m2" size="5" class="keyup-numeric" value="<?php echo isset($_POST["marks".$i]) ? $_POST["marks".$i] : '0'; ?>" />
             <!--<input type="text" name="marks<?php //echo $i;?>"  $id="m2" size="5" class="keyup-numeric" value="" required="required"/>-->
 
         </td>
@@ -292,11 +398,11 @@ if(! empty($studentdetail))
         <!--<input type="submit" name="Submit" value="Marks Upload" />-->
         <input type="submit" name="Submit" value="Marks Upload" />
         <input type="hidden" name="studsize" value="<?php echo $i;?>">
-        <input type="hidden" name="subid" value="<?php echo $sub;?>">
-        <input type="hidden" name="papid" value="<?php echo $pap;?>">
+        <input type="hidden" name="subid" value="<?php echo  $subid;?>">
+        <input type="hidden" name="papid" value="<?php echo $papid;?>">
         <input type="hidden" name="mst" value="<?php echo $this->mst;?>">
-        <input type="hidden" name="prgid1" value="<?php echo $prgname;?>">
-        
+        <input type="hidden" name="prgid1" value="<?php echo $prgid;?>">
+        <input type="hidden" name="semester1" value="<?php echo $prgsem;?>">
     </td>
     </tr>
 

@@ -29,13 +29,13 @@
        	</tr>
 </table>
 <table style="width:100%;border:2px solid #a8a8a8;">
-<thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th>
+<thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;width:100%;"><tr><th>
 	<?php echo $this->message;?>
 </th></tr></thead>
 </table>
 
 <div class="scroller_sub_page">
-   <table class="TFtable" style="border:2px solid #a8a8a8;">
+   <table class="TFtable" style="border:2px solid #a8a8a8;width:100%;">
 	
 	<thead>
 	<tr>

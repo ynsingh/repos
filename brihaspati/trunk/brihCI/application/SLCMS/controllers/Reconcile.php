@@ -65,14 +65,15 @@ class Reconcile extends CI_Controller
 
 				$flag = true;
 				if($flag){
-					$message = '<h3>Your data has been updated successfully !</h3>';
-					$this->session->set_flashdata('msg',$message);
-					redirect('reconcile/fees_nonreconcile');
+					$message = 'Your data has been updated successfully !';
+					$this->session->set_flashdata('success',$message);
+					$this->load->view('reconcile/fees_nonreconcile');
 				}
 				else{
-					$message = '<h3>Your data has not been updated successfully !</h3>';
-					$this->session->set_flashdata('error',$message);
-					$this->load->view('reconcile/fees_nonreconcile');
+					$message = 'Your data has not been updated successfully !';
+					$this->session->set_flashdata('err_message',$message);
+					//$this->load->view('reconcile/fees_nonreconcile');
+					redirect('reconcile/fees_nonreconcile');
 					}
 			}//colse if validation
 		}//close if isset
@@ -101,13 +102,13 @@ class Reconcile extends CI_Controller
 
 				$flag = true;
 				if($flag){
-					$message = '<h3>Your data has been updated successfully !</h3>';
-					$this->session->set_flashdata('msg',$message);
+					$message = 'Your data has been updated successfully !';
+					$this->session->set_flashdata('success',$message);
 					redirect('reconcile/fees_nonreconcile');
 				}
 				else{
-					$message = '<h3>Your data has not been updated successfully !</h3>';
-					$this->session->set_flashdata('error',$message);
+					$message = 'Your data has not been updated successfully !';
+					$this->session->set_flashdata('err_message',$message);
 					$this->load->view('reconcile/fees_nonreconcile');
 					}
 

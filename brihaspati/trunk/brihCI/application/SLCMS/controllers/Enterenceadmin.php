@@ -379,7 +379,7 @@ class Enterenceadmin extends CI_Controller
                       	//add pdf code to store and view pdf file			   	
 			$temp = $this->load->view('enterenceadmin/hallticketpdf', $data, TRUE);
     			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf';
-			$this->genpdf($temp,$pth);
+			$this->commodel->genpdf($temp,$pth);
 			$master = array(
 		                		'ca_hallticketstatus'   => 'Y',
 	           	     		);
@@ -447,8 +447,6 @@ class Enterenceadmin extends CI_Controller
 				}
 			}
 		}	
-		//$message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Centerwise attendance sheet generated Successfully .</h3>';
-		//$this->session->set_flashdata('success',$message);
 		$flag = true;
 			if($getsticker){
 				$message = 'Centerwise sticker sheet generated Successfully .';
@@ -491,7 +489,7 @@ class Enterenceadmin extends CI_Controller
 			//add pdf code to store and view pdf file
 			$temp = $this->load->view('enterenceadmin/stickerpdf', $data, TRUE);
 			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/'.$cname.'Sticker'.'.pdf';
-			$this->genpdf($temp,$pth);
+			$this->commodel->genpdf($temp,$pth);
 			$master = array(
 		      		'ca_stickerstatus'   => 'Y',
 	           		);
@@ -577,7 +575,7 @@ class Enterenceadmin extends CI_Controller
 				$temp = $this->load->view('enterenceadmin/attendencepdf', $data, TRUE);
 				//$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$cname.'.pdf';
 				$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf';
-				$this->genpdf($temp,$pth);
+				$this->commodel->genpdf($temp,$pth);
 				$master = array(
 		                		'ca_attendencesheetstatus'   => 'Y',
 	           	     		);
@@ -587,7 +585,7 @@ class Enterenceadmin extends CI_Controller
 			}
 	}
 
-	public function genpdf($content,$path){
+	/*public function genpdf($content,$path){
 		$this->load->library('pdf');
 		$this->pdf = new DOMPDF();	
      		// pass html to dompdf object
@@ -597,7 +595,7 @@ class Enterenceadmin extends CI_Controller
 		//set paper size
                 $pdf = $this->pdf->output();
 		file_put_contents($path, $pdf); 
-	}
+	}*/
                     /** Graphical Reports **/
 
     /* bar chart b/w form submission vs time */

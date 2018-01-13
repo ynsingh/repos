@@ -2,34 +2,34 @@
     Author     : Deepika Chaudhary (chaudharydeepika88@gmail.com)
 */
 .profile-main{
-        margin-left:10%;
-	width: 75%;
+        /*margin-left:10%;*/
+	width: 100%;
 	height: 90%;
         font-size:20px;
 }
 .container2{
-	width:65%;
+	width:100%;
 	height: 90%;
 	float:left;
-	margin-left: 2%;
+	/*margin-left: 2%;*/
 }
 .heading1{
 	color:#333333;
 	font-size:20px;
 	border-bottom: 3px #0099cc solid;
-	width:250%;
+	width:100%;
 	height: 40px;
-        margin-left:71%;
+      /*  margin-left:71%;*/
 	
 }
 .heading2{
 	color:#333333;
 	font-size:20px;
 	border-bottom: 3px #0099cc solid;
-	width:190%;
+	width:100%;
 	height: 40px;
 	clear: both;
-        margin-left:55%;
+       /* margin-left:55%;*/
            
 }
 .profile-content{
@@ -37,13 +37,13 @@
 }
 
 .left-content{
-	width: 179%;
+	width: 100%;
 	text-align: left;
 	float: left;
 }
 
 .heading-col2{
-	width:10%;
+	width:100%;
 	float:right;
 }
 

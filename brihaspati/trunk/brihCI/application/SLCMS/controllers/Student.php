@@ -1466,7 +1466,25 @@ class Student extends CI_Controller {
 					$this->logmodel->insertrec('userprofile', $dataup);
 					$this->logger->write_logmessage("insert", "Step 4 data insert in userprofile table.");
                     			$this->logger->write_dblogmessage("insert", "Step 4 data insert in userprofile table." );
-					
+
+					// update into student master userid
+					$Supdate = array(
+		                		'sm_userid'          	 =>		$insid,
+						
+	           	     		);
+					//print_r($Supdate);
+		             		//$this->db->where('sm_id',$Sid);
+	    				//$insertUserData = $this->db->update('student_master',$Supdate);
+					$this->commodel->updaterec('student_master',$Supdate,'sm_id',$Sid);
+					$this->logger->write_logmessage("update", "Step 4 user id update in student_master table.");
+                    			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_master table." );
+						
+
+				
+					}else{
+						//get user id
+						 $insid	= $this->logmodel->get_listspfic1('edrpuser','id','username',$email)->id;
+					}
 					//insert into userroletype group
 					$roleid = $this->commodel->get_listspfic1('role','role_id','role_name','Student')->role_id;
 					$sccode = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$Sid)->sm_sccode;
@@ -1484,18 +1502,6 @@ class Student extends CI_Controller {
 					$this->commodel->insertrec('user_role_type',$dataurt);
 					$this->logger->write_logmessage("insert", "Step 4 data insert in user_role_type table.");
                     			$this->logger->write_dblogmessage("insert", "Step 4 data insert in user_role_type table." );
-					// update into student master userid
-					$Supdate = array(
-		                		'sm_userid'          	 =>		$insid,
-						
-	           	     		);
-					//print_r($Supdate);
-		             		//$this->db->where('sm_id',$Sid);
-	    				//$insertUserData = $this->db->update('student_master',$Supdate);
-					$this->commodel->updaterec('student_master',$Supdate,'sm_id',$Sid);
-					$this->logger->write_logmessage("update", "Step 4 user id update in student_master table.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_master table." );
-						
 
 					//update student_admissionstep table
 					$cdate = date('Y-m-d H:i:s');
@@ -1570,11 +1576,11 @@ class Student extends CI_Controller {
                     				$this->logger->write_dblogmessage("insert", "Step 4 detail update and insert successfully." );
 						redirect('student/student_step5');
        					}// close else transcation failure and else is missing
-				}// close of if is duplication
-				else{
-					$message = 'Your login-id and email are already exsist.';
-                                        $this->session->set_flashdata('err_message',$message);
-				}
+				//}// close of if is duplication
+				//else{
+				//	$message = 'Your login-id and email are already exsist.';
+                                //        $this->session->set_flashdata('err_message',$message);
+				//}
 
 	//$this->load->view('student/student_step4');
 	$this->student_step4($Sid);	

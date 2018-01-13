@@ -66,20 +66,18 @@
     
 </table>
 
-<table>
+<table style="width:100%;" class="heading1" border=0>
       <tr>
            <td>   
                  <div class="container2">
-                 <div class="heading1">
-                 <p><b>Welcome, User</b></p>
-                 </div>
-                 <div class="heading1">
-                 <p>Login Information</p>
-                 </div>
-	         <div class="profile-content">
+                <tr>
+                 <td class="heading1" colspan=2><p><b>Welcome, User</b></p></td>
+                 </tr><tr>
+                  <td class="heading1" colspan=2><p>Login Information</p></td></tr>
+                  <div class="profile-content">
                  <div class="left-content">
                  <tr>
-		     <td style="padding: 8px 8px 8px 334px;">Currently Logged In As :</td> 
+		     <td >Currently Logged In As :</td> 
  		      <td>
 		      <?php  
                       echo $this->currentlog;
@@ -91,17 +89,17 @@
 		     </td>
 	         </tr>
 	         <tr>
-                    <td style="padding: 8px 8px 8px 334px;">Current Role :</td> 
+                    <td >Current Role :</td> 
                     <td>
 		    <?php  echo $this->currentrole->role_name ;?>
 	            </td>
                  </tr>  
 		 <tr>
-                    <td style="padding: 8px 8px 8px 334px;">University Name :</td>
+                    <td >University Name :</td>
                     <td><?php  echo $this->orgname->org_name ;?></td>
                  </tr>
                  <tr>
-                     <td style="padding: 8px 8px 8px 334px;">Campus Name :</td>
+                     <td >Campus Name :</td>
                      <td><?php  echo $this->campusname->sc_name ;?></td>
                  </tr>
 	         </div>
@@ -110,37 +108,37 @@
 	  </td>
      </tr>
 </table>
-<table>
-        <tr>
-             <td>
-		<div class="heading2">
-                <p>Other Information</p>
-		<div class="heading-col2"><a href="editprofile" title="Edit Profile"><img src="<?php echo base_url(); ?>uploads/icons/edit.png" width="20" height="20"></a></div>
-                </div>
+<table style="width:100%;" class="heading1" border=0>
+		<tr>
+                  <td class="heading1" colspan=2>Other Information
+			<a href="editprofile" title="Edit Profile" ><img src="<?php echo base_url(); ?>uploads/icons/edit.png" width="20" height="20"></a>
+			</td>
+		 </tr>
+
 		<div class="profile-content">
                 <div class="left-content">
 		<tr>
-                   <td style="padding: 8px 8px 8px 334px;">Name :</td> 
-                   <td style="padding: 8px 8px 8px 75px">
+                   <td width=100>Name :</td> 
+                   <td >
                    <?php  echo $this->name->firstname ;?>&nbsp;&nbsp;<?php echo  $this->lastn->lastname ;?></td>
                 </tr>
 		<tr>
-                   <td style="padding: 8px 8px 8px 334px;">Address :</td>
-                   <td style="padding: 8px 8px 8px 75px">
+                   <td>Address :</td>
+                   <td >
                    <?php  echo $this->address->address ;?></td>
                 </tr>
 	        <tr>
-                   <td style="padding: 8px 8px 8px 334px;">Mobile :</td>
-                   <td style="padding: 8px 8px 8px 75px">
+                   <td>Mobile :</td>
+                   <td>
                    <?php  echo $this->mobile->mobile ;?></td>
                </tr>
                <tr>
-                   <td style="padding: 8px 8px 8px 334px;">Email :</td> 
-                   <td style="padding: 8px 8px 8px 75px"><?php  echo $this->email->email ;?></td>
+                   <td>Email :</td> 
+                   <td ><?php  echo $this->email->email ;?></td>
                </tr>
 	       <tr>
-                   <td style="padding: 8px 8px 8px 334px;">Secondary Email :</td>
-                   <td style="padding: 8px 8px 8px 75px"><?php  echo $this->secmail->secmail ;?></td>
+                   <td>Secondary Email :</td>
+                   <td><?php  echo $this->secmail->secmail ;?></td>
                </tr>
                </div>
                </div> 
