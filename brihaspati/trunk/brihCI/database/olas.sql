@@ -977,6 +977,8 @@ INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (4, 'Employee', 
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (5, 'HoD', 'Responsible for Head of Department related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (6, 'COE', 'Responsible for Controller of Examination related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (7, 'AccountOfficer', 'Responsible for Account related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (8, 'EntranceAdmin', 'Responsible for Entrance related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (9, 'AdmissionAdmin', 'Responsible for Admission related job');
 
 
 -- --------------------------------------------------------
@@ -1768,6 +1770,8 @@ CREATE TABLE `user_role_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into user_role_type values (1,1,1,1,1,'Administrator','');
+insert into user_role_type values (2,3,8,1,1,'EntranceAdministrator','');
+insert into user_role_type values (3,4,9,1,1,'AdmissionAdministrator','');
 
 --
 -- Indexes for dumped tables

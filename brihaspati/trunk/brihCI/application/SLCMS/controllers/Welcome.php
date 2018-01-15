@@ -164,6 +164,24 @@ class Welcome extends CI_Controller {
                         			        $this->session->set_userdata($data);
 			                                redirect('accoffhome'); 
                         			}
+                            			if($row->roleid == 8){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('entranceadminhome'); 
+                        			}
+                            			if($row->roleid == 9){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('admissionadminhome'); 
+                        			}
                         		endforeach;   
                     		}else{
                         		foreach($roles as $row):

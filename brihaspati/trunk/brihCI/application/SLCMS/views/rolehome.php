@@ -122,6 +122,16 @@
                                 echo anchor("accontoffhome", "Login As Account Officer" ,array('title' => ' Login As Account Officer ' , 'class' => 'top_parent'));
                                 echo"</p></td></tr>";
                             }
+                            if($row->roleid == 8){
+                                echo "<tr><td><p>";
+                                echo anchor("entranceadminhome", "Login As Entrance Administrator" ,array('title' => ' Login As Entrance Administrator' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
+                            if($row->roleid == 9){
+                                echo "<tr><td><p>";
+                                echo anchor("admissionadminhome", "Login As Admission Administrator" ,array('title' => ' Login As Admission Administrator ' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
                             
 		}
 		?>

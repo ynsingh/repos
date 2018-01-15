@@ -151,7 +151,9 @@ CREATE TABLE `edrpuser` (
 
 INSERT INTO `edrpuser` (`id`, `username`, `password`, `email`, `componentreg`, `mobile`, `status`, `category_type`, `verification_code`, `is_verified`) VALUES
 (1, 'admin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
-(2, 'guest', md5('guest'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1);
+(2, 'guest', md5('guest'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
+(3, 'entranceadmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
+(4, 'admissionadmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -210,6 +212,8 @@ CREATE TABLE `userlaststatus` (
 
 insert into userlaststatus values (1,1,'English','',1,'','','',1);
 insert into userlaststatus values (2,2,'English','',1,'','','',1);
+insert into userlaststatus values (3,3,'English','',1,'','','',1);
+insert into userlaststatus values (4,4,'English','',1,'','','',1);
 
 
 --
@@ -234,6 +238,8 @@ CREATE TABLE `userprofile` (
 
 insert into userprofile values (1,1,'Y.N.','Singh','','','','English',1);
 insert into userprofile values (2,2,'Guest','','','','','English',1);
+insert into userprofile values (3,3,'Y.N.','Singh','','','','English',1);
+insert into userprofile values (4,4,'Y.N.','Singh','','','','English',1);
 
 
 
