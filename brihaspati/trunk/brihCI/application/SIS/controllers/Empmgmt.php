@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name Empffmgmt.php
- * @author Manorama Pal (palseema30@gmail.com) Employee Profile
+ * @author Manorama Pal (palseema30@gmail.com) Employee Profile, Service and Performance data.
  */
 
 class Empmgmt extends CI_Controller
@@ -375,6 +375,159 @@ class Empmgmt extends CI_Controller
             
         }//closeissetform 
     }//function close
+    
+    /***********************************Start Add service detail******************************************/
+    public function add_servicedata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+        $this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        if(isset($_POST['addservdata'])) {
+            //form validation
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+            $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_sevicedata');
+            }//formvalidation
+            else{
+                $data = array(
+                    'empsd_empid'           =>$empid,
+                    'empsd_campuscode'      =>$_POST['campus'],
+                    'empsd_desigcode'       =>$_POST['designation'],
+                    'empsd_pbid'            =>$_POST['payband'],
+                    'empsd_pbdate'          =>$_POST['DateofAGP'],
+                    'empsd_dojoin'          =>$_POST['Datefrom'],
+                    'empsd_dorelev'         =>$_POST['Dateto']
+                );
+                $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff service record", "Error in insert staff service record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff service record ", "Error in insert staff service record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff service record ');
+                    $this->load->view('empmgmt/add_servicedata',$data);
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("insert","Add Staff Service Data", "Staff Service record insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add Staff Service Data", "Staff Service record insert successfully ." );
+                    $this->session->set_flashdata('success','Service Data record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_servicedata');
+    }//function close
+    
+    /*get employee service detail*/
+    
+    public function edit_servicedata($id) {
+        $this->roleid=$this->session->userdata('id_role');
+       /* $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;*/
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+        $this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        $data['id'] = $id;
+        $data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_id',$id)->row();
+        $this->load->view('empmgmt/edit_servicedata',$data);
+        
+    }
+      
+    /****************************  START UPDATE DATA *************************/
+    public function update_servicedata($id){
+        $this->roleid=$this->session->userdata('id_role');
+        $sperf_dataquery=$this->sismodel->get_listrow('employee_servicedetail','empsd_id', $id);
+        $eds_data['servicedata'] = $sperf_dataquery->row();
+        if(isset($_POST['editservdata'])) {
+            //form validation
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+            $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/edit_sevicedata');
+            }//formvalidation
+            else{
+                $campus = $this->input->post('campus', TRUE);
+                $desigc = $this->input->post('designation', TRUE);
+                $payb = $this->input->post('payband', TRUE);
+                $dataofagp = $this->input->post('DateofAGP', TRUE);
+                $datefrom = $this->input->post('Datefrom', TRUE);
+                $dateto = $this->input->post('Dateto', TRUE);
+                
+                $logmessage = "";
+                if($eds_data['servicedata']->empsd_campuscode != $campus)
+                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_campuscode. " changed by " .$campus;
+                if($eds_data['servicedata']->empsd_desigcode != $desigc)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_desigcode. " changed by " .$desigc;
+                if($eds_data['servicedata']->empsd_pbid != $payb)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbid. " changed by " .$payb;
+                if($eds_data['servicedata']->empsd_pbdate != $dataofagp)
+                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbdate. " changed by " .$dataofagp;
+                if($eds_data['servicedata']->empsd_dojoin != $datefrom)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_dojoin. " changed by " .$datefrom;
+                if($eds_data['servicedata']->empsd_dorelev != $dateto)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_dorelev. " changed by " .$dateto;
+                
+                $edit_data = array(
+                    'empsd_campuscode'      =>$campus,
+                    'empsd_desigcode'       =>$desigc,
+                    'empsd_pbid'            =>$payb,
+                    'empsd_pbdate'          =>$dataofagp,
+                    'empsd_dojoin'          =>$datefrom,
+                    'empsd_dorelev'         =>$dateto
+                );
+                $empserviceflag=$this->sismodel->updaterec('employee_servicedetail', $edit_data, 'empsd_id', $id);
+                if(!$empserviceflag)
+                {
+                    $this->logger->write_logmessage("error","Error in update staff service record ", "Error in  update service record. $logmessage ." );
+                    $this->logger->write_dblogmessage("error","Error in update staff service record ", "Error in update staff service record. $logmessage ." );
+                    $this->session->set_flashdata('err_message','Error in update staff service record');
+                    $this->load->view('empmgmt/edit_servicedata',$eds_data);
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $this->currentlog=$this->session->userdata('username');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_email',$this->currentlog)->emp_code;
+                    $this->logger->write_logmessage("update","Edit Staff Service Data", "Staff Service Data updated successfully. $logmessage ." );
+                    $this->logger->write_dblogmessage("update","Edit Staff service Data", "Staff Service Data updated successfully. $logmessage ." );
+                    $this->session->set_flashdata('success','Service record updated successfully. '."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$this->currentlog." "."]");
+                    
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$id);
+                    }
+                                        
+                }
+                
+            }//formtrue
+         
+        }   
+    }
+    /****************************  Closer UPDATE DATA *************************/
                                                 
 }//classcloser    
     

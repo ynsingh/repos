@@ -387,7 +387,7 @@ class Staffmgmt extends CI_Controller
     }
     /****************************  START OPEN EDIT FORM WITH DATA *************/
     function editempprofile($id){
-        
+        $this->roleid=$this->session->userdata('id_role');
         /*get detail of selected emplyee by passing id for edit*/
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;

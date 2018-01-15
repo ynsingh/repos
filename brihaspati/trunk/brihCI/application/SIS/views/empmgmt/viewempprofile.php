@@ -13,9 +13,7 @@
     </head>
     <body>
         <?php $this->load->view('template/header'); ?>
-        <!--<?php  $this->load->view('template/staffmenu');?>
-       <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username')?>  </td></tr></table>-->
-       <table width="100%">
+        <table width="100%">
            <tr colspan="2"><td>
                 <?php
                     echo "<td align=\"left\" width=\"33%\">";
@@ -314,12 +312,12 @@
                     </td>
                     <td colspan="7" align="right">
                     <?php
-                        if(count($performancedata)){
+                        //if(count($servicedata->result())){
                             //echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
-                        }
-                        else{
-                            //echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
-                        }    
+                        //}
+                        //else{
+                            echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
+                        //}    
                     ?>
                     </td>
                 </tr>
@@ -370,19 +368,24 @@
                                     $date1 = new DateTime($record->empsd_dojoin);
                                     $date2 = new DateTime($record->empsd_dorelev);
                                     $diff = $date1->diff($date2);
-                                    echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp;" . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d. "</b>"
+                                    echo "<b>&nbsp;&nbsp;&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp;" . $diff->m."&nbsp;&nbsp; ".$diff->d. "</b>"
                                     ;?>
+                                    
+                                    
+                                </td>
+                                <td >
+                                <?php echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));?>
                                 </td>   
                             </tr>
                         <?php }; ?>
                         
                     </tbody> 
                     <?php else : ?>
-                            <td colspan= "7" align="center"> No Records found...!</td>
+                            <td colspan= "8" align="center"> No Records found...!</td>
                     <?php endif;?>
 		</tr>
                 <tr></tr>
-                <tr><td colspan="7">
+                <tr><td colspan="8">
                     <HR  COLOR="#6699FF" SIZE="2">
                 </td></tr>
                 <tr></tr>
@@ -403,7 +406,7 @@
                 <tr></tr>
                 <?php if(count($performancedata)):;?>
                     <tr></tr> 
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Awards and Medals : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Awards and Medals : </b></td></tr>
                     <tr>
                         <td><b>Description</b></td>
                         <td> <b>Number of Medals</b></td>

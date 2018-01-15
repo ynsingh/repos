@@ -136,7 +136,12 @@
 			</tr>
 		</table>
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
-			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;"><td align=left colspan=4><b>Service Particulars</b></td><tr>
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Service Particulars</b></td>
+                            <td align="right">
+                                <?php echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));?>
+                            </td>   
+                        <tr>
 		</table>
 		<table class="TFtable" align="center">
                     <thead>
@@ -147,7 +152,7 @@
                             <th>Date of AGP</th>
                             <th>From</th>
                             <th>To</th>
-                            <th>Total service (year,  month,  day)</th>
+                            <th colspan="2">Total service (YY/MM/DD)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,9 +193,12 @@
                                     $date1 = new DateTime($record->empsd_dojoin);
                                     $date2 = new DateTime($record->empsd_dorelev);
                                     $diff = $date1->diff($date2);
-                                    echo $diff->y . " years, " . $diff->m." months, ".$diff->d." days "
+                                    echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d." "
                                     ;?>
-                                </td>   
+                                </td>
+                                <td >
+                                <?php echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));?>
+                                </td> 
                             </tr>
                         <?php }; ?>
                         <?php else : ?>

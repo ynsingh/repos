@@ -369,8 +369,15 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
            
         
         </div>
-        <table style="margin-left:4%;width:97%;"><tr><td>
-        <?php echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'Employeen List ' , 'class' => 'top_parent'));?>
+        <table width="100%"><tr><td>
+        <?php
+            if($this->roleid == 4){
+              echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));  
+            }
+            else{
+                echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'Employeen List ' , 'class' => 'top_parent'));
+            }
+            ?>
         </td>
         </tr>
         </table>
