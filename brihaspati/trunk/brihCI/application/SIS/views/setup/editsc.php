@@ -2,6 +2,7 @@
 
 <!--@name editsc.php 
   @author Rekha Devi Pal(rekha20july@gmail.com)
+  @author Om Prakash (omprakashkgp@gmail.com) => Modification
  -->
 
 <html>
@@ -11,17 +12,16 @@
         
 </head>
 <body>
-
-
-                                  <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
-                                  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-                                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
-                                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-                                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
-                                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+       <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
+       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
+       <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
+       <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+       <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
+       <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 <script>
 $(document).ready(function(){
 $("#StartDate").datepicker({
+
 onSelect: function(value, ui) {
   console.log(ui.selectedYear)
   var today = new Date(), 
@@ -55,7 +55,60 @@ dateFormat: 'yy-mm-dd',
 yearRange: 'c-47:c+50',
 });
 });
+
 </script>
+<script>
+    $(document).ready(function(){
+       $('#country_id').on('change',function(){
+           var cid = $(this).val();
+           if(cid == ''){
+               $('#stname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#stname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_state",
+                   type: "POST",
+                   data: {"cid" : cid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#stname').html(data.replace(/^"|"$/g, ''));
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
+
+$('#stname').on('change',function(){
+           var sid = $(this).val();
+           if(sid == ''){
+               $('#citname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#citname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_city",
+                   type: "POST",
+                   data: {"sid" : sid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#citname').html(data.replace(/^"|"$/g, ''));
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
+    });
+</script>   
+
 <script>
         function goBack() {
         window.history.back();
@@ -63,10 +116,12 @@ yearRange: 'c-47:c+50',
     </script>
 
 <table width:"100%;">
-<tr><td>
+ <tr><td>
 
-<?php echo anchor('setup/viewsc/', "Study Center List" ,array('title' => 'Study Center List' , 'class' => 'top_parent'));?>
-                <div>
+	<?php echo anchor('setup/viewsc/', "Study Center List" ,array('title' => 'Study Center List' , 'class' => 'top_parent'));?>
+            </td></tr>
+        </table>
+                <div  align="left" style="margin-left:0%;width:90%;">
                     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
@@ -77,8 +132,6 @@ yearRange: 'c-47:c+50',
                     };
                     ?>
                 </div>
-            </td></tr>
-        </table>
         <table>
         <?php
 
@@ -140,28 +193,36 @@ yearRange: 'c-47:c+50',
                 
 		?>
                 <tr>
-               <td><label class="control-label">Country:</label></td>
-               <td>
+                <td><label class="control-label">Country:</label></td>
+                <td>
                 <select name="country"  id="country_id">
-		<?php //if();?>
-               <option value="<?php echo $country['value'];?>"><?php echo$this->common_model->get_listspfic1('countries','name','id',$country['value'])->name ;?></option>;
+		<?php if(!empty($country['value'])):;?>
+                <option value="<?php echo $country['value'];?>"><?php echo$this->common_model->get_listspfic1('countries','name','id',$country['value'])->name ;?></option>;
+               <?php else: ?>
+		 <option value="">-----Select Contry------ </option>
+		<?php endif ?>
                 <?php foreach($this->cresult as $datas): ?>
                 <option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
                 <?php endforeach; ?>
                 </select>
   		<tr><td><label class="control-label">State:</label></td><td>
-                <select style="height:35px;" name="state" id="stname" disabled="">
-                
+                <select style="height:35px;" name="state" id="stname" >
+		<?php if(!empty($state['value'])):;?>
                 <option value="<?php echo $state['value'];?>"><?php echo$this->common_model->get_listspfic1('states','name','id',$state['value'])->name ;?></option>;
+                <?php else: ?>
+		<option value="">-----Select State------ </option>
+		<?php endif ?>
                 </select>
                 </tr></td>
                 <tr><td><label class="control-label">City:</label></td><td>
-	        <select style="height:35px;" name="city" id="citname" disabled="">
+	        <select style="height:35px;" name="city" id="citname" >
+		<?php if(!empty($city['value'])):;?>
                  <option value="<?php echo $city['value'];?>"><?php echo$this->common_model->get_listspfic1('cities','name','id',$city['value'])->name ;?></option>;
+                <?php else: ?>
+		<option value="">-----Select City------ </option>
+		<?php endif ?>
                 </select>
                 </tr></td>
-               
-
 		<?php
                 echo "<tr>";
                 echo "<td>";
@@ -219,7 +280,6 @@ yearRange: 'c-47:c+50',
                 echo "</tr>";
                  
           ?>
-
  <tr>
    <td><label for="startdate" class="control-label">Start Date:</label></td>
    <td><input type="text" name="startdate" id="StartDate" value=<?php echo $startdate['value'];?> class="form-control" size="40" /><br>
@@ -232,8 +292,6 @@ yearRange: 'c-47:c+50',
    <td><?php echo form_error('closedate')?></td>
    </td>
    </tr> 
-
-
 <?php
 
                 echo "<tr>";
@@ -268,7 +326,6 @@ yearRange: 'c-47:c+50',
                 echo "<td>";
                 echo "</td>";
                 echo "</tr>";
-
             
                 echo "<tr>";
                 echo "<td>";
@@ -282,10 +339,9 @@ yearRange: 'c-47:c+50',
                 echo "</tr>";
 
         ?>
-
         </table>
-
     </body>
+<p>&nbsp;</p>	
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>
 

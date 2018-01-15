@@ -72,7 +72,7 @@
 	       <option value="<?php echo $dataspt->sc_id; ?>"><?php echo $dataspt->sc_name; ?></option>
                 <?php endforeach; ?>
           </td>
-          <td><?php echo form_error('campusname')?></td>
+         <!-- <td><?php echo form_error('campusname')?></td>-->
       </tr>
       <tr>
           <td>Department Name :</td>
@@ -80,7 +80,7 @@
                <select name="deptname" id="deptname" class="my_dropdown" style="width:300px;" onchange="getschemename(this.value)" >
                <option value="" disabled selected >------Select ---------------</option>
           </td>
-          <td><?php echo form_error('deptname')?></td>
+          <!--<td><?php echo form_error('deptname')?></td>-->
       </tr>
       <tr>
           <td>Scheme Name :</td>
@@ -88,14 +88,14 @@
                <select name="schemecode" id="schemecode" class="my_dropdown" style="width:300px;" >
                <option value="" disabled selected >------Select --------------</option>
           </td>
-	  <td><?php echo form_error('schemecode')?></td>	
+	  <!--<td><?php echo form_error('schemecode')?></td>-->	
       </tr>
       <tr>
 	  <td>DDO Code :</td>
 	  <td>
 		<input type="text" name="ddocode"  size="26" value="<?php echo isset($_POST["ddocode"]) ? $_POST["ddocode"] : ''; ?>" placeholder="DDO Code..." required="required" /> <br>
 	  </td>
-          <td><?php echo form_error('ddocode')?></td>
+          <!--<td><?php echo form_error('ddocode')?></td>-->
           <td> Example : C6208 </td>
       </tr>
       <tr>
@@ -103,7 +103,7 @@
 	  <td>
 		<input type="text" name="ddoname"  size="26" value="<?php echo isset($_POST["ddoname"]) ? $_POST["ddoname"] : ''; ?>" placeholder="DDO Name..." required="required" /> <br>
 	  </td>
-          <td><?php echo form_error('ddoname')?></td>
+        <!--  <td><?php echo form_error('ddoname')?></td>-->
           <td> Example : Om Prakash </td>
       </tr>
       <tr>
@@ -124,5 +124,6 @@
     </form>
  <p><br></p>
    </body>
+<p>&nbsp;</p>
   <div align="center"><?php $this->load->view('template/footer'); ?></div>
 </html>

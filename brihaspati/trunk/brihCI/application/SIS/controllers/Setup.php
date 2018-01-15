@@ -787,8 +787,8 @@ class Setup extends CI_Controller
   public function category(){
 
         if(isset($_POST['category'])) {
-            $this->form_validation->set_rules('cname','Category Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
-            $this->form_validation->set_rules('ccode','Category Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('cname','Category Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('ccode','Category Code','trim|xss_clean|required|alpha_dash|callback_value_exists');
             $this->form_validation->set_rules('csname','Category Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('cdesc','Category Description','trim|xss_clean|alpha_numeric_spaces');
 
@@ -996,11 +996,11 @@ class Setup extends CI_Controller
 
  public function value_exists($key)
  {
-     $is_exist = $this->common_model->isduplicate('category','cat_name',$key);
+     $is_exist = $this->common_model->isduplicate('category','cat_code',$key);
 
      if($is_exist) {
         $this->form_validation->set_message(
-            'value_exists', 'Category  '. $key. '  is already exist.'
+            'value_exists', 'Category code '. $key. '  is already exist.'
         );
         return false;
     } else {
@@ -1025,7 +1025,7 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('studycenter','Campus Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
                 $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
-                $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required|callback_value_existsDept');
                 $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required|alpha_numeric');
                 $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean');
@@ -1116,7 +1116,7 @@ class Setup extends CI_Controller
      /* this function is used for update department record */
     public function editdepartment($id) {
 
-	    $this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
+	$this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
 	$deptrow=$this->common_model->get_listrow('Department','dept_id', $id);
         if ($deptrow->num_rows() < 1)
         {
@@ -1319,6 +1319,25 @@ class Setup extends CI_Controller
         }
        
   }
+
+/** This function check for duplicate entry
+    * @return type
+    */
+
+ public function value_existsDept($key)
+ {
+     $is_exist = $this->common_model->isduplicate('Department','dept_code',$key);
+
+     if($is_exist) {
+        $this->form_validation->set_message(
+            'value_existsDept', 'Department code '. $key. '  is already exist.'
+        );
+        return false;
+    } else {
+    return true;
+  }
+ }
+
  /****************************************** Add Role Module ********************************************/
 
     /** This function for add role
@@ -1584,7 +1603,7 @@ class Setup extends CI_Controller
           $fm_data_q=$this->common_model->get_listrow('fees_master','fm_id', $id);
       if ($fm_data_q->num_rows() < 1)
         {
-            redirect('setup2/displayfees');
+            redirect('setup/displayfees');
         }
                 $fmdflag=$this->common_model->deleterow('fees_master','fm_id', $id);
           	if(!$fmdflag)
@@ -2015,13 +2034,13 @@ class Setup extends CI_Controller
            if(isset($_POST['sc']))
                 {
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
-                $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required');
-                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_isStudyCenterExist');
+                $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required|callback_isStudyCenterExist');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|alpha_numeric_spaces|required');
                 $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
-                $this->form_validation->set_rules('countries','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
-                $this->form_validation->set_rules('states','State','ucwords|trim|xss_clean');
-                $this->form_validation->set_rules('cities','City','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean');
+                $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|max_length[6]');
                 $this->form_validation->set_rules('phone','Phone','trim|xss_clean|numeric|max_length[12]');
@@ -2082,16 +2101,16 @@ class Setup extends CI_Controller
     }
 
        
- /** This function check for duplicate entry
+ /** This function check for duplicate entry of study center code
      * @return type
     */
 
-    public function isStudyCenterExist($sc_name) {
+    public function isStudyCenterExist($sc_code) {
 
-        $is_exist = $this->common_model->isduplicate('study_center','sc_name',$sc_name);
+        $is_exist = $this->common_model->isduplicate('study_center','sc_code',$sc_code);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isStudyCenterExist', 'Study Center ' . $sc_name .' already exist.');
+            $this->form_validation->set_message('isStudyCenterExist', 'Study Center ' . $sc_code .' already exist.');
             return false;
         }
         else {
@@ -2137,6 +2156,7 @@ class Setup extends CI_Controller
 
     public function editsc($id) {
 	//$this->cresult = $this->common_model->get_listspfic('countries','id','name');
+        $this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
 	$this->cresult = $this->common_model->get_listmore('countries','id,name');
 	$sc_data_q=$this->common_model->get_listrow('study_center','sc_id', $id);
 
@@ -2152,7 +2172,7 @@ class Setup extends CI_Controller
              	'id' => 'orgprofile',
              	'maxlength' => '50',
              	'size' => '40',
-             	'value' => $sc_data->org_code,
+             	'value' => $this->common_model->get_listspfic1('org_profile','org_name','org_code',$sc_data->org_code)->org_name,
              	'readonly' => 'readonly'
              	);
 
@@ -2163,7 +2183,7 @@ class Setup extends CI_Controller
                 'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_code,
-                'readonly' => 'readonly'
+               // 'readonly' => 'readonly'
                 );
 
                $data['name'] = array(
@@ -2306,7 +2326,7 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean');
-                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|alpha');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|max_length[6]');
                 $this->form_validation->set_rules('phone','Phone','trim|xss_clean|numeric|max_length[12]');
                 $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|max_length[12]');
@@ -2370,8 +2390,9 @@ class Setup extends CI_Controller
  				if($sc_data->sc_code != $data_institutecode)
 				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
         	               // if($sc_data->sc_name != $data_name)
+		
                        $update_data = array(
-				   'org_code'=>$data_orgprofile,
+				   'org_code'=>$this->common_model->get_listspfic1('org_profile','org_code','org_name',$data_orgprofile)->org_code, 
                                    'sc_code'=>$data_institutecode,
                                    'sc_name'=>$data_name,
                                    'sc_nickname'=>$data_nickname,
@@ -2389,7 +2410,34 @@ class Setup extends CI_Controller
                                    'sc_website'=>$data_website,
                                    'sc_incharge'=>$data_incharge,
                                    'sc_mobile'=>$data_mobile
-                        );
+                          );
+			if($sc_data->sc_code != $data_institutecode){
+			$sccodeflag = $this->common_model->isduplicate('study_center','sc_code', $data_institutecode);
+			if($sccodeflag == 1)
+			{
+                                  $this->session->set_flashdata("err_message", "Record is already exist. 'SC Code' = $data_institutecode  .");
+                                  redirect('setup/viewsc');
+                                  return;
+		
+			}
+			else{
+			$scflag=$this->common_model->updaterec('study_center', $update_data, 'sc_id', $id);
+                        if(!$scflag)
+                                {
+                                $this->logger->write_logmessage("error","Error in update Study center ", "Error in Study center record update". $logmessage );
+                                $this->logger->write_dblogmessage("error","Error in update Study center ", "Error in Study center record update". $logmessage );
+                                $this->session->set_flashdata('err_message','Error updating Study center - ' . $logmessage . '.', 'error');
+                                $this->load->view('setup/editsc', $data);
+                             }
+                        else{
+                                $this->logger->write_logmessage("update","Edit Study center", "Study center record updated successfully..". $logmessage );
+                                $this->logger->write_dblogmessage("update","Edit Study center", "Study center record updated successfully..". $logmessage );
+                                $this->session->set_flashdata('success','Study center record updated successfully...');
+                                redirect('setup/viewsc');
+                           }
+			  }
+			}
+			else{
 			$scflag=$this->common_model->updaterec('study_center', $update_data, 'sc_id', $id);
                         if(!$scflag)
 		                {
@@ -2404,9 +2452,9 @@ class Setup extends CI_Controller
 		                $this->session->set_flashdata('success','Study center record updated successfully...');
 		                redirect('setup/viewsc');
                 	}
-    		}
+    		 }
+	    }	
     	}
-
 
 	public function get_state(){
                $contid = $this->input->post('cid');   
@@ -2824,7 +2872,7 @@ class Setup extends CI_Controller
                 $logmessage = "Add Scheme " .$scheme_data->sd_short. " changed by " .$data_ssname;
             if($scheme_data->sd_desc != $data_sdesc)
                 $logmessage = "Add Scheme " .$scheme_data->sd_desc. " changed by " .$data_sdesc;
-
+	    
             $instdatasda = array(
                'sda_sdid' =>$data_sid,
 	       'sda_deptid' =>$scheme_data->sd_deptid,
@@ -3880,7 +3928,7 @@ public function displayleavetype(){
             $this->form_validation->set_rules('campusname','Campus Name','trim|xss_clean|required');
             $this->form_validation->set_rules('deptname','Department Name','trim|xss_clean|required');
             $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash|callback_isDdoExist');
             $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('remark','Remark','trim|xss_clean|alpha_numeric_spaces');
 
@@ -4046,7 +4094,7 @@ public function displayleavetype(){
 	    $deptid = $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $data_deptid)->dept_name;	
             $data_schid = $this->input->post('schemecode', TRUE);
 	    $schid = $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $data_schid)->sd_name;
-            $data_code = $this->input->post('ddocode', TRUE);
+            $data_code = strtoupper($this->input->post('ddocode', TRUE));
             $data_name = $this->input->post('ddoname', TRUE);
             $data_remark = $this->input->post('remark', TRUE);
             $data_ddoid = $ddo_id;
@@ -4078,6 +4126,7 @@ public function displayleavetype(){
                 'ddoa_archuserid'=>$this->session->userdata('id_user'),
                 'ddoa_archdate'=>date('y-m-d')
             );
+
 	$ddodatadup = $this->SIS_model->isduplicatemore('ddo', $dataeditddo);
 	if($ddodatadup == 1){
 
@@ -4105,7 +4154,32 @@ public function displayleavetype(){
                 'ddo_name'=>strtoupper($data_name),
                 'ddo_remark'=>$data_remark
             );
-
+            if($ddo_data->ddo_code != $data_code){
+	      $ddodupflag = $this->SIS_model->isduplicate('ddo','ddo_code', $data_code);
+	      if($ddodupflag ==1)
+	       {
+                     $this->session->set_flashdata("err_message", "Record is already exist. 'DDO Code' = $data_code  .");
+                     redirect('setup/listddo');
+                     return;
+		}
+		else{
+	   	    $ddoflag=$this->SIS_model->updaterec('ddo', $update_data, 'ddo_id', $data_ddoid);
+	   	    if(!$ddoflag)	
+            	    {
+                	$this->logger->write_logmessage("error","Error in update DDO ", "Error in DDO record update. $logmessage . " );
+                	$this->logger->write_dblogmessage("error","Error in update DDO ", "Error in DDO record update. $logmessage ." );
+                	$this->session->set_flashdata('err_message','Error updating DDO - ' . $logmessage . '.', 'error');
+                	$this->load->view('setup/updateddo', $data);
+               	    }
+            	else{
+                	$this->logger->write_logmessage("update","Edit DDO", "DDO record updated successfully... $logmessage . " );
+                	$this->logger->write_dblogmessage("update","Edit DDO", "DDO record updated successfully... $logmessage ." );
+                	$this->session->set_flashdata('success','DDO record updated successfully...');
+                	redirect('setup/listddo/');
+                   }
+		  }	
+		}
+	   else{
 	   $ddoflag=$this->SIS_model->updaterec('ddo', $update_data, 'ddo_id', $data_ddoid);
 	   if(!$ddoflag)	
             {
@@ -4121,10 +4195,27 @@ public function displayleavetype(){
                 redirect('setup/listddo/');
                 }
 	   }
+	 }
         }//else
         redirect('setup/updateddo/');
     }
 
+/** This function check for duplicate ddo code 
+     * @return type
+    */
+
+    public function isDdoExist($ddo_code) {
+
+        $is_exist = $this->SIS_model->isduplicate('ddo','ddo_code',$ddo_code);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isDdoExist', 'DDO code is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
  // ########################### End of DDO Module  ########################################################	
 }
 

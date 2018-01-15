@@ -48,7 +48,7 @@ class Dependrop_model extends CI_Model
         $statelist=$this->common_model->get_listspficemore('states','id,name',$datawh);
         if(count($statelist)>0){
             $pro_select_box ='';
-            $pro_select_box.= '<option value="">Select states';
+            $pro_select_box.= '<option value="" selected="true" disabled="disabled">------------Select states-----------';
             foreach($statelist as $slist){
                     $pro_select_box.='<option value='.$slist->id.'>'.$slist->name;
                 }
@@ -62,7 +62,7 @@ class Dependrop_model extends CI_Model
         	$citylist=$this->common_model->get_listspficemore('cities','id,name',$datawh);
         	if(count($citylist)>0){
             		$pro_select_box ='';
-            		$pro_select_box.= '<option value="">Select cities';
+            		$pro_select_box.= '<option value="" selected="true" disabled="disabled">---------------Select cities--------------';
             		foreach($citylist as $clist){
             			$pro_select_box.='<option value='.$clist->id.'>'.$clist->name;
             		}

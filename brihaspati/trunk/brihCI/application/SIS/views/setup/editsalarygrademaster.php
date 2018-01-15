@@ -49,7 +49,7 @@
        
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Salary Grade Master Name', 'sgm_name');
+                    echo form_label('Salary Grade Name', 'sgm_name');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($sgm_name);
@@ -60,7 +60,7 @@
 
  		echo "<tr>";
                 echo "<td>";
-                    echo form_label('Salary Grade Master Max', 'sgm_max');
+                    echo form_label('Salary Grade Max', 'sgm_max');
                 //echo "<br />";
                 echo "</td>";
                 echo "<td>";
@@ -72,7 +72,7 @@
         
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Salary Grade Master Min', 'sgm_min');
+                    echo form_label('Salary Grade Min', 'sgm_min');
                 //echo "<br />";
                 echo "</td>";
                 echo "<td>";
@@ -84,7 +84,7 @@
             
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Salary Grade Master Gradepay', 'sgm_gradepay');
+                    echo form_label('Salary Grade Pay Band', 'sgm_gradepay');
                 echo "</td>";
                 echo "<td>";
                     //echo "<br />";

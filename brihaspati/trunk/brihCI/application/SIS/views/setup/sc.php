@@ -2,18 +2,18 @@
 <!--@name sc.php
     @author Rekha Devi Pal (rekha20july@gmail.com)
 	abhay(kumar.abhay.4187@gmail.com) =>repopluate
+    @author Om Prakash (omprakashkgp@gmail.com) =>Modification
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
  <head>
-                                                 
-                                  <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
-                                  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-      				  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
-                                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-      				  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
-          	                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
-
+                                          
+        <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+      	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 <script>
 $(document).ready(function(){
 $("#StartDate").datepicker({
@@ -133,7 +133,7 @@ $('#stname').on('change',function(){
                 <table>
                           <tr><td><label class="control-label">Choose your University:</label></td><td>
                         <select name="orgprofile" style="width:100%">
-                        <option value=""disabled selected>---------Select university---------</option>
+                        <option value="" selected="true" disabled="disabled" >---------Select university---------</option>
                         <?php foreach($this->uresult as $datas): ?>
                        <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
                         <?php endforeach; ?>
@@ -143,8 +143,8 @@ $('#stname').on('change',function(){
 
 			<tr>
              <td><label for="institutecode" class="control-label">Campus Code:</label></td>
-             <td><input type="text" name="institutecode"  class="form-control" size="26"  value="<?php echo isset($_POST["institutecode"]) ? $_POST["institutecode"] : ''; ?>" /><br></td>
-           <td><?php echo form_error('institutecode')?></td>
+             <td><input type="text" name="institutecode"  class="form-control" size="26" placeholder="Campus Code..."  value="<?php echo isset($_POST["institutecode"]) ? $_POST["institutecode"] : ''; ?>" /><br></td>
+         <!--  <td><?php echo form_error('institutecode')?></td>-->
               <td>
 								
                   Example: CU001,CU002,etc
@@ -153,8 +153,8 @@ $('#stname').on('change',function(){
 
                                 <tr>
                                 <td><label for="name" class="control-label"> Campus Name:</label></td>
-                                <td><input type="text" name="name"  class="form-control" size="26"  value="<?php echo isset($_POST["name"]) ? $_POST["name"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('name')?></td>
+                                <td><input type="text" name="name"  class="form-control" size="26" placeholder="Campus Name..."  value="<?php echo isset($_POST["name"]) ? $_POST["name"] : ''; ?>" /><br></td>
+                               <!-- <td><?php echo form_error('name')?></td>-->
                                 <td>
                                  Example: Regional Campus, Manipur, etc
                                 </td>
@@ -163,8 +163,8 @@ $('#stname').on('change',function(){
     
                                 <tr>
                                 <td><label for="nickname" class="control-label">Campus Nick Name:</label></td>
-                                <td><input type="text" name="nickname"  class="form-control" size="26"  value="<?php echo isset($_POST["nickname"]) ? $_POST["nickname"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('nickname')?></td>
+                                <td><input type="text" name="nickname"  class="form-control" size="26" placeholder="Campus Nick Name..."  value="<?php echo isset($_POST["nickname"]) ? $_POST["nickname"] : ''; ?>" /><br></td>
+                               <!-- <td><?php echo form_error('nickname')?></td>-->
                                  <td>
                                  Example: IGNTU
                                 </td>
@@ -172,12 +172,12 @@ $('#stname').on('change',function(){
                                  
                                <tr>
                                 <td><label for="address" class="control-label">Address:</label></td>
-                                <td><input type="text" name="address"  class="form-control" size="26" value="<?php echo isset($_POST["address"]) ? $_POST["address"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('address')?></td>
+                                <td><input type="text" name="address"  class="form-control" size="26" placeholder="Address..."  value="<?php echo isset($_POST["address"]) ? $_POST["address"] : ''; ?>" /><br></td>
+                               <!--<td><?php echo form_error('address')?></td>-->
                                 </tr>
                                 <tr><td><label class="control-label">Country:</label></td> <td>
 					<select name="country"  id="country_id">
-					<option value="">Select Country</option>
+					<option value="" selected="true" disabled="disabled" >------Select Country-----</option>
 					<?php foreach($this->cresult as $datas): ?>
                                 	<option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
                         		<?php endforeach; ?>
@@ -188,7 +188,7 @@ $('#stname').on('change',function(){
                                 <td>
  
 				<select style="height:35px;" name="state" id="stname" disabled="">
-					<option value="">Select state</option>
+					<option value="" selected="true" disabled="disabled" >------Select state-------</option>
 				</select>
                                 </tr></td>
                                 
@@ -196,38 +196,34 @@ $('#stname').on('change',function(){
                                 <td><label class="control-label">City:</label></td>
                                 <td> 
 				<select style="height:35px;" name="city" id="citname" disabled="">
-                                    <option value="">Select city</option>
+                                    <option value="" selected="true" disabled="disabled" >------Select city------</option>
                                 </select>
                                  </tr></td>
                                                                                    
                                 <tr>
                                 <td><label for="district" class="control-label">District:</label></td>
-                                <td><input type="text" name="district"  class="form-control" size="26"  value="<?php echo isset($_POST["district"]) ? $_POST["district"] : ''; ?>"  /><br>
-								</td>
-                                
-												
-								                                                      
+                                <td><input type="text" name="district"  class="form-control" size="26" placeholder="District..." value="<?php echo isset($_POST["district"]) ? $_POST["district"] : ''; ?>"  /><br>
+				</td>
                               	<tr>
                                 <td><label for="pincode" class="control-label">Pincode:</label></td>		
-                                <td><input type="text" name="pincode"  class="form-control" size="26"  value="<?php echo isset($_POST["pincode"]) ? $_POST["pincode"] : ''; ?>" /></td><br>
-                                <td><?php echo form_error('pincode')?></td>
-
+                                <td><input type="text" name="pincode"  class="form-control" size="26" placeholder="Pincode..."  value="<?php echo isset($_POST["pincode"]) ? $_POST["pincode"] : ''; ?>" /></td><br>
+                               <!-- <td><?php echo form_error('pincode')?></td>-->
 				<tr>   
                                 <td><label for="phone" class="control-label">Phone:</label></td>
-                                <td><input type="text" name="phone"  class="form-control" size="26"  value="<?php echo isset($_POST["phone"]) ? $_POST["phone"] : ''; ?> "/><br></td>
-                                <td><?php echo form_error('phone')?></td>
+                                <td><input type="text" name="phone"  class="form-control" size="26" placeholder="Phone Number..."  value="<?php echo isset($_POST["phone"]) ? $_POST["phone"] : ''; ?> "/><br></td>
+                                <!--<td><?php echo form_error('phone')?></td>-->
                                 </tr>
              
 				<tr>
                                 <td><label for="fax" class="control-label">Fax:</label></td>
-                                <td><input type="text" name="fax"  class="form-control" size="26"  value="<?php echo isset($_POST["fax"]) ? $_POST["fax"] : ''; ?>" /><br></td>
-                                <td><?php echo form_error('fax')?></td>
+                                <td><input type="text" name="fax"  class="form-control" size="26" placeholder="Fax Number..."  value="<?php echo isset($_POST["fax"]) ? $_POST["fax"] : ''; ?>" /><br></td>
+                                <!--<td><?php echo form_error('fax')?></td>-->
                                 </tr>
  
 				<tr>
                                 <td><label for="status" class="control-label">Status:</label></td>
-                                <td><input type="text" name="status"  class="form-control" size="26"  value="<?php echo isset($_POST["status"]) ? $_POST["status"] : ''; ?>"/><br></td>
-                                <td><?php echo form_error('status')?></td>
+                                <td><input type="text" name="status"  class="form-control" size="26" placeholder="Status..."  value="<?php echo isset($_POST["status"]) ? $_POST["status"] : ''; ?>"/><br></td>
+                               <!-- <td><?php echo form_error('status')?></td>-->
                                  <td>
                                  Example: Active
                                 </td>
@@ -236,14 +232,14 @@ $('#stname').on('change',function(){
 				
                                 <tr>
                                 <td><label for="startdate" class="control-label">Start Date:</label></td>
-                                <td><input type="text" name="startdate" id="StartDate" class="form-control" size="26"  value="<?php echo isset($_POST["startdate"]) ? $_POST["startdate"] : ''; ?>"/><br>
+                                <td><input type="text" name="startdate" id="StartDate" class="form-control" size="26" placeholder="Start Date..."  value="<?php echo isset($_POST["startdate"]) ? $_POST["startdate"] : ''; ?>"/><br>
 			
 		                        </td>
                                 </tr>
 
                                 <tr>
                                 <td><label for="closedate" class="control-label">Close Date:</label></td>
-                                <td><input type="text" name="closedate" id="EndDate" class="form-control" size="26"  value="<?php echo isset($_POST["closedate"]) ? $_POST["closedate"] : ''; ?>"/><br>
+                                <td><input type="text" name="closedate" id="EndDate" class="form-control" size="26" placeholder="Close Date..."  value="<?php echo isset($_POST["closedate"]) ? $_POST["closedate"] : ''; ?>"/><br>
                                 <td><?php echo form_error('closedate')?></td>
                                 </td>
                                 </tr>
@@ -252,8 +248,8 @@ $('#stname').on('change',function(){
 
                                 <tr>
                                 <td><label for="website" class="control-label">Website:</label></td>
-                                <td><input type="text" name="website"  class="form-control" size="26"  value="<?php echo isset($_POST["website"]) ? $_POST["website"] : ''; ?>"/><br></td>
-                                <td><?php echo form_error('website')?></td>
+                                <td><input type="text" name="website"  class="form-control" size="26" placeholder="Website..."  value="<?php echo isset($_POST["website"]) ? $_POST["website"] : ''; ?>"/><br></td>
+                                <!--<td><?php echo form_error('website')?></td>-->
                                 <td>
                                  Example: http://www.igntu.nic.in
                                 </td>
@@ -262,15 +258,15 @@ $('#stname').on('change',function(){
  
 				<tr>
                                 <td><label for="incharge" class="control-label">Incharge:</label></td>
-                                <td><input type="text" name="incharge"  class="form-control" size="26"  value="<?php echo isset($_POST["incharge"]) ? $_POST["incharge"] : ''; ?>"/><br></td>
+                                <td><input type="text" name="incharge"  class="form-control" size="26" placeholder="Incharge..."  value="<?php echo isset($_POST["incharge"]) ? $_POST["incharge"] : ''; ?>"/><br></td>
                                 <td><?php echo form_error('incharge')?></td>
                                   
                                 </tr>
 
 				<tr>
                                 <td><label for="mobile" class="control-label">Mobile:</label></td>
-                                <td><input type="text" name="mobile"  class="form-control" size="26"  value="<?php echo isset($_POST["mobile"]) ? $_POST["mobile"] : ''; ?>"/><br></td>
-                                <td><?php echo form_error('mobile')?></td>
+                                <td><input type="text" name="mobile"  class="form-control" size="26" placeholder="Mobile Number..."  value="<?php echo isset($_POST["mobile"]) ? $_POST["mobile"] : ''; ?>"/><br></td>
+                               <!--<td><?php echo form_error('mobile')?></td>-->
                                 </tr>                                
                                     <tr>
 				    <td></td>
@@ -283,5 +279,6 @@ $('#stname').on('change',function(){
                 	</form>
 		 <p><br></p>
                  </body>
-<div align="center"> <?php $this->load->view('template/footer');?></div>
+	<p>&nbsp;</p>
+	<div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
