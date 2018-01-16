@@ -3,7 +3,7 @@
 /* 
  * @name Setup.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
- * @author Manorama Pal(palseema30@gmail.com)  add email setting
+ * @author Manorama Pal(palseema30@gmail.com)  add Email setting,Authority
  * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
  * @author Om Prakash(omprakashkgp@gmail.com)  add category, Add DDO, DDO Archive
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
@@ -2170,7 +2170,7 @@ class Setup extends CI_Controller
                 $data['orgprofile'] = array(
              	'name' => 'orgprofile',
              	'id' => 'orgprofile',
-             	'maxlength' => '50',
+             //	'maxlength' => '',
              	'size' => '40',
              	'value' => $this->common_model->get_listspfic1('org_profile','org_name','org_code',$sc_data->org_code)->org_name,
              	'readonly' => 'readonly'
@@ -2189,7 +2189,7 @@ class Setup extends CI_Controller
                $data['name'] = array(
                 'name' => 'name',
                 'id' => 'name',
-                'maxlength' => '50',
+               // 'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_name,
                 );
@@ -2206,7 +2206,7 @@ class Setup extends CI_Controller
                $data['address'] = array(
                 'name' => 'address',
                 'id' => 'address',
-                'maxlength' => '50',
+               // 'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_address,
                 );
@@ -2239,7 +2239,7 @@ class Setup extends CI_Controller
                $data['district'] = array(
                 'name' => 'district',
                 'id' => 'district',
-                'maxlength' => '50',
+               // 'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_district,
                 );
@@ -2247,7 +2247,7 @@ class Setup extends CI_Controller
                $data['pincode'] = array(
                 'name' => 'pincode',
                 'id' => 'pincode',
-                'maxlength' => '50',
+                'maxlength' => '6',
                 'size' => '40',
                 'value' => $sc_data->sc_pincode,
                 );
@@ -2255,7 +2255,7 @@ class Setup extends CI_Controller
                $data['phone'] = array(
                 'name' => 'phone',
                 'id' => 'phone',
-                'maxlength' => '50',
+                'maxlength' => '13',
                 'size' => '40',
                 'value' => $sc_data->sc_phone,
                 );
@@ -2263,7 +2263,7 @@ class Setup extends CI_Controller
                $data['fax'] = array(
                 'name' => 'fax',
                 'id' => 'fax',
-                'maxlength' => '50',
+                'maxlength' => '15',
                 'size' => '40',
                 'value' => $sc_data->sc_fax,
                 );
@@ -2271,7 +2271,7 @@ class Setup extends CI_Controller
                $data['status'] = array(
                 'name' => 'status',
                 'id' => 'status',
-                'maxlength' => '50',
+              //  'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_status,
                 );
@@ -2295,7 +2295,7 @@ class Setup extends CI_Controller
                $data['website'] = array(
                 'name' => 'website',
                 'id' => 'website',
-                'maxlength' => '50',
+                //'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_website,
                 );
@@ -2303,7 +2303,7 @@ class Setup extends CI_Controller
               $data['incharge'] = array(
                 'name' => 'incharge',
                 'id' => 'incharge',
-                'maxlength' => '50',
+               // 'maxlength' => '50',
                 'size' => '40',
                 'value' => $sc_data->sc_incharge,
                 );
@@ -2311,7 +2311,7 @@ class Setup extends CI_Controller
               $data['mobile'] = array(
                 'name' => 'mobile',
                 'id' => 'mobile',
-                'maxlength' => '50',
+                'maxlength' => '13',
                 'size' => '40',
                 'value' => $sc_data->sc_mobile,
                 );

@@ -381,7 +381,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         </td>
         </tr>
         </table>
-        <div align="left" style="margin-left:5%;width:90%;">
+        <div align="left" width="100%">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -404,7 +404,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         <table style="margin-left:0%;border:1px solid gray;" class="TFtable">
         <?php //foreach ($editemp_data as $data):  ?>
             
-            <?php echo form_open_multipart('staffmgmt/update_profile/' .$editdata->emp_id);?>
+            <?php echo form_open_multipart('staffmgmt/update_profile/' .$id);?>
+            <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Edit Staff Profile</th></thead></tr>
            <!--form method="post" action="<?php //echo base_url('staffmgmt/update_profile/',$editdata->emp_id);?>" -->           
             <tr>
@@ -790,7 +791,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>
                 </td>
                 <td><label for="phonemobileno" style="font-size:15px;">Phone/Mobile</label>
-                    <div><input type="text" name="phonemobileno" class="keyup-numeric"  value="<?php echo $editdata->emp_phone; ?>" placeholder="Phone/Mobile No..." size="30" >
+                    <div><input type="text" name="phonemobileno" class="keyup-numeric" MaxLength="13" value="<?php echo $editdata->emp_phone; ?>" placeholder="Phone/Mobile No..." size="30" >
                     </div>    
                 </td>
                 <td><label for="mothertongue" style="font-size:15px;">Mother Tongue</label>
@@ -813,7 +814,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo $editdata->emp_qual;?>" placeholder="Qualification........" size="28" >
                 </div></td>
                 <td><label for="remarks" style="font-size:15px;">Remarks</label>
-                    <div><textarea name="remarks" rows="3" cols="40" required pattern="[a-zA-Z0-9 ]+" ><?php echo $editdata->emp_remarks;?></textarea>
+                    <div><textarea name="remarks" rows="3" cols="40"  ><?php echo $editdata->emp_remarks;?></textarea>
                 </div></td>
             </tr>
             <tr>
@@ -862,7 +863,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             </td>
            
             </tr>
-            <?php echo form_hidden('id', $editdata->emp_id);?>
+            <?php //echo form_hidden('id', $editdata->emp_id);?>
            <?php echo form_close();?>
            <?php //endforeach; ?>
           

@@ -76,28 +76,28 @@ class Staffmgmt extends CI_Controller
             
             $this->form_validation->set_rules('schemecode','Scheme Name','trim|required|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-            $this->form_validation->set_rules('emppost','Employeepost','trim|xss_clean');
+            $this->form_validation->set_rules('emppost','Employeepost','trim|required|xss_clean');
             $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
             $this->form_validation->set_rules('community','Community','trim|xss_clean');
             $this->form_validation->set_rules('religion','Religion','trim|xss_clean');
             $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
-            $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
+            $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
             
-            $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
-            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+            $this->form_validation->set_rules('emptype','Employee Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','trim|required|xss_clean');
             $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
             $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
             $this->form_validation->set_rules('empnhisidno','NHisIDno','trim|xss_clean');
             $this->form_validation->set_rules('dateofjoining','Date of Joining','trim|required|xss_clean');
-            $this->form_validation->set_rules('pnp','Paln / Non Plan','trim|xss_clean');
+            $this->form_validation->set_rules('pnp','Plan / Non Plan','trim|xss_clean');
             $this->form_validation->set_rules('phdstatus','Phd Status','trim|xss_clean');
             
             $this->form_validation->set_rules('Dateofphd','Date of Phd Finish','trim|xss_clean');
-            $this->form_validation->set_rules('assrexam','AssrExam','xss_clean');
+            $this->form_validation->set_rules('assrexam','AssrExam','trim|xss_clean');
             $this->form_validation->set_rules('assrexamdate','Date of AssrExam','xss_clean');
             $this->form_validation->set_rules('dateofretirement','Date of Retirement','trim|xss_clean');
             $this->form_validation->set_rules('dateofhgp','Date of HGP','trim|xss_clean');
-            $this->form_validation->set_rules('panno','Pan No','trim|alpha_numeric');
+            $this->form_validation->set_rules('panno','Pan No','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|required|xss_clean|numeric');
             
             $this->form_validation->set_rules('bankname','Bank Name','trim|xss_clean');
@@ -105,7 +105,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('bankacno','Bank ACC No','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
             $this->form_validation->set_rules('fathername','Father Name','trim|xss_clean');
-            $this->form_validation->set_rules('emailid','E-Mail ID','trim|required|valid_email');
+            $this->form_validation->set_rules('emailid','E-Mail ID','trim|xss_clean|required|valid_email');
             $this->form_validation->set_rules('Address','Address','trim|xss_clean');
             
             $this->form_validation->set_rules('mothertongue','MotherTongue','trim|xss_clean');
@@ -127,8 +127,10 @@ class Staffmgmt extends CI_Controller
 		$this->data['empcode']['value']=$this->input->get_post('empcode',TRUE);
 	    */    
             if($this->form_validation->run() == FALSE){
-                //$this->load->view('staffmgmt/staffprofile');
-                redirect('staffmgmt/staffprofile');
+                
+                $this->load->view('staffmgmt/staffprofile');
+                //redirect('staffmgmt/staffprofile');
+                return;
             }
             //if($this->form_validation->run()==TRUE){
             else{
@@ -399,7 +401,7 @@ class Staffmgmt extends CI_Controller
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
-        
+        $editemp_data['id'] = $id;
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
         $editemp_data['editdata'] = $empmaster_data->row();
         $this->load->view('staffmgmt/editempprofile',$editemp_data);     
@@ -410,26 +412,30 @@ class Staffmgmt extends CI_Controller
     /****************************  START UPDATE DATA *************************/
     public function update_profile($id)
     {
+        $this->roleid=$this->session->userdata('id_role');
+        $editemp_data['id'] = $id;
+        $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
+        $editemp_data['editdata'] = $empmaster_data->row();     
                
         if(isset($_POST['updateprofile'])) {
             /*Form Validation*/
-            $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
-            $this->form_validation->set_rules('empname','EmployeeName','trim|required|xssclean');
+            //$this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
+            $this->form_validation->set_rules('empname','EmployeeName','trim|required|xss_clean');
             $this->form_validation->set_rules('specialisation','Specialisation','trim|xss_clean');
-            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
-            $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
-            $this->form_validation->set_rules('department','Department','trim|required|xss_clean');
+           // $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+           // $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
+           // $this->form_validation->set_rules('department','Department','trim|required|xss_clean');
             
-            $this->form_validation->set_rules('schemecode','Scheme Name','trim|required|x1ss_clean');
-            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-            $this->form_validation->set_rules('emppost','Employeepost','trim|xss_clean');
+            //$this->form_validation->set_rules('schemecode','Scheme Name','trim|required|xss_clean');
+          //  $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+           // $this->form_validation->set_rules('emppost','Employeepost','trim|xss_clean');
             $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
             $this->form_validation->set_rules('community','Community','trim|xss_clean');
             $this->form_validation->set_rules('religion','Religion','trim|xss_clean');
             $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
-            $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
+            //$this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
             
-            $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
+           // $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
             $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
             $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
@@ -451,7 +457,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('bankacno','Bank ACC No','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
             $this->form_validation->set_rules('fathername','Father Name','trim|xss_clean');
-            $this->form_validation->set_rules('emailid','E-Mail ID','trim|required|valid_email');
+            $this->form_validation->set_rules('emailid','E-Mail ID','trim|required');
             $this->form_validation->set_rules('Address','Address','trim|xss_clean');
             
             $this->form_validation->set_rules('mothertongue','MotherTongue','trim|xss_clean');
@@ -460,8 +466,8 @@ class Staffmgmt extends CI_Controller
             
             //some extra field 
             $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean|required');
-            $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
-            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean|required');
+           // $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
+            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
             $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
@@ -469,6 +475,14 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('dateofregular','Date of Regularisation','trim|xss_clean');
             $this->form_validation->set_rules('qual','Qualification','trim|xss_clean');
             $this->form_validation->set_rules('remarks','Remarks','trim|xss_clean');
+            
+             if($this->form_validation->run() == FALSE){
+                //redirect('staffmgmt/editempprofile/'.$id);
+                $this->load->view('staffmgmt/editempprofile',$editemp_data);
+                return;
+               
+            }//formvalidation
+            else{
             
             $bankname=$this->input->post('bankname');
             $ifsccode= $this->input->post('ifsccode');
@@ -615,6 +629,7 @@ class Staffmgmt extends CI_Controller
                     redirect('staffmgmt/employeelist');
                 }    
             }
+            }//form true    
         }//closeissetform    
     }
     /****************************  END UPDATE DATA ****************************/

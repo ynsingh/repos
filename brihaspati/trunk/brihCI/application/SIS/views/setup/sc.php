@@ -210,13 +210,13 @@ $('#stname').on('change',function(){
                                <!-- <td><?php echo form_error('pincode')?></td>-->
 				<tr>   
                                 <td><label for="phone" class="control-label">Phone:</label></td>
-                                <td><input type="text" name="phone"  class="form-control" size="26" placeholder="Phone Number..."  value="<?php echo isset($_POST["phone"]) ? $_POST["phone"] : ''; ?> "/><br></td>
-                                <!--<td><?php echo form_error('phone')?></td>-->
+                                <td><input type="text" name="phone" class="form-control" size="26" placeholder="Phone Number..."  MaxLength="13" value="<?php echo isset($_POST["phone"]) ? $_POST["phone"] : ''; ?> "/><br></td>
+                                <!--<td><?php //echo form_error('phone')?></td>-->
                                 </tr>
              
 				<tr>
                                 <td><label for="fax" class="control-label">Fax:</label></td>
-                                <td><input type="text" name="fax"  class="form-control" size="26" placeholder="Fax Number..."  value="<?php echo isset($_POST["fax"]) ? $_POST["fax"] : ''; ?>" /><br></td>
+                                <td><input type="text" name="fax"  class="form-control" size="26" placeholder="Fax Number..." MaxLength="15" value="<?php echo isset($_POST["fax"]) ? $_POST["fax"] : ''; ?>" /><br></td>
                                 <!--<td><?php echo form_error('fax')?></td>-->
                                 </tr>
  

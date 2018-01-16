@@ -438,7 +438,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 ?>
         </td></tr></table>
-        <div align="left" style="margin-left:2%;">
+        <div align="left">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -488,8 +488,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                       //          echo $auofname." ".$auolname."( ".$authiame." )";
 				echo $ucodata->name;
                             ?>
-                            </option> 
- 			<!--<//?php endforeach; ?>-->
+                            </option> -->
+ 			 <?php // endforeach; ?> 
                     </select></div>
                 </td>
                 <td><label for="department" style="font-size:15px;">Department<font color='Red'>*</font></label>
@@ -742,7 +742,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                    <div><input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID..." size="35" required="required">
                 </div></td>
                 <td><label for="phonemobileno" style="font-size:15px;">Phone/Mobile</label>
-                    <div><input type="text" name="phonemobileno" class="keyup-numeric" value="<?php echo isset($_POST["phonemobileno"]) ? $_POST["phonemobileno"] : ''; ?>" placeholder="Phone/Mobile No..." size="30" >
+                    <div><input type="text" name="phonemobileno" class="keyup-numeric" MaxLength="13" value="<?php echo isset($_POST["phonemobileno"]) ? $_POST["phonemobileno"] : ''; ?>" placeholder="Phone/Mobile No..." size="30" >
                 </div></td>
                 <td><label for="mothertongue" style="font-size:15px;">Mother Tongue</label>
                     <div><input type="text" name="mothertongue"  class="keyup-characters" value="<?php echo isset($_POST["mothertongue"]) ? $_POST["mothertongue"] : ''; ?>" placeholder="Mother Tongue..." size="28" >
