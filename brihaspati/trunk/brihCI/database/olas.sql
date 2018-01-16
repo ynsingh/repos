@@ -412,6 +412,36 @@ ALTER TABLE `admissionstudent_pg`   MODIFY `aspg_id` int(11) NOT NULL AUTO_INCRE
 
 -- fees exam attandence results schema is pending
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `AdmissionMeritList`
+--
+
+CREATE TABLE `admissionmeritlist` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT ,
+        `application_no` VARCHAR(255) NOT NULL ,
+        `entexamname` VARCHAR(255) DEFAULT NULL ,
+        `entexamrollno` VARCHAR(255) DEFAULT NULL ,
+        `course_name` VARCHAR(255) NOT NULL ,
+        `branchname` VARCHAR(255) DEFAULT NULL ,
+        `student_name` VARCHAR(255) NOT NULL ,
+        `student_email` VARCHAR(255) NOT NULL ,
+        `father_name` VARCHAR(255) NOT NULL ,
+        `marks` INT(5) NOT NULL ,
+        `admission_quota` VARCHAR(255) NOT NULL ,
+        `category` VARCHAR(255) NOT NULL ,
+        `meritlist_no` VARCHAR(255) NOT NULL ,
+        `lastdate_admission` DATE DEFAULT NULL ,
+        `admission_taken` VARCHAR(255) NOT NULL ,
+        `admission_date` DATE DEFAULT NULL ,
+	`admission_status` VARCHAR(255) NULL DEFAULT 'Provisional',
+	`admission_confirmdate` DATE NULL,
+        `ext1` VARCHAR(255) NULL ,
+        PRIMARY KEY (`id`),
+        UNIQUE (`application_no`, `course_name`, `student_email`)
+) ENGINE = InnoDB;
+
 
 -- -------------------------------------------------------------------
 --
@@ -463,40 +493,6 @@ ALTER TABLE `announcement_archive`
 
 ALTER TABLE `announcement_archive`
   MODIFY `anoua_id` int(11) NOT NULL AUTO_INCREMENT;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `AdmissionMeritList`
---
-
-CREATE TABLE `admissionmeritlist` (
-        `id` INT(11) NOT NULL AUTO_INCREMENT ,
-        `application_no` VARCHAR(255) NOT NULL ,
-        `entexamname` VARCHAR(255) DEFAULT NULL ,
-        `entexamrollno` VARCHAR(255) DEFAULT NULL ,
-        `course_name` VARCHAR(255) NOT NULL ,
-        `branchname` VARCHAR(255) DEFAULT NULL ,
-        `student_name` VARCHAR(255) NOT NULL ,
-        `student_email` VARCHAR(255) NOT NULL ,
-        `father_name` VARCHAR(255) NOT NULL ,
-        `marks` INT(5) NOT NULL ,
-        `admission_quota` VARCHAR(255) NOT NULL ,
-        `category` VARCHAR(255) NOT NULL ,
-        `meritlist_no` VARCHAR(255) NOT NULL ,
-        `lastdate_admission` DATE DEFAULT NULL ,
-        `admission_taken` VARCHAR(255) NOT NULL ,
-        `admission_date` DATE DEFAULT NULL ,
-	`admission_status` VARCHAR(255) NULL DEFAULT 'Provisional',
-	`admission_confirmdate` DATE NULL,
-        `ext1` VARCHAR(255) NULL ,
-        PRIMARY KEY (`id`),
-        UNIQUE (`application_no`, `course_name`, `student_email`)
-) ENGINE = InnoDB;
-
-
-
 
 -- --------------------------------------------------------
 
@@ -1084,6 +1080,30 @@ CREATE TABLE IF NOT EXISTS `states` (
   `country_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4121 ;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `study_center`
+--
+
+CREATE TABLE `set_date` ( 
+	`sed_id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`sed_campuscode` INT(11) NOT NULL , 
+	`sed_acadyear` varchar(255) NOT NULL,
+  	`sed_sem` varchar(255) NOT NULL,
+ 	`sed_campuscode` varchar(255) NOT NULL,
+	`sed_sessionsdate` DATE NOT NULL , 
+	`sed_sessionedate` DATE NOT NULL , 
+	`sed_examsdate` DATE NOT NULL , 
+	`sed_examedate` DATE NOT NULL , 
+	`sed_formsubmitsdate` DATE NOT NULL , 
+	`sed_formsubmitedate` DATE NOT NULL , 
+	`sed_creatorid` VARCHAR(255) NOT NULL , 
+	`sed_createdate` DATE NOT NULL , 
+	`sed_modifierid` VARCHAR(255) NOT NULL , 
+	`sed_modifiedate` DATE NOT NULL , 
+	PRIMARY KEY (`sed_id`)) ENGINE = InnoDB;
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `student_admissionStep`
@@ -1544,26 +1564,6 @@ CREATE TABLE `student_admission_cancel` (
 ) ENGINE = InnoDB;
 
 
--- --------------------------------------------------------
---
--- Table structure for table `study_center`
-CREATE TABLE `set_date` ( 
-	`sed_id` INT(11) NOT NULL AUTO_INCREMENT , 
-	`sed_campuscode` INT(11) NOT NULL , 
-	`sed_acadyear` varchar(255) NOT NULL,
-  	`sed_sem` varchar(255) NOT NULL,
- 	`sed_campuscode` varchar(255) NOT NULL,
-	`sed_sessionsdate` DATE NOT NULL , 
-	`sed_sessionedate` DATE NOT NULL , 
-	`sed_examsdate` DATE NOT NULL , 
-	`sed_examedate` DATE NOT NULL , 
-	`sed_formsubmitsdate` DATE NOT NULL , 
-	`sed_formsubmitedate` DATE NOT NULL , 
-	`sed_creatorid` VARCHAR(255) NOT NULL , 
-	`sed_createdate` DATE NOT NULL , 
-	`sed_modifierid` VARCHAR(255) NOT NULL , 
-	`sed_modifiedate` DATE NOT NULL , 
-	PRIMARY KEY (`sed_id`)) ENGINE = InnoDB;
 
 -- --------------------------------------------------------
 --
@@ -1763,6 +1763,7 @@ CREATE TABLE `user_role_type` (
   `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `roleid` int(11) NOT NULL,
+  `prgid` int(10) DEFAULT NULL,
   `scid` int(10) NOT NULL,
   `deptid` int(10) DEFAULT NULL,
   `usertype` varchar(255) NOT NULL,
@@ -1773,6 +1774,11 @@ insert into user_role_type values (1,1,1,1,1,'Administrator','');
 insert into user_role_type values (2,3,8,1,1,'EntranceAdministrator','');
 insert into user_role_type values (3,4,9,1,1,'AdmissionAdministrator','');
 
+--
+-- Indexes for table `user_role_type`
+--
+ALTER TABLE `user_role_type`
+  ADD UNIQUE KEY `userid` (`userid`,`roleid`,`prgid`,`usertype`);
 --
 -- Indexes for dumped tables
 --
@@ -1911,11 +1917,6 @@ ALTER TABLE `subject`
 --
 ALTER TABLE `subject_paper`
   ADD PRIMARY KEY (`subp_id`);
---
--- Indexes for table `user_role_type`
---
-ALTER TABLE `user_role_type`
-  ADD UNIQUE KEY `userid` (`userid`,`roleid`,`usertype`);
 
 --
 -- AUTO_INCREMENT for dumped tables

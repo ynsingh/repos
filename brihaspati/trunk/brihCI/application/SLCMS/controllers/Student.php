@@ -1472,15 +1472,9 @@ class Student extends CI_Controller {
 		                		'sm_userid'          	 =>		$insid,
 						
 	           	     		);
-					//print_r($Supdate);
-		             		//$this->db->where('sm_id',$Sid);
-	    				//$insertUserData = $this->db->update('student_master',$Supdate);
 					$this->commodel->updaterec('student_master',$Supdate,'sm_id',$Sid);
 					$this->logger->write_logmessage("update", "Step 4 user id update in student_master table.");
                     			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_master table." );
-						
-
-				
 					}else{
 						//get user id
 						 $insid	= $this->logmodel->get_listspfic1('edrpuser','id','username',$email)->id;
@@ -1494,6 +1488,7 @@ class Student extends CI_Controller {
 					$dataurt = array(
 				        	'userid'=> $insid,
 				           	'roleid'=> $roleid,
+				           	'prgid'=> $prgid,
 				           	'deptid'=> $deptid,
 				           	'scid'  => $scid,
 				           	'usertype'=>"Student"

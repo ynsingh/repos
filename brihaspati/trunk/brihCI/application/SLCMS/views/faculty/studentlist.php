@@ -38,16 +38,22 @@
                     <?php else: ?>   
                         <select name="programname"  onchange="this.form.submit();">   
                     <?php endif ;?>   
-                    <?php if(!empty($selprg_name)):?>
+		    <?php if(!empty($selprg_name)):
+				$flg = True;
+		    ?>
 			
-                        <option value="<?php $selprg_name;?>"><?php 
+                    <option value="<?php $selprg_name;?>"><?php 
                         echo $this->cmodel->get_listspfic1('program','prg_name','prg_id',$selprg_name)->prg_name."&nbsp;"."(".
                         $this->cmodel->get_listspfic1('program','prg_branch','prg_id',$selprg_name)->prg_branch.")"        
                     ;?></option>
-                    <?php //else: ?>
-                        
+		    <?php else: 
+		    	$flg = False;
+		    ?>  
+			<option value="" selected disabled >--------------Select Program------------</option>
+		    <?php endif ;?>
+		    <?php if($flg): ?>
+                         <option value="" disabled >--------------Select Program------------</option>
                     <?php endif ;?>
-			 <option value="" disabled >--------------Select Program------------</option>
                     <?php
                         foreach($prgsublist as $prgdata): ?>	
                             <option value="<?php echo $prgdata->pstp_prgid; ?>"><?php 

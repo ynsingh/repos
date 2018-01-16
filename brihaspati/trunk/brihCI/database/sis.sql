@@ -81,6 +81,55 @@ ALTER TABLE `cudsdmap`
 
 -- ---------------------------------------------------------
 --
+-- Table structure for ddo`
+--
+
+CREATE TABLE `ddo` (
+     `ddo_id` int(11) NOT NULL auto_increment,
+     `ddo_scid` int(11) NOT NULL,
+     `ddo_deptid` int(11) NOT NULL,
+     `ddo_schid` int(11) NOT NULL,
+     `ddo_code` varchar(255) NOT NULL,
+     `ddo_name` varchar(255) NOT NULL,
+     `ddo_remark` varchar(255) default NULL,
+     PRIMARY KEY (ddo_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+--
+-- Table structure for ddo_archive`
+--
+
+CREATE TABLE `ddo_archive` (
+     `ddoa_id` int(11) NOT NULL auto_increment,
+     `ddoa_ddoid` int(11) NOT NULL,
+     `ddoa_scid` int(11) NOT NULL,
+     `ddoa_deptid` int(11) NOT NULL,
+     `ddoa_schid` int(11) NOT NULL,
+     `ddoa_code` varchar(255) NOT NULL,
+     `ddoa_name` varchar(255) NOT NULL,
+     `ddoa_remark` varchar(255) default NULL,
+     `ddoa_archuserid` int(11) NOT NULL,
+     `ddoa_archdate`  date NOT NULL,
+     PRIMARY KEY (ddoa_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- -----------------------------------------------------------------
+--
+-- Table structure for table `employee_servicedetail`
+--
+CREATE TABLE  employee_servicedetail(
+        empsd_id INT(11) NOT NULL AUTO_INCREMENT ,
+        empsd_empid  INT(11) NOT NULL ,
+        empsd_campuscode  varchar(255) NOT NULL ,
+        empsd_desigcode  varchar(255) NOT NULL ,
+        empsd_pbid INT(11) NOT NULL,
+        empsd_pbdate date NOT NULL,
+        empsd_dojoin date NOT NULL,
+        empsd_dorelev date NOT NULL,
+        PRIMARY KEY (empsd_id)
+)ENGINE = InnoDB;
+-- ---------------------------------------------------------
+--
 -- Table structure for table `employee_master`
 --
 
@@ -190,6 +239,22 @@ CREATE TABLE employee_master_support (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `leave_type_master`
+--
+
+CREATE TABLE `leave_type_master` (
+  `lt_id` int(11) NOT NULL auto_increment,
+  `lt_name` varchar(50) NOT NULL,
+  `lt_code` varchar(100) NOT NULL,
+  `lt_short` varchar(100) NOT NULL,
+  `lt_value` int(11) default '0',
+  `lt_remarks` varchar(255) default NULL,
+   PRIMARY KEY  (`lt_id`),
+   UNIQUE KEY `lt_name` (`lt_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `logs`
 --
 
@@ -206,6 +271,32 @@ CREATE TABLE IF NOT EXISTS logs (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
+-- --------------------------------------------------------
+--
+-- Table structure for map_sc_uo 
+--
+
+CREATE TABLE `map_sc_uo` (
+     `scuo_id` int(11) NOT NULL auto_increment,
+     `scuo_scid` int(11) NOT NULL,
+     `scuo_uoid` int(11) NOT NULL,
+     PRIMARY KEY (scuo_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------
+--
+-- Table structure for map_sc_uo_archive 
+--
+
+CREATE TABLE `map_sc_uo_archive` (
+     `scuoa_id` int(11) NOT NULL auto_increment,
+     `scuoa_scuoid` int(11) NOT NULL,
+     `scuoa_scid` int(11) NOT NULL,
+     `scuoa_uoid` int(11) NOT NULL,
+     `scuoa_archuserid` int(11) NOT NULL,
+     `scuoa_archdate`  date NOT NULL,
+      PRIMARY KEY (scuoa_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- -------------------------------------------------------------------
 
 --
@@ -265,6 +356,23 @@ CREATE TABLE `salary_grade_master` (
    PRIMARY KEY  (`sgm_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- -------------------------------------------------------
+--
+-- Table structure for  `salary_grade_master_archive`
+--
+
+CREATE TABLE `salary_grade_master_archive` (
+     `sgma_id` int(11) NOT NULL auto_increment,
+     `sgma_sgmid` int(11) NOT NULL,
+     `sgma_name` varchar(20) NOT NULL,
+     `sgma_max` int(11) NOT NULL default '0',
+     `sgma_min` int(11) NOT NULL default '0',
+     `sgma_gradepay` int(11) NOT NULL default '500',
+     `sgma_org_id` int(11) NOT NULL default '1',
+     `sgma_archuserid` int(11) NOT NULL,
+     `sgma_archdate`  date NOT NULL,
+      PRIMARY KEY (sgma_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- -----------------------------------------------------------------------
 --
 -- Table structure for table `scheme_department`
@@ -287,6 +395,23 @@ ALTER TABLE `scheme_department`
 ALTER TABLE `scheme_department`
   MODIFY `sd_id` int(11) NOT NULL AUTO_INCREMENT;
 
+-- -------------------------------------------------------
+--
+-- Table structure for scheme_department_archive 
+--
+
+CREATE TABLE `scheme_department_archive` (
+     `sda_id` int(11) NOT NULL auto_increment,
+     `sda_sdid` int(11) NOT NULL,
+     `sda_deptid` int(11) NOT NULL,
+     `sda_code` varchar(255)  NULL,
+     `sda_name` varchar(255) NOT NULL,
+     `sda_short` varchar(255) default NULL,
+     `sda_desc` varchar(255)  default NULL,
+     `sda_archuserid` int(11) NOT NULL,
+     `sda_archdate`  date NOT NULL,
+      PRIMARY KEY (sda_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- -------------------------------------------------------------------
 
 --
@@ -476,6 +601,41 @@ CREATE TABLE `staff_transfer_detail` (
     PRIMARY KEY (`std_id`)
 )ENGINE = InnoDB;
 
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Staff_Performance_Data`
+--
+
+CREATE TABLE `Staff_Performance_Data` (
+  `spd_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `spd_empid` int(11) NOT NULL,
+  `spd_int_award` int (11)  default NULL,
+  `spd_nat_award` int (11)  default NULL,
+  `spd_uni_award`int (11)  default NULL,
+  `spd_res_pub_int` int (11)  default NULL,
+  `spd_res_pub_nat` int (11)  default NULL,
+  `spd_pop_pub_int` int (11)  default NULL,
+  `spd_pop_pub_nat` int (11)  default NULL,
+  `spd_pre_pub_int` int (11)  default NULL,
+  `spd_pre_pub_nat` int (11)  default NULL,
+  `spd_noof_project` int (11)  default NULL,
+  `spd_fund_outly_ofproject` double (11)  default NULL,
+  `spd_tr_att_int` int (11)  default NULL,
+  `spd_tr_att_nat` int (11)  default NULL,
+  `spd_tr_con_int` int (11)  default NULL,
+  `spd_tr_con_nat` int (11)  default NULL,
+  `spd_mvsc_stu-guided` int (11)  default NULL,
+  `spd_phd_stu-guided` int (11)  default NULL,
+  `spd_others_stu-guided` int (11)  default NULL,
+  `spd_no_ofguestlecture` int (11)  default NULL,
+  `spd_per_filename` varchar(500) default NULL,
+  `spd_creatorid` varchar(255) NOT NULL,
+  `spd_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `spd_modifierid` varchar(255) NOT NULL,
+  `spd_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+   UNIQUE (`spd_empid`)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 --
 -- Table structure for table `tax_slab_master`
@@ -496,26 +656,7 @@ CREATE TABLE `tax_slab_master` (
    UNIQUE KEY `tsm_fy` (`tsm_fy`,`tsm_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-
 -- --------------------------------------------------------
-
---
--- Table structure for table `leave_type_master`
---
-
-CREATE TABLE `leave_type_master` (
-  `lt_id` int(11) NOT NULL auto_increment,
-  `lt_name` varchar(50) NOT NULL,
-  `lt_code` varchar(100) NOT NULL,
-  `lt_short` varchar(100) NOT NULL,
-  `lt_value` int(11) default '0',
-  `lt_remarks` varchar(255) default NULL,
-   PRIMARY KEY  (`lt_id`),
-   UNIQUE KEY `lt_name` (`lt_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- --------------------------------------------------------
-
 --
 -- Table structure for table `user_role_type`
 --
@@ -533,7 +674,6 @@ CREATE TABLE `user_role_type` (
 insert into user_role_type values (1,1,1,1,1,'Administrator','');
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `user_role_type_archive`
 --
@@ -590,159 +730,6 @@ CREATE TABLE user_input_transfer (
         uit_email_sentto blob default NULL,
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
-
--- ---------------------------------------------------------
---
--- Table structure for ddo`
---
-
-CREATE TABLE `ddo` (
-     `ddo_id` int(11) NOT NULL auto_increment,
-     `ddo_scid` int(11) NOT NULL,
-     `ddo_deptid` int(11) NOT NULL,
-     `ddo_schid` int(11) NOT NULL,
-     `ddo_code` varchar(255) NOT NULL,
-     `ddo_name` varchar(255) NOT NULL,
-     `ddo_remark` varchar(255) default NULL,
-     PRIMARY KEY (ddo_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
---
--- Table structure for ddo_archive`
---
-
-CREATE TABLE `ddo_archive` (
-     `ddoa_id` int(11) NOT NULL auto_increment,
-     `ddoa_ddoid` int(11) NOT NULL,
-     `ddoa_scid` int(11) NOT NULL,
-     `ddoa_deptid` int(11) NOT NULL,
-     `ddoa_schid` int(11) NOT NULL,
-     `ddoa_code` varchar(255) NOT NULL,
-     `ddoa_name` varchar(255) NOT NULL,
-     `ddoa_remark` varchar(255) default NULL,
-     `ddoa_archuserid` int(11) NOT NULL,
-     `ddoa_archdate`  date NOT NULL,
-     PRIMARY KEY (ddoa_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
---
--- Table structure for map_sc_uo 
---
-
-CREATE TABLE `map_sc_uo` (
-     `scuo_id` int(11) NOT NULL auto_increment,
-     `scuo_scid` int(11) NOT NULL,
-     `scuo_uoid` int(11) NOT NULL,
-     PRIMARY KEY (scuo_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -------------------------------------------------------
---
--- Table structure for map_sc_uo_archive 
---
-
-CREATE TABLE `map_sc_uo_archive` (
-     `scuoa_id` int(11) NOT NULL auto_increment,
-     `scuoa_scuoid` int(11) NOT NULL,
-     `scuoa_scid` int(11) NOT NULL,
-     `scuoa_uoid` int(11) NOT NULL,
-     `scuoa_archuserid` int(11) NOT NULL,
-     `scuoa_archdate`  date NOT NULL,
-      PRIMARY KEY (scuoa_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -----------------------------------------------------------------
---
--- Table structure for table `employee_servicedetail`
---
-CREATE TABLE  employee_servicedetail(
-        empsd_id INT(11) NOT NULL AUTO_INCREMENT ,
-        empsd_empid  INT(11) NOT NULL ,
-        empsd_campuscode  varchar(255) NOT NULL ,
-        empsd_desigcode  varchar(255) NOT NULL ,
-        empsd_pbid INT(11) NOT NULL,
-        empsd_pbdate date NOT NULL,
-        empsd_dojoin date NOT NULL,
-        empsd_dorelev date NOT NULL,
-        PRIMARY KEY (empsd_id)
-)ENGINE = InnoDB;
-
-
--- -------------------------------------------------------
---
--- Table structure for scheme_department_archive 
---
-
-CREATE TABLE `scheme_department_archive` (
-     `sda_id` int(11) NOT NULL auto_increment,
-     `sda_sdid` int(11) NOT NULL,
-     `sda_deptid` int(11) NOT NULL,
-     `sda_code` varchar(255)  NULL,
-     `sda_name` varchar(255) NOT NULL,
-     `sda_short` varchar(255) default NULL,
-     `sda_desc` varchar(255)  default NULL,
-     `sda_archuserid` int(11) NOT NULL,
-     `sda_archdate`  date NOT NULL,
-      PRIMARY KEY (sda_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -------------------------------------------------------
---
--- Table structure for map_sc_uo_archive 
---
-
-CREATE TABLE `salary_grade_master_archive` (
-     `sgma_id` int(11) NOT NULL auto_increment,
-     `sgma_sgmid` int(11) NOT NULL,
-     `sgma_name` varchar(20) NOT NULL,
-     `sgma_max` int(11) NOT NULL default '0',
-     `sgma_min` int(11) NOT NULL default '0',
-     `sgma_gradepay` int(11) NOT NULL default '500',
-     `sgma_org_id` int(11) NOT NULL default '1',
-     `sgma_archuserid` int(11) NOT NULL,
-     `sgma_archdate`  date NOT NULL,
-      PRIMARY KEY (sgma_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -----------------------------------------------------------------
--- -------------------------------------------------------------------
-
---
--- Table structure for table `Staff_Performance_Data`
---
-
-CREATE TABLE `Staff_Performance_Data` (
-  `spd_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `spd_empid` int(11) NOT NULL,
-  `spd_int_award` int (11)  default NULL,
-  `spd_nat_award` int (11)  default NULL,
-  `spd_uni_award`int (11)  default NULL,
-  `spd_res_pub_int` int (11)  default NULL,
-  `spd_res_pub_nat` int (11)  default NULL,
-  `spd_pop_pub_int` int (11)  default NULL,
-  `spd_pop_pub_nat` int (11)  default NULL,
-  `spd_pre_pub_int` int (11)  default NULL,
-  `spd_pre_pub_nat` int (11)  default NULL,
-  `spd_noof_project` int (11)  default NULL,
-  `spd_fund_outly_ofproject` double (11)  default NULL,
-  `spd_tr_att_int` int (11)  default NULL,
-  `spd_tr_att_nat` int (11)  default NULL,
-  `spd_tr_con_int` int (11)  default NULL,
-  `spd_tr_con_nat` int (11)  default NULL,
-  `spd_mvsc_stu-guided` int (11)  default NULL,
-  `spd_phd_stu-guided` int (11)  default NULL,
-  `spd_others_stu-guided` int (11)  default NULL,
-  `spd_no_ofguestlecture` int (11)  default NULL,
-  `spd_per_filename` varchar(500) default NULL,
-  `spd_creatorid` varchar(255) NOT NULL,
-  `spd_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `spd_modifierid` varchar(255) NOT NULL,
-  `spd_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-   UNIQUE (`spd_empid`)
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- -------------------------------------------------------------------
 
