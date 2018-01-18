@@ -126,6 +126,7 @@ echo "</head>";
     /* Form */
 
 echo"</body>";
+echo"<p>&nbsp;</p>";
 echo "<div align=\"center\">";  
     $this->load->view('template/footer');
 echo "</html>";

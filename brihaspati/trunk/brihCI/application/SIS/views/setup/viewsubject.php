@@ -98,6 +98,7 @@ echo "<body>";
        echo  "</table>";
        echo "</div>";
 	echo"</body>";
+	echo"<p>&nbsp;</p>";
 	echo "<div align=\"center\">";  
     $this->load->view('template/footer');
 	echo "</div>";

@@ -45,7 +45,7 @@
                 <td>
                 <input type="text" name="cname" class="form-control" size="40" placeholder="Category Name" /><br>
                 </td>
- 	<!--	<td><?php echo form_error('cname')?></td> -->
+ 	<!--	<td><?php //echo form_error('cname')?></td> -->
 		<td> Example : Scheduled Tribe, Other Backward Class, General etc. </td>
             </tr>
             <tr> 
@@ -55,7 +55,7 @@
                 <td>
                     <input type="text" name="ccode" size="40" class="form-control" placeholder="Category Code" /> <br>
                 </td>
- 	<!--	<td><?php echo form_error('ccode')?></td>-->
+ 	<!--	<td><?php //echo form_error('ccode')?></td>-->
 		<td>Example : 01, 02, 03, st04, sc-5 etc.</td>
             </tr>
             <tr>
@@ -65,7 +65,7 @@
                 <td>
                     <input type="text" name="csname" size="40"  class="form-control" placeholder="Category Short Name"/> <br>
                 </td>
-	<!--	 <td><?php echo form_error('csname')?></td>-->
+	<!--	 <td><?php //echo form_error('csname')?></td>-->
 		<td> Example : ST, SC, OBC, GEN, PH etc. </td>
             </tr>
             <tr>
@@ -75,7 +75,7 @@
                 <td>
                     <input type="text" name="cdesc"  size="40" placeholder="Category Description" /> <br>
                 </td>
- 	<!--	<td><?php echo form_error('cdesc')?></td>-->
+ 	<!--	<td><?php //echo form_error('cdesc')?></td>-->
 		<td> Example : Reserved Category, Unreserved Category. </td>
             </tr>
             <tr><td></td>
@@ -88,6 +88,7 @@
         </form>
    <p><br></p>
   </body>
+ <p>&nbsp;</p>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
       

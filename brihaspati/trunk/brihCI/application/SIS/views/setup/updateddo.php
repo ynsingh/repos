@@ -81,7 +81,7 @@
        </tr>
              <td> Department Name</td>
              <td>
-               <!--  <?php echo form_input($deptname); ?> -->
+               <!--  <?php //echo form_input($deptname); ?> -->
                <select name="deptname" id="deptname" class="my_dropdown" style="width:300px;" onchange="getschemename(this.value)" >
                <option value="<?php echo $this->common_model->get_listspfic1('Department', 'dept_id', 'dept_name', $deptname["value"])->dept_id; ?>" > <?php echo $deptname["value"]?> </option>
              </td>
@@ -89,7 +89,7 @@
        <tr>
              <td> Scheme Name </td>
              <td>
-                <!-- <?php echo form_input($schemecode); ?>-->
+                <!-- <?php //echo form_input($schemecode); ?>-->
                <select name="schemecode" id="schemecode" class="my_dropdown" style="width:300px;" >
                <option value="<?php echo $this->SIS_model->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $schemecode["value"])->sd_id; ?>" ><?php echo $schemecode["value"]?></option>
              </td>
@@ -121,6 +121,7 @@
 	     <?php echo form_hidden( 'ddo_id', $ddo_id );?>
    </table>
    </body>
+<p>&nbsp;</p>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
  </html>
  

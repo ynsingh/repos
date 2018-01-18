@@ -44,7 +44,7 @@
                 <td>
                 <input type="text" name="sgmname" class="form-control" size="40" placeholder="Salary Grade Name.."/><br>
                 </td>
- 		<!--<td><?php echo form_error('sgmname')?></td>--> 
+ 		<!--<td><?php //echo form_error('sgmname')?></td>--> 
             </tr>
             <tr> 
                 <td>    
@@ -53,7 +53,7 @@
                 <td>
                     <input type="text" name="sgmmax" size="40" class="form-control" placeholder="Salary Grade Max.."/> <br>
                 </td>
- 		<!--<td><?php echo form_error('sgmmax')?></td>-->
+ 		<!--<td><?php //echo form_error('sgmmax')?></td>-->
             </tr>
             <tr>
                 <td>   
@@ -62,7 +62,7 @@
                 <td>
                     <input type="text" name="sgmmin" size="40"  class="form-control" placeholder="Salary Grade Min.."/> <br>
                 </td>
-		 <!--<td><?php echo form_error('sgmmin')?></td>-->
+		 <!--<td><?php //echo form_error('sgmmin')?></td>-->
             </tr>
             <tr>
                 <td>   
@@ -71,7 +71,7 @@
                 <td>
                     <input type="text" name="sgmgradepay"  size="40" placeholder="Salary Grade Pay Band.."/> <br>
                 </td>
- 		<!--<td><?php echo form_error('sgmgradepay')?></td>-->
+ 		<!--<td><?php //echo form_error('sgmgradepay')?></td>-->
             </tr>
             <tr><td></td>
                 <td colspan="2">   
@@ -84,6 +84,7 @@
      </tr>
  <p><br></p>     
   </body>
+<p>&nbsp;</p>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
       

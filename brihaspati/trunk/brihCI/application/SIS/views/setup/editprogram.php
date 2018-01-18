@@ -188,5 +188,6 @@
 <?php $this->load->view('template/footer.php');?>
 </div>
 </body>
+<p>&nbsp;</p>
 </html>
 

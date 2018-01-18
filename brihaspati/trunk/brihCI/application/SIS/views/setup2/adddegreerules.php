@@ -165,6 +165,8 @@
             </table>
     </form>
     </div>
+  </body>
+<p>&nbsp;</p>	
     <div align="left"> <?php $this->load->view('template/footer');?></div>
     </html>
 

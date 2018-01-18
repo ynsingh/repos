@@ -74,6 +74,7 @@
             </tbody>
         </table>
         </div><!------scroller div------>
+    <p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
 
     </body>

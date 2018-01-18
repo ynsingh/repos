@@ -34,12 +34,11 @@
           ?>
         <?php if  (isset($_SESSION['err_message'])){?>
 	     <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
-
 	<?php
 	};
 	?>
  </div>
-</tr>
+ </td></tr>
  </table>
         <div class="scroller_sub_page">
         <table class="TFtable" >
@@ -89,6 +88,7 @@
         </table>
         </div><!------scroller div------> 
    </body>
+<p> &nbsp; </p>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>
  

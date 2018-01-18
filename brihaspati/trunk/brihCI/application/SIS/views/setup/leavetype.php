@@ -93,6 +93,7 @@
     </tr>
     </table>
     </body>
+<p>&nbsp;</p>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>
 

@@ -58,7 +58,7 @@
                 <td>
                 <input type="text" name="sname" class="form-control" size="40" placeholder="Scheme Name.."/><br>
                 </td>
- 		<!--<td><?php echo form_error('sname')?></td>--> 
+ 		<!--<td><?php //echo form_error('sname')?></td>--> 
             </tr>
             <tr> 
                 <td>    
@@ -67,7 +67,7 @@
                 <td>
                     <input type="text" name="scode" size="40" class="form-control" placeholder="Scheme Code.."/> <br>
                 </td>
- 		<!--<td><?php echo form_error('scode')?></td>-->
+ 		<!--<td><?php //echo form_error('scode')?></td>-->
             </tr>
             <tr>
                 <td>   
@@ -76,7 +76,7 @@
                 <td>
                     <input type="text" name="ssname" size="40"  class="form-control" placeholder="Scheme Short Name.."/> <br>
                 </td>
-		<!-- <td><?php echo form_error('ssname')?></td>-->
+		<!-- <td><?php //echo form_error('ssname')?></td>-->
             </tr>
             <tr>
                 <td>   
@@ -85,7 +85,7 @@
                 <td>
                     <input type="text" name="sdesc"  size="40" placeholder="Scheme Description.."/> <br>
                 </td>
- 		<!--<td><?php echo form_error('sdesc')?></td>-->
+ 		<!--<td><?php //echo form_error('sdesc')?></td>-->
             </tr>
             <tr><td></td>
                 <td colspan="2">   
@@ -98,6 +98,7 @@
      </tr>
   <p><br></p>     
   </body>
+<p>&nbsp;</p>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
       

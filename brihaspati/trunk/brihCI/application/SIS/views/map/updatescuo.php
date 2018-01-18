@@ -64,6 +64,7 @@
              <?php echo form_hidden( 'scuo_id', $scuo_id );?>
      </table>
    </body>
+<p> &nbsp;</p>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>
 

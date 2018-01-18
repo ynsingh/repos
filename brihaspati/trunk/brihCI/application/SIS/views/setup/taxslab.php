@@ -63,7 +63,7 @@
                 <td>
                 <input type="text" name="tsmname" class="form-control" size="40" /><br>
                 </td>
- 		<td><?php echo form_error('tsmname')?></td> 
+ 	<!--	<td><?php //echo form_error('tsmname')?></td>--> 
             </tr>
             <tr> 
                 <td>    
@@ -72,7 +72,7 @@
                 <td>
                     <input type="text" name="tsmstartvalue" size="40" class="form-control"/> <br>
                 </td>
- 		<td><?php echo form_error('tsmstartvalue')?></td>
+ 	<!--	<td><?php //echo form_error('tsmstartvalue')?></td> -->
             </tr>
             <tr>
                 <td>   
@@ -81,7 +81,7 @@
                 <td>
                     <input type="text" name="tsmendvalue" size="40"  class="form-control"/> <br>
                 </td>
-		 <td><?php echo form_error('tsmendvalue')?></td>
+	<!--	 <td><?php //echo form_error('tsmendvalue')?></td>-->
             </tr>
 
 
@@ -114,7 +114,7 @@
                 <td>
                     <input type="text" name="tsmpercent"  size="40"/> <br>
                 </td>
- 		<td><?php echo form_error('tsmpercent')?></td>
+ 	<!--	<td><?php //echo form_error('tsmpercent')?></td>-->
             </tr>
 
 
@@ -131,6 +131,7 @@
       </div> 
      </tr>     
   </body>
+<p>&nbsp;</p>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
     

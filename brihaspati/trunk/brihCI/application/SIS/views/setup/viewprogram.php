@@ -116,5 +116,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 <?php $this->load->view('template/footer.php');?>
 </div>
 </body>
+<p>&nbsp;</p>
 </html>
 
