@@ -105,15 +105,29 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
-     public function get_schemeslist($deptid){
-        $this->db2->select('map_scheme_department.msd_schmid','scheme_department.sd_name');
-       $this->db2->from('map_scheme_department')->where('msd_deptid',$deptid);
-        $this->db2->join('scheme_department','scheme_department.sd_id = map_scheme_department.msd_schmid');
-        $query=$this->db2->get();
-//	print_r($query->result());
-        return $query->result();
-	
+ // get the join  table result value
+    public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$jtype,$whdata){
+            $this->db2->flush_cache();
+            $this->db2->select($selectfield);
+            $this->db2->from($tbname);
+            $this->db2->join($jointbname,$joincond,$jtype);
+            if($whdata != ''){
+                        $this->db2->where($whdata);
+            }
+            return $this->db2->get()->result();
     }
+
+    public function get_distinctrecord($tbname,$selectfield,$whdata){
+            $this->db2->flush_cache();
+            $this->db2->distinct();
+            $this->db2->select($selectfield);
+            $this->db2->from($tbname);
+            if($whdata != ''){
+                        $this->db2->where($whdata);
+            }
+        return $this->db2->get()->result();
+    }
+    /** this function for get hod user list according to study center************************/
     //get the complete record from specific table
     public function get_list($tbname){
          $this->db2->from($tbname);
@@ -248,17 +262,6 @@ class SIS_model extends CI_Model
         
     }//function close
     /***********************************close of staff position*********************************************/   
-    public function get_distinctrecord($tbname,$selectfield,$whdata){
-            $this->db2->flush_cache();
-            $this->db2->distinct();
-            $this->db2->select($selectfield);
-            $this->db2->from($tbname);
-            if($whdata != ''){
-                        $this->db2->where($whdata);
-            }
-        return $this->db2->get()->result();
-    }
-    /** this function for get hod user list according to study center************************/
     public function hoduser($scid){
         $selectfield ="userid,scid,deptid,usertype";
         $whdata=array('roleid' => '5','scid' => $scid);
@@ -267,7 +270,7 @@ class SIS_model extends CI_Model
         return $data;
     }
     /** colse this function for get hod user list according to study center************************/
-
+    
     function __destruct() {
         $this->db2->close();
     }

@@ -69,8 +69,12 @@ echo "<ul class=\"sf-menu\" >";
  					echo "<li>";
                                                 echo anchor('setup/displaybankdetails', 'Bank Details', array('title' => 'Bank Details'));
                                         echo "</li>";
-
-
+                                        echo "<li>";
+                                                echo anchor('setup3/salaryhead_list', 'Salary Head', array('title' => 'Salary Head'));
+                                        echo "</li>";    
+                                        echo "<li>";
+                                                echo anchor('setup3/salaryformula_list', 'Salary Formula', array('title' => 'Salary Formula'));
+                                        echo "</li>";
 
 				/*	echo "<li>";
 						echo anchor('setup/displayfees', 'Program Fees', array('title' => 'Program Fees'));
