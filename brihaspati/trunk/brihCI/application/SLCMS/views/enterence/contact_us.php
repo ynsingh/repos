@@ -62,12 +62,13 @@ echo "</center>";
       </div>
  <div>
                
-                <table  class="TFtable">
+                <table  style="font-size:17px;width:100%;" class="TFtable">
 		<!--<thead class="BG"><tr><th colspan=3> Contact Us</br>
 		<span  style="font-size:17px;color:white;">In Case of any diffculty to access the Online Admission Portal and filling the online application form.Please Contact us at Email : admission@igntu.ac.in or Tel.No. given below:</span>		
 		</th></tr>
 		</thead>-->
-		<thead class="BG" style="font-size:19px;"><tr><th>Sr. No.</th><th>Name of Person</th><th>Mobile No.</th></tr></thead>
+
+		<thead  style="font-size:19px;"><tr><th>Sr. No.</th><th>Name of Person</th><th>Mobile No.</th></tr></thead>
 		<?php
         $count =0;
         if( count($this->result) ):

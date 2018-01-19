@@ -53,12 +53,13 @@ echo "</center>"; ?>
             </td>
      </tr>
 </table>
-
-<div class="welcome"><h2>Welcome</h2></div>
+<br>
+<!--<div class="welcome"><h2>Welcome</h2></div> -->
 
 <?php $this->load->view('enterence/enterence_head');?>
 
 </br>
+<div class="scroller_sub_page">
 <table style="width:100%;border:0px solid black;" align=center border=0> 
 	
 	<tr>
@@ -106,7 +107,8 @@ function getcatelist(studycid){
 		
 		<div style="overflow:auto;height:300px;">
 			<table style="width:100%" class="TFtable" >
-				<tr style="background-color:#38B0DE;color:white;font-size:16px;">
+				<!--<tr style="background-color:#38B0DE;color:white;font-size:16px;"> -->
+				<tr style="font-size:16px;">
 				<td style="border:2px solid white;" align=center colspan=5>Announcement</td></tr>
 				<?php
 				$count =0;
@@ -196,7 +198,7 @@ function getcatelist(studycid){
 	
 </table>
 
-
+</div>
 <div>
 <?php $this->load->view('template/footer'); ?>
 </div>
