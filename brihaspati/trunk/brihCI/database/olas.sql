@@ -514,6 +514,18 @@ CREATE TABLE `category` (
   `cat_short` varchar(255) NOT NULL,
   `cat_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`cat_id`);
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT;
+
+
 
 insert into category values (1,'All','01','All','All Category');
 
@@ -591,7 +603,17 @@ CREATE TABLE `Department` (
   `dept_sccode` varchar(255) NOT NULL,
   `dept_orgcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `Department`
+--
+ALTER TABLE `Department`
+  ADD PRIMARY KEY (`dept_id`),
+  ADD UNIQUE KEY `dept_code` (`dept_code`,`dept_schoolcode`);
+--
+-- AUTO_INCREMENT for table `Department`
+--
+ALTER TABLE `Department`
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Table structure for table `Department_archive`
@@ -638,7 +660,16 @@ CREATE TABLE `designation` (
   `desig_group`varchar(5) NOT NULL,
   `desig_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `designation`
+--
+ALTER TABLE `designation`
+  ADD PRIMARY KEY (`desig_id`);
+--
+-- AUTO_INCREMENT for table `designation`
+--
+ALTER TABLE `designation`
+  MODIFY `desig_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -660,6 +691,19 @@ CREATE TABLE `email_setting` (
   `modifierid` varchar(255) NOT NULL,
   `modifidate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `email_setting`
+--
+ALTER TABLE `email_setting`
+  ADD PRIMARY KEY (`id`);
+--
+-- AUTO_INCREMENT for table `email_setting`
+--
+ALTER TABLE `email_setting`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+
+
 
 -- --------------------------------------------------------
 
@@ -705,7 +749,17 @@ CREATE TABLE `fees_master` (
   `fm_ext1` varchar(255) NOT NULL,
   `fm_ext2` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `fees_master`
+--
+ALTER TABLE `fees_master`
+  ADD PRIMARY KEY (`fm_id`),
+  ADD UNIQUE KEY `fm_head` (`fm_programid`,`fm_semester`,`fm_gender`,`fm_category`,`fm_head`);
+--
+-- AUTO_INCREMENT for table `fees_master`
+--
+ALTER TABLE `fees_master`
+  MODIFY `fm_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -824,6 +878,18 @@ CREATE TABLE `org_profile` (
   `modifierid` varchar(255) NOT NULL,
   `modify_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `org_profile`
+--
+ALTER TABLE `org_profile`
+  ADD PRIMARY KEY (`org_id`),
+  ADD UNIQUE KEY `org_code` (`org_code`);
+--
+-- AUTO_INCREMENT for table `org_profile`
+--
+ALTER TABLE `org_profile`
+  MODIFY `org_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 
 --
 -- Dumping data for table `org_profile`
@@ -856,6 +922,18 @@ CREATE TABLE `program` (
   `creatorid` varchar(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `program`
+--
+ALTER TABLE `program`
+  ADD PRIMARY KEY (`prg_id`),
+  ADD UNIQUE KEY `prg_category` (`prg_scid`,`prg_category`,`prg_name`,`prg_branch`);
+--
+-- AUTO_INCREMENT for table `program`
+--
+ALTER TABLE `program`
+  MODIFY `prg_id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 -- --------------------------------------------------------
 
@@ -879,7 +957,17 @@ CREATE TABLE `program_subject_teacher` (
   `pstp_modifierid` varchar(50) NOT NULL,
   `pstp_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `program_subject_teacher`
+--
+ALTER TABLE `program_subject_teacher`
+  ADD PRIMARY KEY (`pstp_id`),
+  ADD UNIQUE KEY `pstp_scid` (`pstp_scid`,`pstp_prgid`,`pstp_subid`,`pstp_papid`,`pstp_teachid`,`pstp_acadyear`,`pstp_sem`);
+--
+-- AUTO_INCREMENT for table `program_subject_teacher`
+--
+ALTER TABLE `program_subject_teacher`
+  MODIFY `pstp_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -958,6 +1046,16 @@ CREATE TABLE `role` (
   `role_name` varchar(255) NOT NULL,
   `role_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`role_id`);
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Dumping data for table `role`
@@ -993,7 +1091,16 @@ CREATE TABLE `seat_program_studycenter` (
   `spsc_modifierid` varchar(255) NOT NULL,
   `spsc_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `seat_program_studycenter`
+--
+ALTER TABLE `seat_program_studycenter`
+  ADD PRIMARY KEY (`spsc_id`);
+--
+-- AUTO_INCREMENT for table `seat_program_studycenter`
+--
+ALTER TABLE `seat_program_studycenter`
+  MODIFY `spsc_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1010,7 +1117,17 @@ CREATE TABLE `seat_reservation` (
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
+--
+-- Indexes for table `seat_reservation`
+--
+ALTER TABLE `seat_reservation`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `org_code` (`org_code`,`category_id`,`percentage`);
+--
+-- AUTO_INCREMENT for table `seat_reservation`
+--
+ALTER TABLE `seat_reservation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1195,7 +1312,16 @@ CREATE TABLE `student_education` (
   `sedu_ext1` varchar(255) DEFAULT NULL,
   `sedu_ext2` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `student_education`
+--
+ALTER TABLE `student_education`
+  ADD PRIMARY KEY (`sedu_id`);
+--
+-- AUTO_INCREMENT for table `student_education`
+--
+ALTER TABLE `student_education`
+  MODIFY `sedu_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1215,7 +1341,16 @@ CREATE TABLE `student_employment` (
   `semp_remarks` varchar(255) NOT NULL,
   `semp_experience` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `student_employment`
+--
+ALTER TABLE `student_employment`
+  ADD PRIMARY KEY (`semp_id`);
+--
+-- AUTO_INCREMENT for table `student_employment`
+--
+ALTER TABLE `student_employment`
+  MODIFY `semp_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1233,7 +1368,16 @@ CREATE TABLE `student_entrance_exam` (
   `seex_subject` varchar(255) NOT NULL,
   `seex_passingyear` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `student_entrance_exam`
+--
+ALTER TABLE `student_entrance_exam`
+  ADD PRIMARY KEY (`seex_id`);
+--
+-- AUTO_INCREMENT for table `student_entrance_exam`
+--
+ALTER TABLE `student_entrance_exam`
+  MODIFY `seex_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1362,7 +1506,16 @@ CREATE TABLE `student_fees` (
   `sfee_ext2` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
+--
+-- Indexes for table `student_fees`
+--
+ALTER TABLE `student_fees`
+  ADD PRIMARY KEY (`sfee_id`);
+--
+-- AUTO_INCREMENT for table `student_fees`
+--
+ALTER TABLE `student_fees`
+  MODIFY `sfee_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1436,7 +1589,16 @@ CREATE TABLE `student_master` (
   `sm_photo` varchar(255) DEFAULT NULL,
   `sm_signature` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `student_master`
+--
+ALTER TABLE `student_master`
+  ADD PRIMARY KEY (`sm_id`);
+--
+-- AUTO_INCREMENT for table `student_master`
+--
+ALTER TABLE `student_master`
+  MODIFY `sm_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1486,7 +1648,16 @@ CREATE TABLE `student_parent` (
   `spar_garnamehindi` varchar(255) DEFAULT NULL,
   `spar_ext` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `student_parent`
+--
+ALTER TABLE `student_parent`
+  ADD PRIMARY KEY (`spar_id`);
+--
+-- AUTO_INCREMENT for table `student_parent`
+--
+ALTER TABLE `student_parent`
+  MODIFY `spar_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1517,7 +1688,16 @@ CREATE TABLE `student_program` (
   `sp_ext1` varchar(255) DEFAULT NULL,
   `sp_ext2` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `student_program`
+--
+ALTER TABLE `student_program`
+  ADD PRIMARY KEY (`sp_id`);
+--
+-- AUTO_INCREMENT for table `student_program`
+--
+ALTER TABLE `student_program`
+  MODIFY `sp_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1589,6 +1769,17 @@ CREATE TABLE `study_center` (
   `creatorid` varchar(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `study_center`
+--
+ALTER TABLE `study_center`
+  ADD PRIMARY KEY (`sc_id`),
+  ADD UNIQUE KEY `sc_code` (`sc_code`,`org_code`);
+--
+-- AUTO_INCREMENT for table `study_center`
+--
+ALTER TABLE `study_center`
+  MODIFY `sc_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
@@ -1608,7 +1799,17 @@ CREATE TABLE `subject` (
   `sub_ext1` varchar(255) NOT NULL,
   `sub_ext2` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Indexes for table `subject`
+--
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`sub_id`),
+  ADD UNIQUE KEY `sub_name` (`sub_name`,`sub_code`);
+--
+-- AUTO_INCREMENT for table `subject`
+--
+ALTER TABLE `subject`
+  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1636,7 +1837,17 @@ CREATE TABLE `subject_paper` (
 UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_prgcat`,`subp_paperno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Indexes for table `subject_paper`
+--
+ALTER TABLE `subject_paper`
+  ADD PRIMARY KEY (`subp_id`);
 
+--
+-- AUTO_INCREMENT for table `subject_paper`
+--
+ALTER TABLE `subject_paper`
+  MODIFY `subp_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -1766,266 +1977,15 @@ CREATE TABLE `user_role_type` (
   `ext1` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into user_role_type values (1,1,1,'',1,1,'Administrator','');
-insert into user_role_type values (2,3,8,'',1,1,'EntranceAdministrator','');
-insert into user_role_type values (3,4,9,'',1,1,'AdmissionAdministrator','');
-
 --
 -- Indexes for table `user_role_type`
 --
 ALTER TABLE `user_role_type`
   ADD UNIQUE KEY `userid` (`userid`,`roleid`,`prgid`,`usertype`);
---
--- Indexes for dumped tables
---
 
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`cat_id`);
-
---
--- Indexes for table `Department`
---
-ALTER TABLE `Department`
-  ADD PRIMARY KEY (`dept_id`),
-  ADD UNIQUE KEY `dept_code` (`dept_code`,`dept_schoolcode`);
-
---
--- Indexes for table `designation`
---
-ALTER TABLE `designation`
-  ADD PRIMARY KEY (`desig_id`);
-
---
--- Indexes for table `email_setting`
---
-ALTER TABLE `email_setting`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `fees_master`
---
-ALTER TABLE `fees_master`
-  ADD PRIMARY KEY (`fm_id`),
-  ADD UNIQUE KEY `fm_head` (`fm_programid`,`fm_semester`,`fm_gender`,`fm_category`,`fm_head`);
-
---
--- Indexes for table `org_profile`
---
-ALTER TABLE `org_profile`
-  ADD PRIMARY KEY (`org_id`),
-  ADD UNIQUE KEY `org_code` (`org_code`);
-
---
--- Indexes for table `program`
---
-ALTER TABLE `program`
-  ADD PRIMARY KEY (`prg_id`),
-  ADD UNIQUE KEY `prg_category` (`prg_scid`,`prg_category`,`prg_name`,`prg_branch`);
-
---
--- Indexes for table `program_subject_teacher`
---
-ALTER TABLE `program_subject_teacher`
-  ADD PRIMARY KEY (`pstp_id`),
-  ADD UNIQUE KEY `pstp_scid` (`pstp_scid`,`pstp_prgid`,`pstp_subid`,`pstp_papid`,`pstp_teachid`,`pstp_acadyear`,`pstp_sem`);
-
---
--- Indexes for table `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`role_id`);
-
---
--- Indexes for table `seat_program_studycenter`
---
-ALTER TABLE `seat_program_studycenter`
-  ADD PRIMARY KEY (`spsc_id`);
-
---
--- Indexes for table `seat_reservation`
---
-ALTER TABLE `seat_reservation`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `org_code` (`org_code`,`category_id`,`percentage`);
-
---
--- Indexes for table `student_education`
---
-ALTER TABLE `student_education`
-  ADD PRIMARY KEY (`sedu_id`);
-
---
--- Indexes for table `student_employment`
---
-ALTER TABLE `student_employment`
-  ADD PRIMARY KEY (`semp_id`);
-
---
--- Indexes for table `student_entrance_exam`
---
-ALTER TABLE `student_entrance_exam`
-  ADD PRIMARY KEY (`seex_id`);
-
---
--- Indexes for table `student_fees`
---
-ALTER TABLE `student_fees`
-  ADD PRIMARY KEY (`sfee_id`);
-
---
--- Indexes for table `student_master`
---
-ALTER TABLE `student_master`
-  ADD PRIMARY KEY (`sm_id`);
-
---
--- Indexes for table `student_parent`
---
-ALTER TABLE `student_parent`
-  ADD PRIMARY KEY (`spar_id`);
-
---
--- Indexes for table `student_program`
---
-ALTER TABLE `student_program`
-  ADD PRIMARY KEY (`sp_id`);
-
---
--- Indexes for table `study_center`
---
-ALTER TABLE `study_center`
-  ADD PRIMARY KEY (`sc_id`),
-  ADD UNIQUE KEY `sc_code` (`sc_code`,`org_code`);
-
---
--- Indexes for table `subject`
---
-ALTER TABLE `subject`
-  ADD PRIMARY KEY (`sub_id`),
-  ADD UNIQUE KEY `sub_name` (`sub_name`,`sub_code`);
-
---
--- Indexes for table `subject_paper`
---
-ALTER TABLE `subject_paper`
-  ADD PRIMARY KEY (`subp_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `Department`
---
-ALTER TABLE `Department`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `designation`
---
-ALTER TABLE `designation`
-  MODIFY `desig_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `email_setting`
---
-ALTER TABLE `email_setting`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `fees_master`
---
-ALTER TABLE `fees_master`
-  MODIFY `fm_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `org_profile`
---
-ALTER TABLE `org_profile`
-  MODIFY `org_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `program`
---
-ALTER TABLE `program`
-  MODIFY `prg_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `program_subject_teacher`
---
-ALTER TABLE `program_subject_teacher`
-  MODIFY `pstp_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `role`
---
-ALTER TABLE `role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `seat_program_studycenter`
---
-ALTER TABLE `seat_program_studycenter`
-  MODIFY `spsc_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `seat_reservation`
---
-ALTER TABLE `seat_reservation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `student_education`
---
-ALTER TABLE `student_education`
-  MODIFY `sedu_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `student_employment`
---
-ALTER TABLE `student_employment`
-  MODIFY `semp_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `student_entrance_exam`
---
-ALTER TABLE `student_entrance_exam`
-  MODIFY `seex_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `student_fees`
---
-ALTER TABLE `student_fees`
-  MODIFY `sfee_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `student_master`
---
-ALTER TABLE `student_master`
-  MODIFY `sm_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `student_parent`
---
-ALTER TABLE `student_parent`
-  MODIFY `spar_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `student_program`
---
-ALTER TABLE `student_program`
-  MODIFY `sp_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `study_center`
---
-ALTER TABLE `study_center`
-  MODIFY `sc_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `subject`
---
-ALTER TABLE `subject`
-  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `subject_paper`
---
-ALTER TABLE `subject_paper`
-  MODIFY `subp_id` int(11) NOT NULL AUTO_INCREMENT;
-
+insert into user_role_type values (1,1,1,'',1,1,'Administrator','');
+insert into user_role_type values (2,3,8,'',1,1,'EntranceAdministrator','');
+insert into user_role_type values (3,4,9,'',1,1,'AdmissionAdministrator','');
 
 
 INSERT INTO `countries` (`id`, `sortname`, `name`, `phonecode`) VALUES
