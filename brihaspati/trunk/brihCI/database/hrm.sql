@@ -1,9 +1,9 @@
 
 -- --------------------------------------------------------
 
-DROP DATABASE IF EXISTS `bhrm`;
-CREATE DATABASE `bhrm`;
-USE `bhrm`;
+-- DROP DATABASE IF EXISTS `bhrm`;
+-- CREATE DATABASE `bhrm`;
+-- USE `bhrm`;
 
 -- --------------------------------------------------------
 

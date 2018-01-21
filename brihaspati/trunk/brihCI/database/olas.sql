@@ -16,9 +16,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `olas`
---
 
 -- --------------------------------------------------------
 
@@ -1091,7 +1088,6 @@ CREATE TABLE `set_date` (
 	`sed_campuscode` INT(11) NOT NULL , 
 	`sed_acadyear` varchar(255) NOT NULL,
   	`sed_sem` varchar(255) NOT NULL,
- 	`sed_campuscode` varchar(255) NOT NULL,
 	`sed_sessionsdate` DATE NOT NULL , 
 	`sed_sessionedate` DATE NOT NULL , 
 	`sed_examsdate` DATE NOT NULL , 
@@ -1770,9 +1766,9 @@ CREATE TABLE `user_role_type` (
   `ext1` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into user_role_type values (1,1,1,1,1,'Administrator','');
-insert into user_role_type values (2,3,8,1,1,'EntranceAdministrator','');
-insert into user_role_type values (3,4,9,1,1,'AdmissionAdministrator','');
+insert into user_role_type values (1,1,1,'',1,1,'Administrator','');
+insert into user_role_type values (2,3,8,'',1,1,'EntranceAdministrator','');
+insert into user_role_type values (3,4,9,'',1,1,'AdmissionAdministrator','');
 
 --
 -- Indexes for table `user_role_type`
