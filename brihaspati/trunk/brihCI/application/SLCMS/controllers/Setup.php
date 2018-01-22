@@ -20,16 +20,17 @@ class Setup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-	     $this->load->model('common_model'); 
-        $this->load->model('login_model');
-        $this->load->model('dependrop_model','depmodel');
-        $this->load->model('university_model','unimodel');
-        $this->load->model("Mailsend_model","mailmodel");
-	 $this->load->model("DateSem_model","datemodel");	
-        if(empty($this->session->userdata('id_user'))) {
-            $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-		redirect('welcome');
-        }
+		$this->load->model('common_model'); 
+	        $this->load->model('login_model');
+        	$this->load->model('dependrop_model','depmodel');
+        	$this->load->model('university_model','unimodel');
+        	$this->load->model("Mailsend_model","mailmodel");
+	 	$this->load->model("DateSem_model","datemodel");
+		$this->load->model('SIS_model');	
+        	if(empty($this->session->userdata('id_user'))) {
+            		$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+			redirect('welcome');
+        	}
     }
 
     public function index() {
@@ -3153,6 +3154,202 @@ class Setup extends CI_Controller
         // redirect('setup/set_datessetedit');	
 	$this->load->view('setup/session_exam_formdates_edit',$data);	
     }//end funtion
+public function salarygrademaster(){
+
+        if(isset($_POST['salarygrademaster'])) {
+            $this->form_validation->set_rules('sgmname','Salary Grade Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+            $this->form_validation->set_rules('sgmmax','Salary Grade Master Max','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('sgmmin','Salary Grade Master Min','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('sgmgradepay','Salary Grade Master Gradepay','trim|xss_clean|numeric');
+
+            if($this->form_validation->run()==TRUE){
+
+            $sgmn = $this->input->post("sgmname");
+            $sgmmax = $this->input->post("sgmmax");
+            $sgmmin = $this->input->post("sgmmin");
+            $sgmgrade = $this->input->post("sgmgradepay");
+                
+            $data = array(
+                'sgm_name'=>strtoupper($_POST['sgmname']),
+                'sgm_max'=>strtoupper($_POST['sgmmax']),
+                'sgm_min'=>strtoupper($_POST['sgmmin']),
+                'sgm_gradepay'=>$_POST['sgmgradepay']
+
+            );
+           $saldatadup = $this->SIS_model->isduplicatemore('salary_grade_master', $data);
+
+                   if($saldatadup == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Salary Grade Master Name' = $sgmn, 'Salary Grade Master Max' = $sgmmax , 'Salary Grade Master Min' =$sgmmin .");
+                        redirect('setup/salarygrademaster');
+                        return;
+                 }
+           else{
+
+           $sgmflag=$this->SIS_model->insertrec('salary_grade_master', $data) ;
+           if(!$sgmflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding salarygrademaster ", " Salary Grade Master data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding salarygrademaster ", " Salary Grade Master data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding salarygrademaster - ' . $_POST['sgmname'] , 'error');
+                $this->load->view('setup/salarygrademaster');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add salarygrademaster ", "Salary Grade Master record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add salarygrademaster ", "Salary Grade Master record added successfully..." );
+                $this->session->set_flashdata("success", "Salary Grade Master added successfully...");
+                redirect("setup/displaysalarygrademaster", "refresh");
+              }
+           }
+         }
+        }
+      $this->load->view('setup/salarygrademaster');
+   }
+	/* Display Salary Grade Master record */
+
+   public function displaysalarygrademaster(){
+
+        $this->result = $this->SIS_model->get_list('salary_grade_master');
+        $this->logger->write_logmessage("view"," View ", "Salary Grade Master display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Salary Grade Master", "Salary Grade Master successfully..." );
+        $this->load->view('setup/displaysalarygrademaster',$this->result);
+    }
+
+ /**This function is used for update Salary Grade Master details
+     * @param type $sgm_id
+     * @return type
+     */
+public function editsalarygrademaster($sgm_id) {
+        $sgm_data_q=$this->SIS_model->get_listrow('salary_grade_master','sgm_id', $sgm_id);
+        if ($sgm_data_q->num_rows() < 1)
+        {
+           redirect('setup/editsalarygrademaster');
+        }
+        $SalaryGradeMaster_data = $sgm_data_q->row();
+        /* Form fields */
+
+        $data['sgm_name'] = array(
+            'name' => 'sgm_name',
+            'id' => 'sgm_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $SalaryGradeMaster_data->sgm_name,
+        );
+        $data['sgm_max'] = array(
+           'name' => 'sgm_max',
+           'id' => 'sgm_max',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $SalaryGradeMaster_data->sgm_max,
+
+        );
+
+        $data['sgm_min'] = array(
+           'name' => 'sgm_min',
+           'id' => 'sgm_min',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $SalaryGradeMaster_data->sgm_min,
+
+        );
+
+        $data['sgm_gradepay'] = array(
+           'name' => 'sgm_gradepay',
+           'id' => 'sgm_gradepay',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $SalaryGradeMaster_data->sgm_gradepay,
+
+        );
+	$data['sgm_id'] = $sgm_id;
+
+        $this->form_validation->set_rules('sgm_name','Salary Grade Master Name  ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('sgm_max','Salary Grade Master Max ','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('sgm_min','Salary Grade Master Min ','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('sgm_gradepay','Salary Grade Master Gradepay ','trim|xss_clean|numeric');
+
+        if ($_POST)
+        {
+            $data['sgm_name']['value'] = $this->input->post('sgm_name', TRUE);
+            $data['sgm_max']['value'] = $this->input->post('sgm_max', TRUE);
+            $data['sgm_min']['value'] = $this->input->post('sgm_min', TRUE);
+            $data['sgm_gradepay']['value'] = $this->input->post('sgm_gradepay', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editsalarygrademaster', $data);
+            return;
+        }
+        else
+        {
+
+            $sgm_name = strtoupper($this->input->post('sgm_name', TRUE));
+            $sgm_max = strtoupper($this->input->post('sgm_max', TRUE));
+            $sgm_min = strtoupper($this->input->post('sgm_min', TRUE));
+            $sgm_gradepay = $this->input->post('sgm_gradepay', TRUE);
+            //$sgm_id = $sgm_id;
+            $logmessage = "";
+            if($SalaryGradeMaster_data->sgm_name != $sgm_name)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_name. " changed by " .$sgm_name;
+            if($SalaryGradeMaster_data->sgm_max != $sgm_max)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_max. " changed by " .$sgm_max;
+            if($SalaryGradeMaster_data->sgm_min != $sgm_min)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_min. " changed by " .$sgm_min;
+            if($SalaryGradeMaster_data->sgm_gradepay != $sgm_gradepay)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_gradepay. " changed by " .$sgm_gradepay;
+
+            $instdatasgma = array(
+               'sgma_sgmid'=> $sgm_id,
+               'sgma_name' => $SalaryGradeMaster_data->sgm_name,
+               'sgma_max' => $SalaryGradeMaster_data->sgm_max,
+               'sgma_min' => $SalaryGradeMaster_data->sgm_min,
+               'sgma_gradepay'=> $SalaryGradeMaster_data->sgm_gradepay,
+               'sgma_archuserid'=>$this->session->userdata('id_user'),
+               'sgma_archdate'=>date('y-m-d')
+            );
+	$update_data = array(
+               'sgm_name' => $sgm_name,
+               'sgm_max' => $sgm_max,
+               'sgm_min' => $sgm_min,
+               'sgm_gradepay'=> $sgm_gradepay,
+            );
+
+           $saldatadupe = $this->SIS_model->isduplicatemore('salary_grade_master', $update_data);
+
+                   if($saldatadupe == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Salary Grade Master Name' = $sgm_name, 'Salary Grade Master Max' = $sgm_max , 'Salary Grade Master Min' =$sgm_min .");
+                        redirect('setup/displaysalarygrademaster/');
+                        return;
+                 }
+         else{
+         $sgflag=$this->SIS_model->insertrec('salary_grade_master_archive', $instdatasgma);
+         if(!$sgflag)
+            {
+              $this->logger->write_dblogmessage("error","Error in insert salary grade master archive ", "Error in  salary grade master archive record insert" .$sgm_id );
+            }else{
+              $this->logger->write_dblogmessage("insert","Insert salary grade master archive", "Record inserted in salary grade master archive successfully.." .$sgm_id );
+            }
+
+           $sgmflag=$this->SIS_model->updaterec('salary_grade_master', $update_data, 'sgm_id', $sgm_id);
+           if(!$sgmflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Salary Grade Master ", "Error in Salary Grade Master record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Salary Grade Master ", "Error in Salary Grade Master record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Salary Grade Master - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editsalarygrademaster', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Salary Grade Master", "Salary Grade Master record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Salary Grade Master", "Salary Grade Master record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Salary Grade Master record updated successfully...');
+                redirect('setup/displaysalarygrademaster/');
+                }
+            }
+        }//else
+        redirect('setup/editsalarygrademaster/');
+    }
+
 
 
 }//end class
