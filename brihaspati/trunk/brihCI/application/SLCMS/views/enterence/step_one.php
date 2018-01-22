@@ -301,68 +301,71 @@ function filladd()
 		
 	</tr>
 	</table>
-
+</br>
 <table style="width:100%;" border=2>
-	<thead><tr><th align=left style="font-size:22px;" colspan=2>Permanent and Correspondence Address</th>
+	<thead><tr><th align=left style="font-size:22px;" colspan=3>Permanent and Correspondence Address</th>
 		<th align=right colspan=2  style="font-size:18px;">
-		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Permanent Address
+		
 	</th>
 	</tr>
 	
 	</thead>
 	<thead></thead>
 	<tr>
-		<td colspan=2>
+		<td>
 		<table style="width:100%;">
-				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;">Permanent Address</td></tr>
+				<tr><td style="background-color:black;color:white;font-size:20px;text-align:left;" colspan=3><b>Permanent Address</b></td></tr>
 		<tr height=10></tr>
 			<tr><td>
 			<label for="nnumber">Street</label></br>
 			<input type="text" name="entpstreet" placeholder="Enter Your Street" id="street" value="<?php echo isset($_POST["entpstreet"]) ? $_POST["entpstreet"] : ''; ?>">
 				   </td>
-			</tr><tr>		
+					
 			<td><label for="nnumber">City</label></br>
 			<input type="text" name="entpcity" placeholder="Enter Your City" id="city" value="<?php echo isset($_POST["entpcity"]) ? $_POST["entpcity"] : ''; ?>"></td>
-			</tr><tr>
+			
 		
 			<td><label for="nnumber">State</label></br>
 			<input type="text" name="entpstate" placeholder="Enter Your State" id="state" value="<?php echo isset($_POST["entpstate"]) ? $_POST["entpstate"] : ''; ?>"></td></tr><tr>
 			<td><label for="nnumber">Postal Code</label></br>
-			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" id="pcode" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td></tr>
-			<tr>
+			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" id="pcode" value="<?php echo isset($_POST["entpcountry"]) ? $_POST["entpcountry"] : ''; ?>"></td>
 				<td><label for="nnumber">Country</label></br>
-			<input type="text" name="entpcountry" placeholder="Enter Your Country" id="country" value="<?php echo isset($_POST["entpcountry"]) ? $_POST["entpcountry"] : ''; ?>"></td>
+			<input type="text" name="entpcountry" placeholder="Enter Your Country" id="country" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td>
 		</table>
 		</td>
 
-		<td colspan=2>
-
-		<table style="width:100%;">
-				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;" >Correspondence Address</td></tr>
+		
+	</tr>
+	<tr height=20></tr>
+	<tr>
+		<td colspan=3 style="background-color:#38B0DE;color:white;font-weight:bold;font-size:20px;">Correspondence Address same as Permanent Address
+			<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>
+		</td>	
+	</tr>
+	<tr>
+		<td colspan=3>
+			<table style="width:100%;">
+				<tr><td style="background-color:black;color:white;font-size:20px;text-align:left;"  colspan=3><b>Correspondence Address</b></td></tr>
 		<tr height=10></tr>
 				<tr><td>
 					<label for="nnumber">Street</label></br>
-					<input type="text" name="entcostreet" placeholder="Enter Your Street" id="street1" value="<?php echo isset($_POST["entcostreet"]) ? $_POST["entcostreet"] : ''; ?>">
+					<input type="text" name="entcostreet" placeholder="Enter Your Street" id="street1" value="<?php echo isset($_POST["stu_addcostreet"]) ? $_POST["stu_addcostreet"] : ''; ?>">
 				   </td>
-			</tr><tr>		
+				
 			<td><label for="nnumber">City</label></br>
-			<input type="text" name="entcocity" placeholder="Enter Your City" id="city1" value="<?php echo isset($_POST["entcocity"]) ? $_POST["entcocity"] : ''; ?>"></td>
-			</tr><tr>
+			<input type="text" name="entcocity" placeholder="Enter Your City" id="city1" value="<?php echo isset($_POST["stu_addcocity"]) ? $_POST["stu_addcocity"] : ''; ?>"></td>
+			
 		
 			<td><label for="nnumber">State</label></br>
-			<input type="text" name="entcostate" placeholder="Enter Your State" id="state1" value="<?php echo isset($_POST["entcostate"]) ? $_POST["entcostate"] : ''; ?>"></td></tr><tr>
+			<input type="text" name="entcostate" placeholder="Enter Your State" id="state1" value="<?php echo isset($_POST["stu_addcostate"]) ? $_POST["stu_addcostate"] : ''; ?>"></td></tr><tr>
 			<td><label for="nnumber">Postal Code</label></br>
-			<input type="text" name="entcocode" placeholder="Enter Your Postal Code" id="pcode1" value="<?php echo isset($_POST["entcocode"]) ? $_POST["entcocode"] : ''; ?>"></td></tr>
-			<tr>
+			<input type="text" name="entcocode" placeholder="Enter Your Postal Code" id="pcode1" value="<?php echo isset($_POST["stu_addcocode"]) ? $_POST["stu_addcocode"] : ''; ?>"></td>
 				<td><label for="nnumber">Country</label></br>
-			<input type="text" name="entcocountry" placeholder="Enter Your Country" id="country1" value="<?php echo isset($_POST["entcocountry"]) ? $_POST["entcocountry"] : ''; ?>"></td>
+			<input type="text" name="entcocountry" placeholder="Enter Your Country" id="country1" value="<?php echo isset($_POST["stu_addcocountry"]) ? $_POST["stu_addcocountry"] : ''; ?>"></td>
 		</table>
-		</td>		
+		</tr>	
 	</tr>
 </table>
-	
-	
-
 
 </br></br>
 	<table style="width:100%;">

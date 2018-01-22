@@ -361,9 +361,15 @@ class Studenthome extends CI_Controller
             $semmaxcredit = $row->semcr_maxcredit;
             $semcpi = $row->semcr_semcpi;
         }
-        $data['semmincredit'] = $semmincredit;
-        $data['semmaxcredit'] = $semmaxcredit;
-        $data['semcpi'] = $semcpi;
+	if(!empty($semmincredit)){
+	        $data['semmincredit'] = $semmincredit;
+	}
+	if(!empty($semmaxcredit)){
+      	  	$data['semmaxcredit'] = $semmaxcredit;
+	}
+	if(!empty($semcpi)){
+	        $data['semcpi'] = $semcpi;
+	}
         //get subject/papers in a semester of a program from subject_semester
         $wheredata1 = array('subsem_prgid' => $prg_id,'subsem_semester' => $semester);
         $selectfield1 = 'subsem_subid,subsem_subtype';

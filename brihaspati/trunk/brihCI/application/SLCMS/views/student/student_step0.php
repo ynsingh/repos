@@ -84,7 +84,7 @@ echo "</center>";
         	<label for="username">Hall Ticket Number</label></td>
 		</td><td>
 		
-        	<input type="text" name="Sanumber" placeholder="Enter Your Hall Ticket Number" autofocus/> <br>
+        	<input type="text" name="Sanumber" placeholder="Enter Your Hall Ticket Number" autofocus value="<?php echo isset($_POST["Sanumber"]) ? $_POST["Sanumber"] : ''; ?>"/> <br>
 		</td></tr>	
 		<tr ><td>
         	<label for="text">Program/Courses</label>
@@ -122,7 +122,7 @@ echo "</center>";
 		<label for="text">Email-Id</label>
 		</td><td>
 		
-        	<input type="email" name="Semail" placeholder="Enter Your Email-id"/><br>
+        	<input type="email" name="Semail" placeholder="Enter Your Email-id" value="<?php echo isset($_POST["Semail"]) ? $_POST["Semail"] : ''; ?>"/><br>
 		</td></tr>
 		<tr>
         	<td></td>

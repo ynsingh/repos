@@ -126,7 +126,9 @@ echo $semester;
     echo "<tr><td>";
     echo form_label('Minimum Credit : ', 'semester');
     echo"</td><td>";
-    echo $semmincredit;
+    if(!empty($semmincredit)){	
+    	echo $semmincredit;
+    }	
     echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 
@@ -134,7 +136,9 @@ echo $semester;
     echo "<tr><td>";
     echo form_label('Maximum Credit : ', 'semester');
     echo"</td><td>";
-    echo $semmaxcredit;
+    if(!empty($semmaxcredit)){	
+    	echo $semmaxcredit;
+    }	
     echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 
@@ -142,7 +146,9 @@ echo $semester;
     echo "<tr><td>";
     echo form_label('Semester CPI : ', 'semester');
     echo"</td><td>";
-    echo $semcpi;
+    if(!empty($semcpi)){	
+    	echo $semcpi;
+    }
     echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 

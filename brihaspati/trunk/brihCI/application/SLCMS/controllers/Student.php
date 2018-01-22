@@ -20,14 +20,27 @@ class Student extends CI_Controller {
 		$this->load->model("Mailsend_model","mailmodel");
 		$this->load->model("DateSem_model","datmodel");
 	}
+
+	//This function has been created for display the list of degree on the basis of program category
+	public function degreelist(){
+			$pgcatname = $this->input->post('stu_prgcate');
+			$list = $this->commodel->get_listspfic2('program','','prg_name,prg_id,prg_branch','prg_category',$pgcatname,'prg_name,prg_branch');
+		echo "<select>";
+		echo "<option disabled selcted>Select Programe</option>";
+		foreach($list as $datas): 
+      		  	echo "<option  id='degree' value='$datas->prg_id'> " ."$datas->prg_name".'('.$datas->prg_branch.')'."</option>";
+  		endforeach;
+		echo "</select>";
+	 }
+
 	//This function has been created for display the list of branch on the basis of program
-	public function branchlist(){
+	/*public function branchlist(){
 			$pgid = $this->input->post('Sprogramname');
 			$list = $this->commodel->get_listspfic2('admissionmeritlist','','branchname','course_name',$pgid,'branchname');
 			foreach($list as $datas): ?>   
       		  		<option  id='branchname' value="<?php echo $datas->branchname;?>"><?php echo $datas->branchname; ?></option>
 <?php   		endforeach;
-	 }
+	 }*/
 	
 	// Check for user admission login process
 	public function student_step0() {
@@ -60,47 +73,39 @@ class Student extends CI_Controller {
 						//$result = $this->stumodel->login($data);
 						if ($result == true) {
 							$number = $this->input->post('Sanumber');
-							 //verify the data existance filled by user
-                                                        $result1 = $this->commodel->isduplicate('admissionstudent_master','asm_applicationno',$number);
-							
-                                                        if ($result1 == true) {
-							//print_r($result1.','.$number);die;
-                                                                //call studentstep function and that function will decide in which page you are landing after putting the correct crediential
-                                                                $this->studentstep($number);
-								
-                                                        }else{
-                                                                $this->session->set_flashdata('err_message', 'Your data does not exist, So you contact to administrator or department.');
-                                                                redirect('welcome');
-                                                        }
-						}	
-						 else {
+							$this->studentstep($number);
+						}
+						else {
 							
 							$this->session->set_flashdata("err_message",'Your details are invalid');
 							redirect('student/student_step0');
 							}
+						
 					}
 	        }
 		$this->load->view('student/student_step0');
 	}
 
-	//check for completed admission step
-	public function studentstep($applicationno){
 
+	//check for other form completed admission step
+	public function studentstep($applicationno){
+	
 		//check the existence of entry in student_admissionstep table 
 		//$this->resstep=$this->commodel->get_listrow('student_admissionstep','sm_application',$applicationno)->result();
-		$this->resstep=$this->commodel->get_listrow('student_admissionstep','application_no',$applicationno)->result();
-		//print_r($this->resstep);
-		if(!empty($this->resstep)) {
-
+		$this->restep=$this->commodel->get_listrow('student_admissionstep','application_no',$applicationno)->result();
+		
+		//print_r($this->restep);die;
+		if(!empty($this->restep)) {
+		
 		// if exist then check which step is completed and redirect to incmplete step with appropriate data
-			foreach($this->resstep as $rslt){
+			foreach($this->restep as $rslt){
 				$stp1= $rslt->step1_status;
 				$stp2= $rslt->step2_status;
 				$stp3= $rslt->step3_status;
 				$stp4= $rslt->step4_status;
 				$stp5= $rslt->step5_status;
+				$appno = $rslt->application_no;
 			}
-
 			if($stp1 == 0 || $stp1 == NULL){
 				
 			// set the student role and application number in session
@@ -113,10 +118,11 @@ class Student extends CI_Controller {
 				$this->session->set_userdata($data);
                                 //verify the data existance filled by user 
 				redirect('Student/student_step1');
-			}
+				}
+			
 			else if($stp2 == 0 || $stp2 == NULL){
 				//check the value set in session if not then
-				// get the student master id
+				//get the student master id
 				//$this->smid= $this->commodel->get_listspfic1('student_master','sm_id','sm_applicationno',$applicationno)->sm_id;
 				$smid= $this->commodel->get_listspfic1('student_entry_exit','senex_smid','senex_entexamapplicationno',$applicationno)->senex_smid;
 				
@@ -139,7 +145,7 @@ class Student extends CI_Controller {
 					$smid= $this->commodel->get_listspfic1('student_entry_exit','senex_smid','senex_entexamapplicationno',$applicationno)->senex_smid;
 				// set the student master and application number in session
 					$data = [
-						'username' => $applicationno,
+					'username' => $applicationno,
                         	        'sm_id' => $smid,
 					'app_no' => $applicationno,
 			                'id_role' => 3
@@ -203,17 +209,25 @@ class Student extends CI_Controller {
 		}// 
 		else{ //complete block added by nks
 			 // set the student role and application number in session
-                         $data = [
+                        $data = [
                                 'app_no' => $applicationno,
                                 'id_role' => 3
                         ];
                         $this->session->set_userdata($data);
 
-			// if not then redirect to step 1 page with aapropriate data 
-			//$this->load->view('student/student_step1');
-			redirect('student/student_step1');
+			$result1 = $this->commodel->isduplicate('admissionstudent_master','asm_applicationno',$applicationno);
+		 	if ($result1 == true) {
+                                //verify the data existance filled by user 
+				redirect('Student/student_step1');
+			}
+			else if($result1 == false){
+                                //verify the data existance filled by user 
+				redirect('Student/student_admissionform');
+			}
 		}
 	}
+
+
 
     //This function check for duplicate mobile 		   
     public function mobileexist($mobile) {
@@ -243,6 +257,343 @@ class Student extends CI_Controller {
         }
     }
 
+	public function student_admissionform(){
+		$number = $this->session->userdata['app_no'];
+		$data['number']	= $number;
+		$data['stu_prgcat'] = $this->commodel->get_list('programcategory');
+		$data['stu_examcenter'] = $this->commodel->get_list('student_examcenter');
+		$data['stu_studycenter'] = $this->commodel->get_list('study_center');
+		$data['stu_categorylist'] = $this->commodel->get_list('category');
+		$data['stu_depresult'] = $this->commodel->get_list('Department');
+		$data['stu_program'] = $this->commodel->get_list('program');
+		$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','entexamrollno',$number)->row();
+		if(!empty($stu_addmisdata)) {
+			$prgname = $stu_addmisdata->course_name;	
+			$data['email'] = $stu_addmisdata->student_email;
+			$data['name'] = $stu_addmisdata->student_name;
+			$data['prgname'] = $stu_addmisdata->course_name;
+			$data['branchname'] = $stu_addmisdata->branchname;
+			$prgname = $data['prgname'];
+			$branchname = $data['branchname'];
+			$whdata = array('prg_name' => $prgname,'prg_branch' => $branchname);
+			$data['prgcat'] = $this->commodel->get_distinctrecord('program','prg_category',$whdata);
+			$data['fathername'] = $stu_addmisdata->father_name;
+		}
+	//check admission last date for student
+	$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
+	$admidate = $this->datmodel->comparedate($ldate);
+	if($admidate)
+	{
+		if(isset($_POST['stu_addmission'])){
+				$this->form_validation->set_rules('stu_addrollno','Application no.','trim|xss_clean|numeric');
+            			$this->form_validation->set_rules('stu_addname','Applicant name','trim|xss_clean');
+            			$this->form_validation->set_rules('stu_addgender','Gender','trim|xss_clean|required');
+            			$this->form_validation->set_rules('stu_adddob','Date of birth','trim|xss_clean|required');
+	    			$this->form_validation->set_rules('stu_addaadhar','Aadhar number','trim|xss_clean|is_numeric|max_length[12]|callback_aadharexist');
+            			$this->form_validation->set_rules('stu_addabgroup','Blood group','trim|xss_clean');
+           			$this->form_validation->set_rules('stu_addreligion','Religion','trim|xss_clean|required');
+            			$this->form_validation->set_rules('stu_addmobile','Mobile number','trim|xss_clean|is_numeric|max_length[12]|required');
+	    			$this->form_validation->set_rules('stu_addemail','Email-id','trim|xss_clean|required|valid_email');
+				$this->form_validation->set_rules('stu_addcourse','Program/Course name','trim|xss_clean');
+				$this->form_validation->set_rules('stu_addcenter','Study center','trim|xss_clean|required');
+          			//$this->form_validation->set_rules('','Program/Course type','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_adddepart','Departmnet not select','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_addprgcate','Program Category not select','trim|xss_clean|required');
+
+				$this->form_validation->set_rules('stu_addmothername','Mother name','trim|xss_clean|required');
+          			$this->form_validation->set_rules('stu_addfathername','Father name','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_addfathermono','Father mobile number','trim|xss_clean|required|numeric');
+          			$this->form_validation->set_rules('stu_addmothermono','Mother mobile number','trim|xss_clean|required|numeric');
+				$this->form_validation->set_rules('stu_addfatheroccu','Father occupation','trim|xss_clean|required');
+          			$this->form_validation->set_rules('stu_addmotheroccu','Mother occupation','trim|xss_clean|required');
+
+           			$this->form_validation->set_rules('stu_addcate','Category','trim|xss_clean|required');
+           			$this->form_validation->set_rules('stu_addpstreet','Postal address','trim|xss_clean|required');
+				//$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required');
+				//$this->form_validation->set_rules('Spost','Post office','trim|xss_clean|required');
+	   			$this->form_validation->set_rules('stu_addpcity','City','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_addpstate','State','trim|xss_clean|required');
+          			$this->form_validation->set_rules('stu_addpcountry','Country','trim|xss_clean|required');
+           			$this->form_validation->set_rules('stu_addpcode','Postal Code','trim|xss_clean|required|numeric');
+
+				$this->form_validation->set_rules('stu_hcname','High School Class Name','trim|xss_clean|required');
+          			$this->form_validation->set_rules('stu_hinstitute','High School Institute Name','trim|xss_clean|required');
+           			$this->form_validation->set_rules('stu_hboard','High School Board','trim|xss_clean|required');
+           			$this->form_validation->set_rules('stu_hsubject','High School Subject','trim|xss_clean|required');
+	   			$this->form_validation->set_rules('stu_hpassed','High School Passed/Appeared','trim|xss_clean|required');
+	   			$this->form_validation->set_rules('stu_hmmarks','High School Max Marks','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_hmobtain','High School Marks Obtained','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_hpercentage','High School Percentage','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_hyear','High School Passing Year','trim|xss_clean|required');
+	
+	    			$this->form_validation->set_rules('stu_icname','Intermediate School Class Name','trim|xss_clean|required');
+          			$this->form_validation->set_rules('stu_iinstitute','Intermediate School Institute Name','trim|xss_clean|required');
+           			$this->form_validation->set_rules('stu_iboard','Intermediate School Board','trim|xss_clean|required');
+           			$this->form_validation->set_rules('stu_isubject','Intermediate School Subject','trim|xss_clean|required');
+	   			$this->form_validation->set_rules('stu_ipassed','Intermediate School Passed/Appeared','trim|xss_clean|required');
+	   			$this->form_validation->set_rules('stu_immarks','Intermediate School Max Marks','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_imobtain','Intermediate School Marks Obtained','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_ipercentage','Intermediate School Percentage','trim|xss_clean|required');
+				$this->form_validation->set_rules('stu_iyear','Intermediate School Passing Year','trim|xss_clean|required');
+
+	    			if($this->form_validation->run() == TRUE){
+					$stu_reserve = '';
+						
+						foreach($_POST['basic'] as $row){
+							$stu_reserve .= $row . ', ';
+						}
+					$stu_personnel = array(
+                				'sm_fname'  		=>	$_POST['stu_addname'],
+                				'sm_gender'  		=>	$_POST['stu_addgender'],
+                				'sm_dob'   		=>	$_POST['stu_adddob'],
+						'sm_uid'   		=>	$_POST['stu_addaadhar'],
+                				'sm_bloodgroup'   	=>	$_POST['stu_addabgroup'],
+                				'sm_religion'  		=>	$_POST['stu_addreligion'],
+                				'sm_mobile'   		=>	$_POST['stu_addmobile'],
+						'sm_email'   		=>	$_POST['stu_addemail'],
+						'sm_category'		=>	$_POST['stu_addcate'],
+						'sm_sccode'		=>	$_POST['stu_addcenter'],
+						'sm_reservationtype'	=>	$stu_reserve,
+						'sm_phyhandicaped'	=>	$_POST['stu_adddisability'],
+						//'sm_enrollmentno'	=>	$enroollno
+                			);
+					//$this->db->insert('student_master', $data);	
+					$this->db->insert('student_master', $stu_personnel);
+					$insertid = $this->db->insert_id();
+
+					//insert into student parent
+					$stu_parent = array(
+						'spar_smid'		=>	$insertid,
+						'spar_mothername'	=>	$_POST['stu_addmothername'],
+						'spar_motheroccupation'	=>	$_POST['stu_addmotheroccu'],
+						'spar_motherphoneno'   	=>	$_POST['stu_addmothermono'],
+						'spar_fathername'   	=>	$_POST['stu_addfathername'],
+						'spar_fatheroccupation'	=>	$_POST['stu_addfatheroccu'],
+						'spar_fatherphoneno'   	=>	$_POST['stu_addfathermono'],
+
+                				'spar_paddress'  	=>	$_POST['stu_addpstreet'],
+						//'spar_pdistrict'  	=>	$_POST['Sdist'],
+						//'spar_ppostoffice'  	=>	$_POST['Spost'],
+                				'spar_pcity'  		=>	$_POST['stu_addpcity'],
+                				'spar_pstate'   	=>	$_POST['stu_addpstate'],
+						'spar_pcountry'   	=>	$_POST['stu_addpcountry'],
+						'spar_ppincode'   	=>	$_POST['stu_addpcode'],
+						'spar_caddress'  	=>	$_POST['stu_addcostreet'],
+						//'spar_cdistrict'  	=>	$_POST['Sdist'],
+						//'spar_cpostoffice'  	=>	$_POST['Spost'],
+                				'spar_ccity'  		=>	$_POST['stu_addcocity'],
+                				'spar_cstate'   	=>	$_POST['stu_addcostate'],
+						'spar_ccountry'   	=>	$_POST['stu_addcocountry'],
+						'spar_cpincode'   	=>	$_POST['stu_addcocode']
+                	
+                			);
+					//print_r($parent);		
+					$parent = $this->commodel->insertrec('student_parent', $stu_parent);
+					
+					//insert record in student education table
+					$stu_Hedu = array(
+						'sedu_smid'		=>	$insertid,
+                				'sedu_class'   		=>	$_POST['stu_hcname'],
+                				'sedu_subject'  	=>	$_POST['stu_hsubject'],
+                				'sedu_board'  		=>	$_POST['stu_hboard'],
+                				'sedu_passingyear'   	=>	$_POST['stu_hyear'],
+						'sedu_resultstatus'   	=>	$_POST['stu_hpassed'],
+						'sedu_institution'   	=>	$_POST['stu_hinstitute'],
+						'sedu_marksobtained'   	=>	$_POST['stu_hmobtain'],
+						'sedu_maxmarks'   	=>	$_POST['stu_hmmarks'],
+						'sedu_percentage'   	=>	$_POST['stu_hpercentage'],
+						//'asedu_percentage'   	=>	$_POST['eduugc_net']
+                			);	
+					//print_r($Hedu);
+					$this->commodel->insertrec('student_education', $stu_Hedu);
+				
+					$stu_intn =$_POST['stu_icname'];
+					$stu_Iedu = array(
+						'sedu_smid'		=>	$insertid,
+						'sedu_class'   		=>	$_POST['stu_icname'],
+                				'sedu_subject'  	=>	$_POST['stu_isubject'],
+                				'sedu_board'  		=>	$_POST['stu_iboard'],
+                				'sedu_passingyear'   	=>	$_POST['stu_iyear'],
+						'sedu_resultstatus'   	=>	$_POST['stu_ipassed'],
+						'sedu_institution'   	=>	$_POST['stu_iinstitute'],
+						'sedu_marksobtained'   	=>	$_POST['stu_imobtain'],
+						'sedu_maxmarks'   	=>	$_POST['stu_immarks'],
+						'sedu_percentage'   	=>	$_POST['stu_ipercentage']
+						//'asedu_percentage'   	=>	$_POST['eduugc_net']
+             		  	 	);
+					//print_r($Iedu);
+					if(!empty($stu_intn)){
+						$this->commodel->insertrec('student_education', $stu_Iedu);
+					}
+
+					$stu_gran =$_POST['stu_gsubject'];
+					$stu_Gedu = array(
+						'sedu_smid'		=>	$insertid,
+						'sedu_class'   		=>	$_POST['stu_gcname'],
+                				'sedu_subject'  	=>	$_POST['stu_gsubject'],
+                				'sedu_board'  		=>	$_POST['stu_gboard'],
+                				'sedu_passingyear'   	=>	$_POST['stu_gyear'],
+						'sedu_resultstatus'   	=>	$_POST['stu_gpassed'],
+						'sedu_institution'   	=>	$_POST['stu_ginstitute'],
+						'sedu_marksobtained'   	=>	$_POST['stu_gmobtain'],
+						'sedu_maxmarks'   	=>	$_POST['stu_gmmarks'],
+						'sedu_percentage'   	=>	$_POST['stu_gpercentage']
+						//'sedu_percentage'   	=>	$_POST['eduugc_net']
+               				 );
+					//print_r($Gedu);
+					if(!empty($stu_gran)){
+						$this->commodel->insertrec('student_education', $stu_Gedu);
+					}
+
+					$stu_pron =$_POST['stu_psubject'];
+					$stu_Pgedu = array(
+						'sedu_smid'		=>	$insertid,
+						'sedu_class'   		=>	$_POST['stu_gcname'],
+                				'sedu_subject'  	=>	$_POST['stu_gsubject'],
+                				'sedu_board'  		=>	$_POST['stu_gboard'],
+                				'sedu_passingyear'   	=>	$_POST['stu_gyear'],
+						'sedu_resultstatus'   	=>	$_POST['stu_gpassed'],
+						'sedu_institution'   	=>	$_POST['stu_ginstitute'],
+
+						'sedu_marksobtained'   =>	$_POST['stu_gmobtain'],
+						'sedu_maxmarks'   	=>	$_POST['stu_gmmarks'],
+						'sedu_percentage'   	=>	$_POST['stu_gpercentage']
+						//'asedu_percentage'   	=>	$_POST['eduugc_net']
+                			);
+					//print_r($Pgedu);
+					if(!empty($stu_pron)){
+						$this->commodel->insertrec('student_education', $stu_Pgedu);
+					}
+
+					$stu_anyn =$_POST['stu_asubject'];
+					$stu_Aedu = array(
+						'sedu_smid'		=>	$insertid,
+						'sedu_class'   		=>	$_POST['stu_gcname'],
+                				'sedu_subject'  	=>	$_POST['stu_gsubject'],
+                				'sedu_board'  		=>	$_POST['stu_gboard'],
+                				'sedu_passingyear'   	=>	$_POST['stu_gyear'],
+						'sedu_resultstatus'   	=>	$_POST['stu_gpassed'],
+						'sedu_institution'   	=>	$_POST['stu_ginstitute'],
+						'sedu_marksobtained'   =>	$_POST['stu_gmobtain'],
+						'sedu_maxmarks'   	=>	$_POST['stu_gmmarks'],
+						'sedu_percentage'   	=>	$_POST['stu_gpercentage']
+						//'asedu_percentage'   	=>	$_POST['eduugc_net']
+              			  	);
+					//print_r($Aedu);
+					if(!empty($stu_anyn)){
+						$this->commodel->insertrec('student_education', $stu_Aedu);
+					}
+	
+					//insert into student enterence exam
+					$stu_enterence = array(
+						'seex_smid'		=>	$insertid,
+						'seex_rollno'		=>	$_POST['stu_addrollno'],
+						//'seex_examname'   	=>	$_POST[''],
+                				//'spar_paddress'  	=>	$_POST['Spaddress'],
+                				//'spar_pcity'  	=>	$_POST['Scity'],
+                				//'spar_pstate'   	=>	$_POST['Sstate'],
+						//'spar_pcountry'   	=>	$_POST['Scountry'],
+						//'spar_ppincode'   	=>	$_POST['Spincode']
+			
+                				);
+					$this->commodel->insertrec('student_entrance_exam',$stu_enterence);
+
+					$cacadyer = $this->user_model->getcurrentAcadYear();
+					//insert into student program
+					$cdate = date("Y-m-d");
+					$sem=1;
+					$stu_prgcatname = $_POST['stu_addprgcate'];
+					$stu_prgcatid = $this->commodel->get_listspfic1("programcategory","prgcat_id","prgcat_name",$stu_prgcatname)->prgcat_id;
+					
+					$stu_stuprog = array(
+						'sp_smid'		=>	$insertid,
+						'sp_sccode'		=>	$_POST['stu_addcenter'],
+						'sp_pcategory'   	=>	$stu_prgcatid,
+			                	'sp_programid'  	=>	$_POST['stu_addcourse'],
+			                	'sp_acadyear'  		=>	$cacadyer,
+						'sp_semester'  		=>	$sem,
+						'sp_semregdate'		=>	$cdate,
+						'sp_deptid'		=> 	$_POST['stu_adddepart'],
+						'sp_branch'		=> 	$_POST['stu_addcourse']
+			                );
+					
+					$this->db->insert('student_program', $stu_stuprog);
+					$getprogid = $this->db->insert_id();
+					
+					//insert into student fees
+					$stu_fees = array(
+						'sfee_smid'		=>	$insertid,
+						'sfee_spid'		=>	$getprogid
+                				);	
+					$this->commodel->insertrec('student_fees',$stu_fees);
+	
+					//insert into student_admissionstatus
+					$stud_status = array(
+						'sas_hallticketno'	=>	$number,
+						'sas_studentmasterid'	=>	$insertid,
+                				);
+					$this->commodel->insertrec('student_admissionstatus',$stud_status);
+					
+					$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
+					$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","entexamrollno",$number)->entexamname;
+					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;
+					$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	
+					//print_r($ameritid.' '.$ameritexname.' '.$ameritrollno.' '.$ameritno);die;
+					//insert  into student entry exit
+						$stu_entry = array(
+							'senex_prgid'			=>	$_POST['stu_addcourse'],
+							'senex_smid'			=>	$insertid,
+							'senex_entexamapplicationno'   	=>	$_POST['stu_addrollno'],
+							'senex_entexamname'		=>	$ameritexname,
+							'senex_entexamrollno'		=>	$ameritrollno,
+							'senex_entexamrank'		=>      $ameritid,
+							'senex_entexammeritno'		=>	$ameritno
+						 );
+					$this->commodel->insertrec('student_entry_exit',$stu_entry);
+					$this->logger->write_logmessage("insert", "New student record insert in student entry exit table.".$_POST['stu_addrollno']);
+                    			$this->logger->write_dblogmessage("insert", "New student record insert in student entry exit table.".$_POST['stu_addrollno']);				
+
+					//insert into admission step
+					$no=1;
+					$cdate = date('Y-m-d H:i:s');
+					$stu_admission = array(
+						'application_no'	=>	$_POST['stu_addrollno'],
+						'student_masterid'	=>	$insertid,
+						'step1_status'   	=>	$no,
+                				'step1_date'  		=>	$cdate
+                	
+                			);
+					$stu_step1 = $this->commodel->insertrec('student_admissionstep', $stu_admission);
+					$session_studata = array(
+						'sm_id' => $insertid,
+					);
+					$this->session->set_userdata($session_studata);
+					if(!$stu_step1)
+					{
+                   				$this->logger->write_logmessage("insert", "New Student admission personnel , family & education record not add successfully.".$_POST['stu_addrollno']);
+                    				$this->logger->write_dblogmessage("insert", "New Student admission personnel , family & education record not add successfully.".$_POST['stu_addrollno'] );
+                   	 			$this->session->set_flashdata("err_message",'Error in adding admission details');
+						redirect('student/student_admissionform');
+                			}
+                			else{
+                    				$this->logger->write_logmessage("insert","New Student admission personnel , family & education record add successfully.".$_POST['stu_addrollno']);
+                    				$this->logger->write_dblogmessage("insert", "Student admission personnel , family & education record add successfully.".$_POST['stu_addrollno']);
+                   				$this->session->set_flashdata("success", "Your admission details has been  added successfully.");
+						redirect('student/student_step2');
+                			}
+				}//validation if close
+				
+		}//post if close
+
+
+	$this->load->view('student/student_step1form',$data);
+	}//check admission last date if close
+	else
+	{	$this->session->set_flashdata("err_message",'Your last date of admission is over so contact your administration department');
+		redirect('welcome');
+	}
+	}
+
 
 	 public function student_step1(){
 		$array_items = array('success' => '', 'error' => '', 'warning' =>'');
@@ -250,12 +601,12 @@ class Student extends CI_Controller {
 		
 		$number = $this->session->userdata['app_no'];
 		$data['number']	= $number;
-		//print_r($number);echo "step 1";die;
-	//	$whdata = array( 'asm_applicationno' => $number );
+		 //print_r($number);echo "step 1";die;
+		//$whdata = array( 'asm_applicationno' => $number );
                 $resultap = $this->commodel->isduplicate('admissionstudent_master','asm_applicationno', $number);
 		
                 if (!$resultap) {
-			print_r($resultap.','.$number);die;
+			//print_r($resultap.','.$number);die;
                         $this->session->set_flashdata('err_message', 'Your data does not exist, So you contact to administrator or department.');
                         redirect('welcome');
                 }
@@ -451,62 +802,6 @@ class Student extends CI_Controller {
 		
 		//For Repopulating data
 		
-		if($_POST){
-			/*$this->data['Sdepart']=$this->input->get_post('Sdepart');
-			$this->data['Scenters']=$this->input->get_post('Scenters');
-			$this->data['Stypeprogramme']=$this->input->get_post('Stypeprogramme');
-			$this->data['Snameprogramme']=$this->input->get_post('Snameprogramme');
-			$this->data['Smothername']=$this->input->get_post('Smothername');
-			$this->data['Sfathername']=$this->input->get_post('Sfathername');
-			$this->data['Scategory']=$this->input->get_post('Scategory');
-			$this->data['Sgender']=$this->input->get_post('Sgender');
-			$this->data['Sdob']=$this->input->get_post('Sdob');
-			$this->data['Saadharnumber']=$this->input->get_post('Saadharnumber');
-			$this->data['Sabgroup']=$this->input->get_post('Sabgroup');
-			$this->data['Sreligion']=$this->input->get_post('Sreligion');
-			$this->data['Spaddress']=$this->input->get_post('Spaddress');
-			$this->data['Sdist']=$this->input->get_post('Sdist');
-			$this->data['Spost']=$this->input->get_post('Spost');
-			$this->data['Scity']=$this->input->get_post('Scity');
-			$this->data['Sstate']=$this->input->get_post('Sstate');
-			$this->data['Scountry']=$this->input->get_post('Scountry');
-			$this->data['Spincode']=$this->input->get_post('Spincode');
-			$this->data['Smobile']=$this->input->get_post('Smobile');
-			$this->data['Semail']=$this->input->get_post('Semail');
-			$this->data['Icity1']=$this->input->get_post('Icity1');
-
-			$this->data['Hcname']=$this->input->get_post('Hcname');
-			$this->data['Hsubject']=$this->input->get_post('Hsubject');
-			$this->data['Hboard']=$this->input->get_post('Hboard');
-			$this->data['Hyear']=$this->input->get_post('Hyear');
-			$this->data['Hpassed']=$this->input->get_post('Hpassed');
-
-			$this->data['Icname']=$this->input->get_post('Icname');
-			$this->data['Isubject']=$this->input->get_post('Isubject');
-			$this->data['Iboard']=$this->input->get_post('Iboard');
-			$this->data['Iyear']=$this->input->get_post('Iyear');
-			$this->data['Ipassed']=$this->input->get_post('Ipassed');
-
-			$this->data['Gcname']=$this->input->get_post('Gcname');
-			$this->data['Gsubject']=$this->input->get_post('Gsubject');
-			$this->data['Gboard']=$this->input->get_post('Gboard');
-			$this->data['Gyear']=$this->input->get_post('Gyear');
-			$this->data['Gpassed']=$this->input->get_post('Gpassed');
-
-			$this->data['Pcname']=$this->input->get_post('Pcname');
-			$this->data['Psubject']=$this->input->get_post('Psubject');
-			$this->data['Pboard']=$this->input->get_post('Pboard');
-			$this->data['Pyear']=$this->input->get_post('Pyear');
-			$this->data['Ppassed']=$this->input->get_post('Ppassed');
-
-			$this->data['Acname']=$this->input->get_post('Acname');
-			$this->data['Asubject']=$this->input->get_post('Asubject');
-			$this->data['Aboard']=$this->input->get_post('Aboard');
-			$this->data['Ayear']=$this->input->get_post('Ayear');
-			$this->data['Apassed']=$this->input->get_post('Apassed');*/
-			}
-
-		
            	if($this->form_validation->run() == FALSE){
 				//$message = '<h3>Your some detail is incorrect .</h3>';
 	  			//$this->session->set_flashdata('msg',$message);
@@ -533,7 +828,7 @@ class Student extends CI_Controller {
 			
 		//insert into student master
 
-		 $data = array(
+		$data = array(
                 	'sm_fname'  		=>	$_POST['Sname'],
                 	'sm_gender'  		=>	$_POST['Sgender'],
                 	'sm_dob'   		=>	$_POST['Sdob'],
@@ -551,7 +846,7 @@ class Student extends CI_Controller {
 		$this->db->insert('student_master', $data);	
 		$insertid = $this->db->insert_id();
 		$this->logger->write_logmessage("insert", "Aadhar changed by :".$_POST['Semail']."student and aadhar number is".$_POST['Saadharnumber']);
-               $this->logger->write_logmessage("insert", "Aadhar changed by :".$_POST['Semail']."student and aadhar number is".$_POST['Saadharnumber']);
+                $this->logger->write_logmessage("insert", "Aadhar changed by :".$_POST['Semail']."student and aadhar number is".$_POST['Saadharnumber']);
 		//print_r($insertid);			
 	
 		//insert into student parent
@@ -789,12 +1084,13 @@ class Student extends CI_Controller {
 		//$array_items = array('success' => '', 'error' => '', 'warning' =>'');
         	//$this->session->set_flashdata($array_items);
 		$insertid=$this->session->userdata['sm_id'];
-		
+		//print_r($insertid);die;
 		$email = $this->commodel->get_listspfic1("student_master","sm_email","sm_id",$insertid)->sm_email;
 		$data['email'] = $email;
 
 		$rsdata = array('step1_status' => '1', 'student_masterid' => $insertid);
 		$recheckstep_exist = $this->commodel->isduplicatemore('student_admissionstep',$rsdata);
+		//print_r($recheckstep_exist);die;
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('welcome');	
@@ -875,12 +1171,12 @@ class Student extends CI_Controller {
 			redirect('welcome');	
 		}
 
-		/*$rsdata1 = array('step3_status' => '1', 'student_masterid' => $id);
+		$rsdata1 = array('step3_status' => '1', 'student_masterid' => $id);
 		$recheckstep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$rsdata1);
 		if($recheckstep_exist1){
-			$this->session->set_flashdata('err_message', 'Your back step missed.');
+			//$this->session->set_flashdata('err_message', 'Your back step missed.');
 			redirect('student/student_step4');
-		}*/
+		}
         	if(isset($_POST['submitStep3'])) {
 			$this->form_validation->set_rules('userfile', 'Upload Photo', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('userfile2', 'Upload Signature', 'trim|required|xss_clean');
@@ -1045,6 +1341,20 @@ class Student extends CI_Controller {
 		$Sid = $this->session->userdata['sm_id'];
 		$mailid = $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Sid)->sm_email;
 		
+		$rsdata = array('step3_status' => '1', 'student_masterid' => $Sid);
+		$recheckstep_exist = $this->commodel->isduplicatemore('student_admissionstep',$rsdata);
+		if(!$recheckstep_exist){
+			$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('welcome');	
+		}
+
+		$rsdata1 = array('step5_status' => '1', 'student_masterid' => $Sid);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$rsdata1);
+		if($recheckstep_exist1){
+			//$this->session->set_flashdata('err_message', 'Your back step missed.');
+			redirect('student/student_step5');
+		}
+
 		//$ano = $this->session->userdata['app_no'];
 		//$this->coursename=$this->commodel->get_listspfic1('admissionmeritlist','course_name','application_no',$ano)->course_name;
 		$this->appno=$this->commodel->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$Sid)->senex_entexamapplicationno;
