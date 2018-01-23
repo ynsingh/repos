@@ -95,7 +95,7 @@
                 
                             if($row->roleid == 3){
                                 echo "<tr><td><p>";
-                                echo anchor("student/studenthome", "Login As Student" ,array('title' => ' Login As Student ' , 'class' => 'top_parent'));
+                                echo anchor("studenthome", "Login As Student" ,array('title' => ' Login As Student ' , 'class' => 'top_parent'));
                                 echo"</p></td></tr>";
                             }
               

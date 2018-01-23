@@ -82,7 +82,7 @@ class Studenthome extends CI_Controller
              * in which he is registered.
              */
             $noofsemester = sizeof($stud_prg_rec->result());
-            $degree_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_name;
+            $degree_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_name ."( ". $this->commodel->get_listrow('program','prg_branch',$degree_id)->row()->prg_branch ." )";
             $this->load->model("student_model", "studentmodel");           
             $data['degree_name'] = $degree_name;
             //get the value of current semester and academic year,semestertype(odd or even)
@@ -342,7 +342,7 @@ class Studenthome extends CI_Controller
             $prg_id = $prgrec->sp_programid;
         }
         //get program name
-        $prg_name = $this->commodel->get_listrow('program','prg_id',$prg_id)->row()->prg_name;
+        $prg_name = $this->commodel->get_listrow('program','prg_id',$prg_id)->row()->prg_name ." ( ". $this->commodel->get_listrow('program','prg_id',$prg_id)->row()->prg_branch ." )";
         $semester = $semes;
         $acadyear = $acad;    
         $prg_id = $prg_id;

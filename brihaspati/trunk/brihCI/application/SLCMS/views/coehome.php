@@ -10,7 +10,6 @@
                 .panel-primary{
                    // margin-left:20px;
                     //margin-right:5px; 
-                    width:900px;
                     height:500px;
                     background-color: #D0D0D0;
                     
@@ -52,7 +51,7 @@
                 <?php //$this->load->view('template/coemenu');?>
                    
             </div><br/>
-            <table>
+            <table style="width:100%;">
             <tr>
                 <td>   
                     <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
@@ -80,7 +79,7 @@
                                     </tr>
                                     <tr>
                                         <td style="padding: 8px 8px 8px 20px;">Department Name</td> 
-                                        <td><?php  echo $this->deptname->dept_name ;?></td>
+                                        <td><?php  echo $this->deptname ;?></td>
                                     </tr>
                        
                                 </table>

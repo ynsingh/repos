@@ -364,7 +364,9 @@ class Map extends CI_Controller
 //This function has been created for display the list of degree on the basis of program category
 	public function degreelist(){
 			$pgcatname = $this->input->post('subjecttype');
-			$list = $this->commodel->get_listspfic2('program','','prg_name,prg_id,prg_branch','prg_category',$pgcatname,'prg_name,prg_branch');
+			$data = array('prg_category' =>$pgcatname);
+			$list =$this->commodel->get_listspficemore('program','prg_name,prg_id,prg_branch',$data);
+		//	$list = $this->commodel->get_listspfic2('program','','prg_name,prg_id,prg_branch','prg_category',$pgcatname,'prg_name,prg_branch');
 		foreach($list as $datas): 
       		  	echo "<option  id='degree' value='$datas->prg_id'> " ."$datas->prg_name".'('.$datas->prg_branch.')'."</option>";
   		endforeach;

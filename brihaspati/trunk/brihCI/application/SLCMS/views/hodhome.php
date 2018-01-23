@@ -10,7 +10,6 @@
                 .panel-primary{
                    // margin-left:20px;
                     //margin-right:5px; 
-                    width:900px;
                     height:500px;
                     background-color: #D0D0D0;
                     
@@ -52,7 +51,7 @@
                 <?php //$this->load->view('template/hodmenu');?>
                    
             </div><br/>
-            <table>
+            <table style="width:100%;">
             <tr>
                 <td>   
                     <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
