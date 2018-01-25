@@ -261,7 +261,7 @@ class Student extends CI_Controller {
 		$number = $this->session->userdata['app_no'];
 		$data['number']	= $number;
 		$data['stu_prgcat'] = $this->commodel->get_list('programcategory');
-		$data['stu_examcenter'] = $this->commodel->get_list('student_examcenter');
+		//$data['stu_examcenter'] = $this->commodel->get_list('student_examcenter');
 		$data['stu_studycenter'] = $this->commodel->get_list('study_center');
 		$data['stu_categorylist'] = $this->commodel->get_list('category');
 		$data['stu_depresult'] = $this->commodel->get_list('Department');
@@ -1215,6 +1215,7 @@ class Student extends CI_Controller {
 
 				$name2 = $_FILES['userfile2']['name'];
 				$name = $_FILES['userfile']['name'];
+				
 				//$upload = 'application/student_sign_photo/student_photo/';
 				//$upload2 = 'application/student_sign_photo/student_sign/';
 
@@ -1228,7 +1229,7 @@ class Student extends CI_Controller {
 				$config2['file_name'] = $id.$name2;
 				$config['overwrite'] = TRUE;
 				$config2['overwrite'] = TRUE;
-				
+				//print_r($name2.' '.$name);die;	
 				//Image resize
 				/*$config['image_library'] = 'gd2';
 				$config['source_image'] = 'uploads/student_sign_photo/student_photo/';
