@@ -34,10 +34,10 @@ class Upl extends CI_Controller
   
     // This function is used for upload logo
     public function uploadlogo(){
-      // for clearing the previous sucess/error flashdata
-      $array_items = array('success' => '', 'error' => '', 'warning' =>'');
-      $this->session->set_flashdata($array_items);
-      if(isset($_POST['uploadlogo'])) {
+        // for clearing the previous sucess/error flashdata
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
+        if(isset($_POST['uploadlogo'])) {
             $config = array(
 		'upload_path' => "./uploads/logo/",
 		'allowed_types' => "gif|jpg|png|jpeg|pdf",
@@ -93,275 +93,334 @@ class Upl extends CI_Controller
                     $this->load->view('upl/uploadstafflist');
                     return;
                 }
-                
                 else{ 
-                $flag=true;
-                $datal = array();
-                $uploadedfile = $_FILES['userfile']['tmp_name'];
-                $h = fopen($uploadedfile,"r");
-	        fgetcsv($h); 		
-                $i=1;
-                while (false !== ($line = fgets($h)))
-                {
-                    $datal = explode(",", $line);
-                    $flag=false;
-                    //print_r($datal);
-                   // if (count($datal) >= 13){
-                    if (count($datal) == 18){
-                        $pfno= trim($datal[0]);
-                        $empname = trim($datal[1]);
-                        $campus = trim($datal[2]);
-                        $uoc = trim($datal[3]);
-                       // $uocuserid = $datal[4];
-                        //$ddouserid = $datal[5];
-                        $dept = trim($datal[4]);
-                        $scheme = trim($datal[5]);
-                        $ddocode=trim($datal[6]);
-                        $work_type=trim($datal[7]);
-                        $group=trim($datal[8]);
-                        $desig = trim($datal[9]);
-                        $sa_post=trim($datal[10]);
-                        $emp_type=trim($datal[11]);
-                        $pbcode = trim($datal[12]);
-                        $dob = trim($datal[13]);
-                        $doa = trim($datal[14]);
-                        $email = trim($datal[15]);
-                        $email1 = trim($email, " ");
-                        $bankacc = trim($datal[16]);
-                        $aadhar = trim($datal[17]);
-                        $mobile ='';
-                        $role = 4;
+                    $flag=true;
+                    $datal = array();
+                    $uploadedfile = $_FILES['userfile']['tmp_name'];
+                    $h = fopen($uploadedfile,"r");
+                    fgetcsv($h); 		
+                    $i=1;
+                    while (false !== ($line = fgets($h)))
+                    {
+                        $datal = explode(",", $line);
+                        $flag=false;
+                        //print_r($datal);
+                        // if (count($datal) >= 13){
+                        if (count($datal) == 18){
+                            $pfno= trim($datal[0]);
+                            $empname = trim($datal[1]);
+                            $campus = trim($datal[2]);
+                            $uoc = trim($datal[3]);
+                       
+                            $dept = trim($datal[4]);
+                            $scheme = trim($datal[5]);
+                            $ddocode=trim($datal[6]);
+                            $work_type=trim($datal[7]);
+                            $group=trim($datal[8]);
+                            $desig = trim($datal[9]);
+                            $sa_post=trim($datal[10]);
+                            $emp_type=trim($datal[11]);
+                            $pbcode = trim($datal[12]);
+                            $dob = trim($datal[13]);
+                            $doa = trim($datal[14]);
+                            $email = trim($datal[15]);
+                            $email1 = trim($email, " ");
+                            $bankacc = trim($datal[16]);
+                            $aadhar = trim($datal[17]);
+                            $mobile ='';
+                            $role = 4;
                         
-                        /*if (count($datal) > 15)
-                            $mobile = $datal[15];
-                        else
-                            $mobile='';*/
-                        
-                        $campid=$this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_code', $campus)->sc_id;
-                        $ucoid=$this->lgnmodel->get_listspfic1('authorities', 'id', 'code', $uoc)->id;
-                        $deptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $dept)->dept_id;
-                        //$sapostid=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_code', $sa_post)->desig_name;
-                        $sapostid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',$sa_post)->desig_id;
-                        /**************************check for vacancy available in position table************************************************************/
-                        $vacancy=$this->checkvacancy($campid,$ucoid,$deptid,$sapostid,$work_type);
-                        
-                        /**************************************************************************************/
-                        if($vacancy == 1){
-                            // check for duplicate
-                            $isdup= $this->lgnmodel->isduplicate('edrpuser','username',$email );
-                            if(!$isdup){
-                            //generate 10 digit random password
-                                $passwd=$this->commodel->randNum(10);
-                                // generate the hash of password
-                                $password=md5($passwd);
-                                // insert data into edrp user db1
-                                $dataeu = array(
-                                    'username'=> $email,
-                                    'password'=> $password,
-                                    'email'=> $email,
-                                    'componentreg'=> '*',
-                                    'mobile'=>$mobile,
-                                    'status'=>1,
-                                    'category_type'=>'Employee',
-                                    'is_verified'=>1
-                                );
-                                /*insert record in edrpuser table*/
-                                $userflageu=$this->lgnmodel->insertrec('edrpuser', $dataeu);
-                                //get the insert id of edrp user
-                                $insertid= $this->lgnmodel->get_listspfic1('edrpuser','id','username',$email );
-                                $userid=$insertid->id;
-                                if($userflageu){
-                                    // insert into  user profile db1
-                                    $dataup = array(
-                                        'userid'=>$userid,
-                                        'firstname'=>$empname,
-                                        'lang'=> 'english',
-                                        'mobile'=>$mobile,
-                                        'status'=>1
-                                    );
-                                    $userflagup=$this->lgnmodel->insertrec('userprofile', $dataup);
-
-                                    $emdupl = $this->sismodel->isduplicate('employee_master','emp_email', $email );
-                                    if(!$emdupl){
-                                   
-                                        $schemeid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code',$scheme)->sd_id;
-                                        $desigtid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code', $desig)->desig_id;
-                                        $sapostid=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_code', $sa_post)->desig_name;
-                                        $datawh=array('ddo_scid' => $campid,'ddo_deptid' => $deptid,'ddo_schid' => $schemeid,'ddo_code' => $ddocode);
-                                        $ddoid= $this->sismodel->get_listspficemore('ddo','ddo_id',$datawh);
-                                        $ddofinal=$ddoid[0]->ddo_id;
-                                       
-                                        $dataem = array(
-                                            'emp_code'             => $pfno,
-                                            'emp_name'             => $empname,
-                                            'emp_specialisationid' => '',
-                                        
-                                            'emp_dept_code'       => $deptid,
-                                            'emp_schemeid'        => $schemeid,
-                                            'emp_desig_code'      => $desigtid,
-                                            'emp_post'            => $sapostid,
-                                        
-                                            'emp_gender'          =>'',
-                                            'emp_community'       =>'',
-                                            'emp_religion'        =>'',
-                                            'emp_caste'           =>'',
-                                        
-                                            'emp_type_code'       => $emp_type,
-                                            'emp_salary_grade'    => $pbcode,
-                                            'emp_basic'           =>'',
-                                            'emp_emolution'       =>'',
-                                            'emp_nhisidno'        =>'',
-                                            'emp_doj'             => $doa,
-                                            'emp_pnp'             =>'',
-                                            'emp_phd_status'      =>'',
-                                        
-                                            'emp_dateofphd'       =>'',
-                                            'emp_AssrExam_status' =>'',
-                                            'emp_dateofAssrExam'  =>'',
-                                            'emp_dor'             =>'',
-                                            'emp_dateofHGP'       =>'',
-                                            'emp_pan_no'          =>'',
-                                       
-                                            'emp_aadhaar_no'      => $aadhar,
-                                            'emp_bank_ifsc_code'  =>',',
-                                            'emp_bank_accno'      => $bankacc,
-                                            'emp_dob'             => $dob,
-                                            'emp_father'          =>'',
-                                            'emp_email'           => $email,
-                                        
-                                            'emp_address'         =>'',
-                                            'emp_mothertongue'    =>'',
-                                            'emp_citizen'         =>'',
-                                            'emp_phone'           =>'', 
-                                        
-                                            'emp_worktype'        => $work_type,
-                                            'emp_scid'            => $campid,
-                                            'emp_uocid'           => $ucoid,
-                                            'emp_uocuserid'       => $ucoid,
-                                            'emp_ddouserid'       => $ddofinal,
-                                            'emp_ddoid'           => $ddofinal,
-                                            'emp_group'           => $group,
-                                            'emp_apporderno'      => '',
-                                            'emp_phstatus'        => '',
-                                            'emp_phdetail'        => '',
-                                            'emp_bloodgroup'      => '', 
-                                            'emp_doprobation'     => '', 
-                                            'emp_doregular'       => '', 
-                                            'emp_qual'            => '', 
-                                            'emp_remarks'         => '', 
-                                            'emp_photoname'       => ''  
-                                        
-                                        );
-                                        /* insert record into  employe_emaster */
-                                        $this->sismodel->insertrec('employee_master', $dataem);
-                                        $this->logger->write_logmessage("insert", "data insert in employee_master table.");
-                                        $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
-                                        $dataems = array(
-                                            'ems_code'         =>$pfno,
-                                            //'ems_working_type' =>''
-			
-                                        );
-                                        /* insert record into  employe_emaster_support */
-                                        $this->sismodel->insertrec('employee_master_support', $dataems);
-                                        $this->logger->write_logmessage("insert", "data insert in employee_master_support table.");
-                                        $this->logger->write_dblogmessage("insert", "data insert in employee_master_support table." );
-                                    }//empdupl		
-                                    if($userflagup){
-                                        /* insert into user_role_type */
-                                        $dataurt = array(
-                                            'userid'=> $userid,
-                                            'roleid'=> $role,
-                                            'deptid'=> $deptid,
-                                            'scid'=>  $campid,
-                                            'usertype'=>'Employee'
-                                        );
-                                        $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
-                                        if($userflagurt){
-                                            $sub='Staff Profile Registration' ;
-                                            $mess="You are registered as a staff. Your user id ".$email ." and password is ".$passwd ;
-                                            //$mails = $this->mailmodel->mailsnd($email, $sub, $mess,'','Sis');
-                                            $mails = '';
-                                            //$this->mailmodel->mailsnd('$_POST['emailid']', $sub, $mess,'','Sis');
-                                            //  mail flag check                         
-                                            if($mails){
-                                                $error[] ="At row ". $i ." sufficient data and mail sent sucessfully";
-                                                $this->logger->write_logmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email );
-                                                $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email );
-                                            }
-                                            else{
-                                                $error[] ="At row ". $i ." sufficient data and mail does sent";
-                                                $this->logger->write_logmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email ." and mail does sent");
-                                                $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email." and mail does sent" );
-                                            }
-                                            /*************************************updating the staff position table*****************/
-                   
-                                            $this->sismodel->updatestaffposition($campid,$ucoid,$deptid,$desigtid,$work_type,$emp_type) ;
-                   
-                                            /*************************************close updating the staff position table*****************/
-                                        }else{
-                                        //set the message for error in entering data in user role type
-                                            $this->logger->write_logmessage("insert"," Error in adding staff edrpuser,profile and user role type ", " data insert error . ".$empname ." ".$email );
-                                            $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser,profile and user role type ", " data insert error . ".$empname ." ".$email);
-                                            // delete edrp user data
-                                            $result = $this->lgnmodel->deleterow('edrpuser','id',$userid);
-                                            // delete user profile data
-                                            $result = $this->lgnmodel->deleterow('userprofile','userid',$userid);
-                                        }
-                                    }//$userflagu
-                                    else{
-                                        //set the message for error in entering data in user profile table
-                                        $this->logger->write_logmessage("insert"," Error in adding staff edrpuser,profile ", " data insert error . ".$empname ." ".$email  );
-                                        $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser,profile ", " data insert error . ".$empname ." ".$email );
-                                        // delete edrp user data
-                                        $result = $this->lgnmodel->deleterow('edrpuser','id',$userid);
-                                    }
-                                }//ifuserflageu
-                                else{
-                                    // set the message for error in entering data in edrp table
-                                    $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", " data insert error . ".$empname ." ".$email  );
-                                    $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "data insert error . ".$empname ." ".$email );
+                           // print_r('uocname=='.$uoc.'-----deptcode==='.$dept);
+                            //die;
+                           
+                            if((!empty($campus)) && (!empty($uoc)) && (!empty($dept)) && (!empty($sa_post))){ //ifcondition for count empty checks
+                                $campid='';$ucoid='';$deptid='';$sapostid='';
+                                $gcampid=$this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_code', $campus);
+                                if(!empty($gcampid)){        
+                                    $campid=$gcampid->sc_id;
+                                }        
+                                $gucoid=$this->lgnmodel->get_listspfic1('authorities', 'id', 'code', $uoc);
+                                if(!empty($gucoid)){
+                                  $ucoid=$gucoid->id;
                                 }
-                                // $this->session->set_flashdata('success', ' sufficient data');        
-                            }//close for is dupeu
+                                $gdeptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $dept);
+                                if(!empty($gdeptid)){
+                                  $deptid=$gdeptid->dept_id;
+                                }
+                                
+                                $gsapostid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',$sa_post);
+                                if(!empty($gsapostid)){
+                                    $sapostid=$gsapostid->desig_id;
+                                }        
+                              
+                                if((!empty($campid)) && (!empty($ucoid)) && (!empty($deptid)) && (!empty($sapostid))){
+                        
+                                    /**************************check for vacancy available in position table************************************************************/
+                        
+                                    $vacancy=$this->checkvacancy($campid,$ucoid,$deptid,$sapostid,$work_type);
+                        
+                                    /**************************************************************************************/
+                                    if($vacancy == 1){
+                                        // check for duplicate
+                                        $isdup= $this->lgnmodel->isduplicate('edrpuser','username',$email );
+                                        if(!$isdup){
+                                            //generate 10 digit random password
+                                            $passwd=$this->commodel->randNum(10);
+                                            // generate the hash of password
+                                            $password=md5($passwd);
+                                            // insert data into edrp user db1
+                                            $dataeu = array(
+                                                'username'=> $email,
+                                                'password'=> $password,
+                                                'email'=> $email,
+                                                'componentreg'=> '*',
+                                                'mobile'=>$mobile,
+                                                'status'=>1,
+                                                'category_type'=>'Employee',
+                                                'is_verified'=>1
+                                            );
+                                            /*insert record in edrpuser table*/
+                                            $userflageu=$this->lgnmodel->insertrec('edrpuser', $dataeu);
+                                            //get the insert id of edrp user
+                                            $insertid= $this->lgnmodel->get_listspfic1('edrpuser','id','username',$email );
+                                            $userid=$insertid->id;
+                                            if($userflageu){
+                                                // insert into  user profile db1
+                                                $dataup = array(
+                                                    'userid'=>$userid,
+                                                    'firstname'=>$empname,
+                                                    'lang'=> 'english',
+                                                    'mobile'=>$mobile,
+                                                    'status'=>1
+                                                );
+                                                $userflagup=$this->lgnmodel->insertrec('userprofile', $dataup);
+
+                                                $emdupl = $this->sismodel->isduplicate('employee_master','emp_email', $email );
+                                                if(!$emdupl){
+                                   
+                                                    $schemeid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code',$scheme)->sd_id;
+                                                    $desigtid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code', $desig)->desig_id;
+                                                    $sapostname=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_code', $sa_post)->desig_name;
+                                                    $datawh=array('ddo_scid' => $campid,'ddo_deptid' => $deptid,'ddo_schid' => $schemeid,'ddo_code' => $ddocode);
+                                                    $ddoid= $this->sismodel->get_listspficemore('ddo','ddo_id',$datawh);
+                                                    if(!empty($ddoid)){
+                                                        $ddofinal=$ddoid[0]->ddo_id;
+                                                    }
+                                                    if((!empty($schemeid)) && (!empty($desigtid) && ($sapostname)) && (!empty($ddoid))){
+                                       
+                                                        $dataem = array(
+                                                            'emp_code'             => $pfno,
+                                                            'emp_name'             => $empname,
+                                                            'emp_specialisationid' => '',
+                                        
+                                                            'emp_dept_code'       => $deptid,
+                                                            'emp_schemeid'        => $schemeid,
+                                                            'emp_desig_code'      => $desigtid,
+                                                            'emp_post'            => $sapostname,
+                                        
+                                                            'emp_gender'          =>'',
+                                                            'emp_community'       =>'',
+                                                            'emp_religion'        =>'',
+                                                            'emp_caste'           =>'',
+                                        
+                                                            'emp_type_code'       => $emp_type,
+                                                            'emp_salary_grade'    => $pbcode,
+                                                            'emp_basic'           =>'',
+                                                            'emp_emolution'       =>'',
+                                                            'emp_nhisidno'        =>'',
+                                                            'emp_doj'             => $doa,
+                                                            'emp_pnp'             =>'',
+                                                            'emp_phd_status'      =>'',
+                                        
+                                                            'emp_dateofphd'       =>'',
+                                                            'emp_AssrExam_status' =>'',
+                                                            'emp_dateofAssrExam'  =>'',
+                                                            'emp_dor'             =>'',
+                                                            'emp_dateofHGP'       =>'',
+                                                            'emp_pan_no'          =>'',
+                                       
+                                                            'emp_aadhaar_no'      => $aadhar,
+                                                            'emp_bank_ifsc_code'  =>',',
+                                                            'emp_bank_accno'      => $bankacc,
+                                                            'emp_dob'             => $dob,
+                                                            'emp_father'          =>'',
+                                                            'emp_email'           => $email,
+                                        
+                                                            'emp_address'         =>'',
+                                                            'emp_mothertongue'    =>'',
+                                                            'emp_citizen'         =>'',
+                                                            'emp_phone'           =>'', 
+                                        
+                                                            'emp_worktype'        => $work_type,
+                                                            'emp_scid'            => $campid,
+                                                            'emp_uocid'           => $ucoid,
+                                                            'emp_uocuserid'       => $ucoid,
+                                                            'emp_ddouserid'       => $ddofinal,
+                                                            'emp_ddoid'           => $ddofinal,
+                                                            'emp_group'           => $group,
+                                                            'emp_apporderno'      => '',
+                                                            'emp_phstatus'        => '',
+                                                            'emp_phdetail'        => '',
+                                                            'emp_bloodgroup'      => '', 
+                                                            'emp_doprobation'     => '', 
+                                                            'emp_doregular'       => '', 
+                                                            'emp_qual'            => '', 
+                                                            'emp_remarks'         => '', 
+                                                            'emp_photoname'       => ''  
+                                        
+                                                        );
+                                                        /* insert record into  employe_emaster */
+                                                        $this->sismodel->insertrec('employee_master', $dataem);
+                                                        $this->logger->write_logmessage("insert", "data insert in employee_master table.");
+                                                        $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
+                                                        $dataems = array(
+                                                            'ems_code'         =>$pfno,
+                                                            //'ems_working_type' =>''
+			
+                                                        );
+                                                        /* insert record into  employe_emaster_support */
+                                                        $this->sismodel->insertrec('employee_master_support', $dataems);
+                                                        $this->logger->write_logmessage("insert", "data insert in employee_master_support table.");
+                                                        $this->logger->write_dblogmessage("insert", "data insert in employee_master_support table." );
+                                            
+                                 //                 $i++;
+                                                        if($userflagup){
+                                                        /* insert into user_role_type */
+                                                            $dataurt = array(
+                                                                'userid'=> $userid,
+                                                                'roleid'=> $role,
+                                                                'deptid'=> $deptid,
+                                                                'scid'=>  $campid,
+                                                                'usertype'=>'Employee'
+                                                            );
+                                                            $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
+                                                            if($userflagurt){
+                                                                $sub='Staff Profile Registration' ;
+                                                                $mess="You are registered as a staff. Your user id ".$email ." and password is ".$passwd ;
+                                                                //$mails = $this->mailmodel->mailsnd($email, $sub, $mess,'','Sis');
+                                                                $mails = '';
+                                                                //$this->mailmodel->mailsnd('$_POST['emailid']', $sub, $mess,'','Sis');
+                                                                //  mail flag check                         
+                                                                if($mails){
+                                                                    $error[] ="At row ". $i ." sufficient data and mail sent sucessfully";
+                                                                    $this->logger->write_logmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email );
+                                                                    $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email );
+                                                                    $i++;
+                                                                }
+                                                                else{
+                                                                    $error[] ="At row ". $i ." sufficient data and mail does sent";
+                                                                    $this->logger->write_logmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email ." and mail does sent");
+                                                                    $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email." and mail does sent" );
+                                                                    $i++;
+                                                                }
+                                                                /*************************************updating the staff position table*****************/
+                   
+                                                                $this->sismodel->updatestaffposition($campid,$ucoid,$deptid,$desigtid,$work_type,$emp_type) ;
+                   
+                                                                /*************************************close updating the staff position table*****************/
+                                                            }//$userflagurt if
+                                                            else{
+                                                                //set the message for error in entering data in user role type
+                                                                $this->logger->write_logmessage("insert"," Error in adding staff edrpuser,profile and user role type ", " data insert error . ".$empname ." ".$email );
+                                                                $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser,profile and user role type ", " data insert error . ".$empname ." ".$email);
+                                                                // delete edrp user data
+                                                                $result = $this->lgnmodel->deleterow('edrpuser','id',$userid);
+                                                                // delete user profile data
+                                                                $result = $this->lgnmodel->deleterow('userprofile','userid',$userid);
+                                                                $i++;
+                                                            }
+                                                        }//$userflagup
+                                                        else{
+                                                            //set the message for error in entering data in user profile table
+                                                            $this->logger->write_logmessage("insert"," Error in adding staff edrpuser,profile ", " data insert error . ".$empname ." ".$email  );
+                                                            $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser,profile ", " data insert error . ".$empname ." ".$email );
+                                                            // delete edrp user data
+                                                            $result = $this->lgnmodel->deleterow('edrpuser','id',$userid);
+                                                            $i++;
+                                                        }
+                                                    } //second empty check if condition
+                                                    else{
+                                                        $error[] ="At row " .$i. " some fields are empty. or combination is not correct";
+                                                        $this->logger->write_logmessage("insert"," Error in adding staff profile  ", "At row".$i."some fields are empty schemeid=>".$schemeid."desigid==>".$desigtid."shown against post name==>".$sapostname."ddoid==>".$ddocode);
+                                                        $this->logger->write_dblogmessage("insert"," Error in adding staff profile ", "At row".$i."some fields are empty schemeid=>".$schemeid."desigid==>".$desigtid."shown against post name==>".$sapostname."ddoid==>".$ddocode);
+                                                        // delete edrp user data
+                                                        $result = $this->lgnmodel->deleterow('edrpuser','id',$userid);
+                                                        // delete user profile data
+                                                        $result = $this->lgnmodel->deleterow('userprofile','userid',$userid);
+                                                        $i++;
+                                                    }//second empty check else condition
+                                                                            
+                                                }//empdupl
+                                                else{
+                                                    $i++;
+                                                }	   
+                                            }//ifuserflageu
+                                            else{
+                                                // set the message for error in entering data in edrp table
+                                                $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", " data insert error . ".$empname ." ".$email  );
+                                                $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "data insert error . ".$empname ." ".$email );
+                                                $i++;
+                                            }
+                                      
+                                        }//close if is dupeu
+                                        else{
+                                            $error[] ="At row ". $i ." duplicate data";
+                                            $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", "At row".$i."duplicate data"  );
+                                            $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."duplicate data" );
+                                            $i++;
+                                        }
+                                    }//if cond vcancy check
+                                    else{
+                                        $error[] ="At row " .$i. " No vacancy for this post.";
+                                        $this->logger->write_logmessage("insert"," Error in adding staff profile (edrpuser) ", "At row".$i."No vacancy for this post"  );
+                                        $this->logger->write_dblogmessage("insert"," Error in adding staff profile (edrpuser) ", "At row".$i."No vacancy for this post");
+                                        $i++;
+                                    }//else close for vacancy
+                                }//emptychecks for 1st if before vacancy check
+                                else
+                                {
+                                    $error[] ="At row " .$i. " some fields are empty. or combination is not correct";
+                                    $this->logger->write_logmessage("insert"," Error in adding staff profile  ", "At row".$i."some fields are empty capusid=>".$campid."uoid==>".$ucoid."deptid==>".$deptid."shown against postid==>".$sapostid );
+                                    $this->logger->write_dblogmessage("insert"," Error in adding staff profile ", "At row".$i."some fields are empty capusid=>".$campid."uoid==>".$ucoid."deptid==>".$deptid."shown against postid==>".$sapostid);
+                                    $i++;
+                            
+                                }//closerof else emptychecks for  before vacancy check
+                            }//ifcondition for count empty check
                             else{
-                                $error[] ="At row ". $i ." duplicate data";
-                                $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", "At row".$i."duplicate data"  );
-                                $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."duplicate data" );
-                            }
-                            $i++;
-                        }//if cond vcancy check
+                                $error[] ="At row " .$i. " some fields are empty. or combination is not correct";
+                                $this->logger->write_logmessage("insert"," Error in adding staff profile  ", "At row".$i."some fields are empty campus=>".$campus."uoc==>".$uoc."dept==>".$dept."shown against post==>".$sa_post );
+                                $this->logger->write_dblogmessage("insert"," Error in adding staff profile ", "At row".$i."some fields are empty campus=>".$campus."uoc==>".$uoc."deptd==>".$dept."shown against post==>".$sa_post);
+                                $i++;
+                        
+                            }//closer else condition for count empty check
+                        
+                        }//count tokens
                         else{
-                                $error[] ="At row " .$i. " No vacancy for this post.";
-                                $this->logger->write_logmessage("insert"," Error in adding staff profile (edrpuser) ", "At row".$i."No vacancy for this post"  );
-                                $this->logger->write_dblogmessage("insert"," Error in adding staff profile (edrpuser) ", "At row".$i."No vacancy for this post");
-                        }//else close for vacancy
-                        $i++;
-                    }//count tokens
+                            //  insufficient data
+                            $error[] ="At row " .$i. " insufficient data";
+                            $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data"  );
+                            $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data" );
+                            //  $this->session->set_flashdata('error', ' insufficient data');
+                            $i++;
+                        }                     
+                    }//while
+                    if($flag){
+                        $this->session->set_flashdata('error', ' File without data');
+                        $this->load->view('upl/uploadstafflist');
+                        return;
+                    }
                     else{
-                        //  insufficient data
-                        $error[] ="At row " .$i. " insufficient data";
-                        $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data"  );
-                        $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data" );
-                        //  $this->session->set_flashdata('error', ' insufficient data');
-                        $i++;
-                    }                     
-                }//while
-                if($flag){
-                    $this->session->set_flashdata('error', ' File without data');
-                    $this->load->view('upl/uploadstafflist');
-                    return;
-                }else{
-                   // print_r($error);
-                    foreach ($error as $item => $value):
-                    $ferror = $ferror ."</br>". $item .":". $value;
-                    endforeach;
-                    //display error of array
-                    //put ferror in log file.
-                    $this->session->set_flashdata('success', $ferror);
-                    $this->load->view('upl/uploadstafflist');
-                    return;
-                }
-		}
+                        // print_r($error);
+                        foreach ($error as $item => $value):
+                        $ferror = $ferror ."</br>". $item .":". $value;
+                        endforeach;
+                        //display error of array
+                        //put ferror in log file.
+                        $this->session->set_flashdata('success', $ferror);
+                        $this->load->view('upl/uploadstafflist');
+                        return;
+                    }//else closer
+                }//else for csv extension
             }//userfile checks
         }// check for pressing correct button
         $this->load->view('upl/uploadstafflist');
@@ -1254,5 +1313,6 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploaddepartlist');
     }//method close
     /***********************closer of department csv file****************************************************/
+       
 }
 

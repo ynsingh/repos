@@ -210,7 +210,7 @@ class SIS_model extends CI_Model
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
         if(!empty($emppost_data)){
             $update_data = array();
-            $upempdata_flag='';
+            $upempdata_flag=false;
             foreach($emppost_data as $empdata){
                 
                 if($empdata->sp_type == 'Permanent'){
