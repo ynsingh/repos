@@ -72,13 +72,18 @@
                      foreach($this->authuser as $row){ ?>
                      <tr>
                      <td> <?php echo ++$count; ?> </td>
-                       <!-- <//?php
-                       //echo "<td>";-->
 		       <td><?php echo $this->loginmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name ?></td>
-	<!--	<td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$row->user_id)->username; ?></td>-->
                 <?php  echo "<td>";
-                echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->user_id)->firstname .' '.$this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->user_id)->lastname;?>
-                                                                                                                                        
+		$uname = $this->loginmodel->get_listspfic1('edrpuser','username','id',$row->user_id)->username;
+		$fname = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->user_id)->firstname;
+		$lname = $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->user_id)->lastname;
+		if (empty($fname)){
+			echo $uname;
+		}
+		else{
+			echo $fname." " .$lname;
+		}
+		?>
                 </td>                           
                 <?php echo "</td>";?>
                 <td> <?php echo $row->map_date ?></td>

@@ -1199,11 +1199,11 @@ class Setup2 extends CI_Controller
                  $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
                  if($this->form_validation->run()==TRUE){
                 //echo 'form-validated';
-              /*  $authpriority = $this->input->post('priority', TRUE);     
+               $authpriority = $this->input->post('priority', TRUE);     
             	$authcode = $this->input->post('code', TRUE);
             	$authname = $this->input->post('name', TRUE);
             	$authnname = $this->input->post('nickname', TRUE);
-            	$authemail = $this->input->post('authority_email', TRUE);*/
+            	$authemail = $this->input->post('authority_email', TRUE);
                 
 			$data = array(
                                 'priority'=> $_POST['priority'],
