@@ -953,7 +953,7 @@ class Setup extends CI_Controller
             if($category_data->cat_desc != $data_cdesc)
                 $logmessage = "Add Category " .$category_data->cat_desc. " changed by " .$data_cdesc;
 
-            $cdatacheck = array('cat_name'=>ucwords(strtolower($_POST['cname'])) , 'cat_code'=>strtoupper($_POST['ccode']), 'cat_short'=>strtoupper($_POST['csname']) );
+           // $cdatacheck = array('cat_name'=>ucwords(strtolower($_POST['cname'])) , 'cat_code'=>strtoupper($_POST['ccode']), 'cat_short'=>strtoupper($_POST['csname']) );
             $update_data = array(
                'cat_name' => $data_cname,
                'cat_code' => $data_ccode,
@@ -961,15 +961,40 @@ class Setup extends CI_Controller
                'cat_desc'  => $data_cdesc
             );
 
-	   $catdatadup = $this->common_model->isduplicatemore('category', $cdatacheck);
-
-                   if($catdatadup == 1 ){
+	   $catdatadup = $this->common_model->isduplicatemore('category', $update_data);
+               if($catdatadup == 1 ){
 
                         $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Category Name' = $data_cname, 'Category code' = $data_ccode , 'Category Short Name' =$data_csname .");
                         redirect('setup/displaycategory/');
                         return;
-                 }
-          else{
+                }
+           else{
+	   if($category_data->cat_code != $data_ccode){
+	           $categoryflag = $this->common_model->isduplicate('category','cat_code', $data_ccode);
+                      if($categoryflag == 1)
+                        {
+                                $this->session->set_flashdata("err_message", "Category Code = $data_ccode , is already exist .");
+                                $this->load->view('setup/editcategory', $data);  
+				return;
+                        }
+                   else{
+	           $catflag=$this->common_model->updaterec('category', $update_data, 'cat_id', $data_cid);
+        	   if(!$catflag)        
+            		{
+                	$this->logger->write_logmessage("error","Error in update Category ", "Error in Category record update. $logmessage . " );
+                	$this->logger->write_dblogmessage("error","Error in update Category ", "Error in Category record update. $logmessage ." );
+                	$this->session->set_flashdata('err_message','Error updating category - ' . $logmessage . '.', 'error');
+                	$this->load->view('setup/editcategory', $data);
+            	     }
+            	else{
+                	$this->logger->write_logmessage("update","Edit Category", "Category record updated successfully... $logmessage . " );
+                	$this->logger->write_dblogmessage("update","Edit Category", "Category record updated successfully... $logmessage ." );
+                	$this->session->set_flashdata('success','Category record updated successfully...');
+                	redirect('setup/displaycategory/');
+                   }
+		 }
+	       }
+	   else{	
 	   $catflag=$this->common_model->updaterec('category', $update_data, 'cat_id', $data_cid);
 	   if(!$catflag)	
             {
@@ -985,6 +1010,7 @@ class Setup extends CI_Controller
                 redirect('setup/displaycategory/');
                 }
 	   }	
+	}
         }//else
         redirect('setup/editcategory/');
     }
@@ -2085,7 +2111,6 @@ class Setup extends CI_Controller
                                 $this->logger->write_logmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name']  );
                                 $this->logger->write_dblogmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name'] );
                                 $this->session->set_flashdata('err_message','Error in adding Study center - ' . $data['sc_name'] . '.', 'error');
-                                //redirect('setup/sc');
 				 $this->load->view('setup/sc');
                         }
                         else{
@@ -2898,16 +2923,42 @@ class Setup extends CI_Controller
                    $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $sd_deptid, 'Scheme Name' = $data_sname , 'Scheme Code' = $data_scode, 'Scheme Short Name'=$data_ssname .");
                                   redirect('setup/displayscheme/');
                                   return;
-               }
-           else{
+                 }
+            else{
 	    $sdflag=$this->SIS_model->insertrec('scheme_department_archive', $instdatasda);
             if(!$sdflag)
             {
-              $this->logger->write_dblogmessage("error","Error in insert scheme department archive", "Error in  scheme department archive record insert" .$data_id );
+              $this->logger->write_dblogmessage("error","Error in insert scheme department archive", "Error in  scheme department archive record insert" .$data_sid );
             }else{
-              $this->logger->write_dblogmessage("insert","Insert scheme department archive archive", "Record inserted in scheme department archive successfully.." .$data_id );
-            }
-
+              $this->logger->write_dblogmessage("insert","Insert scheme department archive archive", "Record inserted in scheme department archive successfully.." .$data_sid );
+          }
+ 	  if($scheme_data->sd_code != $data_scode)
+          {
+	      $schemedupflag = $this->SIS_model->isduplicate('scheme_department','sd_code', $data_scode);
+              if($schemedupflag ==1)
+              {
+                     $this->session->set_flashdata("err_message", "Record is already exist. 'Scheme Code' = $data_scode  .");
+		     $this->load->view('setup/editscheme', $data);
+                     return;
+              }
+              else{
+              $scflag=$this->SIS_model->updaterec('scheme_department', $update_data, 'sd_id', $data_sid);
+              if(!scflag)
+              {
+                  $this->logger->write_logmessage("error","Error in update Scheme ", "Error in Scheme record update. $logmessage . " );
+                  $this->logger->write_dblogmessage("error","Error in update Scheme ", "Error in Scheme record update. $logmessage ." );
+                  $this->session->set_flashdata('err_message','Error updating scheme - ' . $logmessage . '.', 'error');
+                  $this->load->view('setup/editscheme', $data);
+              }
+              else{
+                   $this->logger->write_logmessage("update","Edit Scheme", "Scheme record updated successfully... $logmessage . " );
+                   $this->logger->write_dblogmessage("update","Edit Scheme", "Scheme record updated successfully... $logmessage ." );
+                   $this->session->set_flashdata('success','Scheme record updated successfully...');
+                   redirect('setup/displayscheme/');
+                 }
+		}    	
+	      }
+          else{
 	   $scflag=$this->SIS_model->updaterec('scheme_department', $update_data, 'sd_id', $data_sid);
 	   if(!scflag)	
             {
@@ -2922,7 +2973,8 @@ class Setup extends CI_Controller
                 $this->session->set_flashdata('success','Scheme record updated successfully...');
                 redirect('setup/displayscheme/');
                 }
-	     }	
+	     }
+	 }	
         }//else
         redirect('setup/editscheme/');
     }

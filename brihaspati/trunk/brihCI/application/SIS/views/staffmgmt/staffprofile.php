@@ -794,7 +794,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
          </td></tr>   -->            
         </form> 
         </table> 
-	<p> &nbsp; </p>
-        <div><?php $this->load->view('template/footer'); ?></div> 
     </body>
+	<p> &nbsp; </p>
+     <div><?php $this->load->view('template/footer'); ?></div> 
 </html>    

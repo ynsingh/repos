@@ -1193,7 +1193,7 @@ class Setup2 extends CI_Controller
        // $this->session->set_flashdata($array_items);
 	    if(isset($_POST['addauthority'])) {
                  $this->form_validation->set_rules('priority','Authority Priority','trim|xss_clean|numeric|callback_ispriorityExist');
-                 $this->form_validation->set_rules('code','Authority Code','trim|xss_clean|required');
+                 $this->form_validation->set_rules('code','Authority Code','trim|xss_clean|required|callback_isAuthCodeExist');
                  $this->form_validation->set_rules('name','Authority Name','trim|xss_clean|required');
                  $this->form_validation->set_rules('nickname','Authority Nickname','trim|xss_clean|required');
                  $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
@@ -1249,13 +1249,29 @@ class Setup2 extends CI_Controller
         $is_exist = $this->logmodel->isduplicate('authorities','authority_email',$authority_email);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isemailExist', 'Authority is already exist.');
+            $this->form_validation->set_message('isemailExist', 'Authority email is already exist.');
             return false;
         }
         else {
             return true;
         }
     }  
+
+  /** This function check for duplicate authority code
+     * @return type
+     */
+    public function isAuthCodeExist($code) {
+        $is_exist = $this->logmodel->isduplicate('authorities','code',$code);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isAuthCodeExist', 'Authority Code is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
  
 
   /**This function Delete the authority records

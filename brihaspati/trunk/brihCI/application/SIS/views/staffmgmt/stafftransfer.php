@@ -602,7 +602,7 @@
                 </form>   
             </table>
         <!--</div> -->
-	<p>&nbsp;</p>
-        <div><?php $this->load->view('template/footer'); ?></div> 
     </body>    
+  <p>&nbsp;</p>
+  <div><?php $this->load->view('template/footer'); ?></div> 
 </html>    
