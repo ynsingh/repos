@@ -31,7 +31,7 @@ echo "<body>";
      <?php if(isset($_SESSION['success'])){?>
        <div style="margin-left:30px" class="isa_success"><?php echo $_SESSION['success'];?></div>
 <?php    }
-    if(isset($_SESSION['error']))
+    if(isset($_SESSION['err_message']))
     {
 ?>        <div style="margin-left:30px"; class="isa_error">"<?php echo $_SESSION['error'];?> </div>
 <?php

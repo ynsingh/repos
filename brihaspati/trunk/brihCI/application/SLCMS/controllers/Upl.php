@@ -211,7 +211,8 @@ class Upl extends CI_Controller
                             $lastdate_admission = $datal[12];
 
                             // check for duplicate
-                            $isdup= $this->commodel->isduplicate('admissionmeritlist','student_email',$email );
+                           // $isdup= $this->commodel->isduplicate('admissionmeritlist','student_email',$email);
+			   $isdup= $this->commodel->isduplicate('admissionmeritlist','application_no',$appno); 	
                             if(!$isdup){
 				    	// insert into student merit list db
 					$dataurt = array(

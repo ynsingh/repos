@@ -13,6 +13,7 @@ body {
 	text-align:center;
 }
 
+.dropdown{font-size:18px;width:30%;}
 .scroller{overflow:auto;height:700px;}
 .scroller_sub_page{overflow:auto;height:665px;}
 
