@@ -100,7 +100,7 @@ $!data.getMessage()
         	</tr>
 		<tr bgcolor="$ui.menuColor">
 		        <td>$brih_program</td>
-         		<td><select name="PrgName" class="drop" size=1 onChange="checkselect(document.frm,this);"/>
+         		<td><select style= "width:100%" name="PrgName" class="drop" size=1 onChange="checkselect(document.frm,this);"/>
 				#if($st.Pgname!="")
 					<option value="$!st.Pgcode">$!st.Pgname</option>
 				#else

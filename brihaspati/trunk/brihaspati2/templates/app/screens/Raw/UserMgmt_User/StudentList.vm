@@ -24,8 +24,18 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
-<div class="scroll">
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></scripti>
+##<div class="scroll">
+<style>
+span
+{
+    display:inline-block;
+    width:180px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
+</style>
 <font face="$ui.sansSerifFonts">$!mmessage</font>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
@@ -198,7 +208,7 @@ $!data.getMessage()
         	        ## get name of User
                         <td>$!urecord.getUserName()</td>
                 	## get Email of User
-		      	<td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
+		      	<td><span><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></span></td>
 	                ## get the list of student RollNO of that course 
 	                #set ($i=2)
 	                <td>
@@ -308,7 +318,7 @@ $!data.getMessage()
 </table>
  #end
 </form>
-</div>
+##</div>
 <table width=100% bgcolor="$ui.tableColor" align=left>
         #foreach( $entry in $error_Messages )
         <tr bgcolor="$ui.tableColor">

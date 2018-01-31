@@ -16,7 +16,17 @@ $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-<div class="scroll">
+<style>
+span
+{
+    display:inline-block;
+    width:180px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
+</style>
+##<div class="scroll">
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
 ##<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 
@@ -117,7 +127,7 @@ $!data.getMessage()
 	#end
               <td>$!urecord.getLoginName()</td>
               <td>$!urecord.getUserName()</td>
-              <td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
+              <td><span><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></span></td>
               <td>
               <font face="$ui.sansSerifFonts">
 		<a href="$link.setPage("call,UserMgmt_Admin,UserForm.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","All").addPathInfo("count",$tdcolor)">$brih_update</a> &nbsp;
@@ -181,7 +191,7 @@ $!data.getMessage()
     </td>
  </tr>
 </table>
-</div>
+##</div>
  #end
 #if($noList=="nolist")
 <table align=left><tr><td>$!infrmtn</td></tr></table>
