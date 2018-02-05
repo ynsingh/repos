@@ -43,9 +43,6 @@ class Setup3 extends CI_Controller
             $this->form_validation->set_rules('salh_desc','Salary Head Description','trim|xss_clean');
            
             if($this->form_validation->run() == FALSE){
-              //   echo "code===".$_POST['salh_code'].$_POST['salh_name'].$_POST['salh_nickname'].$_POST['salh_type'].$_POST['salh_caltype']
-                // . $_POST['salh_tax'].$_POST['salh_cat']. $_POST['salh_desc'] ;
-           // die;
                 $this->load->view('setup3/salaryhead');
                 return;
             }//formvalidation
@@ -226,9 +223,9 @@ class Setup3 extends CI_Controller
                       $this->load->view('setup3/edit_salaryhead',$salh_data);
                       return;
                     }
-                   
+               
                 }//if dupcondiotion 
-                elseif($salh_data['salhdata']->sh_name !=$shname){
+                if($salh_data['salhdata']->sh_name !=$shname){
                      $dupcheck = array(
                        // 'sh_code'                  =>$_POST['salh_code'],
                         'sh_name'                  =>$_POST['salh_name'],
@@ -241,27 +238,26 @@ class Setup3 extends CI_Controller
                       $this->load->view('setup3/edit_salaryhead',$salh_data);
                       return;
                     }
+                 
+                }//ifdupsalhname
+                $editshflag=$this->sismodel->updaterec('salary_head', $edit_data, 'sh_id', $id);
+                if(!$editshflag){
+                    $this->logger->write_logmessage("error","Edit salary head error", "Edit salary head details. $logmessage ");
+                    $this->logger->write_dblogmessage("error","Edit salary head error", "Edit salary head details. $logmessage ");
+                    $this->session->set_flashdata('err_message','Error in updating salary head - ' . $logmessage . '.', 'error');
+                    $this->load->view('setup3/edit_salaryhead', $edit_data);
                     
                 }
                 else{
-                    $editshflag=$this->sismodel->updaterec('salary_head', $edit_data, 'sh_id', $id);
-                        if(!$editshflag){
-                            $this->logger->write_logmessage("error","Edit salary head error", "Edit salary head details. $logmessage ");
-                            $this->logger->write_dblogmessage("error","Edit salary head error", "Edit salary head details. $logmessage ");
-                            $this->session->set_flashdata('err_message','Error in updating salary head - ' . $logmessage . '.', 'error');
-                            $this->load->view('setup3/edit_salaryhead', $edit_data);
+                    $this->logger->write_logmessage("update","Edit Salary Head by".$this->session->userdata('username') , "Edit Salary head details. $logmessage ");
+                    $this->logger->write_dblogmessage("update","Edit salary head by".$this->session->userdata('username') , "Edit salary head details. $logmessage ");
+                    $this->session->set_flashdata('success','Salary Head details updated successfully.');
+                    redirect('setup3/salaryhead_list');
                     
-                        }
-                        else{
-                            $this->logger->write_logmessage("update","Edit Salary Head by".$this->session->userdata('username') , "Edit Salary head details. $logmessage ");
-                            $this->logger->write_dblogmessage("update","Edit salary head by".$this->session->userdata('username') , "Edit salary head details. $logmessage ");
-                            $this->session->set_flashdata('success','Salary Head details updated successfully.');
-                            redirect('setup3/salaryhead_list');
-                    
-                        }
                 }
-            }
-        }
+               
+            }//else form validation
+        }// isset button
     }
     /****************************  closer update data salary head **********************************************/
     
@@ -377,4 +373,209 @@ class Setup3 extends CI_Controller
         $this->load->view('setup3/edit_salaryformula',$data);
     }
     /********************* closer Edit salary heads  formula  *******************************************/
+       
+    /********************* Add Employee type form  *******************************************/
+    public function employeetype(){
+        if(isset($_POST['addemptype'])) {
+            //form validation
+            
+            $this->form_validation->set_rules('emptype_code','Employee Type Code','trim|required|xss_clean|alpha_numeric_spaces|callback_isemptypecode_Exist');
+            $this->form_validation->set_rules('emptype_name','Employee Type Name','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('pfapplies','PF applies','trim|xss_clean');
+            $this->form_validation->set_rules('maxpf_limit','Max PF Limit','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('emptype_sname','Employee Short name','trim|xss_clean|alpha_numeric_spaces');
+                                  
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/employeetype');
+                return;
+            }//formvalidation
+            else{
+               
+                $data = array(
+                    'empt_code'                  =>$_POST['emptype_code'],
+                    'empt_name'                  =>$_POST['emptype_name'],
+                    'empt_shortname'             =>$_POST['emptype_sname'],
+                    'empt_pfapplies'             =>$_POST['pfapplies'],
+                    'empt_maxpflimit'            =>$_POST['maxpf_limit'],
+                    'empt_creatorid'              =>$this->session->userdata('username'),
+                    'empt_creatordate'            =>date('y-m-d'),
+                    'empt_modifierid'             =>$this->session->userdata('username'),
+                    'empt_modifydate'             =>date('y-m-d'),
+                ); 
+                $dupcheck = array(
+                    'empt_code'                  =>$_POST['emptype_code'],
+                    'empt_name'                  =>$_POST['emptype_name'],
+                               
+                ); 
+                
+                $etname = $this->input->post('empt_name', TRUE);
+               
+                $emptdup = $this->sismodel->isduplicatemore('employee_type', $dupcheck);
+                if($emptdup == 1 ){
+
+                      $this->session->set_flashdata("err_message", "Record is already exist with this 'Employee Type Name = $etname' ");
+                      $this->load->view('setup3/employeetype');
+                      return;
+                }
+                else{
+                    $emptyeflag=$this->sismodel->insertrec('employee_type', $data);
+                    if (!$emptyeflag)
+                    {
+                        $this->logger->write_logmessage("insert","Trying to add employee type ", " employee type is not added ".$etname);
+                        $this->logger->write_dblogmessage("insert","Trying to add employee type ", " employee type is not added ".$etname);
+                        $this->session->set_flashdata('err_message','Error in adding employee type - '  , 'error');
+                        redirect('setup3/employeetype');
+                    }
+                    else{
+                        $this->logger->write_logmessage("insert","Add employee type ", "employee type ".$_POST['emptype_name'] ." added  successfully...");
+                        $this->logger->write_dblogmessage("insert","Add  employee type ", "employee type  ".$_POST['emptype_name'] ."added  successfully...");
+                        $this->session->set_flashdata("success", " Employee Type = "."[" .$_POST['emptype_name'] . "]" ." record insert successfully...");
+                        redirect("setup3/employeetype_list");
+                    }
+                    
+                }
+                          
+            }//closer else form run true
+            
+        }
+        $this->load->view('setup3/employeetype');
+    }
+       
+    /*********************  closer Add Employee type form  *******************************************/
+    
+    /********************* check for duplicate employee type code  *******************************************/
+    public function isemptypecode_Exist(){
+        
+        $etcode = $this->input->post('emptype_code', TRUE);
+        if(!empty($etcode)){
+            $is_exist= $this->sismodel->isduplicate('employee_type','empt_code',$etcode);
+            if ($is_exist)
+            {
+                $this->form_validation->set_message('isemptypecode_Exist', 'Employee Type Code =  ' . $etcode .' is already exist. so please insert any other code.');
+                return false;
+            }
+            else {
+                return true;
+            } 
+        }    
+        
+       
+    }
+    
+    /************************************** closer check for duplicate employee type code  **************************/
+    /************************************** Display employee type  **************************/
+
+    public function employeetype_list(){
+        $data['emptype_record'] =$this->sismodel->get_list('employee_type');
+        $this->logger->write_logmessage("view"," view employee type list" );
+        $this->logger->write_dblogmessage("view"," view employee type list");
+        $this->load->view('setup3/emptype_list',$data);
+    }
+     /**************************************closer  Display employee type  **************************/
+    /********************* Add Employee type form  *******************************************/
+    public function edit_employeetype($id){
+       
+        $data['id'] = $id;
+        $data['emptypedata'] = $this->sismodel->get_listrow('employee_type','empt_id',$id)->row();
+        if(isset($_POST['updateemptype'])) {
+            //form validation
+            
+            $this->form_validation->set_rules('emptype_code','Employee Type Code','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('emptype_name','Employee Type Name','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('pfapplies','PF applies','trim|xss_clean');
+            $this->form_validation->set_rules('maxpf_limit','Max PF Limit','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('emptype_sname','Employee Short name','trim|xss_clean|alpha_numeric_spaces');
+                                  
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/edit_emptype',$data);
+                return;
+            }//formvalidation
+            else{
+                $etcode = $this->input->post('emptype_code', TRUE);
+                $etname = $this->input->post('emptype_name', TRUE);
+                $etnickname = $this->input->post('emptype_sname', TRUE);
+                $etpfaply = $this->input->post('pfapplies', TRUE);
+                $etpfmaxlimit = $this->input->post('maxpf_limit', TRUE);
+                
+                
+                $logmessage = "";
+                if($data['emptypedata']->empt_code != $etcode)
+                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_code. " changed by " .$etcode;
+                if($data['emptypedata']->empt_name != $etname)
+                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_name. " changed by " .$etname;
+                if($data['emptypedata']->empt_shortname != $etnickname)
+                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_shortname . " changed by " .$etnickname;
+                if($data['emptypedata']->empt_pfapplies != $etpfaply)
+                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_pfapplies . " changed by " .$etpfaply;
+                if($data['emptypedata']->empt_maxpflimit != $etpfmaxlimit)
+                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_maxpflimit . " changed by " .$etpfmaxlimit;
+                
+                $editdata = array(
+                    'empt_code'                  =>$_POST['emptype_code'],
+                    'empt_name'                  =>$_POST['emptype_name'],
+                    'empt_shortname'             =>$_POST['emptype_sname'],
+                    'empt_pfapplies'             =>$_POST['pfapplies'],
+                    'empt_maxpflimit'            =>$_POST['maxpf_limit'],
+                    'empt_modifierid'             =>$this->session->userdata('username'),
+                    'empt_modifydate'             =>date('y-m-d'),
+                ); 
+               
+                if($data['emptypedata']->empt_code != $etcode){
+                    
+                    $dupcheck = array(
+                        'empt_code'                  =>$_POST['emptype_code'],
+                        //'empt_name'                  =>$_POST['emptype_name'],
+                
+                    ); 
+                    $emptypedup = $this->sismodel->isduplicatemore('employee_type', $dupcheck);
+                    if($emptypedup == 1 ){
+                      
+                      $this->session->set_flashdata("err_message", "Record is already exist with this ' Code = $etcode so please assign any other code. ");
+                      $this->load->view('setup3/edit_emptype',$data);
+                      return;
+                    }
+                                        
+                }//if dupcondiotion 
+                if($data['emptypedata']->empt_name != $etname){
+                     $dupcheck = array(
+                    
+                        'empt_name'                  =>$_POST['emptype_name'],
+                                        
+                    ); 
+                    $emptypedup = $this->sismodel->isduplicatemore('employee_type', $dupcheck);
+                    if($emptypedup == 1 ){
+
+                      $this->session->set_flashdata("err_message", "Record is already exist with this  ' Name = $etname ' so please change it. ");
+                      $this->load->view('setup3/edit_emptype',$data);
+                      return;
+                    }
+                    
+                }//ifdupcondition
+                $editetflag=$this->sismodel->updaterec('employee_type', $editdata, 'empt_id', $id);
+                if(!$editetflag){
+                      
+                    $this->logger->write_logmessage("error","Edit employee type error", "Edit employee type details. $logmessage ");
+                    $this->logger->write_dblogmessage("error","Edit employee type error", "Edit employee type. $logmessage ");
+                    $this->session->set_flashdata('err_message','Error in updating employee type - ' . $logmessage . '.', 'error');
+                    $this->load->view('setup3/edit_emptype', $data);
+                    
+                }
+                else{
+                    $this->logger->write_logmessage("update","Edit employee type by  ".$this->session->userdata('username') , "Edit employee type details. $logmessage ");
+                    $this->logger->write_dblogmessage("update","Edit employee type by  ".$this->session->userdata('username') , "Edit employee type details. $logmessage ");
+                    $this->session->set_flashdata('success','Record updated successfully.'.'[ Employee Type is = ' .$_POST['emptype_name'] .' ]');
+                    redirect('setup3/employeetype_list');
+                    
+                }
+                
+                           
+            }//closer else form run true
+            
+        }
+        $this->load->view('setup3/edit_emptype',$data);
+    }
+       
+    /*********************  closer Add Employee type form  *******************************************/
 }//class    
