@@ -5,6 +5,7 @@
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Sharad Singh (sharad23nov@gmail.com) modify view profile
  * @author  Manorama Pal(palseema30@gmail.com) modify view profile
+ * @author  Om Prakash(omprakashkgp@gmail.com) => Change Employee Password
  */
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -213,6 +214,60 @@ public function viewprofile(){
 		$this->load->view('profile/editprofile',$data);
 	}//end function
         
-            
+ /* This function has been created for the change employee password */
+    public function changeemppassword(){
+	
+         /* Form validations */
+	    $this->form_validation->set_rules('empemail', 'Employee Email', 'trim|xss_clean|required|valid_email');
+            $this->form_validation->set_rules('npasswd', 'Password', 'trim|xss_clean|required|min_length[5]');
+          // $this->form_validation->set_rules('npasswd', 'Password', 'trim|xss_clean|required|min_length[5]|matches[renpasswd]');
+          //  $this->form_validation->set_rules('renpasswd', 'Re Password', 'trim|xss_clean|required');
+	 if($this->form_validation->run() == FALSE)
+	 {
+
+	   $this->load->view('profile/changeemppassword');
+	 }
+	 else{
+	       $empemail = $this->input->post("empemail");
+	       $npasswd = $this->input->post("npasswd");
+	     //  $renpasswd = $this->input->post("renpasswd");
+	       $flagemail= $this->logmodel->isduplicate('edrpuser','username',$empemail );
+	       if($flagemail == 0)
+                   {
+                      $this->session->set_flashdata('err_message','Your email Id is not matching as per our record !!');
+                      redirect('profile/changeemppassword');
+                   }
+               else{
+                        $update_data = array(
+                        'password'=>md5($npasswd),
+                        );
+                        $pflag=$this->logmodel->updaterec('edrpuser', $update_data,'username',$empemail);
+                        $sub='New Password';
+                        $mess='Your password has been changed. Your new password is '.$npasswd.' You can change it later on as per your convenience.';
+                        if ( ! $pflag)
+                        {
+                                $this->logger->write_logmessage("error","Error in update password ", "Error in change password update". $empemail );
+                                $this->logger->write_dblogmessage("error","Error in update password", "Error in change password update". $empemail);
+                                $this->session->set_flashdata('err_message'.'Error in change password....');
+                                redirect('profile/changeemppassword');
+                        }else{
+	
+                             $mails=$this->mailmodel->mailsnd($empemail,$sub,$mess,'');
+                             if($mails){
+                                    $this->logger->write_logmessage("update"," Password change", " successfully" .$empemail);
+                                    $this->logger->write_dblogmessage("update","Password change", "successfully".$empemail );
+                                    $this->session->set_flashdata("success", 'Password has been changed successfully !! Mail sent Sucessfully !!' );
+                                }
+                                else{
+                                     $this->logger->write_logmessage("update"," Password change", " successfully" .$empemail);
+                                     $this->logger->write_dblogmessage("update","Password change", "successfully".$empemail );
+                                     $this->session->set_flashdata("success", 'Password has been changed successfully !! Mail does not sent !!' );
+                                }
+                                redirect('profile/changeemppassword');
+	            	    }
+		      }
+	       }
+//	   $this->load->view('profile/changeemppassword');
+       } 
         
 }//end class

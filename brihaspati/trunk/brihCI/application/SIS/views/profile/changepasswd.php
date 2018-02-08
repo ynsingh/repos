@@ -1,13 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!--@name changepasswd.php 
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
+  @author Om Prakash(omprakashkgp@gmail.com)=> GUI Modification
+
  -->
 
 <html>
     <head>  
         <title>Change Password</title>  
         <?php $this->load->view('template/header'); ?>
-       
+       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">  
     </head>
 <body>
 
@@ -41,7 +43,7 @@
                     echo "<td align=\"left\" width=\"33%\">";
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
-                    echo "<b>Change Password</b>";
+                    //echo "<b>Change Password</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\" style=\"font-size:16px\">";
                     $help_uri = site_url()."/help/helpdoc#ChangePassword";
@@ -68,29 +70,28 @@
 <tr>  
                 <div> 
                 <br>    
-                           <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
-                        <table style="margin-left:30px;">
+                       <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
+                        <table style="width:100%; border:1px solid gray;" align="center" class="TFtable" >
+			 <tr><thead><th  style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="2">&nbsp;Change Password Form</th></thead></tr>
                             <tr>  
                                 <td><label for="oldpassword" class="control-label"><b>Old Password</b></label></td>
-                                <td><input type="password" name="oldpassword" class="form-control" size="30"><br></td>
-				<td><?php //echo form_error('oldpassword')?></td>
+                                <td><input type="password" name="oldpassword" class="form-control" size="40"><br></td>
+				<!--<td><?php //echo form_error('oldpassword')?></td>-->
                             </tr>
 
 				<tr>
                                 <td><label for="newpassword" class="control-label"><b>New Password</b></label></td>
-                                <td><input type="password" name="newpassword"  class="form-control" size="30" /><br></td>
-                                <td><?php //echo form_error('newpassword')?></td>
+                                <td><input type="password" name="newpassword"  class="form-control" size="40" /><br></td>
+                                <!--<td><?php //echo form_error('newpassword')?></td>-->
                             </tr>
 
 			    <tr>
                                 <td><label for="confirmpassword" class="control-label"><b>New Password (Confirm)</b></label></td>
-                                <td><input type="password" name="confirmpassword"  class="form-control" size="30" /><br></td>
-                                <td><?php //echo form_error('confirmpassword')?></td>
+                                <td><input type="password" name="confirmpassword"  class="form-control" size="40" /><br></td>
+                               <!-- <td><?php //echo form_error('confirmpassword')?></td>-->
                             </tr>
-			<tr>
-                                <td>
-                                </td>
-                                <td>
+			<tr  style="background-color:#2a8fcf;text-align:left;height:40px;">
+                                <td colspan="2">
                                 <button name="changepasswd"><b>Update Password</b></button>
                                 </td>
                             </tr>
