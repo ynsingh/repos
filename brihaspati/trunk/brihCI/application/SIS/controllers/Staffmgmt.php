@@ -139,13 +139,18 @@ class Staffmgmt extends CI_Controller
                // $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['uocontrol'])->authority_id;
                 //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
                 //-----------change employee photo name ----------------//
+                $empcode=$_POST['empcode'];
                 if(!empty($_FILES['userfile']['name'])){
                 $newFileName = $_FILES['userfile']['name'];
                 $fileExt1 = explode('.', $newFileName);
                 $file_ext = end( $fileExt1);
-                $empcode=$_POST['empcode'];
                 $new_name = $empcode.".".$file_ext; 
-                }
+		}
+		$email = $_POST['emailid'];
+		if(empty($email)){
+                                    $email = $empcode .'@tanuvas.org.in';
+                            }
+
                 //-------------------------------------------------------------
                 $data = array(
                     'emp_code'                  =>$_POST['empcode'],
@@ -189,7 +194,7 @@ class Staffmgmt extends CI_Controller
                     'emp_bank_accno'            =>$_POST['bankacno'],
                     'emp_dob'                   =>$_POST['DateofBirth'],
                     'emp_father'                =>$_POST['fathername'],
-                    'emp_email'                 =>$_POST['emailid'],
+                    'emp_email'                 =>$email,
                     
                     'emp_address'               =>$_POST['Address'],
                     'emp_mothertongue'          =>$_POST['mothertongue'],
@@ -212,11 +217,16 @@ class Staffmgmt extends CI_Controller
                     'emp_photoname'             =>$new_name  
                         
                 );
+		if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
+                       	$passwd = $empcode;
+                }else{
                 
-                //generate 10 digit random password
-                $passwd=$this->commodel->randNum(10);
+                	//generate 10 digit random password
+			$passwd=$this->commodel->randNum(10);
+		}
                 $isdupl= $this->lgnmodel->isduplicate('edrpuser','username',$_POST['emailid']);
-                if(!$isdupl){
+		if(!$isdupl){
+
                     /* generate the hash of password */
                     $password=md5($passwd);
                     $dataedrpusr = array(

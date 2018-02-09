@@ -123,7 +123,10 @@ class Upl extends CI_Controller
                             $pbcode = trim($datal[12]);
                             $dob = trim($datal[13]);
                             $doa = trim($datal[14]);
-                            $email = trim($datal[15]);
+			    $email = trim($datal[15]);
+			    if(empty($email)){
+				    $email = $pfno .'@tanuvas.org.in';
+			    }
                             $email1 = trim($email, " ");
                             $bankacc = trim($datal[16]);
                             $aadhar = trim($datal[17]);
@@ -163,9 +166,13 @@ class Upl extends CI_Controller
                                     if($vacancy == 1){
                                         // check for duplicate
                                         $isdup= $this->lgnmodel->isduplicate('edrpuser','username',$email );
-                                        if(!$isdup){
-                                            //generate 10 digit random password
-                                            $passwd=$this->commodel->randNum(10);
+					if(!$isdup){
+						if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
+   							$passwd = $pfno;
+						}else{
+                                            		//generate 10 digit random password
+							$passwd=$this->commodel->randNum(10);
+						}
                                             // generate the hash of password
                                             $password=md5($passwd);
                                             // insert data into edrp user db1
