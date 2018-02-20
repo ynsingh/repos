@@ -441,14 +441,14 @@ try
 			      crit.add(TurbineUserPeer.USER_ID, usrId);
 			      List usrList = TurbineUserPeer.doSelect(crit);
 			      String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
-			      Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+" ." +"the Information regarding the upload is as given blow ."+"<br>"+newText +"."+"<br>"+fullName, "", "", "", userEmail, "Course content uploaded", "", LangFile);
+			      Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+" ." +"the Information regarding the upload is as given below ."+"<br>"+newText +"."+"<br>"+fullName, "", "", "", userEmail, "Course content uploaded", "", LangFile);
 			   }
 			   if(Mail_msg.equals("Success")) {
 			      crit = new Criteria();
         	              crit.add(TurbineUserPeer.USER_ID, uid);
                 	      List usrList = TurbineUserPeer.doSelect(crit);
 	                      String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
-			      Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+ " . "+"the Information regarding the upload is as given blow"+"<br>"+newText+"."+"<br>"+ fullName, "", "", "", senderEmail, "Course content uploaded", "", LangFile);
+			      Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+ " . "+"the Information regarding the upload is as given below"+"<br>"+newText+"."+"<br>"+ fullName, "", "", "", senderEmail, "Course content uploaded", "", LangFile);
 			      Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
 			      data.addMessage(Mail_msg);
 			   }

@@ -24,7 +24,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></scripti>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 ##<div class="scroll">
 <style>
 span
