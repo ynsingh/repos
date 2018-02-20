@@ -49,7 +49,7 @@
         </table>
         <br/>
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+            <table cellpadding="16" style="margin-left:" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Program Name(Branch)</th>

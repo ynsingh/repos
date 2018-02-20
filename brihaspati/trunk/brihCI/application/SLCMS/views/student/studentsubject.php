@@ -81,7 +81,7 @@ echo $semester;
     echo "<tr><td>";
     echo form_label('Program Name', 'prgname');
     echo"</td><td>";
-    echo $prg_name;
+    echo $prg_name ." ( ".$prg_branch." )";
     echo "</td><td>";
     echo form_error('prgname');
     echo"</td><td>";
