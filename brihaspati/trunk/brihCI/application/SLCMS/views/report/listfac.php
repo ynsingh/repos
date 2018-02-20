@@ -46,7 +46,7 @@
                 <?php
                         if( count($this->tresult) ):
                                 foreach($this->tresult as $row){
-   
+   				if(!empty($row->userid)){
                                         echo "<tr>";
 					echo "<td align=\"center\">";
 					echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
@@ -66,6 +66,7 @@
 				        echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
 					echo "</td>";
                                         echo "</tr>";
+				}
                                 };
                         else :
                                 echo "<td colspan=\"6\" align=\"center\"> No Records found...!</td>";

@@ -68,13 +68,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </table>
 
-<div class="scroller_sub_page">
-	<table style="width:100%;font-size:19px;" border=0>
-	
+<div class="scroller_sub_page" >
+
+	<table style="width:100%;font-size:19px;" border=0 class="TFtable">
+	<thead>
+		<tr><th>Sr. No.</th><th>University Name</th><th>Department Name</th><th>Action</th></tr>
+	</thead>
+	<tbody>
 	<tr>
 		<?php
 			$year = $currentacadyear;
-			$i = 0;
+			$i = 1;
 
 		foreach($getattsheet as $row){
 			 $deptid1=$row->sp_deptid;	
@@ -98,21 +102,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$atturl = 'uploads/SLCMS/adminstudent_exam/'.$year.'/attendence_sheet/'.$sutcid.'/'.$departtid.'.pdf';
 			if(file_exists($atturl)) {
 		?>
-		<td align=left>
+		<td><?php echo $i++;?></td>
+		<td><?php echo $cname;?></td>
+		<td><?php echo $deptname;?></td>
+		<td >
 <?php //if($yee == $year){?>
 		<a href="<?php echo base_url($atturl);?>" title="Click To View Exam Form" target=_blank>
-			<?php echo $cname.' '.'( '.$deptname.' )';?></br>
-		<embed src="<?php echo base_url($atturl);?>" type="application/pdf"   height="350px" width="100%">
+		Click To Open PDF
+			<?php //echo $cname.' '.'( '.$deptname.' )';?></br>
+		<!---<embed src="<?php //echo base_url($atturl);?>" type="application/pdf"   height="350px" width="100%">--->
 		</a>
 			
 		</td>
 		
-		<?php  }$i++;
-		if($i%4 == 0){?>
+		<?php  }//$i++;
+		//if($i%4 == 0){?>
 	</tr>
-	<tr>
-		<?php }}} ?>
-	</tr>
+	<!--<tr>-->
+		<?php }}//} ?>
+	<!--</tr>-->
 
 	</table>
 </div><!------scroller div------>

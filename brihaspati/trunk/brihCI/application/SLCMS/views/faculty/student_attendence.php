@@ -82,7 +82,9 @@
                     echo "</tr>";
                     echo "</table>";
                  ?>
-	<?php 
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
 	    if(!empty($_SESSION['success'])){	
 		if(isset($_SESSION['success'])){?>
          <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
@@ -94,7 +96,7 @@
              <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
-	?> 	
+	?>  	
 
       </div>
         
@@ -105,7 +107,7 @@
             <tr style="font-weight:bold; background-color:lightslategray;">
 
                 <td> <span style="color:white;">Select Program :</span>
-                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);" required>
+                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);" >
 			<option selected="true" disabled>Select Program</option>
 			 <?php foreach($prgsublist as $prgdata): ?>	
                             <option value="<?php echo $prgdata->pstp_prgid; ?>">
@@ -116,19 +118,19 @@
 		    </select>
                 </td>
                 <td><span style="color:white;">Semester :</span>
-			<select name="semester" id="semester" onchange="getsubject(this.value);" required>
+			<select name="semester" id="semester" onchange="getsubject(this.value);" >
 				<option selected="true" disabled>semester</option>
 		
 		   	</select>		
                 </td>
                 <td><span style="color:white;">Subject Name :</span>
-                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" required> 
+                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" > 
                         <option selected="selected" disabled selected>subject name</option>
 		
                     </select>
                 </td>
 		<td><span style="color:white;">Subject Paper Name :</span>
-                    <select name="papername" id="papername" onchange="" required> 
+                    <select name="papername" id="papername" onchange=""> 
                         <option selected="selected" disabled selected>subject paper name</option>
 		
                     </select>
@@ -178,8 +180,8 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 		<span>Select Class :</span>
                     <select name="classtype" id="cltype" onchange=""> 
                         <option selected="selected" disabled selected>Select Class Type</option>
-			<option value="R">Regular</option>
-			<option value="E">Extra</option>	
+			<option value="Regular">Regular</option>
+			<option value="Extra">Extra</option>	
                     </select>
 	
 	

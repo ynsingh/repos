@@ -206,8 +206,17 @@ class Facultyhome extends CI_Controller
 			$date = $this->input->post('adate',TRUE);
 			$search = $this->input->post('search');
 
-           		 if (isset($search)) 
+           		 if(isset($search)) 
             		 {
+			 $this->form_validation->set_rules('program_branch','Select Programme','trim|xss_clean|required');
+			 $this->form_validation->set_rules('subjectname','Select Subject','trim|xss_clean|required');
+			 $this->form_validation->set_rules('papername','Select Papername','trim|xss_clean|required');
+			 $this->form_validation->set_rules('semester','Select Semester','trim|xss_clean|required');	
+			 if($this->form_validation->run() == False){
+				$this->session->set_flashdata("err_message",'Select Programme , Semester , Subject and Paper Name.' );	
+				redirect('facultyhome/student_attendence');
+			 }
+			else{
 			 $getdata = '';	
 					 $whereau = "((sp_programid = $this->prgid) AND (sp_semester = $this->sem) AND (sp_acadyear = '$acadyear') AND ((sp_subid1 = $this->subjectid) OR (sp_subid2 = $this->subjectid) OR (sp_subid3 = $this->subjectid) OR (sp_subid4 = $this->subjectid) OR (sp_subid5 = $this->subjectid) OR (sp_subid6 = $this->subjectid) OR (sp_subid7 = $this->subjectid) OR (sp_subid8 = $this->subjectid) OR (sp_subid9 = $this->subjectid) OR (sp_subid10 = $this->subjectid)))";
 
@@ -219,8 +228,8 @@ class Facultyhome extends CI_Controller
 					//print_r($whereau);print_r($getdata);die;
 				}
 				
-			 }//if isset search close
-
+			 }//else search close
+			}//if isset search close
 			 $submit = $this->input->post('Submit');
            		 if (isset($submit))
 			 {
@@ -248,7 +257,6 @@ class Facultyhome extends CI_Controller
 							$pstdatadup = $this->cmodel->isduplicatemore('student_attendance',$datacheck);
 							//print_r($pstdatadup);die;
         						if($pstdatadup){
-							
 								//echo "<span style=' color: #D8000C;background-color: #FFBABA;'>";
 								$this->logger->write_logmessage("insert", "Student attendence already submitted ." .$datacheck);
                     						$this->logger->write_dblogmessage("insert", "Student attendence already submitted." .$datacheck);
@@ -260,26 +268,27 @@ class Facultyhome extends CI_Controller
 							}
         						else{
 							
-							$attendence = array(
-								'satd_smid'   		=>	$smid,
-                						'satd_scid'  		=>	$_POST['studycenter'],
-                						'satd_deptid'   	=>	$_POST['department'],
-                						'satd_acadyear'   	=>	$acadyear,
-								'satd_prgid'     	=>	$_POST['program_branch'],
-								'satd_sem'   	 	=>	$_POST['semester'],
-                						'satd_papid'  	 	=>	$_POST['papername'],
-								'satd_subid'  	 	=>	$_POST['subjectname'],
-								'satd_classtype' 	=>	$_POST['classtype'],
-								'satd_astatus'   	=>	$attendence,
-								'satd_adate'      	=>	$date,
-								'satd_creatorid'    	=>	$uname,
-								'satd_createdate'      	=>	$cdate
-                					);
+								$attendence = array(
+									'satd_smid'   		=>	$smid,
+                							'satd_scid'  		=>	$_POST['studycenter'],
+                							'satd_deptid'   	=>	$_POST['department'],
+                							'satd_acadyear'   	=>	$acadyear,
+									'satd_prgid'     	=>	$_POST['program_branch'],
+									'satd_sem'   	 	=>	$_POST['semester'],
+                							'satd_papid'  	 	=>	$_POST['papername'],
+									'satd_subid'  	 	=>	$_POST['subjectname'],
+									'satd_classtype' 	=>	$_POST['classtype'],
+									'satd_astatus'   	=>	$attendence,
+									'satd_adate'      	=>	$date,
+									'satd_creatorid'    	=>	$uname,
+									'satd_createdate'      	=>	$cdate
+                						);
+									
 								$insertatt = $this->cmodel->insertrec('student_attendance',$attendence);
 								
 							}//close else	
 							
-						}//if empty close
+						}//if not empty close
 						else {break;}
 				   	}//for close
 					 if(!$insertatt)
@@ -295,14 +304,84 @@ class Facultyhome extends CI_Controller
                    				$this->session->set_flashdata("success", "Today Attendence is Submitted.");
 						redirect('facultyhome/student_attendence_view');
                 			 }	
-			  }//if isset submit close
+			  }//else submit close
 			
-			}
+			}//if isset submit close
 		}//if isset post close
 		$this->load->view('faculty/student_attendence',$datarec);
 	}
 
 	public function student_attendence_view(){
+		$uname = $this->session->userdata('username');
+		
+		$uid = $this->session->userdata('id_user');
+		$acadyear = $this->usermodel->getcurrentAcadYear();
+        	$datarec['academicyear']=$acadyear;
+		//get program list of program,subject,paper and semester in program_subject_teacher
+       		$selectfield=array('pstp_prgid');
+		//$selectfield=array('pstp_prgid');
+        	$data=array(
+            		'pstp_teachid' => $uid,
+            		'pstp_acadyear' => $acadyear,
+        	);
+        	$prgsublist = $this->cmodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
+		//print_r($this->prgsublist);
+        	$datarec['prgsublist']=$prgsublist;
+
+		$selectfield=array('pstp_sem','pstp_subid','pstp_prgid','pstp_papid','pstp_acadyear');
+        	$data=array(
+            		'pstp_teachid'  => $uid,
+			'pstp_acadyear' => $acadyear,
+			//'pstp_prgid'	=> $this->prgid,
+			//'pstp_sem'	=> $this->sem
+        	);
+        	$subject = $this->cmodel->get_listspficemore('program_subject_teacher',$selectfield,$data);
+		//print_r($subject);
+		$datarec['subject'] = $subject;
+		
+		$search = $this->input->post('search');
+		if(isset($_POST['search'])){
+			$this->sem = $this->input->post('semester',TRUE);
+			$this->prgid = $this->input->post('program_branch',TRUE);
+			$this->subjectid = $this->input->post('subjectname',TRUE);
+			$this->paperid = $this->input->post('papername',TRUE);
+			$date = $this->input->post('adate',TRUE);
+ 			$whereau = array('satd_prgid' => $this->prgid ,'satd_sem' => $this->sem , 'satd_acadyear' => $acadyear ,'satd_subid' => $this->subjectid ,'satd_papid' => $this->paperid);
+				$selectdata='satd_smid,satd_subid,satd_papid,satd_classtype,satd_astatus,satd_sem,satd_acadyear,satd_scid,satd_deptid,satd_prgid,satd_adate';
+			if(!empty($whereau)){
+	        		$getdata = $this->cmodel->get_listspficemore('student_attendance',$selectdata,$whereau);
+				$datarec['getdata']=$getdata;	
+			}
+
+			$record=array( );	
+			if(!empty($this->prgid)){
+			if(!empty($uname)){   
+			$record['satd_creatorid'] = $uname;
+			$record ['satd_prgid'] =  $this->prgid;}}
+
+			if(!empty($this->sem)){
+			if(!empty($uname)){   
+			$record['satd_creatorid'] = $uname;
+			$record ['satd_sem'] =  $this->sem;}}
+
+			if(!empty($this->subjectid)){
+			if(!empty($uname)){   
+			$record['satd_creatorid'] = $uname;
+			$record ['satd_subid'] =  $this->subjectid;}}
+
+			if(!empty($this->paperid)){
+			if(!empty($uname)){   
+			$record['satd_creatorid'] = $uname;
+			$record ['satd_papid'] =  $this->paperid;}}
+
+			$selectdata1='satd_smid,satd_subid,satd_papid,satd_classtype,satd_astatus,satd_sem,satd_acadyear,satd_scid,satd_deptid,satd_prgid,satd_adate';
+			if(!empty($record)){		
+       				$getdata = $this->cmodel->get_listspficemore('student_attendance',$selectdata1,$record);
+				//print_r($getdata);
+				$datarec['getdata']=$getdata;	
+			}
+			
+		}//post close
 		$uname = $this->session->userdata('username');
 		//get student attendence record
 		$studatt = $this->cmodel->get_listrow('student_attendance','satd_creatorid',$uname)->result();

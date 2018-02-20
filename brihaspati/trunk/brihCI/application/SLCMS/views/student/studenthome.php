@@ -13,18 +13,33 @@
 	<?php //$this->load->view('template/stumenu'); ?>
 
 	</div>
-	<div align="center">
-<?php if(isset($_SESSION['err_message'])){ ?>
+	<!--<div align="center">-->
+	<?php //if(isset($_SESSION['err_message'])){ ?>
              <?php 
-			echo "<div style='font-size:16px;text-align:center;background-color: #FFBABA;width:80%;height:30px;color: #D8000C;'>";
-			echo "<span style='margin-top:50px;'>";
-			echo $_SESSION['err_message'];
-			echo "<span>";
-			echo "</div>";
+			//echo "<div style='font-size:16px;text-align:center;background-color: #FFBABA;width:80%;height:30px;color: #D8000C;'>";
+			//echo "<span style='margin-top:50px;'>";
+			//echo $_SESSION['err_message'];
+			//echo "<span>";
+			//echo "</div>";
 		?>
         <?php
-        };
+        //};
 	?>
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+	
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>  
 <?php
 
 /*

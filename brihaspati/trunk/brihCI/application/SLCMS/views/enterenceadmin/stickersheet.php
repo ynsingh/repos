@@ -89,15 +89,18 @@ function myFunction() {
 					$centerid = $row->ca_centername;
 					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
 					//print_r($cname);
-		 	if((!empty($centerid)) && (!empty($row->ca_stickerstatus))){ ?>
+		 	if((!empty($centerid)) && (!empty($row->ca_stickerstatus))){ 
+			$stickerurl = 'uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/'.$centerid.'Sticker'.'.pdf';
+			if(file_exists($stickerurl)) {
+		?>
 				<td style="border:1px solid black;">
 				
-					<a href="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/'.$centerid.'Sticker'.'.pdf');?>" target=_blank style="font-size:20px;">
+					<a href="<?php echo base_url($stickerurl);?>" target=_blank style="font-size:20px;">
 		<?php echo $cname;?>  Sticker List</br>
-		<embed src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/'.$centerid.'Sticker'.'.pdf');?>" type="application/pdf"   height="350px" width="100%">
+		<embed src="<?php echo base_url($stickerurl);?>" type="application/pdf"   height="350px" width="100%">
 		</a>	
 				</td>	
-			<?php }?>
+			<?php }}?>
 			
 			<?php 
 			//}

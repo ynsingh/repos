@@ -63,8 +63,10 @@ class Studenthome extends CI_Controller
 
             //get study center code.
             $sc_code = $stud_master1->sm_sccode;  
-            $sc_name = $this->commodel->get_listrow('study_center','sc_code',$sc_code)->row()->sc_name;
-            $data['sc_name'] = $sc_name;
+		
+           $sc_name = $this->commodel->get_listrow('study_center','sc_id',$sc_code)->row()->sc_name;
+		//print_r($sc_name);
+                $data['sc_name'] = $sc_name;
 
             //get degree
 
@@ -82,7 +84,9 @@ class Studenthome extends CI_Controller
              * in which he is registered.
              */
             $noofsemester = sizeof($stud_prg_rec->result());
-            $degree_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_name ."( ". $this->commodel->get_listrow('program','prg_branch',$degree_id)->row()->prg_branch ." )";
+          //  $degree_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_name ."( ". $this->commodel->get_listrow('program','prg_branch',$degree_id)->row()->prg_branch ." )";
+		$degree_name = $this->commodel->get_listspfic1('program','prg_name','prg_id',$degree_id)->prg_name .'('. $this->commodel->get_listspfic1('program','prg_branch','prg_id',$degree_id)->prg_branch.' )';
+		//print_r($degree_name);
             $this->load->model("student_model", "studentmodel");           
             $data['degree_name'] = $degree_name;
             //get the value of current semester and academic year,semestertype(odd or even)
@@ -189,15 +193,19 @@ class Studenthome extends CI_Controller
             //print_r($studsemsubject);
              
             //get sfee_spid(student program id) from student_program
-            $stud_prg_id = $studsemsubject->row()->sp_id; 
-            $subjectid1 = $studsemsubject->row()->sp_subid1;
+            //$stud_prg_id = $studsemsubject->row()->sp_id; 
+           // $subjectid1 = $studsemsubject->row()->sp_subid1;
+
+	$stud_prg_id = $stud_prg_rec->row()->sp_id; 
+        $subjectid1 = $stud_prg_rec->row()->sp_subid1;
+	//print_r($stud_prg_id);	print_r($subjectid1);
             if($subjectid1 == 0)
             {
                 redirect('studenthome/studentsubject/');
             }
             else
             {
-                $subjectid2 = $studsemsubject->row()->sp_subid2;
+               /* $subjectid2 = $studsemsubject->row()->sp_subid2;
                 $subjectid3 = $studsemsubject->row()->sp_subid3;
                 $subjectid4 = $studsemsubject->row()->sp_subid4;
                 $subjectid5 = $studsemsubject->row()->sp_subid5;
@@ -205,8 +213,17 @@ class Studenthome extends CI_Controller
                 $subjectid7 = $studsemsubject->row()->sp_subid7;
                 $subjectid8 = $studsemsubject->row()->sp_subid8;
                 $subjectid9 = $studsemsubject->row()->sp_subid9;
-                $subjectid10 = $studsemsubject->row()->sp_subid10;
-            
+                $subjectid10 = $studsemsubject->row()->sp_subid10;*/
+		
+            	$subjectid2 = $stud_prg_rec->row()->sp_subid2;
+		$subjectid3 = $stud_prg_rec->row()->sp_subid3;
+		$subjectid4 = $stud_prg_rec->row()->sp_subid4;
+		$subjectid5 = $stud_prg_rec->row()->sp_subid5;
+		$subjectid6 = $stud_prg_rec->row()->sp_subid6;
+		$subjectid7 = $stud_prg_rec->row()->sp_subid7;
+		$subjectid8 = $stud_prg_rec->row()->sp_subid8;
+		$subjectid9 = $stud_prg_rec->row()->sp_subid9;
+		$subjectid10 = $stud_prg_rec->row()->sp_subid10;
             //get subject name 
                 if($subjectid1 != 0)
                     $subject1 = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$subjectid1)->sub_name; 
@@ -254,16 +271,26 @@ class Studenthome extends CI_Controller
             }
             
             $stud_par_rec = $this->commodel->get_listrow('student_parent','spar_smid',$stid);
-            if((!empty($stud_par_rec->row()->spar_paddress)) && (!empty($stud_par_rec->row()->spar_pcity)) && (!empty($stud_par_rec->row()->spar_pdistrict)) && (!empty($stud_par_rec->row()->spar_pstate)) && (!empty($stud_par_rec->row()->spar_pcountry)) && (!empty($stud_par_rec->row()->spar_ppincode)))
+	    $stud_add1 = $stud_par_rec->row();
+	 //   print_r($stud_add1);
+            //if((!empty($stud_add1->row()->spar_paddress)) && (!empty($stud_add1->row()->spar_pcity)) && (!empty($stud_add1->row()->spar_pdistrict)) && (!empty($stud_add1->row()->spar_pstate)) && (!empty($stud_add1->row()->spar_pcountry)) && (!empty($stud_add1->row()->spar_ppincode)))
+	    if(!empty($stud_add1))
             {
-            $stud_address = $stud_par_rec->row()->spar_paddress;
-            $stud_city = $stud_par_rec->row()->spar_pcity;
-            $stud_dist = $stud_par_rec->row()->spar_pdistrict;
-            $stud_stat= $stud_par_rec->row()->spar_pstate;
-            $stud_count= $stud_par_rec->row()->spar_pcountry;
-            $stud_pin= $stud_par_rec->row()->spar_ppincode;
-            $student_address = $stud_address.", ".$stud_city."<br>".$stud_dist.", ".$stud_stat."<br>".$stud_count." - ".$stud_pin;
-            $data['student_address'] = $student_address;
+            	/* $stud_address = $stud_add1->row()->spar_paddress;
+           	  $stud_city = $stud_add1->row()->spar_pcity;
+          	  $stud_dist = $stud_add1->row()->spar_pdistrict;
+          	  $stud_stat= $stud_add1->row()->spar_pstate;
+          	  $stud_count= $stud_add1->row()->spar_pcountry;
+          	  $stud_pin= $stud_add1->row()->spar_ppincode; */
+		$stud_address = $stud_add1->spar_paddress;
+            	$stud_city = $stud_add1->spar_pcity;
+            	$stud_dist = $stud_add1->spar_pdistrict;
+            	$stud_stat= $stud_add1->spar_pstate;
+           	$stud_count= $stud_add1->spar_pcountry;
+            	$stud_pin= $stud_add1->spar_ppincode;
+           	$student_address = $stud_address.", ".$stud_city."<br>".$stud_dist.", ".$stud_stat."<br>".$stud_count." - ".$stud_pin;
+		
+            	$data['student_address'] = $student_address;
             }
             else
                 $data['student_address'] = "Please fill the Address properly";
@@ -297,7 +324,7 @@ class Studenthome extends CI_Controller
            	    redirect('welcome');
 	    }
 
-     // $this->load->view('student/studenthome');
+     //$this->load->view('student/studenthome');
     }
     
     /* Student subject registration in semester */    
@@ -313,7 +340,7 @@ class Studenthome extends CI_Controller
        
 	 $stud_master = $studmaster->result();
          $stud_master1 = $studmaster->row();
-        $semtotalcr=0;
+         $semtotalcr=0;
         //get student details        
         if(!empty($stud_master)) {
             $stid = $stud_master1->sm_id;
@@ -361,28 +388,31 @@ class Studenthome extends CI_Controller
             $semmaxcredit = $row->semcr_maxcredit;
             $semcpi = $row->semcr_semcpi;
         }
-	if(!empty($semmincredit)){
+	//if(!empty($semmincredit)){
 	        $data['semmincredit'] = $semmincredit;
-	}
-	if(!empty($semmaxcredit)){
+	//}
+	//if(!empty($semmaxcredit)){
       	  	$data['semmaxcredit'] = $semmaxcredit;
-	}
-	if(!empty($semcpi)){
+	//}
+	//if(!empty($semcpi)){
 	        $data['semcpi'] = $semcpi;
-	}
+	//}
         //get subject/papers in a semester of a program from subject_semester
-        $wheredata1 = array('subsem_prgid' => $prg_id,'subsem_semester' => $semester);
+       /* $wheredata1 = array('subsem_prgid' => $prg_id,'subsem_semester' => $semester);
         $selectfield1 = 'subsem_subid,subsem_subtype';
-        $semsubject =  $this->commodel->get_listspficemore('subject_semester',$selectfield1,$wheredata1);    
-        
+        $semsubject =  $this->commodel->get_listspficemore('subject_semester',$selectfield1,$wheredata1);*/
+	$wheredata1 = array('sub_program' => $prg_id,'sub_semester' => $semester);
+        $selectfield1 = 'sub_id,sub_name,sub_subtype';
+        $semsubject =  $this->commodel->get_listspficemore('subject',$selectfield1,$wheredata1);   
+      	//print_r($semsubject);
         $subjectsem = array();
         $compcr = 0;
         $upsubdata = array();
         $incrid = 1;
         foreach($semsubject as $row)
         {
-            $subid = $row->subsem_subid;
-            $subtype = $row->subsem_subtype; 
+            $subid = $row->sub_id;
+            $subtype = $row->sub_subtype; 
             $substring = $subid."#".$subtype;
             $subjectsem[] = $substring;
             if($subtype == "Compulsory")
@@ -435,37 +465,40 @@ class Studenthome extends CI_Controller
             //if total credit (compulsory + elective) in a semester should be lies bewtween min and max credit.
 //            echo $semmincredit;
 //            echo $semmaxcredit;
-            echo $semtotalcr = $compcr + $elecsubjectcr_total;
+           $semtotalcr = $compcr + $elecsubjectcr_total;
 
-            echo $rid;
+           // echo $rid;
             if(sizeof($updatesubject)<=10)
             {
+		//print_r($rid); print_r($updatesubject);die;	
                 if(($semtotalcr >= $semmincredit) && ($semtotalcr <= $semmaxcredit)) 
                 {
                     $updatesemsubject = $this->commodel->updaterec('student_program',$updatesubject,'sp_id',$rid);        
-    
+   		// print_r($updatesemsubject);die;	
                     if(!$updatesemsubject)
                     {
                         $this->db->trans_rollback();
                         $this->session->set_flashdata("warning",'Error in adding subject in semester '.$semester." in acdemic year " .$acadyear);
                         $this->logger->write_dblogmessage("update","Error in adding subject in semester ".$semester." in acdemic year " .$acadyear1, ' by '.$username);
                         $this->logger->write_logmessage("update","Error in adding subject in semester ".$semester." in acdemic year " .$acadyear1, ' by '.$username);
-                        redirect('studenthome/index');
-
+			$this->session->set_flashdata("err_mesage", " Subjects not updated successfully.");
+                        //redirect('studenthome');
+			redirect('studenthome/studentsubject');
                     }
                     else
                     {
                         $this->db->trans_complete();
                         $this->logger->write_logmessage("update","Subject added in semester ".$semester." in acdemic year " .$acadyear, ' by '.$username);
                         $this->logger->write_dblogmessage("update","Subject added in semester ".$semester." in acdemic year " .$acadyear, ' by '.$username);
-                        $this->session->set_flashdata("success", " Subject updated successfully");
-                        redirect('studenthome/index');
+                        $this->session->set_flashdata("success", " Subjects updated successfully.");
+                        redirect('studenthome'); 
+			//redirect('studenthome/index');
                     }
                 }
                 else
                 {
                     //echo "NOk";
-                    $this->session->set_flashdata("warning", "Total Credit must be between ".$semmincredit. "and". $semmaxcredit);
+                    $this->session->set_flashdata("warning", " Total Credit must be between " .$semmincredit. ' ' ."and". ' ' . $semmaxcredit);
                 }
             }
             else
@@ -478,8 +511,6 @@ class Studenthome extends CI_Controller
         $this->load->view('student/studentsubject',$data);    
     }
     
-
-
 
 		 
 }

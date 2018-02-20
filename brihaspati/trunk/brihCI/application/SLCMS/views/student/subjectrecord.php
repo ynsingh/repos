@@ -30,9 +30,9 @@
                     echo "</tr>";
                     echo "</table>";
                     ?>
-         <table style="margin-left:2%;width:100%">
+         <table style="width:100%">
           <tr><td>
-               <div  style="margin-left:2%; width:90%;" >
+               <div>
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>

@@ -13,7 +13,7 @@ echo "<head>";
 echo "</head>";
 echo "<body>";
 ?>
-<br>
+
 <table style="margin-left:9px;">
 <tr colspan="2"><td>
 <div>
@@ -21,24 +21,24 @@ echo "<body>";
 </table>
 </div>
 
-    <table>
+    <table style="width:100%;">
     <tr colspan=2><td>
-    <div  style="margin-left:30px;width:1700px;">
+    <div  style="width:100%;">
 
     <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
      <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:30px" class="isa_success"><?php echo $_SESSION['success'];?></div>
+       <div style="width:100%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 <?php    }
     if(isset($_SESSION['err_message']))
     {
-?>        <div style="margin-left:30px"; class="isa_error">"<?php echo $_SESSION['error'];?> </div>
+?>        <div style="width:100%;"; class="isa_error"><?php echo $_SESSION['error'];?> </div>
 <?php
     }
     if(isset($_SESSION['warning']))
     {
-?>        <div style="margin-left:30px"; class="isa_warning">"<?php echo $_SESSION['warning'];?> </div>
+?>        <div style="width:100%;"; class="isa_warning"><?php echo $_SESSION['warning'];?> </div>
 <?php
     }
 
@@ -46,7 +46,7 @@ echo "<body>";
     echo "</table>";
     echo "<div style=\"margin-left:30px;\">";
 
-    /* Form */
+/* Form */
 /*
 echo $stid;
 echo $acadyear;

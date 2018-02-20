@@ -239,7 +239,7 @@ $pap = $sub_pap[1];
             <tr style="font-weight:bold; background-color:lightslategray;">
 
                 <td align=left> <span style="color:white;">Select Program :</span></br>
-                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);" required>
+                    <select name="program_branch" id="program_branch" onchange="getsemester(this.value);" >
 			<option selected="true" disabled>Select Program</option>
 			 <?php foreach($facprgsublist as $prgdata): ?>	
                             <option value="<?php echo $prgdata->pstp_prgid; ?>">
@@ -250,19 +250,19 @@ $pap = $sub_pap[1];
 		    </select>
                 </td>
                 <td align=left><span style="color:white;">Semester :</span></br>
-			<select name="semester" id="semester" onchange="getsubject(this.value);" required>
+			<select name="semester" id="semester" onchange="getsubject(this.value);" >
 				<option selected="true" disabled>semester</option>
 		
 		   	</select>		
                 </td>
                 <td align=left><span style="color:white;">Subject Name :</span></br>
-                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" required> 
+                    <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" > 
                         <option selected="selected" disabled selected>subject name</option>
 		
                     </select>
                 </td>
 		<td align=left><span style="color:white;">Subject Paper Name :</span></br>
-                    <select name="papername" id="papername" onchange="" required> 
+                    <select name="papername" id="papername" onchange="" > 
                         <option selected="selected" disabled selected>subject paper name</option>
 		
                     </select>
@@ -296,7 +296,7 @@ if(! empty($studentdetail))
 <tr align="center" style="font-weight:bold; background-color:lightslategray;">
 <td width = "20%">
     Exam Type: &nbsp;
-            <select name="examtype" required>
+            <select name="examtype">
 		<option selected="selected" disabled selected>Selecet Exam Type</option>
             <?php
                 foreach($exmtype as $exm_type): ?>

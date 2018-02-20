@@ -71,12 +71,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 <div class="scroller_sub_page">
-	<table style="width:100%;font-size:19px;" border=0>
-	
+	<table style="width:100%;font-size:19px;" border=0 class=TFtable>
+	<thead>
+		<tr><th>Sr. No.</th><th>University Name</th><th>Programme Name</th><th>Action</th></tr>
+	</thead>
+	<tbody>
 	<tr>
 		<?php
 			$year = $currentacadyear;
-			$i = 0;
+			$i =1;
 
 		foreach($getverifie as $row){
 			$prgid1=$row->sp_programid;
@@ -96,20 +99,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$formurl = 'uploads/SLCMS/adminstudent_exam/'.$year.'/form_verifiesheet/'.$stcid.'/'.$deptid.'/'.$prgid.'.pdf';
 		if(file_exists($formurl)) {
 		?>
-		<td align=left>
+		<td><?php echo $i++;?></td>
+		<td><?php echo $cname;?></td>
+		<td><?php echo $prgname;?></td>
+		<td>
 
 		<a href="<?php echo base_url($formurl);?>" title="Click To View Exam Form" target=_blank>
-			<?php echo $cname.'('.$prgname.')';?></br>
-		<embed src="<?php echo base_url($formurl);?>" type="application/pdf"   height="350px" width="100%">
+		Click To Open PDF
+			<?php //echo $cname.'('.$prgname.')';?></br>
+		<!--<embed src="<?php //echo base_url($formurl);?>" type="application/pdf"   height="350px" width="100%">-->
 		</a>
 		</td>
 				
-		<?php }$i++;
-		if($i%4 == 0){?>
+		<?php }//$i++;
+		//if($i%4 == 0){?>
 	</tr>
-	<tr>
-		<?php }} ?>
-	</tr>
+	<!--<tr>-->
+		<?php }//} ?>
+	<!--</tr>-->
+	</tbody>	
 	</table>
 </div><!------scroller div------>
 
