@@ -23,6 +23,7 @@
                 });
             });
         </script>
+
     </head>
     <body>
         <?php $this->load->view('template/header'); ?>
@@ -65,18 +66,19 @@
                     <br/><b> zip folder contains employees photo and photo name should be employee PF No.</b> 
                 </td>
             </tr>
-            <?php echo form_open_multipart('upl/uplstaffphoto');?>
+
+            	 <?php echo form_open_multipart('upl/uplstaffphoto');?>
                 <tr>
                     <td align="left">
                         <span id="lblError" style="color: red;font-size:15px;"></span><br/>
                         <div><label for="file" style="font-size:15px;"><b>Choose a zip file to upload:</b></label>
                             <input type='file'  id="fileUpload" name='userfile' size='20' accept=".zip" />
-                            <input type='submit' name="staffphoto" id="btnUpload"  value='upload'/>
+                            <input type='submit' name="staffphotoupl"  value='upload'/>
                         </div>
                     </td> 
                                  
                 </tr>
-            <?php echo form_close();?>
+		</form>
         </table>    
         <p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>

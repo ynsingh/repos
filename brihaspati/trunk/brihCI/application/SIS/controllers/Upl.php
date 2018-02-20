@@ -159,13 +159,31 @@ class Upl extends CI_Controller
                                 if((!empty($campid)) && (!empty($ucoid)) && (!empty($deptid)) && (!empty($sapostid))){
                         
                                     /**************************check for vacancy available in position table************************************************************/
-                        
-                                    $vacancy=$this->checkvacancy($campid,$ucoid,$deptid,$sapostid,$work_type);
-                        
+					if(!empty($scheme)){
+					        $datawh=array('sd_deptid' => $deptid,'sd_code' => $scheme);
+					        $schemeres= $this->sismodel->get_listspficemore('scheme_department','sd_id',$datawh);
+					        if(!empty($schemeres)){
+					            $schemeid=$schemeres[0]->sd_id;
+        					}else{
+							$schemeid='';
+						}
+//                                    		$schemeid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code',$scheme)->sd_id;
+                        		}
+					if(!empty($schemeid)){
+                                    		$vacancy=$this->checkvacancy($campid,$ucoid,$deptid,$schemeid,$sapostid,$work_type);
+					}else{
+                                    		$vacancy=$this->checkvacancy($campid,$ucoid,$deptid,'',$sapostid,$work_type);
+					}
+                    /*    print_r($datawh);echo "==";
+			echo "=campus =". $campid."=uo=".$ucoid."=D=".$deptid."=SCH=".$schemeid."=SOA=".$sapostid."=WT=".$work_type."=";
+			print_r( $schemeid);echo "==";
+			print_r($vacancy);die;
+		*/
                                     /**************************************************************************************/
                                     if($vacancy == 1){
                                         // check for duplicate
                                         $isdup= $this->lgnmodel->isduplicate('edrpuser','username',$email );
+					$vacancy=0;
 					if(!$isdup){
 						if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
    							$passwd = $pfno;
@@ -194,18 +212,17 @@ class Upl extends CI_Controller
                                             if($userflageu){
                                                 // insert into  user profile db1
                                                 $dataup = array(
-                                                    'userid'=>$userid,
-                                                    'firstname'=>$empname,
-                                                    'lang'=> 'english',
-                                                    'mobile'=>$mobile,
-                                                    'status'=>1
+                                                    'userid' => $userid,
+                                                    'firstname' => $empname,
+                                                    'lang' => 'english',
+                                                    'mobile' => $mobile,
+                                                    'status' => 1
                                                 );
                                                 $userflagup=$this->lgnmodel->insertrec('userprofile', $dataup);
 
                                                 $emdupl = $this->sismodel->isduplicate('employee_master','emp_email', $email );
                                                 if(!$emdupl){
                                    
-                                                    $schemeid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code',$scheme)->sd_id;
                                                     $desigtid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code', $desig)->desig_id;
                                                     $sapostname=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_code', $sa_post)->desig_name;
                                                     $datawh=array('ddo_scid' => $campid,'ddo_deptid' => $deptid,'ddo_schid' => $schemeid,'ddo_code' => $ddocode);
@@ -213,7 +230,10 @@ class Upl extends CI_Controller
                                                     if(!empty($ddoid)){
                                                         $ddofinal=$ddoid[0]->ddo_id;
                                                     }
-                                                    if((!empty($schemeid)) && (!empty($desigtid) && ($sapostname)) && (!empty($ddoid))){
+//							print_r($datawh);	
+//							echo "=campus =". $campid."=uo=".$ucoid."=D=".$deptid."=SCH=".$schemeid."=SOA=".$sapostid."=WT=".$work_type."=soan=".$sapostname."=ddo=".$ddofinal."=desigid=".$desigtid;
+//							die;	
+                                                    if((!empty($schemeid)) && (!empty($desigtid)) && (!empty($sapostname)) && (!empty($ddoid))){
                                        
                                                         $dataem = array(
                                                             'emp_code'             => $pfno,
@@ -315,14 +335,15 @@ class Upl extends CI_Controller
                                                                     $i++;
                                                                 }
                                                                 else{
-                                                                    $error[] ="At row ". $i ." sufficient data and mail does sent";
-                                                                    $this->logger->write_logmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email ." and mail does sent");
-                                                                    $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email." and mail does sent" );
+                                                                    $error[] ="At row ". $i ." sufficient data and mail does not sent";
+                                                                    $this->logger->write_logmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email ." and mail does not sent");
+                                                                    $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile, employee_master and user role type ", "record added successfully for.".$empname ." ".$email." and mail does not sent" );
                                                                     $i++;
                                                                 }
                                                                 /*************************************updating the staff position table*****************/
                    
-                                                                $this->sismodel->updatestaffposition($campid,$ucoid,$deptid,$desigtid,$work_type,$emp_type) ;
+                                                                //$this->sismodel->updatestaffposition($campid,$ucoid,$deptid,$desigtid,$work_type,$emp_type) ;
+                                                                $this->sismodel->updatestaffposition($campid,$ucoid,$deptid,$sapostid,$work_type,$emp_type) ;
                    
                                                                 /*************************************close updating the staff position table*****************/
                                                             }//$userflagurt if
@@ -347,8 +368,8 @@ class Upl extends CI_Controller
                                                         }
                                                     } //second empty check if condition
                                                     else{
-                                                        $error[] ="At row " .$i. " some fields are empty. or combination is not correct";
-                                                        $this->logger->write_logmessage("insert"," Error in adding staff profile  ", "At row".$i."some fields are empty schemeid=>".$schemeid."desigid==>".$desigtid."shown against post name==>".$sapostname."ddoid==>".$ddocode);
+                                                        $error[] ="At row " .$i. " some fields are empty. or combination is not correct 1";
+                                                        $this->logger->write_logmessage("insert","1 Error in adding staff profile  ", "At row".$i."some fields are empty schemeid=>".$schemeid."desigid==>".$desigtid."shown against post name==>".$sapostname."ddoid==>".$ddocode);
                                                         $this->logger->write_dblogmessage("insert"," Error in adding staff profile ", "At row".$i."some fields are empty schemeid=>".$schemeid."desigid==>".$desigtid."shown against post name==>".$sapostname."ddoid==>".$ddocode);
                                                         // delete edrp user data
                                                         $result = $this->lgnmodel->deleterow('edrpuser','id',$userid);
@@ -386,16 +407,16 @@ class Upl extends CI_Controller
                                 }//emptychecks for 1st if before vacancy check
                                 else
                                 {
-                                    $error[] ="At row " .$i. " some fields are empty. or combination is not correct";
-                                    $this->logger->write_logmessage("insert"," Error in adding staff profile  ", "At row".$i."some fields are empty capusid=>".$campid."uoid==>".$ucoid."deptid==>".$deptid."shown against postid==>".$sapostid );
+                                    $error[] ="At row " .$i. " some fields are empty. or combination is not correct 2";
+                                    $this->logger->write_logmessage("insert","2 Error in adding staff profile  ", "At row".$i."some fields are empty capusid=>".$campid."uoid==>".$ucoid."deptid==>".$deptid."shown against postid==>".$sapostid );
                                     $this->logger->write_dblogmessage("insert"," Error in adding staff profile ", "At row".$i."some fields are empty capusid=>".$campid."uoid==>".$ucoid."deptid==>".$deptid."shown against postid==>".$sapostid);
                                     $i++;
                             
                                 }//closerof else emptychecks for  before vacancy check
                             }//ifcondition for count empty check
                             else{
-                                $error[] ="At row " .$i. " some fields are empty. or combination is not correct";
-                                $this->logger->write_logmessage("insert"," Error in adding staff profile  ", "At row".$i."some fields are empty campus=>".$campus."uoc==>".$uoc."dept==>".$dept."shown against post==>".$sa_post );
+                                $error[] ="At row " .$i. " some fields are empty. or combination is not correct 3";
+                                $this->logger->write_logmessage("insert","3 Error in adding staff profile  ", "At row".$i."some fields are empty campus=>".$campus."uoc==>".$uoc."dept==>".$dept."shown against post==>".$sa_post );
                                 $this->logger->write_dblogmessage("insert"," Error in adding staff profile ", "At row".$i."some fields are empty campus=>".$campus."uoc==>".$uoc."deptd==>".$dept."shown against post==>".$sa_post);
                                 $i++;
                         
@@ -676,10 +697,12 @@ class Upl extends CI_Controller
     }
     /******************************* closer upload staff service particulars ******************************/
     /******************************* vacancy available check from staff position *************************************/
-    public function checkvacancy($campusid,$uoid,$deptid,$desigid,$worktype){
-        $datawh=array('sp_campusid' => $campusid,'sp_uo' => $uoid, 'sp_dept' => $deptid,
-                        'sp_emppost' => $desigid, 'sp_tnt' => $worktype);
-        
+    public function checkvacancy($campusid,$uoid,$deptid,$shmeid,$desigid,$worktype){
+	if(!empty($shmeid)){
+        	$datawh=array('sp_campusid' => $campusid,'sp_uo' => $uoid, 'sp_dept' => $deptid,'sp_schemecode' => $shmeid,'sp_emppost' => $desigid, 'sp_tnt' => $worktype);
+	}else{
+        	$datawh=array('sp_campusid' => $campusid,'sp_uo' => $uoid, 'sp_dept' => $deptid,'sp_emppost' => $desigid, 'sp_tnt' => $worktype);
+        }
         $emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_vacant',$datawh);
         $vcyflag=false;
         if(!empty($emptype_data)){ 
@@ -703,12 +726,13 @@ class Upl extends CI_Controller
     
     /******************************* upload staff photo ******************************/
     public function uplstaffphoto(){
-        if(isset($_POST['staffphoto']))
-        {
-            if ( isset($_FILES["userfile"]))
+	$array_items = array('success' => '', 'error' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
+	$ferror='';
+	if(isset($_POST['staffphotoupl'])){
+           if (isset($_FILES["userfile"]))
             {
-                
-                $filename = $_FILES["userfile"]["name"];
+              $filename = $_FILES["userfile"]["name"];
                 $source = $_FILES["userfile"]["tmp_name"];
                 $type = $_FILES["userfile"]["type"];
 	
@@ -717,6 +741,9 @@ class Upl extends CI_Controller
                 foreach($accepted_types as $mime_type) {
                     if($mime_type == $type) {
 			$okay = true;
+			$message = "The file you are trying to upload is not a .zip file with correct mime type. Please try again.";
+                    	$this->session->set_flashdata('error',$message);
+			
 			break;
                     } 
                 }
@@ -769,8 +796,12 @@ class Upl extends CI_Controller
                 $this->session->set_flashdata('success',$message);
                 }//moveclose    
                 else {	
+			$error =  array('error' => $this->upload->display_errors());
+                foreach ($error as $item => $value):
+                        $ferror = $item .":". $value;
+                endforeach;
                     $message = "There was a problem with the upload. Please try again.";
-                    $this->session->set_flashdata('error',$message);
+                    $this->session->set_flashdata('error',$message."  ".$ferror);
                 }
      		}         
             } //userfile   
@@ -1123,12 +1154,19 @@ class Upl extends CI_Controller
                         $uoid=$this->lgnmodel->get_listspfic1('authorities', 'id', 'code', $uoc)->id;
                         $deptid=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code', $dept)->dept_id;
                         $postid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',$emppost)->desig_id;
-			$schid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code', $scheme)->sd_id;
 
+//			$schid=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code', $scheme)->sd_id;
+			if(!empty($scheme)){
+				$datawh=array('sd_deptid' => $deptid,'sd_code' => $scheme);
+                                $schemeres= $this->sismodel->get_listspficemore('scheme_department','sd_id',$datawh);
+                                if(!empty($schemeres)){
+                                	$schid=$schemeres[0]->sd_id;
+                                }else{
+                                        $schid='';
+                                }
+			}
                         $datadupposition = array('sp_tnt'=>$wtype , 'sp_type'=>$emptype , 'sp_emppost'=>$postid, 'sp_grppost'=>$gpost, 'sp_scale'=>$pband, 'sp_methodRect'=>$mor, 'sp_group'=>$group, 'sp_uo'=>$uoid, 'sp_dept'=>$deptid, 'sp_campusid'=>$campid, 'sp_plan_nonplan'=>$pnplan, 'sp_schemecode'=>$schid, 'sp_org_id'=> '1' );
  
-
-
                          // check for duplicate
 		        $duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
 		        if(!$duppositionflag){

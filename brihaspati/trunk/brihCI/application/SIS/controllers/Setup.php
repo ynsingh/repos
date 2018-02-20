@@ -2862,7 +2862,7 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('sd_deptid','Department name','trim|xss_clean'); 
         $this->form_validation->set_rules('sname','Scheme Name ','trim|xss_clean|required');
         $this->form_validation->set_rules('scode','Scheme Code ','trim|xss_clean|required|alpha_dash');
-        $this->form_validation->set_rules('ssname','Scheme Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('ssname','Scheme Short Name ','trim|xss_clean|required');
         $this->form_validation->set_rules('sdesc','Scheme Description ','trim|xss_clean');
 
         if ($_POST)

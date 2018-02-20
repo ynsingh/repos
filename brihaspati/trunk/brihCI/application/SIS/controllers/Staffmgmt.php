@@ -33,8 +33,8 @@ class Staffmgmt extends CI_Controller
     /* Display Employee record */
 
     public function employeelist(){
-
-	$data['records'] = $this->sismodel->get_list('employee_master');
+	$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*','','emp_dept_code asc,emp_desig_code asc');
+//	$data['records'] = $this->sismodel->get_list('employee_master');
         $this->logger->write_logmessage("view"," view employee list" );
         $this->logger->write_dblogmessage("view"," view employee list");
         $this->load->view('staffmgmt/employeelist',$data);
@@ -835,7 +835,8 @@ class Staffmgmt extends CI_Controller
 
   /*this function has been created for display the record of staff position */
   public function staffposition(){
-        $this->result = $this->sismodel->get_list('staff_position');
+        $this->result = $this->sismodel->get_orderlistspficemore('staff_position','*','','sp_dept asc,sp_emppost asc');
+//        $this->result = $this->sismodel->get_list('staff_position');
         $this->logger->write_logmessage("view"," View staff position ", "Staff position details...");
         $this->logger->write_dblogmessage("view"," View staff position ", "Staff position details...");
         $this->load->view('staffmgmt/staffposition');

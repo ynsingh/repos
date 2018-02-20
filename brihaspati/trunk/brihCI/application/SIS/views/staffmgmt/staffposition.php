@@ -48,6 +48,7 @@
 		<th> Campus Name </th>
 		<th> U O Control </th>
 		<th> Department Name </th>
+		<th> Scheme Name (Scheme Code) </th>
 		<th> Working Type </th>
 		<th> Employee Type </th>
 		<th> Employee Post </th>
@@ -63,12 +64,14 @@
 	 if( count($this->result) ) {
 		foreach ($this->result as $row)
 		{
+//		print_r($row);die;
 		?>    
 			<tr>
 			 <td><?php echo ++$count; ?> </td>
                          <td><?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->sp_campusid)->sc_name; ?> </td>
 			 <td><?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $row->sp_uo)->name ?> </td>
 			 <td><?php echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $row->sp_dept)->dept_name; ?> </td>
+			 <td><?php echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->sp_schemecode)->sd_name ."( ".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->sp_schemecode)->sd_code . " )";  ?> </td>
 			 <td><?php echo $row->sp_tnt ?> </td>
 			 <td><?php echo $row->sp_type ?> </td>
 			 <td><?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $row->sp_emppost)->desig_name ?> </td>
