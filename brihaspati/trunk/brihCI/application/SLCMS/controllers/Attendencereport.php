@@ -15,6 +15,7 @@ class Attendencereport extends CI_Controller
         $this->load->model("user_model","usermodel");
         $this->load->model("student_model", "studentmodel");
         $this->load->model("map_model", "mapmodel");
+        $this->load->model("login_model", "loginmodel");
         if(empty($this->session->userdata('id_user'))) 
         {
             $this->session->set_flashdata('err_message', 'You don\'t have access!');
@@ -22,6 +23,8 @@ class Attendencereport extends CI_Controller
         }
     }
     
+    //consolidated attendance report of student in a program
+
     public function attendencereport()
     {
         $uid = $this->session->userdata('id_user');
@@ -79,13 +82,13 @@ class Attendencereport extends CI_Controller
                 $edate = $row->sed_sessionedate;
             }
             
-/*            $startdate = date('Y-m-d',strtotime($sdate));
+            $startdate = date('Y-m-d',strtotime($sdate));
             $enddate = date('Y-m-d',strtotime($edate));
-*/
 
+/*
             $startdate = date('Y-m-d',strtotime('2017-07-01'));
             $enddate = date('Y-m-d',strtotime('2017-09-29'));
-
+*/
             $data['startdate'] = $startdate;
             $data['enddate'] = $enddate;
             
@@ -117,7 +120,7 @@ class Attendencereport extends CI_Controller
     }    
 
     //get all semester in selected program
-
+    
     public function semester_get(){
 
         $prgid = $this->input->post('program_branch');
@@ -127,7 +130,7 @@ class Attendencereport extends CI_Controller
         $selectfield=array('pstp_sem');
         $data=array(
             'pstp_prgid'    =>$prgid
-            );
+        );
         $sem = $this->commodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
 
         //$sem  = $this->commodel->get_listspfic2('program_subject_teacher','','pstp_sem','pstp_prgid',$prgid,'pstp_sem');
@@ -137,11 +140,10 @@ class Attendencereport extends CI_Controller
              echo "<option  value='$datas->pstp_sem'>"."$datas->pstp_sem"."</option>";
         endforeach;
         echo "</select>";
-
     }
 
     //get all subjects in a semeter of a program
-
+    
     public function subject_get(){
         $prgid = $this->input->post('prgbrnch');
         $parts = explode(',',$prgid);
@@ -199,6 +201,66 @@ class Attendencereport extends CI_Controller
                 
         echo "</select>";
 
-
     }
+    public function facultyattendance()
+    {
+        $uid = $this->session->userdata('id_user');
+        $uname = $this->session->userdata('username');
+
+        //get current academic year
+
+        $acadyear = $this->usermodel->getcurrentAcadYear();
+        $data['academicyear']=$acadyear;
+
+        //get program list of program,subject,paper and semester in program_subject_teacher
+
+        $selectfield=array('prg_id','prg_name','prg_branch');
+        $prgsublist = $this->commodel->get_distinctrecord('program',$selectfield,'');
+        $data['prgsublist']=$prgsublist;
+
+        if(isset($_POST)){
+            $sem = $this->input->post('semester',TRUE);
+            $prgid = $this->input->post('program_branch',TRUE);
+
+            //get all subject/paper along with teacher in a program and semester in a academic year.
+
+            $selectsubjectpaper = array('pstp_subid','pstp_papid','pstp_teachid');
+            $wheresubjectpaper = array('pstp_prgid' => $prgid,'pstp_sem' => $sem,'pstp_acadyear' => $acadyear);
+            $prgsubpap = $this->commodel->get_listspficemore('program_subject_teacher',$selectsubjectpaper,$wheresubjectpaper);
+            $data['prgsubpap'] = $prgsubpap;
+            //print_r($prgsubpap);
+            $selectfield=array('satd_adate');
+            $data1 = array(
+                'satd_prgid' => $prgid,
+                'satd_sem' => $sem,
+                //'satd_subid' => $subjectid,
+                //'satd_papid' => $paperid
+            );
+            $data['sem'] = $sem;
+            $data['prgid'] = $prgid;
+            $attendencedate = $this->commodel->get_distinctrecord('student_attendance',$selectfield,$data1);
+            //get academic session information
+            $selectsessiondata = array('sed_sessionsdate','sed_sessionedate');
+            $wheresession = array('sed_acadyear' => $acadyear, 'sed_sem' => $sem);
+            $sessiondata = $this->commodel->get_distinctrecord('set_date',$selectsessiondata,$wheresession);
+            $sdate = "";
+            $edate = "";
+            foreach($sessiondata as $row)
+            {
+                $sdate = $row->sed_sessionsdate;
+                $edate = $row->sed_sessionedate;
+            }
+
+            $startdate = date('Y-m-d',strtotime($sdate));
+            $enddate = date('Y-m-d',strtotime($edate));
+            $data['startdate'] = $startdate;
+            $data['enddate'] = $enddate;
+
+            //print_r($rec);
+
+            $attenddate = array();
+        }
+        $this->load->view('attendance/facultyattendance',$data);
+    }
+
 }
