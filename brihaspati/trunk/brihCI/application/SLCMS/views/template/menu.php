@@ -260,7 +260,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<ul>";
 					echo "<li>";
 						//echo anchor('result/markssubmission', 'Marks Submission', array('title' => 'Marks Submission'));
-						echo anchor('welcome/work_underprocess', 'Marks Submission', array('title' => 'Marks Submission'));
+						echo anchor('admin_studentresult/studentmarks', 'Marks Submission', array('title' => 'Marks Submission'));
 					echo "</li>";
 					echo "<li>";
 						//echo anchor('result/tabulationchart', 'Tabulation Chart', array('title' => 'Tabulation Chart'));

@@ -246,7 +246,7 @@ class Upl extends CI_Controller
 					   <tr><td><b>Program Name : </b> </td><td align=left>".$course_name ." ( ".$branchname ." )</td></tr>
 					   <tr><td><b>Merit list number :</b></td><td align=left>".$meritlist_no."</td></tr>
 					   <tr><td><b>Last date of admission : </b></td><td align=left> ".$lastdate_admission ."</td></tr>
-				   	   <tr><td colspan=2 align=right><a href='".site_url()."' style='color:yellow;' title='Click to link'>Click To Link For Admission</a></td><tr>
+				   	   <tr><td colspan=2 align=right><a href='".site_url('Student/student_step0')."' style='color:yellow;' title='Click to link'>Click To Link For Admission</a></td><tr>
 					</table> " ;
 
                                            // $mess="Congrats!  Now you are eligible for taking the admission. \n Your admissions details are given below - \n Hall ticket number - ".$entexamrollno." \n Program name - ".$course_name ." ( ".$branchname ." )  \n  Merit list number - ".$meritlist_no." \n Last date of admission - ".$lastdate_admission." \n Kindly check the website - base_url()";
