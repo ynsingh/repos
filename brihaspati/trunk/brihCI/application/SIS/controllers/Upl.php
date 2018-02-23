@@ -124,9 +124,13 @@ class Upl extends CI_Controller
                             $dob = trim($datal[13]);
                             $doa = trim($datal[14]);
 			    $email = trim($datal[15]);
+			    
 			    if(empty($email)){
 				    $email = $pfno .'@tanuvas.org.in';
 			    }
+			   /* if(!empty($pfno)){
+			    	$email = $pfno .'@tanuvas.org.in';			
+			    }*/	
                             $email1 = trim($email, " ");
                             $bankacc = trim($datal[16]);
                             $aadhar = trim($datal[17]);
