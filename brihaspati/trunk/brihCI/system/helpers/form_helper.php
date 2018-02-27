@@ -1059,3 +1059,25 @@ if ( ! function_exists('_get_validation_object'))
 		return $return;
 	}
 }
+
+// ------------------------------------------------------------------------
+if ( ! function_exists('form_submitjscript'))
+{
+        function form_submitjscript($data = '', $value = '', $extra = '')
+        {
+                $defaults = array('type' => 'submit', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value, 'class'=> "confirmClick", 'title'=> "submit this entry");
+
+                return "<input "._parse_form_attributes($data, $defaults).$extra." />";
+        }
+}
+
+if ( ! function_exists('form_submitscript'))
+{
+        function form_submitscript($data = '', $value = '', $extra = '')
+        {
+                        $defaults = array('type' => 'submit', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value, 'class'=> "confirmClick", 'title'=> "print this cheque Numder");
+
+                return "<input "._parse_form_attributes($data, $defaults).$extra." />";
+        }
+}
+

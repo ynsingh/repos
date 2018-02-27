@@ -1,0 +1,142 @@
+<table border="0" style="width:70%">
+	<tbody>
+		<tr>
+			<td>yyyyyyyyyyyy</td>
+		</tr>
+		<tr>
+			<td>Finance and Accounts Section</td>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>FORM GRF 19-A</td>
+		</tr>
+		<tr>
+			<td>(See Government of India&#39;s Decision(1) below Rule 150)</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Form of Utilization Certificate</td>
+		</tr>
+		<tr>
+			<td>(Normal Plan 2017-2018)</td>
+		</tr>
+	</tbody>
+</table>
+
+<table align="left" border="1" style="width:70%">
+	<thead>
+		<tr>
+			<td colspan="2">Sanction letter No. &amp; Date</td>
+			<td colspan="2">General</td>
+			<td colspan="2">SCSP</td>
+			<td colspan="2">TSP</td>
+			<td colspan="2">NER</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2">&nbsp;</td>
+			<td>OH:35</td>
+			<td>OH:31</td>
+			<td>OH:35</td>
+			<td>OH:31</td>
+			<td>OH:35</td>
+			<td>OH:31</td>
+			<td>OH:35</td>
+			<td>OH:31</td>
+		</tr>
+		<tr>
+			<td colspan="2">F.No. 10 dated 07/02/2018</td>
+			<td colspan="2">F.No. 12 dated 07/02/2018</td>
+			<td colspan="2">F.No. 90 dated 07/02/2018</td>
+			<td colspan="2">F.No. 5 dated 07/02/2018</td>
+			<td>180.00</td>
+		</tr>
+		<tr>
+			<td colspan="2">Total:</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>180</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><br />
+<br />
+<br />
+<br />
+&nbsp;</p>
+
+<table align="justify" border="0" style="width:70%">
+	<tbody>
+		<tr>
+		</tr>
+		<tr>
+			<td>Certified that Rs.180 (Object Head-35 - Rs.0 and Object Head-31 - Rs.180 ) of grants-in-aid under Normal Plan sanctioned by the MHRD during the year 2017-2018 in favour of IIT Kanpur under the Ministry letter no.s and date given in the margin.</td>
+		</tr>
+		<tr>
+			<td>The total plan expenditure made during the year was Rs.180 (Rs. 0 under Object Head - 35, Rs.180 under Object Head - 31 and Internal Income of Rs.0) for planned activities of the Institute in the financial year 2017-2018</td>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<td>Certified that I have satisfied myself that the conditions on which the grant-in-aid was sanctioned have been duly fulfilled and that I have exercised the following checks to see that the money was actually utilized for the purpose for which it was sanctioned.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Kinds of checks exercised: Annual Accounts 2017-2018 .</td>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<td>Dated: February 20, 2018</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><br />
+<br />
+<br />
+&nbsp;</p>
+
+<table border="0" style="width:70%">
+	<tbody>
+		<tr>
+		</tr>
+		<tr>
+			<td colspan="2">Sr. Deputy Registrar (F&amp;A)</td>
+			<td colspan="2">Finance Officer</td>
+			<td>&nbsp;</td>
+			<td colspan="2">Director</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2">IITK Kanpur Kayyanpur</td>
+			<td colspan="2">IIT Kanpur</td>
+			<td>&nbsp;</td>
+			<td colspan="2">IIT Kanpur</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><br />
+&nbsp;</p>
+
+<table>
+	<tbody>
+		<tr>
+		</tr>
+	</tbody>
+</table>

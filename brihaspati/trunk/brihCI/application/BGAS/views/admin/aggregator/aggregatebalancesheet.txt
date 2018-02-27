@@ -1,0 +1,12 @@
+<?php
+	print_r($values);
+	$length=count($values);
+	echo"====>$length";
+	for($i=0; $i<$length; $i++)
+	{
+	echo"<br>";
+	echo $acc=$values[$i];
+	
+	}
+
+?>

@@ -40,6 +40,10 @@ table tr td a{text-decoration:none;font-size:20px;color:black;}
 	<tr align="center">
 		<td><a href="hrmindex.php">Brihaspati Human Resource Management (BHRM)</a></td>
 	</tr>
+	 <tr align="center">
+                <td><a href="bgasindex.php">Brihaspati General Accounting System (BGAS)</a></td>
+         </tr>
+
 </table>
 
 </br></br>
