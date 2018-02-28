@@ -844,7 +844,7 @@ class Staffmgmt extends CI_Controller
 
   /*this function has been created for add new staff Position record */
   public function newstaffposition(){
-        $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id,sc_code', 'sc_name');
         $this->desigresult = $this->commodel->get_listspfic2('designation','desig_id', 'desig_name');
         $this->authorty = $this->lgnmodel->get_list('authorities', 'id', 'name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');

@@ -58,7 +58,7 @@
                       
                 </td></tr>
                <tr><td colspan="7" align="right"> 
-                    <?php echo anchor("staffmgmt/editempprofile/{$record->emp_id}","Edit Information",array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+                    <?php //echo anchor("staffmgmt/editempprofile/{$record->emp_id}","Edit Information",array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
                 </td></tr>
                <tr></tr>
                 <tr><td>   
@@ -224,7 +224,7 @@
                     <td><?php echo $record->emp_caste; ?></td> 
                     <td>Whether Physically Handicapped :</td>
                     <td><div><input type="radio" name="phstatus" value="yes" <?php echo ($record->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="phstatus" value="no" <?php echo ($record->emp_phstatus == 'no'?'checked="checked"':''); ?> >No
+                        <input type="radio" name="phstatus" value="no" <?php echo ($record->emp_phstatus == 'no'?'checked="checked"':'"checked"'); ?> >No
                     </div> </td> 
                     <td>Details Of PH :</td>
                     <td colspan="2"><?php echo $record->emp_phdetail; ?><td>
@@ -316,7 +316,7 @@
                             //echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
                         //}
                         //else{
-                            echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
+                           // echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
                         //}    
                     ?>
                     </td>
@@ -394,12 +394,12 @@
                     </td>
                     <td colspan="7" align="right">
                     <?php
-                        if(count($performancedata)){
+                 /*       if(count($performancedata)){
                             echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
                         }
                         else{
                             echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
-                        }    
+                        }    */
                     ?>
                     </td>
                 </tr>

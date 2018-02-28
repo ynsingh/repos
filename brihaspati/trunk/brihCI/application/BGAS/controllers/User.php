@@ -138,14 +138,15 @@ function __construct() {
 				$this->session->set_userdata('active_account',$user_account);
 				$this->db->from('settings');
 		                $value = $this->db->get();
-                		foreach($value->result() as $row)
-		                {
-                		        $fy_start=explode(" ",$row->fy_start);
-                		}
-				$date1=$fy_start[0];	
-				$this->session->set_userdata('date1',$date1);
-				$this->session->set_userdata('date2',date("Y-m-d"));
-             
+				if(!empty($value)){
+                			foreach($value->result() as $row)
+		                	{
+                			        $fy_start=explode(" ",$row->fy_start);
+                			}
+					$date1=$fy_start[0];	
+					$this->session->set_userdata('date1',$date1);
+					$this->session->set_userdata('date2',date("Y-m-d"));
+             			}
              			$current_date = date("Y-m-d h:i:s");
 				$db1->select('id')->from('userlaststatus')->where('userid',$user_id);
 				$query_result = $db1->get();
@@ -712,6 +713,18 @@ function __construct() {
 
 			/* Setting new account database details in session */
 			$this->session->set_userdata('active_account', $data_active_account);
+				$this->db->from('settings');
+                                $value = $this->db->get();
+                                if(!empty($value)){
+                                        foreach($value->result() as $row)
+                                        {
+                                                $fy_start=explode(" ",$row->fy_start);
+                                        }
+                                        $date1=$fy_start[0];
+                                        $this->session->set_userdata('date1',$date1);
+                                        $this->session->set_userdata('date2',date("Y-m-d"));
+                                }
+
 //      print_r($data['active_account']); die;
 			$this->messages->add('Account changed.', 'success');
 			redirect('');

@@ -346,8 +346,10 @@
                     <tr></tr>
                     <tr><td><b>File Name</b></td>
                         <td colspan="4">
+			<?php  if (!empty($performancedata->spd_per_filename)){ ?>
                             <a href="<?php echo base_url().'uploads/SIS/perfattachment/'.$performancedata->spd_per_filename ; ?>"
                                target="_blank" type="application/octet-stream" download="<?php echo $performancedata->spd_per_filename ?>">Download the pdf</a>
+			<?php } ?>
                         </td>
                     </tr>
                     <?php else : ?>

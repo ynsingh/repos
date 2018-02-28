@@ -224,7 +224,7 @@
           		<div><select required name="campus" id="campus" class="my_dropdown" style="width:338px;" onchange="getuoc(this.value)" >
                 	<option value="" disabled selected >------Select----------------</option>
 			<?php foreach($this->scresult as $datasp): ?>
-                    	<option value="<?php echo $datasp->sc_id; ?>"<?php echo set_select('campus', $datasp->sc_id); ?>><?php echo $datasp->sc_name; ?></option>
+                    	<option value="<?php echo $datasp->sc_id; ?>"<?php echo set_select('campus', $datasp->sc_id); ?>><?php echo $datasp->sc_name ."( ". $datasp->sc_code." )"; ?></option>
                 	<?php endforeach; ?>
 			</div>
 		</td>

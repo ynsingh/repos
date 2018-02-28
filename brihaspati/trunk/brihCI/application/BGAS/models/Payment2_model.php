@@ -1,13 +1,13 @@
 <?php	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Payment2_model extends CI_Model {
 
-        function Payment2_model()
-        {
-                parent::Model();
-        }
-function __construct() {
-        parent::__construct();
-    }
+        //function Payment2_model()
+        //{
+          //      parent::Model();
+        //}
+	function __construct() {
+        	parent::__construct();
+    	}
 	
 	public function p2record_count() {
                  return $this->db->count_all("bill_voucher_create");

@@ -35,7 +35,7 @@ echo "<div>";
 }
 
 echo "</center>"; ?>
-<table style="width:70%;" >
+<table style="width:100%;" >
             <tr colspan="2">
                 <td>
                     <div align="left" style="">

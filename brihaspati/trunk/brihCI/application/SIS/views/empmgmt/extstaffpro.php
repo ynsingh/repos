@@ -20,24 +20,27 @@
   
   </head>
    <body>
-    <table width="100%">
-   <!-- <table style="padding: 8px 8px 8px 20px;">-->
-     <tr>
-         <?php
-            echo "<td align=\"left\" width=\"33%\">";
-            /*if($this->roleid != 4){
-                echo anchor('staffmgmt/employeelist', 'View Employee List ', array('class' => 'top_parent'));
-            }*/
-            echo "</td>";
-            
-            echo "<td align=\"center\" width=\"34%\">";
-            echo "<b>Add Performance Details</b>";
-            echo "</td>";
-            echo "<td align=\"right\" width=\"33%\">";
+   <table width="100%">
+            <tr>
+                <?php
+                    echo "<td align=\"left\" width=\"33%\">";
+                    if($this->roleid == 4){
+                        echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
+                    }
+                    else{
+                        echo anchor('report/viewfull_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                    }
+                    echo "</td>";
 
-         ?>
-       </tr>
-           </table>
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Add Performance Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
+
+                ?>
+            </tr>
+        </table>
+
            <table width="100%">
            <tr><td>
            <div>
@@ -171,6 +174,7 @@
             <td colspan="3">
                 <button name="extstaffpro" >Submit</button>
                 <button name="clear" >Clear</button>
+		<button type="button" onclick="history.back();">Back</button>
             </td>
         </tr>
     </table>

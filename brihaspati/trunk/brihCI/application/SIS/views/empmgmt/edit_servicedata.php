@@ -123,8 +123,8 @@
                 </tr>
                 
                 <tr>
-                    <td>Date of AGP<font color='Red'>*</font></td>
-                        <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo $servicedata->empsd_pbdate;?>"  size="40" required="required">
+                    <td>Date of AGP<font color='Red'></font></td>
+                        <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo $servicedata->empsd_pbdate;?>"  size="40" >
                     </td>
                 </tr>
                 <tr>

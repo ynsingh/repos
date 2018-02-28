@@ -48,25 +48,25 @@ class Empmgmt extends CI_Controller
         $this->roleid=$this->session->userdata('id_role');
         $this->emp_id = $empid;
         if(isset($_POST['extstaffpro'])) {
-            $this->form_validation->set_rules('national','National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('international','International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('university','University','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('research_national','No.of Research at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('research_international','No.of Research at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('popular_national','No.of Popular at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('popular_international','No.of Popular at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('presentation_national','No.of Presentation at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('presentation_international','No.of Presentation at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('noofproject','No.of Project Handled','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('fund','No.of Fund Outlay','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_attend_national','No.of Training Attended at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_attend_international','No.of Training Attended at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_conducted_national','No.of Training  Conducted at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_conducted_international','No.of Training Conducted at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('mvsc','No.of Students at MVSc','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('phd','No.of Students at PhD','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('others','No.of Students at Others','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('guestlect','No.of Guest Lecture','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('national','National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('international','International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('university','University','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('research_national','No.of Research at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('research_international','No.of Research at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('popular_national','No.of Popular at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('popular_international','No.of Popular at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('presentation_national','No.of Presentation at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('presentation_international','No.of Presentation at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('noofproject','No.of Project Handled','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('fund','No.of Fund Outlay','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_attend_national','No.of Training Attended at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_attend_international','No.of Training Attended at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_conducted_national','No.of Training  Conducted at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_conducted_international','No.of Training Conducted at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('mvsc','No.of Students at MVSc','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('phd','No.of Students at PhD','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('others','No.of Students at Others','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('guestlect','No.of Guest Lecture','trim|xss_clean|numeric');
             $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
 
             if($this->form_validation->run()==TRUE){
@@ -110,7 +110,7 @@ class Empmgmt extends CI_Controller
                     $_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
                     $_FILES['userFile']['size'] = $_FILES['userfile']['size'];
                     $config['upload_path'] = 'uploads/SIS/perfattachment/';
-                    $config['max_size'] = '2048000';
+                    $config['max_size'] = '20480000';
                     $config['allowed_types'] = 'pdf';
                     $config['file_name'] = $name;
                     $config['overwrite'] = TRUE;
@@ -130,7 +130,7 @@ class Empmgmt extends CI_Controller
                             $ferror = $ferror.$value;
                         endforeach;
                         $ferror=str_replace("\r\n","",$ferror);
-                        $simsg = "The permitted size of document is 200kb";
+                        $simsg = "The permitted size of document is 20MB";
                         $ferror = $simsg.$ferror;
                         $this->logger->write_logmessage("insert","File upload error", $ferror);
                         $this->logger->write_dblogmessage("insert","File upload error", $ferror);
@@ -189,25 +189,25 @@ class Empmgmt extends CI_Controller
        // $this->emp_id = $id;
         if(isset($_POST['updateextpro'])) {
             //$edpref_data['id'] = $id;
-            $this->form_validation->set_rules('national','National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('international','International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('university','University','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('research_national','No.of Research at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('research_international','No.of Research at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('popular_national','No.of Popular at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('popular_international','No.of Popular at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('presentation_national','No.of Presentation at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('presentation_international','No.of Presentation at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('noofproject','No.of Project Handled','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('fund','No.of Fund Outlay','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_attend_national','No.of Training Attended at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_attend_international','No.of Training Attended at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_conducted_national','No.of Training  Conducted at National','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('training_conducted_international','No.of Training Conducted at International','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('mvsc','No.of Students at MVSc','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('phd','No.of Students at PhD','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('others','No.of Students at Others','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('guestlect','No.of Guest Lecture','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('national','National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('international','International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('university','University','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('research_national','No.of Research at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('research_international','No.of Research at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('popular_national','No.of Popular at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('popular_international','No.of Popular at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('presentation_national','No.of Presentation at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('presentation_international','No.of Presentation at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('noofproject','No.of Project Handled','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('fund','No.of Fund Outlay','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_attend_national','No.of Training Attended at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_attend_international','No.of Training Attended at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_conducted_national','No.of Training  Conducted at National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('training_conducted_international','No.of Training Conducted at International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('mvsc','No.of Students at MVSc','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('phd','No.of Students at PhD','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('others','No.of Students at Others','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('guestlect','No.of Guest Lecture','trim|xss_clean|numeric');
             $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
             if ($this->form_validation->run() == FALSE)
             {
@@ -320,7 +320,7 @@ class Empmgmt extends CI_Controller
                 if(!empty($_FILES['userfile']['name'])){
                     
                     $config['upload_path'] = 'uploads/SIS/perfattachment/';
-                    $config['max_size'] = '2048000';
+                    $config['max_size'] = '20480000';
                     $config['allowed_types'] = 'pdf';
                     $config['file_name'] = $new_name;
                     $config['overwrite'] = TRUE;
@@ -331,7 +331,7 @@ class Empmgmt extends CI_Controller
                         foreach ($error as $item => $value):
                         $ferror = $ferror ."</br>". $item .":". $value;
                         endforeach;
-                        $simsg = "The permitted size of file is 100kb";
+                        $simsg = "The permitted size of file is 20MB";
                         $ferror = $simsg.$ferror;
                         $this->logger->write_logmessage("uploadfile","file upload error", $ferror);
                         $this->logger->write_dblogmessage("uploadfile","file upload error", $ferror);

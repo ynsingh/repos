@@ -102,8 +102,8 @@
                 </tr>
                 
                 <tr>
-                    <td>Date of AGP<font color='Red'>*</font></td>
-                        <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" required="required">
+                    <td>Date of AGP<font color='Red'></font></td>
+                        <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
                     </td>
                 </tr>
                 <tr>
@@ -121,6 +121,7 @@
                     <td colspan="3">
                     <button name="addservdata" >Submit</button>
                     <button name="reset" >Clear</button>
+			<button type="button" onclick="history.back();">Back</button>
                     </td>
                 </tr>    
         
