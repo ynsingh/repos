@@ -10,10 +10,39 @@
         <?php $this->load->view('template/header'); ?>
         
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+        <style type="text/css" media="print">
+            @page {
+                size: auto;   /* auto is the initial value */
+                margin:0;  /* this affects the margin in the printer settings */
+            }
+        </style>
+        <script>
+      
+            function printDiv(printme) {
+                var printContents = document.getElementById(printme).innerHTML; 
+                var originalContents = document.body.innerHTML;      
+                document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
+                // document.body.style.fontSize = "x-small";
+                //document.body.style. = "x-small";
+                window.print();  
+                // document.body.style.fontSize = "initial";
+                document.body.innerHTML = originalContents;
+            }
+
+        </script>
+
     </head>
     <body>
-        
-
+    <table style="width:100%;">
+        <tr>
+            <td>
+                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+                
+            </td> 
+        </tr>
+    </table>        
+    <div id="printme">   
+      
 <table style="width:100%;" border=0>
     <div align="left">
             
@@ -32,15 +61,16 @@
                 ?>    
                   
         </div>
+ 
 <tr>
 <td valign="top" width=170>
 
     <table border=1 class="TFtable">
 		<tr>
 			<?php if(!empty($data->emp_photoname)):?>
-                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/'.$data->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;"></td>
+                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/'.$data->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;" id="pimg"></td>
                          <?php else :?>
-                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;"></td>
+                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;" id="pimg"></td>
 			 <?php endif;?>
 			
 			
@@ -56,15 +86,17 @@
     </table>
 	   
 </td>
-
+       
 <td>		
 	
            <table class="TFtable" style="width:100%;">
-			<tr>
+              
+                    	<tr>
 				<td>Emp No. :</td>
 				<td><?php echo $data->emp_code;?></td>
 				<td>Date Of Appointment :</td>
 			        <td><?php echo $data->emp_doj;?></td>
+                                
 			</tr>
 			
 			<tr>
@@ -83,14 +115,14 @@
 				$depname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name ;?>
 				<td><?php echo $depname;?></td>
 				<td>Date Of Regularization :</td>
-			        <td><?php //echo $dor;?></td>
+			        <td><?php echo $data->emp_doregular ;?></td>
 			</tr>
 			
 			<tr>
 				<td>Community :</td>
 				<td><?php echo $data->emp_community;?></td>
 				<td>Date Of Completion Of Probation :</td>
-				<td><?php //echo $doprobe; ?></td>
+				<td><?php echo $data->emp_doprobation; ?></td>
 			</tr>
 			<tr>
 				<td>Caste :</td>
@@ -355,12 +387,15 @@
                     <?php else : ?>
                     <td colspan= "7" align="center"> No Records found...!</td>
                     <?php endif;?>
-            
+                    
                 </table>
 </td>
 </tr>
 
+
 </table>
+       
+   </div>      
  <p> &nbsp; </p>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
     </body>

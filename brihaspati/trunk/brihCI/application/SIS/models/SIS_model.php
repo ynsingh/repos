@@ -263,10 +263,15 @@ class SIS_model extends CI_Model
     }//function close
     /***********************************close of staff position*********************************************/   
     public function hoduser($scid){
-        $selectfield ="userid,scid,deptid,usertype";
+       /* $selectfield ="userid,scid,deptid,usertype";
         $whdata=array('roleid' => '5','scid' => $scid);
         $whorder = "userid asc";
-        $data = $this->get_orderlistspficemore('user_role_type',$selectfield,$whdata,$whorder);
+        $data = $this->get_orderlistspficemore('user_role_type',$selectfield,$whdata,$whorder);*/
+        $today= date("Y-m-d H:i:s"); 
+        $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid";
+        $whdata=array('hl_dateto >='=> $today,'hl_scid' => $scid);
+        $whorder = "hl_dateto asc";
+        $data = $this->get_orderlistspficemore('hod_list',$selectfield,$whdata,$whorder);
         return $data;
     }
     /** colse this function for get hod user list according to study center************************/

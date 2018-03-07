@@ -1,26 +1,64 @@
 <!--@filename listofstaffposition.php  @author Nagendra Kumar Singh(nksinghiitk@gmail.com) 
 	@author Om Prakash (omprakashkgp@gmail.com)
+        @author Neha Khullar (nehukhullar@gmail.com)
+        @author Manorama Pal(palseema30@gmail.com)
 -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<html>
+<html moznomarginboxes mozdisallowselectionprint>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+        <style type="text/css" media="print">
+            @page {
+                size: auto;   /* auto is the initial value */
+                margin:0;  /* this affects the margin in the printer settings */
+            }
+        </style>
+        <script>
+             function printDiv(printme) {
+                var printContents = document.getElementById(printme).innerHTML; 
+                //alert("printContents==="+printContents);
+                var originalContents = document.body.innerHTML;   
+                //document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
+                document.body.innerHTML = "<html><head><title></title></head><body style='width:100%;'><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left'  style='width:100%;height:100px;' >"+" <div style='width:100%;height:100%;'>  " + printContents + "</div>"+"</body>";
+                window.print();     
+                document.body.innerHTML = originalContents;
+                
+    
+    /* var content = document.getElementById(printme).innerHTML;
+                //alert("content=="+content);
+                var mywindow = window.open('', 'Print', 'height="100%",width="100%"');
+
+                 mywindow.document.write('<html><head><title>Print</title>');
+                    mywindow.document.write('</head><body ><table width="100%" style="font-size:300%;">');
+                    mywindow.document.write(content);
+                mywindow.document.write('</table></body></html>');
+
+                mywindow.document.close();
+             mywindow.focus()
+             mywindow.print();
+            mywindow.close();
+            return true;*/
+            }
+
+        </script>   
+             
     </head>
     <body>
-            <?php $this->load->view('template/header'); ?>
+          
+        <?php $this->load->view('template/header'); ?>
             
         <table width="100%"><tr colspan="2"><td>
+            <td>
+                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+                
+            </td>            
 	<?php
-            echo "<td align=\"center\" width=\"100%\">";
+            echo "<td style=\"text-align:center;\" width=\"100%\">";
             echo "<b>List of Staff Position Details</b>";
             echo "</td>";
          ?>
-        <?php //echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
-        //$help_uri = site_url()."/help/helpdoc#ViewEmployeeList";
-       // echo "<a target=\"_blanik\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
-        ?>
         <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -37,8 +75,9 @@
                 ?>
 
         </div>
- </td></tr>
+    </td></tr>
         </table>
+   <div id="printme" align="left" style="width:100%;">        
 <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>
@@ -106,12 +145,17 @@
                         </tr>
                     <?php }; ?>
                 <?php else : ?>
-                    <td colspan= "13" align="center"> No Records found...!</td>
+                    <td colspan= "13" > No Records found...!</td>
                 <?php endif;?>
                 </tbody>
         </table>
+        
         </div><!------scroller div------>
-        <div align="center">  <?php $this->load->view('template/footer');?></div>
+        
+        </div><!------print div------>
+        <p> &nbsp; </p>
+
+        <div>  <?php $this->load->view('template/footer');?></div>
 
     </body>
 </html>

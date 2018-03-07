@@ -18,7 +18,7 @@ class Map extends CI_Controller
         parent::__construct();
         /*Loading model calsses*/
         $this->load->model('Dependrop_model',"depmodel");
-        $this->load->model('Map_model',"mapmodel");
+       // $this->load->model('Map_model',"mapmodel");
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"loginmodel"); 
 	$this->load->model('SIS_model', "sismodel"); 
@@ -1869,5 +1869,258 @@ public function schemedept(){
   }
 //############################################# End of Map Study Center and UO #################################
 
+  
+ //############################################# set Hod#################################
+  
+    public function sethod(){
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+        if(isset($_POST['sethod'])) {
+            
+            $this->form_validation->set_rules('campus','Campus Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('deptname','Department Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('usrname','User Name','trim|xss_clean');
+            $this->form_validation->set_rules('emailid','Email Id','trim|required|xss_clean');
+            $this->form_validation->set_rules('DateFrom','Datefrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('DateTo','Dateto','trim|required|xss_clean'); 
+            $this->form_validation->set_rules('status','Status','trim|required|xss_clean'); 
+            
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('map/set_hod');
+                return;
+            }//formvalidation
+            else{
+                
+                /** check dulicate entry and insert in edrpuser table**********************/
+                $isdup= $this->loginmodel->isduplicate('edrpuser','username',$_POST['emailid']);
+                $parts = explode('@',$_POST['emailid']); 
+                $passwd=md5($parts[0]);
+                if(!$isdup){
+                    $dataeu = array(
+                        'username'=> $_POST['emailid'],
+                        'password'=> $passwd,
+                        'email'=> $_POST['emailid'],
+                        'componentreg'=> '*',
+                        'mobile'=>'',
+                        'status'=>1,
+                        'category_type'=>'HOD',
+                        'is_verified'=>1
+                    );
+                    /*insert record in edrpuser table*/
+                    $userflageu=$this->loginmodel->insertrec('edrpuser', $dataeu);
+                    $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+                    if($userflageu){
+                        // insert into  user profile db1
+                        $dataup = array(
+                            'userid' => $userid,
+                            'firstname' => 'Head of the Department',
+                            'lang' => 'english',
+                            'mobile' => '',
+                            'status' => 1
+                        );
+                        $userflagup=$this->loginmodel->insertrec('userprofile', $dataup);
+                    }//if $userflageu closer
+                }//ifdupedrpuser check closer     
+                /*************************check for duplicate entry in hod list and insert in table*************/
+                $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+                $duphod = array('hl_userid' => $userid, 'hl_scid' => $_POST['campus'],'hl_deptid'=> $_POST['deptname']);
+                $isduphod= $this->sismodel->isduplicatemore('hod_list',$duphod);
+                if(!$isduphod){
+                    $usr =$this->session->userdata('username'); 
+                   // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+                    $pfno='';
+                    if(!empty($_POST['usrname'])){
+                        $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
+                    }
+                    $datahod = array(
+                        'hl_userid'=> $userid,
+                        'hl_empcode'=> $pfno,
+                        'hl_deptid'=> $_POST['deptname'],
+                        'hl_scid'=> $_POST['campus'],
+                        'hl_datefrom'=> $_POST['DateFrom'],
+                        'hl_dateto'=> $_POST['DateTo'],
+                        'hl_status'=> $_POST['status'],
+                        'hl_creatorid'=> $usr,
+                        'hl_creatordate'=> date('y-m-d'),
+                        'hl_modifierid'=> $usr,
+                        'hl_modifydate'=> date('y-m-d'),
+                    );
+                    $hodlistflag=$this->sismodel->insertrec('hod_list', $datahod) ;
+                    /* insert into user_role_type */
+                    $dataurt = array(
+                        'userid'=> $userid,
+                        'roleid'=> 5,
+                        'deptid'=> $_POST['deptname'],
+                        'scid'=>  $_POST['campus'],
+                        'usertype'=>'HoD'
+                    );
+                    $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
+                    $sub=' Registred as a HOD' ;
+                    $mess="You are registered as a Hod. Your login id ".$_POST['emailid'] ." and password is ".$passwd ;
+                    //$mails = $this->mailmodel->mailsnd($email, $sub, $mess,'','Sis');
+                    $mails = '';
+                    //$this->mailmodel->mailsnd('$_POST['emailid']', $sub, $mess,'','Sis');
+                    //  mail flag check                         
+                    if($mails){
+                        $mailmsg='Please check your mail for username and password....Mail send successfully';
+                        $this->logger->write_logmessage("insert"," add hod edrpuser, userprofile,hod_list and user_role_type ", "record added successfully for.".$pfno ." ".$_POST['emailid'] );
+                        $this->logger->write_dblogmessage("insert"," add staff edrpuser, userprofile, hod_list and user_role_type ", "record added successfully for.".$pfno ." ".$_POST['emailid'] );
+                    }
+                    else{
+                        $mailmsg='Mail does not sent';
+                        $this->logger->write_logmessage("insert"," add hod edrpuser,userprofile, hod_list and user role type ", "record added successfully for.".$pfno ." ".$_POST['emailid'] ." and mail does not sent");
+                        $this->logger->write_dblogmessage("insert"," add hod edrpuser,userprofile, hod_list and user role type ", "record added successfully for.".$pfno ." ".$_POST['emailid']." and mail does not sent" );
+                                       
+                    }
+                    $this->logger->write_logmessage("insert", "record insert successfully.");
+                    $this->logger->write_dblogmessage("insert", "record insert successfully." );
+                    $this->session->set_flashdata('success','Hod added successfully.'.$mailmsg);
+                    redirect('map/hodlist');
+                   
+                }// if $isduphod closer 
+                else{
+                    $this->session->set_flashdata('err_message', 'email id is already exist for this hod.');
+                    redirect('map/hodlist');
+                  
+                }
+                
+            }//closer else form run true          
+        }//button check
+        $this->load->view('map/set_hod');
+      
+    }
+    
+    /************************************** Display HOD List **************************/
+
+    public function hodlist(){
+        $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+	$data['records'] = $this->sismodel->get_list('hod_list');
+        $this->logger->write_logmessage("view"," view hod list" );
+        $this->logger->write_dblogmessage("view"," view hod list");
+        $this->load->view('map/viewhod_list',$data);
+    }
+    /********************* closer HOd list  *******************************************/
+    
+    
+    public function getempdetail(){
+        $combid= $this->input->post('campdept');
+        $parts = explode(',',$combid); 
+       // echo "sc===".$parts[0]."dept==".$parts[1];
+        $datawh=array('emp_dept_code' => $parts[1],'emp_scid ' => $parts[0]);
+        $comb_data = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_name,emp_email,emp_code',$datawh);
+        $emp_select_box ='';
+        $emp_select_box.='<option value="">-------Select User for PF No.--------';
+        if(count($comb_data)>0){
+            foreach($comb_data as $detail){
+              
+               $emp_select_box.='<option value='.$detail->emp_id.'>'.$detail->emp_name. '(' .$detail->emp_code. ')'.' ';
+            }
+        }
+        echo json_encode($emp_select_box);
+    } 
+    /***************************************************edit hod details*************************/
+     public function edithod($id){
+        
+        $data['id'] = $id;
+        $data['hoddata'] = $this->sismodel->get_listrow('hod_list','hl_id',$id)->row();
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+        if(isset($_POST['edithod'])) {
+            
+            $this->form_validation->set_rules('campus','Campus Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('deptname','Department Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('usrname','User Name','trim|xss_clean');
+            $this->form_validation->set_rules('emailid','Email Id','trim|required|xss_clean');
+            $this->form_validation->set_rules('DateFrom','Datefrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('DateTo','Dateto','trim|required|xss_clean'); 
+            $this->form_validation->set_rules('status','Status','trim|required|xss_clean'); 
+            
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('map/edit_hod',$data);
+                return;
+            }//formvalidation
+            else{
+                
+                $campus = $this->input->post('campus', TRUE);
+                $deptname = $this->input->post('deptname', TRUE);
+                $usrname = $this->input->post('usrname', TRUE);
+                $datefrom = $this->input->post('DateFrom', TRUE);
+                $dateto = $this->input->post('DateTo', TRUE);
+                $emailid = $this->input->post('emailid', TRUE);
+                $status = $this->input->post('status', TRUE);
+                //echo $campus."dept==".$deptname."user". $usrname."datef". $datefrom."dto". $dateto."email==".$emailid;
+                // die;               
+                $logmessage = "";
+                if($data['hoddata']->hl_scid !=  $campus)
+                    $logmessage = "Edit HOD campus " .$data['hoddata']->hl_scid. " changed by " . $campus;
+                if($data['hoddata']->hl_deptid != $deptname)
+                    $logmessage = "Edit HOD Department " .$data['hoddata']->hl_deptid. " changed by " .$deptname;
+                if($data['hoddata']->hl_empcode != $usrname)
+                    $logmessage = "Edit HOD user " .$data['hoddata']->hl_empcode . " changed by " .$usrname;
+                if($data['hoddata']->hl_datefrom != $datefrom)
+                    $logmessage = "Edit HOD Date from " .$data['hoddata']->hl_datefrom . " changed by " .$datefrom;
+                if($data['hoddata']->hl_dateto != $dateto)
+                    $logmessage = "Edit Employee Type Data " .$data['hoddata']->hl_dateto . " changed by " .$dateto;
+                 if($data['hoddata']->hl_status != $status)
+                    $logmessage = "Edit Employee Type Data " .$data['hoddata']->hl_status . " changed by " .$status;
+                
+                
+                $pfno='';
+                $usr =$this->session->userdata('username'); 
+                if(!empty($_POST['usrname'])){
+                    if($data['hoddata']->hl_empcode != $_POST['usrname']){
+                        $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
+                    // echo "username===".$_POST['usrname'];
+                    //die;
+                    }
+                    else{
+                        $pfno=$data['hoddata']->hl_empcode;
+                    }
+                }
+                $datahod = array(
+                   // 'hl_userid'=> $userid,
+                    'hl_empcode'=> $pfno,
+                    'hl_deptid'=> $deptname,
+                    'hl_scid'=> $campus,
+                    'hl_datefrom'=> $datefrom,
+                    'hl_dateto'=> $dateto,
+                    'hl_status'=> $status,
+                    'hl_creatorid'=> $usr,
+                    'hl_creatordate'=> date('y-m-d'),
+                    'hl_modifierid'=> $usr,
+                    'hl_modifydate'=> date('y-m-d'),
+                );
+              
+                /*$duphod = array('hl_userid' => $data['hoddata']->hl_userid, 'hl_scid' => $_POST['campus'],'hl_deptid'=> $_POST['deptname']);
+                $isduphod= $this->sismodel->isduplicatemore('hod_list',$duphod);
+                if($isduphod == 1){
+                
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination.");
+                    redirect('map/hodlist');
+                    return;
+           
+                }
+                else{*/
+                    $editshforflag=$this->sismodel->updaterec('hod_list', $datahod, 'hl_id', $id);
+                    if (!$editshforflag){ 
+                        $this->logger->write_logmessage("error","Edit HOD Detail", "Edit HOD Detail. $logmessage ");
+                        $this->logger->write_dblogmessage("error","Edit HOD Detail", "Edit HOD Detail. $logmessage ");
+                        $this->session->set_flashdata('err_message','Edit HOD Detail - ' . $logmessage . '.', 'error');
+                        $this->load->view('map/edit_hod', $datahod);
+                    }
+                    else{
+                    
+                        $this->logger->write_logmessage("update","Edit HOD Detail by".$this->session->userdata('username') , "Edit HOD Detail. $logmessage ");
+                        $this->logger->write_dblogmessage("update","Edit HOD Detail by".$this->session->userdata('username') , "Edit HOD Detail. $logmessage ");
+                        $this->session->set_flashdata('success','HOD details updated successfully.'." Email Id = "."[ " .$_POST['emailid']. " ]");
+                        redirect("map/hodlist");
+                    }
+               // }//dupelse    
+                    
+                
+            }//else form validation true
+        }//buton check
+        $this->load->view('map/edit_hod',$data);
+     }//func closer    
 }
     

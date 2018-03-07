@@ -2,7 +2,8 @@
     Created on : May 19, 2017, 4:12:18 PM
     Author     : Manorama Pal (palseema30@gmail.com)
 */
-body{width:70%;margin:0 auto;}
+/*this is commented for print 
+//body{width:70%;margin:0 auto;} */
 
 .TFtable th{
 	text-align:left;font-size:18px;
@@ -10,7 +11,7 @@ body{width:70%;margin:0 auto;}
         background-color: #9d9d9d;
     }
     .TFtable{
-	 width:100%; 
+	width:100%; 
 	border-collapse:collapse;
 	border:2px solid #a8a8a8;
 	/*margin: 0 auto;*/

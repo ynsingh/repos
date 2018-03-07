@@ -160,8 +160,10 @@ public function disciplinewiselist(){
         $this->load->view('report/professorlist',$data);
     } 
     public function hodlist(){
-        $whdata=array('roleid' => '5');
-        $data['allsc']=$this->sismodel->get_distinctrecord('user_role_type','scid',$whdata);
+        $today= date("Y-m-d H:i:s"); 
+        $whdata=array('hl_dateto >='=> $today);
+        $selectfield ="hl_scid";
+        $data['allsc']=$this->sismodel->get_distinctrecord('hod_list',$selectfield,$whdata);
         $this->logger->write_logmessage("view"," view list of HOD in report " );
         $this->logger->write_dblogmessage("view"," view list of HOD in report");
         $this->load->view('report/hodlist',$data);

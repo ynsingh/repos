@@ -1,5 +1,6 @@
 
 <!--@filename desigemployeelist.php  @author Manorama Pal(palseema30@gmail.com) 
+    @filename desigemployeelist.php  @author Neha Khullar(nehukhullar@gmail.com)
 -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
@@ -7,19 +8,41 @@
     <head>
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
+        <style type="text/css" media="print">
+            @page {
+                size: auto;   /* auto is the initial value */
+                margin:0;  /* this affects the margin in the printer settings */
+            }
+        </style>
+          <script>
+             function printDiv(printme) {
+                var printContents = document.getElementById(printme).innerHTML; 
+                //alert("printContents==="+printContents);
+                var originalContents = document.body.innerHTML;      
+                document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo'  style='width:100%;height:100px;'>"+" <div style='width:100%;height:100%;'>  " + printContents + "</div>"+"</body>";
+                window.print();     
+                document.body.innerHTML = originalContents;
+            }
+        </script>     
+       
+        
     </head>
     <body>
-        <?php $this->load->view('template/header'); ?>
-        
-        <table width="100%"><tr colspan="2"><td>
-            <?php
-                    echo "<td align=\"center\" width=\"100%\">";
-                    echo "<b>Designation Wise Teaching Staff List Details</b>";
-                    echo "</td>";
-            ?>
-       
-      
+    <?php $this->load->view('template/header'); ?>           
+    <table width="100%">
+       <tr colspan="2"><td>
+        <td>
+            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+        </td>      
+       <div>
+       <?php
+       echo "<td align=\"center\" width=\"100%\">";
+       echo "<b>Designation Wise Teaching Staff List Details</b>";
+       echo "</td>";
+       ?>
+       </div>
         </td></tr></table>
+        <div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
             <table class="TFtable" >
                 <thead>
@@ -63,10 +86,11 @@
                 <?php endif;?>
                 </tbody>
         </table>
+
         </div><!------scroller div------>
+        </div><!------print div------>
         <p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
-
     </body>
 </html>
 
