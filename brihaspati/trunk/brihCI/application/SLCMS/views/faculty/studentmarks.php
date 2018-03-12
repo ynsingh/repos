@@ -1,11 +1,13 @@
-<!-- @author Sharad Singh(sharad23nov@gmail.com) -->
+<!-- @author Sharad Singh(sharad23nov@gmail.com) 
+      @author Neha Khullar(nehukhullar@gmail.com) -->
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Student fees detail</title>
+	<title>IGNTU:Student Fees Detail</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -100,7 +102,7 @@ thead tr th{color:white;font-weight:bold;font-size:18px;}
                 //alert (frm);
                 var characterReg = /^\s*[a-zA-Z]+\s*$/;
                 if(!characterReg.test(inputVal)) {
-                    $(this).after('<td><span class="error error-keyup-2"><font color="red">Only Alphabate..</font></span></td>');
+                    $(this).after('<td><span class="error error-keyup-2"><font color="red">Only Alphabet..</font></span></td>');
             }
             });
             });
@@ -251,19 +253,19 @@ $pap = $sub_pap[1];
                 </td>
                 <td align=left><span style="color:white;">Semester :</span></br>
 			<select name="semester" id="semester" onchange="getsubject(this.value);" >
-				<option selected="true" disabled>semester</option>
+				<option selected="true" disabled>Semester</option>
 		
 		   	</select>		
                 </td>
                 <td align=left><span style="color:white;">Subject Name :</span></br>
                     <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" > 
-                        <option selected="selected" disabled selected>subject name</option>
+                        <option selected="selected" disabled selected>Subject Name</option>
 		
                     </select>
                 </td>
 		<td align=left><span style="color:white;">Subject Paper Name :</span></br>
                     <select name="papername" id="papername" onchange="" > 
-                        <option selected="selected" disabled selected>subject paper name</option>
+                        <option selected="selected" disabled selected>Subject Paper Name</option>
 		
                     </select>
                 </td>
@@ -297,7 +299,7 @@ if(! empty($studentdetail))
 <td width = "20%">
     Exam Type: &nbsp;
             <select name="examtype">
-		<option selected="selected" disabled selected>Selecet Exam Type</option>
+		<option selected="selected" disabled selected>Select Exam Type</option>
             <?php
                 foreach($exmtype as $exm_type): ?>
                     <option value="<?php echo $exm_type->exty_id; ?>"><?php

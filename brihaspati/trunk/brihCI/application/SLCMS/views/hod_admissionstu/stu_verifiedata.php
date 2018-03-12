@@ -1,6 +1,8 @@
 <!-------------------------------------------------------
     -- @name stu_verifiedata.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author Neha Khullar(nehukhullar@gmail.com) --
+
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -136,7 +138,7 @@ select{width:98%;height:40px;font-size:18px;font-size:18px;}
 	<tr>	
 		
 		<td>	
-			<label for="nnumber">Aadhar Number</label></br>	
+			<label for="nnumber">Aadhaar Number</label></br>	
 			<?php echo $aadhar; ?>		
 		</td>
 

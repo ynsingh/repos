@@ -1,6 +1,8 @@
 <!--
    @name adminstu_examschedule.php
    @author sumit saxena (sumitsesaxena@gmail.com)
+   @author neha khullar (nehukhullar@gmail.com)
+
  --->
 
 <?php

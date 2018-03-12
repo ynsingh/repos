@@ -1,4 +1,5 @@
-<!--@filename studentlist.php  @author Manorama Pal(palseema30@gmail.com) -->
+<!--@filename studentlist.php  @author Manorama Pal(palseema30@gmail.com) 
+    @filename studentlist.php  @author Neha Khullar(nehukhullar@gmail.com) -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -68,9 +69,9 @@
                 <td>Search By:</br>
                     <select name="field" required> 
                         <option selected="selected" disabled selected>--------------Filter By ------------</option>
-                        <option value="sm_fname">StudentName</option>
+                        <option value="sm_fname">Student Name</option>
                         <option value="sm_email">Email</option>
-                        <option value="sm_enrollmentno">EnrollmentNo</option>
+                        <option value="sm_enrollmentno">Enrollment No</option>
                     </select>
                 </td>
                 <td>Match String:</br>
@@ -93,7 +94,7 @@
                     <th>Enrollment No</th>
                     <th>Roll No</th>
                     <th>Semester/Year</th>
-                    <th>Aadhar No</th>
+                    <th>Aadhaar No</th>
                     <th>Department</th>
                     <th>Subject</th>
                     <th>Email Id</th>

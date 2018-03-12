@@ -62,7 +62,7 @@
                 <th>Department Nick Name</th>
                 <th>Department Description</th>
                 <th>Archiver Name</th>
-                <th>Archive date</th>
+                <th>Archive Date</th>
                 </tr>
             </thead>
             <tbody>

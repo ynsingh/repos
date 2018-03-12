@@ -2,6 +2,8 @@
 
 <!--@name display program subject paper.php 
     @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+    @author Neha Khullar (nehukhullar@gmail.com)
+
  -->
 
 
@@ -66,7 +68,7 @@
 		<th>Paper Short Name</th>
 		<th>Paper Description</th>
 		<th>Archiver Name</th>
-		<th>Archive date</th>
+		<th>Archive Date</th>
                 </tr>
             </thead>
             <tbody>

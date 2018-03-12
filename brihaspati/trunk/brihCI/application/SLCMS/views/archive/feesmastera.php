@@ -8,6 +8,12 @@
 <!--@name authoritya.php 
   @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  -->
+
+<!--@name displayfees.php 
+  @author Neha Khullar (nehukhullar@gmail.com)
+ -->
+
+
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
@@ -69,7 +75,7 @@
 		<th>To Date</th>
 		<th>Description</th>
 		<th>Archiver Name</th>
-		<th>Archive date</th>
+		<th>Archive Date</th>
                 </tr>
             </thead>
             <tbody>

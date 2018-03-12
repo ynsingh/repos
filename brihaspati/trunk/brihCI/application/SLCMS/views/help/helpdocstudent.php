@@ -12,12 +12,12 @@
 </head>
 <body>
         <div class="wrapper" width="100%"  style="background-color: #DDDDDD;">
-        <div class="head">Online Addmision System (Student)</div>
+        <div class="head">Online Admission System (Student)</div>
         <div class="content">
         <div class="sideleft">
         <div id="cssmenu">
         <ul>
-<li><a href="#AboutOnlineAddmisionSystem(Student)">About Online Addmision System (Student)</a></li>
+<li><a href="#AboutOnlineAdmissionSystem(Student)">About Online Admission System (Student)</a></li>
 <li><a href="#Dashboard">Dashboard</a></li>
  <li class='has-sub'><a href="#Fees">Fees</a>
                         <ul>
@@ -62,15 +62,15 @@
             </div>
 </div>
   <div class="sideright">
-                                        <section id="AboutOnlineAddmisionSystem(Student)">
+                                        <section id="AboutOnlineAdmissionSystem(Student)">
                                         <div class="row-fluid">
-                                                <h2><b>About Online Addmision System (Student)</b></h2>
+                                                <h2><b>About Online Admission System (Student)</b></h2>
                                         </div>
                                         <div class="row-fluid">
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-A platform independent, highly scalable content-delivery tool for web based e-learning system !!
+An independent platform, highly scalable content-delivery tool for web based e-learning system !!
                                                                 </p>
                                                         </ol>
                                                 </font>
@@ -84,7 +84,7 @@ A platform independent, highly scalable content-delivery tool for web based e-le
                                                         <font size="4">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
-                                                                        This page consists of details of Student. The page is constantly updated on the basis of the activities carried out in the system.
+                                                                        This page consists of Student details. The page is continuously updated on the basis of the activities carried out in the system.
                                                                         </p>
                                                                 </ol>
                                                         </font>
@@ -219,7 +219,7 @@ From here student can download fees reciept by this link.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-    User Profile display of personal data associted with specific user. From here user see Login Information and Other Information.
+    User Profile displays the personal data associated with specific user. From here user see Login and Other Information.
                                                                  </p>
                                                         </ol>
                                                 </font>

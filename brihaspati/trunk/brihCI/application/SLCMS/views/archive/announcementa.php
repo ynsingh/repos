@@ -2,6 +2,7 @@
 
 <!--@name announcementa.php 
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
+  @author Neha Khullar (nehukhullar@gmail.com)
  -->
 
  <html>
@@ -52,7 +53,7 @@
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>
-               <thead><th>Sr.No</th><th>Announcement ID</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Announcement Archive Name</th><th>Announcement Archive Date</th></tr></thead>
+               <thead><th>Sr.No</th><th>Announcement ID</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Announcement Archiver Name</th><th>Announcement Archive Date</th></tr></thead>
 
 <?php
         $count =0;

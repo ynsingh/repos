@@ -1,6 +1,7 @@
 <!-------------------------------------------------------
     -- @name stu_verified.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author Neha Khullar(nrhukhullar@gmail.com) Modifications --
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');

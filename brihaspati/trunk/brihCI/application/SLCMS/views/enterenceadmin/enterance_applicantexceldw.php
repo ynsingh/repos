@@ -41,15 +41,15 @@
 		<th>Category</th>
 
 		<th>Are You Physically Handicapped</th>
-		<th>% of Disibility</th>
-		<th>Disibility Type</th>
+		<th>% of Disability</th>
+		<th>Disability Type</th>
 		
 		<th>Religion</th>
 		<th>Nationality</th>
 		<th>Present State</th>
 
 		<th>Address for Correspondence</th>
-		<th>Permanant Address</th>
+		<th>Permanent Address</th>
 		<th>Father's Name</th>
 		<th>Mother's Name</th>	
 		<th>Father's Mobile No.</th>
@@ -151,8 +151,8 @@
 		<th>Subject For Which Registration</th>
 		<th>Name of the Supervisor</th>
 		<th>Period</th>
-		<th>Topic of research</th>
-		<th>Reasons for leaving</th>
+		<th>Topic of Research</th>
+		<th>Reasons for Leaving</th>
 		<th>Area(s) of interest for research</th>
 		<th>Payment Mode</th>
 		

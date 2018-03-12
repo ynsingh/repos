@@ -56,7 +56,7 @@ echo "<ul class=\"sf-menu\">";
                                 echo "<a href=" . ">Help</a>";
                         echo "<ul>";
                                         echo "<li>";
-                                                echo anchor('help/helpdocfaculty', 'User Manuual', array('title' => 'User Manuual'));
+                                                echo anchor('help/helpdocfaculty', 'User Manual', array('title' => 'User Manual'));
                                         echo "</li>";
                                         echo "</ul>";
                               echo "</li>";

@@ -76,7 +76,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('studentrecord/feesreceiptdw', 'Fees Receipt', array('title' => 'Downlaod Fees Receipt'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('studentrecord/admitcard', 'Admit Card', array('title' => 'Downlaod admit Card'));
+						echo anchor('studentrecord/admitcard', 'Admit Card', array('title' => 'Downlaod Admit Card'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('studentrecord/markscard', 'Marks Card', array('title' => 'Download Marks Card'));
@@ -105,7 +105,7 @@ echo "<ul class=\"sf-menu\">";
                                 echo "<a href=" . ">Help</a>";
                         echo "<ul>";
                                         echo "<li>";
-                                                echo anchor('help/helpdocstudent', 'User Manuual', array('title' => 'User Manuual'));
+                                                echo anchor('help/helpdocstudent', 'User Manual', array('title' => 'User Manual'));
                                         echo "</li>";
                                         echo "</ul>";
 

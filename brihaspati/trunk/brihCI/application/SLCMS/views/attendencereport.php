@@ -1,4 +1,5 @@
 <!--@filename attendencereport.php  @author Sharad Singh(sharad23nov@gmail.com) -->
+<!--@filename attendencereport.php @author Neha khullar(nehukhullar@gmail.com)Modifications --> 
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -113,7 +114,7 @@
 
                 <td><span style="color:white;">Semester :</span>
                 <select name="semester" id="semester" onchange="getsubject(this.value);">
-                <option selected="true" disabled>semester</option>
+                <option selected="true" disabled>Semester</option>
                 </select>
                 </td>
 <!--
@@ -145,7 +146,7 @@
             <th>Enrollment No</th>
             <th>Roll No</th>
             <th>Total Lecture</th>
-            <th>Attendence</th>
+            <th>Attendance</th>
             </tr>
             </thead>
 

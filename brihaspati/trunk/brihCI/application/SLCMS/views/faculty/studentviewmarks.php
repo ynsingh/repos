@@ -1,11 +1,12 @@
-<!-- @author Sharad Singh(sharad23nov@gmail.com) -->
+<!-- @author Sharad Singh(sharad23nov@gmail.com) 
+     @author Neha Khullar(nehukhullar@gmail.com) -->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Student fees detail</title>
+	<title>IGNTU:Student Fees Detail</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -166,7 +167,7 @@ $unique3 = array_unique($unique2);
         </td>
             
         <td width=10%>Semester :
-            <select name="semester"> 
+            <select name="Semester"> 
             <?php
                 foreach ($unique3 as $key=> $value)
                 {
@@ -183,7 +184,7 @@ $unique3 = array_unique($unique2);
 
  
         <td width=30%>Subject(Paper) :
-            <select name="subjectpaper">
+            <select name="SubjectPaper">
             <?php
                 foreach($facprgsublist as $prgdata): ?>
                     <option value="<?php echo $prgdata->pstp_subid."#".$prgdata->pstp_papid; ?>"><?php
@@ -194,7 +195,7 @@ $unique3 = array_unique($unique2);
         </td>
         <td width = "20%">
     Exam Type: &nbsp;
-            <select name="examtype">
+            <select name="ExamType">
             <?php
                 foreach($exmtype as $exm_type): ?>
                     <option value="<?php echo $exm_type->exty_id; ?>"><?php
@@ -229,26 +230,26 @@ $unique3 = array_unique($unique2);
                 </td>
                 <td align=left><span style="color:white;">Semester :</span></br>
 			<select name="semester" id="semester" onchange="getsubject(this.value);" required>
-				<option selected="true" disabled>semester</option>
+				<option selected="true" disabled>Semester</option>
 		
 		   	</select>		
                 </td>
                 <td align=left><span style="color:white;">Subject Name :</span></br>
                     <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" required> 
-                        <option selected="selected" disabled selected>subject name</option>
+                        <option selected="selected" disabled selected>Subject Name</option>
 		
                     </select>
                 </td>
 		<td align=left><span style="color:white;" >Subject Paper Name :</span></br>
                     <select name="papername" id="papername" onchange="" required> 
-                        <option selected="selected" disabled selected>subject paper name</option>
+                        <option selected="selected" disabled selected>Subject Paper Name</option>
 		
                     </select>
                 </td>
 		<td width = "20%">
     <span style="color:white;">Exam Type: &nbsp;</span>
             <select name="examtype" required>
-		<option selected="selected" disabled selected>Selecet Exam Type</option>
+		<option selected="selected" disabled selected>Select Exam Type</option>
             <?php
                 foreach($exmtype as $exm_type): ?>
                     <option value="<?php echo $exm_type->exty_id; ?>"><?php

@@ -1,5 +1,6 @@
 <!--@name degreerules.php
   @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+  @author Neha Khullar (nehukhullar@gmail.com)
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -53,7 +54,7 @@
        </table>
 <div class="scroller_sub_page">
 <table class="TFtable" >
-<thead><th>Sr.No</th><th>Programme</th><th>Branch</th><th>Min Credit</th><th>Min Subject Credit</th><th>Min thesis Credit</th><th>Min Subjects</th><th>Minimum Semester</th><th>Min CPI</th><th>Max Credit</th><th>Maximum semesters</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Programme</th><th>Branch</th><th>Min Credit</th><th>Min Subject Credit</th><th>Min thesis Credit</th><th>Min Subjects</th><th>Minimum Semester</th><th>Min CPI</th><th>Max Credit</th><th>Maximum Semesters</th><th>Action</th></tr></thead>
 
    <?php
         $count =0;

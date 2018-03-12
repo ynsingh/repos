@@ -44,7 +44,7 @@
                     echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
                  
-                ;?>
+                ?>
             </tr>
         </table>
         <div>  

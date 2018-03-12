@@ -1,10 +1,13 @@
-<!--@name student_attendence_view.php  @author sumit saxena(sumitsesaxena@gmail.com)-->
+<!--@name student_attendence_view.php  @author sumit saxena(sumitsesaxena@gmail.com)
+    @name student_attendence_view.php  @author neha khullar(nehukhullar@gmail.com) -->
+
+
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
     <head>  
-	<title>Welcome to IGNTU :Attendence</title>  
+	<title>Welcome to IGNTU :Attendance</title>  
        
           <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <style>
@@ -82,7 +85,7 @@
 		<?php
 		    echo "<td align=\"left\" width=\"33%\">";
                     $help_uri = site_url()."/facultyhome/student_attendence";
-                    echo "<a style=\"text-decoration:none\" href=$help_uri><b>Add Student Attendence</b></a>";
+                    echo "<a style=\"text-decoration:none\" href=$help_uri><b>Add Student Attendance</b></a>";
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
                     echo "<b>Student Attendance List</b>";
@@ -216,10 +219,10 @@
                 <th>Semester</th>
                 <th>Subject</th> 
                 <th>Paper</th>
-		<th>Attendence</th>
+		<th>Attendance</th>
 		<th>Class Type</th>
-		<th>Attendence Date</th>
-		    <!---<th style="width:20%;">Attendence </br>P(present) A(absent) L(leave)</th>-->
+		<th>Attendance Date</th>
+		    <!---<th style="width:20%;">Attendance </br>P(present) A(absent) L(leave)</th>-->
 				
                 </tr>
             </thead>
@@ -333,9 +336,9 @@
                 <th>Semester</th>
                 <th>Subject</th> 
                 <th>Paper</th>
-		<th>Attendence</th>
+		<th>Attendance</th>
 		<th>Class Type</th>
-		<th>Attendence Date</th>
+		<th>Attendance Date</th>
             </tr>
 	</thead>
 	<tbody>

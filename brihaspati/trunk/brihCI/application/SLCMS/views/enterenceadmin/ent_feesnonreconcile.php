@@ -2,6 +2,7 @@
 
 <!--@name ent_feesnonreconcile.php 
   * @author Sumit Saxena(sumitsesaxena@gmail.com) *
+    @author Neha Khullar(nehukhullar@gmail.com)
  -->
 
 <html>
@@ -49,7 +50,7 @@ echo "</center>";
 	<thead >
 	<tr>
 <th style="text-align:left;">Sr. No.</th>
-<th style="text-align:left;">Student name</th><th style="text-align:left;">Program(Branch)</th><th style="text-align:left;">Fees Amount</th><th style="text-align:left;">Reference Number</th><th style="text-align:left;">Bank Name / Payment Method</th><th style="text-align:left;">Reconciled</th>
+<th style="text-align:left;">Student Name</th><th style="text-align:left;">Program(Branch)</th><th style="text-align:left;">Fees Amount</th><th style="text-align:left;">Reference Number</th><th style="text-align:left;">Bank Name / Payment Method</th><th style="text-align:left;">Reconciled</th>
 	</tr>
 	</thead>
 

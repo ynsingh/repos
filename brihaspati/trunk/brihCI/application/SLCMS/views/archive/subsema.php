@@ -1,7 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <!--@name subsema.php 
-  @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+  @author Nagendra Kumar Singh (nksinghiitk@gmail.com
+  @author Neha Khullar (nehukhullar@gmail.com))
  -->
 
 <html>
@@ -65,7 +66,7 @@
 		<th>To Date</th>
 		<th>Description</th>
 		<th>Archiver Name</th>
-		<th>Archive date</th>
+		<th>Archive Date</th>
                 </tr>
             </thead>
             <tbody>

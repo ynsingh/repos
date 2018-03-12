@@ -2,6 +2,7 @@
 
 <!--@name examcentera.php 
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
+  @author Neha Khullar (nehukhullar@gmail.com)
  -->
 <html>
     <head>    
@@ -53,7 +54,7 @@
         <table class="TFtable" >
             <thead>
                
-<thead><th>Sr.No</th><th>Entrance Exam Center ID</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Entrance Exam Center Archive Name</th><th>Entrance Exam Center Archive Date</th></tr></thead><tbody>
+<thead><th>Sr.No</th><th>Entrance Exam Center ID</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Entrance Exam Center Archiver Name</th><th>Entrance Exam Center Archive Date</th></tr></thead><tbody>
 <?php
         $count =0;
         if( count($this->exresult) ):

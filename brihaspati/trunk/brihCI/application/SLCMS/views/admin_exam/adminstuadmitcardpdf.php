@@ -1,6 +1,7 @@
 <!-------------------------------------------------------
     -- @name adminstuadmitcardpdf.php.php.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author neha khullar(nehukhullar@gmail.com)-- Modifications
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');

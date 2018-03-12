@@ -2,6 +2,7 @@
 
 <!--@name authoritya.php 
   @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+  @author Neha Khullar (nehukhullar@gmail.com)
  -->
 <html>
     <head>    
@@ -58,7 +59,7 @@
 		<th>From Date</th>
 		<th>Till Date</th>
 	        <th>Archiver Name</th>
-		<th>Archive date</th> 
+		<th>Archive Date</th> 
                 </tr>
             </thead>
 	    <tbody>

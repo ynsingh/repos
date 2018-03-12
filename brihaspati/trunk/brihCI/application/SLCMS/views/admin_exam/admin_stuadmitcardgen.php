@@ -1,13 +1,14 @@
 <!-- -----------------------------------------------------
     -- @name admin_stu_admincardgen.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author Neha Khullar(nehukhullar@gmail.com) -- Modifications
 ------------------------------------------------------- -->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html>
 <head>
-<title>Student Admit Card Genrate</title>
+<title>Student Admit Card Generation</title>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -39,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <table style="width:100%;font-size:20px;">
 <tr>
 	<td align=left><a href="<?php echo site_url('adminstuexam/admitcardgen');?>" style="text-decoration:none;" title="Click To Generate Admit Card Then Click To Download Admit Card"><b>Generate Admit Card</b></a></td>
-	<td align=left><b>Student Admit Card Generate</b>
+	<td align=left><b>Student Admit Card Generation</b>
 	</td>
 </tr>
 </table>

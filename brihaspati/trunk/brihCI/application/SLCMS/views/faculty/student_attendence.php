@@ -1,9 +1,12 @@
-<!--@filename student_attendence.php  @author sumit saxena(sumitsesaxena@gmail.com) -->
+<!--@filename student_attendence.php  @author sumit saxena(sumitsesaxena@gmail.com) 
+    @filename student_attendence.php  @author neha khullar(nehukhullar@gmail.com) -->
+ 
+
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
     <head>
-        <title>Welcome to IGNTU :Attendence</title>
+        <title>Welcome to IGNTU :Attendance</title>
       	
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 
@@ -70,9 +73,9 @@
                     echo "<tr valign=\"top\">";
 		    echo "<td align=left>";
                     $help_uri = site_url()."/facultyhome/student_attendence_view";
-                    echo "<a href=$help_uri><b>View Student Attendence</b></a>";
+                    echo "<a href=$help_uri><b>View Student Attendance</b></a>";
 		    echo "<td>";
-		    echo "<b>Student Attendence</b>";	 
+		    echo "<b>Student Attendance</b>";	 
 		    echo "</td>";
                     echo "</td>";
                     echo "<td align=right>";
@@ -119,19 +122,19 @@
                 </td>
                 <td><span style="color:white;">Semester :</span>
 			<select name="semester" id="semester" onchange="getsubject(this.value);" >
-				<option selected="true" disabled>semester</option>
+				<option selected="true" disabled>Semester</option>
 		
 		   	</select>		
                 </td>
                 <td><span style="color:white;">Subject Name :</span>
                     <select name="subjectname" id="subjectname" onchange="getpaper(this.value);" > 
-                        <option selected="selected" disabled selected>subject name</option>
+                        <option selected="selected" disabled selected>Subject Name</option>
 		
                     </select>
                 </td>
 		<td><span style="color:white;">Subject Paper Name :</span>
                     <select name="papername" id="papername" onchange=""> 
-                        <option selected="selected" disabled selected>subject paper name</option>
+                        <option selected="selected" disabled selected>Subject Paper Name</option>
 		
                     </select>
                 </td>
@@ -187,7 +190,7 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 	
 	<form name="tfrm" method="POST" >
 		Toggle
-			<select name="attendence<?php echo $i;?>" id="first_box">
+			<select name="attendance<?php echo $i;?>" id="first_box">
 				<option value='P'>P</option>
 				<option value='A'>A</option>
 				<option value='L'>L</option>
@@ -208,7 +211,7 @@ $("#adate").datepicker().datepicker("setDate", new Date());
                     <th>Student Name</th>
                     <th>Enrollment No</th>
                     <th>Roll No</th>
-		    <th style="width:20%;">Attendence </br>P(present) A(absent) L(leave)</th>
+		    <th style="width:20%;">Attendance </br>P(present) A(absent) L(leave)</th>
 				
                 </tr>
             </thead>
@@ -229,7 +232,7 @@ $("#adate").datepicker().datepicker("setDate", new Date());
 		
 		<td> 
 	<!--<form action="<?php echo site_url('Studenthome/student_attendence');?>" method="POST">--->
-			<select name="attendence<?php echo $i;?>" class="second_box">
+			<select name="attendance<?php echo $i;?>" class="second_box">
 				<option value='P'>P</option>
 				<option value='A'>A</option>
 				<option value='L'>L</option>

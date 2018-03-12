@@ -20,7 +20,6 @@
             echo "<td align=\"left\" width=\"33%\">";
             echo anchor('setup/category/', 'Add Category', array('class' => 'top_parent'));
             echo "</td>";
-
             echo "<td align=\"center\" width=\"34%\">";
             echo "<b>Category Details</b>";
             echo "</td>";

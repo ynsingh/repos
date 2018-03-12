@@ -1,6 +1,7 @@
 <!--
  * @name adminstu_viewexamschedule.php
    @author sumit saxena (sumitsesaxena@gmail.com)
+   @author neha khullar (nehukhullar@gmail.com)
  --->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
@@ -52,7 +53,7 @@
 <table class="TFtable" >
 <tr>
 <thead><th>Sr.No</th><th>Exam Center Name</th><th>Programme Category</th><th>Department Name</th><th>Programme Name</th><th>Session</th><th>Semester</th>
-<th>Exam Name</th><th>Paper Name</th><th> Exam Name</th><th>Exam Date</th>
+<th>Paper Name</th><th> Exam Name</th><th>Exam Date</th>
 	<th>Exam Time</th><th>Action</th></thead>
 <tbody>
  <?php

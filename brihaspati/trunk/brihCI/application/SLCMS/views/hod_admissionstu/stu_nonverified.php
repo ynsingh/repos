@@ -1,6 +1,7 @@
 <!-------------------------------------------------------
     -- @name stu_verified.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author Neha Kullar(nehukhullar@gmail.com) --
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -20,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->load->view('template/header'); ?>
 <table style="width:100%;font-size:18px;">
 	<tr>
-		<td align=center><b>Student NoN-Verified Data</b></td>
+		<td align=center><b>Student Non-Verified Data</b></td>
 	</tr>	
 </table>
 <?php echo validation_errors('<div class="isa_warning">','</div>');?>

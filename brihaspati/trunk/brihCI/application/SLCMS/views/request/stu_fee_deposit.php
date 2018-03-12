@@ -1,6 +1,8 @@
 <!-------------------------------------------------------
     -- @name stu_fee_deposit.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author Neha Khullar(nehukhullar@gmail.com) --
+
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -157,9 +159,9 @@ echo "</center>";
 <?php $totalfees = '';?>
 	<select name="ftype" style="width:21%;height:35px;" id="drop">
 		<option selected="true" disabled="disabled">Select Fees Type</option>
-		<option value="semfee">Semester fees</option>
-		<option value="exmfee">Exam fees</option>
-		<option value="finefee">Panality fees</option>
+		<option value="semfee">Semester Fees</option>
+		<option value="exmfee">Exam Fees</option>
+		<option value="finefee">Penalty Fees</option>
 	</select></br></br>
 		
 	<input type="text" name="fees" placeholder="Enter Your Fees" value="<?php //echo $this->pcounname; ?>" id="down2" />
@@ -194,8 +196,8 @@ echo "</center>";
 		
 	</br></br>
 	
-		<input type="submit" value="Online payment" name="online_pay" style="font-size:18px;">
-		<input type="submit" name="offline_pay" value="Offline payment"style="font-size:18px;">
+		<input type="submit" value="Online payment" name="Online_pay" style="font-size:18px;">
+		<input type="submit" name="Offline_pay" value="Offline payment"style="font-size:18px;">
 	
 	</form>
 

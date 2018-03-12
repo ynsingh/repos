@@ -1,7 +1,8 @@
 <!--
  * @name adminstu_attsheet.php
    @author sumit saxena (sumitsesaxena@gmail.com)
- --->
+   @author neha khullar (nehukhullar@gmail.com) Modifications 
+--->
 
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -23,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <table style="width:100%;font-size:20px;">
 <tr>
 	<!--<td align=left><a href="<?php echo site_url('adminstuexam/attendancesheetgenpdf');?>" style="text-decoration:none;"><b>Generate Exam-Attendence Sheet</b></a></td>-->
-	<td style="text-align:center;"><b>Student Exam-Attendance Sheet Generate</b>
+	<td style="text-align:center;"><b>Student Exam-Attendance Sheet Generation</b>
 	</td>
 </tr>
 </table>

@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!--@name helpdoc.php 
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
+  @author Neha Khullar (nehukhullar@gmail.com) Modification 
  -->
 <html>
 <head>
@@ -18,12 +19,12 @@
              ?>
 </table>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
-	<div class="head">Online Addmission System</div>
+	<div class="head">Online Admission System</div>
 	<div class="content">
 	<div class="sideleft">
         <div id="cssmenu">
         	<ul>
-<li><a href="#AboutOnlineAddmissionSystem">About Online Addmission System</a></li>
+<li><a href="#AboutOnlineAdmissionSystem">About Online Admission System</a></li>
 	     <li><a href="#Dashboard">Dashboard</a></li>
 	     <li class='has-sub'><a href="#Setup">Setup</a>
 			<ul>
@@ -85,15 +86,15 @@
                 </div>
             </div>
                 <div class="sideright">
-					<section id="AboutOnlineAddmissionSystem">
+					<section id="AboutOnlineAdmissionSystem">
 					<div class="row-fluid">
-						<h2>About Online Addmission System</h2>
+						<h2>About Online Admission System</h2>
 					</div>
 					<div class="row-fluid">
 						<font size="4">
 							<ol>
 								<p align="justify" STYLE="line-height: 150%">
-Online Admission System is to automate the Academic university admission structure and its related operation and functionality. The objective of the initiative is to provide support to the administration and admission seeking candidates by providing a faster, transparent and easy way of keeping records and use them for reference and further proceedings. 
+Online Admission System is to operate the Academic university admission structure related to operation and functionality. The objective is to take initiative give support to the administration and admission seeking candidates by providing a faster, transparent and easy way of keeping records and use them for reference and further proceedings. 
 								</p>
 							</ol>
 						</font>
@@ -108,7 +109,7 @@ Online Admission System is to automate the Academic university admission structu
 							<font size="4">
 								<ol>
 									<p align="justify" STYLE="line-height: 150%">
-									This page consists of details of University Profile, Program, Seat and Fees. The page is constantly updated on the basis of the activities carried out in the system. 
+									This page consists of University Profile, Program, Seat and Fees Details. The page is continuously updated on the basis of the activities carried out in the system. 
 									</p>
 								</ol>
 							</font>						
@@ -132,7 +133,7 @@ Online Admission System is to automate the Academic university admission structu
 							<font size="4">
 									<ol>
 									<p align="justify" STYLE="line-height: 150%">	
-						By Filling all email setting data we can setup outgoing email.<br>
+						By entering all email setting data we can send outgoing email.<br>
 						The format of email setting are given below:-
 									</p>	
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
@@ -180,7 +181,7 @@ Online Admission System is to automate the Academic university admission structu
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can also view email setting after adding email setting. Admin can edit and delete this data.
+				Admin can view email setting after adding Email Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -197,7 +198,7 @@ Online Admission System is to automate the Academic university admission structu
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-From here Admin can add role by filling Role Name and Role Description.<br>
+Admin can add role by entering Role Name and Role Description.<br>
 The format of Add Role are given below:-
 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2" style="width:700px">
@@ -236,7 +237,7 @@ The format of Add Role are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can view role after adding role details. Admin can edit and delete this data.
+				Admin can view role after adding Role Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
 <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewrole.png" height="60%" width="100%">
@@ -255,7 +256,7 @@ The format of Add Role are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
- Admin can add category by filling Category Name, Category Code, Category Short Name, Category Description.<br>
+Admin can add category by entering Category Name, Category Code, Category Short Name, Category Description.<br>
 The format of Add category are given below:-
 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2" style="width:700px">
@@ -299,7 +300,7 @@ The format of Add category are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can also view category after adding Category Detail. Admin can edit and delete this data.
+				Admin can view category after adding Category Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
 <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewcategory.png" height="60%" width="100%">
@@ -315,7 +316,7 @@ The format of Add category are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add seat for student select University, select Category, Percentage, Number of Seat.<br>
+Admin can add seat for student by entering select University, select Category, Percentage, Number of Seat.<br>
 The format of Add seat are given below:-
 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2" style="width:700px">
@@ -337,7 +338,7 @@ The format of Add seat are given below:-
 						</tr>
 						<tr>
 						<td><B>Number of Seat</B></td>
-						<td>Automatic Caluculate</td>
+						<td>Automatic Calculates</td>
 						</tr>
 
 								</table>
@@ -356,7 +357,7 @@ The format of Add seat are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can also view seat after adding seat Detail. Admin can edit and delete this data.
+				Admin can view seat after adding Seat Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
 <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewseat.png" height="50%" width="100%">
@@ -371,7 +372,7 @@ The format of Add seat are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add study center by Select your University, Campus Code, Campus Name, Campus Nick Name, Address, Country, State, City, District, Pincode, Phone, Fax, Status, Start Date, Close Date, Website, Incharge, Mobile.<br>
+Admin can add study center by entering your University, Campus Code, Campus Name, Campus Nick Name, Address, Country, State, City, District, Pincode, Phone, Fax, Status, Start Date, Close Date, Website, Incharge, Mobile.<br>
 The format of Add Study Center are given below:- 
 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2px solid black" style="width:700px">
@@ -467,7 +468,7 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can also view study center after adding study center Detail. Admin can edit and delete this data.
+				Admin can view study center after adding Study Center Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
 <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstudycenter.png" height="60%" width="100%">
@@ -484,8 +485,8 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-			Admin can add department by Choose your University, Choose your Campus, School Code, School Name, Department Code, Department Name, Department Nick Name and Department Description.<br>
-                               The format of Add category are given below:-  
+Admin can add department by entering your University, Choosing your Campus, School Code, School Name, Department Code, Department Name, Department Nick Name and Department Description.<br>
+The format of Add category are given below:-  
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2px solid black" style="width:700px">
 						<tr>
@@ -540,7 +541,7 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can view department after adding department Detail. Admin can edit and delete this data.
+				Admin can view department after adding Department Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -555,8 +556,8 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-                        Admin can add Designation by enter Designation Name, Designation Code, Designation short, Designation Description.<br>
-                         The format of Add category are given below:-
+Admin can add Designation by entering Designation Name, Designation Code, Designation short, Designation Description.<br>
+The format of Add category are given below:-
 			<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
                                                 <tr>
@@ -572,8 +573,8 @@ The format of Add Study Center are given below:-
                                                 <td>Enter Designation Code.Ex:-01,02</td>
                                                 </tr>
                                                 <tr>
-                                                <td><B>Designation short</B></td>
-                                                <td>Enter Designation short. Ex:-AM, AR</td>
+                                                <td><B>Designation Short</B></td>
+                                                <td>Enter Designation Short. Ex:-AM, AR</td>
                                                 </tr>
                                                 <tr>
                                                 <td><B>Designation Description</B></td>
@@ -595,7 +596,7 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-                                Admin can view Designation after adding Designation Detail. Admin can edit and delete this data.
+                                Admin can view Designation after adding Designation Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -611,8 +612,8 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-                        Admin can add  Authority by enter Authority Name, Authority Nick Name,  Authority Email.<br>
-                         The format of Add category are given below:-
+Admin can add Authority by entering Authority Name, Authority Nick Name,  Authority Email.<br>
+The format of Add category are given below:-
                         <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
                                                 <tr>
@@ -647,7 +648,7 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-                                Admin can view Authority after adding Authority Detail. Admin can edit and delete this data.
+                                Admin can view authority after adding Authority Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -662,7 +663,7 @@ The format of Add Study Center are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add program category list by adding Program Category Name, Program Category Code, Program Category Short Name, Program Category Description.<br>
+Admin can add program category list by entering Program Category Name, Program Category Code, Program Category Short Name, Program Category Description.<br>
 The format of Add Program Category are given below:-
                                                 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -703,7 +704,7 @@ The format of Add Program Category are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-                                Admin can view Program Category after adding Program Category Detail. Admin can edit and delete this data.
+                                Admin can view program category after adding Program Category Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -718,7 +719,7 @@ The format of Add Program Category are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add program and seat by filling Program Category, Program Name, Program Branch, Total Seat, Program Code, Program Short, Program Description, Program Min Time and Program Max Time.<br>
+Admin can add program and seat by entering Program Category, Program Name, Program Branch, Total Seat, Program Code, Program Short, Program Description, Program Min Time and Program Max Time.<br>
 The format of Add Program and fees are given below:-
                                                                  </p>
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
@@ -779,7 +780,7 @@ The format of Add Program and fees are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can also view program and seat after adding program and seat Detail. Admin can edit and delete this data.
+				Admin can view program and seat after adding Program and Seat Details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
 <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewprog.png" height="60%" width="100%">
@@ -796,7 +797,7 @@ The format of Add Program and fees are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subject Description.
+Admin can add subject by entering Subject Name, Subject Code, Subject Short, Subject Description.
                                                                  </p>
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="3px solid black" style="width:700px">
@@ -818,7 +819,7 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
 						</tr>
 						<tr>
 						<td><B>Subject Description</B></td>
-						<td>The English Subject Centre supported the teaching and learning of English literature</td>
+						<td>The English Subject Centre supports the teaching and learning of English literature</td>
 						</tr>
 </table>
 </P>
@@ -837,7 +838,7 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-				Admin can also view subject after adding subject Detail. Admin can edit and delete this data.
+				Admin can view subject after adding Subject DetailS. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -853,7 +854,7 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add program fees with head list by adding program name, Academic Year,Semester, Category, Gender, Head, Amount and Description. <br>                                
+Admin can add program fees with head list by entering Program Name, Academic Year,Semester, Category, Gender, Head, Amount and Description. <br>                                
 The format of add program fees with head list are given below:-
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2px solid black" style="width:700px">
@@ -862,7 +863,7 @@ The format of add program fees with head list are given below:-
 						<td><B>Description</B></td>
 						</tr>
 						<tr>
-						<td><B>Program name</B></td>
+						<td><B>Program Name</B></td>
 						<td>Select Program Ex:- Bachelor of Art, Master of Art etc  </td>
 						</tr>
 						<tr>
@@ -891,7 +892,7 @@ The format of add program fees with head list are given below:-
 						</tr>
 						<tr>
 						<td><B>Description</B></td>
-						<td>Enter description</td>
+						<td>Enter Description</td>
 						</tr>
 						</table>
 						</P>     
@@ -910,7 +911,7 @@ The format of add program fees with head list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also View Campus Program Seat List after adding Program Fees with Head Detail. We can edit and delete this data.
+Admin can view campus program seat list after adding Program Fees with Head Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfees.png" height="50%" width="100%">      
@@ -925,7 +926,7 @@ Admin can also View Campus Program Seat List after adding Program Fees with Head
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also add Degree Rule by Choose Programme, Choose Branch, Degree minimum Credit, Minimum Subject Credit, Minimum Thesis Credit, Minimum Subjects, Minimum Semesters, Minimum CPI, Maximum Credit, Maximum Semesters.<br>
+Admin can add Degree Rule by entering Programme, Choose Branch, Degree minimum Credit, Minimum Subject Credit, Minimum Thesis Credit, Minimum Subjects, Minimum Semesters, Minimum CPI, Maximum Credit, Maximum Semesters.<br>
 The format of add Degree Rules with head list are given below:-
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="2px solid black" style="width:700px">
@@ -942,7 +943,7 @@ The format of add Degree Rules with head list are given below:-
 						<td>Choose Branch from drop down.</td>
 						</tr>
 						<tr>
-						<td><B>Degree minimum Credit</B></td>
+						<td><B>Degree Minimum Credit</B></td>
 						<td>Enter Degree minimum Credit</td>
 						</tr>
 						<tr>
@@ -991,7 +992,7 @@ The format of add Degree Rules with head list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also View Degree Rules after adding Degree Rules Detail. We can edit and delete this data.
+Admin can view degree rules after adding Degree Rules Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
 					 </font>
@@ -1007,7 +1008,7 @@ Admin can also View Degree Rules after adding Degree Rules Detail. We can edit a
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add semester rules by adding Program Name, Branch Name, Semester, Semester Minimum Credit, Semester Maximum Credit, Semester CPI.<br>
+Admin can add semester rules by entering Program Name, Branch Name, Semester, Semester Minimum Credit, Semester Maximum Credit, Semester CPI.<br>
 The format of add program fees with head list are given below:-
                                                 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1056,7 +1057,7 @@ The format of add program fees with head list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also View Semester Rule after adding Semester Rule details. Admin can edit and delete this data.
+Admin can view semester rule after adding Semester Rule Details. Admin can edit and delete this data.
 							</p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsemesterrule.png" height="45%" width="100%">       </font>
@@ -1072,7 +1073,7 @@ Admin can also View Semester Rule after adding Semester Rule details. Admin can 
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can add Grade Master by adding Grade Name, Grade Point, Grade Short, Grade Description.<br>
+Admin can add Grade Master by entering Grade Name, Grade Point, Grade Short, Grade Description.<br>
 The format of add program fees with head list are given below:-
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1112,7 +1113,7 @@ The format of add program fees with head list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also View Grade after adding grade details. Admin can edit and delete this data.
+Admin can view grade after adding Grade Details. Admin can edit and delete this data.
                                                         </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewgrade.png" height="90%" width="100%">       
@@ -1129,7 +1130,7 @@ Admin can also View Grade after adding grade details. Admin can edit and delete 
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-From here admin can Map User with Role by Choose your Campus, Choose your Department, Select your Role, Select User Type, Select Username.<br>
+From here admin can Map User with Role by entering your Campus, Choose your Department, Select your Role, Select User Type, Select Username.<br>
 The format of Map User with Role list are given below:-
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1174,7 +1175,7 @@ The format of Map User with Role list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also View Map with User Role List after adding Map User Role details. Admin can edit and delete this data.
+Admin can view map with user role list after adding Map User Role Details. Admin can edit and delete this data.
                                                         </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmaprole.png" height="70%" width="100%">       
@@ -1189,7 +1190,7 @@ Admin can also View Map with User Role List after adding Map User Role details. 
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Add the number of seat for program in set a campus.
+Add the number of seat for program in a campus.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1204,7 +1205,7 @@ Add the number of seat for program in set a campus.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also view Study Center and Program with Seat after adding campus program seat list Detail. We can edit and delete this data.
+Admin can view Study Center and Program with Seat after adding Campus Program Seat List Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmapps.png" height="60%" width="100%">       </font>
@@ -1219,7 +1220,7 @@ Admin can also view Study Center and Program with Seat after adding campus progr
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can Add subject paper list by adding Degree, Academic Year, Subject Name, Paper Category, Paper No, Paper Name, Paper Code, Paper Short Name, Paper Description.<br>
+Admin can Add subject paper list by entering Degree, Academic Year, Subject Name, Paper Category, Paper No, Paper Name, Paper Code, Paper Short Name, Paper Description.<br>
 The format of add Program with Subject and Paperlist are given below:-
                                                 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1280,7 +1281,7 @@ The format of add Program with Subject and Paperlist are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also view subject paper list after adding subject paper Detail. We can edit and delete this data.
+Admin can view subject paper list after adding Subject Paper Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsublist.png" height="50%" width="100%">      
@@ -1296,7 +1297,7 @@ Admin can also view subject paper list after adding subject paper Detail. We can
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can Map Subject and Paper With Teacher by Select Campus Name, Department Name, Academic Year, Program Name, Branch Name, Semester, Subject Name, Paper Name, Teacher Name.<br>
+Admin can Map Subject and Paper With Teacher by entering Campus Name, Department Name, Academic Year, Program Name, Branch Name, Semester, Subject Name, Paper Name, Teacher Name.<br>
 The format of add subject paper with teacher list are given below:-
                                                 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1358,7 +1359,7 @@ The format of add subject paper with teacher list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also view Subject and Paper with Teacher list after adding Subject and Paper with Teacher Detail. We can edit and delete this data.
+Admin can view Subject and Paper with Teacher list after adding Subject and Paper with Teacher Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsubtech.png" height="70%" width="100%">      
@@ -1373,7 +1374,7 @@ Admin can also view Subject and Paper with Teacher list after adding Subject and
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-The current subject is depend on this subject.  This module set the subject depending<br>
+The current subject depends on this subject.  This module set the subject depending<br>
 The format of add Subject and Paper with Prerequisite list are given below:-
                                                 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1422,7 +1423,7 @@ The format of add Subject and Paper with Prerequisite list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also view Subject and Paper with Prerequisite after adding Subject and Paper with Prerequisite Detail. We can edit and delete this data.
+Admin can view Subject and Paper with Prerequisite after adding Subject and Paper with Prerequisite Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsubprerequisite.png" height="70%" width="100%">      
@@ -1437,7 +1438,7 @@ Admin can also view Subject and Paper with Prerequisite after adding Subject and
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This subject related to perticular subject<br>
+This subject is related to particular subject<br>
 The format of add subject paper list are given below:-
                                                 <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
                                                 <table border="2px solid black" style="width:700px">
@@ -1487,7 +1488,7 @@ The format of add subject paper list are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-Admin can also view Map Subject and Semester after adding Subject and Semester Detail. We can edit and delete this data.
+Admin can view Map Subject and Semester after adding Subject and Semester Details. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
                                          <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsubsem.png" height="70%" width="100%">      
@@ -1548,7 +1549,7 @@ All information are mandatory except mobile number.
 Administrators can upload multiple staff at a time. The file should have ".csv" extension & proper format. The files contain name, email, departmentid, roleid, campusid and mobile no all separated by  comma.<br>
 <b>Example</b><br>
 <b>name,email,departmentid,roleid,campasid,mobileno</b><br>
-kanchan,kanchan@gmail.com,01,04,01,9415938783<br>
+Neha,nehukhullar@gmail.com,01,04,01,9415938783<br>
 <b>Note:-</b></br>
 All information are mandatory except mobile number.
                                                                  </p>
@@ -1587,7 +1588,7 @@ All information are mandatory except mobile number.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
- Admin can also view list of faculty after uploading csv file.	
+ Admin can view list of faculty after uploading csv file.	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1603,7 +1604,7 @@ All information are mandatory except mobile number.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
- Admin can also view list of staff after uploading csv file.	
+ Admin can view list of staff after uploading csv file.	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1624,7 +1625,7 @@ All information are mandatory except mobile number.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This module will display the earlier data. which is not used now. 	
+This module will display the earlier data which is not used now. 	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1640,7 +1641,7 @@ This module will display the earlier data. which is not used now.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This module will display the earlier data. which is not used now. 	
+This module will display the earlier data which is not used now. 	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1656,7 +1657,7 @@ This module will display the earlier data. which is not used now.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This module will display the earlier data. which is not used now. 	
+This module will display the earlier data which is not used now. 	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1672,7 +1673,7 @@ This module will display the earlier data. which is not used now.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This module will display the earlier data. which is not used now. 	
+This module will display the earlier data  which is not used now. 	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1688,7 +1689,7 @@ This module will display the earlier data. which is not used now.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This module will display the earlier data. which is not used now.
+This module will display the earlier data which is not used now.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1706,7 +1707,7 @@ This module will display the earlier data. which is not used now.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trails and summary recent activity. The page is constantly updated on the basis of the activities carried out in the system.	
+This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trails and summary recent activity. The page is continuously updated on the basis of the activities carried out in the system.	
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1727,7 +1728,7 @@ This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trail
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-    User Profile display of personal data associated with specific user. From here user see Login Information and Other Information.
+    User Profile displays the Personal Data associated with specific user. From here user see Login Information and Other Information.
                                                                  </p>
                                                         </ol>
                                                 </font>
@@ -1742,7 +1743,7 @@ This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trail
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-    Password can be changed from Change Password link. Each user must enter the old password first and then new password after that Re-type New Password for the user.
+    Password can be changed from Change Password link. Each user must enter the old password first and then enter new password after that Re-type New Password for the user.
 
                                                                  </p>
                                                         </ol>

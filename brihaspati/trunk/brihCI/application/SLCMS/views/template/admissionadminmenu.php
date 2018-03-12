@@ -70,7 +70,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('welcome/work_underprocess', 'Admit Card Generation', array('title' => 'Admit Card Generation'));
                                         echo "</li>";
                                         echo "<li>";
-						//echo anchor('exam/attendancesheetgen', 'Attandence Sheet Generation', array('title' => 'Attandence Sheet Generation'));
+						//echo anchor('exam/attendancesheetgen', 'Attendance Sheet Generation', array('title' => 'Attendance Sheet Generation'));
                                                 echo anchor('welcome/work_underprocess', 'Attandence Sheet Generation', array('title' => 'Attandence Sheet Generation'));
                                         echo "</li>";
                                         echo "<li>";

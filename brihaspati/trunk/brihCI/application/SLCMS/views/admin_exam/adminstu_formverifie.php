@@ -1,6 +1,7 @@
 <!--
  * @name adminstu_formverifie.php
    @author sumit saxena (sumitsesaxena@gmail.com)
+   @author neha khullar (neha khullar@gmail.com) Modifications
  --->
 
 <?php
@@ -8,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html>
 <head>
-<title>Student Form Verification</title>
+<title>Student Exam-Form Verification</title>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -22,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php $this->load->view('template/header'); ?>
 <table style="width:100%;font-size:20px;">
 <tr>
-	<!--<td align=left><a href="<?php echo site_url('adminstuexam/attendancesheetgenpdf');?>" style="text-decoration:none;"><b>Generate Exam-Attendence Sheet</b></a></td>-->
-	<td style="text-align:center;"><b>Student Exam-Form verification</b>
+	<!--<td align=left><a href="<?php echo site_url('adminstuexam/attendancesheetgenpdf');?>" style="text-decoration:none;"><b>Generate Exam-Attendance Sheet</b></a></td>-->
+	<td style="text-align:center;"><b>Student Exam-Form Verification</b>
 	</td>
 </tr>
 </table>

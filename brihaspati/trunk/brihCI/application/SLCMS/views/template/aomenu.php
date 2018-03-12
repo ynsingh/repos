@@ -159,7 +159,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Audit Trails</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('audittr/logdetail', 'Log Deatails', array('title' => 'Log Details'));
+						echo anchor('audittr/logdetail', 'Log Details', array('title' => 'Log Details'));
 					echo "</li>";
 				echo "</ul>";
 				echo "</li>"; */
@@ -181,7 +181,7 @@ echo "<ul class=\"sf-menu\">";
                                 echo "<a href=" . ">Help</a>";
                         echo "<ul>";
                                         echo "<li>";
-                                                echo anchor('help/helpdoc', 'User Manuual', array('title' => 'User Manuual'));
+                                                echo anchor('help/helpdoc', 'User Manual', array('title' => 'User Manual'));
                                         echo "</li>";
                                         echo "</ul>";
 

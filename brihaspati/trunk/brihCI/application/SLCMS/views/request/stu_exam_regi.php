@@ -1,6 +1,7 @@
 <!-------------------------------------------------------
     -- @name stu_exam_regi.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+    -- @author Neha Khullar(nehukhullar@gmail.com) --
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -114,13 +115,13 @@ echo "</center>";
 		<td>
 			
 			<span style="color:red;"><?php echo form_error('Sname');?></span>
-			<label>Student name</label></br>
+			<label>Student Name</label></br>
 			<input type="text" name="Exsname" placeholder="Enter your exam name" value="<?php echo $this->name;?>" readonly>	
 		<td/>
 		
 		<td>	
 			<!---<span style="color:red;"><?php echo form_error('Smothername');?></span>--->
-			<label for="nnumber">Mother name</label></br>	
+			<label for="nnumber">Mother Name</label></br>	
 			<input type="text" name="Exmname" placeholder="Enter Mother Name" value="<?php echo $this->mname; ?>" readonly/>		
 		<td/>
 		<td>	
@@ -144,7 +145,7 @@ echo "</center>";
 			
 		<!---<span style="color:red;"><?php echo form_error('Sdob');?></span>-->
 
-		<label>Date of birth</label></br>
+		<label>Date of Birth</label></br>
 		<input type="text" name="Exdob" placeholder="Enter date of birth" value="<?php echo $this->dob;?>" readonly>
 		<td/>
 		<td>	
@@ -202,7 +203,7 @@ echo "</center>";
 			<input type="text" name="Expincode" placeholder="Enter Your Pincode" MaxLength="6" value="<?php echo $this->ppin; ?>" readonly/>		
 		<td/>
 		<td>	<!---<span style="color:red;"><?php echo form_error('Smobile');?></span>--->
-			<label>Mobile/Phone no.</label></br>
+			<label>Mobile/Phone No.</label></br>
 			<input type="text" name="Exmobile" placeholder="Enter Mobile Number" MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo $this->mobile; ?>" readonly/>		
 		<td/>
 	</tr>
@@ -218,15 +219,15 @@ echo "</center>";
 
 	<table class="TFtable" id="academic" style="width:52%;">	
 			<thead id="styleTable"><th colspan=7>
-			Details of earlier passed examination
+			Details of Earlier Passed Examination
 			</th></thead>
 			<thead id="acadhead2">
 			<tr>
 				<th><span style="float:left;">Programmes</span></th>
-				<th><span style="float:left;">Year of passing</span></th>
-				<th><span style="float:left;">Name of the board / university</span></th>
+				<th><span style="float:left;">Year of Passing</span></th>
+				<th><span style="float:left;">Name of the Board / University</span></th>
 				
-				<th><span style="float:left;">Marks Obtained / Total marks</span></th>
+				<th><span style="float:left;">Marks Obtained / Total Marks</span></th>
 				<th><span style="float:left;">% of Marks</span></th>
 				<th><span style="float:left;">Subjects</span></th>
 			</tr>	
