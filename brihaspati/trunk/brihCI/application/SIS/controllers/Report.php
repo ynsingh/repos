@@ -134,7 +134,8 @@ public function disciplinewiselist(){
     }
     public function positionsummary(){
         $selectfield ="sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
-        $whdata = array ('sp_tnt' => 'Non Teaching');
+        //$whdata = array ('sp_tnt' => 'Non Teaching');
+        $whdata = '';
         $whorder = "sp_emppost asc";
         $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
         

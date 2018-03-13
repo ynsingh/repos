@@ -210,7 +210,7 @@ class SIS_model extends CI_Model
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
         if(!empty($emppost_data)){
             $update_data = array();
-            $upempdata_flag=false;
+            $upempdata_flag = false;
             foreach($emppost_data as $empdata){
                 
                 if($empdata->sp_type == 'Permanent'){
@@ -227,7 +227,7 @@ class SIS_model extends CI_Model
                         'sp_org_id'=> '1'
                     );
                     //echo "vacacny=per==".$position.$vacant.$pospermanent.$vpermanenet;
-                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                    $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
                 }
                 if($empdata->sp_type == 'Temporary'){
                     
@@ -243,7 +243,7 @@ class SIS_model extends CI_Model
                        'sp_org_id'=> '1'
                     );
                    // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
-                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                    $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
                 }
                
             } //foreach   

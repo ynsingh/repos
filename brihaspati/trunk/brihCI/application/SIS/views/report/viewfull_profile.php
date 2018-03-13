@@ -381,7 +381,11 @@
 			<?php  if (!empty($performancedata->spd_per_filename)){ ?>
                             <a href="<?php echo base_url().'uploads/SIS/perfattachment/'.$performancedata->spd_per_filename ; ?>"
                                target="_blank" type="application/octet-stream" download="<?php echo $performancedata->spd_per_filename ?>">Download the pdf</a>
-			<?php } ?>
+			<?php } 
+				else{
+                                echo " No attachment found";
+                                }
+			?>
                         </td>
                     </tr>
                     <?php else : ?>
