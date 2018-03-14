@@ -22,6 +22,70 @@
                 }).on('changeDate', function (ev) {
                     $(this).datepicker('hide');
                 });
+
+/********uoc on the basis of campus*****************************************************************************/          
+            /*
+            In future this code may be replace when either campusid added in the 
+            autority or authority added in campus.*/
+            $('#camp').on('change',function(){
+                var sc_code = $(this).val();
+                //alert(sc_code);
+                if(sc_code == ''){
+                    $('#uocid').prop('disabled',true);
+                   
+                }
+                else{
+                    $('#uocid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getuoclist",
+                        type: "POST",
+                        data: {"campusname" : sc_code},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#uocid').html(data.replace(/^"|"$/g, ''));
+                                                 
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                    });
+                }
+            }); 
+            /*****end of uoc***************************************************************************/
+            /************************select department on basis of uoc and campus*******************/           
+             $('#uocid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var combid = sc_code+","+uoc_id;
+               //alert("combid=="+combid);
+                if(uoc_id == ''){
+                    $('#scid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#scid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getnewdeptlist",
+                        type: "POST",
+                        data: {"campuoc" : combid},
+                        dataType:"html",
+                        success:function(data){
+                            
+                            $('#scid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+              }); 
             }); 
         </script>
   
@@ -66,25 +130,49 @@
             <form id="myform" action="<?php echo site_url('empmgmt/update_servicedata/'.$id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th  style="background-color: gray; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Service Details</th></thead></tr>
+                <tr><thead><th style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Service Details</th></thead></tr>
                 <tr></tr><tr></tr>
                 <tr>
                     <td>Campus Name <font color='Red'>*</font></td>
                         <td><select id="camp" style="width:350px;" name="campus" required> 
                             <?php if(!empty($servicedata->empsd_campuscode)):;?>       
-                            <option value="<?php echo $servicedata->empsd_campuscode;?>"><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$servicedata->empsd_campuscode)->sc_name;?></option>    
+                            <option value="<?php echo $servicedata->empsd_campuscode;?>"><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$servicedata->empsd_campuscode)->sc_name;?></option>    
                             <?php else:?>
                             <option selected="selected" disabled selected>--------Campus Name-----</option>
                             <?php endif;?>
                             <?php foreach($this->campus as $camdata): ?>	
-   				<option class="test" value="<?php echo $camdata->sc_code; ?>"><?php echo $camdata->sc_name; ?></option> 
+   				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
                             <?php endforeach; ?>
                       
                         </select>
                     </td>
-                </tr> 
-                <tr>
-                    <td>Designation<font color='Red'>*</font></td>
+                </tr>
+<tr>
+                    <td>University Officer Control<font color='Red'>*</font></td>
+                        <td><select id="uocid" style="width:350px;" name="uocontrol" required>
+                            <?php if(!empty($servicedata->empsd_ucoid)):;?>
+                            <option value="<?php echo $servicedata->empsd_ucoid;?>"><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id',$servicedata->empsd_ucoid)->name;?></option>
+                            <?php else:?>
+			<option value="">Select University Officer Control</option>
+			<?php endif;?>
+                        </select>
+                    </td>
+                </tr>
+<tr>
+                    <td>Department<font color='Red'>*</font></td>
+                        <td><select id="scid" style="width:350px;" name="department" required>
+                            <?php if(!empty($servicedata->empsd_deptid)):;?>
+                            <option value="<?php echo $servicedata->empsd_deptid;?>"><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$servicedata->empsd_deptid)->dept_name;?></option>
+                            <?php else:?>
+			  <option value="">Select Department</option>
+                        <?php endif;?>
+
+                        </select>
+                    </td>
+                </tr>
+ 
+		<tr>
+		    <td>Designation<font color='Red'>*</font></td>
                         <td><select name="designation" id="desigid" required style="width:350px;"> 
                             <?php if(!empty($servicedata->empsd_desigcode)):;?> 
                             <option value="<?php echo $servicedata->empsd_desigcode;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$servicedata->empsd_desigcode)->desig_name;?></option>    
@@ -138,7 +226,7 @@
                     </td>   
                 </tr>
                 <tr></tr><tr></tr>
-                <tr style="background-color:gray; text-align:left; height:30px;">
+                <tr style="background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">
                     <button name="editservdata" >Update</button>
                     <!--<button  onclick="goBack();">Back</button> -->

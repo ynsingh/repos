@@ -381,12 +381,15 @@ class Empmgmt extends CI_Controller
         $this->roleid=$this->session->userdata('id_role');
         $this->emp_id = $empid;
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-        $this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+        //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
         $this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         if(isset($_POST['addservdata'])) {
             //form validation
             $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
@@ -400,6 +403,8 @@ class Empmgmt extends CI_Controller
                 $data = array(
                     'empsd_empid'           =>$empid,
                     'empsd_campuscode'      =>$_POST['campus'],
+                    'empsd_ucoid'           =>$_POST['uocontrol'],
+                    'empsd_deptid'          =>$_POST['department'],
                     'empsd_desigcode'       =>$_POST['designation'],
                     'empsd_pbid'            =>$_POST['payband'],
                     'empsd_pbdate'          =>$_POST['DateofAGP'],
@@ -434,6 +439,53 @@ class Empmgmt extends CI_Controller
         }//ifpost button
         $this->load->view('empmgmt/add_servicedata');
     }//function close
+/* This function has been created for get list of uco on the basis of campus */
+    /*In future this code may be replace when either campusid added in the 
+     authority or authority added in campus.*/
+    public function getuoclist(){
+        $scid = $this->input->post('campusname');
+        $auco_data = $this->sismodel->get_listrow('map_sc_uo','scuo_scid',$scid);
+        $aucolist = $auco_data->result();
+        $uco_select_box ='';
+        $uco_select_box.='<option value="">-------University Officer Control--------';
+        foreach($aucolist as $aucoid){
+            $auoname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$aucoid->scuo_uoid)->name;
+            $auocode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$aucoid->scuo_uoid)->code;
+            /*$auouserid=$this->lgnmodel->get_listspfic1('authority_map', 'user_id', 'authority_id',$aucoid->cudsd_auoid)->user_id;
+            $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$auouserid)->firstname;
+            $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$auouserid)->lastname;
+            $auoflname=$auofname." ".$auolname;
+            $uco_select_box.='<option value='.$aucoid->cudsd_auoid.'>'.$auoflname.' ';*/
+         json_encode("in controller====".$aucoid->scuo_uoid);
+            $uco_select_box.='<option value='.$aucoid->scuo_uoid.'>'.$auoname." (".$auocode.") ".' ';
+        }
+        echo json_encode($uco_select_box);
+    }
+
+/* This function has been created for get list of schemes on the basis of  selected campus and uco */
+
+    public function getnewdeptlist(){
+        $combid = $this->input->post('campuoc');
+        //echo json_encode("combination===".$combid);
+        $parts = explode(',',$combid);
+       // echo json_encode("this is test===".$parts[0].",".$parts[1]);
+        $sccode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$parts[0])->sc_code;
+        //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1]);
+        $datawh=array('dept_uoid' => $parts[1],'dept_sccode' => $sccode);
+        //$comb_data = $this->sismodel->get_listspficemore('cudsdmap','cudsd_deptid',$datawh);
+        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
+        //$comblist = $comb_data->result();
+        $dept_select_box ='';
+        $dept_select_box.='<option value="">-------Select Department--------';
+        foreach($comb_data as $combdataid){
+           // $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$combdataid->cudsd_deptid)->dept_name;
+            //$dept_select_box.='<option value='.$combdataid->cudsd_deptid.'>'.$deptname.' ';
+            $dept_select_box.='<option value='.$combdataid->dept_id.'>'.$combdataid->dept_name.'('.$combdataid->dept_code.')'.' ';
+
+        }
+        echo json_encode($dept_select_box);
+
+    }
     
     /*get employee service detail*/
     
@@ -442,7 +494,7 @@ class Empmgmt extends CI_Controller
        /* $this->roleid=$this->session->userdata('id_role');
         $this->emp_id = $empid;*/
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-        $this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
         $this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         $data['id'] = $id;
@@ -450,7 +502,6 @@ class Empmgmt extends CI_Controller
         $this->load->view('empmgmt/edit_servicedata',$data);
         
     }
-      
     /****************************  START UPDATE DATA *************************/
     public function update_servicedata($id){
         $this->roleid=$this->session->userdata('id_role');
@@ -459,6 +510,8 @@ class Empmgmt extends CI_Controller
         if(isset($_POST['editservdata'])) {
             //form validation
             $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+	    $this->form_validation->set_rules('uocontrol','University Officer Control','trim|xss_clean');
+	    $this->form_validation->set_rules('department','Department','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
@@ -470,6 +523,8 @@ class Empmgmt extends CI_Controller
             }//formvalidation
             else{
                 $campus = $this->input->post('campus', TRUE);
+		$uocontrol=$this->input->post('uocontrol', TRUE);
+                $department=$this->input->post('department', TRUE);
                 $desigc = $this->input->post('designation', TRUE);
                 $payb = $this->input->post('payband', TRUE);
                 $dataofagp = $this->input->post('DateofAGP', TRUE);
@@ -479,6 +534,10 @@ class Empmgmt extends CI_Controller
                 $logmessage = "";
                 if($eds_data['servicedata']->empsd_campuscode != $campus)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_campuscode. " changed by " .$campus;
+		if($eds_data['servicedata']->empsd_ucoid != $uocontrol)
+                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_ucoid. " changed by " .$uocontrol;
+		if($eds_data['servicedata']->empsd_deptid != $department)
+                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_deptid. " changed by " .$department;
                 if($eds_data['servicedata']->empsd_desigcode != $desigc)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_desigcode. " changed by " .$desigc;
                 if($eds_data['servicedata']->empsd_pbid != $payb)
@@ -492,6 +551,8 @@ class Empmgmt extends CI_Controller
                 
                 $edit_data = array(
                     'empsd_campuscode'      =>$campus,
+		    'empsd_ucoid'           =>$uocontrol,
+                    'empsd_deptid'          =>$department,
                     'empsd_desigcode'       =>$desigc,
                     'empsd_pbid'            =>$payb,
                     'empsd_pbdate'          =>$dataofagp,
@@ -518,7 +579,8 @@ class Empmgmt extends CI_Controller
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$id);
+			$uid = $this->sismodel->get_listspfic1('employee_servicedetail','empsd_empid','empsd_id',$id)->empsd_empid;
+                        redirect('report/viewfull_profile/'.$uid);
                     }
                                         
                 }
