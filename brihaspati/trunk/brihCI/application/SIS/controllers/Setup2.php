@@ -856,8 +856,8 @@ class Setup2 extends CI_Controller
   */
 
     public function designation() {
-	$array_items = array('success' => '', 'error' => '', 'warning' =>'');
-        $this->session->set_flashdata($array_items);
+//	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
+  //      $this->session->set_flashdata($array_items);
         $this->result = $this->commodel->get_list('designation');
         $this->logger->write_logmessage("view"," View Designation ", "Designation details...");
         $this->logger->write_dblogmessage("view"," View Designation" , "Designation record display successfully..." );
@@ -870,7 +870,10 @@ class Setup2 extends CI_Controller
 
     public function adddesignation()
     {
-	    $this->payresult=$this->sismodel->get_list('salary_grade_master');
+	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
+        $this->session->set_flashdata($array_items);
+
+        $this->payresult=$this->sismodel->get_list('salary_grade_master');
 
          if(isset($_POST['adddesignation'])) {
                  $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|callback_isCodeExist');
@@ -895,7 +898,7 @@ class Setup2 extends CI_Controller
                         'desig_type'=>$_POST['tnt'],
                         'desig_subtype'=>$_POST['grouppost'],
                         'desig_payscale'=>$_POST['desig_payscale'],
-                        'desig_name'=>ucwords(strtolower($_POST['desig_name'])),
+                        'desig_name'=>$_POST['desig_name'],
                         'desig_group'=>$_POST['desig_group'],
                         'desig_short'=>strtoupper($_POST['desig_short']),
                         'desig_desc'=>$_POST['desig_desc'],
@@ -981,6 +984,9 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function editdesignation($desig_id) {
+	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
+        $this->session->set_flashdata($array_items);
+
 	$this->payresult=$this->sismodel->get_list('salary_grade_master');
         $desig_data_q=$this->commodel->get_listrow('designation','desig_id', $desig_id);
         if ($desig_data_q->num_rows() < 1)
@@ -1125,7 +1131,7 @@ class Setup2 extends CI_Controller
               'desig_type' => $desig_type,
               'desig_subtype'=> $desig_subtype,
               'desig_payscale'=> $desig_payscale,
-              'desig_name'  => ucwords(strtolower($desig_name)),
+              'desig_name'  => $desig_name,
               'desig_group' => $desig_group,
               'desig_short' => strtoupper($desig_short),
               'desig_desc' => $desig_desc,

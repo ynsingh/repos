@@ -86,7 +86,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+            <!--        <td>
                         <div class="panel panel-primary" style="margin-left:10px; margin-right:20px;background-color: #D0D0D0;">
                             <div class="panel-heading">Course Detail</div>
                             <div class="panel-body">
@@ -123,7 +123,7 @@
                             </div>
                         </div>
                     </td>    
-              
+              -->
                 </tr>
             </table>
       

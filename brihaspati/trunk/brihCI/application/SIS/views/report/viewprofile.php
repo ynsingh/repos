@@ -7,40 +7,7 @@
         <title>Welcome to TANUVAS</title>
         <script type="text/javascript" src="<//?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
-         <script>
-             function printDiv(printme) {
-                var printContents = document.getElementById(printme).innerHTML; 
-                //alert("printContents==="+printContents);
-                var originalContents = document.body.innerHTML;      
-                //document.body.innerHTML = printContents;     
-                //document.body.innerHTML = "<html><head><title></title></head><body>" + printContents + "</body>";
-               document.body.innerHTML = "<html moznomarginboxes mozdisallowselectionprint ><head><title></title></head><body style='width:100%;' ><img src='http://172.26.82.20/~guest/brihCI/uploads/logo/logotanuvas.jpeg' alt='logo' style='width:100%;' >"+" <div style='width:100%;height:100px;'>  " + printContents + "</div>"+"</body>";
-               
-                window.print();     
-                document.body.innerHTML = originalContents;
-            }
-        </script>        
       </head>
-    <body>
-        <script>
-/*            $(document).ready(function(){
-                $("#letterid").on('change',function(){
-                var alphaletter= $(this).val();
-                alert("id===seema"+letterid);
-               /* if(alphaletter !== ''){
-                    return $('#worktypeid');
-                }*
-               if(alphaletter == ''){
-                    $('#worktypeid').prop('disabled',true);
-                    //return $('#worktypeid');
-                }
-                else{
-                    $('#worktypeid').prop('disabled',false);
-                }   
-               
-                });
-             });*/
-        </script>    
     </head>
     <body>
         <?php $this->load->view('template/header'); ?>
@@ -52,16 +19,6 @@
 	    echo "<b>Employee List Details</b>";
 	    echo "</td>";
     ?>
-          <table style="width:100%;">
-              
-               <tr>
-               <td colspan="4"><input type="submit" value="Print" onclick="javascript:printDiv('printme')" title="Click for print" style="font-size:18px;" >
-               </td> 
-                </tr>
-            </table>                
-                    
-        <div>
-                                
             <!--help part -->
         </tr>
         </table> 
@@ -134,7 +91,6 @@
             <?php echo form_hidden('filter', $filter);?>
             </form>
               </table>
-              <div id="printme" align="left" style="width:100%;"> 
             <div class="scroller_sub_page">
         <table class="TFtable" >
             <?php if(!empty($wtype)):;?>  
@@ -177,19 +133,7 @@
                 <?php endif;?>
         </table>
         </div><!------scroller div------>
-        </div><!------print div------>
 	<p> &nbsp; </p>
-        <div align="center">  <footer>
-<p class="footer" >2017 © <a href="#" >Brihaspati ERP Team IIT Kanpur</a> All rights reserved. <a href="http://172.26.82.20/~guest/brihCI/brihaspati-license.txt">Click here </a> for distribution license.</p>
-
-</footer>
-<!--<p class="footer">    Page rendered in <strong>0.0671</strong> seconds. CodeIgniter Version <strong>3.1.4</strong></p>
-<p class="footer">2017 © <a href="#">Brihaspati ERP Team IIT Kanpur</a> All rights reserved. <a href="http://172.26.82.20/~guest/brihCI/brihaspati-license.txt">Click here </a> for distribution license</p>
-</div>
-
-</body>
-</html>-->
-</div>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
     </body>    
 </html>    

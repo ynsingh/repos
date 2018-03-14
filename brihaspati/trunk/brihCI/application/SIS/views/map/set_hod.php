@@ -146,14 +146,14 @@
                     <td><input type="text"placeholder="Email Id" name="emailid"  size="45" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" required="required"/><br> </td>
                 </tr>
                 <tr>
-                    <td><label for="Datefrom" style="font-size:15px;">Date From<font color='Red'>*</font></label></td>
-                    <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo isset($_POST["DateFrom"]) ? $_POST["DateFrom"] : ''; ?>"  size="45" required="required">
+                    <td><label for="Datefrom" style="font-size:15px;">Date From<font color='Red'></font></label></td>
+                    <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo isset($_POST["DateFrom"]) ? $_POST["DateFrom"] : ''; ?>"  size="45" >
                     </td>     
                          
                 </tr>
                 <tr>
-                    <td><label for="Dateto" style="font-size:15px;">Date To<font color='Red'>*</font></label></td>
-                    <td><input type="text" name="DateTo" id="Dateto" value="<?php echo isset($_POST["DateTo"]) ? $_POST["DateTo"] : ''; ?>"  size="45" required="required">
+                    <td><label for="Dateto" style="font-size:15px;">Date To<font color='Red'></font></label></td>
+                    <td><input type="text" name="DateTo" id="Dateto" value="<?php echo isset($_POST["DateTo"]) ? $_POST["DateTo"] : ''; ?>"  size="45" >
                     </td>     
                          
                 </tr>

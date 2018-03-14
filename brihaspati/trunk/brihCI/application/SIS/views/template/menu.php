@@ -217,16 +217,13 @@ echo "<ul class=\"sf-menu\" >";
 					echo "</li>";
 					echo "<li>";
 						echo anchor('report/listfac', 'Faculty List', array('title' => 'Faculty List'));
-					echo "</li>";*/
+					echo "</li>";
 					echo "<li>";
 						echo anchor('staffmgmt/employeelist', 'Staff List', array('title' => 'Staff List'));
-					echo "</li>";	
+					echo "</li>";	*/
                                         echo "<li>";
 						echo anchor('report/viewprofile', 'View Employee List', array('title' => 'View Employee List'));
 					echo "</li>";
-                                        echo "<li>";
-						echo anchor('report/listofstaffposition', 'List of Staff Position', array('title' => 'List of Staff Position'));
-					echo "</li>";	
                                         echo "<li>";
                                                 echo anchor('report/disciplinewiselist', 'Discipline Wise Report', array('title' => 'Discipline Wise Report'));
                                         echo "</li>";
@@ -236,6 +233,9 @@ echo "<ul class=\"sf-menu\" >";
 					echo "<li>";
                                                 echo anchor('report/desigemployeelist', 'Designation Wise Staff List', array('title' => 'Designation Wise Staff List'));
                                         echo "</li>";
+                                        echo "<li>";
+						echo anchor('report/listofstaffposition', 'List of Staff Position', array('title' => 'List of Staff Position'));
+					echo "</li>";	
                                         echo "<li>";
                                                 echo anchor('report/staffstrengthlist', 'Staff Strength List', array('title' => 'Staff Strength List'));
                                         echo "</li>";
