@@ -2,7 +2,7 @@
 
 class Logger
 {
-	function Logger()
+	function __construct()
 	{
 		return;
 	}

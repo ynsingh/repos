@@ -11,10 +11,10 @@ class Aggreegate_model extends CI_Model {
     }
 
 
-    function Aggreegate_model()
-    {
-        parent::Model();
-    }
+//    function Aggreegate_model()
+  //  {
+    //    parent::Model();
+   // }
 
 
     function get_op_balance_agg($ledger_id,$accname)

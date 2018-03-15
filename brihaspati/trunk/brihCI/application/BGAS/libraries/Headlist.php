@@ -23,7 +23,7 @@ class Headlist
 	public static $csv_row = 0;
 	public static $new_link;
 
-	function Headlist()
+	function __construct()
 	{
 		//$CI->messages->add('Account Name in Head List==>'.$accountname);
 		return;

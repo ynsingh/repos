@@ -3,7 +3,7 @@
 class paymentreceipt
 {
 
-	function Paymentreceipt()
+	function __construct()
         {
 		$CI =& get_instance();
 		$CI->load->model('payment_model');

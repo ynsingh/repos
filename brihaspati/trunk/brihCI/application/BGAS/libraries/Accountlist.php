@@ -23,7 +23,7 @@ class Accountlist
 	public static $csv_data = array();
 	public static $csv_row = 0;
 
-	function Accountlist()
+	function __construct()
 	{
 		return;
 	}

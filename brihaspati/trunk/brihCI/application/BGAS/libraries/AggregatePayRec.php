@@ -5,7 +5,7 @@
 class AggregatePayRec
 {
 
-	function AggregatePayRec()
+	function __construct()
     {
         return;
     }

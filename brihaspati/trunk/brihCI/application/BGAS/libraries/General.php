@@ -1,17 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class General {
-public function __construct()
+	public function __construct()
         {
                 return;
         }
 
 	var $error_messages = array();
-
-	function General()
-	{
-		return;
-	}
 
 	/* Check format of config/accounts ini files */
 	function check_account($account_name)

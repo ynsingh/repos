@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Reportlist1
 {
-	function Reportlist1()
+	function __construct()
 	{
 		$CI =& get_instance();
                 $CI->load->model('Group_model');

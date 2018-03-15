@@ -7,10 +7,10 @@ function __construct() {
     }
 
 
-	function Authority_model()
-	{
-		parent::Model();
-	}
+//	function Authority_model()
+//	{
+//		parent::Model();
+//	}
 
 	function get_authority_name($id)
 	{

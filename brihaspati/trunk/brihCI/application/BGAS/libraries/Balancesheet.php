@@ -30,7 +30,7 @@ class Balancesheet
 	var $host_name = "";
 	var $port = "";
 
-	function Balancesheet()
+	function __construct()
 	{
 		return;
 	}

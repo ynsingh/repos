@@ -18,7 +18,7 @@ class Messages
     var $_ci;
     var $_types = array('success', 'error', 'warning', 'message');
 
-    function Messages($params = array())
+    function __construct($params = array())
     {
         $this->_ci =& get_instance();
         $this->_ci->load->library('session');

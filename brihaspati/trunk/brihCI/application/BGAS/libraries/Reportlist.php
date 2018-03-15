@@ -36,7 +36,7 @@ class Reportlist
 	public static $csv_data = array();
 	public static $csv_row = 0;
 
-	function Reportlist()
+	function __construct()
 	{
 		$CI =& get_instance();
                 $CI->load->model('Payment_model');

@@ -1,5 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-	ob_start();
+	//ob_start();
 	echo form_open('ckeditor');
 	$this->load->library('session');
 	$newdata = array(
@@ -22,8 +22,8 @@
 		ob_start();
 	}
 	$docs_path_url = realpath(BASEPATH.'/docs');
-        print_r($docs_path_url);
-        die;
+     //   print_r($docs_path_url);
+      //  die;
         $file_list = get_filenames($docs_path_url);
         $arr_len = count($file_list);
         $file_name = Date("F d, Y").'nonplan_report'.'.txt';
@@ -53,7 +53,7 @@
         $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
         $this->db->select('id, sanc_type')->from('entries');
-        $entry_id = $this->db->get();
+	$entry_id = $this->db->get();
         foreach($entry_id->result() as $row1_1)
         {
                 $this->db->select('id, ledger_id, amount')->from('entry_items')->where('entry_id', $row1_1->id);

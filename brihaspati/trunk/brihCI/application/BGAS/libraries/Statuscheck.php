@@ -3,7 +3,7 @@
 class Statuscheck {
 	var $error_messages = array();
 
-	function Statuscheck()
+	function __construct()
 	{
 		$this->error_messages = array();
 	}

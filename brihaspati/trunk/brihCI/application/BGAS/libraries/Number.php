@@ -12,7 +12,7 @@ class Number
 	var $number="";
 	var $n="";
 	
-	function Number()
+	function __construct()
 	{
 		return;
 	}

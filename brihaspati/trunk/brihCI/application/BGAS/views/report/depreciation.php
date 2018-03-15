@@ -84,6 +84,7 @@
 	$i=1;
 	
 	$asset_register = $this->Depreciation_model->get_asset_data($search,$text,$asset_type,"Previous Year Assets");
+	if(!empty($asset_register)){
 	$num_rows = count($asset_register);
 	if($num_rows!= 0){
         echo "<tr class=\"tr-balance\"><td colspan=\"8\"><b>Previous Year Assets (BGAS)</b></td></tr>";
@@ -201,11 +202,12 @@
 	}
 	echo "<td>".$row->sanc_type."</td>";
 	echo "<td>".$fund_name."</td>";
-	}
-        }
-			
+	} //else of asset register 1
+        } //closer of foreach if record exist
+}			// check for empty asset register
 	//if($asset_register->num_rows() != 0){
 	$asset_register = $this->Depreciation_model->get_asset_data($search,$text,$asset_type,"Current Year Assets");
+	if(!empty($asset_register)){
         $num_rows = count($asset_register);
 
 	if($num_rows!= 0){
@@ -433,8 +435,9 @@
                                               }
                                         $count++;
 					}
-		}//foreach
-
+	}//foreach
+	}
+/*
 		$asset_register = $this->Depreciation_model->get_asset_data($search,$text,$asset_type,"PICO");
                 $num_rows = count($asset_register);
 
@@ -525,7 +528,8 @@
 
 		}//foreach
 		}//ifnumrows
-	}//else
+		}//else
+ */
 echo"</table>";				
 
 
@@ -540,3 +544,4 @@ echo"</table>";
 	if($check == "1" && $search == "curr_value"){
 		$this->messages->add($text . ' is not found.', 'error');
 		redirect('report/depreciation');				
+ */

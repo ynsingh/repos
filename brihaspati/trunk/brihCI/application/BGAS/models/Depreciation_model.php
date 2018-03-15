@@ -319,7 +319,7 @@ function get_asset_data($search,$text,$asset_type,$database_type)
                         }
                 }
 
-	}elseif($database_type == "PICO"){
+	}/*elseif($database_type == "PICO"){
 	if($search == '' || $asset_type_value != NULL && $b == NULL){
      	//load database pico
         $logndb = $this->load->database('pico', TRUE);
@@ -360,8 +360,14 @@ function get_asset_data($search,$text,$asset_type,$database_type)
         }
 	}//else
 	$this->logndb->close();
+		}*/
+	//	$this->$asset_register = $asset_register;
+	if(!empty($asset_register)){
+		return $asset_register->result(); 
 	}
-	return $asset_register->result(); 
+	else{
+		return null;
+	}
 }
 	
 /*	function get_deprecvalue($search,$text,$asset_type,$database_type)

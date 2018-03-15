@@ -20,7 +20,7 @@ class GetParentlist
 	public static $csv_data = array();
 	public static $csv_row = 0;
 
-	function GetParentlist()
+	function __construct()
 	{
 		return;
 	}

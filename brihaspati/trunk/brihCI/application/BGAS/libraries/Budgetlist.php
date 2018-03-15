@@ -27,7 +27,7 @@ class Budgetlist
 	public static $csv_data = array();
 	public static $csv_row = 0;
 
-	function Budgetlist()
+	function __construct()
 	{
 		return;
 	}

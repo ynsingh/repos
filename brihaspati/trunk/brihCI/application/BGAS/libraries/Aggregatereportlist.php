@@ -40,7 +40,7 @@ class Aggregatereportlist
 	var $k=0;
 	var $databasehost="";
 	
-	function Aggregatereportlist()
+	function __construct()
 	{
 		return;
 	}
