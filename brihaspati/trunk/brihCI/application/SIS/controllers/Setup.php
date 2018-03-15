@@ -5,7 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
  * @author Manorama Pal(palseema30@gmail.com)  add Email setting,Authority
  * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
- * @author Om Prakash(omprakashkgp@gmail.com)  add category, Add DDO, DDO Archive
+ * @author Om Prakash(omprakashkgp@gmail.com)=> Add Category, Add DDO, DDO Archive, Add Scheme
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
@@ -2724,7 +2724,8 @@ class Setup extends CI_Controller
         if(isset($_POST['scheme'])) {
             $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
             $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean');
-            $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash|callback_isSchemeExist');
+            $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
+           // $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash|callback_isSchemeExist');
             $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean');
 
@@ -2735,7 +2736,8 @@ class Setup extends CI_Controller
             $schcode= $this->input->post("scode");
 	    $schsn= $this->input->post("ssname");	
 	    					
-	    $schdata = array('sd_deptid'=>ucwords(strtolower($_POST['dept_name'])), 'sd_name'=>ucwords(strtolower($_POST['sname'])), 'sd_code'=>strtoupper($_POST['scode']), 'sd_short'=>strtoupper($_POST['ssname']) );
+	   // $schdata = array('sd_deptid'=>ucwords(strtolower($_POST['dept_name'])), 'sd_name'=>ucwords(strtolower($_POST['sname'])), 'sd_code'=>strtoupper($_POST['scode']), 'sd_short'=>strtoupper($_POST['ssname']) );
+	    $schdata = array('sd_deptid'=>ucwords(strtolower($_POST['dept_name'])), 'sd_code'=>strtoupper($_POST['scode']) );
 
             $data = array(
                 'sd_deptid'=>ucwords(strtolower($_POST['dept_name'])),
@@ -2749,7 +2751,8 @@ class Setup extends CI_Controller
 	   $schdatadup = $this->SIS_model->isduplicatemore('scheme_department', $schdata);		
            if($schdatadup == 1 ){
 
-                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $schd  , 'Scheme Name' = $schname , 'Scheme Code' = $schcode, 'Scheme Short Name'=$schsn  .");
+                                  //$this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $schd  , 'Scheme Name' = $schname , 'Scheme Code' = $schcode, 'Scheme Short Name'=$schsn  .");
+                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $schd  , 'Scheme Code' = $schcode .");
                                   redirect('setup/scheme');
                                   return;
                   }
@@ -2917,6 +2920,11 @@ class Setup extends CI_Controller
                'sd_desc'  => $data_sdesc
             );
 
+            $chdup_data = array(
+               'sd_deptid' =>$this->common_model->get_listspfic1('Department','dept_id', 'dept_name', $sd_deptid)->dept_id,
+               'sd_code' => $data_scode
+            );
+
 	   $schdatadupe = $this->SIS_model->isduplicatemore('scheme_department', $update_data);		
            if($schdatadupe == 1 ){
 
@@ -2932,12 +2940,15 @@ class Setup extends CI_Controller
             }else{
               $this->logger->write_dblogmessage("insert","Insert scheme department archive archive", "Record inserted in scheme department archive successfully.." .$data_sid );
           }
- 	  if($scheme_data->sd_code != $data_scode)
+	 //if($scheme_data->sd_code != $data_scode)
+	  if(($scheme_data->sd_code != $data_scode)&&($scheme_data->sd_deptid !=$sd_deptid))
           {
-	      $schemedupflag = $this->SIS_model->isduplicate('scheme_department','sd_code', $data_scode);
+	      //$schemedupflag = $this->SIS_model->isduplicate('scheme_department','sd_code', $data_scode);
+	      $schemedupflag = $this->SIS_model->isduplicatemore('scheme_department', $chdup_data);		
               if($schemedupflag ==1)
               {
-                     $this->session->set_flashdata("err_message", "Record is already exist. 'Scheme Code' = $data_scode  .");
+                     // $this->session->set_flashdata("err_message", "Record is already exist. 'Scheme Code' = $data_scode  .");
+                     $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Department' = $sd_deptid, 'Scheme Code' = $data_scode .");
 		     $this->load->view('setup/editscheme', $data);
                      return;
               }
@@ -3980,7 +3991,8 @@ public function displayleavetype(){
             $this->form_validation->set_rules('campusname','Campus Name','trim|xss_clean|required');
             $this->form_validation->set_rules('deptname','Department Name','trim|xss_clean|required');
             $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash|callback_isDdoExist');
+            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash');
+            //$this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash|callback_isDdoExist');
             $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('remark','Remark','trim|xss_clean|alpha_numeric_spaces');
 
@@ -3995,9 +4007,10 @@ public function displayleavetype(){
 	$ddocode = $this->input->post("ddocode");
 	$ddoname = $this->input->post("ddoname");
 
-	$ddodata = array('ddo_scid'=>$campid, 'ddo_deptid'=>$deptid, 'ddo_schid'=>$schid, 'ddo_code'=>strtoupper($ddocode), 'ddo_name'=>strtoupper($ddoname) );
+	//$ddodata = array('ddo_scid'=>$campid, 'ddo_deptid'=>$deptid, 'ddo_schid'=>$schid, 'ddo_code'=>strtoupper($ddocode), 'ddo_name'=>strtoupper($ddoname) );
+	$ddodata = array('ddo_scid'=>$campid, 'ddo_deptid'=>$deptid, 'ddo_schid'=>$schid, 'ddo_code'=>strtoupper($ddocode) );
           
-	 $data = array(
+	$data = array(
                 'ddo_scid'=>$_POST['campusname'],
                 'ddo_deptid'=>$_POST['deptname'],
                 'ddo_schid'=>$_POST['schemecode'],
@@ -4009,9 +4022,8 @@ public function displayleavetype(){
          $ddodatadup = $this->SIS_model->isduplicatemore('ddo', $ddodata);
 
           if($ddodatadup == 1 ){
-
-                   $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname  , 'Department Name' = $deptname , 'Scheme Name' = $schname, 'ddo_code' = $ddocode, 'ddo_name' = $ddoname  .");
-
+                   //$this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname  , 'Department Name' = $deptname , 'Scheme Name' = $schname, 'ddo_code' = $ddocode, 'ddo_name' = $ddoname  .");
+                   $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname  , 'Department Name' = $deptname , 'Scheme Name' = $schname, 'ddo_code' = $ddocode  .");
                    redirect('setup/newddo');
                    return;
               }
@@ -4206,11 +4218,23 @@ public function displayleavetype(){
                 'ddo_name'=>strtoupper($data_name),
                 'ddo_remark'=>$data_remark
             );
-            if($ddo_data->ddo_code != $data_code){
-	      $ddodupflag = $this->SIS_model->isduplicate('ddo','ddo_code', $data_code);
+
+            $datadup_data = array(
+                //'ddo_scid'=> $this->common_model->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_scid)->sc_id,
+                'ddo_scid'=> $data_scid,
+                //'ddo_deptid'=> $this->common_model->get_listspfic1('Department', 'dept_id', 'dept_name', $data_deptid)->dept_id,
+                'ddo_deptid'=> $data_deptid,
+                //'ddo_schid'=> $this->SIS_model->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $data_schid)->sd_id,
+                'ddo_schid'=> $data_schid,
+                'ddo_code'=>strtoupper($data_code)
+            );
+
+            if(($ddo_data->ddo_code != $data_code)||($ddo_data->ddo_scid != $data_scid)||($ddo_data->ddo_deptid != $data_deptid)||($ddo_data->ddo_schid != $data_schid)){
+	      //$ddodupflag = $this->SIS_model->isduplicate('ddo','ddo_code', $data_code);
+	      $ddodupflag = $this->SIS_model->isduplicatemore('ddo', $datadup_data);
 	      if($ddodupflag ==1)
 	       {
-                     $this->session->set_flashdata("err_message", "Record is already exist. 'DDO Code' = $data_code  .");
+                     $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Study Center' = $campid, 'Department' = $deptid , 'Scheme' = $schid, 'DDO Code' = $data_code  .");
                      redirect('setup/listddo');
                      return;
 		}
@@ -4231,7 +4255,7 @@ public function displayleavetype(){
                    }
 		  }	
 		}
-	   else{
+	   else{ 
 	   $ddoflag=$this->SIS_model->updaterec('ddo', $update_data, 'ddo_id', $data_ddoid);
 	   if(!$ddoflag)	
             {

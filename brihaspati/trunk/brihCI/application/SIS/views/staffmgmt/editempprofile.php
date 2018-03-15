@@ -462,10 +462,14 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>
             </tr>    
             <tr>
+			<?php echo $editdata->emp_ddouserid?>
                 <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer<font color='Red'>*</font></label>
                     <div><select name="ddo" id="ddoid" required readonly>
+			<?php if(!empty($editdata->emp_ddouserid)):;?>
                         <option value="<?php echo $editdata->emp_ddouserid;?>" ><?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$editdata->emp_ddouserid)->ddo_name;?></option>    
-                        <!--<option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>-->
+                        <?php else:?>
+			 <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
+			 <?php endif;?>
                         <!--<//?php foreach($this->ddo as $ddodata): ?>	
                             <option value="<//?php echo $ddodata->ddo_id; ?>"><//?php echo $ddodata->ddo_name . '(' . $ddodata->ddo_code .')'; ?></option> 
  			<//?php endforeach; ?>-->
