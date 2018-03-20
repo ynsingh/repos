@@ -276,6 +276,47 @@ class SIS_model extends CI_Model
     }
     /** colse this function for get hod user list according to study center************************/
     
+    public function emplist($uo,$dept,$post){
+        $selectfield ="emp_name,emp_desig_code,emp_post,emp_email";
+        $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_desig_code' => $post );
+        $whorder = "emp_post asc";
+        $data = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+        return $data;
+             
+    }
+    public function postlist_sp($uo,$dept,$tnt){
+        $selectfield ="sp_emppost,sp_sancstrenght,sp_position , sp_vacant";
+        $whorder = "sp_emppost asc";
+        if(!empty($tnt)){
+            $whdata = array('sp_uo'=> $uo,'sp_dept' => $dept,'sp_tnt' => $tnt);
+        }
+        else{
+            $whdata = array('sp_uo'=> $uo,'sp_dept' => $dept);
+        }
+        $data = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        return $data;
+             
+    }
+    public function deptlist_sp($uo,$tnt,$seldept){
+        $selectfield ="sp_dept";
+	//$whdata = array('sp_uo'=> $uo);
+        $whorder = "sp_dept asc";
+        if(!empty($tnt)){
+            if(!empty($seldept)&&($seldept !="All")){
+                $whdata = array('sp_uo'=> $uo,'sp_tnt' => $tnt,'sp_dept' =>$seldept);  
+            }
+            else{
+                $whdata = array('sp_uo'=> $uo,'sp_tnt' => $tnt);
+            }
+        }
+        else{
+            $whdata = array('sp_uo'=> $uo);    
+        }
+        $data = $this->sismodel->get_distinctrecord('staff_position',$selectfield,$whdata);
+        return $data;
+             
+    }
+    
     function __destruct() {
         $this->db2->close();
     }

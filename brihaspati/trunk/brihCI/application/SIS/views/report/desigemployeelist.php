@@ -7,7 +7,8 @@
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <style type="text/css" media="print">
             @page {
                 size: auto;   /* auto is the initial value */
@@ -15,7 +16,7 @@
             }
         </style>
           <script>
-             function printDiv(printme) {
+            function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
                 //alert("printContents==="+printContents);
                 var originalContents = document.body.innerHTML;      
@@ -23,25 +24,173 @@
                 window.print();     
                 document.body.innerHTML = originalContents;
             }
-        </script>     
-       
-        
+            
+            $(document).ready(function(){
+                
+                /****************************************** start of uofficer********************************/
+                $('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                    if(workt == ''){
+                        $('#desig').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#desig').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                           // alert("data==1="+data);
+                                $('#desig').html(data.replace(/^"|"$/g, ''));
+                                                 
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of uofficer********************************/
+                
+                /****************************************** start of deptarment********************************/
+                $('#desig').on('change',function(){
+                    var wtcode = $('#wtype').val();
+                    var desigid = $('#desig').val();
+                    var wtdesig = wtcode+","+desigid;
+                    if(desigid == ''){
+                        $('#uoff').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#uoff').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getuodesiglist",
+                            type: "POST",
+                            data: {"wtdesig" : wtdesig},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#uoff').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of department********************************/
+                
+                /******************************************start Department********************************/
+                 $('#uoff').on('change',function(){
+                    var wtcode = $('#wtype').val();
+                    var desigid = $('#desig').val();
+                    var uoid = $('#uoff').val();
+                    //alert(sc_code);
+                    var wtdesiguo = wtcode+","+desigid+","+uoid;
+                    if(uoid == ''){
+                      //  $('#dept').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#dept').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getdeptuodesiglist",
+                            type: "POST",
+                            data: {"wtdesiguo" : wtdesiguo},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#dept').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                });                 
+                /******************************************end Department********************************/
+                           
+               
+            });
+            function verify(){
+                    var w=document.getElementById("desig").value;
+                    var x=document.getElementById("wtype").value;
+                    var y=document.getElementById("uoff").value;
+                    var z=document.getElementById("dept").value;
+                    if((x == 'null' && w == 'null') || (x == '' && w == '')||(w == 'null')||(x == 'null')){
+                     
+                        alert("please select at least any two combination for search !!");
+                        return false;
+                    };
+                    
+            }
+
+        </script>        
+               
     </head>
     <body>
-    <?php $this->load->view('template/header'); ?>           
+    <?php $this->load->view('template/header'); ?> 
+    <form action="<?php echo site_url('report/desigemployeelist');?>" id="myForm" method="POST" class="form-inline">
+         <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td>  Select Type
+                    <select name="wtype" id="wtype"> 
+                      <option value="" disabled selected>------- Select Working Type -------</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                       
+                    </select> 
+                                    
+                </td> 
+                <td> Designation
+                    <select name="desig" id="desig"> 
+                      <option value="" disabled selected>----------- Select Designation------</option>
+                      <!--<option value="All" >All</option> -->
+                    </select> 
+                </td>
+                <!--<td></td>
+                </tr>
+                <tr style="font-weight:bold;">-->
+                <td>   University Officer
+                    <select name="uoff" id="uoff"> 
+                      <option value="" disabled selected>------ Select University officer -----</option>
+                     <!-- <option value="All" >All</option> -->
+                    </select> 
+                </td> 
+                <td> Department
+                    <select name="dept" id="dept"> 
+                      <option value="">--------- Select Department -------</option>
+                      <!--<option value="All" >All</option> -->
+                    </select> 
+                    
+                </td>
+                <td valign="bottom">
+                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+                </td>
+            </tr>    
+        </table>       
     <table width="100%">
-       <tr colspan="2"><td>
-        <td>
+       <tr style=" background-color: graytext;"> 
+        <td valign="top">
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+            <div style="margin-left:500px;valign:top"><b>Designation Wise Teaching Staff List Details</b></div>
         </td>      
-       <div>
-       <?php
-       echo "<td align=\"center\" width=\"100%\">";
-       echo "<b>Designation Wise Teaching Staff List Details</b>";
-       echo "</td>";
-       ?>
-       </div>
-        </td></tr></table>
+      
+       <!--<//?php
+       //echo "<td align=\"center\" width=\"100%\">";
+       //echo "<b>Designation Wise Teaching Staff List Details</b>";
+       //echo "</td>";
+       ?> -->
+      
+        </tr></table>
         <div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
             <table class="TFtable" >
@@ -89,6 +238,7 @@
 
         </div><!------scroller div------>
         </div><!------print div------>
+        </form>
         <p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
     </body>

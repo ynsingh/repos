@@ -8,15 +8,16 @@
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <style type="text/css" media="print">
-        @page {
+            @page {
                 size: auto;   /* auto is the initial value */
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
         <script>
-             function printDiv(printme) {
+            function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
                 //alert("printContents==="+printContents);
                 var originalContents = document.body.innerHTML;      
@@ -24,31 +25,133 @@
                 window.print();     
                 document.body.innerHTML = originalContents;
             }
+            
+            $(document).ready(function(){
+                
+                /****************************************** start of uofficer********************************/
+                $('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                    //alert(sc_code);
+                    if(workt == ''){
+                        $('#uoff').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#uoff').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getspuolist",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#uoff').html(data.replace(/^"|"$/g, ''));
+                                                 
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of uofficer********************************/
+                /****************************************** start of designation********************************/
+                $('#uoff').on('change',function(){
+                    var wtcode = $('#wtype').val();
+                    var uoid = $('#uoff').val();
+                    var wtuoid = wtcode+","+uoid;
+                    if(uoid == ''){
+                        $('#desig').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#desig').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getuo_postlist",
+                            type: "POST",
+                            data: {"wtuoid" : wtuoid},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#desig').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of department********************************/
+            });  
+            
+            function verify(){
+                var w=document.getElementById("desig").value;
+                var x=document.getElementById("wtype").value;
+                var y=document.getElementById("uoff").value;
+                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
+                    alert("please select at least any two combination for search !!");
+                    return false;
+                };
+            }
         </script>     
        
     
-    </head>
-    <body>
-    <?php $this->load->view('template/header'); ?>   
+</head>
+<body>
+    <?php $this->load->view('template/header'); ?>
+    <form action="<?php echo site_url('report/staffvacposition');?>" id="myForm" method="POST" class="form-inline">
+        <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td>  Select Working Type
+                    <select name="wtype" id="wtype"> 
+                      <option value="" disabled selected>------- Select Working Type -------</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                       
+                    </select> 
+                                    
+                </td> 
+                <td>   Select UO
+                    <select name="uoff" id="uoff"> 
+                      <option value="" disabled selected>------ Select University officer -----</option>
+                     <!-- <option value="All" >All</option> -->
+                    </select> 
+                </td>
+                <td> Select Post
+                    <select name="desig" id="desig"> 
+                      <option value="" disabled selected>----------- Select Post------</option>
+                      <!--<option value="All" >All</option> -->
+                    </select> 
+                </td>
+                <td valign="bottom">
+                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+                </td>
+            </tr>    
+    </table>          
     <table width="100%">
-       <tr colspan="2"><td>
-        <td>
-            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
-        </td>      
-       <div>
-       <?php
+        <tr style=" background-color: graytext;">
+            <td>
+                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+                <div style="margin-left:500px;"><b>View Staff Vacancy Position Details</b></div>
+            </td>      
+      <!-- <div>
+       <//?php
        echo "<td align=\"center\" width=\"100%\">";
        echo "<b>View Staff Vacancy Position Details</b>";
        echo "</td>";
        ?>
 
-        <div>
+        <div> -->
 
         <?php //echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
         //$help_uri = site_url()."/help/helpdoc#ViewEmployeeList";
        // echo "<a target=\"_blanik\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
         ?>
-        <div>
+            <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -63,9 +166,9 @@
                 };
                 ?>
 
-        </div>
- </td></tr>
-        </table>
+            </div>
+        </tr>
+    </table>
 <div id="printme" align="left" style="width:100%;">
 <div class="scroller_sub_page">
         <table class="TFtable" >
@@ -101,7 +204,8 @@
 //                        print_r($record);
 			if($opid !=$record->sp_emppost){
                         echo "<tr><td colspan=6 align=left><b> Name of the Post : ";
-			echo $record->sp_grppost;
+			//echo $record->sp_grppost;
+                        echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->sp_emppost)->desig_name;
 //			echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->sp_dept)->dept_name;
 //			echo " ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->sp_dept)->dept_code ." )";
                         echo "</b></td></tr>";
@@ -120,7 +224,8 @@
 			}
 			echo "<tr>";
 			echo "<td>". $serial_no++ ." </td>";
-			echo "<td>".$this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->sp_dept)->dept_code ;
+                        echo "<td> <b>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->sp_dept)->dept_name ;
+			echo "(".$this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->sp_dept)->dept_code.")"."</b>" ;
 			echo "<br>";
 			echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->sp_schemecode)->sd_name ;
 			echo "</td>";
@@ -138,6 +243,7 @@
         </table>              
         </div><!------scroller div------>
         </div><!------print div------>
+        </form>
         <p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
  

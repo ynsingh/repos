@@ -6,7 +6,8 @@
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <style type="text/css" media="print">
         @page {
                 size: auto;   /* auto is the initial value */
@@ -14,7 +15,7 @@
             }
         </style>
         <script>
-             function printDiv(printme) {
+            function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
                 //alert("printContents==="+printContents);
                 var originalContents = document.body.innerHTML;      
@@ -22,27 +23,94 @@
                 window.print();     
                 document.body.innerHTML = originalContents;
             }
+             $(document).ready(function(){
+                
+                /****************************************** start post********************************/
+                $('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                   // alert("post====="+workt);
+                    if(workt == ''){
+                        $('#post').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#post').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getpostlist_sp",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#post').html(data.replace(/^"|"$/g, ''));
+                                                 
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+            });  
+            
+            function verify(){
+                var x=document.getElementById("wtype").value;
+                var y=document.getElementById("post").value;
+                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
+                    alert("please select at least any two combination for search !!");
+                    return false;
+                };
+                   
+
+            }
+
         </script>     
        
     
     </head>
     <body>
-     <?php $this->load->view('template/header'); ?>   
+        <?php $this->load->view('template/header'); ?> 
+        <form action="<?php echo site_url('report/positionvacancy');?>" id="myForm" method="POST" class="form-inline">
+          <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td>  Select Working Type
+                    <select name="wtype" id="wtype"> 
+                      <option value="" disabled selected>----------- Select Working Type ----------</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                       
+                    </select> 
+                                    
+                <!--</td> 
+                <td> -->  Select Post
+                    <select name="post" id="post"> 
+                      <option value="" disabled selected>---------- Select Post -----------------</option>
+                     <!-- <option value="All" >All</option> -->
+                    </select> 
+               <!-- </td>
+                <td>-->
+                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+                </td>
+            </tr>    
+        </table>  
         
     <table width="100%">
-       <tr colspan="2"><td>
+       <tr style=" background-color: graytext;">
         <td>
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+            <div style="margin-left:500px;"><b>Vacancy Position</b></div>
         </td>       
-       <div>
-       <?php
+      <!-- <div>
+       <//?php
        echo "<td align=\"center\" width=\"100%\">";
        echo "<b>Vacancy Position</b>";
        echo "</td>";
        ?>
        
-        </div>
-        </td></tr></table>
+        </div> -->
+        </tr></table>
         <div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
             <table class="TFtable" >
@@ -102,7 +170,7 @@
                     echo "<td> </td>";
                     echo "<td> </td>";
                     echo "</tr>";  
-                     $opid1=$record->sp_emppost;
+                    $opid1=$record->sp_emppost;
                     $selectfield ="emp_name,emp_post,emp_dor";
                     $whdata=array('emp_uocid' => $data->sp_uo,'emp_dept_code' =>$data->sp_dept,'emp_schemeid' =>$data->sp_schemecode,'emp_desig_code' =>$record->sp_emppost);
                     $whorder = "emp_name asc";
@@ -152,6 +220,7 @@
         </table>
         </div><!------scroller div------>  
         </div><!------print div------>
+        </form>
         <p> &nbsp; </p> 
         <div align="center">  <?php $this->load->view('template/footer');?></div>
      </body>
