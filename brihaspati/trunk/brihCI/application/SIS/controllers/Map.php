@@ -1881,7 +1881,7 @@ public function schemedept(){
             $this->form_validation->set_rules('deptname','Department Name','trim|required|xss_clean');
             $this->form_validation->set_rules('usrname','User Name','trim|xss_clean');
             $this->form_validation->set_rules('emailid','Email Id','trim|required|xss_clean');
-            $this->form_validation->set_rules('DateFrom','Datefrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
             $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
             $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
             
@@ -2031,7 +2031,7 @@ public function schemedept(){
             $this->form_validation->set_rules('deptname','Department Name','trim|required|xss_clean');
             $this->form_validation->set_rules('usrname','User Name','trim|xss_clean');
             $this->form_validation->set_rules('emailid','Email Id','trim|required|xss_clean');
-            $this->form_validation->set_rules('DateFrom','Datefrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
             $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
             $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
             

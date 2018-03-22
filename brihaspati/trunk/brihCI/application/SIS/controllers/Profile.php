@@ -230,6 +230,18 @@ public function viewprofile(){
 	 else{
 	       $empemail = $this->input->post("empemail");
 	       $npasswd = $this->input->post("npasswd");
+		$roleid=$this->session->userdata('id_role');
+        	$userid=$this->session->userdata('id_user');
+        	$deptid = '';
+        	$whdatad = array('userid' => $userid,'roleid' => $roleid);
+        	$resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+       // 	$whdata = '';
+       // if (!empty($deptid))
+         //       $whdata = array('emp_dept_code' => $deptid);
+	
 	     //  $renpasswd = $this->input->post("renpasswd");
 	       $flagemail= $this->logmodel->isduplicate('edrpuser','username',$empemail );
 	       if($flagemail == 0)
@@ -238,6 +250,20 @@ public function viewprofile(){
                       redirect('profile/changeemppassword');
                    }
                else{
+			if($roleid !=1){
+				// get empid
+				$empid = $this->logmodel->get_listspfic1('edrpuser','id','username',$empemail)->id;
+				// check exist emp with dept
+				$datawh = array('deptid' => $deptid,'userid'=>$empid);
+				$flagedeptmail= $this->sismodel->isduplicatemore('user_role_type',$datawh);
+				if($flagedeptmail == 0)
+	                	{
+        	              		$this->session->set_flashdata('err_message','This email Id does not matched as per our department record !!');
+					$this->logger->write_dblogmessage("error","Error in update password", "Error in change password update". $empemail.' by '. $userid);
+                	      		redirect('profile/changeemppassword');
+                   		}
+			}
+
                         $update_data = array(
                         'password'=>md5($npasswd),
                         );
@@ -266,8 +292,8 @@ public function viewprofile(){
                                 redirect('profile/changeemppassword');
 	            	    }
 		      }
-	       }
+	       }//end validation
 //	   $this->load->view('profile/changeemppassword');
-       } 
+       }//end function 
         
 }//end class

@@ -405,7 +405,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         <?php //foreach ($editemp_data as $data):  ?>
             
             <?php echo form_open_multipart('staffmgmt/update_profile/' .$id);?>
-            <input type="hidden" name="id" value="<?php echo  $id ; ?>">
+            <input type="hidden" name="id" value="<?php echo $id ; ?>">
             <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Edit Staff Profile</th></thead></tr>
            <!--form method="post" action="<?php //echo base_url('staffmgmt/update_profile/',$editdata->emp_id);?>" -->           
             <tr>
@@ -462,7 +462,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>
             </tr>    
             <tr>
-			<?php echo $editdata->emp_ddouserid?>
+			<?php //echo $editdata->emp_ddouserid?>
                 <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer<font color='Red'>*</font></label>
                     <div><select name="ddo" id="ddoid" required readonly>
 			<?php if(!empty($editdata->emp_ddouserid)):;?>

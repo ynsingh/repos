@@ -147,13 +147,28 @@ class Report  extends CI_Controller
 
         /***************************************View Employee List******************************************************/
     public function viewprofile($id=0) {
+	$roleid=$this->session->userdata('id_role');
+        $userid=$this->session->userdata('id_user');
+        $deptid = '';
+        $whdatad = array('userid' => $userid,'roleid' => $roleid);
+        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+        $datawh = '';
+
         $worktype=$this->input->post('workingtype',TRUE);
         $empdata['filter']=$id;
         if(!empty($worktype) && ($id!== 0)){
             $filter=$this->input->post('filter',TRUE);
             $empdata['wtype']=$worktype; 
-            $datawh=array('emp_worktype' => $worktype);
-            $empdata['emprecord'] = $this->sismodel->searchemp_profile('employee_master',$worktype,$filter);
+	    if (!empty($deptid))
+                $datawh = array('emp_dept_code' => $deptid,'emp_worktype' => $worktype,'emp_name LIKE '=> $filter.'%');
+	    else
+                $datawh=array('emp_worktype' => $worktype,'emp_name LIKE '=> $filter.'%');
+	    $empdata['emprecord'] = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no',$datawh);
+		
+        //    $empdata['emprecord'] = $this->sismodel->searchemp_profile('employee_master',$worktype,$filter);
         }
         else{
             $empdata1=array();
@@ -345,13 +360,24 @@ public function disciplinewiselist(){
     } 
     public function hodlist(){
         $today= date("Y-m-d H:i:s"); 
-        $whdata=array('hl_dateto >='=> $today);
-        $selectfield ="hl_scid";
-        $data['allsc']=$this->sismodel->get_distinctrecord('hod_list',$selectfield,$whdata);
+//        $whdata=array('hl_dateto >='=> $today);
+        $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid";
+        $data['allsc']=$this->sismodel->get_distinctrecord('hod_list',$selectfield,'');
         $this->logger->write_logmessage("view"," view list of HOD in report " );
         $this->logger->write_dblogmessage("view"," view list of HOD in report");
         $this->load->view('report/hodlist',$data);
     }
+
+	public function uolist(){
+        $today= date("Y-m-d H:i:s");
+//        $whdata=array('hl_dateto >='=> $today);
+        $selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname";
+        $data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
+        $this->logger->write_logmessage("view"," view list of UO in report " );
+        $this->logger->write_dblogmessage("view"," view list of UO in report");
+        $this->load->view('report/uolist',$data);
+    }
+
     /********************slect uo list according to selection type**********************/
     public function getuolist(){
         $combid= $this->input->post('worktype');

@@ -188,14 +188,14 @@
                     <td><input type="text"placeholder="Email Id" name="emailid"  size="45" value="<?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$hoddata->hl_userid)->username; ;?>"  readonly required="required"/><br> </td>
                 </tr>
                 <tr>
-                    <td><label for="Datefrom" style="font-size:15px;">Date From<font color='Red'>*</font></label></td>
-                    <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo $hoddata->hl_datefrom ;?>"   size="45" required="required">
+                    <td><label for="Datefrom" style="font-size:15px;">Date From<font color='Red'></font></label></td>
+                    <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo $hoddata->hl_datefrom ;?>"   size="45" >
                     </td>     
                          
                 </tr>
                 <tr>
-                    <td><label for="Dateto" style="font-size:15px;">Date To<font color='Red'>*</font></label></td>
-                    <td><input type="text" name="DateTo" id="Dateto"  value="<?php echo $hoddata->hl_dateto ;?>"   size="45" required="required">
+                    <td><label for="Dateto" style="font-size:15px;">Date To<font color='Red'></font></label></td>
+                    <td><input type="text" name="DateTo" id="Dateto"  value="<?php echo $hoddata->hl_dateto ;?>"   size="45" >
                     </td>     
                          
                 </tr>

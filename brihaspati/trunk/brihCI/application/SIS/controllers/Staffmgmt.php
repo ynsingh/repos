@@ -33,7 +33,18 @@ class Staffmgmt extends CI_Controller
     /* Display Employee record */
 
     public function employeelist(){
-	$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*','','emp_dept_code asc,emp_desig_code asc');
+	$roleid=$this->session->userdata('id_role');	
+	$userid=$this->session->userdata('id_user');
+	$deptid = '';
+	$whdatad = array('userid' => $userid,'roleid' => $roleid);
+	$resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+		foreach($resu as $rw){
+			$deptid=$rw->deptid;
+		}
+	$whdata = '';
+	if (!empty($deptid))
+		$whdata = array('emp_dept_code' => $deptid);
+	$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
 //	$data['records'] = $this->sismodel->get_list('employee_master');
         $this->logger->write_logmessage("view"," view employee list" );
         $this->logger->write_dblogmessage("view"," view employee list");
@@ -835,7 +846,19 @@ class Staffmgmt extends CI_Controller
 
   /*this function has been created for display the record of staff position */
   public function staffposition(){
-        $this->result = $this->sismodel->get_orderlistspficemore('staff_position','*','','sp_dept asc,sp_emppost asc');
+	$roleid=$this->session->userdata('id_role');
+        $userid=$this->session->userdata('id_user');
+        $deptid = '';
+        $whdatad = array('userid' => $userid,'roleid' => $roleid);
+        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+        $whdata = '';
+        if (!empty($deptid))
+                $whdata = array('sp_dept' => $deptid);
+
+        $this->result = $this->sismodel->get_orderlistspficemore('staff_position','*',$whdata,'sp_dept asc,sp_emppost asc');
 //        $this->result = $this->sismodel->get_list('staff_position');
         $this->logger->write_logmessage("view"," View staff position ", "Staff position details...");
         $this->logger->write_dblogmessage("view"," View staff position ", "Staff position details...");

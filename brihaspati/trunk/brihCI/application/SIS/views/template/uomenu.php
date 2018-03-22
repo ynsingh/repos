@@ -128,7 +128,7 @@ echo "<ul class=\"sf-menu\">";
                         echo "</li>";
 */
 			echo "<li>";
-				echo "<a href=" . ">View/Edit</a>";
+				echo "<a href=" . ">View</a>";
 				echo "<ul>";
 				/*	echo "<li>";
 						echo anchor('report/liststu', 'Student List', array('title' => 'Student List'));

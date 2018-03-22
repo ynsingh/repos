@@ -1,7 +1,4 @@
 
-<!--@filename hodlist.php  @author Manorama Pal(palseema30@gmail.com) 
-    @filename hodlist.php  @author Neha Khullar(nehukhullar@gmail.com) 
--->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -36,7 +33,7 @@
        <div>
        <?php
        echo "<td align=\"center\" width=\"100%\">";
-       echo "<b>List of HOD</b>";
+       echo "<b>List of UO</b>";
        echo "</td>";
        ?>
                 
@@ -62,8 +59,8 @@
             <table class="TFtable" >
                 <thead>
                 <tr>
-                    <th>Department Name</th>
-                    <th>HOD Name</th>
+                    <th>University Officer</th>
+                    <th>UO Name</th>
                                       
                 </tr>
             </thead>
@@ -77,15 +74,15 @@
 		
 			echo "<tr>";
                         echo "<td>";
-				echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->hl_deptid)->dept_name;
+				echo $record->ul_uoname;
 				echo " ( ";
-				echo $this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->hl_deptid)->dept_code;
+				echo $record->ul_code;
 				echo " ) ";
 			echo "</td>";
 			echo "<td>";
-				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode)->emp_name;
+				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
 				echo " ( ";
-				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->hl_userid)->username;
+				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
 				echo " ) ";
                         echo "</td>";
                         echo "</tr>";

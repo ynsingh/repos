@@ -80,7 +80,12 @@
 			 <td><?php echo $row->sp_sancstrenght ?> </td>
 			 <td><?php echo $row->sp_position ?> </td>
 			 <td><?php echo $row->sp_vacant ?> </td>
-		        <td><?php echo anchor('staffmgmt/editstaffposition/' . $row->sp_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ?> </td> 	
+		        <td><?php 
+				$roleid=$this->session->userdata('id_role');
+				if($roleid == 1){	
+					echo anchor('staffmgmt/editstaffposition/' . $row->sp_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); 
+				}
+			?> </td> 	
 		      </tr>
 	<?php  } 
 	}else{

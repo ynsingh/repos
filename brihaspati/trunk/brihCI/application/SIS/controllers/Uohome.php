@@ -25,7 +25,7 @@ class Hodhome extends CI_Controller
  
     public function index() {
         /* set role id in session*/
-	$data = [ 'id_role' => 5 ];
+	$data = [ 'id_role' => 10 ];
         $this->session->set_userdata($data);
         /* get logged user detail from different tables (firstname, lastname, email, campus name, org name, department name)
          * using login model and common model
@@ -43,7 +43,7 @@ class Hodhome extends CI_Controller
         $this->campusname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
         $this->orgcode=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
         $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
-        $this->load->view('hodhome');
+        $this->load->view('uohome');
     }
  
 }
