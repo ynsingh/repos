@@ -171,7 +171,13 @@
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                             <td align=left colspan=4><b>Service Particulars</b></td>
                             <td align="right">
-                                <?php echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));?>
+                                <?php 
+					$roleid=$this->session->userdata('id_role');
+                                if(($roleid == 1)||($roleid == 5)||($roleid == 4)){
+					echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
+				}
+				?>
+				
                             </td>   
                         <tr>
 		</table>
@@ -236,7 +242,11 @@
                                     ;?>
                                 </td>
                                 <td >
-                                <?php echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));?>
+                                <?php 
+					if(($roleid == 1)||($roleid == 5)||($roleid == 4)){
+						echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));
+					}
+				?>
                                 </td> 
                             </tr>
                         <?php }; ?>
@@ -250,12 +260,14 @@
                             <td align=left colspan=4><b>Performance Details</b></td>
                             <td colspan="5" align="right">
                             <?php
-                                if(count($performancedata)){
-                                    echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
-                                }
-                                    else{
-                                    echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
-                                }    
+				if(($roleid == 1)||($roleid == 5)||($roleid == 4)){
+                                	if(count($performancedata)){
+                                    		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                	}
+                                    	else{
+                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                	}    
+				}
                             ?>
                         </td>
                         

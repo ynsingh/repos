@@ -19,23 +19,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         if($role == 1){
                 $this->load->view('template/menu');
         }
-        if($role == 6){
-                $this->load->view('template/coemenu');
-        }
-        if($role == 5){
-                $this->load->view('template/hodmenu');
-        }
         if($role == 2){
                 $this->load->view('template/facultymenu');
+        }
+        if($role == 3){
+                $this->load->view('template/stumenu');
         }
         if($role == 4){
                 $this->load->view('template/staffmenu');
         }
+        if($role == 5){
+                $this->load->view('template/hodmenu');
+        }
+        if($role == 6){
+                $this->load->view('template/coemenu');
+        }
         if($role == 7){
                 $this->load->view('template/aomenu');
         }
-        if($role == 3){
-                $this->load->view('template/stumenu');
+        if($role == 10){
+                $this->load->view('template/uomenu');
         }
         if (($this->session->userdata('username')) !=''){
 ?>

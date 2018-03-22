@@ -9,7 +9,7 @@ echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
 //				echo "<a href=" . base_url() . ">Dashboard</a>";
-				echo "<a href=" . site_url() ."/hodhome> Dashboard</a>";
+				echo "<a href=" . site_url() ."/uohome> Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
 			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
@@ -192,9 +192,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('profile/changepasswd', 'Change Password', array('title' => 'Change Password'));
 					echo "</li>";
-					echo "<li>";
+				/*	echo "<li>";
                                                 echo anchor('profile/changeemppassword', 'Change Employee Password', array('title' => 'Change Employee Password'));
-                                        echo "</li>";
+                                        echo "</li>"; */
 					echo "<li>";
 						echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 					echo "</li>";							

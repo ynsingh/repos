@@ -112,6 +112,15 @@ class Welcome extends CI_Controller {
                         			        $this->session->set_userdata($data);
 			                                redirect('accoffhome'); 
                         			}
+                            			if($row->roleid == 10){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('uohome'); 
+                        			}
                         		endforeach;   
                     		}else{
                         		foreach($roles as $row):

@@ -96,7 +96,12 @@
                             <td><?php echo $record->emp_email; ?></td>
                             <td><?php echo $record->emp_phone; ?></td>
                             <td><?php echo $record->emp_aadhaar_no; ?></td>
-                            <td> <?php echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); ?></td>
+                            <td> <?php 
+				$roleid=$this->session->userdata('id_role');
+                                if(($roleid == 1)||($roleid == 5)){
+					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
+				}
+				?></td>
                         </tr>
                     <?php }; ?>
                 <?php else : ?>

@@ -3,11 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
- * @name Hodhome.php
+ * @name Uohome.php
  * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  */
 
-class Hodhome extends CI_Controller
+class Uohome extends CI_Controller
 {
  
     function __construct() {

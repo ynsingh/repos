@@ -122,6 +122,11 @@
                                 echo anchor("accontoffhome", "Login As Account Officer" ,array('title' => ' Login As Account Officer ' , 'class' => 'top_parent'));
                                 echo"</p></td></tr>";
                             }
+                            if($row->roleid == 10){
+                                echo "<tr><td><p>";
+                                echo anchor("uohome", "Login As University Officer" ,array('title' => ' Login As University Officer ' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
                             
 		}
 		?>
