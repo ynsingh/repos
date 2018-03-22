@@ -300,7 +300,7 @@ class Upl2 extends CI_Controller
                         
                         $datal = explode(",", $line);
                         $flag=false;
-                        if (count($datal) == 4){
+                        if (count($datal) >= 4){
                             $email= trim($datal[0]);
                             $pfno= trim($datal[1]);
                             $uocode = trim($datal[2]);
@@ -358,17 +358,17 @@ class Upl2 extends CI_Controller
                                             
                                             $usr =$this->session->userdata('username');
                                             $datauo = array(
-                                                'hl_userid'=> $userid,
-                                                'hl_empcode'=> $pfno,
-                                                'hl_uocode'=> $uocode,
-                                                'hl_uoname'=> $uoname,
-                                                'hl_datefrom'=> $dfrom,
-                                                'hl_dateto'=> $dto,
-                                                'hl_status'=> $status,
-                                                'hl_creatorid'=> $usr,
-                                                'hl_creatordate'=> date('y-m-d'),
-                                                'hl_modifierid'=> $usr,
-                                                'hl_modifydate'=> date('y-m-d'),
+                                                'ul_userid'=> $userid,
+                                                'ul_empcode'=> $pfno,
+                                                'ul_uocode'=> $uocode,
+                                                'ul_uoname'=> $uoname,
+                                                'ul_datefrom'=> $dfrom,
+                                                'ul_dateto'=> $dto,
+                                                'ul_status'=> $status,
+                                                'ul_creatorid'=> $usr,
+                                                'ul_creatordate'=> date('y-m-d'),
+                                                'ul_modifierid'=> $usr,
+                                                'ul_modifydate'=> date('y-m-d'),
                                             );
                                             $uolistflag=$this->sismodel->insertrec('uo_list', $datauo) ;
                                             if($uolistflag){

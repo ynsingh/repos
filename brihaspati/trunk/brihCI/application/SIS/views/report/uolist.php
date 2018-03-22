@@ -76,11 +76,14 @@
                         echo "<td>";
 				echo $record->ul_uoname;
 				echo " ( ";
-				echo $record->ul_code;
+				echo $record->ul_uocode;
 				echo " ) ";
 			echo "</td>";
 			echo "<td>";
+				
+//				$empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
 				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
+//				if (!empty($empname)){ echo $empname;}
 				echo " ( ";
 				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
 				echo " ) ";
