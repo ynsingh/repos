@@ -20,9 +20,10 @@
         echo "<td><strong>A.  CURRENT LIABILITIES</strong><td>";
         //echo "<td></td>";
         echo "</tr>";
-		
+		 $currlid = $this->Group_model->get_group_id('100401');
 	$liability = new Reportlist1();
-	$liability->Current_liability(84,'100401',3, 'view', 'NULL');
+	$liability->Current_liability($currlid,'100401',3, 'view', 'NULL');
+	//$liability->Current_liability(84,'100401',3, 'view', 'NULL');
 	$liability_totalA = $liability->liability_total;
 	$prev_total = $liability->prev_total;
 	echo "<tr>";
@@ -42,9 +43,11 @@
 	echo "<tr>";
         echo "<td><strong>B.  PROVISIONS</strong></td>";
        	echo "<td></td>";
-        echo "</tr>";
+	echo "</tr>";
+	$provid = $this->Group_model->get_group_id('100402');
 	$liability = new Reportlist1();
-	$liability->Provision(109,'100402',3, 'view', 'NULL');
+	$liability->Provision($provid,'100402',3, 'view', 'NULL');
+//	$liability->Provision(109,'100402',3, 'view', 'NULL');
 	$liability_totalB = $liability->liability_total;
 	$prev_total1 = $liability->prev_total;
 	 echo "<tr>";

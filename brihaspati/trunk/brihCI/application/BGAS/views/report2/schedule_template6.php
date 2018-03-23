@@ -13,10 +13,10 @@
     	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
     	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
-	$counter = "";	
-	$count = "";
-    	$counter1 = (2 * $counter) + 4;
-    	$counter2 = $counter + 1;
+//	$counter = "";	
+//	$count = "";
+  //  	$counter1 = (2 * $counter) + 4;
+    //	$counter2 = $counter + 1;
 //    $this->load->library('reportlist1');
   //  $object = new Reportlist1();
 	//if(!($print_preview))

@@ -32,29 +32,29 @@
         echo "<tr><td class=\"bold\" colspan=\"7\">A Infrastructure</td></tr>";
 	//$object->schedule17('400301','view','NULL',$count,'A');
         $object->schedule17($code,'view','NULL',$count,'A');
-	$prev_total1=$object->prev_total;
-        $prev_plan_total1=$object->prev_plan_total;
-        $prev_nonplan_total1=$object->prev_nonplan_total;
-        $prev_plan_sfc_total1=$object->prev_plan_sfc_total;
+	$prev_total1=(float)$object->prev_total;
+        $prev_plan_total1=(float)$object->prev_plan_total;
+        $prev_nonplan_total1=(float)$object->prev_nonplan_total;
+        $prev_plan_sfc_total1=(float)$object->prev_plan_sfc_total;
         echo "<tr><td class=\"bold\" colspan=\"7\">B Communication</td></tr>";
 	//$object->schedule17('400302','view','NULL',$count,'B');
         $object->schedule17($code,'view','NULL',$count,'B');
-	$prev_total2=$object->prev_total;
-        $prev_plan_total2=$object->prev_plan_total;
-        $prev_nonplan_total2=$object->prev_nonplan_total;
-        $prev_plan_sfc_total2=$object->prev_plan_sfc_total;
+	$prev_total2=(float)$object->prev_total;
+        $prev_plan_total2=(float)$object->prev_plan_total;
+        $prev_nonplan_total2=(float)$object->prev_nonplan_total;
+        $prev_plan_sfc_total2=(float)$object->prev_plan_sfc_total;
 
         echo "<tr><td class=\"bold\" colspan=\"7\">C Others</td></tr>";
         $object->schedule17($code,'view','NULL',$count,'C');
-	$curr_total = $object->curr_sum_total;
-        $curr_plan_total = $object->curr_plan_sum_total;
-        $curr_non_plan_total = $object->curr_non_plan_sum_total;
-	$curr_plan_sfc_total=$object->curr_plan_sfc_sum_total;
+	$curr_total = (float)$object->curr_sum_total;
+        $curr_plan_total = (float)$object->curr_plan_sum_total;
+        $curr_non_plan_total = (float)$object->curr_non_plan_sum_total;
+	$curr_plan_sfc_total=(float)$object->curr_plan_sfc_sum_total;
 
-	$prev_total3=$object->prev_total;
-	$prev_plan_total3=$object->prev_plan_total;
-	$prev_nonplan_total3=$object->prev_nonplan_total;
-	$prev_plan_sfc_total3=$object->prev_plan_sfc_total;
+	$prev_total3=(float)$object->prev_total;
+	$prev_plan_total3=(float)$object->prev_plan_total;
+	$prev_nonplan_total3=(float)$object->prev_nonplan_total;
+	$prev_plan_sfc_total3=(float)$object->prev_plan_sfc_total;
 
 	$prev_sum=$prev_total1+$prev_total2+$prev_total3;
 	$prev_plan_sum=$prev_plan_total1+$prev_plan_total2+$prev_plan_total3;

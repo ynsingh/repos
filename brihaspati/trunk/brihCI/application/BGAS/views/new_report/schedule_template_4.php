@@ -41,17 +41,17 @@
 	echo "</tr>";
 	$object = new Reportlist1();
 	$object->FixedAsset_A('2001',4,'view', 'NULL');
-	$opening_balanceA = $object->opening_balance;
-	$debit_totalA = $object->debit_total;
+	$opening_balanceA = (float)$object->opening_balance;
+	$debit_totalA = (float)$object->debit_total;
 	//$credit_totalA = $object->credit_total;
-	$credit_totalA = $object->credit_total;
+	$credit_totalA = (float)$object->credit_total;
 	//	print_r(" credit_totalA=== ". $credit_totalA );
-	$closing_balanceA = $object->closing_balance;
-	$dep_opening_balanceA = $object->dep_opening_balance;
-	$current_depreciation_amountA = $object->current_depreciation_amount;
-	$total_depreciationA = $object->total_depreciation;
-	$current_yearA = $object->curr_amount; 
-	$prev_total1 = $object->prev_total;	
+	$closing_balanceA = (float)$object->closing_balance;
+	$dep_opening_balanceA = (float)$object->dep_opening_balance;
+	$current_depreciation_amountA = (float)$object->current_depreciation_amount;
+	$total_depreciationA =(float) $object->total_depreciation;
+	$current_yearA = (float)$object->curr_amount; 
+	$prev_total1 = (float)$object->prev_total;	
 //	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
 
 	echo "<tr class=\"tr-group\">";
@@ -107,16 +107,16 @@
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
 	$object = new Reportlist1();
 	$object->FixedAsset_B('2001',4, 'view', 'NULL');
-	$opening_balanceB = $object->opening_balance;
-        $debit_totalB = $object->debit_total;
-        $credit_totalB = $object->credit_total;
+	$opening_balanceB = (float)$object->opening_balance;
+        $debit_totalB = (float)$object->debit_total;
+        $credit_totalB = (float)$object->credit_total;
 
-        $closing_balanceB = $object->closing_balance;
-        $dep_opening_balanceB = $object->dep_opening_balance;
-        $current_depreciation_amountB = $object->current_depreciation_amount;
-        $total_depreciationB = $object->total_depreciation;
-	$current_yearB = $object->curr_amount;
-	$prev_total2 = $object->prev_total;
+        $closing_balanceB = (float)$object->closing_balance;
+        $dep_opening_balanceB = (float)$object->dep_opening_balance;
+        $current_depreciation_amountB =(float) $object->current_depreciation_amount;
+        $total_depreciationB = (float)$object->total_depreciation;
+	$current_yearB = (float)$object->curr_amount;
+	$prev_total2 = (float)$object->prev_total;
 
 	echo "</table>";
 	echo "<br>";
@@ -152,16 +152,16 @@
         echo "</tr>";
 	$object = new Reportlist1();
         $object->FixedAsset_C('2001',4,'view','NULL');
-	$opening_balanceC = $object->opening_balance;
-        $debit_totalC = $object->debit_total;
-        $credit_totalC = $object->credit_total;
+	$opening_balanceC = (float)$object->opening_balance;
+        $debit_totalC = (float)$object->debit_total;
+        $credit_totalC = (float)$object->credit_total;
 
-        $closing_balanceC = $object->closing_balance;
-        $dep_opening_balanceC = $object->dep_opening_balance;
-        $current_depreciation_amountC = $object->current_depreciation_amount;
-	$total_depreciationC = $object->total_depreciation;
-	$current_yearC = $object->curr_amount;
-	$prev_total3 = $object->prev_total;
+        $closing_balanceC = (float)$object->closing_balance;
+        $dep_opening_balanceC = (float)$object->dep_opening_balance;
+        $current_depreciation_amountC =(float) $object->current_depreciation_amount;
+	$total_depreciationC = (float)$object->total_depreciation;
+	$current_yearC = (float)$object->curr_amount;
+	$prev_total3 = (float)$object->prev_total;
 	echo "<tr>";
 		echo "<td>";
 		echo "</td>";

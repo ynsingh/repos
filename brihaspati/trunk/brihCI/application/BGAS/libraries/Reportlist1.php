@@ -818,16 +818,16 @@ d Investments')
                 $sum6 = 0;
                 $sum7 = 0;
                 $counter = 1;
-                $net_total ="";
-		$current_amount='';
-		$opening_balance='';
-                $debit_total='';
-                $credit_total='';
-                $closing_balance='';
-		$dep_opening_balance='';
-		$current_depreciation_amount='';
+                $net_total =0;
+		$current_amount=0;
+		$opening_balance=0;
+                $debit_total=0;
+                $credit_total=0;
+                $closing_balance=0;
+		$dep_opening_balance=0;
+		$current_depreciation_amount=0;
                 $current_year_value = 0.00;
-		$total_depreciation  = "";
+		$total_depreciation  = 0;
 		//$total_deprecaition = "";
 		$prev_total=0;
                 $CI = & get_instance();
@@ -1114,12 +1114,12 @@ d Investments')
 		$cr_amountdep = -$value[5];
 
                 $result1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
-		$dep_op_balance = $result1[0];
+		$dep_op_balance = (float)$result1[0];
                 $sum4 = $sum4 + $dep_op_balance;
-                $old_dep_amount = $result1[1];
+                $old_dep_amount = (float)$result1[1];
 
 		$result2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
-		$new_dep_amount = $result2[1];
+		$new_dep_amount = (float)$result2[1];
 
                         //Adding opening balance for the ledger head.
                         $current_depreciation = ($old_dep_amount + $new_dep_amount+$cr_amountdep);
@@ -1241,12 +1241,12 @@ d Investments')
                         $sum3 = $sum3 + $closing_bal;
 
          	        $result1 = $CI->newschedules_model->get_old_asset_depvalue1($ledg_id);
-                        $dep_op_balance = $result1[0];
+                        $dep_op_balance =(float) $result1[0];
                         $sum4 = $sum4 + $dep_op_balance;
-			$old_dep_amount = $result1[1];
+			$old_dep_amount = (float)$result1[1];
 				
 			$result2 = $CI->newschedules_model->get_new_asset_depvalue1($ledg_id);
-                        $new_dep_amount = $result2[1];
+                        $new_dep_amount = (float)$result2[1];
 
 			//Adding opening balance for the ledger head.
                 	$current_depreciation = ($old_dep_amount + $new_dep_amount);
@@ -2437,7 +2437,7 @@ d Investments')
 		$sum = 0;
 		$counter = 1;
 		$str1 = 'a';
-		$prev_total='';
+		$prev_total=0;
 		$CI =& get_instance();
 	//	$CI->load->model('Ledger_model');
 			//$liabilit = new Reportlist1();
@@ -2858,7 +2858,7 @@ d Investments')
 
 	function subschedule_3c()
 	{
-		$total_opening = "";
+		$total_opening = 0;
 		$CI =& get_instance();
 		$id = $CI->Group_model->get_id('Unutilized Grants');
             	$CI->db->select('name,id')->from('groups')->where('parent_id',$id);
@@ -3713,8 +3713,8 @@ d Investments')
 	$i=0;
         $c =14;
         $counter=8;
-        $total = "";
-        $sum = "";
+        $total = 0;
+        $sum = 0;
         $type_total=0;
         $paymentlist2=0;
 	$CI = & get_instance();
@@ -3910,21 +3910,21 @@ d Investments')
     {
 
         $CI = & get_instance();
-        $sum1 = "";
-        $sum = "";
+        $sum1 = 0;
+        $sum = 0;
         $str = 'a';
-        $curr_sum_total = "";
-        $curr_plan_sum_total = "";
-        $curr_sum = "";
-        $curr_plan_total = "";
-        $curr_non_plan_total = "";
-	$curr_plan_sfc_total='';
-	$curr_plan_sfc_sum_total='';
+        $curr_sum_total = 0;
+        $curr_plan_sum_total = 0;
+        $curr_sum = 0;
+        $curr_plan_total = 0;
+        $curr_non_plan_total = 0;
+	$curr_plan_sfc_total=0;
+	$curr_plan_sfc_sum_total=0;
 	
-	$prev_total='';
-	$prev_plan_total='';
-	$prev_nonplan_total='';
-	$prev_plan_sfc_total='';
+	$prev_total=0;
+	$prev_plan_total=0;
+	$prev_nonplan_total=0;
+	$prev_plan_sfc_total=0;
         $current_active_account = $CI->session->userdata('active_account');
         $CI->db->from('settings');
         $detail = $CI->db->get();
@@ -3953,16 +3953,16 @@ d Investments')
         
         foreach($main_result as $row)
         {
-            	$cr_total = "";
-            	$dr_total = "";
-            	$plan_cr_total = "";
-            	$nonplan_cr_total = "";
-            	$plan_dr_total = "";
-            	$nonplan_dr_total = "";
-            	$plan_total ="";
-            	$non_plan_total =""; 
-            	$total = "";
-	    	$plan_sfc_total='';
+            	$cr_total = 0;
+            	$dr_total = 0;
+            	$plan_cr_total = 0;
+            	$nonplan_cr_total = 0;
+            	$plan_dr_total = 0;
+            	$nonplan_dr_total = 0;
+            	$plan_total =0;
+            	$non_plan_total =0; 
+            	$total = 0;
+	    	$plan_sfc_total=0;
 	    	$plan_sfc_cr_total=0;
       	    	$plan_sfc_dr_total=0;
             	$group_name = $row->name;
@@ -4117,18 +4117,18 @@ d Investments')
                     }
                 }
         }
-        $curr_sum1 = "";
-        $curr_plan_total1 = "";
-        $curr_non_plan_total1 = "";
+        $curr_sum1 = 0;
+        $curr_plan_total1 = 0;
+        $curr_non_plan_total1 = 0;
 	$curr_plan_sfc_total1=0;
-	$prev_total1="";
-	$prev_plan_total1="";
-	$prev_nonplan_total1="";
-	$prev_plan_sfc_total1="";
+	$prev_total1=0;
+	$prev_plan_total1=0;
+	$prev_nonplan_total1=0;
+	$prev_plan_sfc_total1=0;
 	
         foreach($ledger_result as $row1)
         {
-            	$total1 = "";
+            	$total1 = 0;
             	$ledger_name = $row1->name;
             	$ledger_id =$row1->id;
 		$previous_amount=$CI->payment_model->xml_read1($tt,$ledger_name);
@@ -4225,25 +4225,25 @@ d Investments')
     function schedule17($code,$type,$database,$count,$var){
 
         $CI = & get_instance();
-        $sum1 = "";
-        $sum = "";
-        $curr_sum_total = "";
-        $curr_plan_sum_total = "";
-        $curr_non_plan_sum_total = "";
-        $curr_sum = "";
-        $curr_plan_total = "";
-        $curr_non_plan_total = "";
+        $sum1 = 0;
+        $sum = 0;
+        $curr_sum_total = 0;
+        $curr_plan_sum_total = 0;
+        $curr_non_plan_sum_total = 0;
+        $curr_sum = 0;
+        $curr_plan_total = 0;
+        $curr_non_plan_total = 0;
 	$curr_plan_sfc_total=0;
 
-	$prev_total='';
-	$prev_sum='';
-	$prev_sum_total='';
-	$prev_plan_sum_total='';
-	$prev_nonplan_sum_total='';
-	$prev_plan_sfc_sum_total='';
-        $prev_plan_total='';
-        $prev_nonplan_total='';
-        $prev_plan_sfc_total='';
+	$prev_total=0;
+	$prev_sum=0;
+	$prev_sum_total=0;
+	$prev_plan_sum_total=0;
+	$prev_nonplan_sum_total=0;
+	$prev_plan_sfc_sum_total=0;
+        $prev_plan_total=0;
+        $prev_nonplan_total=0;
+        $prev_plan_sfc_total=0;
         $str = 'a';
 
         $current_active_account = $CI->session->userdata('active_account');
@@ -4276,17 +4276,17 @@ d Investments')
         $ledger_result = $ledger_detail->result();
         foreach($main_result as $row)
         {
-            	$cr_total = "";
-            	$dr_total = "";
-            	$plan_cr_total = "";
-            	$nonplan_cr_total = "";
-            	$plan_dr_total = "";
-            	$nonplan_dr_total = "";
+            	$cr_total = 0;
+            	$dr_total = 0;
+            	$plan_cr_total = 0;
+            	$nonplan_cr_total = 0;
+            	$plan_dr_total = 0;
+            	$nonplan_dr_total = 0;
 		$plan_sfc_cr_total=0;
 		$plan_sfc_dr_total=0;
-            	$plan_total ="";
-            	$non_plan_total =""; 
-            	$total = "";
+            	$plan_total =0;
+            	$non_plan_total =0; 
+            	$total = 0;
             	$group_name = $row->name;
             	$group_id =$row->id;
 		$previous_amount=$CI->payment_model->xml_read1($tt,$group_name);
@@ -4473,18 +4473,18 @@ d Investments')
                 $curr_plan_sfc_total = $curr_plan_sfc_total + $plan_sfc_total;
                 //}           
             }
-	$curr_sum1 = "";
-        $curr_plan_total1 = "";
-        $curr_non_plan_total1 = "";
-        $curr_plan_sfc_total1='';
-   	$prev_sum1='';
-        $prev_plan_total1='';
-        $prev_nonplan_total1='';
-        $prev_plan_sfc_total1='';
+	$curr_sum1 = 0;
+        $curr_plan_total1 = 0;
+        $curr_non_plan_total1 = 0;
+        $curr_plan_sfc_total1=0;
+   	$prev_sum1=0;
+        $prev_plan_total1=0;
+        $prev_nonplan_total1=0;
+        $prev_plan_sfc_total1=0;
 	if(($var != 'A') && ($var != 'B') && ($var == 'C')){
         foreach($ledger_result as $row1)
         {
-		$total1 = "";
+		$total1 = 0;
 		$ledger_name = $row1->name;
 		$ledger_id =$row1->id;
 		$previous_amount=$CI->payment_model->xml_read1($tt,$ledger_name);
@@ -4595,7 +4595,7 @@ d Investments')
         $ledger_result = $ledger_detail->result();
         foreach($ledger_result as $row1)
         {
-            	$total = "";
+            	$total = 0;
             	$ledger_code = $row1->code;
             	$ledger_name = $row1->name;
             	$ledger_id =$row1->id;
@@ -4650,7 +4650,7 @@ d Investments')
 
         foreach($ledger_result as $row1)
         {
-        	$total = "";
+        	$total = 0;
             	$ledger_code = $row1->code;
             	$ledger_name = $row1->name;
             	$ledger_id =$row1->id;
@@ -5782,4 +5782,5 @@ d Investments')
         }
 	
 }
+
 

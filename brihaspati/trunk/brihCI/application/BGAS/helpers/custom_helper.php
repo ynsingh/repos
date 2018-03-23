@@ -102,7 +102,7 @@ if ( ! function_exists('convert_cur'))
 {
 	function convert_cur($amount)
 	{
-		return number_format($amount, 2, '.', '');
+		return number_format((float)$amount, 2, '.', '');
 	}
 }
 
