@@ -818,18 +818,18 @@ var $ledgers = array();
 		}
 		if( $db_name_q->num_rows() == 1 ) {
 			/* database connectivity for getting previous year opening balance */
-			$con = @mysql_connect($host_name, $db_username, $db_password);
+			$con = @mysqli_connect($host_name, $db_username, $db_password);
 			$op_balance = array();
 			if($con){
-				$value = mysql_select_db($db_name, $con);
-				$id = mysql_real_escape_string($ledger_id);
+				$value = mysqli_select_db($con, $db_name);
+				$id = mysqli_real_escape_string($ledger_id);
 				$cl = "select * from ledgers where id = '$id' limit 1";
-				$val = mysql_query($cl);
+				$val = mysqli_query($con, $cl);
 				if($val != ''){
-					while($row = mysql_fetch_assoc($val)) 
+					while($row = mysqli_fetch_assoc($val)) 
 					{
 						$op_balance = array($row['op_balance'], $row['op_balance_dc']);
-						mysql_close($con);		
+						mysqli_close($con);		
 						return $op_balance;
 					}
 				}
@@ -903,14 +903,14 @@ var $ledgers = array();
 			$port = $row->port;
 		}
 		/* database connectivity for getting previous year opening balance */
-		$con = @mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysqli_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
-			$value = mysql_select_db($db_name, $con);
+			$value = mysqli_select_db($con, $db_name, );
 			$cl = "select * from ledgers order by 'id'";
-			$val = mysql_query($cl);
+			$val = mysqli_query($con, $cl);
 			if($val != ''){
-				while($row = mysql_fetch_assoc($val)) 
+				while($row = mysqli_fetch_assoc($val)) 
 				{
 					list ($opbalance, $optype) = $this->get_prev_year_op_balance($row['id']);
 					if ($optype == "D")
@@ -923,7 +923,7 @@ var $ledgers = array();
 			}
 		}
 		return $total_op;
-		mysql_close($con);
+		mysqli_close($con);
 	}
 
 	/* Return debit total of selected date in current financial year as positive value */
@@ -1382,18 +1382,18 @@ var $ledgers = array();
 		$old_year1 = $date1[0]-1;
 		$to_date = $old_year1."-".$date1[1]."-".$date1[2];
 		/* database connectivity for getting previous year debit amount */
-		$con = @mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysqli_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
-			$value = mysql_select_db($db_name, $con);
-			$id = mysql_real_escape_string($ledger_id);
+			$value = mysqli_select_db($con, $db_name);
+			$id = mysqli_real_escape_string($ledger_id);
 			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$from_date' and entries.date <= '$to_date'";
-			$val = mysql_query($abc);
+			$val = mysqli_query($con, $abc);
 			if($val != ''){
-				while($row = mysql_fetch_assoc($val)) 
+				while($row = mysqli_fetch_assoc($val)) 
 				{
 					$dr_total = $row['sum(amount)'];
-					mysql_close($con);
+					mysqli_close($con);
 					return $dr_total;
 				}
 			}
@@ -1464,18 +1464,18 @@ var $ledgers = array();
 		$to_date = $old_year1."-".$date1[1]."-".$date1[2];
 
 		/* database connectivity for getting previous year debit amount */
-		$con = @mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysqli_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
-			$value = mysql_select_db($db_name, $con);
-			$id = mysql_real_escape_string($ledger_id);
+			$value = mysqli_select_db($con, $db_name);
+			$id = mysqli_real_escape_string($ledger_id);
 			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' and entries.date >= '$from_date' and entries.date <= '$to_date'";
-			$val = mysql_query($abc);
+			$val = mysqli_query($con, $abc);
 			if($val != ''){
-				while($row = mysql_fetch_assoc($val)) 
+				while($row = mysqli_fetch_assoc($val)) 
 				{
 					$cr_total = $row['sum(amount)'];
-					mysql_close($con);
+					mysqli_close($con);
 					return $cr_total;
 				}
 			}			
@@ -1579,18 +1579,18 @@ var $ledgers = array();
 
 		/* database connectivity for getting previous year debit amount */
 
-		$con = @mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysqli_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
-			$value = mysql_select_db($db_name, $con);
-			$id = mysql_real_escape_string($ledger_id);
+			$value = mysqli_select_db($con, $db_name);
+			$id = mysqli_real_escape_string($ledger_id);
 			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$date1' and entries.date <= '$date2'";
-			$val = mysql_query($abc);
+			$val = mysqli_query($con,$abc);
 			if($val != ''){
-				while($row = mysql_fetch_assoc($val)) 
+				while($row = mysqli_fetch_assoc($val)) 
 				{
 					$dr_total = $row['sum(amount)'];
-					mysql_close($con);
+					mysqli_close($con);
 					return $dr_total;
 				}
 			}		
@@ -1673,18 +1673,18 @@ var $ledgers = array();
 
 		/* database connectivity for getting previous year debit amount */
 
-		$con = @mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysqli_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
-			$value = mysql_select_db($db_name, $con);
-			$id = mysql_real_escape_string($ledger_id);
+			$value = mysqli_select_db($con, $db_name);
+			$id = mysqli_real_escape_string($ledger_id);
 			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' and entries.date >= '$date1' and entries.date <= '$date2'";
-			$val = mysql_query($abc);
+			$val = mysqli_query($con, $abc);
 			if($val != ''){
-				while($row = mysql_fetch_assoc($val)) 
+				while($row = mysqli_fetch_assoc($val)) 
 				{
 					$cr_total = $row['sum(amount)'];
-					mysql_close($con);
+					mysqli_close($con);
 					return $cr_total;
 				}
 			}
@@ -2294,25 +2294,25 @@ var $ledgers = array();
                         $databasepassword=$row->dbpass;
 			//echo "get_op_balance_agg===>".$databasehost.$databasename.$databaseport.$databaseusername.$databasepassword;
                 }
-                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                $new_link = @mysqli_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
                 if ($new_link)
                 {
-                        $db_selected = mysql_select_db($databasename, $new_link);
+                        $db_selected = mysqli_select_db($new_link, $databasename);
                         if ($db_selected) {
 
 //                        }
 //                }
 		//echo $ledger_id."==";
                 $query = sprintf("SELECT * from ledgers where id=$ledger_id limit 1");
-                $result = mysql_query($query);
+                $result = mysqli_query($new_link, $query);
                 if (!$result) {
-	                $message  = 'Invalid query: ' . mysql_error() . "\n";
+	                $message  = 'Invalid query: ' . mysqli_error() . "\n";
                         $message .= 'Whole query: ' . $query;
                         die($message);
                 }
 
 		if($result != ''){
-                	while($row = mysql_fetch_assoc($result))
+                	while($row = mysqli_fetch_assoc($result))
                         {
 				
                         	$op_balance = array($row['op_balance'], $row['op_balance_dc']);
@@ -2353,19 +2353,19 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = @mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysqli_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
-                        $value = mysql_select_db($db_name, $con);
-                        $id = mysql_real_escape_string($ledger_id);
+                        $value = mysqli_select_db($con, $db_name);
+                        $id = mysqli_real_escape_string($ledger_id);
                         //$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$date1' and entries.date <= '$date2'";
                         $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D'";
-                        $val = mysql_query($abc);
+                        $val = mysqli_query($con,$abc);
                         if($val != ''){
-                                while($row = mysql_fetch_assoc($val))
+                                while($row = mysqli_fetch_assoc($val))
                                 {
                                         $dr_total = $row['sum(amount)'];
-                                        mysql_close($con);
+                                        mysqli_close($con);
 					$dr_total;
                                         return $dr_total;
                                 }
@@ -2411,21 +2411,21 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = @mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysqli_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
-                        $value = mysql_select_db($db_name, $con);
-                        $id = mysql_real_escape_string($ledger_id);
+                        $value = mysqli_select_db($con, $db_name);
+                        $id = mysqli_real_escape_string($ledger_id);
                         //$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' and entries.date >= '$date1' and entries.date <= '$date2'";
                         $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C'";
-                        $val = mysql_query($abc);
+                        $val = mysqli_query($con,$abc);
                         if($val != ''){
-                                while($row = mysql_fetch_assoc($val))
+                                while($row = mysqli_fetch_assoc($val))
                                 {
 					
                                         $cr_total = $row['sum(amount)'];
 					//echo "||".$cr_total;
-                                        mysql_close($con);
+                                        mysqli_close($con);
                                         return $cr_total;
                                 }
                         }
@@ -2477,15 +2477,15 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = @mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysqli_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
-                        $value = mysql_select_db($db_name, $con);
-                        $id = mysql_real_escape_string($ledger_id);
+                        $value = mysqli_select_db($con, $db_name);
+                        $id = mysqli_real_escape_string($ledger_id);
                         $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' ";
-                        $val = mysql_query($abc);
+                        $val = mysqli_query($con, $abc);
                         if($val != ''){
-                                while($row = mysql_fetch_assoc($val))
+                                while($row = mysqli_fetch_assoc($val))
                                 {
 
                                         $dr_total = $row['sum(amount)'];
@@ -2532,16 +2532,16 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = @mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysqli_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
-                        $value = mysql_select_db($db_name, $con);
-                        $id = mysql_real_escape_string($ledger_id);
+                        $value = mysqli_select_db($con, $db_name);
+                        $id = mysqli_real_escape_string($ledger_id);
                         $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' ";
 
-                        $val = mysql_query($abc);
+                        $val = mysqli_query($con, $abc);
                         if($val != ''){
-                                while($row = mysql_fetch_assoc($val))
+                                while($row = mysqli_fetch_assoc($val))
                                 {
 
                                         $cr_total = $row['sum(amount)'];
