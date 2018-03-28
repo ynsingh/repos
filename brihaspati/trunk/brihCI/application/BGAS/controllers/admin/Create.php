@@ -1,18 +1,9 @@
 <?php
 
 class Create extends CI_Controller {
-
-function __construct() {
-        parent::__construct();
-        if(empty($this->session->userdata('id_user'))) {
-            $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-            redirect('user/login');
-        }
-    }
-
-	function Create()
+	function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
 
 		/* Check access */
 		if ( ! check_access('administer'))
@@ -27,6 +18,7 @@ function __construct() {
 	
 	function index()
 	{
+        $sc_path = realpath(BASEPATH.'../application/BGAS/controllers/admin/schema.sql');echo "<br>";
 		$this->load->helper('file');
 		$this->template->set('page_title', 'Create account');
 
@@ -275,14 +267,14 @@ function __construct() {
 			$data_database_password = $this->input->post('database_password', TRUE);
 
 			/* check for database label exist */
-                        $db1=$this->load->database('login', TRUE);
+            $db1=$this->load->database('login', TRUE);
 			$db1->select('dblable')->from('bgasAccData')->where('dblable', $data_account_label);
-                        if ($db1->get()->num_rows() > 1)
-                        {
-                                $this->messages->add('Account with same label already exists.', 'error');
+            if ($db1->get()->num_rows() > 1)
+            {
+                $this->messages->add('Account with same label already exists.', 'error');
 				$this->template->load('admin_template', 'admin/create', $data);
-                                return;
-                        }
+                return;
+            }
 			$db1->close();
 		//	$ini_file = $this->config->item('config_path') . "accounts/" . $data_account_label . ".ini";
 
@@ -312,27 +304,29 @@ function __construct() {
 			if ($this->input->post('create_database', TRUE) == "1")
 			{
 				$ini_file = $this->config->item('config_path') . "accounts/sqladmin.ini";
-
 				if ( ! get_file_info($ini_file))
-                                {       
-                                	$this->messages->add('MySQL settings file label sqladmin.ini does not exists.', 'error');
-                                        $this->messages->add('So you first set the MySQL administrator user name and password.', 'error');
-                                        $this->template->load('admin_template', 'admin/create', $data);
-                                        return;
-                                }
-                                else
-                                {
-                                        $data_sql_accounts = parse_ini_file($ini_file);
-                                        $data_database_admin_username = $data_sql_accounts['sql_admin_name'];
-                                        $data_database_admin_password = $data_sql_accounts['sql_admin_password'];
-
-					$new_link = @mysqli_connect($data_database_host . ':' . $data_database_port, $data_database_admin_username, $data_database_admin_password);
+                {       
+                    $this->messages->add('MySQL settings file label sqladmin.ini does not exists.', 'error');
+                    $this->messages->add('So you first set the MySQL administrator user name and password.', 'error');
+                    $this->template->load('admin_template', 'admin/create', $data);
+                    return;
+                }
+                else
+                {
+                    $data_sql_accounts = parse_ini_file($ini_file);
+                    $data_database_admin_username = $data_sql_accounts['sql_admin_name'];
+                    $data_database_admin_password = $data_sql_accounts['sql_admin_password'];
+					$new_link = mysqli_connect($data_database_host, $data_database_admin_username, $data_database_admin_password);
+	          		if (mysqli_connect_errno())
+                    {
+                        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                    }
 					if ($new_link)
 					{
 						/* Check if database already exists */
-						$db_selected = mysql_select_db($data_database_name, $new_link);
+						$db_selected = mysqli_select_db($new_link, $data_database_name);
 						if ($db_selected) {
-							mysql_close($new_link);
+							mysqli_close($new_link);
 							$this->messages->add('Database already exists.', 'error');
 							$this->template->load('admin_template', 'admin/create', $data);
 							return;
@@ -341,21 +335,22 @@ function __construct() {
 							$upflag=true;
 							$eflag=true; $eflag1=true; $eflag2=true;
 							$data_database_name1='mysql';
-							$db_selected1 = mysql_select_db($data_database_name1, $new_link);
+							$db_selected1 = mysqli_select_db($new_link, $data_database_name);
 							/* Check if database user already exists */
 							$query="select * from user where User='".$data_database_username."'";
-							$result = mysql_query($query);
-							$num_rows = mysql_num_rows($result);
-//							$this->$db_selected1->select('*')->from('user')->where('User',$data_database_username);
-    						        if($num_rows > 0)
-				                        {
+							$result = mysqli_query($new_link, $query);
+							//$num_rows = mysqli_num_rows($result);
+    						//if($num_rows > 0)
+    						if($result)
+				            {
+                            
 								/* Check with password matched */
-								$link_me = @mysqli_connect($data_database_host . ':' . $data_database_port, $data_database_username, $data_database_password);
+								$link_me = mysqli_connect($data_database_host . ':' . $data_database_port, $data_database_username, $data_database_password);
 
-	    						        if(!$link_me)
-					                        {
+	    					    if(!$link_me)
+					            {
 									$upflag=false;
-									mysql_close($new_link);
+									mysqli_close($new_link);
 									$this->messages->add('Database user name already exists and password is not matched.', 'error');
 									$this->template->load('admin_template', 'admin/create', $data);
 									return;
@@ -364,31 +359,31 @@ function __construct() {
 							}
 							if($upflag){
 								/* Creating account database */
-								$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name).'; ';
-								$db_create_q1 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
-								$db_create_q2 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
-								if (mysql_query($db_create_q, $new_link))
+								$db_create_q = 'CREATE DATABASE ' . mysqli_real_escape_string($new_link, $data_database_name).'; ';
+								$db_create_q1 = 'GRANT ALL ON '. mysqli_real_escape_string($new_link, $data_database_name).'.* TO '. mysqli_real_escape_string($new_link,$data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysqli_real_escape_string($new_link, $data_database_password).'"; ';
+								$db_create_q2 = 'GRANT ALL ON '. mysqli_real_escape_string($new_link, $data_database_name).'.* TO '. mysqli_real_escape_string($new_link, $data_database_username).'@localhost IDENTIFIED BY "'. mysqli_real_escape_string($new_link, $data_database_password).'"; ';
+								if (mysqli_query($new_link, $db_create_q))
 								{
 									$eflag=false;
 									$this->messages->add('Created new account database.', 'success');
 								} 
-								if (mysql_query($db_create_q1, $new_link))
+								if (mysqli_query($new_link,$db_create_q1))
 								{
 									$eflag1=false;
 									$this->messages->add('Granting permission to user to access new database  with local ip.', 'success');
 								} 
-								if (mysql_query($db_create_q2, $new_link))
+								if (mysqli_query($new_link,$db_create_q2))
 								{
 									$eflag2=false;
 									$this->messages->add('Granting permission to user to access new database  with local name.', 'success');
 								} 
 								if ($eflag ||$eflag1  || $eflag2) {
-									mysql_close($new_link);
+									mysqli_close($new_link);
 									$this->messages->add('Error creating account database. ' , 'error');
 									$this->template->load('admin_template', 'admin/create', $data);
 									return;
 								}
-								mysql_close($new_link);
+								mysqli_close($new_link);
 							}
 						}
 					} //end if new link
@@ -401,41 +396,69 @@ function __construct() {
 			}
 
 			/* Setting database */
-			$dsn = "mysql://${data_database_username}:${data_database_password}@${data_database_host}:${data_database_port}/${data_database_name}";
-			$newacc = $this->load->database($dsn, TRUE);
-
-			if ( ! $newacc->conn_id)
-			{
-				$this->messages->add('Error connecting to database.', 'error');
-				$this->template->load('admin_template', 'admin/create', $data);
-				return;
-			} else if ($newacc->_error_message() != "") {
-				$this->messages->add('Error connecting to database. ' . $newacc->_error_message(), 'error');
-				$this->template->load('admin_template', 'admin/create', $data);
-				return;
-			} else if ($newacc->query("SHOW TABLES")->num_rows() > 0) {
-				$this->messages->add('Selected database in not empty.', 'error');
-				$this->template->load('admin_template', 'admin/create', $data);
-				return;
-			} else {
+			//$new_link = mysqli_connect($data_database_host, $data_database_admin_username, $data_database_admin_password);
+			$dsn = mysqli_connect($data_database_host, $data_database_username, $data_database_password, $data_database_name);
+			//if ($dsn->connect_errno) {
+    			//echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+			//}
+				
+			//$dsn = "mysql://${data_database_username}:${data_database_password}@${data_database_host}:${data_database_port}/${data_database_name}";
+/*
+			try {
+			$dsn = new PDO("mysql:host=$data_database_host;dbname=$data_database_name", $data_database_username, $data_database_password);
+			}
+			catch(PDOException $e)
+                        {
+                                echo $e->getMessage();
+                        }
+*/
+			$dsn = new mysqli($data_database_host, $data_database_username, $data_database_password, $data_database_name);
+            if (mysqli_connect_errno())
+            {
+                echo "Failed to connect to MySQL: " . mysqli_connect_error();
+            }
+            else
+                echo "connect to MySQL: ";
+            $res = mysqli_query($dsn,"SHOW TABLES");
+            if (!$dsn)
+            {
+                $this->messages->add('Error connecting to database.', 'error');
+                $this->template->load('admin_template', 'admin/create', $data);
+                return;
+            }/* else if ($newacc->_error_message() != "") {
+                $this->messages->add('Error connecting to database. ' . $newacc->_error_message(), 'error');
+                $this->template->load('admin_template', 'admin/create', $data);
+                return;
+            }*/
+             //else if ($newacc->query("SHOW TABLES")->num_rows() > 0) {
+             //else if ($dsn->query("SHOW TABLES")->mysqli_num_rows() > 0) {
+             else if (mysqli_num_rows(mysqli_query($dsn,"SHOW TABLES")) > 0) {
+                $this->messages->add('Selected database in not empty.', 'error');
+                $this->template->load('admin_template', 'admin/create', $data);
+                return;
+            } else {
+                $path1 = realpath(BASEPATH);
+        
 				/* Executing the database setup script */
-				$setup_account = read_file('system/application/controllers/admin/schema.sql');
+				$setup_account = read_file($sc_path);
 				$setup_account_array = explode(";", $setup_account);
 				foreach($setup_account_array as $row)
 				{
-					if (strlen($row) < 5)
-						continue;
-					$newacc->query($row);
-					if ($newacc->_error_message() != "")
+					//if (strlen($row) < 5)
+					//	continue;
+					mysqli_query($dsn,$row);
+			/*		if ($dsn->_error_message() != "")
 					{
+                        echo "Error in errormessage";
 						$this->messages->add('Error initializing account database under schema.sql.'.$row, 'error');
 						$this->messages->add('Error initializing account database under schema.sql.'.$newacc->_error_message(), 'error');
 						$this->template->load('admin_template', 'admin/create', $data);
 						return;
 					}
+            */
 				}
 				$this->messages->add('Initialized account database.', 'success');
-
+                $mhrdsc_path = realpath(BASEPATH.'../application/BGAS/controllers/admin/mhrdFormat2015.sql');echo "<br>";
 				/* Initial account setup */
 				//if $data_chart_account is minimal
 				if (($data_chart_account == 'minimal') || ($data_chart_account == '')){
@@ -445,16 +468,21 @@ function __construct() {
 					$setup_initial_data = read_file('system/application/controllers/admin/mhrdedu.sql');
 				}  */
 				elseif ( $data_chart_account == 'mhrd2015'){
-					$setup_initial_data = read_file('system/application/controllers/admin/mhrdFormat2015.sql');
+					$setup_initial_data = read_file($mhrdsc_path);
 				}
 					//else $data_chart_account is standard
 				elseif ( $data_chart_account == 'standard'){
 					$setup_initial_data = read_file('system/application/controllers/admin/initialize.sql');
 				}
-				$setup_initial_data_array = explode(";", $setup_initial_data);
-				$newacc->trans_start();
+                $setup_initial_data_array = explode(";", $setup_initial_data);
 				foreach($setup_initial_data_array as $row)
 				{
+                    //if (strlen($row) < 5)
+                    //  continue;
+                    mysqli_query($dsn,$row);
+
+                    //mysqli_query($dsn,$row);
+                    /*
 					if (strlen($row) < 5)
 						continue;
 					$newacc->query($row);
@@ -465,20 +493,27 @@ function __construct() {
 						$this->template->load('admin_template', 'admin/create', $data);
 						return;
 					}
+                    */
 				}
-				$newacc->trans_complete();
-				$this->messages->add('Initialized basic accounts data.', 'success');
-
+				//$newacc->trans_complete();
 				/* Adding account settings */
-				$newacc->trans_start();
-				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')))
+				//$dsn->trans_start();
+				$resultnew = mysqli_query($dsn,"INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (1, '$data_account_name', '$data_account_address', '$data_account_email', '$data_fy_start', '$data_fy_end', '$data_account_currency', '$data_account_date', '$data_account_timezone', 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, '$data_org_name', '', '$data_unit_name', '$ledger_name', '$liability_ledger_name', '$data_chart_account', 'true')");
+
+               echo  "INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')";
+
+
+
+                echo "I am here";print_r($resultnew);
+				//if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')))
+                if(!$resultnew)
 				{
-					$newacc->trans_rollback();
+					//$dsn->trans_rollback();
 					$this->messages->add('Error adding account settings.', 'error');
 					$this->template->load('admin_template', 'admin/create', $data);
 					return;
 				} else {
-					$newacc->trans_complete();
+					//$newacc->trans_complete();
 					$this->messages->add('Added account settings.', 'success');
 				}
 
@@ -496,33 +531,33 @@ function __construct() {
 				}
 				$tablebad="bgasAccData";
 				$db1=$this->load->database('login', TRUE);
-                                $db1->trans_start();
-                                $insert_data = array(
-	                                'organization'=> $data_org_name,
-                                        'unit'=>  $data_unit_name,
-                                        'databasename' =>  $data_database_name,
-                                        'fyear' => $fy,
-                                        'uname' => $data_database_username,
-                                        'dbpass' => $data_database_password,
-                                        'hostname' => $data_database_host,
-                                        'port' => $data_database_port,
-                                        'dbtype' => $data_database_type,
-                                        'dblable' => $data_account_label,
-                                );
+                $db1->trans_start();
+                $insert_data = array(
+	                'organization'=> $data_org_name,
+                    'unit'=>  $data_unit_name,
+                    'databasename' =>  $data_database_name,
+                    'fyear' => $fy,
+                    'uname' => $data_database_username,
+                    'dbpass' => $data_database_password,
+                    'hostname' => $data_database_host,
+                    'port' => $data_database_port,
+                    'dbtype' => $data_database_type,
+                    'dblable' => $data_account_label,
+                   );
 
-                                if ( ! $db1->insert($tablebad, $insert_data))
-                                {
-                                	$db1->trans_rollback();
-                                        $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+                if ( ! $db1->insert($tablebad, $insert_data))
+                {
+                    $db1->trans_rollback();
+                    $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
 					$db1->close();
-                                        $this->template->load('admin_template', 'admin/create', $data);
-                                        return;
-                                } else {
-                                        $db1->trans_complete();
-                                        $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
+                    $this->template->load('admin_template', 'admin/create', $data);
+                    return;
+                } else {
+                    $db1->trans_complete();
+                    $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
 
-                                }
-                                $db1->close();
+                }
+                $db1->close();
 
 				/* Adding account settings to file. Code copied from manage controller */
 				/* below code is replaced with mysql code

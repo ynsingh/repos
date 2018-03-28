@@ -906,7 +906,7 @@ var $ledgers = array();
 		$con = @mysqli_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
-			$value = mysqli_select_db($con, $db_name, );
+			$value = mysqli_select_db($con, $db_name );
 			$cl = "select * from ledgers order by 'id'";
 			$val = mysqli_query($con, $cl);
 			if($val != ''){
