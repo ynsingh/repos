@@ -359,6 +359,7 @@ public function disciplinewiselist(){
         $this->load->view('report/professorlist',$data);
     } 
     public function hodlist(){
+	// get list of uo form authority table priority wise
         $today= date("Y-m-d H:i:s"); 
 //        $whdata=array('hl_dateto >='=> $today);
         $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid";

@@ -137,12 +137,12 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('staffmgmt/staffposition', 'Staff Position', array('title' => 'Staff Position'));
                                         echo "</li>";
 					echo "<li>";
-                                                echo anchor('staffmgmt/employeelist', 'Basic Staff Profile', array('title' => 'Staff List'));
+                                                echo anchor('staffmgmt/employeelist', 'Staff Profile', array('title' => 'Staff List'));
                                         echo "</li>";
-                                        echo "<li>";
+                                        /*echo "<li>";
                                                 echo anchor('report/viewprofile', 'Employee Service Perticulars', array('title' => 'View Employee List'));
                                         echo "</li>";
-
+*/
 				echo "</ul>";
 			echo "</li>";
 		/*	echo "<li>";

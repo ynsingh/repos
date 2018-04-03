@@ -14,7 +14,10 @@
         <table width="100%"><tr colspan="2">
         <?php 
         echo "<td align=\"left\" width=\"33%\">";
-	echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
+	$roleid=$this->session->userdata('id_role');
+        if(($roleid == 1)||($roleid == 5)){
+		echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
+	}
         echo "</td>";
         echo "<td align=\"center\" width=\"34%\">";
         echo "<b>Staff Profile Details</b>";
@@ -76,7 +79,8 @@
                             <?php else :?>
                             <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
                             <?php endif;?>
-                            <td><?php echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td>
+			    <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));?></td>
+                           <!-- <td><?php //echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td> -->
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
                             <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>
@@ -97,7 +101,7 @@
                             <td><?php echo $record->emp_phone; ?></td>
                             <td><?php echo $record->emp_aadhaar_no; ?></td>
                             <td> <?php 
-				$roleid=$this->session->userdata('id_role');
+		//		$roleid=$this->session->userdata('id_role');
                                 if(($roleid == 1)||($roleid == 5)){
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 				}

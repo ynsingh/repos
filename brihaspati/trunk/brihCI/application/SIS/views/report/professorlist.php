@@ -72,7 +72,7 @@
                             echo "<tr>";
                             echo "<td>".$serial_no++."</td>";
                             echo "<td>". $record-> emp_name." </td>";
-                            echo "<td> $record->emp_dor</td>";
+                            echo "<td> ".implode('-', array_reverse(explode('-', $record->emp_dor)))."</td>";
                             echo "<td>";
                             if(!empty($record->emp_specialisationid)){
                                 echo  $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
@@ -81,7 +81,7 @@
                             echo "<td>";
                             echo  $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
                             echo  "</td>";
-                            echo "<td> $record->emp_doj</td>";
+                            echo "<td>". implode('-', array_reverse(explode('-', $record->emp_doj)))."</td>";
                             $date1 = new DateTime($record->emp_doj);
                             $date2 = new DateTime();
                             $diff = $date1->diff($date2);

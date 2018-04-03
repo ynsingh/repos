@@ -224,7 +224,7 @@
                 <tr>
                     <th></th>
                     <th>Employee Name</th>
-                    <th>Detail</th>
+                    <th>Details</th>
                     <th>Doj / Dor</th>
                     <th>Designation</th>
                     <th>E-Mail ID</th>
@@ -307,7 +307,7 @@
                    <!-- <th>Campus Name</th>
                     <th>UO</th>
                     <th>Department</th>-->
-                    <th>Detail</th>
+                    <th>Details</th>
                     <th>Designation</th>
                     <th>Doj / Dor</th>
                     <!--<th>E-Mail ID</th> -->

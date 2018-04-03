@@ -1744,7 +1744,7 @@ public function schemedept(){
 		return;
 	}
         else{	
-      
+     // need to be done- must put the entry in uo_list 
         $scuoflag = $this->sismodel->insertrec('map_sc_uo', $datascuo) ;
         if(!$scuoflag)
           {

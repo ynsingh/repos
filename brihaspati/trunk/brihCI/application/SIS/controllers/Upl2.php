@@ -355,11 +355,13 @@ class Upl2 extends CI_Controller
                                         $dupuo = array('ul_userid' => $userid, 'ul_uocode' => $uocode,'ul_uoname'=> $uoname);
                                         $isdupuo= $this->sismodel->isduplicatemore('uo_list',$dupuo);
                                         if(!$isdupuo){
-                                            
+					    $auoid=null;
+                                            $auoid = $this->lgnmodel->get_listspfic1('authorities','id','code',$uocode)->id;
                                             $usr =$this->session->userdata('username');
                                             $datauo = array(
                                                 'ul_userid'=> $userid,
                                                 'ul_empcode'=> $pfno,
+						'ul_authuoid' => $auoid,
                                                 'ul_uocode'=> $uocode,
                                                 'ul_uoname'=> $uoname,
                                                 'ul_datefrom'=> $dfrom,

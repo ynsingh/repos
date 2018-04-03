@@ -14,7 +14,10 @@
             <tr colspan="2">
          <?php
 	    echo "<td align=\"left\" width=\"33%\">";
-            echo anchor('staffmgmt/newstaffposition/', ' Staff Position ', array('class' => 'top_parent'));
+		$roleid=$this->session->userdata('id_role');
+                if(($roleid == 1)){
+	            echo anchor('staffmgmt/newstaffposition/', ' Staff Position ', array('class' => 'top_parent'));
+		}
             echo "</td>";
             echo "<td align=\"center\" width=\"34%\">";
             echo "<b>Staff Position Details</b>";
@@ -81,7 +84,7 @@
 			 <td><?php echo $row->sp_position ?> </td>
 			 <td><?php echo $row->sp_vacant ?> </td>
 		        <td><?php 
-				$roleid=$this->session->userdata('id_role');
+		//		$roleid=$this->session->userdata('id_role');
 				if($roleid == 1){	
 					echo anchor('staffmgmt/editstaffposition/' . $row->sp_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); 
 				}

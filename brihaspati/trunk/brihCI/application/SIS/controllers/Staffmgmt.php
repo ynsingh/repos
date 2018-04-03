@@ -437,10 +437,10 @@ class Staffmgmt extends CI_Controller
         $editemp_data['id'] = $id;
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
         $editemp_data['editdata'] = $empmaster_data->row();     
-               
         if(isset($_POST['updateprofile'])) {
             /*Form Validation*/
             //$this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
+            $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('empname','EmployeeName','trim|required|xss_clean');
             $this->form_validation->set_rules('specialisation','Specialisation','trim|xss_clean');
            // $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
@@ -496,7 +496,8 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('dateofregular','Date of Regularisation','trim|xss_clean');
             $this->form_validation->set_rules('qual','Qualification','trim|xss_clean');
             $this->form_validation->set_rules('remarks','Remarks','trim|xss_clean');
-            
+            $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
+
              if($this->form_validation->run() == FALSE){
                 //redirect('staffmgmt/editempprofile/'.$id);
                 $this->load->view('staffmgmt/editempprofile',$editemp_data);
@@ -504,7 +505,8 @@ class Staffmgmt extends CI_Controller
                
             }//formvalidation
             else{
-            
+		
+       	    $empoldcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$id)->emp_code;     
             $bankname=$this->input->post('bankname');
             $ifsccode= $this->input->post('ifsccode');
             //$emp_post= $this->input->post('emppost');
@@ -513,6 +515,16 @@ class Staffmgmt extends CI_Controller
             //$uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$uocuid)->authority_id;
             //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
             $empcode= $this->input->post('empcode');
+		if(!($empcode === $empoldcode )){
+			$is_exist= $this->sismodel->isduplicate('employee_master','emp_code',$empcode);
+	        	if ($is_exist)
+            		{
+				$this->session->set_flashdata('err_message', 'Employee PF No ' . $empcode .' is already exist.');
+//				$this->load->view('staffmgmt/editempprofile',$editemp_data);
+	                    	redirect('staffmgmt/employeelist');
+				return;
+            		}
+		}
             if(!empty($_FILES['userfile']['name'])){
             $newFileName = $_FILES['userfile']['name'];
             $fileExt1 = explode('.', $newFileName);
@@ -527,6 +539,7 @@ class Staffmgmt extends CI_Controller
                // 'emp_bank_ifsc_code'             => $this->input->post('bankname'),
                 /*----extra field added---------------------------------------------*/
             $data = array(
+		'emp_code'			=> $this->input->post('empcode'),
                 'emp_specialisationid'           => $this->input->post('specialisation'),
                // 'emp_scid'                       => $this->input->post('campus'),
                 //'emp_uocuserid'                  => $this->input->post('uocontrol'),
@@ -583,7 +596,8 @@ class Staffmgmt extends CI_Controller
                 'emp_doregular'                  => $this->input->post('dateofregular'), 
                 'emp_qual'                       => $this->input->post('qual'), 
                 'emp_remarks'                    => $this->input->post('remarks'), 
-                'emp_photoname'                  => $new_name  
+                'emp_photoname'                  => $new_name,
+		'emp_grade'			=> $this->input->post('empgrade')  
             );
 //print_r($data);
             /* upload photo*/
@@ -848,6 +862,8 @@ class Staffmgmt extends CI_Controller
   public function staffposition(){
 	$roleid=$this->session->userdata('id_role');
         $userid=$this->session->userdata('id_user');
+	// get ul authid
+	// default is null and for VC,  R also null but others uo pass it in filter
         $deptid = '';
         $whdatad = array('userid' => $userid,'roleid' => $roleid);
         $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);

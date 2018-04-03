@@ -1,4 +1,5 @@
 -- Nagendra Kumar Singh (nksinghiitk@gmail.com)
+
 -- Manorama Pal(palseema30@gmail.com)
 -- Om Prakash (omprakashkgp@gmail.com)
 -- Database: `payroll`
@@ -219,6 +220,7 @@ CREATE TABLE `employee_master` (
   `emp_scid` int(11) NOT NULL,
   `emp_org_code` int(11) NOT NULL,
   `emp_remarks` blob default NULL,
+  `emp_grade` varchar(255) Default NULL,
    PRIMARY KEY  (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -712,7 +714,7 @@ CREATE TABLE `user_role_type` (
   `ext1` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into user_role_type values (1,1,1,1,1,'Administrator','');
+insert into user_role_type values (1,1,1,1,NULL,'Administrator','');
 
 -- --------------------------------------------------------
 --
@@ -848,6 +850,7 @@ CREATE TABLE `uo_list` (
   `ul_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `ul_userid` int(11)  NOT NULL,
   `ul_empcode` varchar(100)  NOT NULL,
+  `ul_authuoid` int(11)  NOT NULL,
   `ul_uocode` varchar(100)  NOT NULL,
   `ul_uoname` varchar(255) NOT NULL,
   `ul_datefrom` datetime NOT NULL,

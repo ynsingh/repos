@@ -548,7 +548,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td ><label for="empcode" style="font-size:15px;">Employee PF No<font color='Red'>*</font></label>
-                    <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo $editdata->emp_code;?>" size="27"  required pattern="[a-zA-Z0-9 ]+" required="required" readonly>
+                    <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo $editdata->emp_code;?>" size="27"  required pattern="[a-zA-Z0-9 ]+" required="required" >
                     </div>
                 </td>
             </tr>
@@ -817,11 +817,28 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="Qualification" style="font-size:15px;">Qualification</label>
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo $editdata->emp_qual;?>" placeholder="Qualification........" size="28" >
                 </div></td>
+
+		<td><label for="empgrade" style="font-size:15px;"> Grade  </label>
+                        <div><select name="empgrade" id="empgrade"  style="width:338px;">
+			<?php if(!empty($editdata->emp_grade)):;?>
+                        <option value="<?php echo $editdata->emp_grade;?>"><?php echo $editdata->grade;?></option>
+                        <?php else:?>
+                        <option value="">------------ Select Grade ---------</option>
+                        <?php endif?>
+			<?php if ($editdata->emp_worktype === 'Teaching'){?>
+                        <option value="Career Advance (CA)">Career Advance (CA)</option>
+                        <option value="Regular(R)">Regular (R)</option>
+			<?php } else {?>
+                        <option value="Selection Grade (SG)">Selection Grade (SG)</option>
+                        <option value="Special Grade (SplG)">Special Grade (SplG)</option>
+			<?php }?>
+                    </select></div>
+                </td>
+            </tr>
+            <tr>
                 <td><label for="remarks" style="font-size:15px;">Remarks</label>
                     <div><textarea name="remarks" rows="3" cols="40"  ><?php echo $editdata->emp_remarks;?></textarea>
                 </div></td>
-            </tr>
-            <tr>
                 <td><label for="Address" style="font-size:15px;">Address</label>
                     <div><textarea name="Address"  class="keyup-characters" rows="5" cols="50" pattern="[a-zA-Z0-9 ]+"><?php echo $editdata->emp_address;?></textarea>
                     </div>

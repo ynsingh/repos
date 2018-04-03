@@ -83,7 +83,12 @@
 				echo " ) ";
 			echo "</td>";
 			echo "<td>";
-				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode)->emp_name;
+
+				$name=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode);
+				if(!empty($name)){
+					echo $name->emp_name;
+				}
+				//echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode)->emp_name;
 				echo " ( ";
 				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->hl_userid)->username;
 				echo " ) ";
