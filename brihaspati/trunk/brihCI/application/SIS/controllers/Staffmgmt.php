@@ -1375,7 +1375,7 @@ class Staffmgmt extends CI_Controller
         $payb_select_box ='';
         $payb_select_box.='<option value="">----------Select Payband-----------';
         foreach($desig as $drecord){
-        echo "Om Prakash====3====>".$drecord->desig_payscale;   
+      //  echo "Om Prakash====3====>".$drecord->desig_payscale;   
             $payb_select_box.='<option value='.$drecord->desig_payscale.'>'.$drecord->desig_payscale ;
         }
         echo json_encode($desig_select_box.','.$payb_select_box);
@@ -1663,11 +1663,11 @@ class Staffmgmt extends CI_Controller
      public function getempnamelist(){
         $combfour = $this->input->post('uddempt');
         $parts = explode(',',$combfour);
-            
+       // echo "values====".$combfour ;  
         $datawh=array('emp_uocid' => $parts[0],'emp_dept_code' => $parts[1], 'emp_worktype' => $parts[2], 'emp_desig_code' => $parts[3]);
         $comb_data = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_name',$datawh);
         $emplst_select_box ='';
-        $emplst_select_box.='<option value="">------------- Select Employee Name -----------------';
+        $emplst_select_box.='<option value="">---------- Select Employee Name -------------';
         foreach($comb_data as $combdataid){
             $emplst_select_box.='<option value='.$combdataid->emp_id.'>'.$combdataid->emp_name.'('.$combdataid->emp_code.')'.' ';
             
@@ -1675,5 +1675,193 @@ class Staffmgmt extends CI_Controller
         echo json_encode($emplst_select_box);
          
     }
+    
+    /****************************staff retirement**********************************************************/
+    public function staffretirement($selempid=0){
+        $selectfield ="emp_id,emp_code,emp_name,emp_dept_code,emp_desig_code,emp_worktype,emp_email,emp_doj,emp_dor,emp_uocid,emp_schemeid,emp_scid,emp_photoname";
+        $whorder = "emp_name  asc";
+        $crit=$this->input->post('filter',TRUE);
+        $data['search']=$crit;
+        $data['selempid']=$selempid;
+        if(isset($_POST['filter'])) {
+           
+            $wtype = $this->input->post('wtype');
+            $uoff  = $this->input->post('uoff');
+            $dept  = $this->input->post('dept');
+            $desig  = $this->input->post('desig');
+            $emp    = $this->input->post('emp');
+            $data['selempid']=$emp;
+            if($uoff!="All" && $dept!="All"){
+                $whdata = array ('emp_worktype' => $wtype,'emp_uocid' => $uoff,'emp_dept_code' => $dept, 'emp_desig_code' =>$desig,'emp_id'=>$emp);
+            }
+            if($uoff =="All" && $dept!="All" ){
+                $whdata = array ('emp_worktype' => $wtype,'emp_dept_code' => $dept, 'emp_desig_code' =>$desig,'emp_id'=>$emp);
+            }
+            if($uoff !="All" && $dept =="All" ){
+                $whdata = array ('emp_worktype' => $wtype,'emp_uocid' => $uoff, 'emp_desig_code' =>$desig,'emp_id'=>$emp);
+            }
+            if($uoff =="All" && $dept == "All" ){
+                $whdata = array ('emp_worktype' => $wtype,'emp_desig_code' =>$desig,'emp_id'=>$emp);
+            }
+            $data['empret'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+                       
+        }
+        
+        if(isset($_POST['update'])){
+           
+            $reason = $this->input->post('resret');
+           
+            $empcode=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$selempid)->emp_code;
+            $empemail=$this->sismodel->get_listspfic1('employee_master', 'emp_email', 'emp_id',$selempid)->emp_email;
+            $doj=$this->sismodel->get_listspfic1('employee_master', 'emp_doj', 'emp_id',$selempid)->emp_doj;
+            $dor=$this->sismodel->get_listspfic1('employee_master', 'emp_dor', 'emp_id',$selempid)->emp_dor;
+            $update_data = array(
+               'sre_empid' => $selempid,
+               'sre_empcode' => $empcode,
+               'sre_empemailid' => $empemail,
+               'sre_doj'  => $doj,
+               'sre_dor'  => $dor,
+               'sre_reason' => $reason,
+               'sre_reasondate' => date('y-m-d'),
+               'sre_creatorid' => $this->session->userdata('username'),
+               'sre_creatordate' => date('y-m-d'),
+               'sre_modifierid' => $this->session->userdata('username'), 
+               'sre_modifydate' => date('y-m-d')
+            );
+            $dupdetail=array(
+               'sre_empid' => $selempid, 
+               'sre_empcode' => $empcode,
+               'sre_empemailid' => $empemail,
+            );
+            $dupdata = $this->sismodel->isduplicatemore('staff_retirement', $dupdetail);
+
+            if($dupdata == 1 ){
+
+                $this->session->set_flashdata("err_message", "Record is already exist . 'Employee PF No' = $empcode  , ' Email'= $empemail .");
+                redirect('staffmgmt/staffretirement');
+                return;
+            }
+            $retupdateflag=$this->sismodel->insertrec('staff_retirement', $update_data);
+            if(!$retupdateflag)
+            {
+                $this->logger->write_logmessage("error"," Trying to staff retirement record", "staff retirement record is not added. Employee PF No' = $empcode  , ' Email'= $empemail");
+                $this->logger->write_dblogmessage("error","Trying to staff retirement record", "staff retirement record is not added. Employee PF No' = $empcode  , ' Email'= $empemail ");
+                $this->session->set_flashdata('err_message','Error staff retirement data - ' .' Employee PF No ='. $empcode .' Email='. $empemail. '.', 'error');
+                $this->load->view('staffmgmt/staffretirement', $update_data);
+            }
+            else{
+                /*update employeemaster table*/
+                if($reason == 'disqualify')
+                {
+                    $reason='disqualified';
+                } 
+                if($reason == 'remove'){
+                    $reason='removed';
+                }
+                if($reason == 'dismiss'){
+                   $reason =$reason.'ed'; 
+                }
+                $empup_data = array(
+                  'emp_leaving' => $reason 
+                );
+                $empmasterflag=$this->sismodel->updaterec('employee_master', $empup_data, 'emp_id', $selempid);
+                /*update staff position table on staff retirement*/
+                
+                $dept=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$selempid)->emp_dept_code;
+                $desig=$this->sismodel->get_listspfic1('employee_master', 'emp_desig_code', 'emp_id',$selempid)->emp_desig_code;
+                $worktype=$this->sismodel->get_listspfic1('employee_master', 'emp_worktype', 'emp_id',$selempid)->emp_worktype;
+                $emptype=$this->sismodel->get_listspfic1('employee_master', 'emp_type_code', 'emp_id',$selempid)->emp_type_code;
+                $empscid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$selempid)->emp_scid;
+                $empuocid=$this->sismodel->get_listspfic1('employee_master', 'emp_uocid', 'emp_id',$selempid)->emp_uocid;
+                $empschmid=$this->sismodel->get_listspfic1('employee_master', 'emp_schemeid', 'emp_id',$selempid)->emp_schemeid;
+             //   echo "==dept==".$dept."===desig===".$desig."==wtype===".$worktype."===etype===".$emptype."==scid===".$empscid."==uocid===".$empuocid."===schmid===".$empschmid;
+                $upspdata_flag=$this->sismodel->updatestaffposition2($empscid,$empuocid,$dept,$desig,$worktype,$emptype,$empschmid);
+                if(!$upspdata_flag){
+                    $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
+                    $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
+                }
+                else{
+                    $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ");
+                    $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully");
+            
+                }
+                $this->logger->write_logmessage("insert","staff retirement record insert " , "staff retirement record inserted successfully... ");
+                $this->logger->write_dblogmessage("insert","staff retirement record insert" , "staff retirement record inserted successfully... ");
+                $this->session->set_flashdata('success','staff retirement record inserted successfully '.' Employee PF No ='. $empcode .' Email='. $empemail);
+                redirect('staffmgmt/staffretirement');
+            }
+         
+           
+        }//if update button
+        $fields="sre_empid,sre_empcode,sre_empemailid,sre_doj,sre_dor,sre_reason,sre_reasondate";  
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_retirement',$fields,'','sre_reasondate asc');
+        $this->logger->write_logmessage("view"," view staff retirement list" );
+        $this->logger->write_dblogmessage("view"," view staff retirement list");
+        $this->load->view('staffmgmt/staffretirement',$data);
+    }
+    /*******************************************closer staff retirement********************************/
+    /*******************************************designation list********************************/
+    public function getcombdesiglist(){
+        $combthree = $this->input->post('wtuodept');
+        $parts = explode(',',$combthree);
+        if($parts[1]!="All" && $parts[2]!="All"){
+            $datawh=array('emp_worktype' => $parts[0],'emp_uocid' => $parts[1],'emp_dept_code' => $parts[2]);
+        }
+        if($parts[1]== "All" && $parts[2]!="All" ){
+            $datawh=array('emp_worktype' => $parts[0],'emp_dept_code' => $parts[2]);
+        }
+        if($parts[1] != "All" && $parts[2] =="All" ){
+            $datawh=array('emp_worktype' => $parts[0],'emp_uocid' => $parts[1]);
+        }
+        if($parts[1] == "All" && $parts[2] == "All" ){
+            $datawh=array('emp_worktype' => $parts[0]);
+        }
+        $comb_data = $this->sismodel->get_distinctrecord('employee_master','emp_desig_code',$datawh);
+        $desig_select_box ='';
+        $desig_select_box.='<option value="">------------- Select Designation ----------';
+        foreach($comb_data as $combdataid){
+            $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$combdataid->emp_desig_code)->desig_name;
+            $desigcode=$this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$combdataid->emp_desig_code)->desig_code;
+            $desig_select_box.='<option value='.$combdataid->emp_desig_code.'>'.$designame. '(' .$desigcode. ')'.' ';
+                           
+        }
+        echo json_encode($desig_select_box);
+         
+    }
+    /*******************************************closer designation list********************************/
+    /*******************************************employee list********************************/
+    public function getempnamelist2(){
+        $combfour = $this->input->post('uddempt');
+        $parts = explode(',',$combfour);
+        //echo "values====".$combfour ;  
+        if($parts[0]!="All" && $parts[1]!="All"){
+            $datawh=array('emp_uocid' => $parts[0],'emp_dept_code' => $parts[1], 'emp_worktype' => $parts[2], 'emp_desig_code' => $parts[3],'emp_leaving' =>NULL);  
+        }
+        if($parts[0] == "All" && $parts[1]!="All" ){
+            $datawh=array('emp_dept_code' => $parts[1], 'emp_worktype' => $parts[2], 'emp_desig_code' => $parts[3],'emp_leaving' =>NULL);  
+        }
+        if($parts[0]!= "All" && $parts[1] =="All" ){
+            $datawh=array('emp_uocid' => $parts[0],'emp_worktype' => $parts[2], 'emp_desig_code' => $parts[3],'emp_leaving' =>NULL);     
+        }
+        if($parts[0] == "All" && $parts[1] =="All" ){
+            $datawh=array('emp_worktype' => $parts[2], 'emp_desig_code' => $parts[3],'emp_leaving' =>NULL);  
+        }
+        $comb_data = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_name',$datawh);
+        $emplst_select_box ='';
+        $emplst_select_box.='<option value="">---------- Select Employee Name -------------';
+        if(!empty($comb_data)){ 
+            foreach($comb_data as $combdataid){
+                $emplst_select_box.='<option value='.$combdataid->emp_id.'>'.$combdataid->emp_name.'('.$combdataid->emp_code.')'.' ';
+            
+            }
+        }
+        else{
+            $emplst_select_box ='novalue';
+        }
+        echo json_encode($emplst_select_box);
+    
+    }
+    
+    /*******************************************closer employeenamelist********************************/
 }    
 
