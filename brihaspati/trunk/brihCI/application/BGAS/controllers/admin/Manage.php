@@ -8,10 +8,10 @@ class Manage extends CI_Controller {
            // $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             //redirect('welcome');
        // }
-    }
+    //}
 
-	function Manage()
-	{
+//	function Manage()
+//	{
 		parent::Controller();
 
 		/* Check access */
@@ -25,7 +25,7 @@ class Manage extends CI_Controller {
 
 		return;
 	}
-
+	
 	
 	function index()
 	{
@@ -438,15 +438,15 @@ class Manage extends CI_Controller {
 	
 	function backup_tables($databasehost,$databaseuser,$databasepassword,$dbname,$database_label,$tables = '*')
 	{
-		$con = @mysql_connect($databasehost,$databaseuser,$databasepassword);
-		mysql_select_db($dbname,$con);
+		$con = @mysqli_connect($databasehost,$databaseuser,$databasepassword);
+		mysqli_select_db($con,$dbname);
 
 		//get all of the tables
 		if($tables == '*')
 		{	
 			$tables = array();
-			$result = mysql_query("SHOW TABLES");
-			while($row = mysql_fetch_row($result))
+			$result = mysqli_query($con,"SHOW TABLES");
+			while($row = mysqli_fetch_row($result))
 			{
 				$tables[] = $row[0];
 			}
@@ -459,13 +459,13 @@ class Manage extends CI_Controller {
 		//cycle through all the table in database $dbname
 		foreach($tables as $table)
 		{
-			$result = mysql_query('SELECT * FROM '.$table);
-			$num_fields = mysql_num_fields($result);
+			$result = mysqli_query($con,'SELECT * FROM '.$table);
+			$num_fields = mysqli_num_fields($result);
 			$return.= 'DROP TABLE '.$table.';';
-			$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+			$row2 = mysqli_fetch_row(mysqli_query($con,'SHOW CREATE TABLE '.$table));
 			$return.= "nn".$row2[1].";nn";
 
-			while($row = mysql_fetch_row($result))
+			while($row = mysqli_fetch_row($result))
 			{
 				$return.= 'INSERT INTO '.$table.' VALUES(';
 				for($j=0; $j<$num_fields; $j++)
@@ -489,15 +489,15 @@ class Manage extends CI_Controller {
 		
 		//drop the database
 	
-		$link = @mysql_connect($databasehost, $databaseuser, $databasepassword);
+		$link = @mysqli_connect($databasehost, $databaseuser, $databasepassword);
 		if (!$link) {
-			die('Could not connect: ' . mysql_error());
+			die('Could not connect: ' . mysqli_error());
 		}
 		$sql = 'DROP DATABASE '.$dbname;
-		if (mysql_query($sql, $link)) {
+		if (mysqli_query($link,$sql)) {
     			echo "Database ".$dbname. " was successfully dropped\n";
 		} else {
-    			echo 'Error dropping database: ' . mysql_error() . "\n";
+    			echo 'Error dropping database: ' . mysqli_error() . "\n";
 		}
 		
 		//delete the account record from bgasAccData table
@@ -537,7 +537,7 @@ class Manage extends CI_Controller {
         //$db1=$this->load->database('login', TRUE);
 		//his->messages->add('value===>'.$dblable);
         $sqldel="DELETE from `bgasAccData` where `dblable`='$database_label'";
-        $result = mysql_query($sqldel);
+        $result = mysqli_query($link,$sqldel);
 
 		$this->messages->add('Account <b>' .$database_label. '</b> has been deleted Successfully and backup of account is stored in backups directory');
 	 	return;	

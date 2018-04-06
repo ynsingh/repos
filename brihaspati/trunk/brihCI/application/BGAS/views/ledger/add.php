@@ -37,7 +37,11 @@ $(document).ready(function() {
 	echo "<br />";
 	echo form_input($ledger_name);
 	echo "</p>";
-
+//	if(empty($ledger_group_active)){
+//		$ledger_group_active = $this->session->userdata('group_name').'#'.$this->session->userdata('ledger_group_id');
+	//	}
+////	echo $ledger_group_active;
+//	print_r($ledger_group_id);
 	echo "<p>";
 	echo form_label('Parent group', 'ledger_group_id');
 	echo "<br />";

@@ -1,12 +1,12 @@
 <?php
 class Userverify_model extends CI_Model{
 
-function Userverify_model(){
+//function Userverify_model(){
 function __construct() {
         parent::__construct();
 	}    
         //parent::Model();
- }
+ //}
 
 function get_hash_value($user_email)
 	{

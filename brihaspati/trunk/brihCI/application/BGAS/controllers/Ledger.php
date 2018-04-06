@@ -78,6 +78,15 @@ var $username;
 			'size' => '40',
 			'value' => $ledger_name,
 		);
+
+		$ledger_group_id = $this->session->userdata('ledger_group_id');
+		$ledger_group_name = $this->session->userdata('group_name');
+		$ledger_group = $ledger_group_name.'#'.$ledger_group_id;
+		if($ledger_group)
+            		$data['ledger_group_active'] = $ledger_group;
+		else
+			$data['ledger_group_active'] = '';
+
 		$data['ledger_group_id'] = $this->Group_model->get_ledger_groups();
 
 		$data['ledger_description'] = array(
@@ -96,13 +105,6 @@ var $username;
 			'value' => '',
 		);
 
-		$ledger_group_id = $this->session->userdata('ledger_group_id');
-		$ledger_group_name = $this->session->userdata('group_name');
-		$ledger_group = $ledger_group_name.'#'.$ledger_group_id;
-		if($ledger_group)
-            		$data['ledger_group_active'] = $ledger_group;
-		else
-			$data['ledger_group_active'] = 0;
 	
 		$data['op_balance_dc'] = "D";
 		$data['ledger_type_cashbank'] = FALSE;

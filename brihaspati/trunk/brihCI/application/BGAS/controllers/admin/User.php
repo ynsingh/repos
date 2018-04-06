@@ -3,13 +3,13 @@
 class User extends CI_Controller {
  function __construct() {
         parent::__construct();
-//        if(empty($this->session->userdata('id_user'))) {
- //           $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-   //         redirect('welcome');
-        }
+        if(empty($this->session->userdata('id_user'))) {
+            $this->session->set_flashdata('flash_data', 'You don\'t have access!');
+            redirect('welcome');
+   //     }
 
-	function User()
-	{
+//	function User()
+//	{
 		//parent::Controller();
 		$this->load->model('Upload_model');
 		/* Check access */
@@ -23,7 +23,7 @@ class User extends CI_Controller {
 
 		return;
 	}
-
+ }
 
 
 	function index()
@@ -331,15 +331,15 @@ class User extends CI_Controller {
 				$secondary_id = $this->get_random_secunitid($secunit_id,$number);
 			//	$secondary_id = $number;
 				//database connectivity for getting data information
-                                $con = @mysql_connect($host_name,$db_username,$db_password);
+                                $con = @mysqli_connect($host_name,$db_username,$db_password);
                                 if($con){
-                                        $value = mysql_select_db($db_name, $con);
+                                        $value = mysqli_select_db($con, $db_name);
                                 	$query = "INSERT INTO addsecondparty(sacunit,partyname,u_id,email,mobnum,partyrole) value('$secondary_id','$data_full_name','$data_uidnum','$data_user_email','$data_user_mobile','$data_category_type')";
 					//trigger_error(mysql_error()." in ".$query);
-                                        $val = mysql_query($query);
+                                         $val = mysqli_query($con, $query);
 					//$this->messages->add('insert values in party table'.$val, 'error');
                              	}//ifcon 
-                                        mysql_close($con);
+                                        mysqli_close($con);
 
  
 
@@ -634,18 +634,18 @@ class User extends CI_Controller {
                 $db_password = $value[3];
 
                 //database connectivity for getting data information
-             	$con = @mysql_connect($host_name,$db_username,$db_password);
+             	$con = @mysqli_connect($host_name,$db_username,$db_password);
                 if($con){
-                       	$value = mysql_select_db($db_name, $con);
+                       	$value = mysqli_select_db($con,$db_name);
                         //trigger_error(mysql_error()." in ".$query);
 			//if($prole == "faculty"){
 			$cl = "select * from addsecondparty where partyrole = '$prole'";
-                        $val = mysql_query($cl);
+                        $val = mysqli_query($con,$cl);
                         if($val != ''){
-                        	while($row = mysql_fetch_assoc($val))
+                        	while($row = mysqli_fetch_assoc($val))
                                 {
 					$v = $row;
-					$num = mysql_num_rows($val);
+					$num = mysqli_num_rows($val);
                                 }
                         }
 		}//if
@@ -1388,17 +1388,17 @@ class User extends CI_Controller {
                         $databaseusername=$row->uname;
                         $databasepassword=$row->dbpass;
                 }
-                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                $new_link = @mysqli_connect($databasehost, $databaseusername, $databasepassword);
                 if ($new_link)
                 {
-                        $db_selected = mysql_select_db($dbname, $new_link);
+                        $db_selected = mysqli_select_db($new_link, $dbname);
                         if ($db_selected) {
 
                         }
                 }
                 $query = "select name from groups where id='$id'";
-                $result = mysql_query($query);
-                $row = mysql_fetch_assoc($result);
+                $result = mysqli_query($new_link,$query);
+                $row = mysqli_fetch_assoc($result);
                 $headn = $row['name'];
                 $data['name']=$headn;
                 $this->template->load('admin_template','/admin/user/addpermission',$data);
@@ -1442,10 +1442,10 @@ class User extends CI_Controller {
                                 $databaseusername=$row->uname;
                                 $databasepassword=$row->dbpass;
                         }
-                        $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                        $new_link = @mysqli_connect($databasehost , $databaseusername, $databasepassword);
                         if ($new_link)
                         {
-                                $db_selected = mysql_select_db($dbname, $new_link);
+                                $db_selected = mysqli_select_db($new_link,$dbname);
                                 if ($db_selected) {
 					
                                 }
@@ -1455,7 +1455,7 @@ class User extends CI_Controller {
                         $tt=1;
                         //$query = sprintf('INSERT INTO bgas_acl '.'(id,username,groupid,roleid,ptype,atype) '.'VALUES ('','$user_name','','','','')');
                         $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','$id','1','$type','$htype')";
-                        $result = mysql_query($query);
+                        $result = mysqli_query($new_link,$query);
                         if (!$result) {
 
                                // $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -1489,11 +1489,11 @@ class User extends CI_Controller {
                         $databaseusername=$row->uname;
                         $databasepassword=$row->dbpass;
                 }
-                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                $new_link = @mysqli_connect($databasehost, $databaseusername, $databasepassword);
                 //echo $new_link;
                 if ($new_link)
                 {
-                        $db_selected = mysql_select_db($dbname, $new_link);
+                        $db_selected = mysqli_select_db($new_link,$dbname);
                                 if ($db_selected) {
 
 
@@ -1503,7 +1503,7 @@ class User extends CI_Controller {
                 $type=3;
                 //echo $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','*','1','$type','grp')";
                 $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','*','1','$type','grp')";
-                $result = mysql_query($query);
+                $result = mysqli_query($new_link,$query);
                 $data['user_name']=$user_name;
                 $data['accountname'] = $accountname;
                 $data['user_email'] = $user_email;
@@ -1528,11 +1528,11 @@ class User extends CI_Controller {
                         $databaseusername=$row->uname;
                         $databasepassword=$row->dbpass;
                 }
-                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                $new_link = @mysqli_connect($databasehost, $databaseusername, $databasepassword);
                 //echo $new_link;
                 if ($new_link)
                 {
-                        $db_selected = mysql_select_db($dbname, $new_link);
+                        $db_selected = mysqli_select_db($new_link,$dbname);
                         if ($db_selected) {
 
 //                                }
@@ -1541,13 +1541,13 @@ class User extends CI_Controller {
                 		$type=3;
 
 		                $query = "delete from bgas_acl where headid='$id' and username='$user_name'";
-                		$result = mysql_query($query);
+                		$result = mysqli_query($new_link,$query);
 	                	$data['user_name']=$user_name;
 	        	        $data['accountname'] = $accountname;
         	        	$data['user_email'] = $user_email;
                 		$this->messages->add('Permission Remove Succesfully to the Code - '.$name);
 		                $this->template->load('admin_template','/admin/user/assignpermission',$data);
-				mysql_close($new_link);
+				mysqli_close($new_link);
                 		return;
 		
         		}

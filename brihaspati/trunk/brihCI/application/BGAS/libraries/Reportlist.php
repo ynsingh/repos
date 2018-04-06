@@ -1364,15 +1364,15 @@ function previous_year_data($c = 0,$id,$code,$type,$database)
 	$this->getPreviousYearDetails();
         if($this->prevYearDB != "" ){//3
         /* database connectivity for getting previous year opening balance */
-	$con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+	$con = mysqli_connect($this->host_name, $this->db_username, $this->db_password);
 	$op_balance = array();
        	if($con){//4
-        $value = mysql_select_db($this->prevYearDB, $con);
-        $id = mysql_real_escape_string($data['id']);
+        $value = mysqli_select_db($con,$this->prevYearDB);
+        $id = mysqli_real_escape_string($data['id']);
 	$cl = "select entry_id, id, amount, dc from entry_items where ledger_id = '$id'";
-   	$val = mysql_query($cl);
+   	$val = mysqli_query($con,$cl);
 	if($val != ''){//5
-      	while($row = mysql_fetch_assoc($val))
+      	while($row = mysqli_fetch_assoc($val))
         {//6
 		if($row != null){//7
 	        if($row['dc'] == 'C'){//12

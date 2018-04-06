@@ -17,19 +17,6 @@ function __construct() {
         }
     }
 
-	function Entry()
-	{
-		//parent::Controller();
-		//$this->load->model('Entry_model');
-		//$this->load->model('Ledger_model');
-		//$this->load->model('Group_model');
-		//$this->load->model('Tag_model');
-		//$this->load->model('Budget_model');
-		//$this->load->library('GetParentlist');
-		//$this->load->model('Secunit_model');
-		//return;
-	}
-
 
 	function index()
 	{
@@ -1068,7 +1055,7 @@ $width="100%";
                 	else
                       		$data_number = $this->Entry_model->next_entry_number($entry_type_id);
                         //}
-			$this->messages->add('the value is '+$ledger_data, 'error');	
+			$this->messages->add('the value is '.$ledger_data, 'error');	
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
 			{
 				//these lines existed earlier
@@ -3149,7 +3136,7 @@ $width="100%";
                 }
 		if($cheque_no == 1)
                 {       
-                        $cheque_no1=Null;
+                        $cheque_no1=0;
                 }else{
                         $cheque_no1=$cheque_no+1;
                 }
@@ -3264,8 +3251,8 @@ $width="100%";
 	function cheque_print($entry_type, $entry_id = 0, $ledger_id, $secunitid)
         {
 		$id=0;
-		$new_cheque_no='';
-		$duplicate_id='';
+		$new_cheque_no=0;
+		$duplicate_id=0;
 		$this->db->select('id, name, entry_no')->from('cheque_print')->where('entry_no', $entry_id);
                 $allvalue = $this->db->get();
 		$no_of_row=$allvalue->num_rows();
@@ -3274,7 +3261,7 @@ $width="100%";
                         $name=$row->name;
                 }
 
-		$cheque_print_status='';
+		$cheque_print_status=NULL;
                 $data['entry_id'] = $entry_id;
                 $data['entry_type'] = $entry_type;
 		$today_date=date("Y-m-d");
@@ -4658,7 +4645,7 @@ $width="100%";
                 //$data['fund_list_active'] = 0;
 
 		$data['check'] = $check;
-			print_r($check);
+		//	print_r($check);
 
 		$data['sanc_letter_no'] = array(
                         'name' => 'sanc_letter_no',

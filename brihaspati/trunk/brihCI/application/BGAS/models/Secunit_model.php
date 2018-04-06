@@ -104,7 +104,8 @@ class Secunit_model extends CI_Model {
 		$this->db->where('date >=', $date1);
 	    $this->db->where('date <=', $date2);
 		$dr_total_q = $this->db->get();
-		if ($dr_total = $dr_total_q->row())
+		$dr_total = $dr_total_q->row();
+		if (!empty($dr_total))
 			return $dr_total->drtotal;
 		else
 			return 0;

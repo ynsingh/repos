@@ -39,11 +39,11 @@
                                 $dnm= trim(str_replace('"',"",$dbn));
                                 $name= trim(str_replace('"',"",$dunm));
                                 $psw= trim(str_replace('"',"",$dbp));
-                                $conn =@mysql_connect($hst, $name, $psw);
+                                $conn =@mysqli_connect($hst, $name, $psw);
                                 $cdate= date("F d Y ");
                                 if ($conn)
                                 {
-					$query= mysql_select_db(trim($dnm), $conn);
+					$query= mysqli_select_db($conn, trim($dnm));
                                         if($query)
                                         {
 						$sqlpath=$fullpath.'/config/sqlscripts/';	
@@ -76,7 +76,7 @@
                                                                         foreach ($statements as $query)
                                                                         {
                                                                                 if(trim($query) != '') {
-                                                                                mysql_query($query);
+                                                                                mysqli_query($conn,$query);
                                                                                 }
                                                                         }
                                                                 }
@@ -84,10 +84,10 @@
                                                 }
                                         }
                                 } else {
-                                        echo ('Not connect to database.' . mysql_error(). 'error');
+                                        echo ('Not connect to database.' . mysqli_error(). 'error');
                                         return;
                                 }
-				  mysql_close();
+				  mysqli_close();
                          }
                 }
         }

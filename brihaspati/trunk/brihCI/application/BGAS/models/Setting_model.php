@@ -7,12 +7,12 @@ function __construct() {
 	var $upload_path;
 	var $logo_path_url;
 
-	function Setting_model()
-	{
+//	function Setting_model()
+//	{
 		//parent::Model();
 		//$this->upload_path= realpath(BASEPATH.'../uploads/logo');
 		//$this->logo_path_url=base_url().'uploads/logo';
-	}
+//	}
 
 	function get_current()
 	{
@@ -93,14 +93,14 @@ function __construct() {
                 }
 		$value = '';
                 if( $db_name_q->num_rows() == 1 ) {
-                        $con = mysql_connect($host_name, $db_username, $db_password);
+                        $con = mysqli_connect($host_name, $db_username, $db_password);
                         $op_balance = array();
                         if($con){
-                                $value = mysql_select_db($db_name, $con);
+                                $value = mysqli_select_db($con,$db_name);
                                 $cl = "select * from settings where id = '1'";
-                                $val = mysql_query($cl);
+                                $val = mysqli_query($con,$cl);
                                 if($val != ''){
-                                        while($row = mysql_fetch_assoc($val))
+                                        while($row = mysqli_fetch_assoc($val))
                                         {
                                                	$value=$row['ledger_name']; 
                                                 //mysql_close($con);

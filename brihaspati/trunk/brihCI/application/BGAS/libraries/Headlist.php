@@ -43,10 +43,10 @@ class Headlist
                         $databaseusername=$row->uname;
                         $databasepassword=$row->dbpass;
                 }
-                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                $new_link = @mysqli_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
                 if ($new_link)
                 {
-                        $db_selected = mysql_select_db($databasename, $new_link);
+                        $db_selected = mysqli_select_db($new_link,$databasename);
                         if ($db_selected) {
 
                         }
@@ -62,13 +62,13 @@ class Headlist
                 }
 		else{
 			$query = sprintf("SELECT * from groups where id=$id limit 1");
-			$result = mysql_query($query);	
+			$result = mysqli_query($new_link,$query);	
 			if (!$result) {
-				$message  = 'Invalid query: ' . mysql_error() . "\n";
+				$message  = 'Invalid query: ' . mysqli_error() . "\n";
 				$message .= 'Whole query: ' . $query;
 				die($message);
 			}
-			while ($row = mysql_fetch_assoc($result)) {
+			while ($row = mysqli_fetch_assoc($result)) {
 				
 				$id=$row['id'];
 				$this->id=$row['id'];
@@ -88,16 +88,16 @@ class Headlist
 		$CI =& get_instance();
 		$query1 = sprintf("SELECT * from groups where parent_id=$this->id");
 
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($new_link,$query1);
                         if (!$result1) {
 				
-                                $message  = 'Invalid query: ' . mysql_error() . "\n";
+                                $message  = 'Invalid query: ' . mysqli_error() . "\n";
                                 $message .= 'Whole query: ' . $query1;
                                 die($message);
                         }
 
 		$counter = 0;
-		while($row = mysql_fetch_assoc($result1)) {
+		while($row = mysqli_fetch_assoc($result1)) {
 	                $id=$row['id'];
 			$this->children_groups[$counter] = new Headlist();
 				$this->children_groups[$counter]->init($accountname,$this->user_name,$id);
@@ -112,8 +112,8 @@ class Headlist
 		$CI =& get_instance();
 		$counter=0;
 		$query1 = sprintf("SELECT * from ledgers where group_id=$this->id");
-                $result1 = mysql_query($query1);
-		while($row = mysql_fetch_assoc($result1)) {
+                $result1 = mysqli_query($new_link,$query1);
+		while($row = mysqli_fetch_assoc($result1)) {
 			$this->children_ledgers[$counter]['id'] = $row['id'];
                         $this->children_ledgers[$counter]['code'] = $row['code'];
                         $this->children_ledgers[$counter]['name'] = $row['name'];
@@ -156,8 +156,8 @@ class Headlist
 			//echo $this->user_name;
 			//echo $this->id;
 			$query1 = sprintf("SELECT * from bgas_acl where username='$this->user_name' and headid='$this->id'");
-			$result1 = mysql_query($query1);
-			$perm = mysql_num_rows($result1);
+			$result1 = mysqli_query($new_link,$query1);
+			$perm = mysqli_num_rows($result1);
 			//echo $row = mysql_fetch_assoc($result1);
 		
 			$remove="Remove";	

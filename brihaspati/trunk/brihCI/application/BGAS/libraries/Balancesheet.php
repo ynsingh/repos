@@ -332,17 +332,17 @@ class Balancesheet
                 $this->getPreviousYearDetails();
                 if($this->prevYearDB != ""){
 			/* database connectivity for getting previous year opening balance */
-                        $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                        $con = mysqli_connect($this->host_name, $this->db_username, $this->db_password);
 			if($con){//4
-                       		$value = mysql_select_db($this->prevYearDB, $con);
+                       		$value = mysqli_select_db($con,$this->prevYearDB);
                                 
-				$id = mysql_real_escape_string($this->id);
-				$type = mysql_real_escape_string($type);
+				$id = mysqli_real_escape_string($this->id);
+				$type = mysqli_real_escape_string($type);
 				
                                 $cl = "select name from ledgers where id = '$id'";
-         			$val = mysql_query($cl);
+         			$val = mysqli_query($con,$cl);
                                 if($val != ''){//5
- 	                               while($row = mysql_fetch_assoc($val))
+ 	                               while($row = mysqli_fetch_assoc($val))
                                        {
         	                       		if($row != null)       
 							$isLedger = true;			
@@ -351,9 +351,9 @@ class Balancesheet
 
                 	        if($isLedger){
 					$cl = "select amount from fund_management where fund_id = '$id' and type = '$type'";
-					$val = mysql_query($cl);
+					$val = mysqli_query($con,$cl);
                                 	if($val != ''){//5
-                                       		while($row = mysql_fetch_assoc($val))
+                                       		while($row = mysqli_fetch_assoc($val))
                                        		{
                                                 	if($row != null)                 
                                                         	$sum = $sum + $row['amount'];
@@ -370,11 +370,11 @@ class Balancesheet
 					if(count($this->children_ledgers) > 0){
                                                 foreach ($this->children_ledgers as $id => $data)
         	                                {
-							$id = mysql_real_escape_string($data['id']);
+							$id = mysqli_real_escape_string($data['id']);
 							$cl = "select amount from fund_management where fund_id = '$id' and type = '$type'";
-							$val = mysql_query($cl);
+							$val = mysqli_query($con,$cl);
                                         		if($val != ''){//5
-		                                                while($row = mysql_fetch_assoc($val))
+		                                                while($row = mysqli_fetch_assoc($val))
                 		                                {
                                 		                        if($row != null)
                                                 		                $sum = $sum + $row['amount'];
@@ -478,16 +478,16 @@ function additionToFundsDonation()
 
 		if($this->prevYearDB != ""){
 			/* database connectivity for getting previous year opening balance */
-                        $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                        $con = mysqli_connect($this->host_name, $this->db_username, $this->db_password);
 
 			if($con){//4
-	                        $value = mysql_select_db($this->prevYearDB, $con);
-                                $id = mysql_real_escape_string($this->id);
+	                        $value = mysqli_select_db($con,$this->prevYearDB);
+                                $id = mysqli_real_escape_string($this->id);
                                 
 				$cl = "select name from ledgers where id = '$id'";
-                                $val = mysql_query($cl);
+                                $val = mysqli_query($con,$cl);
                                 if($val != ''){
-          	                      while($row = mysql_fetch_assoc($val))
+          	                      while($row = mysqli_fetch_assoc($val))
                                       {
                 	                      if($row != null)
 						$isLedger = true;
@@ -496,9 +496,9 @@ function additionToFundsDonation()
 
 				if($isLedger){
 					$cl = "select amount from entry_items where ledger_id = '$id' and dc = 'C'";
-                        	        $val = mysql_query($cl);
+                        	        $val = mysqli_query($con,$cl);
                                 	if($val != ''){
-	                                      while($row = mysql_fetch_assoc($val))
+	                                      while($row = mysqli_fetch_assoc($val))
         	                              {
                 	                              if($row != null)
                         	                        $sum = $sum + $row['amount'];
@@ -515,11 +515,11 @@ function additionToFundsDonation()
 	                	        if(count($this->children_ledgers) > 0){
         	                	        foreach ($this->children_ledgers as $id => $data)
                 	                	{
-							$id = mysql_real_escape_string($data['id']);
+							$id = mysqli_real_escape_string($data['id']);
                                 	        	$cl = "select amount from entry_items where ledger_id = '$id' and dc = 'C'";
-                                			$val = mysql_query($cl);
+                                			$val = mysqli_query($con,$cl);
 		                                	if($val != ''){
-	                		                      while($row = mysql_fetch_assoc($val))
+	                		                      while($row = mysqli_fetch_assoc($val))
         	                        		      {
                 	                              			if($row != null)
 				                                                $sum = $sum + $row['amount'];
@@ -1086,17 +1086,17 @@ function current_liabilities($id,$count,$code,$type,$database)
 	$CI = & get_instance();
 	$current_active_account = $CI->session->userdata('active_account');
         $counter = 1;
-        $sum = "";
-        $sum1 = "";
-        $total = "";
-        $sum2 = "";
-        $dr_total = "";
-        $cr_total = "";
+        $sum = 0;
+        $sum1 = 0;
+        $total = 0;
+        $sum2 = 0;
+        $dr_total = 0;
+        $cr_total = 0;
 	$dr_amount = 0.00;
 	$cr_amount = 0.00;
-        $count1 = "";
-        $prev_sum ="";
-        $prev_sum1 = "";
+        $count1 = 0;
+        $prev_sum =0;
+        $prev_sum1 = 0;
         $i = 0;
         $schedulelist2 = "";
         $schedulelist1 = "";
@@ -1398,15 +1398,15 @@ function provisions($id,$count,$code,$type,$database)
 	$CI = & get_instance();
 	$current_active_account = $CI->session->userdata('active_account');
         $counter = 1;
-        $sum = "";
-        $sum1 = "";
-        $total = "";
-        $sum2 = "";
-        $dr_total = "";
-        $cr_total = "";
-        $count1 = "";
-        $prev_sum ="";
-        $prev_sum1 = "";
+        $sum = 0;
+        $sum1 = 0;
+        $total = 0;
+        $sum2 = 0;
+        $dr_total = 0;
+        $cr_total = 0;
+        $count1 = 0;
+        $prev_sum =0;
+        $prev_sum1 = 0;
         $i = 9;
         $schedulelist2 = "";
         $schedulelist1 = "";
@@ -1862,14 +1862,14 @@ function Investments($id,$type2,$count,$code,$database,$type,$i)
 {//main
 	$CI = & get_instance();
 	$counter = 1;
-	$sum1 = "";
-	$sum2 = "";
-	$sum3 = "";
-	$sum4 = "";
-	$prev_sum = "";
-	$prev_sum1 = "";
-	$prev_sum2 = "";
-	$prev_sum3 = "";
+	$sum1 = 0;
+	$sum2 = 0;
+	$sum3 = 0;
+	$sum4 = 0;
+	$prev_sum = 0;
+	$prev_sum1 = 0;
+	$prev_sum2 = 0;
+	$prev_sum3 = 0;
 	$schedulelist2 = "";
 	$schedulelist3 = "";
 	$CI =& get_instance();
@@ -2182,17 +2182,17 @@ function fixed_assets($id,$count,$code,$type,$database)
 	$current_active_account = $CI->session->userdata('active_account');
 	$counter = 1;
 	$count1 = 1;
-	$sum = "";
-	$sum1 = "";
+	$sum = 0;
+	$sum1 = 0;
 	$opening_balance = 0.00;
-	$total = "";
-	$total1 = "";
-	$total2 = "";
-	$total3 = "";
-	$total4 = "";
+	$total = 0;
+	$total1 = 0;
+	$total2 = 0;
+	$total3 = 0;
+	$total4 = 0;
 	$schedulelist2 = "";
 	$schedulelist3 = "";
-	$prev_sum = "";
+	$prev_sum = 0;
 	$i = 0;
 	$net_dr = 0.00;
 	$net_opening_bal = 0.00;
@@ -3119,11 +3119,11 @@ return array($net_dr, $net_cr, $net_total, $net_opening_bal, $net_current_year, 
 function get_schedule($count,$code,$type,$database)
 {
 	$counter = 1;
-        $sum = "";
+        $sum = 0;
 	$count1 = 1;
-        $sum1 = "";
-        $prev_sum ="";
-        $prev_sum1 = "";
+        $sum1 = 0;
+        $prev_sum =0;
+        $prev_sum1 = 0;
         $i = 0;
         $schedulelist2 = "";
         $schedulelist1 = "";
@@ -3386,11 +3386,11 @@ function get_schedule($count,$code,$type,$database)
 function loans_advances($count,$code,$type,$database)
 {//main
 	$counter = 1;
-	$sum = "";
-	$sum1 = "";
-	$count1 = "";
-	$prev_sum ="";
-	$prev_sum1 = "";
+	$sum = 0;
+	$sum1 = 0;
+	$count1 = 0;
+	$prev_sum =0;
+	$prev_sum1 = 0;
 	$i = 0;
 	$schedulelist2 = "";
 	$schedulelist1 = "";

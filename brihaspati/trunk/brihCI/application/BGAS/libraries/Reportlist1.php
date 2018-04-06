@@ -160,8 +160,9 @@ class Reportlist1
                 $liability_total1 = 0;
 		$current_active_account = $CI->session->userdata('active_account');
 		//code for previous year
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                $file_name="Liability"."-".$current_active_account."-".$prev_year.".xml";
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
+		$file_name="Liability"."-".$current_active_account."-".$prev_year.".xml";
+//		echo $file_name; die;
                 $tt=$acctpath."/".$file_name;
                 $CI->db->select('name,code,id,parent_id')->from('groups')->where('parent_id',$id);
                 $main = $CI->db->get();
@@ -232,7 +233,7 @@ class Reportlist1
                         $counter = 3;
 			$flag='true';
 			//code for previous year
-	                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+	                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         	        $file_name="Assets"."-".$current_active_account."-".$prev_year.".xml";
                 	$tt=$acctpath."/".$file_name;
 
@@ -385,7 +386,7 @@ class Reportlist1
         	$current_active_account = $CI->session->userdata('active_account');
             	$id = $CI->Ledger_model->get_group_id($code);
                 $parent = $CI->Ledger_model->get_group_name($id);
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
                 $CI->db->select('name,code,id,op_balance, op_balance_dc')->from('ledgers')->where('group_id',$id);
@@ -519,7 +520,7 @@ class Reportlist1
 		$current_active_account = $CI->session->userdata('active_account');
                 $id = $CI->Group_model->get_group_id($code);
 		$name = $CI->Group_model->get_group_name($id);
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
@@ -838,7 +839,7 @@ d Investments')
                 $prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
                 $id = $CI->Group_model->get_group_id($code);
@@ -1088,7 +1089,7 @@ d Investments')
 		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
@@ -1214,7 +1215,7 @@ d Investments')
 		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
@@ -2450,7 +2451,7 @@ d Investments')
                 $prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 		$CI->db->select('id,name,code')->from('groups')->where('parent_id',$id);
@@ -2621,7 +2622,7 @@ d Investments')
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
                 /*Get current label*/
                 $current_active_account = $CI->session->userdata('active_account');
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
@@ -3722,7 +3723,7 @@ d Investments')
 	$year=explode("-",$prev_year); 
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
         $current_active_account = $CI->session->userdata('active_account');
-	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
 
         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
         $main = $CI->db->get();
@@ -3940,7 +3941,7 @@ d Investments')
         $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
         $id = $CI->Ledger_model->get_group_id($code);
         $parent = $CI->Ledger_model->get_group_name($id);
-	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
@@ -4262,7 +4263,7 @@ d Investments')
 
         $id = $CI->Ledger_model->get_group_id($code);
         $parent = $CI->Ledger_model->get_group_name($id);
-	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
 
@@ -4587,7 +4588,7 @@ d Investments')
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
         $current_active_account = $CI->session->userdata('active_account');
         $id = $CI->Ledger_model->get_group_id($code);
-	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
         $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
@@ -4640,7 +4641,7 @@ d Investments')
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
 	$CI = & get_instance();
         $current_active_account = $CI->session->userdata('active_account');
-	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
         $id = $CI->Ledger_model->get_group_id($code);
@@ -4692,7 +4693,7 @@ d Investments')
         $prev_year=$this->get_fy_year();
         $year=explode("-",$prev_year);
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
         $id = $CI->Ledger_model->get_group_id($code);
@@ -4831,7 +4832,7 @@ d Investments')
 	$prev_year=$this->get_fy_year();
         $year=explode("-",$prev_year);
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
         $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
 
@@ -5325,7 +5326,7 @@ d Investments')
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
 
                 // code for reading previous year data from xml
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
@@ -5602,7 +5603,7 @@ d Investments')
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
 
                 //code for reading previous year data from xml
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
