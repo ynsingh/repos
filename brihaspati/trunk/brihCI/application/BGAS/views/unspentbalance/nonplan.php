@@ -227,10 +227,10 @@
 	echo "<table border=\"1\" class=\"simple-table\" width=\"70%\">";
 	echo "<thead><tr><td width=\"90\" colspan=\"2\" class=\"bold\">Sanction letter No. & Date</td><td align=\"center\" class=\"bold\">Salary</td><td align=\"center\" class=\"bold\">Pension & Pensionary Benifit</td><td align=\"center\" class=\"bold\">Non-Salary</td></tr></thead>";
 	echo "<tr><td colspan=\"2\"></td><td class=\"bold\" align=\"center\">OH:36</td><td class=\"bold\" align=\"center\">OH:31</td><td class=\"bold\" align=\"center\">OH:31</td>";
-	$Non_salary_total = '';
-	$salary_total = '';
-	$Pension_benefit_total = '';
-	$total = '';
+	$Non_salary_total = 0;
+	$salary_total = 0;
+	$Pension_benefit_total = 0;
+	$total = 0;
 	
 	$this->db->distinct();
         $this->db->select('sanc_letter_date')->from('entries')->where('sanc_type','non_plan');

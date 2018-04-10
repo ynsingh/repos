@@ -406,8 +406,8 @@ function __construct() {
 		$this->form_validation->set_rules('branchname', 'Branch Name','trim');
 		$this->form_validation->set_rules('ifsccode', 'IFSC Code','trim');
 		$this->form_validation->set_rules('bankaddress', 'Bank Address','trim');
-		$this->form_validation->set_rules('pannum', 'PAN Number','trim  |max_length[10]');
-		$this->form_validation->set_rules('uidnum', 'UID Number','trim  |max_length[12]');
+		$this->form_validation->set_rules('pannum', 'PAN Number','trim|max_length[10]');
+		$this->form_validation->set_rules('uidnum', 'UID Number','trim|max_length[12]');
 		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
 		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
@@ -929,7 +929,9 @@ function __construct() {
 				$data_op_balance_dc='D';
 			}
 			
-
+			if(empty($data_opbal)){
+				$data_opbal=0.0;
+			}
 			$this->db->trans_start();
                         $insert_data=array(
                                 'sacunit' =>$secondary_id,
@@ -955,13 +957,16 @@ function __construct() {
                         );
 
                         $sunitid = $insert_data['sacunit'];
-
+//			print_r($insert_data);die;
                         if ( ! $this->db->insert('addsecondparty', $insert_data))
-                        {
+			{
+				$msg11=	$this->db->error();
+
                                 $this->db->trans_rollback();
-                                $this->logger->write_message("error", "Error adding second party");
+				$this->logger->write_message("error", "Error adding second party");
+//				print_r($this->db->error()); die;
                                 $msg1= 'Error addding Secondary Unit.';
-				return $msg1;
+				return $msg1. "==".$msg11['message'];
                         }
                         else {
                                 $this->db->trans_complete();

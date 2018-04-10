@@ -97,10 +97,11 @@
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";
 	}
 		echo "<tr class=\"tr-total\"><td colspan=\"1\">TOTAL ";
-	if (float_ops($temp_dr_total, $temp_cr_total, '=='))
+/*	if (float_ops($temp_dr_total, $temp_cr_total, '=='))
 		echo "<img src=\"" . asset_url() . "assets/bgas/images/icons/match.png\">";
 	else
 		echo "<img src=\"" . asset_url() . "assets/bgas/images/icons/nomatch.png\">";
+ */
 	echo "</td><td> " . convert_amount_dc($total_op_bal) . "</td><td>Dr " . money_format('%!i', convert_cur($temp_dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($temp_cr_total)) ."</td><td> " . convert_amount_dc($total_cl_bal) ."</td></tr>";
 	echo "</table>";
 	echo "<br>";

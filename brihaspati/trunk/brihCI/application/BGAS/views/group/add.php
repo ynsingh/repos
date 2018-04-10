@@ -44,7 +44,8 @@ $(document).ready(function() {
 	echo "<p>";
 	echo form_label('Parent group', 'group_parent');
 	echo "<br />";
-	echo form_dropdown('group_parent', $group_parent, $group_parent_active, "class = \"group-parent\"");
+	echo form_dropdown('group_parent', $group_parent, $group_parent_active);
+	//echo form_dropdown('group_parent', $group_parent, $group_parent_active, "class = \"group-parent\"");
 	echo "</p>";
 
 	/**
@@ -52,7 +53,7 @@ $(document).ready(function() {
 	 * for the selected group head.
 	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
 	 */
-	$attributes = array('class' => "parent", 'style' => "width:600px");
+/*	$attributes = array('class' => "parent", 'style' => "width:600px");
 	echo form_fieldset('Parent Child Hierarchy', $attributes);
 	echo "<p>";
 	$this->load->library('session');
@@ -94,7 +95,7 @@ $(document).ready(function() {
 	}
 	echo "</p>";
 	echo form_fieldset_close();
-
+*/
 	echo "<p>";
 	echo form_label('Group Description', 'group_description');
 	echo "<br />";

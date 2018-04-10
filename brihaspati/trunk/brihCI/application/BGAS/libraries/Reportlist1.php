@@ -219,7 +219,7 @@ class Reportlist1
                         		}
 					echo "</tr>";
 					//code for previous year
-					$mhrd_total=$mhrd_total+$mhrdlist1;
+					$mhrd_total=$mhrd_total+(float)$mhrdlist1;
 		                        $this->total_mhrd = $mhrd_total;
                         	}//ifcode 
                         }//foreach
@@ -263,7 +263,7 @@ class Reportlist1
                                 echo "</td>";
                                 echo "<td align=\"right\">" . convert_amount_dc($asset_total) . "</td>";
                                 echo "<td align=\"right\">" . convert_amount_dc($mhrdlist1) . "</td>";//code for previous year
-				$mhrd_total=$mhrd_total+$mhrdlist1;
+				$mhrd_total=$mhrd_total+(float)$mhrdlist1;
 				echo "</tr>";
 				}else{
 				$data = $CI->payment_model->xml_creation('Assets',$ledg_id,$database,$name,$curr_year,$asset_total);
@@ -3753,7 +3753,7 @@ d Investments')
                         $sum = $sum + $total;
                         $total = 0 - $total;
                         $paymentlist2=$CI->payment_model->xml_read($tt,$name);
-			$type_total=$type_total+$paymentlist2;
+			$type_total=$type_total+(float)$paymentlist2;
 			$this->total=$type_total;
                 	echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
                 	echo"</td>";
@@ -3771,7 +3771,7 @@ d Investments')
                 	$total = $income->total;
                 	$sum = $sum + $total;
                 	$paymentlist2=$CI->payment_model->xml_read($tt,$name);
-                	$type_total=$type_total+$paymentlist2;
+                	$type_total=$type_total+(float)$paymentlist2;
 			$this->total=$type_total;
                 	if($name == 'Depreciation'){
                     	echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . '23', 4, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));

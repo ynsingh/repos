@@ -11,7 +11,8 @@ $(document).ready(function() {
         	                $('.parent').show();
                 	        ledger = $(this).val();
 				var ledgerArray = ledger.split('#');
-				name = ledgerArray[0];
+			//	name =urlencode(utf8_encode(ledgerArray[0]));
+				name =ledgerArray[0];
 				id = ledgerArray[1]; 
 
 				ledger_name = $('#ledger_name').val();
@@ -31,21 +32,36 @@ $(document).ready(function() {
 
 <?php
 	echo form_open('ledger/add');
-
+//	print_r($ledger_group_id);die;
 	echo "<p>";
 	echo form_label('Ledger name', 'ledger_name');
 	echo "<br />";
 	echo form_input($ledger_name);
 	echo "</p>";
-//	if(empty($ledger_group_active)){
-//		$ledger_group_active = $this->session->userdata('group_name').'#'.$this->session->userdata('ledger_group_id');
-	//	}
-////	echo $ledger_group_active;
+//	if(empty(($ledger_group_active))||(empty($group_name))){
+//		$ledger_group_active = utf8_decode(urldecode($this->session->userdata('group_name'))).'#'.$this->session->userdata('ledger_group_id');
+//		$group_name = utf8_decode(urldecode($this->session->userdata('group_name')));
+//		}
+//	echo $ledger_group_active;die;
 //	print_r($ledger_group_id);
 	echo "<p>";
+//	echo "<label for=\"ledger_group_id\" style=\"font-size:15px;\"> Parent group </label>";
+//	echo "<br />";
+?>
+<!--	<select name="ledger_group_id" id="ledger_group_id" class="ledger-parent" style="width:300px;">
+		<option value="<?php echo $ledger_group_active ?>"><?php echo $group_name; ?></option> -->
+<?php	
+			//print_r($ledger_group_id);die;
+//			foreach($ledger_group_id as $id=>$name): ?>
+<!--			 <option value="<?php echo $id; ?>"><?php echo $name; ?></option>-->
+	<?	//endforeach;
+//	echo "</select>"
+//	die;
+//	echo "<br />";
 	echo form_label('Parent group', 'ledger_group_id');
 	echo "<br />";
-	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
+	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active);
+	//echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
 	echo "</p>";
 
 	/**
@@ -53,7 +69,7 @@ $(document).ready(function() {
          * for the selected ledger head.
          * @author Priyanka Rawat <rpriyanka12@ymail.com>
          */
-	$attributes = array('class' => "parent", 'style' => "width:600px");
+/*	$attributes = array('class' => "parent", 'style' => "width:600px");
         echo form_fieldset('Parent Child Hierarchy', $attributes);
         echo "<p>";
         $this->load->library('session');
@@ -94,7 +110,7 @@ $(document).ready(function() {
         }
         echo "</p>";
         echo form_fieldset_close();
-
+*/
 //	if (code.startwith(10|20){ 
     echo "<p>";
 	echo form_label('Ledger Description', 'ledger_description');

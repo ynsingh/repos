@@ -12,7 +12,7 @@ class Manage extends CI_Controller {
 
 //	function Manage()
 //	{
-		parent::Controller();
+//		parent::Controller();
 
 		/* Check access */
 

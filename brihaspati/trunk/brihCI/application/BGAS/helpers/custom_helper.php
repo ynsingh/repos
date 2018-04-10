@@ -67,7 +67,7 @@ if ( ! function_exists('convert_amount_dc'))
 		if ($amount == "D")
 			return "0";
 		else if ($amount < 0)
-			return "Cr " . money_format('%!i', convert_cur(-$amount));
+			return "Cr " . money_format('%!i', convert_cur(-(float)$amount));
 		else
 			return "Dr " . money_format('%!i', convert_cur($amount));
 	}

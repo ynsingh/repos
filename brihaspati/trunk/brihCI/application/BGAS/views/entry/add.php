@@ -754,6 +754,7 @@ $(document).ready(function() {
 
 		// line added by Priyanka	
 		echo "<td id =\"ledger\">" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
+		//echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
@@ -802,7 +803,7 @@ $(document).ready(function() {
 	        echo "<td>";
 		        echo form_input($data);
 		echo "</td>";
-		echo "</tr>";
+		echo "</tr>"; 
 	}
 
 	echo "<tr><td colspan=\"7\"></td></tr>";	
