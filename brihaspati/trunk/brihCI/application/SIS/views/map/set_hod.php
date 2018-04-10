@@ -122,6 +122,17 @@
                         </select>
                     </td>
                 </tr>
+		<tr>
+                    <td>  Choose Your UO : <font color='Red'>*</font></td>
+                    <td><select name="uo" id="uo" style="width:100%;" required="required">
+                        <option value="">Select UO</option>
+                         <?php foreach($this->uo as $udatas): ?>
+                        <option value="<?php echo $udatas->ul_uocode; ?>"><?php echo $udatas->ul_uoname ." ( ". $udatas->ul_uocode." )"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>  Choose your Department: <font color='Red'>*</font></td>
                     <td>

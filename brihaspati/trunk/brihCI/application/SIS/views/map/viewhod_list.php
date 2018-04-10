@@ -57,16 +57,35 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $serial_no = 1;?>
-              <?php if( count($records) ):  ?>
-                    <?php foreach($records as $record){ ?>
-                        <tr>
+                <?php $serial_no = 1;
+		$uoprid =0;
+		
+               if( count($records) ):  
+                    foreach($records as $record){ 
+			if($record->hl_uopid != $uoprid) {
+                                $uoprid = $record->hl_uopid;
+                                echo "<tr>";
+                                echo "<td colspan=8>";
+                                echo "<b>";
+                                echo $this->loginmodel->get_listspfic1('authorities','name','priority',$record->hl_uopid)->name;
+                                echo " ( ";
+                                echo $this->loginmodel->get_listspfic1('authorities','code','priority',$record->hl_uopid)->code;
+                                echo " ) ";
+                                echo "</b>";
+                                echo "</td>";
+                                echo "</tr>";
+                        }
+
+ ?>                       <tr>
                             <td><?php echo $serial_no++; ?></td>
                             
                             <td>
                                 <?php if(!empty($record->hl_empcode)):?>
                                 <?php 
-                                   echo  $pfno=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode)->emp_name;
+                                     $pfno=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode);
+					if(!empty($pfno)){
+                                   		echo  $pfno->emp_name;
+					}
                                 
                                 ?>
                                 <?php else : ?>

@@ -72,13 +72,15 @@ class Upl2 extends CI_Controller
                             $pfno= trim($datal[1]);
                             $campus = trim($datal[2]);
                             $dept = trim($datal[3]);
-                            $dfrom = trim($datal[4]);
-                            $dto = trim($datal[5]);
+                            $uo = trim($datal[4]);
+                            $dfrom = trim($datal[5]);
+                            $dto = trim($datal[6]);
                             $status ='Fulltime';
                             
                             
                             $campusid=$this->commodel->get_listspfic1('study_center','sc_id','sc_code',$campus)->sc_id;
                             $deptid=$this->commodel->get_listspfic1('Department','dept_id','dept_code',$dept)->dept_id;
+                            $uoid=$this->lgnmodel->get_listspfic1('authorities','priority','code',$uo)->priority;
                             
                             if((!empty($campusid)) && (!empty($deptid))){
                              
@@ -129,6 +131,7 @@ class Upl2 extends CI_Controller
                                                 'hl_empcode'=> $pfno,
                                                 'hl_deptid'=> $deptid,
                                                 'hl_scid'=> $campusid,
+						`hl_uopid` => $uoid,
                                                 'hl_datefrom'=> $dfrom,
                                                 'hl_dateto'=> $dto,
                                                 'hl_status'=> $status,

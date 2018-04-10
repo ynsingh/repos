@@ -158,7 +158,7 @@
         <table width="100%"><tr style=" background-color: graytext;">
             <td>
                 <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
-                <div style="margin-left:500px;"><b>List of Staff Position Details</b></div>
+                <div style="margin-left:500px;"><b>List of Staff Position with Staff Name</b></div>
             </td>           
 		
 	<!--<//?php

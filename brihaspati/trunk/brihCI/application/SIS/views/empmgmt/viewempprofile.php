@@ -57,10 +57,128 @@
                     <?php endif?>
                       
                 </td></tr>
-               <tr><td colspan="7" align="right"> 
-                    <?php //echo anchor("staffmgmt/editempprofile/{$record->emp_id}","Edit Information",array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+                <!--<tr></tr>-->
+                <tr><td>
+                    <p><b>Personal Information :</b></p>
                 </td></tr>
-               <tr></tr>
+                <tr></tr>
+                <tr> 
+                    <td>Employee PF No : </td>
+                    <td><?php echo $record->emp_code;?></td> 
+                    <td>Employee Name :</td>
+                    <td><?php echo $record->emp_name ;?></td> 
+                    <td>Fathers Name :</td>
+                    <td colspan="2"><?php echo $record->emp_father; ?></td>
+               
+                </tr>
+                <tr></tr>
+                <tr> 
+                    <td>Gender : </td>
+                    <td><?php echo $record->emp_gender;?></td> 
+                    <td>Community :</td>
+                    <td><?php echo $record->emp_community;?></td> 
+                    <td>Religion :</td>
+                    <td colspan="2"><?php echo $record->emp_religion;?></td>
+               
+                </tr>
+                <tr></tr>
+                <tr> 
+                    <td>Caste : </td>
+                    <td><?php echo $record->emp_caste; ?></td> 
+                    <td>Whether Physically Handicapped :</td>
+                    <td><div><input type="radio" name="phstatus" value="yes" <?php echo ($record->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="phstatus" value="no" <?php echo ($record->emp_phstatus == 'no'?'checked="checked"':'"checked"'); ?> >No
+                    </div> </td> 
+                    <td>Details Of PH :</td>
+                    <td colspan="2"><?php echo $record->emp_phdetail; ?><td>
+               
+                </tr>
+                <tr></tr>
+                <tr> 
+                    <td>Blood Group : </td>
+                    <td><?php echo $record->emp_bloodgroup;?></td> 
+                    <td>Date Of Birth :</td>
+                    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dob))); ?></td> 
+                    <td>Pan No :</td>
+                    <td colspan="2"><?php echo $record->emp_pan_no;?></td>
+               
+                </tr>
+                <tr></tr>
+                <tr> 
+                    <td>Bank Name : </td>
+                    <td>
+                        <?php 
+                        $fulldata=$record->emp_bank_ifsc_code;
+                        $bname=explode(",",$fulldata);  
+                        echo $bname[0]; 
+                        ;?>
+                    </td> 
+                    <td>IFSC Code :</td>
+                    <td><?php echo $bname[1]; ?></td> 
+                    <td>Bank ACC No :</td>
+                    <td colspan="2"><?php echo $record->emp_bank_accno; ?></td>
+               
+                </tr>
+                <tr></tr>
+                <tr> 
+                    <td>Aadhaar No : </td>
+                    <td colspan="6" ><?php echo $record->emp_aadhaar_no; ?></td> 
+                    <!--<td>IFSC Code :</td>
+                    <td> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
+                    <td>Bank ACC No :</td>
+                    <td><?php echo $record->emp_post; ?></td>-->
+               
+                </tr>
+                <tr></tr>
+                <tr><td colspan="7">    
+                    <HR COLOR="#6699FF" SIZE="2">
+                </td></tr>
+                <tr></tr>
+                <tr><td>
+                    <p><b>Communication Information:</b></p>
+                <tr><td>
+                <tr></tr>
+                <tr> 
+                    <td>E-Mail ID : </td>
+                    <td><?php echo $record->emp_email; ?></td> 
+                    <td>Phone/Mobile No :</td>
+                    <td><?php echo $record->emp_phone; ?></td> 
+                    <td>Address :</td>
+                    <td colspan="2" ><?php echo $record->emp_address;?></td>
+               
+                </tr>
+                
+                <tr><td colspan="7">    
+                    <HR COLOR="#6699FF" SIZE="3">
+                </td></tr>
+                <tr></tr>
+                <tr><td>
+                    <p><b>Educational Information:</b></p>
+                </td></tr>    
+                <tr></tr>
+                <tr> 
+                    <td>Qualification : </td>
+                    <td><?php echo $record->emp_qual;?></td> 
+                    <td>Phd Status :</td>
+                    <td><?php echo $record->emp_phd_status;?></td> 
+                    <td>Date Of Phd Completion :</td>
+                    <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofphd))); ?></td>
+               
+                </tr>
+                <tr></tr>
+                <tr> 
+                    <td>ASSR Exam : </td>
+                    <td><?php echo $record->emp_AssrExam_status;?></td> 
+                    <td>Date Of ASSR Exam :</td>
+                    <td colspan="3"> <?php echo implode('-', array_reverse(explode('-', $record->emp_dateofAssrExam))) ;?></td> 
+                   <!-- <td>Date Of Phd Completion :</td>
+                    <td><?php echo $record->emp_post; ?></td>-->
+               
+                </tr>
+                <tr><td colspan="7">    
+                    <HR COLOR="#6699FF" SIZE="3">
+                </td></tr>
+                <tr></tr>
                 <tr><td>   
                     <p><b>Work Information:</b></p>
                 </td></tr>
@@ -146,149 +264,28 @@
                     <td>NHIS ID No :</td>
                     <td> <?php echo $record->emp_nhisidno; ?></td> 
                     <td>Date Of Appointment :</td>
-                    <td colspan="2"><?php echo $record->emp_doj; ?></td>
+                    <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_doj))); ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
                     <td>Date Of Retirement: </td>
-                    <td><?php echo $record->emp_dor; ?></td> 
+                    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dor))); ?></td> 
                     <td>Date of Probation :</td>
-                    <td><?php echo $record->emp_doprobation;?></td> 
+                    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_doprobation)));?></td> 
                     <td>Date of Regularisation :</td>
-                    <td colspan="2"><?php echo $record->emp_doregular;?></td>               
+                    <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_doregular)));?></td>               
                 </tr>
                 <tr></tr>
                 <tr>
                     <td>Date Of HGP: </td>
-                    <td colspan="6"><?php echo $record->emp_dateofHGP ; ?></td> 
+                    <td colspan="6"><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofHGP))); ?></td> 
                 </tr> 
                 <tr></tr>
                 <tr><td colspan="7">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr> 
-                <tr><td>
-                    <p><b>Educational Information:</b></p>
-                </td></tr>    
-                <tr></tr>
-                <tr> 
-                    <td>Qualification : </td>
-                    <td><?php echo $record->emp_qual;?></td> 
-                    <td>Phd Status :</td>
-                    <td><?php echo $record->emp_phd_status;?></td> 
-                    <td>Date Of Phd Completion :</td>
-                    <td colspan="2"><?php echo $record->emp_dateofphd; ?></td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>ASSR Exam : </td>
-                    <td><?php echo $record->emp_AssrExam_status;?></td> 
-                    <td>Date Of ASSR Exam :</td>
-                    <td colspan="3"> <?php echo $record->emp_dateofAssrExam ;?></td> 
-                   <!-- <td>Date Of Phd Completion :</td>
-                    <td><?php echo $record->emp_post; ?></td>-->
-               
-                </tr>
-                <tr><td colspan="7">    
-                    <HR COLOR="#6699FF" SIZE="2">
-                </td></tr>
-                <tr></tr>
-                <tr><td>
-                    <p><b>Personal Information :</b></p>
-                </td></tr>
-                <tr></tr>
-                <tr> 
-                    <td>Employee PF No : </td>
-                    <td><?php echo $record->emp_code;?></td> 
-                    <td>Employee Name :</td>
-                    <td><?php echo $record->emp_name ;?></td> 
-                    <td>Fathers Name :</td>
-                    <td colspan="2"><?php echo $record->emp_father; ?></td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>Gender : </td>
-                    <td><?php echo $record->emp_gender;?></td> 
-                    <td>Community :</td>
-                    <td><?php echo $record->emp_community;?></td> 
-                    <td>Religion :</td>
-                    <td colspan="2"><?php echo $record->emp_religion;?></td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>Caste : </td>
-                    <td><?php echo $record->emp_caste; ?></td> 
-                    <td>Whether Physically Handicapped :</td>
-                    <td><div><input type="radio" name="phstatus" value="yes" <?php echo ($record->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="phstatus" value="no" <?php echo ($record->emp_phstatus == 'no'?'checked="checked"':'"checked"'); ?> >No
-                    </div> </td> 
-                    <td>Details Of PH :</td>
-                    <td colspan="2"><?php echo $record->emp_phdetail; ?><td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>Blood Group : </td>
-                    <td><?php echo $record->emp_bloodgroup;?></td> 
-                    <td>Date Of Birth :</td>
-                    <td><?php echo $record->emp_dob; ?></td> 
-                    <td>Pan No :</td>
-                    <td colspan="2"><?php echo $record->emp_pan_no;?></td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>Bank Name : </td>
-                    <td>
-                        <?php 
-                        $fulldata=$record->emp_bank_ifsc_code;
-                        $bname=explode(",",$fulldata);  
-                        echo $bname[0]; 
-                        ;?>
-                    </td> 
-                    <td>IFSC Code :</td>
-                    <td><?php echo $bname[1]; ?></td> 
-                    <td>Bank ACC No :</td>
-                    <td colspan="2"><?php echo $record->emp_bank_accno; ?></td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>Aadhaar No : </td>
-                    <td colspan="6" ><?php echo $record->emp_aadhaar_no; ?></td> 
-                    <!--<td>IFSC Code :</td>
-                    <td> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
-                    <td>Bank ACC No :</td>
-                    <td><?php echo $record->emp_post; ?></td>-->
-               
-                </tr>
-                <tr></tr>
-                <tr><td colspan="7">    
-                    <HR COLOR="#6699FF" SIZE="2">
-                </td></tr>
-                <tr></tr>
-                <tr><td>
-                    <p><b>Communication Information:</b></p>
-                <tr><td>
-                <tr></tr>
-                <tr> 
-                    <td>E-Mail ID : </td>
-                    <td><?php echo $record->emp_email; ?></td> 
-                    <td>Phone/Mobile No :</td>
-                    <td><?php echo $record->emp_phone; ?></td> 
-                    <td>Address :</td>
-                    <td colspan="2" ><?php echo $record->emp_address;?></td>
-               
-                </tr>
-                
-                <tr><td colspan="7">        
-                    <HR  COLOR="#6699FF" SIZE="2">
-                </td></tr>
-                <tr></tr>
                 <tr><td>
                     <p><b>Other Information :</b></p>
                 </td></tr>
@@ -312,10 +309,10 @@
                     </td>
                     <td colspan="7" align="right">
                     <?php
-                        //if(count($servicedata->result())){
-                            //echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                       // if(count($servicedata->result())){
+                          //  echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
                         //}
-                        //else{
+                       //else{
                            // echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
                         //}    
                     ?>
@@ -355,13 +352,13 @@
                                     ;?>
                                 </td>
                                 <td>
-                                    <?php echo $record->empsd_pbdate; ?>
+                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_pbdate))); ?>
                                 </td>
                                 <td>
-                                    <?php echo $record->empsd_dojoin; ?>
+                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
                                 </td>
                                 <td>
-                                    <?php echo $record->empsd_dorelev; ?>
+                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
                                 </td>
                                 <td>
                                     <?php 

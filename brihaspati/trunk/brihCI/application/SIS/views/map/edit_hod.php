@@ -148,6 +148,25 @@
                         </select>
                     </td>
                 </tr>
+		<tr>
+                    <td>  Choose Your UO : <font color='Red'>*</font></td>
+                    <td><select name="uo" id="uo" style="width:100%;" required="required">
+                        <?php if(!empty($hoddata->hl_uopid)):;?>
+                        <option value="<?php echo $hoddata->hl_uopid;?>">
+                        <?php
+                            echo $this->loginmodel->get_listspfic1('authorities','name','priority',$hoddata->hl_uopid)->name;
+                         ?>
+                        </option>
+                        <?php else:?>
+                        <option value="">Select UO</option>
+                        <?php endif;?>
+			 <?php foreach($this->uo as $udatas): ?>
+                        <option value="<?php echo $udatas->ul_uocode; ?>"><?php echo $udatas->ul_uoname  ." ( ". $udatas->ul_uocode." )"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>  Choose your Department: <font color='Red'>*</font></td>
                     <td>

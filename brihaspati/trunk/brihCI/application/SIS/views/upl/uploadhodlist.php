@@ -66,10 +66,10 @@
             <tr><td align="left" colspan=6><b>Note : The file extension should be in csv. The format of HOD list file is </b>
                 </td>
             </tr>
-            <tr><td><b> Email Id </b></td><td><b> PF No </b> </td><td><b> Campus Code </b> </td><td><b> Department Code </b></td><td><b> Date From </b> <td><b> Date To </b>
+            <tr><td><b> Email Id </b></td><td><b> PF No </b> </td><td><b> Campus Code </b> </td><td><b> Department Code </b></td><td><b> UO Code </b></td><td><b> Date From </b> <td><b> Date To </b>
 		</td>
 		</tr>
-                <tr><td> palseema30@gmail.com &nbsp;</td><td> &nbsp;CPS01150 </td><td> CU002 &nbsp;</td><td> &nbsp; MVC-AGB </td><td> 2017-01-25 &nbsp;</td><td> &nbsp;  2017-10-25 </td></tr>
+                <tr><td> palseema30@gmail.com &nbsp;</td><td> &nbsp;CPS01150 </td><td> CU002 &nbsp;</td><td> &nbsp; MVC-AGB </td><td>VC </td><td> 2017-01-25 &nbsp;</td><td> &nbsp;  2017-10-25 </td></tr>
 
 	    <?php echo form_open_multipart('upl2/uploadhodlist');?>
              <tr>

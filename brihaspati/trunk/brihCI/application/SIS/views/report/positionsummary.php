@@ -27,7 +27,23 @@
         </head>
     <body>
      <?php $this->load->view('template/header'); ?>
-          
+  <form action="<?php echo site_url('report/positionsummary');?>" id="myForm" method="POST" class="form-inline">
+         <table width="100%" border="0">
+            <tr style="font-weight:bold;">
+                <td>  Select Type
+                    <select name="wtype" id="wtype">
+                     <!-- <option value="" disabled selected>--------Select Working Type-------</option> -->
+                      <option value="All">All</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+
+                    </select>
+
+                </td>
+                <td><input type="submit" name="filter" id="crits" value="Search" /></td>
+            </tr>
+        </table>
+        
 <table width="100%">
        <tr colspan="2"><td>
         <td>
@@ -36,7 +52,7 @@
        <div>
        <?php
        echo "<td align=\"center\" width=\"100%\">";
-       echo "<b>Position-Summary</b>";
+       echo "<b>".$this->wtype." Position-Summary</b>";
        echo "</td>";
        ?>
        

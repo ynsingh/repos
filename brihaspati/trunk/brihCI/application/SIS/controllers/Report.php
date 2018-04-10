@@ -318,7 +318,27 @@ public function disciplinewiselist(){
         //$whdata = array ('sp_tnt' => 'Non Teaching');
         $whdata = '';
         $whorder = "sp_emppost asc";
-        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        if(isset($_POST['filter'])) {
+            //echo "ifcase post of filter";
+            	$wtype = $this->input->post('wtype');
+            	if($wtype != "null"){
+                	if($wtype!= "All"){
+                    		//echo "step1".$dept."uo==".$uoff;
+                    		$whdata = array ('sp_tnt' => $wtype);
+                	}
+                	else{
+                    		$whdata = '';
+                	}
+           	}
+		$this->wtype = $wtype;
+        	$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        }
+        else{
+            	//echo "else case of filter";
+		 $this->wtype = 'All';
+        	$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        }
+
         
         $this->logger->write_logmessage("view"," view position Summary" );
         $this->logger->write_dblogmessage("view"," view position Summary");
@@ -362,8 +382,9 @@ public function disciplinewiselist(){
 	// get list of uo form authority table priority wise
         $today= date("Y-m-d H:i:s"); 
 //        $whdata=array('hl_dateto >='=> $today);
-        $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid";
-        $data['allsc']=$this->sismodel->get_distinctrecord('hod_list',$selectfield,'');
+        $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid,hl_uopid";
+	$whorder = "hl_uopid asc";
+        $data['allsc']=$this->sismodel->get_orderlistspficemore('hod_list',$selectfield,'',$whorder);
         $this->logger->write_logmessage("view"," view list of HOD in report " );
         $this->logger->write_dblogmessage("view"," view list of HOD in report");
         $this->load->view('report/hodlist',$data);

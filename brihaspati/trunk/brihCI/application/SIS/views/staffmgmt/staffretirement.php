@@ -281,7 +281,6 @@
                         </select> &nbsp;&nbsp;&nbsp;
                         <button name="update" id="retire" onClick="return verifyreason()">Update</button>
                     </td>
-                    <?php// echo $selempid ?>
                     <input type="hidden" name="selempid" value="<?php echo  $selempid ; ?>">          
                 </tr>
                     <?php }; ?>

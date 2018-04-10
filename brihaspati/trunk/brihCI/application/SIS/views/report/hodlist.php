@@ -71,10 +71,22 @@
                 <?php 
 		$cid = 0;
                 $did=0;
-                               
+                $uoprid = 0;               
                 if( count($allsc) ):  ?>
                     <?php foreach($allsc as $record){
-		
+			if($record->hl_uopid != $uoprid) {
+				$uoprid = $record->hl_uopid;
+				echo "<tr>";
+	                        echo "<td colspan=2>";
+				echo "<b>";
+				echo $this->lgnmodel->get_listspfic1('authorities','name','priority',$record->hl_uopid)->name;
+                                echo " ( ";
+                                echo $this->lgnmodel->get_listspfic1('authorities','code','priority',$record->hl_uopid)->code;
+                                echo " ) ";
+				echo "</b>";
+				echo "</td>";
+				echo "</tr>";
+			}
 			echo "<tr>";
                         echo "<td>";
 				echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->hl_deptid)->dept_name;

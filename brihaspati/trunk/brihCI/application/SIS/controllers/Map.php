@@ -1875,6 +1875,7 @@ public function schemedept(){
     public function sethod(){
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+	$this->uo=$this->sismodel->get_list('uo_list');
         if(isset($_POST['sethod'])) {
             
             $this->form_validation->set_rules('campus','Campus Name','trim|required|xss_clean');
@@ -1932,11 +1933,13 @@ public function schemedept(){
                     if(!empty($_POST['usrname'])){
                         $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
                     }
+		    $uopid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['uo'])->priority;
                     $datahod = array(
                         'hl_userid'=> $userid,
                         'hl_empcode'=> $pfno,
                         'hl_deptid'=> $_POST['deptname'],
                         'hl_scid'=> $_POST['campus'],
+			'hl_uopid'=> $uopid,
                         'hl_datefrom'=> $_POST['DateFrom'],
                         'hl_dateto'=> $_POST['DateTo'],
                         'hl_status'=> $_POST['status'],
@@ -1994,7 +1997,11 @@ public function schemedept(){
 
     public function hodlist(){
         $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
-	$data['records'] = $this->sismodel->get_list('hod_list');
+	$selectfield ="*";
+        $whorder = "hl_uopid asc";
+        $data['records']=$this->sismodel->get_orderlistspficemore('hod_list',$selectfield,'',$whorder);
+
+//	$data['records'] = $this->sismodel->get_list('hod_list');
         $this->logger->write_logmessage("view"," view hod list" );
         $this->logger->write_dblogmessage("view"," view hod list");
         $this->load->view('map/viewhod_list',$data);
@@ -2025,6 +2032,7 @@ public function schemedept(){
         $data['hoddata'] = $this->sismodel->get_listrow('hod_list','hl_id',$id)->row();
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+        $this->uo=$this->sismodel->get_list('uo_list');
         if(isset($_POST['edithod'])) {
             
             $this->form_validation->set_rules('campus','Campus Name','trim|required|xss_clean');
@@ -2040,7 +2048,7 @@ public function schemedept(){
                 return;
             }//formvalidation
             else{
-                
+                $uocode = $this->input->post('uo', TRUE); 
                 $campus = $this->input->post('campus', TRUE);
                 $deptname = $this->input->post('deptname', TRUE);
                 $usrname = $this->input->post('usrname', TRUE);
@@ -2077,11 +2085,13 @@ public function schemedept(){
                         $pfno=$data['hoddata']->hl_empcode;
                     }
                 }
+		$uopid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['uo'])->priority;
                 $datahod = array(
                    // 'hl_userid'=> $userid,
                     'hl_empcode'=> $pfno,
                     'hl_deptid'=> $deptname,
                     'hl_scid'=> $campus,
+                    'hl_uopid'=> $uopid,
                     'hl_datefrom'=> $datefrom,
                     'hl_dateto'=> $dateto,
                     'hl_status'=> $status,

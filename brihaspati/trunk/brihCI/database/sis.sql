@@ -831,6 +831,7 @@ CREATE TABLE `hod_list` (
   `hl_empcode` varchar(100)  NOT NULL,
   `hl_deptid` int(10)  NOT NULL,
   `hl_scid` int(10) NOT NULL,
+  `hl_uopid` int(3) NULL,
   `hl_datefrom` datetime NOT NULL,
   `hl_dateto` datetime NOT NULL,
   `hl_status` varchar(50) NOT NULL,
