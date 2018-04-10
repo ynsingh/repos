@@ -43,8 +43,37 @@ class Staffmgmt extends CI_Controller
 		}
 	$whdata = '';
 	if (!empty($deptid))
-		$whdata = array('emp_dept_code' => $deptid);
-	$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
+	 $whdata = array('emp_dept_code' => $deptid);
+	 $selectfield ="emp_id,emp_code,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
+         $whorder = "emp_dept_code asc,emp_desig_code asc";
+        //$whdata = array('sp_uo'=> $uo);
+         if(isset($_POST['filter'])) {
+            //echo "ifcase post of filter";
+            $wtype = $this->input->post('wtype');
+            $post  = $this->input->post('post');
+            if(!empty($post) && (!empty($deptid))){
+                if($post != 'All'){
+                        $whdata = array('emp_worktype'=> $wtype,'emp_desig_code' =>$post,'emp_dept_code' => $deptid);
+                }
+                else{
+                        $whdata = array('emp_worktype'=> $wtype,'emp_dept_code' => $deptid);
+                }
+
+            }
+            elseif (!empty($post)){
+                if($post != 'All'){
+                        $whdata = array('emp_worktype'=> $wtype,'emp_desig_code' =>$post);
+                }
+                else{
+                        $whdata = array('emp_worktype'=> $wtype);
+                }
+            }
+         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
+         }
+         else{
+         $data['records']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+         }
+	//$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
 //	$data['records'] = $this->sismodel->get_list('employee_master');
         $this->logger->write_logmessage("view"," view employee list" );
         $this->logger->write_dblogmessage("view"," view employee list");
@@ -874,11 +903,41 @@ class Staffmgmt extends CI_Controller
         if (!empty($deptid))
                 $whdata = array('sp_dept' => $deptid);
 
-        $this->result = $this->sismodel->get_orderlistspficemore('staff_position','*',$whdata,'sp_dept asc,sp_emppost asc');
-//        $this->result = $this->sismodel->get_list('staff_position');
+
+	 $selectfield ="sp_emppost,sp_campusid,sp_uo,sp_dept,sp_schemecode,sp_tnt,sp_type,sp_emppost,sp_scale,sp_methodRect,sp_sancstrenght,sp_position,sp_vacant,sp_id";
+         $whorder = "sp_dept asc,sp_emppost asc";
+        //$whdata = array('sp_uo'=> $uo);
+         if(isset($_POST['filter'])) {
+            //echo "ifcase post of filter";
+            $wtype = $this->input->post('wtype');
+            $post  = $this->input->post('post');
+            if(!empty($post) && (!empty($deptid))){
+		if($post != 'All'){
+                	$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post,'sp_dept' => $deptid);
+		}
+		else{
+                	$whdata = array('sp_tnt'=> $wtype,'sp_dept' => $deptid);
+		}
+
+            }
+	    elseif (!empty($post)){
+		if($post != 'All'){
+			$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post);
+		}
+		else{
+			$whdata = array('sp_tnt'=> $wtype);
+		}
+	    }
+ 	 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield, $whdata,$whorder);
+         }
+         else{
+         	$data['records']=$this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+         }
+
+	//$this->result = $this->sismodel->get_orderlistspficemore('staff_position','*',$whdata,'sp_dept asc,sp_emppost asc');
         $this->logger->write_logmessage("view"," View staff position ", "Staff position details...");
         $this->logger->write_dblogmessage("view"," View staff position ", "Staff position details...");
-        $this->load->view('staffmgmt/staffposition');
+        $this->load->view('staffmgmt/staffposition',$data);
   }
 
   /*this function has been created for add new staff Position record */

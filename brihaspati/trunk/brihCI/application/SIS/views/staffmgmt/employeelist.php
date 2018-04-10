@@ -6,8 +6,52 @@
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
     </head>
+<script>
+$(document).ready(function(){
+                /****************************************** start post********************************/
+                $('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                   //alert("post====="+workt);
+                    if(workt == ''){
+                        $('#post').prop('disabled',true);
+
+                    }
+                    else{
+                        $('#post').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#post').html(data.replace(/^"|"$/g, ''));
+
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+
+                            }
+                        });
+                    }
+                });
+            });
+
+            function verify(){
+                var x=document.getElementById("wtype").value;
+                var y=document.getElementById("post").value;
+                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
+                    alert("please select option for search !!");
+                    return false;
+                };
+
+
+            }
+</script>
     <body>
             <?php $this->load->view('template/header'); ?>
            
@@ -45,6 +89,30 @@
         </div>
 </tr>
         </table>
+<form action="<?php echo site_url('staffmgmt/employeelist');?>" id="myForm" method="POST" class="form-inline">
+          <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td>  Select Working Type
+                    <select name="wtype" id="wtype">
+                      <option value="" disabled selected>----------- Select Working Type ----------</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                    </select>
+		<?php
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp";
+		?>
+                <!--</td>
+                <td> --> Select Post
+                    <select name="post" id="post">
+                      <option value="" disabled selected>---------- Select Post -----------------</option>
+                     <!-- <option value="All" >All</option> -->
+                    </select>
+               <!-- </td>
+                <td>-->
+                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+                </td>
+            </tr>
+        </table><br>
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>
@@ -95,7 +163,7 @@
                             <td></td>
                             <?php endif;?>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?></td>
-                           <!-- <td><?php //echo $record->emp_post; ?></td>-->
+			   <!-- <td><?php //echo $record->emp_post; ?></td>-->
                            <!-- <td></td>-->
                             <td><?php echo $record->emp_email; ?></td>
                             <td><?php echo $record->emp_phone; ?></td>

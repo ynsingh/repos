@@ -5,9 +5,54 @@
  <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-       
+      <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>       
       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
     </head>
+
+<script>
+ $(document).ready(function(){
+                /****************************************** start post********************************/
+                $('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                   //alert("post====="+workt);
+                    if(workt == ''){
+                        $('#post').prop('disabled',true);
+
+                    }
+                    else{
+                        $('#post').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getpostlist_sp",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#post').html(data.replace(/^"|"$/g, ''));
+
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+
+                            }
+                        });
+                    }
+                });
+            });
+
+            function verify(){
+                var x=document.getElementById("wtype").value;
+                var y=document.getElementById("post").value;
+                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
+                    alert("please select option for search !!");
+                    return false;
+                };
+
+
+            }
+</script>
+
     <body>
 
 <table width="100%">
@@ -43,6 +88,30 @@
  </div>
  </td></tr>
  </table>
+<form action="<?php echo site_url('staffmgmt/staffposition');?>" id="myForm" method="POST" class="form-inline">
+          <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td>  Select Working Type
+                    <select name="wtype" id="wtype">
+                      <option value="" disabled selected>----------- Select Working Type ----------</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                    </select>
+		 <?php
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp";
+                ?>
+                <!--</td>
+                <td> -->  Select Post
+                    <select name="post" id="post">
+                      <option value="" disabled selected>---------- Select Post -----------------</option>
+                     <!-- <option value="All" >All</option> -->
+                    </select>
+               <!-- </td>
+                <td>-->
+                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+                </td>
+            </tr>
+        </table><br>
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>
@@ -64,9 +133,9 @@
 	</thead>
 	<tbody>
 	<?php $count = 0;
-	 if( count($this->result) ) {
-		foreach ($this->result as $row)
-		{
+		 if( count($records) ) {
+                foreach ($records as $row)
+                {
 //		print_r($row);die;
 		?>    
 			<tr>
@@ -74,7 +143,7 @@
                          <td><?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->sp_campusid)->sc_name; ?> </td>
 			 <td><?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $row->sp_uo)->name ?> </td>
 			 <td><?php echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $row->sp_dept)->dept_name; ?> </td>
-			 <td><?php echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->sp_schemecode)->sd_name ."( ".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->sp_schemecode)->sd_code . " )";  ?> </td>
+			 <td><?php echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->sp_schemecode)->sd_name ."<br>( ".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->sp_schemecode)->sd_code . " )";  ?> </td>
 			 <td><?php echo $row->sp_tnt ?> </td>
 			 <td><?php echo $row->sp_type ?> </td>
 			 <td><?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $row->sp_emppost)->desig_name ?> </td>

@@ -107,7 +107,7 @@
         <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Working Type
-                    <select name="wtype" id="wtype"> 
+                    <select name="wtype" id="wtype" style="width:250px;"> 
                       <option value="" disabled selected>------- Select Working Type -------</option>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
@@ -116,13 +116,13 @@
                                     
                 </td> 
                 <td>   Select UO
-                    <select name="uoff" id="uoff"> 
+                    <select name="uoff" id="uoff" style="width:270px;"> 
                       <option value="" disabled selected>------ Select University officer -----</option>
                      <!-- <option value="All" >All</option> -->
                     </select> 
                 </td>
                 <td> Select Post
-                    <select name="desig" id="desig"> 
+                    <select name="desig" id="desig" style="width:250px;"> 
                       <option value="" disabled selected>----------- Select Post------</option>
                       <!--<option value="All" >All</option> -->
                     </select> 

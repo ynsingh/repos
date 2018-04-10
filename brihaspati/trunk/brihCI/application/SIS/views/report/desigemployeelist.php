@@ -142,7 +142,7 @@
          <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Type
-                    <select name="wtype" id="wtype"> 
+                    <select name="wtype" id="wtype" style="width:250px;"> 
                       <option value="" disabled selected>------- Select Working Type -------</option>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
@@ -151,7 +151,7 @@
                                     
                 </td> 
                 <td> Designation
-                    <select name="desig" id="desig"> 
+                    <select name="desig" id="desig" style="width:250px;"> 
                       <option value="" disabled selected>----------- Select Designation------</option>
                       <!--<option value="All" >All</option> -->
                     </select> 
@@ -160,13 +160,13 @@
                 </tr>
                 <tr style="font-weight:bold;">-->
                 <td>   University Officer
-                    <select name="uoff" id="uoff"> 
+                    <select name="uoff" id="uoff" style="width:260px;"> 
                       <option value="" disabled selected>------ Select University officer -----</option>
                      <!-- <option value="All" >All</option> -->
                     </select> 
                 </td> 
                 <td> Department
-                    <select name="dept" id="dept"> 
+                    <select name="dept" id="dept" style="width:250px;"> 
                       <option value="">--------- Select Department -------</option>
                       <!--<option value="All" >All</option> -->
                     </select> 

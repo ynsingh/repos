@@ -110,6 +110,7 @@
                
             });
             function verify(){
+
                 var x=document.getElementById("wtype").value;
                 var y=document.getElementById("uoff").value;
                 if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
@@ -130,7 +131,7 @@
         <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Working Type
-                    <select name="wtype" id="wtype"> 
+                    <select name="wtype" id="wtype" style="width:250px;"> 
                       <option value="" disabled selected>------- Select Working Type -------</option>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
@@ -139,13 +140,13 @@
                                     
                 </td> 
                 <td>   Select UO
-                    <select name="uoff" id="uoff"> 
+                    <select name="uoff" id="uoff" style="width:270px;"> 
                       <option value="" disabled selected>------ Select University officer -----</option>
                      <!-- <option value="All" >All</option> -->
                     </select> 
                 </td>
                 <td> Select Department
-                    <select name="dept" id="dept"> 
+                    <select name="dept" id="dept" style="width:250px;"> 
                       <option value="" disabled selected>----------- Select Department------</option>
                       <!--<option value="All" >All</option> -->
                     </select> 

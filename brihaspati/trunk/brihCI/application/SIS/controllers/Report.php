@@ -93,12 +93,44 @@ class Report  extends CI_Controller
     }
 
     public function staffstrengthlist(){
-        $selectfield ="sp_uo, sp_dept,sp_grppost, sp_sancstrenght , sp_position , sp_vacant";
+        $selectfield ="sp_uo, sp_dept,sp_emppost, sp_sancstrenght , sp_position , sp_vacant,sp_type";
         $whorder = "sp_uo asc, sp_dept  asc";
-        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,'',$whorder);
-        $this->logger->write_logmessage("view"," view staff strength list" );
-        $this->logger->write_dblogmessage("view"," view staff strength list");
-        $this->load->view('report/staffstrengthlist',$data);
+	if(isset($_POST['filter'])) {
+            //echo "ifcase post of filter";
+            $wtype = $this->input->post('wtype');
+            $uoff  = $this->input->post('uoff');
+            $dept  = $this->input->post('dept');
+	   if($dept != "null" && $dept != "All"){
+                //echo "if case dept of filter";
+                if($uoff != "All"){
+                    $whdata = array ('sp_tnt' => $wtype,'sp_uo' => $uoff,'sp_dept'=> $dept);
+                }
+                else{
+                    $whdata = array ('sp_tnt' => $wtype,'sp_dept'=> $dept);
+                }
+
+            }
+            else{
+
+                if($uoff != "All"){
+
+                    $whdata = array ('sp_tnt' => $wtype,'sp_uo' => $uoff);
+                }
+                else{
+
+                    $whdata = array ('sp_tnt' => $wtype);
+                }
+            }
+	 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        }
+        else{
+            //echo "else case of filter";
+            $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,'',$whorder);
+
+        }
+            $this->logger->write_logmessage("view"," view staff strength list" );
+            $this->logger->write_dblogmessage("view"," view staff strength list");
+            $this->load->view('report/staffstrengthlist',$data);
     }
 
     public function staffvacposition(){
@@ -132,7 +164,6 @@ class Report  extends CI_Controller
                 }
             }
             $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
-            
         }
         else{
             //echo "else case of filter";
