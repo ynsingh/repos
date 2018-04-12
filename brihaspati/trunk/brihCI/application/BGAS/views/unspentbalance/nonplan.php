@@ -24,8 +24,9 @@
 	$docs_path_url = realpath(BASEPATH.'/docs');
      //   print_r($docs_path_url);
       //  die;
-        $file_list = get_filenames($docs_path_url);
-        $arr_len = count($file_list);
+	$file_list = get_filenames($docs_path_url);
+	$arr_len = is_array($file_list) ? count($file_list) : 1;
+        //$arr_len = count($file_list);
         $file_name = Date("F d, Y").'nonplan_report'.'.txt';
 	$plan_total = 0;
         $nonplan_total = 0;

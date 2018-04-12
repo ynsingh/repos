@@ -1148,7 +1148,8 @@ function __construct() {
 	{
                 $this->template->set('page_title', 'Balance Sheet MHRD Format-2015');
 		//$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
-		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdfpreview/new_mhrd' => 'Download PDF','aggregation/aggregatebalancesheet' => 'View Aggregate Balacesheet'));
+		//$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdfpreview/new_mhrd' => 'Download PDF','aggregation/aggregatebalancesheet' => 'View Aggregate Balacesheet'));
+		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdfpreview/new_mhrd' => 'Download PDF'));
 
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";

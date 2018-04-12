@@ -3128,7 +3128,7 @@ $width="100%";
 		foreach($allvalue->result() as $row)
                 {
 			$cheque_print_date=$row->cheque_print_date;
-                	$cheque_no = $row->update_cheque_no;
+                	$cheque_no = (float)$row->update_cheque_no;
 			$bank_name = $row->bank_name;
 			$amount=$row->amount;
 			$name=$row->name;

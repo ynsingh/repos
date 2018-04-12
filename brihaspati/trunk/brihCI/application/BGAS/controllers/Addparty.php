@@ -93,7 +93,7 @@ function __construct() {
 		);
 		if ($_POST)
 		{
-			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			$data['search_by_active'] = $this->input->post('search_by', TRUE);
 			$data['text']['value'] = $this->input->post('text', TRUE);
 		}
 		/* Form validation */

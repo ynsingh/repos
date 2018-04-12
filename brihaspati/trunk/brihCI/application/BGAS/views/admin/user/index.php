@@ -69,7 +69,7 @@
 		}
 		if($user_role == "guest")
 		echo "<td>" ."</td> ";
-    		if(($user_role=="administrator") ||($user_role=="manager")) 
+/*    		if(($user_role=="administrator") ||($user_role=="manager")) 
 		{
 			if($user_type=='agg')
 			{
@@ -80,7 +80,7 @@
 				echo "<td>" . anchor('admin/user/makeaggregator/'.$row->id, 'Make Aggregator', array('title' => 'Back to admin')); "</td>";
 			}
 		}
-
+		 */
 		if($user_components == 'BGAS'){
 			echo "<td>" .anchor('admin/user/delete/'.$row->id, img(array('src' => asset_url() . "assets/bgas/images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "You Want To Delete User From Entire System")) . "</td>";
 		}else{
