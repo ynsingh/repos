@@ -184,6 +184,50 @@ echo "<ul class=\"sf-menu\">";
 			echo "</li>";
 */
 			echo "<li>";
+                                echo "<a href=" . ">Report</a>";
+                                echo "<ul>";
+/*                                      echo "<li>";
+                                                echo anchor('report/viewprofile', 'View Employee List', array('title' => 'View Employee List'));
+                                        echo "</li>";
+*/
+                                        echo "<li>";
+                                                echo anchor('report/disciplinewiselist', 'Discipline Wise Report', array('title' => 'Discipline Wise Report'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('report/deptemployeelist', 'Department Wise Staff List', array('title' => 'Department Wise Staff List'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                               echo anchor('report/desigemployeelist', 'Designation Wise Staff List', array('title' => 'Designation Wise Staff List'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('report/staffvacposition', 'View Staff Vacancy Position', array('title' => 'View Staff Vacancy Position'));
+                                        echo "</li>";
+                                         echo "<li>";
+                                                echo anchor('report/positionsummary', 'Position-Summary', array('title' => 'Position-Summary'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('report/staffstrengthlist', 'Staff Strength List', array('title' => 'Staff Strength List'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('report/listofstaffposition', 'Staff Position UO Wise', array('title' => 'List of Staff Position'));
+                                        echo "</li>";
+
+                                        echo "<li>";
+                                                echo anchor('report/positionvacancy', 'Staff Position Post Wise', array('title' => 'Vacancy Position'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('report/professorlist', 'List of Professors', array('title' => 'List of Professors'));
+                                        echo "</li>";
+                                   /*     echo "<li>";
+                                                echo anchor('report/hodlist', 'List of HOD', array('title' => 'List of HOD'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('report/uolist', 'List of UO', array('title' => 'List of UO'));
+                                        echo "</li>";*/
+                           echo "</ul>";
+                        echo "</li>";
+
+			echo "<li>";
 				echo "<a href=" . ">Profile</a>";
 				 echo "<ul>";
 					echo "<li>";
@@ -195,9 +239,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
                                                 echo anchor('profile/changeemppassword', 'Change Employee Password', array('title' => 'Change Employee Password'));
                                         echo "</li>";
-					echo "<li>";
+				/*	echo "<li>";
 						echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 					echo "</li>";							
+				*/
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";

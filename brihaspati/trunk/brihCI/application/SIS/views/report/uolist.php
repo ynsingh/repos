@@ -59,6 +59,7 @@
             <table class="TFtable" >
                 <thead>
                 <tr>
+                    <th>Sr. No.</th>
                     <th>University Officer</th>
                     <th>UO Name</th>
                                       
@@ -69,10 +70,14 @@
 		$cid = 0;
                 $did=0;
                                
+		$i=1;
                 if( count($allsc) ):  ?>
                     <?php foreach($allsc as $record){
 		
 			echo "<tr>";
+			echo "<td>";
+				echo $i;
+			echo "</td>";
                         echo "<td>";
 				echo $record->ul_uoname;
 				echo " ( ";
@@ -88,6 +93,7 @@
 				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
 				echo " ) ";
                         echo "</td>";
+			$i++;
                         echo "</tr>";
            /* 
                         if($cid !=$record->hl_scid){    

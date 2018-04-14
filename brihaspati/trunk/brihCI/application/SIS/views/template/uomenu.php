@@ -171,11 +171,11 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('report/staffstrengthlist', 'Staff Strength List', array('title' => 'Staff Strength List'));
                                         echo "</li>";
                                         echo "<li>";
-                                                echo anchor('report/listofstaffposition', 'List of Staff Position', array('title' => 'List of Staff Position'));
+                                                echo anchor('report/listofstaffposition', 'Staff Position UO Wise', array('title' => 'List of Staff Position'));
                                         echo "</li>";
 
                                         echo "<li>";
-                                                echo anchor('report/positionvacancy', 'Vacancy Position', array('title' => 'Vacancy Position'));
+                                                echo anchor('report/positionvacancy', 'Staff Position Post Wise', array('title' => 'Vacancy Position'));
                                         echo "</li>";
                                         echo "<li>";
                                                 echo anchor('report/professorlist', 'List of Professors', array('title' => 'List of Professors'));
@@ -237,10 +237,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 				/*	echo "<li>";
                                                 echo anchor('profile/changeemppassword', 'Change Employee Password', array('title' => 'Change Employee Password'));
-                                        echo "</li>"; */
+                                        echo "</li>"; *
 					echo "<li>";
 						echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
-					echo "</li>";							
+					echo "</li>";*/							
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";

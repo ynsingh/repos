@@ -33,7 +33,25 @@ class Staffmgmt extends CI_Controller
     /* Display Employee record */
 
     public function employeelist(){
-	$roleid=$this->session->userdata('id_role');	
+	$cdate = date('y-m-d');
+	// add doris geater than current date and reason is null  in whdata
+	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+        //  get role id and user id
+        $rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+                $usrid=$this->session->userdata('id_user');
+                $deptid = '';
+                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+                $whdata['emp_dept_code'] = $deptid;
+        }
+	
+
+
+/*	$roleid=$this->session->userdata('id_role');	
 	$userid=$this->session->userdata('id_user');
 	$deptid = '';
 	$whdatad = array('userid' => $userid,'roleid' => $roleid);
@@ -44,6 +62,7 @@ class Staffmgmt extends CI_Controller
 	$whdata = '';
 	if (!empty($deptid))
 	 $whdata = array('emp_dept_code' => $deptid);
+*/
 	 $selectfield ="emp_id,emp_code,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_dept_code asc,emp_desig_code asc";
         //$whdata = array('sp_uo'=> $uo);
@@ -51,7 +70,7 @@ class Staffmgmt extends CI_Controller
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $post  = $this->input->post('post');
-            if(!empty($post) && (!empty($deptid))){
+           /* if(!empty($post) && (!empty($deptid))){
                 if($post != 'All'){
                         $whdata = array('emp_worktype'=> $wtype,'emp_desig_code' =>$post,'emp_dept_code' => $deptid);
                 }
@@ -67,11 +86,20 @@ class Staffmgmt extends CI_Controller
                 else{
                         $whdata = array('emp_worktype'=> $wtype);
                 }
+            }*/
+            if (!empty($post)){
+                if($post != 'All'){
+                        $whdata['emp_worktype']= $wtype;
+                        $whdata['emp_desig_code'] =$post;
+                }
+                else{
+                        $whdata['emp_worktype']= $wtype;
+                }
             }
-         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
+	         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
          }
          else{
-         $data['records']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+         	$data['records']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
          }
 	//$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
 //	$data['records'] = $this->sismodel->get_list('employee_master');
@@ -889,21 +917,32 @@ class Staffmgmt extends CI_Controller
 
   /*this function has been created for display the record of staff position */
   public function staffposition(){
-	$roleid=$this->session->userdata('id_role');
-        $userid=$this->session->userdata('id_user');
-	// get ul authid
-	// default is null and for VC,  R also null but others uo pass it in filter
-        $deptid = '';
-        $whdatad = array('userid' => $userid,'roleid' => $roleid);
-        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+        $whdata = '';
+	//  get role id and user id
+	$rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+                $usrid=$this->session->userdata('id_user');
+		$deptid = '';
+		$whdatad = array('userid' => $usrid,'roleid' => $rlid);
+        	$resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
                 foreach($resu as $rw){
                         $deptid=$rw->deptid;
                 }
-        $whdata = '';
-        if (!empty($deptid))
-                $whdata = array('sp_dept' => $deptid);
-
-
+                $whdata = array ('sp_dept' => $deptid);
+                //array_push($whdata,'sp_dept' => $deptid);
+        }
+        if ($rlid == 10){
+		// get uo authid
+		// default is null and for VC,  R also null but others uo pass it in filter
+                $usrname=$this->session->userdata('username');
+//              print_r( $usrname); die;
+                if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+                }else{
+                      $uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
+                      $whdata = array ('sp_uo' => $uoid);
+                }
+        }
+        //print_r($whdata); die;
 	 $selectfield ="sp_emppost,sp_campusid,sp_uo,sp_dept,sp_schemecode,sp_tnt,sp_type,sp_emppost,sp_scale,sp_methodRect,sp_sancstrenght,sp_position,sp_vacant,sp_id";
          $whorder = "sp_dept asc,sp_emppost asc";
         //$whdata = array('sp_uo'=> $uo);
@@ -913,19 +952,27 @@ class Staffmgmt extends CI_Controller
             $post  = $this->input->post('post');
             if(!empty($post) && (!empty($deptid))){
 		if($post != 'All'){
-                	$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post,'sp_dept' => $deptid);
+                	$whdata['sp_tnt']= $wtype;
+                	$whdata['sp_emppost'] =$post;
+		        if ($rlid != 5){
+                		$whdata['sp_dept'] = $deptid;
+			}
 		}
 		else{
-                	$whdata = array('sp_tnt'=> $wtype,'sp_dept' => $deptid);
+                	$whdata['sp_tnt']= $wtype;
+		        if ($rlid != 5){
+                		$whdata['sp_dept'] = $deptid;
+			}
 		}
 
             }
 	    elseif (!empty($post)){
 		if($post != 'All'){
-			$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post);
+			$whdata['sp_tnt']= $wtype;
+			$whdata['sp_emppost'] =$post;
 		}
 		else{
-			$whdata = array('sp_tnt'=> $wtype);
+			$whdata['sp_tnt']= $wtype;
 		}
 	    }
  	 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield, $whdata,$whorder);
@@ -1778,6 +1825,8 @@ class Staffmgmt extends CI_Controller
             if($uoff =="All" && $dept == "All" ){
                 $whdata = array ('emp_worktype' => $wtype,'emp_desig_code' =>$desig,'emp_id'=>$emp);
             }
+		 $whdata['emp_leaving'] = NULL;
+		 $whdata['emp_dor>='] = date('y-m-d');
             $data['empret'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
                        
         }
@@ -1785,6 +1834,8 @@ class Staffmgmt extends CI_Controller
         if(isset($_POST['update'])){
            
             $reason = $this->input->post('resret');
+            $dateofleaving = $this->input->post('dateofleaving');
+            $remark = $this->input->post('remark');
            
             $empcode=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$selempid)->emp_code;
             $empemail=$this->sismodel->get_listspfic1('employee_master', 'emp_email', 'emp_id',$selempid)->emp_email;
@@ -1797,7 +1848,8 @@ class Staffmgmt extends CI_Controller
                'sre_doj'  => $doj,
                'sre_dor'  => $dor,
                'sre_reason' => $reason,
-               'sre_reasondate' => date('y-m-d'),
+               'sre_reasondate' => $dateofleaving,
+	       'sre_remark' => $remark,	
                'sre_creatorid' => $this->session->userdata('username'),
                'sre_creatordate' => date('y-m-d'),
                'sre_modifierid' => $this->session->userdata('username'), 
@@ -1826,16 +1878,16 @@ class Staffmgmt extends CI_Controller
             }
             else{
                 /*update employeemaster table*/
-                if($reason == 'disqualify')
+               /* if($reason == 'Disqualify')
                 {
-                    $reason='disqualified';
+                    $reason='Disqualified';
                 } 
-                if($reason == 'remove'){
-                    $reason='removed';
+                if($reason == 'Expire'){
+                    $reason='Expired';
                 }
-                if($reason == 'dismiss'){
+                if($reason == 'Resign'){
                    $reason =$reason.'ed'; 
-                }
+                }*/
                 $empup_data = array(
                   'emp_leaving' => $reason 
                 );

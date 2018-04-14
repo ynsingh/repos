@@ -5,7 +5,11 @@
     <head>
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+	
+	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
+
         <script>
             $(document).ready(function(){
                 /****************************************** start of uofficer********************************/
@@ -133,7 +137,23 @@
                     }
                 }); 
                 /******************************************end of employee list********************************/
+           	var today = new Date();
             
+            $('#Dateofaleaving').datepicker({
+                dateFormat: 'yy/mm/dd',
+                autoclose:true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-70:c',
+                endDate: "today",
+                maxDate: today
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+        });
+
+	
+
+
             });
             function verify(){
                 var x=document.getElementById("wtype").value;
@@ -150,8 +170,8 @@
                     return false;
                 };
             }
-
         </script>
+
     </head>
     <body>
         <?php $this->load->view('template/header'); ?>
@@ -179,8 +199,8 @@
         <form action="<?php echo site_url('staffmgmt/staffretirement/'.$selempid);?>" id="myForm" method="POST" class="form-inline">
          <table width="100%" border="0">
             <tr style="font-weight:bold;">
-                <td>  Select Type
-                    <select name="wtype" id="wtype"> 
+                <td>  Select Type<br>
+                    <select name="wtype" id="wtype" style="width:400px;"> 
                       <option value="" disabled selected>--------Select Working Type ----------</option>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
@@ -188,27 +208,27 @@
                     </select> 
                                     
                 </td> 
-               <td>  Select UO
-                    <select name="uoff" id="uoff"> 
+               <td>  Select UO<br>
+                    <select name="uoff" id="uoff" style="width:400px;"> 
                       <option value="" disabled selected>-------- Select University officer------</option>  
                     </select> 
                 </td> 
-                <td>  Select Department
-                    <select name="dept" id="dept"> 
+                <td>  Select Department<br>
+                    <select name="dept" id="dept" style="width:400px;"> 
                       <option value="" disabled selected>-------- Select Department --------</option>  
                     </select> 
                     
                 </td>
                 </tr>
                 <tr style="font-weight:bold;">
-                <td> Select Designation
-                    <select name="desig" id="desig"> 
+                <td> Select Designation<br>
+                    <select name="desig" id="desig" style="width:400px;"> 
                       <option  value="" disabled selected>-------- Select Designation ------</option>  
                     </select> 
                     
                 </td>
-                <td> Select Employee  
-                    <select name="emp" id="emp"> 
+                <td> Select Employee  <br>
+                    <select name="emp" id="emp" style="width:400px;"> 
                       <option selected="selected" disabled selected>---------Select Employee----------</option>  
                     </select> 
                     
@@ -269,16 +289,24 @@
                             <td><?php echo $record->emp_email; ?></td>
                         </tr>
                          <tr>
-                    <td></td>
-                    <td></td>
-                    <td colspan="4" >Reason of Retirement
+                    <td colspan="2" >Reason of Leaving :<br>
                       
                         <select name="resret" id="resret"> 
                         <option value="" disabled selected>-------- Select Reason------</option>
-                        <option value="dismiss">Dismiss</option>  
-                        <option value="disqualify" >Disqualify</option>  
-                        <option value="remove">Remove</option>
-                        </select> &nbsp;&nbsp;&nbsp;
+                        <option value="Dismissed">Dismiss</option>  
+                        <option value="Expired" >Expire</option>  
+                        <option value="Resigned">Resign</option>
+                        <option value="VRS">VRS</option>
+                        </select> 
+			</td><td>
+	
+			Remark :<br><textarea name="remark" rows="3" cols="60"  ></textarea> 
+                	</td><td colspan="2">
+		
+			Date :<br>
+			<input type="text" name="dateofleaving" value="" id="Dateofaleaving"  size="15" required="required">
+			
+		</td><td>	
                         <button name="update" id="retire" onClick="return verifyreason()">Update</button>
                     </td>
                     <input type="hidden" name="selempid" value="<?php echo  $selempid ; ?>">          

@@ -10,6 +10,22 @@
        <!-- <link rel="stylesheet" type="text/css" href="<?php// echo base_url(); ?>assets/css/profile.css">-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
+	<style type="text/css" media="print">
+        @page {
+                size: auto;   /* auto is the initial value */
+                margin:0;  /* this affects the margin in the printer settings */
+            }
+        </style>
+        <script type="text/javascript">
+             function printDiv(printme) {
+                var printContents = document.getElementById(printme).innerHTML; 
+                //alert("printContents==="+printContents);
+                var originalContents = document.body.innerHTML;      
+                document.body.innerHTML = "<html><head><title></title></head><body style='width:100%;'><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' style='width:100%;height:100px;'>"+" <div style='width:100%;height:100%;'>  " + printContents + "</div>"+"</body>";
+                window.print();     
+                document.body.innerHTML = originalContents;
+            }
+	</script>
     </head>
     <body>
         <?php $this->load->view('template/header'); ?>
@@ -43,12 +59,13 @@
                 </div>
             </td></tr>
         </table>
+	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
         <table width="100%">
                 <tr><td colspan="7">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
-                <tr></tr>
+                <tr> <td colspan="7"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
                <tr><td align="center" colspan="7">
                     <?php if(!empty($record->emp_photoname)):;?>
                         <img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="85" height="100">
@@ -86,8 +103,16 @@
                     <td>Caste : </td>
                     <td><?php echo $record->emp_caste; ?></td> 
                     <td>Whether Physically Handicapped :</td>
-                    <td><div><input type="radio" name="phstatus" value="yes" <?php echo ($record->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="phstatus" value="no" <?php echo ($record->emp_phstatus == 'no'?'checked="checked"':'"checked"'); ?> >No
+                    <td><div>
+			<?php if($record->emp_phstatus == 'yes'){
+					echo "Yes";
+				}else{
+					echo "No";
+				}
+			?>
+		<!--	<input type="radio" name="phstatus" value="yes" <?php // echo ($record->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="phstatus" value="no" <?php // echo ($record->emp_phstatus == 'no'?'checked="checked"':'"checked"'); ?> >No
+-->
                     </div> </td> 
                     <td>Details Of PH :</td>
                     <td colspan="2"><?php echo $record->emp_phdetail; ?><td>
@@ -544,6 +569,7 @@
                 </td></tr>
         
          </div>   
+ </div>   
         <p> &nbsp; </p>   
         </div><?php $this->load->view('template/footer'); ?></div>
     </body>

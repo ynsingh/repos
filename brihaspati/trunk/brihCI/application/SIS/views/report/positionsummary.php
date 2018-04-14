@@ -39,8 +39,8 @@
 
                     </select>
 
-                </td>
-                <td><input type="submit" name="filter" id="crits" value="Search" /></td>
+            <!--    </td>
+                <td>--><input type="submit" name="filter" id="crits" value="Search" /></td>
             </tr>
         </table>
         

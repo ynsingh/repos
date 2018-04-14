@@ -113,10 +113,10 @@ echo "<ul class=\"sf-menu\">";
 				echo "</ul>";
 				echo "</li>";
  */
-			echo "<li>";
+/*			echo "<li>";
 				echo "<a href=" . ">Reports</a>";
 				echo "<ul>";
-				/*	echo "<li>";
+					echo "<li>";
 						echo anchor('report/liststu', 'Student List', array('title' => 'Student List'));
 					echo "</li>";
 					echo "<li>";
@@ -124,9 +124,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 					echo "<li>";
 						echo anchor('report/liststaff', 'Staff List', array('title' => 'Staff List'));
-					echo "</li>";					*/
+					echo "</li>";					
 				echo "</ul>";
-			echo "</li>";
+			echo "</li>";*/
 		/*	echo "<li>";
 				echo "<a href=" . ">Reconcile</a>";
 				echo "<ul>";
@@ -173,9 +173,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('profile/changepasswd', 'Change Password', array('title' => 'Change Password'));
 					echo "</li>";
-					echo "<li>";
+				/*	echo "<li>";
 						echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 					echo "</li>";							
+				*/
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";

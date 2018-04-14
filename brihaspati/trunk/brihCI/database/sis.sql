@@ -637,6 +637,7 @@ CREATE TABLE `staff_retirement` (
   `sre_dor` datetime NOT NULL,
   `sre_reason` varchar(255) NOT NULL,
   `sre_reasondate` datetime NOT NULL,
+  `sre_remark` blob NULL,
   `sre_creatorid` varchar(255) NOT NULL,
   `sre_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `sre_modifierid` varchar(255) NOT NULL,

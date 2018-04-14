@@ -145,6 +145,29 @@
                 $selectfield ="sp_uo, sp_dept,sp_schemecode,sp_sancstrenght , sp_position , sp_vacant";
                 $whdata = array('sp_emppost' =>$record->sp_emppost);
                 $whorder = "sp_uo  asc, sp_dept  asc";
+		
+		$rlid=$this->session->userdata('id_role');
+                if ($rlid == 5){
+                        $usrid=$this->session->userdata('id_user');
+			$deptid = '';
+                	$whdatad = array('userid' => $usrid,'roleid' => $rlid);
+        	        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+	                foreach($resu as $rw){
+                        	$deptid=$rw->deptid;
+                	}
+                        $whdata['sp_dept'] = $deptid;
+                        //array_push($whdata,'sp_dept' => $deptid);
+                }
+                if ($rlid == 10){
+                        $usrname=$this->session->userdata('username');
+			if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+                        }else{
+                        	$uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
+                        	$whdata['sp_uo'] = $uoid;
+                	}
+		}
+
+
                 $alldata=$this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
                 foreach($alldata as $data){
                     echo "<tr>";

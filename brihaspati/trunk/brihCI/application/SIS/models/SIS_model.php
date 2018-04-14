@@ -127,6 +127,20 @@ class SIS_model extends CI_Model
             }
         return $this->db2->get()->result();
     }
+
+    public function get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder){
+            $this->db2->flush_cache();
+            $this->db2->distinct();
+            $this->db2->select($selectfield);
+            $this->db2->from($tbname);
+            if($whdata != ''){
+                        $this->db2->where($whdata);
+            }
+	    if($whorder != ''){
+                $this->db2->order_by($whorder);
+            }
+        return $this->db2->get()->result();
+    }
     /** this function for get hod user list according to study center************************/
     //get the complete record from specific table
     public function get_list($tbname){

@@ -28,6 +28,9 @@
                 // document.body.style.fontSize = "initial";
                 document.body.innerHTML = originalContents;
             }
+		 function goBack() {
+        		window.history.back();
+	        }
 
         </script>
 
@@ -39,6 +42,9 @@
                 <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
                 
             </td> 
+	 <td align=right>
+<?php		echo "<button onclick=\"goBack()\" >Back</button>"; ?>
+	</td>
         </tr>
     </table>        
     <div id="printme">   
@@ -65,7 +71,7 @@
 <tr>
 <td valign="top" width=170>
 
-    <table border=1 class="TFtable">
+<table border=1 class="TFtable">
 		<tr>
 			<?php if(!empty($data->emp_photoname)):?>
                             <td><img src="<?php echo base_url('uploads/SIS/empphoto/'.$data->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;" id="pimg"></td>
@@ -88,7 +94,20 @@
 </td>
        
 <td>		
-	
+	 <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                        <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Basic Profile Details</b></td>
+                            <td align="right">
+                                <?php
+				$roleid=$this->session->userdata('id_role');
+                                if(($roleid == 1)||($roleid == 5)){
+                                        echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
+                                }
+                                ?>
+
+                            </td>
+                        <tr>
+                </table>	
            <table class="TFtable" style="width:100%;">
 			<tr>
 				<td>
@@ -291,90 +310,26 @@
                                 <td>
                                 </td>
                         </tr>
-
-<!--
-                    	<tr>
-				<td>Emp No. :</td>
-				<td><?php echo $data->emp_code;?></td>
-				<td>Date Of Appointment :</td>
-			        <td><?php echo $data->emp_doj;?></td>
-                                
-			</tr>
-			
-			<tr>
-				<td>Name :</td>
-				<td><?php echo $data->emp_name;?></td>
-				<td>Department :</td>
-				<?php 
-				//$deptid = $dep;
-				$depname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$data->emp_dept_code)->dept_name ;?>
-				<td><?php echo $depname;?></td>
-			</tr>
-			<tr>
-				<td>Designation :</td>
-				<?php 
-				//$desigid = $desig;
-				$depname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name ;?>
-				<td><?php echo $depname;?></td>
-				<td>Date Of Regularization :</td>
-			        <td><?php echo $data->emp_doregular ;?></td>
-			</tr>
-			
-			<tr>
-				<td>Community :</td>
-				<td><?php echo $data->emp_community;?></td>
-				<td>Date Of Completion Of Probation :</td>
-				<td><?php echo $data->emp_doprobation; ?></td>
-			</tr>
-			<tr>
-				<td>Caste :</td>
-				<td><?php echo $data->emp_caste;?></td>
-				<td>Religion :</td>
-			        <td><?php echo $data->emp_religion;?></td>
-			</tr>
-			
-			<tr>
-				<td>Nativity :</td>
-				<td><?php echo $data->emp_citizen;?></td>
-				<td>Specialization :</td>
-				<?php
-				//$specialid = $specialize;
-				if(!empty($data->emp_specialisationid)){
-					$specialize = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$data->emp_specialisationid)->sub_name;	
-				}
-                                else{
-                                    $specialize="";
+		</table>
+		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                        <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b></b></td>
+                            <td align="right">
+                                <?php
+                                if(($roleid == 1)||($roleid == 5)){
+                                        echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
                                 }
-				?>
-				<td><?php echo $specialize;?></td>
-			</tr>
-			<tr>
-				
-				<td>To Present Post :</td>
-			        <td><?php echo $data->emp_post;?></td>
-				<td>Qualification (PHD Completion):</td>
-				<td><?php echo $data->emp_qual;?></td>
-			</tr>
-			
-			<tr>
-				
-				<td>Date Of Birth :</td>
-				<td><?php echo $data->emp_dob;?></td>
-				<td>Date Of Retirement :</td>
-				<td><?php echo $data->emp_dor;?></td>
-			</tr>
-			<tr>
-				<td>ASRR :</td>
-				<td><?php echo $data->emp_AssrExam_status;?></td>
-				<td></td><td></td>
-			</tr>
-		</table>-->
+                                ?>
+
+                            </td>
+                        <tr>
+                </table>
+<br>
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                             <td align=left colspan=4><b>Service Particulars</b></td>
                             <td align="right">
                                 <?php 
-					$roleid=$this->session->userdata('id_role');
                                 if(($roleid == 1)||($roleid == 5)||($roleid == 4)){
 					echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
 				}
@@ -457,6 +412,7 @@
                         <?php endif;?>
                     </tbody>    
 		</table>
+<br>
                 <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                             <td align=left colspan=4><b>Performance Details</b></td>
@@ -614,6 +570,14 @@
                     <?php endif;?>
                     
                 </table>
+		<table style="width:100%;">
+        	<tr>
+        	<td align=right>
+		<?php      	echo "<button onclick=\"goBack()\" >Back</button>"; ?>
+        	</td>
+        	</tr>
+    		</table>
+	<br>
 </td>
 </tr>
 
