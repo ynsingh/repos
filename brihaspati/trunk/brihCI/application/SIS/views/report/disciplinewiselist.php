@@ -28,17 +28,56 @@
     <body>
 
     <?php $this->load->view('template/header'); ?>
+	<form action="<?php echo site_url('report/disciplinewiselist');?>" id="myForm" method="POST" class="form-inline">
+ 	<table width="100%" border="0">
+            <tr style="font-weight:bold;">
+               <td>  Select Campus
+                    <select name="camp" id="camp" style="width:400px;">
+                      <option value="" disabled selected>-------- Select Campus name------</option>
+                      <?php
+                      foreach( $this->sc as $row ){
+ ?>
+                      <option value="<?php echo $row->sc_id; ?>" > <?php echo $row->sc_name ." ( ".$row->sc_code ." )"; ?></option>
+<?php }?>
+                    </select>
+                </td>
+
+                 <td><div> Select Subject
+                    <select name="subj" id="subj" style="width:400px;">
+                      <option selected="selected" disabled selected>-------------Select Subject name-----------</option>
+			 <?php
+                      foreach( $this->sub as $row ){
+ ?>
+                      <option value="<?php echo $row->sub_id; ?>" > <?php echo $row->sub_name ." ( ".$row->sub_code ." )"; ?></option>
+<?php }?>
+
+                    </select>
+
+                </td>
+
+
+                <td><input type="submit" name="filter" id="crits" value="Search" /></td>
+		<td>
+            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+        </td>
+            </tr>
+        </table>
+</form>
     <table width="100%">
     
-       <tr colspan="2"><td>
-        <td>
-            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
-        </td>       
-       <div>
+       <tr>
+<!--	<td>
+            <img src='<?php //echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+        </td>        -->
+      <!-- <div> -->
 	<?php
-        echo "<td align=\"center\" width=\"100%\">";
-        echo "<b>Discipline Wise List Details</b>";
-        echo "</td>";
+       // echo "<td align=\"center\" width=\"100%\">";
+//        echo "<b>Discipline Wise List Details</b>";
+//	if((!empty($this->camp)) && (!empty($this->subj))){
+//	echo  " ( ".$this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name."  -  ".$this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name." ) ";
+//	}
+  //      echo "</td>";
+       // echo "<td>";
             ?>
         <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -57,6 +96,20 @@
      </td></tr>
  </table>
         <div id="printme" align="left" style="width:100%;"> 
+	 <table width="100%">
+
+       <tr colspan="2">
+	<?php
+        echo "<td align=\"center\" width=\"100%\">";
+        echo "<b>Discipline Wise List Details</b>";
+        if((!empty($this->camp)) && (!empty($this->subj))){
+        echo  " ( ".$this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name."  -  ".$this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name." ) ";
+        }
+        echo "</td>";
+?>
+</tr>
+ </table>
+
         <div class="scroller_sub_page">
         <table class="TFtable" 
             <thead>
