@@ -641,12 +641,13 @@ var $ledgers = array();
 		//echo $ledger_id."==";		
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
 		$op_bal_q = $this->db->get();
-		//print_r($op_bal_q->row());
-		if ($op_bal = $op_bal_q->row())
+//		print_r($op_bal_q); die;
+		if (!empty($op_bal_q))
 		{
 			//echo "<br>";
 			//print_r($op_bal->op_balance."==".$op_bal->op_balance_dc);
 			//return;
+			$op_bal = $op_bal_q->row();
 			return array($op_bal->op_balance, $op_bal->op_balance_dc);
 		}
 		else
@@ -2306,7 +2307,7 @@ var $ledgers = array();
                 $query = sprintf("SELECT * from ledgers where id=$ledger_id limit 1");
                 $result = mysqli_query($new_link, $query);
                 if (!$result) {
-	                $message  = 'Invalid query: ' . mysqli_error() . "\n";
+	                $message  = 'Invalid query: ' . mysqli_error($new_link) . "\n";
                         $message .= 'Whole query: ' . $query;
                         die($message);
                 }

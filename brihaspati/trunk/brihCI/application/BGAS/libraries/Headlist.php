@@ -64,7 +64,7 @@ class Headlist
 			$query = sprintf("SELECT * from groups where id=$id limit 1");
 			$result = mysqli_query($new_link,$query);	
 			if (!$result) {
-				$message  = 'Invalid query: ' . mysqli_error() . "\n";
+				$message  = 'Invalid query: ' . mysqli_error($new_link) . "\n";
 				$message .= 'Whole query: ' . $query;
 				die($message);
 			}
@@ -80,18 +80,30 @@ class Headlist
 	
 		}
 		$this->add_sub_groups($accountname);
-		$this->add_sub_ledgers();
+		$this->add_sub_ledgers($accountname);
 	}
 
 	function add_sub_groups($accountname)
 	{
-		$CI =& get_instance();
+                $CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accountname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $databasename= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+		$new_link = @mysqli_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+		$db_selected = mysqli_select_db($new_link,$databasename);
 		$query1 = sprintf("SELECT * from groups where parent_id=$this->id");
-
 		$result1 = mysqli_query($new_link,$query1);
                         if (!$result1) {
 				
-                                $message  = 'Invalid query: ' . mysqli_error() . "\n";
+                                $message  = 'Invalid query: ' . mysqli_error($new_link) . "\n";
                                 $message .= 'Whole query: ' . $query1;
                                 die($message);
                         }
@@ -107,10 +119,24 @@ class Headlist
 
 	}
 
-	function add_sub_ledgers()
+	function add_sub_ledgers($accountname)
 	{
 		$CI =& get_instance();
 		$counter=0;
+		$db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accountname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $databasename= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $new_link = @mysqli_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                $db_selected = mysqli_select_db($new_link,$databasename);
+
 		$query1 = sprintf("SELECT * from ledgers where group_id=$this->id");
                 $result1 = mysqli_query($new_link,$query1);
 		while($row = mysqli_fetch_assoc($result1)) {
@@ -126,6 +152,7 @@ class Headlist
 	/* Display all  accounts heads */
 	function account_st_main($c = 0)
 	{
+		$CI =& get_instance();
 		$this->counter = $c;
 		echo form_open('admin/user/addpermission');
 		if ($this->id != 0)
@@ -155,6 +182,22 @@ class Headlist
 			$htype = "grp";
 			//echo $this->user_name;
 			//echo $this->id;
+			$accountname=$this->accountname;
+			$db1=$CI->load->database('login', TRUE);
+	                $db1->from('bgasAccData')->where('dblable', $accountname);
+        	        $accdetail = $db1->get();
+                	foreach ($accdetail->result() as $row)
+                	{
+                        $databasehost=$row->hostname;
+                        $databasename= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                	}
+
+			$new_link = @mysqli_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+	                $db_selected = mysqli_select_db($new_link,$databasename);
+
 			$query1 = sprintf("SELECT * from bgas_acl where username='$this->user_name' and headid='$this->id'");
 			$result1 = mysqli_query($new_link,$query1);
 			$perm = mysqli_num_rows($result1);

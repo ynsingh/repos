@@ -15,11 +15,18 @@ function __construct() {
                 $this->load->model('Tag_model');
                 $this->load->library('pdf');
                 $this->load->library('session');
-                $this->load->helper('url');
+		$this->load->helper('url');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('user/login');
-        }
+	}
+		if ( ! check_access('view reports'))
+                {
+                        $this->messages->add('Permission denied.', 'error');
+                        redirect('');
+                return;
+                }
+
     }
 	var $acc_array;
 	var $account_counter;
@@ -31,8 +38,8 @@ function __construct() {
 	var $children_groups = array();
 	var $counter = 1;
 
-	function Report()
-	{
+//	function Report()
+//	{
 		//parent::Controller();
                 /*
 		$this->load->model('newschedules_model');
@@ -50,15 +57,15 @@ function __construct() {
 		$this->load->helper('url');
 		*/
 		/* Check access */
-		if ( ! check_access('view reports'))
-		{
-			$this->messages->add('Permission denied.', 'error');
-			redirect('');
-		return;
-		}
+//		if ( ! check_access('view reports'))
+//		{
+//			$this->messages->add('Permission denied.', 'error');
+//			redirect('');
+//		return;
+//		}
 
-		return;
-	}
+//		return;
+//	}
 	
 	function index()
 	{

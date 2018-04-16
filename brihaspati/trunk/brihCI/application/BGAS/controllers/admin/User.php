@@ -1417,7 +1417,7 @@ class User extends CI_Controller {
                 $this->form_validation->set_rules('account_name', 'Account Name', 'trim|required');
                 $this->form_validation->set_rules('user_name', 'User Name', 'trim|required');
                 $this->form_validation->set_rules('head_name', 'Head Name', 'trim|required');
-                $this->form_validation->set_rules('type', '', 'trim|required');
+                $this->form_validation->set_rules('type', 'Type', 'trim|required');
                 if ($this->form_validation->run() == FALSE)
                 {
                         $this->messages->add(validation_errors(), 'error');
@@ -1544,7 +1544,7 @@ class User extends CI_Controller {
                 		$result = mysqli_query($new_link,$query);
 	                	$data['user_name']=$user_name;
 	        	        $data['accountname'] = $accountname;
-        	        	$data['user_email'] = $user_email;
+        	        	$data['user_email'] = $user_name;
                 		$this->messages->add('Permission Remove Succesfully to the Code - '.$name);
 		                $this->template->load('admin_template','/admin/user/assignpermission',$data);
 				mysqli_close($new_link);

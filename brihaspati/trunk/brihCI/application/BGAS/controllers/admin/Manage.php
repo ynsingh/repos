@@ -491,13 +491,13 @@ class Manage extends CI_Controller {
 	
 		$link = @mysqli_connect($databasehost, $databaseuser, $databasepassword);
 		if (!$link) {
-			die('Could not connect: ' . mysqli_error());
+			die('Could not connect: ' . mysqli_error($link));
 		}
 		$sql = 'DROP DATABASE '.$dbname;
 		if (mysqli_query($link,$sql)) {
     			echo "Database ".$dbname. " was successfully dropped\n";
 		} else {
-    			echo 'Error dropping database: ' . mysqli_error() . "\n";
+    			echo 'Error dropping database: ' . mysqli_error($link) . "\n";
 		}
 		
 		//delete the account record from bgasAccData table

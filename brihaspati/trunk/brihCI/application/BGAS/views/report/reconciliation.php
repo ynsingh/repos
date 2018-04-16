@@ -6,7 +6,7 @@
         $date2 = $this->session->userdata('date2');
 	setlocale(LC_MONETARY, 'en_IN');
 	@$val=$value;
-	$num_rows = '';
+	$num_rows = 0;
 
 	if ( ! $print_preview)
         {
@@ -48,6 +48,8 @@
 	/* Pagination configuration */
 	if ( ! $print_preview)
 	{
+//$config['total_rows'] = 200;
+//$config['per_page'] = 20;
 		$pagination_counter = $this->config->item('row_count');
 		$page_count = (int)$this->uri->segment(5);
 		//$page_count = $this->input->xss_clean($page_count);
@@ -58,10 +60,18 @@
 		$config['num_links'] = 10;
 		$config['per_page'] = $pagination_counter;
 		$config['uri_segment'] = 5;
-		if ($reconciliation_type == 'all')
-			$config['total_rows'] = (int)$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('date >=', $date1)->where('date <=', $date2)->count_all_results();
-		else
-			$config['total_rows'] = (int)$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.reconciliation_date', NULL)->where('date >=', $date1)->where('date <=', $date2)->count_all_results();
+		if ($reconciliation_type == 'all'){
+//			echo " IN all";
+			$config['total_rows'] = $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('date >=', $date1)->where('date <=', $date2)->count_all();}
+		else if($ledger_id !=0){
+//			echo "not null ldis";
+			$config['total_rows'] = $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.reconciliation_date', NULL)->where('date >=', $date1)->where('date <=', $date2)->count_all();}
+		else{
+//			echo "ld is 0";
+			$result =  $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.reconciliation_date', NULL)->where('date >=', $date1)->where('date <=', $date2);
+//			print_r($result);
+			$config['total_rows'] = $this->db->count_all();}
+//		echo $config['total_rows'];echo "I"; die;
 		$config['full_tag_open'] = '<ul id="pagination-flickr">';
 		$config['full_close_open'] = '</ul>';
 		$config['num_tag_open'] = '<li>';
@@ -81,6 +91,7 @@
 		$config['last_tag_open'] = '<li class="last">';
 		$config['last_tag_close'] = '</li>';
 		$this->pagination->initialize($config);
+
 	}
 	if ($ledger_id != 0)
 	{

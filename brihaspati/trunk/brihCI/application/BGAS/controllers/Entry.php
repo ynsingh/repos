@@ -1227,7 +1227,7 @@ $width="100%";
 				$secunitid = $data_all_secunit[$id];
 				$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
 				$code_ledg_fnd = $this->Ledger_model->get_code($fund_ledger);
-				$code_ledg_inc = $this->Ledger_model->get_code($income_id);
+				//$code_ledg_inc = $this->Ledger_model->get_code($income_id);
 				
 				//added by kanchan
 				$add_value = $opening_bal + $dr_total;
@@ -1569,13 +1569,16 @@ $width="100%";
                                                	'entry_no' => $entry_id,
 						'paymentreceiptby' => $data_cheque[$id],
                                                 'update_cheque_no' => $data_cheque[$id],
-						'secunitid' => $secunitid
-                               		);
+						'secunitid' => $secunitid,
+					);
                            		if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
-                                  	{
-                                      		$this->db->trans_rollback();
+					{
+						$error = $this->db->error();
+						$this->db->trans_rollback();
+
+			//		print_r($error); die;
                                            	$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                        	$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 8" . "[id:" . $data_ledger_id . "]");
+                                        	$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 8" . "[id:" . $data_ledger_id . " ] ". $error['message']);
                                             	$this->template->load('template', 'entry/add', $data);
                                            	return;
                           		}//if inner
@@ -2562,7 +2565,7 @@ $width="100%";
                                 	$fund_ledger = $data_all_fund_ledger[$id];
 					$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
 					$code_ledg_fnd = $this->Ledger_model->get_code($fund_ledger);
-					$code_ledg_inc = $this->Ledger_model->get_code($income_id);
+					//$code_ledg_inc = $this->Ledger_model->get_code($income_id);
                                 	if($fund_ledger > 0 && $data_ledger_dc == 'D')
 					{
 						$expense_type = $data_all_expense_type[$id];
@@ -4871,8 +4874,8 @@ $width="100%";
                                 return;
                         }
                         $det=$this->Ledger_model->get_other_ledger_name($ledidarray, $entry_type, $leddcarray, $dr_total);
-			echo "det ========";
-			print_r($det);
+//			echo "det ========";
+//			print_r($det);
 			if($det && $check == 0){
 				$data['check'] = 1;
                         	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create or Cancel', 'error');

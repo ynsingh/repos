@@ -152,11 +152,15 @@ $(document).ready(function() {
 		<div id="logo">
 		<?php
 		$this->db->select('id, name')->from('settings');
-                $ins_id = $this->db->get();
+		$ins_id = $this->db->get();
+//		$ins_id = $this->db->get()->result();
+	//			print_r( $ins_id); die;
+		if(!empty($ins_id)){
                 foreach( $ins_id->result() as $row)
                 {
                 	$row1 = $row->name;
-               	}
+		}
+		}else{ $row1 = null;}
                 $this->upload_path= realpath(BASEPATH.'../uploads/BGAS/logo');
                 $file_list = get_filenames($this->upload_path);
                 if ($file_list)

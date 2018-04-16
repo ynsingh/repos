@@ -35,12 +35,14 @@
 	echo form_input('head_name',$name);
         echo "</p>";
 
-        echo "<p class=\"affects-gross\">";
+	echo "<p class=\"affects-gross\">";
+	echo form_label('Type', 'type');
+        echo "<br />";
         echo "<span id=\"tooltip-target-1\">";
         //echo form_checkbox('affects_gross', 1, $affects_gross) . " Affects Gross Profit/Loss Calculations";
         echo form_checkbox('type',1) . "Cr";
         echo form_checkbox('type',2) . "Dr";
-        echo form_checkbox('type',3) . "Both";
+        echo form_checkbox('type',3,'checked') . "Both";
 	
        /* echo "</span>";
         echo "<span id=\"tooltip-content-1\">If selected the Group account will affect Gross Profit and Loss calculations, otherwise it will affect only Net Profit and Loss calculations.</span>";*/

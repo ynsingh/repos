@@ -84,7 +84,7 @@
                                                 }
                                         }
                                 } else {
-                                        echo ('Not connect to database.' . mysqli_error(). 'error');
+                                        echo ('Not connect to database.' . mysqli_error($conn). 'error');
                                         return;
                                 }
 				  mysqli_close();

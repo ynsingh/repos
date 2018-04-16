@@ -1,9 +1,10 @@
 <?php
  echo form_open('admin/user/permitpermission/');
 	echo "<p>";
-        echo "Account Name=>".$accountname;
-        echo "<br />";
-        echo "User Name=>".$user_name;
+        echo "<b>Account Name=></b>".$accountname;
+        //echo "<br />";
+        echo "&nbsp;&nbsp;&nbsp;";
+        echo "<b>User Name=></b>".$user_name;
 //	print_r($accounts);
    	echo "</p>";
 	$this->load->library('headlist');

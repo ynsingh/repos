@@ -162,7 +162,7 @@
 </table>
 
 <?php
-	$cheque='';	
+	$cheque=array();	
         $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$entry_number);
         $ledger_q = $this->db->get();
         foreach($ledger_q->result() as $row)
