@@ -12,7 +12,7 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
     </head>
     <body>
-    <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<!--    <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table> -->
     <script>
 	function getdepartment(val){
 		var val=val;
@@ -54,7 +54,7 @@
  	<tr>
             <td>Campus Name :</td>
             <td>
-            	<select name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">
+            	<select name="campusname" id="campusname" class="my_dropdown" style="width:500px;" onchange="getdepartment(this.value)">
                 <option value="" disabled selected >------Select Campus Name---------------</option>
 		<?php foreach($this->scresult as $dataspt): ?>
 		<option value="<?php echo $dataspt->sc_id; ?>"><?php echo $dataspt->sc_name; ?></option>
@@ -64,7 +64,7 @@
       <tr>
            <td>Authority Name :</td>
            <td>
-           	<select name="authority" id="authority" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
+           	<select name="authority" id="authority" class="my_dropdown" style="width:500px;" onchange="getbranchname(this.value)" >
                 <option value="" disabled selected >------Select Authority Name--------------</option>
                 <?php foreach($this->authresult as $data): ?>
                 <option value="<?php echo $data->id; ?>"><?php echo $data->name; ?></option>

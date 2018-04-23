@@ -178,9 +178,9 @@
                 <!--    <th>Designation</th>
                     <th>University Officer Control</th>
                     <th>Department Name</th>
-                    <th>Scheme Name</th>
                     <th>Specialisation(Major Subject)</th> -->
                     <th>Designation</th>
+                    <th>Scheme Name</th>
                     <!--<th>Employee Post</th>-->
                    <!-- <th>Pay Band</th>-->
                  <!--   <th>E-Mail ID</th>
@@ -219,6 +219,10 @@
 			echo "<td>". $serial_no++ ." </td>";
 			echo "<td> $record->emp_name</td>";
 			echo "<td> $record->emp_post</td>";
+			echo "<td>";
+			echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name ;	
+			echo " ( ".$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->emp_schemeid)->sd_code ." )";	
+			echo "</td>";
 ?>
                         </tr>
                     <?php }; ?>

@@ -180,6 +180,11 @@
                 </tr>
                 
                 <tr>
+                    <td>Grade Pay<font color='Red'></font></td>
+                        <td><input type="text" name=gradepay" id="gradepay" value="<?php echo isset($_POST["gradepay"]) ? $_POST["gradepay"] : ''; ?>"  size="40" >
+                    </td>
+                </tr>
+                <tr>
                     <td>Date of AGP<font color='Red'></font></td>
                         <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
                     </td>
@@ -190,8 +195,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Date To<font color='Red'>*</font></td>
-                        <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" required="required">
+                    <td>Date To<font color='Red'></font></td>
+                        <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
                     </td>   
                 </tr>
                 <tr></tr><tr></tr>

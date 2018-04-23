@@ -30,7 +30,8 @@
     <body>
         <?php $this->load->view('template/header'); ?>
         <table width="100%">
-           <tr colspan="2"><td>
+           <tr colspan="8">
+<!--<td> -->
                 <?php
                     echo "<td align=\"left\" width=\"33%\">";
                     echo "</td>";
@@ -41,8 +42,8 @@
                     $help_uri = site_url()."/help/helpdoc#ViewProfile";
                     echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
-		    echo "</tr>";
-		    echo "</table>";
+		   // echo "</tr>";
+		   // echo "</table>";
                 ?>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
@@ -56,17 +57,38 @@
                 <?php
                 };
                 ?>
-                </div>
-            </td></tr>
+<!--                </div>-->
+<!--            </td>-->
+</tr>
         </table>
+
+<?php
+//				print_r($servicedata);
+		/*		if(!empty($servicedata)){
+                                        foreach($servicedata as $recod){
+                                                $currscnme=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $recod->empsd_campuscode)->sc_name;
+                                                $curruonme=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $recod->empsd_ucoid)->name;
+                                                $curruocode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id', $recod->empsd_ucoid)->code;
+                                                $currdeptnme=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $recod->empsd_deptid)->dept_name;
+                                                $currschnme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$recod->empsd_schemeid)->sd_name;
+                                                $currdesnme=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$recod->empsd_desigcode)->desig_name;
+                                                $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$recod->empsd_pbid)->sgm_name;
+                                                $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$recod->empsd_pbid)->sgm_max;
+                                                $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$recod->empsd_pbid)->sgm_min;
+                                                $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$recod->empsd_pbid)->sgm_gradepay;
+                                                $currpband= $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
+                                        break;
+                                        }
+                                }*/
+?>
 	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
         <table width="100%">
-                <tr><td colspan="7">
+                <tr><td colspan="8">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
-                <tr> <td colspan="7"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
-               <tr><td align="center" colspan="7">
+                <tr> <td colspan="8"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
+               <tr><td align="center" colspan="8">
                     <?php if(!empty($record->emp_photoname)):;?>
                         <img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="85" height="100">
                     <?php else:?>
@@ -155,8 +177,8 @@
                
                 </tr>
                 <tr></tr>
-                <tr><td colspan="7">    
-                    <HR COLOR="#6699FF" SIZE="2">
+                <tr><td colspan="8">    
+                    <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
                 <tr><td>
@@ -173,7 +195,7 @@
                
                 </tr>
                 
-                <tr><td colspan="7">    
+                <tr><td colspan="8">    
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
@@ -200,7 +222,7 @@
                     <td><?php echo $record->emp_post; ?></td>-->
                
                 </tr>
-                <tr><td colspan="7">    
+                <tr><td colspan="8">    
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
@@ -210,16 +232,24 @@
                 <tr></tr>
                 <tr>
                     <td>Campus Name :</td>
-                    <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;?>
+                    <td>
+<?php 
+				echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
+?>
                     </td>
                     <td>University Officer Control : </td>
-                    <td><?php $authname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$record->emp_uocid)->name;
-                             $authcode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$record->emp_uocid)->code;
-                        echo  $authname." " . "( ".$authcode." )";    
-                        ?>
+                    <td>
+<?php 
+			$authname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$record->emp_uocid)->name;
+                        $authcode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$record->emp_uocid)->code;
+                        	echo  $authname." " . "( ".$authcode." )";    
+?>
                     </td>
                     <td>Department :</td>
-                    <td colspan="2"> <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name?>
+                    <td colspan="2"> 
+<?php 
+				echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
+?>
                     </td>
                     <!--<td>
                          <?php if(!empty($record->emp_photoname)):;?>
@@ -233,7 +263,11 @@
                 <tr></tr>
                 <tr> 
                     <td>Scheme Name : </td>
-                    <td><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name?></td> 
+                    <td>
+<?php 
+				echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+?>
+		</td> 
                     <td>Drawing and Disbursing Officer :</td>
                     <td> <?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->emp_ddouserid)->ddo_name;?></td> 
                     <td>Working Type :</td>
@@ -245,7 +279,11 @@
                     <td>Group : </td>
                     <td><?php echo $record->emp_group;?></td> 
                     <td>Designation :</td>
-                    <td> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
+                    <td> 
+<?php
+				echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
+?>
+			</td> 
                     <td>Shown Against The Post :</td>
                     <td colspan="2"><?php echo $record->emp_post; ?></td>
                
@@ -275,7 +313,7 @@
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->emp_salary_grade)->sgm_max;
                             $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->emp_salary_grade)->sgm_min;
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->emp_salary_grade)->sgm_gradepay;
-                        echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
+                        	echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
                         ?>    
                     </td> 
                     <td>Basic Pay :</td>
@@ -307,7 +345,7 @@
                     <td colspan="6"><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofHGP))); ?></td> 
                 </tr> 
                 <tr></tr>
-                <tr><td colspan="7">
+                <tr><td colspan="8">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr> 
@@ -325,14 +363,14 @@
                
                 </tr>
                 <tr></tr>
-                <tr><td colspan="7">
+                <tr><td colspan="8">
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
                 <tr><td>
                     <p><b>Service Data :</b></p>
                     </td>
-                    <td colspan="7" align="right">
+                    <td colspan="8" align="right">
                     <?php
                        // if(count($servicedata->result())){
                           //  echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
@@ -345,23 +383,25 @@
                 </tr>
                 <tr></tr>
                 <tr>
-                    <?php if( count($servicedata->result()) ):  ?>
+                    <?php if( count($servicedata) ):  ?>
                     <td><b>Place of working</b></td>
                     <td><b>Designation</b></td>
                     <td><b>AGP</b></td>
+                    <td><b>Grade Pay</b></td>
                     <td><b>Date of AGP</b></td>
                     <td><b>From</b></td>
                     <td><b>To</b></td>
                     <td><b>Total service (YY/MM/DD)</b></td>
                     <tbody>
                         
-                            <?php foreach($servicedata->result() as $record){;?>
+                            <?php foreach($servicedata as $record){;?>
                             <tr>
                                 <td>
                                     
                                     <?php
-                                    $cname=$this->commodel->get_listspfic1('study_center','sc_name','sc_code',$record->empsd_campuscode)->sc_name;
-                                    echo $cname."&nbsp;"."(".$record->empsd_campuscode.")";
+                                    $cname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->empsd_campuscode)->sc_name;
+                                    $ccode=$this->commodel->get_listspfic1('study_center','sc_code','sc_id',$record->empsd_campuscode)->sc_code;
+                                    echo $cname." ( ".$ccode." ) ";
                                     ?>
                                 </td>
                                 <td>
@@ -375,6 +415,9 @@
                                     $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
                                     echo $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
                                     ;?>
+                                </td>
+                                <td>
+                                    <?php echo $record->empsd_gradepay; ?>
                                 </td>
                                 <td>
                                     <?php echo implode('-', array_reverse(explode('-', $record->empsd_pbdate))); ?>
@@ -396,7 +439,7 @@
                                     
                                 </td>
                                 <td >
-                                <?php echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));?>
+                                <?php //echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));?>
                                 </td>   
                             </tr>
                         <?php }; ?>
@@ -448,7 +491,7 @@
                             </tr>   
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Publications : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Publications : </b></td></tr>
                     <tr>
                         <td><b>Description</b></td>
                         <td><b> National</b></td>
@@ -471,7 +514,7 @@
                             </tr>   
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Project handled : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Project handled : </b></td></tr>
                     <tr>
                         <td><b>Number of Projects handled</b></td>
                         <td colspan="4"> <b>Fund outlay</b></td>
@@ -484,7 +527,7 @@
                            
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Training attended (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Training attended (Seminar / Symposium / Workshop etc.) : </b></td></tr>
                     <tr>
                         <td></td>
                         <td colspan="4"><b> Number of Trainings attended</b></td>
@@ -500,7 +543,7 @@
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Training conducted (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Training conducted (Seminar / Symposium / Workshop etc.) : </b></td></tr>
                     <tr>
                         <td></td>
                         <td colspan="4"><b> Number of Trainings conducted</b></td>
@@ -516,7 +559,7 @@
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Students Guided : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Students Guided : </b></td></tr>
                     <tr>
                         <td></td>
                         <td colspan="4"><b> Number of students guided</b></td>
@@ -536,7 +579,7 @@
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="7"><b>Guest lecture delivered : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Guest lecture delivered : </b></td></tr>
                     <tr>
                         <tbody>
                             <tr>
@@ -564,7 +607,7 @@
                     <?php endif;?>
             
                 <tr></tr>
-                <tr><td colspan="7">
+                <tr><td colspan="8">
                     <HR  COLOR="#6699FF" SIZE="2">
                 </td></tr>
         

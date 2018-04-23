@@ -211,6 +211,11 @@
                 </tr>
                 
                 <tr>
+                    <td>Grade Pay<font color='Red'></font></td>
+                        <td><input type="text" name="gradepay" id="gradepay" value="<?php echo $servicedata->empsd_gradepay;?>"  size="40" >
+                    </td>
+                </tr>
+                <tr>
                     <td>Date of AGP<font color='Red'></font></td>
                         <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo $servicedata->empsd_pbdate;?>"  size="40" >
                     </td>
@@ -221,8 +226,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Date To<font color='Red'>*</font></td>
-                        <td><input type="text" name="Dateto" id="Dateto" value="<?php echo $servicedata->empsd_dorelev; ?>"  size="40" required="required">
+                    <td>Date To<font color='Red'></font></td>
+                        <td><input type="text" name="Dateto" id="Dateto" value="<?php echo $servicedata->empsd_dorelev; ?>"  size="40" >
                     </td>   
                 </tr>
                 <tr></tr><tr></tr>

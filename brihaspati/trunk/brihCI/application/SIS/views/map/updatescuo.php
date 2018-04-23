@@ -46,7 +46,7 @@
         <tr>
                 <td>UO Name</td>
                 <td>
-		       <select name="authority" id="authority" class="my_dropdown" style="width:300px;">
+		       <select name="authority" id="authority" class="my_dropdown" style="width:500px;">
                 	<option value="<?php echo $this->loginmodel->get_listspfic1('authorities', 'id', 'name', $authority["value"])->id; ?>"><?php echo $authority["value"]; ?></option>
                 	<?php foreach($this->authorty as $uo): ?>
                     	<option value="<?php echo $uo->id; ?>"><?php echo $uo->name; ?></option>

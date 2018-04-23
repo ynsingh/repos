@@ -209,14 +209,14 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('report/staffstrengthlist', 'Staff Strength List', array('title' => 'Staff Strength List'));
                                         echo "</li>";
                                         echo "<li>";
-                                                echo anchor('report/listofstaffposition', 'Staff Position UO Wise', array('title' => 'List of Staff Position'));
+                                                echo anchor('report/listofstaffposition', 'Staff Position with Name UO Wise', array('title' => 'List of Staff Position'));
                                         echo "</li>";
 
                                         echo "<li>";
-                                                echo anchor('report/positionvacancy', 'Staff Position Post Wise', array('title' => 'Vacancy Position'));
+                                                echo anchor('report/positionvacancy', 'Staff Position with Name Post Wise', array('title' => 'Vacancy Position'));
                                         echo "</li>";
                                         echo "<li>";
-                                                echo anchor('report/professorlist', 'List of Professors', array('title' => 'List of Professors'));
+                                                echo anchor('report/professorlist', 'Staff Seniority List', array('title' => 'Staff Seniority List'));
                                         echo "</li>";
                                    /*     echo "<li>";
                                                 echo anchor('report/hodlist', 'List of HOD', array('title' => 'List of HOD'));

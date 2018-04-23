@@ -43,8 +43,8 @@ class Report  extends CI_Controller
 	}
 
     public function deptemployeelist(){
-        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post";
-        $whorder = "emp_uocid asc, emp_dept_code  asc";
+        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_schemeid";
+        $whorder = "emp_uocid asc, emp_dept_code  asc, emp_post asc";
 	$cdate = date('y-m-d');
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
@@ -237,6 +237,11 @@ class Report  extends CI_Controller
                 $datawh['emp_worktype'] = $worktype;
                 $datawh['emp_name LIKE ']= $filter.'%';
 	    	$empdata['emprecord'] = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no',$datawh);
+//		add this code as join query
+	/*	$selectfield="empsd_campuscode,empsd_ucoid,empsd_deptid,empsd_desigcode,empsd_schemeid";
+	        $whdata = array ('empsd_empid'=>$emp_id);
+        	$whorder = "empsd_dojoin dsc";
+	        $empdata['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder); */
         //    $empdata['emprecord'] = $this->sismodel->searchemp_profile('employee_master',$worktype,$filter);
         }
         else{
@@ -254,7 +259,11 @@ class Report  extends CI_Controller
         $emp_data['emp_id']=$emp_id;
 	//get all profile and service data
 	$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
-        $emp_data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
+	$selectfield="*";
+	$whdata = array ('empsd_empid' => $emp_id);
+	$whorder = 'empsd_dojoin desc';
+	$emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
+        //$emp_data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
         $this->load->view('report/viewfull_profile',$emp_data);
   }
@@ -502,10 +511,31 @@ public function disciplinewiselist(){
     /*Professor list report and service period*/
     public function professorlist(){
 	$cdate = date('y-m-d');
-        $getdesgid=$this->commodel->get_listspfic1('designation','desig_id','desig_name','Professor')->desig_id;
-        $selectfield ="emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";
-        $whdata=array('emp_desig_code' => $getdesgid,'emp_leaving' => NULL,'emp_dor>='=>$cdate);
-        $whorder = "emp_doj asc";
+        $selectfield ="emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";        
+	$whorder = "emp_doj asc";
+	$desig=null;
+        $whdata=array('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+	 if(isset($_POST['filter'])) {
+		$wtype = $this->input->post('wtype');
+		$desig  = $this->input->post('desig');
+		$dosc  = $this->input->post('dateofservcalc');
+		$doa  = $this->input->post('dateofappoint');
+		$doagp  = $this->input->post('dateofagp');
+		if(!empty($wtype))
+        		$whdata['emp_worktype'] = $wtype;
+		if(!empty($desig))
+        		$whdata['emp_desig_code'] = $desig;
+		//if(!empty($dosc))
+        	//	$whdata['emp_desig_code'] = $dosc;
+		if(!empty($doa))
+        		$whdata['emp_doj >='] = $doa;
+		//if(!empty($doagp))
+	        //	$whdata['emp_desig_code'] = $doagp;
+	}
+		$this->desig=$desig;
+
+       // $getdesgid=$this->commodel->get_listspfic1('designation','desig_id','desig_name','Professor')->desig_id;
+       // $whdata=array('emp_desig_code' => $getdesgid,'emp_leaving' => NULL,'emp_dor>='=>$cdate);
         $data['emplist'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         $this->logger->write_logmessage("view"," view list of professors in report " );
         $this->logger->write_dblogmessage("view"," view list of professors in report");

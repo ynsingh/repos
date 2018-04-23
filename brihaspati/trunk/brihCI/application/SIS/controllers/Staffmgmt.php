@@ -335,6 +335,8 @@ class Staffmgmt extends CI_Controller
                     $this->sismodel->insertrec('employee_master', $data);
                     $this->logger->write_logmessage("insert", "data insert in employee_master table.");
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
+
+		/* insert record in service details  */
                     
                     $dataems = array(
                        'ems_code'              =>$_POST['empcode'],
@@ -500,21 +502,23 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('empname','EmployeeName','trim|required|xss_clean');
             $this->form_validation->set_rules('specialisation','Specialisation','trim|xss_clean');
-           // $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
-           // $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
-           // $this->form_validation->set_rules('department','Department','trim|required|xss_clean');
-            
-            //$this->form_validation->set_rules('schemecode','Scheme Name','trim|required|xss_clean');
-          //  $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-           // $this->form_validation->set_rules('emppost','Employeepost','trim|xss_clean');
+// enabled by nks
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+            $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|required|xss_clean');           
+           $this->form_validation->set_rules('schemecode','Scheme Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('emppost','Employeepost','trim|xss_clean');
+// enabled by nks
             $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
             $this->form_validation->set_rules('community','Community','trim|xss_clean');
             $this->form_validation->set_rules('religion','Religion','trim|xss_clean');
             $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
-            //$this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
-            
-           // $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
+// enabled by nks
+            $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');            
+            $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+// enabled by nks
             $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
             $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
             $this->form_validation->set_rules('empnhisidno','NHisIDno','trim|xss_clean');
@@ -544,7 +548,7 @@ class Staffmgmt extends CI_Controller
             
             //some extra field 
             $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean|required');
-           // $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
+            $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
             $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric');
@@ -598,24 +602,26 @@ class Staffmgmt extends CI_Controller
             $data = array(
 		'emp_code'			=> $this->input->post('empcode'),
                 'emp_specialisationid'           => $this->input->post('specialisation'),
-               // 'emp_scid'                       => $this->input->post('campus'),
+// enabled by nks start
+                'emp_scid'                       => $this->input->post('campus'),
                 //'emp_uocuserid'                  => $this->input->post('uocontrol'),
-                //'emp_uocid'                      => $this->input->post('uocontrol'),
+                'emp_uocid'                      => $this->input->post('uocontrol'),
                 //'emp_uocid'                      => $uocid,
-               // 'emp_dept_code'                  => $this->input->post('department'),
-                //'emp_schemeid'                   => $this->input->post('schemecode'),
-                //'emp_desig_code'                 => $this->input->post('designation'),
+                'emp_dept_code'                  => $this->input->post('department'),
+                'emp_schemeid'                   => $this->input->post('schemecode'),
+                'emp_desig_code'                 => $this->input->post('designation'),
                 
-                //'emp_post'                       => $this->input->post('emppost'),
+                'emp_post'                       => $this->input->post('emppost'),
+// enabled by nks close
                 'emp_gender'                     => $this->input->post('gender'),
                 'emp_community'                  => $this->input->post('community'),
-                'emp_religion'                   => $this->input->post('religion'),
-                
+                'emp_religion'                   => $this->input->post('religion'),                
                 'emp_caste'                      => $this->input->post('caste'),
-                //'emp_worktype'                   => $this->input->post('workingtype'),
-               // 'emp_type_code'                  => $this->input->post('emptype'),
+// enabled by nks start
+                'emp_worktype'                   => $this->input->post('workingtype'),
+                'emp_type_code'                  => $this->input->post('emptype'),
                 'emp_salary_grade'               => $this->input->post('payband'),
-                
+// enabled by nks     close           
                 'emp_basic'                      => $this->input->post('basicpay'),
                 'emp_emolution'                  => $this->input->post('emolution'),
                 'emp_nhisidno'                   => $this->input->post('empnhisidno'),
@@ -643,8 +649,10 @@ class Staffmgmt extends CI_Controller
                 'emp_name'                       => $this->input->post('empname'),
                 'emp_bank_accno'		 => $this->input->post('bankacno'),
                // 'emp_ddouserid'                  => $this->input->post('ddo'),
-                //'emp_ddoid'                      => $this->input->post('ddo'),
-               // 'emp_group'                      => $this->input->post('group'),
+//// enabled by nks start
+                'emp_ddoid'                      => $this->input->post('ddo'),
+                'emp_group'                      => $this->input->post('group'),
+// enabled by nks close
                 'emp_apporderno'                 => $this->input->post('orderno'),
                 'emp_phstatus'                   => $this->input->post('phstatus'),
                 'emp_phdetail'                   => $this->input->post('phdetail'),
@@ -702,6 +710,8 @@ class Staffmgmt extends CI_Controller
 	    $mess = 'Your Employee data updated Successfully.';
             $sub = 'Employee Profile Updated';
             $this->mailmodel->mailsnd($_POST['emailid'],$sub,$mess,'');
+		
+		/* insert record in service details  */
 
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );

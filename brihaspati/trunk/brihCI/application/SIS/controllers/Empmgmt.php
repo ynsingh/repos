@@ -36,7 +36,11 @@ class Empmgmt extends CI_Controller
         $data['record'] = $empmaster_data->row();
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $data['emp_id']=$emp_id;
-        $data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
+	$selectfield="*";
+        $whdata = array ('empsd_empid' => $emp_id);
+        $whorder = 'empsd_dojoin desc';
+        $data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
+//        $data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
         $data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
        // echo $data['performancedata'];
         //die;
@@ -393,7 +397,8 @@ class Empmgmt extends CI_Controller
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
-            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
                 
@@ -407,6 +412,7 @@ class Empmgmt extends CI_Controller
                     'empsd_deptid'          =>$_POST['department'],
                     'empsd_desigcode'       =>$_POST['designation'],
                     'empsd_pbid'            =>$_POST['payband'],
+                    'empsd_gradepay'        =>$_POST['gradepay'],
                     'empsd_pbdate'          =>$_POST['DateofAGP'],
                     'empsd_dojoin'          =>$_POST['Datefrom'],
                     'empsd_dorelev'         =>$_POST['Dateto']
@@ -513,9 +519,10 @@ class Empmgmt extends CI_Controller
 	    $this->form_validation->set_rules('uocontrol','University Officer Control','trim|xss_clean');
 	    $this->form_validation->set_rules('department','Department','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','trim|required|xss_clean');
+            $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
-            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
                 
@@ -527,6 +534,7 @@ class Empmgmt extends CI_Controller
                 $department=$this->input->post('department', TRUE);
                 $desigc = $this->input->post('designation', TRUE);
                 $payb = $this->input->post('payband', TRUE);
+                $gradepay = $this->input->post('gradepay', TRUE);
                 $dataofagp = $this->input->post('DateofAGP', TRUE);
                 $datefrom = $this->input->post('Datefrom', TRUE);
                 $dateto = $this->input->post('Dateto', TRUE);
@@ -542,6 +550,8 @@ class Empmgmt extends CI_Controller
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_desigcode. " changed by " .$desigc;
                 if($eds_data['servicedata']->empsd_pbid != $payb)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbid. " changed by " .$payb;
+                if($eds_data['servicedata']->empsd_gradepay != $gradepay)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_gradepay. " changed by " .$gradepay;
                 if($eds_data['servicedata']->empsd_pbdate != $dataofagp)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbdate. " changed by " .$dataofagp;
                 if($eds_data['servicedata']->empsd_dojoin != $datefrom)
@@ -555,6 +565,7 @@ class Empmgmt extends CI_Controller
                     'empsd_deptid'          =>$department,
                     'empsd_desigcode'       =>$desigc,
                     'empsd_pbid'            =>$payb,
+                    'empsd_gradepay'        =>$gradepay,
                     'empsd_pbdate'          =>$dataofagp,
                     'empsd_dojoin'          =>$datefrom,
                     'empsd_dorelev'         =>$dateto

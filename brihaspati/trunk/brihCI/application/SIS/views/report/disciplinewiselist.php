@@ -33,7 +33,11 @@
             <tr style="font-weight:bold;">
                <td>  Select Campus
                     <select name="camp" id="camp" style="width:400px;">
+			<? if  (!empty($this->camp)){ ?>
+			<option value="<?php echo $this->camp; ?>" > <?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name ." ( ". $this->commodel->get_listspfic1('study_center','sc_code','sc_id' ,$this->camp)->sc_code ." )"; ?></option>
+			<?  }else{ ?>
                       <option value="" disabled selected>-------- Select Campus name------</option>
+			<?  } ?>
                       <?php
                       foreach( $this->sc as $row ){
  ?>
@@ -44,7 +48,11 @@
 
                  <td><div> Select Subject
                     <select name="subj" id="subj" style="width:400px;">
-                      <option selected="selected" disabled selected>-------------Select Subject name-----------</option>
+			<? if  (!empty($this->subj)){ ?>
+			<option value="<?php echo $this->subj; ?>" > <?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name ." ( ".$this->commodel->get_listspfic1('subject','sub_code','sub_id' ,$this->subj)->sub_code ." )"; ?></option>
+			<?  }else{ ?>
+                      <option value="" disabled selected>-------------Select Subject name-----------</option>
+			<?  } ?>
 			 <?php
                       foreach( $this->sub as $row ){
  ?>

@@ -57,11 +57,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         
             /*******uoc on the basis of campus  ****************************************************************************/
             
-           /* $('#camp').on('change',function(){
+            $('#camp').on('change',function(){
                 var sc_code = $(this).val();
                // alert(sc_code);
                 if(sc_code == ''){
-                    $(''#uocid).prop('disabled',true);
+                    $('#uocid').prop('disabled',true);
                 }
                 else{
              
@@ -82,7 +82,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         }
                     });
                 }
-            }); */
+            }); 
             /**************************** end of uoc ***************************************************************************/
             /************************select department on basis of uoc and campus*******************/
                        
@@ -160,7 +160,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 var schm_id = $('#schmid').val();
                 var campuocdeptschm = sc_code+","+dept_id+","+schm_id;
                 //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
-                if(uoc_id == ''){
+                if(schm_id == ''){
                     $('#ddoid').prop('disabled',true);
                 }
                 else{
@@ -222,20 +222,21 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var dept_id = $('#scid').val();
-                var schm_id = $('#schmid').val();
+                //var schm_id = $('#schmid').val();
                 var desig_id = $('#desigid').val();
                 var wrktype_id = $('#worktypeid').val();
-                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+wrktype_id;
+                //var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+wrktype_id;
+                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id;
               //  alert("comin script===bsix===="+cudshmdesigwrktype);
                 //var grp_id = $(this).val();
                 if(desig_id == ''){
-                    $('#emppost').prop('disabled',true);
-                    $('#emptypeid').prop('disabled',true);
+                    $('#emppostid').prop('disabled',true);
+                //    $('#emptypeid').prop('disabled',true);
                 }
                 else{
              
-                    $('#emppost').prop('disabled',false);
-                    $('#emptypeid').prop('disabled',false);
+                    $('#emppostid').prop('disabled',false);
+                   // $('#emptypeid').prop('disabled',false);
                     $.ajax({
                         url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
                         type: "POST",
@@ -245,17 +246,21 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             //alert("seemas"+data);
                             var empdata=data;
                            // alert("empdata"+empdata);
-                            var empinput=empdata.split(',');
-                            var val1 = empinput[0].replace(/\"/g,"");
+                     //       var empinput=empdata.split(',');
+//                            var val1 = empinput[0].replace(/\"/g,"");
+				var val1 = empdata.replace(/\"/g,"");
                             //alert("empinput=split===="+empinput[0]+","+empinput[1]);
-                            $('#emppost').val(val1.replace(/^"|"$/g, ''));
-                            var val2=$('#emppost').val();
-                            if(val2.trim() === "No vacancy"){
-                                alert(" Sorry, No vacancy available for this post");
+                        //    $('#emppost').val(val1.replace(/^"|"$/g, ''));
+			$('#emppostid').html(data.replace(/^"|"$/g, ''));
+				if(val1.trim() === "No vacancy"){
+					 alert('Sorry, No vacancy available for this post');
+//                            var val2=$('#emppostid').val();
+  //                          if(val2.trim() === "No vacancy"){
+    //                            alert(" Sorry, No vacancy available for this post");
                                $('#my_id').submit();
                                    
                             }   
-                            $('#emptypeid').html(empinput[1].replace(/^"|"$/g, ''));
+      //                      $('#emptypeid').html(empinput[1].replace(/^"|"$/g, ''));
                        
                         },
                         error:function(data){
@@ -269,7 +274,46 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             }); 
              
             /************************closer for shown against the post*****************************************/
+           /************************Employee type******************************************************************/
             
+            $('#emppostid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                //var schm_id = $('#schmid').val();
+                var empost_id = $('#emppostid').val();
+                var wrktype_id = $('#worktypeid').val();
+                //var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+empost_id+","+wrktype_id;
+                var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+empost_id+","+wrktype_id;
+               // alert("comin script===bsix===="+cudshmpostwrktype);
+                //var grp_id = $(this).val();
+                if(empost_id == ''){
+                   $('#emptypeid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#emptypeid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemptypeposition",
+                        type: "POST",
+                        data: {"combfive" : cudshmpostwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("seema455==="+data);
+                            
+                            $('#emptypeid').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee type******************************************************************/ 
             /*****************************************validation for date of appiontment**************************************/
             $("#StartDate").on('change',function(){
                 var dob = $('#Dateofbirth').val();
@@ -402,7 +446,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
         <!--<table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">-->
         <table style="margin-left:0%;border:1px solid gray;" class="TFtable">
-        <?php //foreach ($editemp_data as $data):  ?>
             
             <?php echo form_open_multipart('staffmgmt/update_profile/' .$id);?>
             <input type="hidden" name="id" value="<?php echo $id ; ?>">
@@ -410,16 +453,19 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
            <!--form method="post" action="<?php //echo base_url('staffmgmt/update_profile/',$editdata->emp_id);?>" -->           
             <tr>
                 <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
-                    <div><select id="camp" name="campus" required readonly> 
+                    <div><select id="camp" name="campus" style="width:300px;" > 
                         <option value="<?php echo $editdata->emp_scid;?>"><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$editdata->emp_scid)->sc_name;?></option>
-                        <!--<//?php foreach($this->campus as $camdata): ?>	
+                        <?php foreach($this->campus as $camdata): ?>	
    				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
- 			<//?php endforeach; ?>-->
+ 			<?php endforeach; ?>
                       
                     </select></div>
                 </td>
+
+
                 <td><label for="uocontrol" style="font-size:15px;">University Officer Control<font color='Red'>*</font></label>
-                    <div><select name="uocontrol" id="uocid" required readonly>
+                    <div><select name="uocontrol" style="width:300px;" id="uocid" required readonly>
+
                         <option value="<?php echo $editdata->emp_uocuserid;?>">
                             <?php
                                 $authname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$editdata->emp_uocid)->name;
@@ -430,7 +476,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                                 echo $authname."(".$authcode.")";?>
                             <!--echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$editdata->emp_dept_code)->dept_name;-->
                             </option>
-                        <!--<option selected="selected" disabled selected>--------University Officer Control -----</option>-->
+                        <option  disabled >--------University Officer Control -----</option>
                        
                         <!--<//?php foreach($this->uoc as $ucodata): ?>	
                             <option value="<//?php echo $ucodata->id; ?>"><//?php echo $ucodata->name; ?></option> 
@@ -442,29 +488,27 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                                 $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
                                 $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
                                 echo $auofname." ".$auolname."( ".$authiame." )";*/
-                                echo $authname."(".$authcode.")";
+                          //      echo $authname."(".$authcode.")";
                             ?>
                             </option> 
  			<//?php endforeach; ?>-->
                     </select></div>
                 </td>
                 <td><label for="department" style="font-size:15px;">Department<font color='Red'>*</font></label>
-                    <div><select required name="department" id="scid" readonly> 
+                    <div><select required name="department" id="scid" style="width:300px;" readonly>
                         <option value="<?php echo $editdata->emp_dept_code;?>"><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$editdata->emp_dept_code)->dept_name;?></option>
-                       
                     </select></div>
                 </td>
                 <td><label for="schemecode" style="font-size:15px;">Scheme Name<font color='Red'>*</font></label>
-                    <div><select required name="schemecode" id="schmid" readonly> 
-                        <option value="<?php echo $editdata->emp_schemeid;?>"><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$editdata->emp_schemeid)->sd_name;?>"</option>
-                        
+                    <div><select required name="schemecode" id="schmid" style="width:300px;" readonly> 
+                        <option value="<?php echo $editdata->emp_schemeid;?>"><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$editdata->emp_schemeid)->sd_name;?></option>
                     </select></div>
                 </td>
             </tr>    
             <tr>
 			<?php //echo $editdata->emp_ddouserid?>
                 <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer<font color='Red'>*</font></label>
-                    <div><select name="ddo" id="ddoid" required readonly>
+                    <div><select name="ddo" id="ddoid" style="width:300px;" required readonly>
 			<?php if(!empty($editdata->emp_ddouserid)):;?>
                         <option value="<?php echo $editdata->emp_ddouserid;?>" ><?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$editdata->emp_ddouserid)->ddo_name;?></option>    
                         <?php else:?>
@@ -476,33 +520,33 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="workingtype" style="font-size:15px;">Working Type<font color='Red'>*</font></label>
-                        <div><select id="worktypeid" name="workingtype" readonly style="width:78%;">
+                        <div><select id="worktypeid" name="workingtype" readonly style="width:300px;">
                         <?php if(!empty($editdata->emp_worktype)):;?>   
                         <option value="<?php echo $editdata->emp_worktype;?>"><?php echo $editdata->emp_worktype;?></option>
                         <?php else:?>
                         <option value="">-----------Select Working Type--------</option>
                         <?php endif;?>
-                       <!-- <option value="Teaching">Teaching</option>
-                        <option value="Non Teaching">Non Teaching</option>-->
+                        <option value="Teaching">Teaching</option>
+                        <option value="Non Teaching">Non Teaching</option>
                         </select></div>
                 </td>
                 <td><label for="group" style="font-size:15px;">Group<font color='Red'>*</font></label>
-                       <div><select name="group" id="grpid" required style="width:78%;" readonly>
+                       <div><select name="group" id="grpid" required style="width:300px;" readonly>
                         <?php if(!empty($editdata->emp_group)):;?>
                         <option value="<?php echo $editdata->emp_group;?>"><?php echo $editdata->emp_group;?></option>      
                         <?php else:?>
                         <option selected="selected" disabled selected>------------ Select Group ---------</option>
                         <?php endif;?>
-                        <!--<option value="A">A</option>
+                        <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
-                        <option value="D">D</option>-->
+                        <option value="D">D</option>
                     </select></div>
                 </td>
                 <td><label for="designation" style="font-size:15px;">Designation<font color='Red'>*</font></label>
                     
-                    <div><select name="designation" id="desigid" required  readonly> 
-                        <?php if(!empty($editdata->emp_desig_code)):;?>
+                    <div><select name="designation" id="desigid" style="width:300px;" required  readonly> 
+                        <?php if(!empty($editdata->emp_desig_code)):;?>				
                             <option value="<?php echo $editdata->emp_desig_code;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$editdata->emp_desig_code)->desig_name;?></option>
                         <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
@@ -515,13 +559,20 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             </tr>    
             <tr>
                 <td><label for="emppost" style="font-size:15px;">Shown against the Post<font></font></label>
+			<div><select name="emppost" id="emppostid" required style="width:300px;">
                     <?php if(!empty($editdata->emp_post)):;?>
-                    <div><input type="text" id="emppost" name="emppost" value="<?php echo $editdata->emp_post; ?>" readonly  size="35">
+			<option value="<?php echo $editdata->emp_post;?>"><?php echo $editdata->emp_post;?></option>
+                        <?php else:?>
+                            <option selected="selected" disabled selected>------- Select Designation ---------</option>
+                         <?php endif;?>
+			 </select></div>
+<!--
+                    <div><input type="text" id="emppost" name="emppost" value="<?php //echo $editdata->emp_post; ?>" readonly  size="35">
                     </div>
-                    <?php else:?>
+                    <?php //else:?>
                     <div><input type="text" id="emppost" name="emppost" placeholder="Employee Post..."readonly  size="35">
                     </div>
-                    <?php endif?>
+                    <?php //endif?>-->
                 </td>
                 <td><label for="pnp" style="font-size:15px;">Plan / Non Plan</label>
                     <div><select name="pnp" style="width:78%;">
@@ -537,7 +588,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="emptype" style="font-size:15px;">Employee Type</label>
-                    <div><select name="emptype" style="width:78%;" readonly>
+                    <div><select name="emptype" id="emptypeid" style="width:300px;" readonly>
                         <?php if(!empty($editdata->emp_type_code)):;?>
                         <option value="<?php echo $editdata->emp_type_code;?>"><?php echo $editdata->emp_type_code;?></option>
                         <?php else:?>
@@ -580,30 +631,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 
             </tr>
                     
-            <!--<tr style="height:10px;"></tr>
-            <tr>
-                <td>Campus Name: </td><td width="10%"><select id="camp" name="campus" style="width:100%;" required> 
-                        <option value="<?php echo $editdata->emp_scid;?>"><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$editdata->emp_scid)->sc_name;?></option>
-                       <?php foreach($this->campus as $camdata): ?>	
-   				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
- 			<?php endforeach; ?>
-                      
-                </select></td> 
-                <td>University Officer Control:</td><td>
-                    <select name="uocontrol" required> 
-                        <option value="<?php echo $editdata->emp_uocid;?>"><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id',$editdata->emp_uocid)->name;?></option>
-                       
-                        <?php foreach($this->uoc as $ucodata): ?>	
-                            <option value="<?php echo $ucodata->id; ?>"><?php echo $ucodata->name; ?></option> 
- 			<?php endforeach; ?>
-                    </select>
-                </td>
-            
-            </tr>
-            <tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="gender" style="font-size:15px;">Gender</label>
-                    <div><select name="gender" style="width:55%;">
+                    <div><select name="gender" style="width:300px;">
                         <?php if(!empty($editdata->emp_gender)):;?>
                         <option value="<?php echo $editdata->emp_gender;?>"><?php echo $editdata->emp_gender;?></option>
                         <?php else:?>
@@ -616,7 +646,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td> 
                     
                 <td><label for="community" style="font-size:15px;">Community</label>
-                    <div><select name="community" style="width:78%;">
+                    <div><select name="community" style="width:300px;">
                         <?php if(!empty($editdata->emp_community)):;?>
                         <option value="<?php echo $editdata->emp_community;?>"><?php echo $editdata->emp_community;?></option>
                         <?php else:?>
@@ -628,7 +658,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td> 
                 <td><label for="religion" style="font-size:15px;">Religion</label>
-                    <div><select name="religion" style="width:78%;">
+                    <div><select name="religion" style="width:300px;">
                         <?php if(!empty($editdata->emp_religion)):;?>
                         <option value="<?php echo $editdata->emp_religion;?>"><?php echo $editdata->emp_religion;?></option>
                         <?php else:?>
@@ -650,7 +680,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             <tr>
             
                 <td><label for="payband" style="font-size:15px;">Pay Band<font color='Red'>*</font></label>
-                    <div><select name="payband" required style="width:57%;"> 
+                    <div><select name="payband" required style="width:300px;"> 
+			
                         <option value="<?php echo $editdata->emp_salary_grade;?>">
                             <?php
                             $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$editdata->emp_salary_grade)->sgm_name;
@@ -659,6 +690,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$editdata->emp_salary_grade)->sgm_gradepay;
                             ;?>
                             <?php echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;?></option>
+
                             <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
                             </option> 

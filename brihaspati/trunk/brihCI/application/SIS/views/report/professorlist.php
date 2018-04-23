@@ -6,7 +6,11 @@
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
+
+<script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <style type="text/css" media="print">
         @page {
                 size: auto;   /* auto is the initial value */
@@ -22,28 +26,126 @@
                 window.print();     
                 document.body.innerHTML = originalContents;
             }
-        </script>     
-       
+
+	$(document).ready(function(){
+		$('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                    if(workt == ''){
+                        $('#desig').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#desig').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                           // alert("data==1="+data);
+                                $('#desig').html(data.replace(/^"|"$/g, ''));
+                                                 
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                });
+		var today = new Date();
+            
+            $('#Dateofservcalc,#Dateofappoint,#Dateofagp').datepicker({
+                dateFormat: 'yy/mm/dd',
+                autoclose:true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-70:c',
+                endDate: "today",
+                maxDate: today
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+        });
+
+	});
+
+
+
+//	});
+	function verify(){
+                    var w=document.getElementById("desig").value;
+                    var x=document.getElementById("wtype").value;
+                    var y=document.getElementById("Dateofservcalc").value;
+                    var z=document.getElementById("Dateofappoint").value;
+                    var v=document.getElementById("Dateofagp").value;
+                    if((x == 'null' && w == 'null') || (x == '' && w == '')||(w == 'null')||(x == 'null')){
+                        alert("please select first two and date combination for search !!");
+                        return false;
+                    };
+                    
+            }
+    </script>     
         
     </head>
     <body>
     <?php $this->load->view('template/header'); ?>    
-    <table width="100%">
-       <tr colspan="2"><td>
-        <td>
+<form action="<?php echo site_url('report/professorlist');?>" id="myForm" method="POST" class="form-inline">
+         <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td> Select Type
+                    <select name="wtype" id="wtype" style="width:250px;">
+                      <option value="" disabled selected>------- Select Working Type -------</option>
+                      <option value="Teaching">Teaching</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                    </select>
+                </td>
+                <td> Designation
+                    <select name="desig" id="desig" style="width:250px;">
+                      <option value="" disabled selected>----------- Select Designation------</option>
+                    </select>
+                </td>
+		<td>Service Calculation Date
+		<input type="text" name="dateofservecalc" value="" id="Dateofservcalc"  size="15" >
+		</td>		
+		<td>Appointment Date
+		<input type="text" name="dateofappoint" value="" id="Dateofappoint"  size="15" >
+		</td>		
+		<td>AGP Date
+		<input type="text" name="dateofagp" value="" id="Dateofagp"  size="15" >
+		</td>		
+		<td valign="bottom">
+                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+                </td>
+		<td valign="bottom">
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+        </td>
+	   </tr>
+	</table>
+</form>
+<!--
+    <table width="100%">
+       <tr>
+        <td>
+            <img src='<?php //echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
         </td>       
-       <div>
+        </tr></table>
+-->
+        <div id="printme" align="left" style="width:100%;">
+	<table width="100%">
+	<tr align="center">
        <?php
        echo "<td align=\"center\" width=\"100%\">";
-       echo "<b> List of Professors - ( Seniority on the basis of date of appt. as Prof )</b>";
+       echo "<b> List of ";
+
+	if(!empty($this->desig))
+		echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$this->desig)->desig_name;
+	echo " - ( Seniority on the basis of date of appt. as Prof )</b>";
        echo "</td>";
        ?>
-       
-        </div>
 
-        </td></tr></table>
-        <div id="printme" align="left" style="width:100%;">
+        </tr>
+        </table>
         <div class="scroller_sub_page">
             <table class="TFtable" >
                 <thead>
@@ -65,7 +167,9 @@
                     if( count($emplist) ):  ?>
                         <?php    echo "<tr>";
                             echo "<td colspan=7>";
-                            echo " <b> Designation : PROFESSOR";
+                            echo " <b> Designation : ";
+			if(!empty($this->desig))
+				echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$this->desig)->desig_name ;
                             echo "</b></td>";
                             echo "</tr>";
                          foreach($emplist as $record){
