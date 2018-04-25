@@ -32,6 +32,11 @@
             <tr style="font-weight:bold;">
                 <td>  Select Type
                     <select name="wtype" id="wtype">
+			<?php if  (!empty($this->wtype)){ ?>
+                        <option value="<?php echo $this->wtype; ?>" > <?php echo $this->wtype; ?></option>
+                        <?php  }else{ ?>
+                      <option value="" disabled selected>------- Select Working Type -------</option>
+                          <?php  } ?>
                      <!-- <option value="" disabled selected>--------Select Working Type-------</option> -->
                       <option value="All">All</option>
                       <option value="Teaching">Teaching</option>

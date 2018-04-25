@@ -181,7 +181,7 @@
                 
                 <tr>
                     <td>Grade Pay<font color='Red'></font></td>
-                        <td><input type="text" name=gradepay" id="gradepay" value="<?php echo isset($_POST["gradepay"]) ? $_POST["gradepay"] : ''; ?>"  size="40" >
+                        <td><input type="text" name="gradepay" id="gradepay" value="<?php echo isset($_POST["gradepay"]) ? $_POST["gradepay"] : ''; ?>"  size="40" >
                     </td>
                 </tr>
                 <tr>

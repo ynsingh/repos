@@ -103,6 +103,22 @@
                                 if(($roleid == 1)||($roleid == 5)){
                                         echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
                                 }
+/*				if( !empty($servicedata) ){  
+                             		foreach($servicedata as $record){
+						$currscnme=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name;
+						$curruonme=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name;
+						$curruocode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id', $record->empsd_ucoid)->code;
+                                 		$currdeptnme=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name;
+						$currschnme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
+						$currdesnme=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name;
+                                    		$pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name;
+	                                	$pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
+        	                	        $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
+                		                $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
+                                    		$currpband= $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
+					break;
+					}
+				}*/
                                 ?>
 
                             </td>
@@ -111,17 +127,28 @@
            <table class="TFtable" style="width:100%;">
 			<tr>
 				<td>
-<?php   echo	"<b>Campus Name</b> <br>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$data->emp_scid)->sc_name; ?>
+<?php   			echo	"<b>Campus Name</b> <br>";
+			/*	if(!empty($currscnme)) 
+					echo $currscnme;
+				else*/
+					echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$data->emp_scid)->sc_name; 
+?>
 				</td>
 				<td>
-<?php echo "<b>UO Name</b><br>".$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$data->emp_uocid)->name ."(".$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$data->emp_uocid)->code.")"; ?>
+<?php 				echo "<b>UO Name</b><br>";
+					echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$data->emp_uocid)->name ."(".$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$data->emp_uocid)->code.")"; 
+?>
 
 				</td>
 				<td>
-<?php echo "<b>Department </b><br>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$data->emp_dept_code)->dept_name; ?>
+<?php 				echo "<b>Department </b><br>";
+					echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$data->emp_dept_code)->dept_name; 
+?>
 				</td>
 				<td>
-<?php echo "<b>Scheme Name</b><br>".$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$data->emp_schemeid)->sd_name;?>
+<?php 				echo "<b>Scheme Name</b><br>";
+					echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$data->emp_schemeid)->sd_name;
+?>
 				</td>
 			</tr>              
   			<tr>
@@ -136,7 +163,9 @@
 <?php   echo    "<b>Group</b> <br>".$data->emp_group ?>
                                 </td>
                                 <td>
-<?php   echo    "<b>Designation</b> <br>".$this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name; ?>
+<?php   			echo    "<b>Designation</b> <br>";
+					echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name; 
+?>
                                 </td>
                         </tr>
 			<tr>
@@ -193,12 +222,14 @@
 <tr>
                                 <td>
 <?php   
-	 $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_grade)->sgm_name;
+	 		    $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_grade)->sgm_name;
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_grade)->sgm_max;
                             $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$data->emp_salary_grade)->sgm_min;
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$data->emp_salary_grade)->sgm_gradepay;
 
-	echo    "<b>Pay Band</b> <br>".$payband."(".$pay_min."-".$pay_max.")".$gardepay;?>
+				echo    "<b>Pay Band</b> <br>";
+					echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
+?>
                                 </td>
                                 <td>
 <?php   echo    "<b>Basic Pay</b> <br>".$data->emp_basic;?>
@@ -354,8 +385,8 @@
                     </thead>
                     <tbody>
                         
-                        <?php if( count($servicedata->result()) ):  ?>
-                            <?php foreach($servicedata->result() as $record){;?>
+                        <?php if( !empty($servicedata) ):  ?>
+                            <?php foreach($servicedata as $record){;?>
                             <tr>
                                 <td>
                                     

@@ -63,9 +63,9 @@
         echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Phone</td><td>";
 	echo $this->result->org_phone;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Affilation</td><td>";
-	echo $this->result->org_affiliation;
-	echo "</td></tr>";
+        //echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Affilation</td><td>";
+//	echo $this->result->org_affiliation;
+//	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Administrator</td><td>";
 	echo $this->result->org_adminfn;echo "\t";echo $this->result->org_adminln;echo ",";echo "\t";echo $this->result->org_admindesig;
 	echo "</td></tr>";

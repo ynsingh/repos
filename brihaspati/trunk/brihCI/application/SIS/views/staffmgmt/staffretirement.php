@@ -165,8 +165,9 @@
             }
             function verifyreason(){
                 var x=document.getElementById("resret").value;
-                if((x == '')){
-                    alert("please select option for update !!");
+                var y=document.getElementById("Dateofaleaving").value;
+                if((x == '')||(y == '')){
+                    alert("either leaving option or date is not filled !!");
                     return false;
                 };
             }
@@ -304,7 +305,7 @@
                 	</td><td colspan="2">
 		
 			Date :<br>
-			<input type="text" name="dateofleaving" value="" id="Dateofaleaving"  size="15" required="required">
+			<input type="text" name="dateofleaving" value="" id="Dateofaleaving"  size="15" >
 			
 		</td><td>	
                         <button name="update" id="retire" onClick="return verifyreason()">Update</button>

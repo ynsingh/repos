@@ -51,6 +51,11 @@ class Report  extends CI_Controller
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $dept  = $this->input->post('dept');
+
+	    $this->wtyp = $wtype;
+            $this->uolt = $uoff;
+            $this->deptmt = $dept;
+
             //echo "dept===".$dept."www==".$wtype."uo===".$uoff;
             if($dept != "null"){
                 if($dept!= "All" && $uoff !="All"){
@@ -108,6 +113,11 @@ class Report  extends CI_Controller
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $dept  = $this->input->post('dept');
+
+	    $this->wtyp = $wtype;
+            $this->uolt = $uoff;
+            $this->deptmt = $dept;
+
 	   if($dept != "null" && $dept != "All"){
                 //echo "if case dept of filter";
                 if($uoff != "All"){
@@ -159,6 +169,10 @@ class Report  extends CI_Controller
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $desig  = $this->input->post('desig');
+
+	    $this->wtyp = $wtype;
+            $this->uolt = $uoff;
+            $this->desigm = $desig;
             //echo "desig===".$desig."www==".$wtype."uo===".$uoff;
             if($desig != "null" && $desig != "All"){
                 //echo "if case dept of filter";
@@ -307,6 +321,11 @@ public function disciplinewiselist(){
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $dept  = $this->input->post('dept');
+
+	    $this->wtyp = $wtype;
+            $this->uolt = $uoff;
+            $this->deptmt = $dept;
+
             //echo "dept===".$dept."\nwt==".$wtype."\nuo===".$uoff;
             $data['tnttype'] =  $wtype;  
             $data['seldept']=$dept;
@@ -347,6 +366,11 @@ public function disciplinewiselist(){
             $uoff  = $this->input->post('uoff');
             $dept  = $this->input->post('dept');
             $desig  = $this->input->post('desig');
+
+      	    $this->wtyp = $wtype;
+            $this->uolt = $uoff;
+            $this->deptmt = $dept;
+	    $this->desigm = $desig;
            // echo "dept===".$dept."wt==".$wtype."uo===".$uoff."desig==".$desig;
             if($desig != "null" || $uoff != "null" || $dept != "null" ){
                 //echo "ifcase dept of filter";
@@ -488,6 +512,8 @@ public function disciplinewiselist(){
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $post  = $this->input->post('post');
+		$this->wtyp = $wtype;
+		$this->desigm = $post;
             if(!empty($post) && ($post!="All")){
                 //$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post);
 		 $whdata['sp_tnt']=$wtype;
@@ -531,6 +557,7 @@ public function disciplinewiselist(){
         		$whdata['emp_doj >='] = $doa;
 		//if(!empty($doagp))
 	        //	$whdata['emp_desig_code'] = $doagp;
+		$this->wtyp = $wtype;
 	}
 		$this->desig=$desig;
 
@@ -700,7 +727,21 @@ public function disciplinewiselist(){
     /********************slect uo list according to selection type**********************/
     public function getspuolist(){
         $combid= $this->input->post('worktype');
-        $datawh=array('sp_tnt' => $combid);
+	$datawh ='';
+        $rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+        	$usrid=$this->session->userdata('id_user');
+                $deptid = '';
+                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                	$deptid=$rw->deptid;
+                }
+                $datawh = array ('sp_dept' => $deptid);
+        }
+        $datawh['sp_tnt'] = $combid;
+
+//        $datawh=array('sp_tnt' => $combid);
 	$whorder = 'sp_uo asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$datawh,$whorder);
         $uo_select_box =' ';
@@ -728,6 +769,19 @@ public function disciplinewiselist(){
         else{
             $datawh=array('sp_tnt' => $parts[0]);
         }
+
+	$rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+                $usrid=$this->session->userdata('id_user');
+                $deptid = '';
+                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+                $datawh['sp_dept'] = $deptid;
+        }
+
 	$whorder = 'sp_emppost asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$datawh,$whorder);
         $pt_select_box =' ';
@@ -748,6 +802,18 @@ public function disciplinewiselist(){
      public function getuolist_sp(){
         $combid= $this->input->post('worktype');
         $datawh=array('sp_tnt' => $combid);
+	$rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+                $usrid=$this->session->userdata('id_user');
+                $deptid = '';
+                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+                $datawh['sp_dept'] = $deptid;
+        }
+
 	$whorder = 'sp_uo asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$datawh,$whorder);
         $uo_select_box =' ';
@@ -773,6 +839,18 @@ public function disciplinewiselist(){
         else{
             $datawh=array('sp_tnt' => $parts[0]);
         }
+	$rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+                $usrid=$this->session->userdata('id_user');
+                $deptid = '';
+                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+                $datawh['sp_dept'] = $deptid;
+        }
+
 	$whorder = 'sp_dept asc ';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_dept',$datawh,$whorder);
         $dept_select_box =' ';
@@ -792,7 +870,20 @@ public function disciplinewiselist(){
     /********************select post list according to selection type**********************/
     public function getpostlist_sp(){
         $combid= $this->input->post('worktype');
-        $datawh=array('sp_tnt' => $combid);
+	$datawh ='';
+                $rlid=$this->session->userdata('id_role');
+                if ($rlid == 5){
+                        $usrid=$this->session->userdata('id_user');
+                        $deptid = '';
+                        $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                        foreach($resu as $rw){
+                                $deptid=$rw->deptid;
+                        }
+                        $datawh = array ('sp_dept' => $deptid);
+                }
+
+        $datawh['sp_tnt'] = $combid;
 	$whorder = 'sp_emppost asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$datawh,$whorder);
         $post_select_box =' ';

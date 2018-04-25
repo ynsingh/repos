@@ -94,7 +94,11 @@ $(document).ready(function(){
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Working Type
                     <select name="wtype" id="wtype">
-                      <option value="" disabled selected>----------- Select Working Type ----------</option>
+				<?php if  (!empty($this->wtyp)){ ?>
+                        <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
+                        <?php  }else{ ?>
+                      <option value="" disabled selected>------- Select Working Type -------</option>
+                          <?php  } ?>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
                     </select>
@@ -104,7 +108,11 @@ $(document).ready(function(){
                 <!--</td>
                 <td> --> Select Post
                     <select name="post" id="post">
+			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
+                        <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
+                        <?php  }else{ ?>
                       <option value="" disabled selected>---------- Select Post -----------------</option>
+			 <?php  } ?>
                      <!-- <option value="All" >All</option> -->
                     </select>
                <!-- </td>

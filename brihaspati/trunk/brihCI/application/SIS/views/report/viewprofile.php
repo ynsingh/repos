@@ -115,6 +115,20 @@
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
                             <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link')); ?></td>
+			<?php
+// array('name' => $name, 'title' => $title, 'status' => $status); 
+//SELECT m1.*      FROM employee_servicedetail m1 LEFT JOIN employee_servicedetail m2      ON (m1.empsd_empid = m2.empsd_empid AND m1.empsd_dojoin < m2.empsd_dojoin)      WHERE m1.empsd_empid = 715 and m2.empsd_dojoin IS NULL;
+		//		$srrecod=$this->sismodel->get_jointbrecord('employee_servicedetail m1','*','employee_servicedetail m2','m1.empsd_empid = m2.empsd_empid AND m1.empsd_dojoin < m2.empsd_dojoin','LEFT',array('m1.empsd_empid' => $record->emp_id ,'m2.empsd_dojoin' =>  NULL));
+			//	print_r($srrecod);// die;
+/*				if( !empty($srrecod) ){
+					foreach($srrecod as $recd){
+						$curscname = ;
+						$curdeptname = ;
+						$curdesigname = ;
+
+					}
+				}*/
+			?>
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
 <!--                            <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>-->
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>

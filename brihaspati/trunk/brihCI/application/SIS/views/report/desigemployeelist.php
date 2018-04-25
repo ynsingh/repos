@@ -142,17 +142,26 @@
          <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Type
-                    <select name="wtype" id="wtype" style="width:250px;"> 
+                    <select name="wtype" id="wtype" style="width:250px;">
+			 <?php if  (!empty($this->wtyp)){ ?>
+                        <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
+                        <?php  }else{ ?> 
                       <option value="" disabled selected>------- Select Working Type -------</option>
+			  <?php  } ?>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
                        
                     </select> 
                                     
                 </td> 
+
                 <td> Designation
                     <select name="desig" id="desig" style="width:250px;"> 
+			 <?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
+                        <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
+                        <?php  }else{ ?>
                       <option value="" disabled selected>----------- Select Designation------</option>
+			 <?php  } ?>
                       <!--<option value="All" >All</option> -->
                     </select> 
                 </td>
@@ -161,13 +170,21 @@
                 <tr style="font-weight:bold;">-->
                 <td>   University Officer
                     <select name="uoff" id="uoff" style="width:260px;"> 
+			<?php if  ((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
+                        <option value="<?php echo $this->uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$this->uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$this->uolt)->code ." )"; ?></option>
+                        <?php  }else{ ?>
                       <option value="" disabled selected>------ Select University officer -----</option>
+			  <?php  } ?>
                      <!-- <option value="All" >All</option> -->
                     </select> 
                 </td> 
                 <td> Department
                     <select name="dept" id="dept" style="width:250px;"> 
+			 <?php if ( (!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
+                        <option value="<?php echo $this->deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$this->deptmt)->dept_code ." )"; ?></option>
+                        <?php  }else{ ?>
                       <option value="">--------- Select Department -------</option>
+			  <?php  } ?>
                       <!--<option value="All" >All</option> -->
                     </select> 
                     
