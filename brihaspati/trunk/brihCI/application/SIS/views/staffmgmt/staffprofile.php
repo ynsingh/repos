@@ -881,11 +881,11 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td>    
             </tr>
             <tr>
-                <td><label for="udeput" style="font-size:15px;">If YES<font color='Red'>*</font>  </label>
+                <td><label for="udeput" style="font-size:15px;">If YES  </label>
                 <div><input type="radio" name="udeput" id="udeput" value="withsalary">with Salary &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="udeput" id="udeput2" value="withoutsalary">without Salary
                 </div></td>
-                <td><label for="udeput" style="font-size:15px;">If NO (Tyoe of Leave availed for Ph.D)<font color='Red'>*</font>  </label>
+                <td><label for="udeput" style="font-size:15px;">If NO (Tyoe of Leave availed for Ph.D)  </label>
                 <div>
                     <select name="udt" id="udt" style="width:300px;"> 
                         <option value="">--------- Select Leave Type --------</option>

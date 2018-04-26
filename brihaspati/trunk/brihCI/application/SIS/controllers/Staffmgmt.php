@@ -124,15 +124,6 @@ class Staffmgmt extends CI_Controller
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
         $this->leavedata=$this->sismodel->get_list('leave_type_master');
         /**********************here we check that vacancy is available or not in staff position******************************************/
-        /*if(!empty($_POST['emppost'])){
-            $str = str_replace(" ", "",$_POST['emppost']);
-            echo ("this is testing==2===".$str);
-            if($str == 'Novacancy'){
-                $this->session->set_flashdata('err_message', 'No vacancy available for this post');
-                redirect('staffmgmt/staffprofile');
-            }
-        }*/
-        
                     
         if(isset($_POST['staffprofile'])) {
       
@@ -256,6 +247,9 @@ class Staffmgmt extends CI_Controller
                        
                     }
                 } 
+                else{
+                    $udval=NULL;
+                }
                 if(!empty($_POST['netqual'])){
                     if($_POST['netqual'] =='Yes'){
                         $netdetail=$_POST['netqual'].",".$_POST['netqualyes'];
@@ -264,6 +258,9 @@ class Staffmgmt extends CI_Controller
                         $netdetail=$_POST['netqual'];
                     }
                     
+                }
+                else{
+                    $netdetail=NULL;
                 }
 
                 //-------------------------------------------------------------
@@ -396,6 +393,8 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
 
 		/* insert record in service details , if uo then update in uolist table  and if hod then update in hod list table */
+                    
+                    
                     
                     $empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email',$_POST['emailid'])->emp_id;
                     if(!empty($_POST['asignname'])){
@@ -575,13 +574,6 @@ class Staffmgmt extends CI_Controller
         $whdata = array ('aa_empid' => $id);
         $whorder = 'aa_asigperiodfrom desc';
         $editemp_data['editasign'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,$whorder);
-
-       // $selectfield ="*";
-        //$whdata = array ('aa_empid' => $id);
-        //$joincond='';
-       // $editemp_data['editasign']= $this->sismodel->get_jointbrecord('additional_assignments',$selectfield,'additional_assignments',$joincond,'LEFT',$whdata);
-       // $aasign_data=$this->sismodel->get_listrow('additional_assignments','aa_empid', $id);
-        //$editemp_data['editasign'] = $aasign_data->row();
         $this->load->view('staffmgmt/editempprofile',$editemp_data);     
         
     }
@@ -727,6 +719,9 @@ class Staffmgmt extends CI_Controller
                     $udval=$_POST['univdeput'].",".$_POST['udt'].",".$_POST['leavedatefrom'].",".$_POST['leavedateto'];
                 }
             } 
+            else{
+                $udval=NULL;
+            }
             if(!empty($_POST['netqual'])){
                 if($_POST['netqual'] =='Yes'){
                     $netdetail=$_POST['netqual'].",".$_POST['netqualyes'];
@@ -739,6 +734,11 @@ class Staffmgmt extends CI_Controller
                     $netdpln=NULL;
                 }
                     
+            }
+            else{
+                $netdetail=NULL;
+                $netpass=NULL;
+                $netdpln=NULL;
             }
             
             $data = array(
@@ -867,6 +867,10 @@ class Staffmgmt extends CI_Controller
                     $asignname=$_POST['asignname'];
                 }
             }
+            else{
+                $asignname=NULL;
+            }
+            
             
             /* update record in  additional assignments */
              $dupcheck = array(
@@ -1741,7 +1745,7 @@ class Staffmgmt extends CI_Controller
             $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$auouserid)->lastname;
             $auoflname=$auofname." ".$auolname;
             $uco_select_box.='<option value='.$aucoid->cudsd_auoid.'>'.$auoflname.' ';*/
-         json_encode("in controller====".$aucoid->scuo_uoid);
+        // json_encode("in controller====".$aucoid->scuo_uoid);
             $uco_select_box.='<option value='.$aucoid->scuo_uoid.'>'.$auoname." (".$auocode.") ".' ';
         } 
         echo json_encode($uco_select_box);
@@ -1866,72 +1870,9 @@ class Staffmgmt extends CI_Controller
         echo json_encode($emppost_select_box);
                         
     }
-    
-    /*************************************updating the staff position table*****************/
-    //public function updatestaffposition($campus,$uocid,$deptid,$emppost,$worktype,$emptype){
-    // public function updatestaffposition($campus,$uocid,$deptid,$schmid,$emppost,$worktype,$emptype){
-        /*$datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
-            'sp_schemecode'=> $schmid,'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);*/
-        /*$datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
-            'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);
-        $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
-        if(!empty($emppost_data)){
-            $update_data = array();
-            $upempdata_flag;
-            foreach($emppost_data as $empdata){
-                
-                if($empdata->sp_type == 'Permanent'){
-                    
-                    $position = $empdata->sp_position+1;
-                    $vacant   = $empdata->sp_vacant-1;
-                    $pospermanent=$empdata->sp_pospermanent+1;
-                    $vpermanenet =$empdata->sp_vpermanenet-1;
-                    $update_data = array(
-                        'sp_position'=>$position,
-                        'sp_vacant'=>$vacant,
-                        'sp_pospermanent'=>$pospermanent,
-                        'sp_vpermanenet'=>$vpermanenet,
-                        'sp_org_id'=> '1'
-                    );
-                    //echo "vacacny=per==".$position.$vacant.$pospermanent.$vpermanenet;
-                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
-                }
-                if($empdata->sp_type == 'Temporary'){
-                    
-                    $position = $empdata->sp_position+1;
-                    $vacant   = $empdata->sp_vacant-1;
-                    $postemporary =$empdata->sp_postemporary+1;
-                    $vtemporary = $empdata->sp_vtemporary-1;
-                    $update_data = array(
-                       'sp_position'=>$position,
-                       'sp_vacant'=>$vacant,
-                       'sp_postemporary'=>$postemporary,
-                       'sp_vtemporary'=>$vtemporary,
-                       'sp_org_id'=> '1'
-                    );
-                   // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
-                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
-                }
-               
-            } //foreach   
-            if(!upempdata_flag){
-                $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
-                $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
-            
-            }
-            else{
-                $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ");
-                $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully");
-            
-            }
-           
-        }  //ifempty  
-        
-    }*/ //function close
-    /***********************************close of staff position*********************************************/   
-    
+       
     /***********************************Employee type from staff position*********************************************/   
-     /* This function has been created for get the employee type vacant shown against position */
+    /* This function has been created for get the employee type vacant shown against position */
     public function getemptypeposition(){
         $combval = $this->input->post('combfive');
         $parts = explode(',',$combval);

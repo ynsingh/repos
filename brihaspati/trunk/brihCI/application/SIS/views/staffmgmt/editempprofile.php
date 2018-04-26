@@ -977,7 +977,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><select name="univdeput" id="univdeput" style="width:300px;"> 
                         <?php $udep=$editdata->emp_phdunivdeput;
                             $udepnew=explode(",",$udep);
-                            echo  "seema==jfkhsdfhjsdhf==".$udepnew[0];
+                           // echo  "seema==jfkhsdfhjsdhf==".$udepnew[0];
                         if(!empty($editdata->emp_phdunivdeput)):;?>
                         <option value="<?php echo $udepnew[0] ;?>"><?php echo $udepnew[0];?></option>        
                         <?php else:?>    
@@ -989,11 +989,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>    
             </tr>
              <tr>
-                <td><label for="udeput" style="font-size:15px;">If YES<font color='Red'>*</font>  </label>
+                <td><label for="udeput" style="font-size:15px;">If YES </label>
                 <div><input type="radio" name="udeput" id="udeput" value="withsalary" <?php if(!empty($editdata->emp_phdunivdeput)&& $udepnew[0]=== 'Yes'){echo ($udepnew[1] == 'withsalary'?'checked="checked"':'');} ?> >with Salary &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="udeput" id="udeput2" value="withoutsalary" <?php if(!empty($editdata->emp_phdunivdeput)&& $udepnew[0]=== 'Yes'){echo ($udepnew[1] == 'withoutsalary'?'checked="checked"':'');} ?> >without Salary
                 </div></td>
-                <td><label for="udeput" style="font-size:15px;">If NO (Tyoe of Leave availed for Ph.D)<font color='Red'>*</font>  </label>
+                <td><label for="udeput" style="font-size:15px;">If NO (Tyoe of Leave availed for Ph.D) </label>
                 <div>
                     <select name="udt" id="udt" style="width:300px;">
                         <?php if(!empty($editdata->emp_phdunivdeput) && $udepnew[0]=== 'No'):;?>
