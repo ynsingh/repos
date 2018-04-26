@@ -122,6 +122,7 @@ class Staffmgmt extends CI_Controller
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
+        $this->leavedata=$this->sismodel->get_list('leave_type_master');
         /**********************here we check that vacancy is available or not in staff position******************************************/
         /*if(!empty($_POST['emppost'])){
             $str = str_replace(" ", "",$_POST['emppost']);
@@ -192,6 +193,30 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('dateofregular','Date of Regularisation','trim|xss_clean');
             $this->form_validation->set_rules('qual','Qualification','trim|xss_clean');
             $this->form_validation->set_rules('remarks','Remarks','trim|xss_clean');
+            $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
+            //more  fields added on demand
+            $this->form_validation->set_rules('phddiscipline','Discipline','trim|xss_clean');
+            $this->form_validation->set_rules('phdtype','phdtype','trim|xss_clean');
+            $this->form_validation->set_rules('phdinstname','InstName','trim|xss_clean');
+            $this->form_validation->set_rules('univdeput','univdeput','trim|xss_clean');
+            $this->form_validation->set_rules('udeput','If YES','trim|xss_clean');
+            $this->form_validation->set_rules('udt','If NO','trim|xss_clean');
+            $this->form_validation->set_rules('leavedatefrom','Leave From','trim|xss_clean');
+            $this->form_validation->set_rules('leavedateto','Leave To','trim|xss_clean');
+            $this->form_validation->set_rules('netqual','NET qualified','trim|xss_clean');
+            $this->form_validation->set_rules('netqualyes','NET Organiser','trim|xss_clean');
+            $this->form_validation->set_rules('passyear','NET passyear','trim|xss_clean');
+            $this->form_validation->set_rules('netdiscipline','NET Discipline','trim|xss_clean');
+            $this->form_validation->set_rules('vciregno','VCIregno','trim|xss_clean');
+            $this->form_validation->set_rules('vciregdate','VCIregdate','trim|xss_clean');
+            $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
+            $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
+            $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
+            $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
+            $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
+            $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
+            
+            
             //Repopulate forms value
             /* if($_POST){
 		$this->data['empcode']['value']=$this->input->get_post('empcode',TRUE);
@@ -204,6 +229,8 @@ class Staffmgmt extends CI_Controller
             }
             //if($this->form_validation->run()==TRUE){
             else{
+                //$udval='';
+                $pfno=0;
                 $bank_ifsccode=$_POST['bankname'].",".$_POST['ifsccode'];
                 $emppostname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['emppost'])->desig_name; 
                // $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['uocontrol'])->authority_id;
@@ -218,8 +245,26 @@ class Staffmgmt extends CI_Controller
 		}
 		$email = $_POST['emailid'];
 		if(empty($email)){
-                                    $email = $empcode .'@tanuvas.org.in';
-                            }
+                    $email = $empcode .'@tanuvas.org.in';
+                }
+                if(!empty($_POST['univdeput'])){
+                    if($_POST['univdeput'] =='Yes'){
+                        $udval=$_POST['univdeput'].",".$_POST['udeput'];
+                    }
+                    else{
+                        $udval=$_POST['univdeput'].",".$_POST['udt'].",".$_POST['leavedatefrom'].",".$_POST['leavedateto'];
+                       
+                    }
+                } 
+                if(!empty($_POST['netqual'])){
+                    if($_POST['netqual'] =='Yes'){
+                        $netdetail=$_POST['netqual'].",".$_POST['netqualyes'];
+                    }
+                    else{
+                        $netdetail=$_POST['netqual'];
+                    }
+                    
+                }
 
                 //-------------------------------------------------------------
                 $data = array(
@@ -283,8 +328,20 @@ class Staffmgmt extends CI_Controller
                     'emp_doprobation'           =>$_POST['dateofprob'], 
                     'emp_doregular'             =>$_POST['dateofregular'], 
                     'emp_qual'                  =>$_POST['qual'], 
-                    'emp_remarks'               =>$_POST['remarks'], 
-                    'emp_photoname'             =>$new_name  
+                    'emp_remarks'               =>$_POST['remarks'],
+                    'emp_grade'			=>$_POST['empgrade'],  
+                    'emp_secndemail'            =>$_POST['secndemailid'],
+                    'emp_phddiscipline'         =>$_POST['phddiscipline'],
+                    'emp_phdtype'               =>$_POST['phdtype'],
+                    'emp_phdinstname'           =>$_POST['phdinstname'],
+                    'emp_phdunivdeput'          =>$udval,
+                    'emp_netqualified'          =>$netdetail,
+                    'emp_netpassingyear'        =>$_POST['passyear'],
+                    'emp_netdiscipline'         =>$_POST['netdiscipline'],
+                    'emp_vciregno'              =>$_POST['vciregno'],
+                    'emp_vciregdate'            =>$_POST['vciregdate'],
+                    'emp_photoname'             =>$new_name 
+                        
                         
                 );
 		if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
@@ -338,7 +395,33 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_logmessage("insert", "data insert in employee_master table.");
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
 
-		/* insert record in service details  */
+		/* insert record in service details , if uo then update in uolist table  and if hod then update in hod list table */
+                    
+                    $empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email',$_POST['emailid'])->emp_id;
+                    if(!empty($_POST['asignname'])){
+                        if($_POST['asignname'] == 'Others'){
+                            $asignname=$_POST['asignname'].",".$_POST['asignother'];
+                        }
+                        else{
+                            $asignname=$_POST['asignname'];
+                        }
+                    }
+                    $dataasign=array(
+                        'aa_empid'              =>$empid,
+                        'aa_asigname'           =>$asignname,
+                        'aa_asigperiodfrom'     =>$_POST['asigndatefrom'],
+                        'aa_asigperiodto'       =>$_POST['asigndateto'],
+                        'aa_place'              =>$_POST['asignplace'],
+                        'aa_creatorid'          =>$this->session->userdata('username'),
+                        'aa_creatordate'        =>date('y-m-d'),
+                        'aa_modifierid'         =>$this->session->userdata('username'),
+                        'aa_modifydate'         =>date('y-m-d'),
+                        
+                    );
+                    /* insert record in  additional assignments */
+                    $this->sismodel->insertrec('additional_assignments', $dataasign);
+                    $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
+                    $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
                     
                     $dataems = array(
                        'ems_code'              =>$_POST['empcode'],
@@ -483,9 +566,22 @@ class Staffmgmt extends CI_Controller
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
+        $this->leavedata=$this->sismodel->get_list('leave_type_master');
         $editemp_data['id'] = $id;
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
         $editemp_data['editdata'] = $empmaster_data->row();
+        /*********************************select additional assignments***********************************/
+	$selectfield="*";
+        $whdata = array ('aa_empid' => $id);
+        $whorder = 'aa_asigperiodfrom desc';
+        $editemp_data['editasign'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,$whorder);
+
+       // $selectfield ="*";
+        //$whdata = array ('aa_empid' => $id);
+        //$joincond='';
+       // $editemp_data['editasign']= $this->sismodel->get_jointbrecord('additional_assignments',$selectfield,'additional_assignments',$joincond,'LEFT',$whdata);
+       // $aasign_data=$this->sismodel->get_listrow('additional_assignments','aa_empid', $id);
+        //$editemp_data['editasign'] = $aasign_data->row();
         $this->load->view('staffmgmt/editempprofile',$editemp_data);     
         
     }
@@ -553,15 +649,36 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
-            $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric');
+            $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
             $this->form_validation->set_rules('dateofprob','Date of Probation','trim|xss_clean');
             $this->form_validation->set_rules('dateofregular','Date of Regularisation','trim|xss_clean');
             $this->form_validation->set_rules('qual','Qualification','trim|xss_clean');
             $this->form_validation->set_rules('remarks','Remarks','trim|xss_clean');
             $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
+            //more  fields added on demand
+            $this->form_validation->set_rules('phddiscipline','Discipline','trim|xss_clean');
+            $this->form_validation->set_rules('phdtype','phdtype','trim|xss_clean');
+            $this->form_validation->set_rules('phdinstname','InstName','trim|xss_clean');
+            $this->form_validation->set_rules('univdeput','univdeput','trim|xss_clean');
+            $this->form_validation->set_rules('udeput','If YES','trim|xss_clean');
+            $this->form_validation->set_rules('udt','If NO','trim|xss_clean');
+            $this->form_validation->set_rules('leavedatefrom','Leave From','trim|xss_clean');
+            $this->form_validation->set_rules('leavedateto','Leave To','trim|xss_clean');
+            $this->form_validation->set_rules('netqual','NET qualified','trim|xss_clean');
+            $this->form_validation->set_rules('netqualyes','NET Organiser','trim|xss_clean');
+            $this->form_validation->set_rules('passyear','NET passyear','trim|xss_clean');
+            $this->form_validation->set_rules('netdiscipline','NET Discipline','trim|xss_clean');
+            $this->form_validation->set_rules('vciregno','VCIregno','trim|xss_clean');
+            $this->form_validation->set_rules('vciregdate','VCIregdate','trim|xss_clean');
+            $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
+            $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
+            $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
+            $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
+            $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
+            $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
 
-             if($this->form_validation->run() == FALSE){
+            if($this->form_validation->run() == FALSE){
                 //redirect('staffmgmt/editempprofile/'.$id);
                 $this->load->view('staffmgmt/editempprofile',$editemp_data);
                 return;
@@ -601,6 +718,29 @@ class Staffmgmt extends CI_Controller
                 /*'emp_name'                       => $this->input->post('empname'),*/
                // 'emp_bank_ifsc_code'             => $this->input->post('bankname'),
                 /*----extra field added---------------------------------------------*/
+            
+            if(!empty($_POST['univdeput'])){
+                if($_POST['univdeput'] =='Yes'){
+                    $udval=$_POST['univdeput'].",".$_POST['udeput'];
+                }
+                else{
+                    $udval=$_POST['univdeput'].",".$_POST['udt'].",".$_POST['leavedatefrom'].",".$_POST['leavedateto'];
+                }
+            } 
+            if(!empty($_POST['netqual'])){
+                if($_POST['netqual'] =='Yes'){
+                    $netdetail=$_POST['netqual'].",".$_POST['netqualyes'];
+                    $netpass=$_POST['passyear'];
+                    $netdpln=$_POST['netdiscipline'];
+                }
+                else{
+                    $netdetail=$_POST['netqual'];
+                    $netpass=NULL;
+                    $netdpln=NULL;
+                }
+                    
+            }
+            
             $data = array(
 		'emp_code'			=> $this->input->post('empcode'),
                 'emp_specialisationid'           => $this->input->post('specialisation'),
@@ -664,7 +804,17 @@ class Staffmgmt extends CI_Controller
                 'emp_qual'                       => $this->input->post('qual'), 
                 'emp_remarks'                    => $this->input->post('remarks'), 
                 'emp_photoname'                  => $new_name,
-		'emp_grade'			=> $this->input->post('empgrade')  
+		'emp_grade'                      => $this->input->post('empgrade'), 
+                'emp_secndemail'                 =>$_POST['secndemailid'],
+                'emp_phddiscipline'              =>$_POST['phddiscipline'],
+                'emp_phdtype'                    =>$_POST['phdtype'],
+                'emp_phdinstname'                =>$_POST['phdinstname'],
+                'emp_phdunivdeput'               =>$udval,
+                'emp_netqualified'               =>$netdetail,
+                'emp_netpassingyear'             =>$netpass,
+                'emp_netdiscipline'              =>$netdpln,
+                'emp_vciregno'                   =>$_POST['vciregno'],
+                'emp_vciregdate'                 =>$_POST['vciregdate'],   
             );
 //print_r($data);
             /* upload photo*/
@@ -707,13 +857,66 @@ class Staffmgmt extends CI_Controller
                     $msgphoto=" and photo" ;
                 } 
             }//check for empphoto
-           
+            
             $upempdata_flag=$this->sismodel->updaterec('employee_master', $data,'emp_id',$id);
-	    $mess = 'Your Employee data updated Successfully.';
+	    if(!empty($_POST['asignname'])){
+                if($_POST['asignname'] == 'Others'){
+                    $asignname=$_POST['asignname'].",".$_POST['asignother'];
+                }
+                else{
+                    $asignname=$_POST['asignname'];
+                }
+            }
+            
+            /* update record in  additional assignments */
+             $dupcheck = array(
+                'aa_empid'     =>$id,   
+                'aa_asigname'  =>$asignname,
+                'aa_place'    =>$_POST['asignplace']      
+            ); 
+            $emidexits= $this->sismodel->isduplicatemore('additional_assignments',$dupcheck);
+            if(! $emidexits)
+            {
+                $dataasign=array(
+               'aa_empid'              =>$id,
+               'aa_asigname'           =>$asignname,
+               'aa_asigperiodfrom'     =>$_POST['asigndatefrom'],
+               'aa_asigperiodto'       =>$_POST['asigndateto'],
+               'aa_place'              =>$_POST['asignplace'],
+               'aa_creatorid'          =>$this->session->userdata('username'),
+               'aa_creatordate'        =>date('y-m-d'),
+               'aa_modifierid'         =>$this->session->userdata('username'),
+               'aa_modifydate'         =>date('y-m-d'),
+                        
+            );
+                /* insert record in  additional assignments */
+                    $this->sismodel->insertrec('additional_assignments', $dataasign);
+                    $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
+                    $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
+            }
+            else{
+                $dataasign=array(
+               //'aa_empid'              =>$empid,
+               'aa_asigname'           =>$asignname,
+               'aa_asigperiodfrom'     =>$_POST['asigndatefrom'],
+               'aa_asigperiodto'       =>$_POST['asigndateto'],
+               'aa_place'              =>$_POST['asignplace'],
+              // 'aa_creatorid'          =>$this->session->userdata('username'),
+               //'aa_creatordate'        =>date('y-m-d'),
+               'aa_modifierid'         =>$this->session->userdata('username'),
+               'aa_modifydate'         =>date('y-m-d'),
+                        
+            );
+                $this->sismodel->updaterec('additional_assignments', $dataasign,'aa_empid',$id);
+                $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
+                $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
+            }
+            
+            $mess = 'Your Employee data updated Successfully.';
             $sub = 'Employee Profile Updated';
             $this->mailmodel->mailsnd($_POST['emailid'],$sub,$mess,'');
 		
-		/* insert record in service details  */
+		/* insert record in service details with check duplicate , if uo then update in uolist table  and if hod then update in hod list table */
 
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
@@ -2002,7 +2205,28 @@ class Staffmgmt extends CI_Controller
         echo json_encode($emplst_select_box);
     
     }
-    
     /*******************************************closer employeenamelist********************************/
+    
+    /* This function has been created for get Grades on the basis of  selected working type */
+     
+    public function getgradelist(){
+        $combid = $this->input->post('wtype');
+        echo json_encode($combid);
+        $grade_select_box ='';
+        $grade_select_box.='<option value="">------- Select Grade -----------------';
+        if($combid == 'Teaching'){
+            $grade_select_box.='<option value='.'Career'.''.'Advance(CA)'.'>'.'Career'.''.'Advance(CA)'.'';
+            $grade_select_box.='<option value='.'Regular(R)'.'>'.'Regular(R)'.'';    
+               
+        }
+        else{
+            $grade_select_box.='<option value='.'Selection Grade(SG)'.'>'.'Selection Grade(SG)'.'';
+            $grade_select_box.='<option value='.'Special Grade(SplG)'.'>'.'Special Grade(SplG)'.'';    
+        }
+        echo json_encode($grade_select_box);
+         
+    }
+    
+    /*******************************************closer grade list********************************/
 }    
 

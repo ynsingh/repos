@@ -26,7 +26,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-	    $('#Dateofprob,#Dateofregular').datepicker({
+	    $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#passyear,#leavedatefrom,#leavedateto').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -406,9 +406,93 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             });
            /*******************************************************close pan number method****************************************************************/
           
+            /*****************************************university deputed************************************************************ */
             
+            $('#univdeput').on('change',function(){
+                var selval = $(this).val();
+              //  alert("selval===="+selval);
+                if(selval == 'Yes'){
+                    $('#udt,#leavedatefrom,#leavedateto').prop('disabled',true);
+                                      
+                }
+                else{
+                   $('#udt,#leavedatefrom,#leavedateto').prop('disabled',false);
+                   $('#udeput,#udeput2').prop('disabled',true);
+                    
+                    
+                }
+            }); 
+            
+            /****************university deputed closer***************************************************************************/    
            
-         
+            /*****************************************NET************************************************************ */
+            
+            $('#netqual,#netqual2').on('change',function(){
+                var redioval = $(this).val();
+               // alert("redioval===="+redioval);
+                if(redioval == 'No'){
+                    $('#netqualyes,#passyear,#netdiscipline').prop('disabled',true);
+                                      
+                }
+                else{
+                    $('#netqualyes,#passyear,#netdiscipline').prop('disabled',false);
+                   
+                    
+                    
+                }
+            }); 
+            
+           /****************NET closer*************************************************************************/
+           
+            /****************************************Additional Assignments************************************************************ */
+            
+            $('#asignname').on('change',function(){
+                var asignval = $(this).val();
+              //  alert("asignval===="+asignval);
+                if(asignval === 'Others'){
+                    $('#asignother').prop('disabled',false);
+                                      
+                }
+                else{
+                    $('#asignother').prop('disabled',true);
+                   
+                    
+                    
+                }
+            }); 
+            
+           /**************** Additional Assignments closer*************************************************************************/
+            /************************Employee Grade******************************************************************/
+            
+            $('#worktypeid').on('change',function(){
+                var worktype = $(this).val();
+              //  alert("comin ======="+worktype);
+                if(worktype === ''){
+                   $('#empgrade').prop('disabled',true);
+                }
+                else{
+             
+                    $('#empgrade').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
+                        type: "POST",
+                        data: {"wtype" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee Grade******************************************************************/
+        
+        
         });
          /*********************************************image preview***************************************************************/
         function preview_image(event) 
@@ -457,7 +541,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         </div>
       <!-- <div> -->
         <!--<table style="margin-left:2%; margin-right:2%; width:97%; border:1px solid gray;" border=1 class="TFtable">-->
-        <table style="margin-left:0%;border:1px solid gray;" class="TFtable">
+        <table width="100%" style="margin-left:0%;border:1px solid gray;" class="TFtable">
             
             <?php echo form_open_multipart('staffmgmt/staffprofile','id="my_id"');?>
             <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Staff Profile Form</th></thead></tr>
@@ -761,17 +845,143 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="Qualification" style="font-size:15px;">Qualification</label>
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="28" >
                 </div></td>
-                <td><label for="remarks" style="font-size:15px;">Remarks</label>
-                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="3" cols="40"  placeholder="Remarks......"></textarea>
+                <td><label for="empgrade" style="font-size:15px;"> Grade  </label>
+                        <div><select name="empgrade" id="empgrade"  style="width:300px;">
+                        <option selected="selected" disabled selected >-------- Select Grade --------</option>        
+			<!--<option value="">------------ Select Grade ---------</option>
+                       	<option value="Career Advance (CA)">Career Advance (CA)</option>
+                        <option value="Regular(R)">Regular (R)</option>
+			<option value="Selection Grade (SG)">Selection Grade (SG)</option>
+                        <option value="Special Grade (SplG)">Special Grade (SplG)</option> -->
+			</select></div>
+                </td>
+                          
+            </tr>
+            <tr><td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
+            <tr>
+                <td><label for="Discipline " style="font-size:15px;">Discipline</label>
+                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="phD Discipline........" size="28" >
+                </div></td>
+                <td><label for="phdtype" style="font-size:15px;">PhD Type</label>
+                    <div><select name="phdtype" style="width:300px;"> 
+                        <option value="">-------------PhD type ----------</option>
+                        <option value="Full time">Full time</option>
+                        <option value="Part time">Part time</option>
+                    </select></div>
+                </td>
+                <td><label for="InstName" style="font-size:15px;">Institute Name</label>
+                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD Institute Name........" size="28" >
+                </div></td>
+                <td><label for="univdeput" style="font-size:15px;">Whether Deputed by Unversity</label>
+                    <div><select name="univdeput" id="univdeput" style="width:300px;"> 
+                        <option value="">--------- Select Unversity deputed --------</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select></div>
+                </td>    
+            </tr>
+            <tr>
+                <td><label for="udeput" style="font-size:15px;">If YES<font color='Red'>*</font>  </label>
+                <div><input type="radio" name="udeput" id="udeput" value="withsalary">with Salary &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="udeput" id="udeput2" value="withoutsalary">without Salary
+                </div></td>
+                <td><label for="udeput" style="font-size:15px;">If NO (Tyoe of Leave availed for Ph.D)<font color='Red'>*</font>  </label>
+                <div>
+                    <select name="udt" id="udt" style="width:300px;"> 
+                        <option value="">--------- Select Leave Type --------</option>
+                        <?php foreach($this->leavedata as $ldata): ?>	
+   				<option value="<?php echo $ldata->lt_id; ?>"><?php echo $ldata->lt_name."( ".$ldata->lt_code." )"; ?></option> 
+ 			<?php endforeach; ?>
+                       
+                    </select>   
+                </div></td>
+                <td><label for="leavedatefrom" style="font-size:15px;">Leave From</label>
+                    <div><input type="text" name="leavedatefrom" id="leavedatefrom" value="<?php echo isset($_POST["leavedatefrom"]) ? $_POST["leavedatefrom"] : ''; ?>"class="form-control" size="30" />
+                <div></td>
+                <td><label for="leavedateto" style="font-size:15px;">Leave To</label>
+                    <div><input type="text" name="leavedateto" id="leavedateto" value="<?php echo isset($_POST["leavedateto"]) ? $_POST["leavedateto"] : ''; ?>"class="form-control" size="30" />
+                <div></td>
+            </tr>
+            <tr><td><label for="NET Details: " style="font-size:15px;"><b>NET Details</b></label></td></tr>
+            <tr>
+                <td><label for="netqual" style="font-size:15px;">Whether NET qualified  </label>
+                <div><input type="radio" name="netqual" id="netqual" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="netqual" id="netqual2" value="No">NO
+                </div></td>
+                <td><label for="netqualyes" style="font-size:15px;">If Yes </label>
+                <div>
+                    <select name="netqualyes" id="netqualyes" style="width:300px;"> 
+                        <option value="">--------- Select Organiser--------</option>
+                        <option value="ICAR">ICAR</option>
+                        <option value="CSIR">CSIR</option>
+                        <option value="UGC">UGC</option>
+                        <option value="TNSET">INSET</option>
+                    </select>   
+                </div></td>
+                <td><label for="passdate" style="font-size:15px;">Year of Passing</label>
+                    <div><input type="text" name="passyear" id="passyear" value="<?php echo isset($_POST["passyear"]) ? $_POST["passyear"] : ''; ?>" placeholder="Year of Passing Date  ........" size="30" />
+                <div></td>
+                <td><label for="netdiscipline" style="font-size:15px;">Discipline</label>
+                <div><input type="text" name="netdiscipline" id="netdiscipline" class="keyup-characters" value="<?php echo isset($_POST["netdiscipline"]) ? $_POST["netdiscipline"] : ''; ?>" placeholder="NET Discipline........" size="28" >
                 </div></td>
             </tr>
             <tr>
-                
-               
-                <td><label for="Address" style="font-size:15px;">Address</label>
-                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50"  placeholder="Address..."></textarea>
+            <td><label for="vci " style="font-size:15px;"><b>Veterinary Council of india (VCI) Registration: </b></label></td>   
+            </tr>
+            <tr>
+                <td><label for="vciregno" style="font-size:15px;">Registration No</label>
+                <div><input type="text" name="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="VCI Registration No........" size="28" >
                 </div></td>
-                <td colspan="2"><label for="userfile" style="font-size:15px;">Upload Photo</label>
+                <td colspan="2"><label for="vciregdate" style="font-size:15px;">Date of Registration</label>
+                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo isset($_POST["vciregdate"]) ? $_POST["vciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="28" >
+                </div></td>
+                <td><label for="secondary emailid" style="font-size:15px;">Secondary Email Id</label>
+                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="28" >
+                </div></td>
+            </tr>
+            <tr>
+                <td><label for="addasign" style="font-size:15px;"><b>Additional Assignments:</b></label></td>
+            </tr>
+            <tr>
+              <td><label for="asignname" style="font-size:15px;">Name of the Assignment </label>
+                <div>
+                    <select name="asignname" id="asignname" style="width:300px;"> 
+                        <option value="">--------- Select Assignment Name --------</option>
+                        <option value="warden">Warden</option>
+                        <option value="Deputy Warden">Deputy Warden</option>
+                        <option value="Guest House Incharge">Guest House Incharge</option>
+                        <option value="NSS Corordinator">NSS Corordinator</option>
+                        <option value="NCC Officer">NCC Officer</option>
+                        <option value="Resident Veterinary Officer">Resident Veterinary Officer</option>
+                        <option value="Canteen Incharge">Canteen Incharge</option>
+                        <option value="Others">Others</option>
+                    </select>   
+                </div></td> 
+                <td><label for="asignother" style="font-size:15px;">Others</label>
+                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php echo isset($_POST["asignother"]) ? $_POST["asignother"] : ''; ?>" placeholder="Others........" size="28" >
+            <!--</tr>
+            <tr>-->
+                
+                <td><label for="asigndatefrom" style="font-size:15px;">Date From</label>
+                <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php echo isset($_POST["vasigndatefrom"]) ? $_POST["asigndatefrom"] : ''; ?>" placeholder="Date From........" size="28" >
+                </div></td>
+                <td><label for="asigndateto" style="font-size:15px;">Date To</label>
+                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php echo isset($_POST["asigndateto"]) ? $_POST["asigndateto"] : ''; ?>" placeholder="Date To ........" size="28" >
+                </div></td>
+            </tr>
+            <tr>
+                <td><label for="asignplace" style="font-size:15px;">Place</label>
+                <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="28" >
+                </div></td>
+           <!-- </tr>
+            <tr> -->
+                <td><label for="remarks" style="font-size:15px;">Remarks</label>
+                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="2" cols="35"  placeholder="Remarks......"></textarea>
+                </div></td>
+                <td><label for="Address" style="font-size:15px;">Address</label>
+                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="4" cols="40"  placeholder="Address..."></textarea>
+                </div></td>
+                <td><label for="userfile" style="font-size:15px;">Upload Photo</label>
                    <div>
                         <input type="file" name='userfile' accept="image/*" onchange="preview_image(event)">
                         <!--<input type='file' name='userfile' size='20' class='upload-image' />-->

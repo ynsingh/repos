@@ -28,7 +28,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-            $('#Dateofprob,#Dateofregular').datepicker({
+            $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#passyear,#leavedatefrom,#leavedateto').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -399,6 +399,93 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             });
            /*******************************************************close pan number method****************************************************************/
          
+          /*****************************************university deputed************************************************************ */
+            
+            $('#univdeput').on('change',function(){
+                var selval = $(this).val();
+               // alert("selval===="+selval);
+                if(selval == 'Yes'){
+                    $('#udt,#leavedatefrom,#leavedateto').prop('disabled',true);
+                                      
+                }
+                else{
+                   $('#udt,#leavedatefrom,#leavedateto').prop('disabled',false);
+                   $('#udeput,#udeput2').prop('disabled',true);
+                    
+                    
+                }
+            }); 
+            
+            /****************university deputed closer***************************************************************************/    
+           
+            /*****************************************NET************************************************************ */
+            
+            $('#netqual,#netqual2').on('change',function(){
+                var redioval = $(this).val();
+               // alert("redioval===="+redioval);
+                if(redioval == 'No'){
+                    $('#netqualyes,#passyear,#netdiscipline').prop('disabled',true);
+                                      
+                }
+                else{
+                    $('#netqualyes,#passyear,#netdiscipline').prop('disabled',false);
+                   
+                    
+                    
+                }
+            }); 
+            
+           /****************NET closer*************************************************************************/
+           
+            /****************************************Additional Assignments************************************************************ */
+            
+            $('#asignname').on('change',function(){
+                var asignval = $(this).val();
+               // alert("asignval===="+asignval);
+                if(asignval === 'Others'){
+                    $('#asignother').prop('disabled',false);
+                                      
+                }
+                else{
+                    $('#asignother').prop('disabled',true);
+                   
+                    
+                    
+                }
+            }); 
+            
+           /**************** Additional Assignments closer*************************************************************************/
+            /************************Employee Grade******************************************************************/
+            
+            $('#worktypeid').on('change',function(){
+                var worktype = $(this).val();
+                //alert("comin ======="+worktype);
+                if(worktype === ''){
+                   $('#empgrade').prop('disabled',true);
+                }
+                else{
+             
+                    $('#empgrade').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
+                        type: "POST",
+                        data: {"wtype" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee Grade******************************************************************/
+        
+         
         });
         /*function myFunction() {
             window.print();
@@ -445,7 +532,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         <div>
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
         <!--<table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">-->
-        <table style="margin-left:0%;border:1px solid gray;" class="TFtable">
+        <table width="100%" style="margin-left:0%;border:1px solid gray;" class="TFtable">
             
             <?php echo form_open_multipart('staffmgmt/update_profile/' .$id);?>
             <input type="hidden" name="id" value="<?php echo $id ; ?>">
@@ -853,9 +940,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 		<td><label for="empgrade" style="font-size:15px;"> Grade  </label>
                         <div><select name="empgrade" id="empgrade"  style="width:338px;">
 			<?php if(!empty($editdata->emp_grade)):;?>
-                        <option value="<?php echo $editdata->emp_grade;?>"><?php echo $editdata->grade;?></option>
+                        <option value="<?php echo $editdata->emp_grade;?>"><?php echo $editdata->emp_grade;?></option>
                         <?php else:?>
-                        <option value="">------------ Select Grade ---------</option>
+                        <option value="">------------ Select Grade ------</option>
                         <?php endif?>
 			<?php if ($editdata->emp_worktype === 'Teaching'){?>
                         <option value="Career Advance (CA)">Career Advance (CA)</option>
@@ -867,12 +954,175 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
             </tr>
+            <tr><td colspan="4"><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
             <tr>
+                <td><label for="Discipline " style="font-size:15px;">Discipline</label>
+                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo $editdata->emp_phddiscipline;?>" placeholder="phD Discipline........" size="28" >
+                </div></td>
+                <td><label for="phdtype" style="font-size:15px;">PhD Type</label>
+                    <div><select name="phdtype" style="width:300px;"> 
+                        <?php if(!empty($editdata->emp_phdtype)):;?>
+                        <option value="<?php echo $editdata->emp_phdtype;?>"><?php echo $editdata->emp_phdtype;?></option>    
+                        <?php else:?>
+                        <option value="">-----------Select PhD type ----------</option>
+                        <?php endif?>
+                        <option value="Full time">Full time</option>
+                        <option value="Part time">Part time</option>
+                    </select></div>
+                </td>
+                <td><label for="InstName" style="font-size:15px;">Institute Name</label>
+                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo $editdata->emp_phdinstname; ?>" placeholder="PhD Institute Name........" size="28" >
+                </div></td>
+                <td><label for="univdeput" style="font-size:15px;">Whether Deputed by Unversity</label>
+                    <div><select name="univdeput" id="univdeput" style="width:300px;"> 
+                        <?php $udep=$editdata->emp_phdunivdeput;
+                            $udepnew=explode(",",$udep);
+                            echo  "seema==jfkhsdfhjsdhf==".$udepnew[0];
+                        if(!empty($editdata->emp_phdunivdeput)):;?>
+                        <option value="<?php echo $udepnew[0] ;?>"><?php echo $udepnew[0];?></option>        
+                        <?php else:?>    
+                        <option value="">--------- Select Unversity deputed --------</option>
+                        <?php endif?>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select></div>
+                </td>    
+            </tr>
+             <tr>
+                <td><label for="udeput" style="font-size:15px;">If YES<font color='Red'>*</font>  </label>
+                <div><input type="radio" name="udeput" id="udeput" value="withsalary" <?php if(!empty($editdata->emp_phdunivdeput)&& $udepnew[0]=== 'Yes'){echo ($udepnew[1] == 'withsalary'?'checked="checked"':'');} ?> >with Salary &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="udeput" id="udeput2" value="withoutsalary" <?php if(!empty($editdata->emp_phdunivdeput)&& $udepnew[0]=== 'Yes'){echo ($udepnew[1] == 'withoutsalary'?'checked="checked"':'');} ?> >without Salary
+                </div></td>
+                <td><label for="udeput" style="font-size:15px;">If NO (Tyoe of Leave availed for Ph.D)<font color='Red'>*</font>  </label>
+                <div>
+                    <select name="udt" id="udt" style="width:300px;">
+                        <?php if(!empty($editdata->emp_phdunivdeput) && $udepnew[0]=== 'No'):;?>
+                        <option value="<?php echo $udepnew[1] ;?>"><?php 
+                        $lname=$this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$udepnew[1])->lt_name;
+                        $lcode=$this->sismodel->get_listspfic1('leave_type_master','lt_code','lt_id',$udepnew[1])->lt_code;
+                        echo $lname."( ".$lcode." )";?></option>
+                        <?php else:?>
+                        <option value="">--------- Select Leave Type --------</option>
+                        <?php endif?>
+                        <?php foreach($this->leavedata as $ldata): ?>	
+   				<option value="<?php echo $ldata->lt_id; ?>"><?php echo $ldata->lt_name."( ".$ldata->lt_code." )"; ?></option> 
+ 			<?php endforeach; ?>
+                       
+                    </select>   
+                </div></td>
+                <td><label for="leavedatefrom" style="font-size:15px;">Leave From</label>
+                    <div><input type="text" name="leavedatefrom" id="leavedatefrom" value="<?php if(!empty($editdata->emp_phdunivdeput)&& $udepnew[0]=== 'No'){echo $udepnew[2];} ?>"class="form-control" size="30" />
+                <div></td>
+                <td><label for="leavedateto" style="font-size:15px;">Leave To</label>
+                    <div><input type="text" name="leavedateto" id="leavedateto" value="<?php if(!empty($editdata->emp_phdunivdeput)&& $udepnew[0]=== 'No'){echo $udepnew[2];} ?>"class="form-control" size="30" />
+                <div></td>
+            </tr>
+             <tr><td colspan="4"><label for="NET Details: " style="font-size:15px;"><b>NET Details</b></label></td></tr>
+            <tr>
+                <?php $ntq=$editdata->emp_netqualified;
+                    $ntqnew=explode(",",$ntq);
+                   // echo $ntqnew[0].$ntqnew[1];
+                ;?>
+                <td><label for="netqual" style="font-size:15px;">Whether NET qualified  </label>
+                <div><input type="radio" name="netqual" id="netqual" value="Yes" <?php echo ($ntqnew[0] == 'Yes'?'checked="checked"':''); ?>>Yes &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="netqual" id="netqual2" value="No" <?php echo ($ntqnew[0] == 'No'?'checked="checked"':''); ?>>NO
+                </div></td>
+                <td><label for="netqualyes" style="font-size:15px;">If Yes </label>
+                <div>
+                    <select name="netqualyes" id="netqualyes" style="width:300px;">
+                        <?php if(!empty($editdata->emp_netqualified) && $ntqnew[0] == 'Yes'):;?>
+                        <option value="<?php echo $ntqnew[1] ;?>"><?php echo $ntqnew[1];?></option>
+                        <?php else:?>
+                        <option value="">--------- Select Organiser--------</option>
+                        <?php endif?>
+                        <option value="ICAR">ICAR</option>
+                        <option value="CSIR">CSIR</option>
+                        <option value="UGC">UGC</option>
+                        <option value="TNSET">INSET</option>
+                    </select>   
+                </div></td>
+                <td><label for="passdate" style="font-size:15px;">Year of Passing</label>
+                    <div><input type="text" name="passyear" id="passyear" value="<?php if(!empty($editdata->emp_netqualified) && $ntqnew[0] == 'Yes'){echo $editdata->emp_netpassingyear;} ?>" placeholder="Year of Passing Date  ........" size="30" />
+                <div></td>
+                <td><label for="netdiscipline" style="font-size:15px;">Discipline</label>
+                <div><input type="text" name="netdiscipline" id="netdiscipline" class="keyup-characters" value="<?php if(!empty($editdata->emp_netqualified) && $ntqnew[0] == 'Yes'){echo $editdata->emp_netdiscipline ;} ?>" placeholder="NET Discipline........" size="28" >
+                </div></td>
+            </tr>
+            <tr>
+            <td colspan="4"><label for="vci " style="font-size:15px;"><b>Veterinary Council of india (VCI) Registration: </b></label></td>   
+            </tr>
+            <tr>
+                <td><label for="vciregno" style="font-size:15px;">Registration No</label>
+                <div><input type="text" name="vciregno" class="keyup-characters" value="<?php echo $editdata->emp_vciregno; ?>" placeholder="VCI Registration No........" size="28" >
+                </div></td>
+                <td colspan="2"><label for="vciregdate" style="font-size:15px;">Date of Registration</label>
+                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo $editdata->emp_vciregdate; ?>" placeholder="VCI Registration Date........" size="28" >
+                </div></td>
+                <td><label for="secondary emailid" style="font-size:15px;">Secondary Email Id</label>
+                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo $editdata->emp_secndemail; ?>" placeholder="Secondary Email Id........" size="28" >
+                </div></td>
+            </tr>
+            <tr>
+                <td colspan="4"><label for="addasign" style="font-size:15px;"><b>Additional Assignments:</b></label></td>
+            </tr>
+<?php		if(!empty($editasign)){
+                	foreach($editasign as $recod){
+				$aaname = $recod->aa_asigname;
+				$aafrom = $recod->aa_asigperiodfrom;
+				$aato = $recod->aa_asigperiodto;
+				$aaplace = $recod->aa_place;
+				
+	 break; }}?>
+            <tr>
+              <td><label for="asignname" style="font-size:15px;">Name of the Assignment </label>
+                <div>
+                    <select name="asignname" id="asignname" style="width:300px;">
+                        <?php //if(!empty($editasign->aa_asigname)):;?>
+                        <?php if(!empty($aaname)):;?>
+                        <?php //$aaname=$editasign->aa_asigname;
+                        $aanew=$ntqnew=explode(",",$aaname);
+                       // if($aanew[0] === 'Others'):;?>
+                        <option value="<?php echo $aanew[0];?>"><?php echo $aanew[0];?></option>
+                       <!-- <option value="<?php //echo $editasign->aa_asigname ;?>"><?php //echo $editasign->aa_asigname ;?></option> -->
+                        <?php else:?>
+                        <option value="">--------- Select Assignment Name --------</option>
+                        <?php endif?>
+                        <option value="warden">Warden</option>
+                        <option value="Deputy Warden">Deputy Warden</option>
+                        <option value="Guest House Incharge">Guest House Incharge</option>
+                        <option value="NSS Corordinator">NSS Corordinator</option>
+                        <option value="NCC Officer">NCC Officer</option>
+                        <option value="Resident Veterinary Officer">Resident Veterinary Officer</option>
+                        <option value="Canteen Incharge">Canteen Incharge</option>
+                        <option value="Others">Others</option>
+                    </select>   
+                </div></td> 
+                <td><label for="asignother" style="font-size:15px;">Others</label>
+                    
+<!--                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php if(!empty($editasign->aa_asigname) && $aanew[0]=='Others'){ echo $aanew[1];} ?>" placeholder="Others........" size="28" >-->
+                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php if(!empty($aaname) && $aanew[0]=='Others'){ echo $aanew[1];} ?>" placeholder="Others........" size="28" >
+            <!--</tr>
+            <tr>-->
+                
+                <td><label for="asigndatefrom" style="font-size:15px;">Date From</label>
+  <!--              <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php  if(!empty($editasign->aa_asigperiodfrom)){echo $editasign->aa_asigperiodfrom;} ?>" placeholder="Date From........" size="28" > -->
+                <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php  if(!empty($aafrom)){echo $aafrom;} ?>" placeholder="Date From........" size="28" >
+                </div></td>
+                <td><label for="asigndateto" style="font-size:15px;">Date To</label>
+<!--                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php if(!empty($editasign->aa_asigperiodto)){echo $editasign->aa_asigperiodto ;} ?>" placeholder="Date To ........" size="28" >-->
+                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php if(!empty($aato)){echo $aato ;} ?>" placeholder="Date To ........" size="28" >
+                </div></td>
+            </tr>
+            <tr>
+                <td><label for="asignplace" style="font-size:15px;">Place</label>
+               <!-- <div><input type="text" name="asignplace" class="keyup-characters" value="<?php if(!empty($editasign->aa_place)){echo $editasign->aa_place;} ?>" placeholder="Place........" size="28" >-->
+                <div><input type="text" name="asignplace" class="keyup-characters" value="<?php if(!empty($aaplace)){echo $aaplace;} ?>" placeholder="Place........" size="28" >
+                </div></td>
                 <td><label for="remarks" style="font-size:15px;">Remarks</label>
                     <div><textarea name="remarks" rows="3" cols="40"  ><?php echo $editdata->emp_remarks;?></textarea>
                 </div></td>
                 <td><label for="Address" style="font-size:15px;">Address</label>
-                    <div><textarea name="Address"  class="keyup-characters" rows="5" cols="50" pattern="[a-zA-Z0-9 ]+"><?php echo $editdata->emp_address;?></textarea>
+                    <div><textarea name="Address"  class="keyup-characters" rows="4" cols="40" pattern="[a-zA-Z0-9 ]+"><?php echo $editdata->emp_address;?></textarea>
                     </div>
                 </td>    
                     <!--    <input type="text" name="Address" class="keyup-characters" value="<//?php echo $editdata->emp_address; ?>" placeholder="Address..." size="25" ></td>-->
@@ -882,7 +1132,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     
                     </div>
                                             
-                </td>
+                <div>
                 <?php 
                 /*
                 $strphoto = 0;
@@ -901,11 +1151,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 */
                 //if($strphoto == 1):;?>
                 <?php if(!empty($editdata->emp_photoname)):;?>
-                    <td colspan="2"><img src="<?php echo base_url('uploads/SIS/empphoto/'.$editdata->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></td>
+                    <img src="<?php echo base_url('uploads/SIS/empphoto/'.$editdata->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94">
+                        
                 <?php else:?>
-                    <td colspan="2"><img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
+                    <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>
                 <?php endif?>   
-            
+                 </div></td>    
             </tr>    
                 
             </tr>

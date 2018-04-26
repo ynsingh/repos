@@ -10,6 +10,26 @@
 -- CREATE DATABASE `payroll`;
 -- USE `payroll`;
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `additional_assignments`
+--
+
+
+CREATE TABLE `additional_assignments` (
+  `aa_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `aa_empid` int(11)  NOT NULL,
+  `aa_asigname` varchar(255)  Default NULL,
+  `aa_asigperiodfrom`  DATETIME  Default NULL,
+  `aa_asigperiodto`  DATETIME  Default NULL,
+  `aa_place` varchar(255)  Default NULL,
+  `aa_creatorid` varchar(255) NOT NULL,
+  `aa_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `aa_modifierid` varchar(255) NOT NULL,
+  `aa_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 --
@@ -226,8 +246,19 @@ CREATE TABLE `employee_master` (
   `emp_org_code` int(11) NOT NULL,
   `emp_remarks` blob default NULL,
   `emp_grade` varchar(255) Default NULL,
+  `emp_secndemail` VARCHAR(255) default NULL,
+  `emp_phddiscipline` VARCHAR(255) default NULL,
+  `emp_phdtype` VARCHAR(50) default NULL,
+  `emp_phdinstname` VARCHAR(255) default NULL,
+  `emp_phdunivdeput` VARCHAR(255) default NULL,
+  `emp_netqualified` VARCHAR(50) default NULL,
+  `emp_netpassingyear` date  default NULL,
+  `emp_netdiscipline`  VARCHAR(255) default NULL,
+  `emp_vciregno` VARCHAR(255) default NULL,
+  `emp_vciregdate` datetime default NULL ,
    PRIMARY KEY  (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- ---------------------------------------------------------
 
