@@ -60,24 +60,24 @@
         </thead>
         <tbody>
 		
-                <?php $orgid=0;?>
+                <?php// $orgid=0;?>
                 <?php foreach($this->result as $record){ 
-			$deptname = $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?>
+			//$deptname = $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?>
                     <tr>
 			<?php
-			if($orgid != $record->scid){
+			//if($orgid != $record->scid){
 			?>
 				<!--<tr>
 					<td colspan=10 style="font-size:18px;text-align:center;">
-					<b>Institute Name :</b> 
-                        		<?php
-                          		echo $this->commodel->get_listspfic1('org_profile','org_name', 'org_id',$record->scid)->org_name;
+					                        		<?php
+                          		//echo $this->commodel->get_listspfic1('org_profile','org_name', 'org_id',$record->scid)->org_name;
                         		?></td>
 				</tr>-->
                      	<?php $orgid =$record->scid;
 			$serial_no = 1;
-			}?>			
-                    <td><?php echo $serial_no++; ?></td>   
+			//}?>			
+                    <td><?php echo $serial_no++; ?></td> 
+  							<td><?php echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?>
                     <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td>
                     <td><?php echo $record->usertype; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name; ?></td>

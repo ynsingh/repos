@@ -14,8 +14,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <img src="<?php //echo base_url(); ?>uploads/logo/logo1.png" alt="logo">
 
 </div> -->
-<table><tr><td>
-<img src="<?php echo base_url(); ?>uploads/logo/niitsikkim.png" alt="logo" >	
+<table style="width:100%;"><tr><td>
+<img src="<?php echo base_url(); ?>uploads/logo/Demo.jpg" alt="logo" style="width:100%;height:110px;">	
 </td></tr></table>
 <?php 
 	$role = $this->session->userdata('id_role');

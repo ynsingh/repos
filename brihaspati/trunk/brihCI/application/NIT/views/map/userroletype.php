@@ -9,7 +9,7 @@
 	<link rel="icon" href="<?php echo base_url('uploads/logo'); ?>/nitsindex.png" type="image/png">	
          <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
-<script>
+<!--<script>
         $(document).ready(function(){
         
        $('#camp').on('change',function(){
@@ -38,7 +38,7 @@
            }
        }); 
     });
-</script>  
+</script>-->  
     </head>    
     <body>
        <?php $this->load->view('template/header'); ?>
@@ -86,21 +86,41 @@
  <div>
         <table>
            <form action="<?php echo site_url('map/userroletype');?>" method="POST">
-                         <tr><td> Choose your Institute : </td><td>
+                       <!-- <tr><td> Choose your Institute : </td><td>
                          <select name="campus" id="camp" style="width:150%;">
                          <option value="">-------------Select Institute---------------</option>
                          <?php foreach($this->scresult as $datas): ?>
  		         <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
                          <?php endforeach; ?>
                          </select>
-                        </td></tr><tr><td>
+                        </td></tr>-->
+
+						
+					<tr>
+       			<td>Select Department</td>
+         		<td>
+         		<select name="dept_name" style="width:100%">
+        			<option value=""disabled selected>--------------Select Department----------</option>
+               <?php foreach($this->deptresult as $deptdata): ?>	
+               <option value="<?php echo $deptdata->dept_id; ?>"><?php echo $deptdata->dept_name; ?></option>
+					<?php endforeach; ?>
+	    			</select>          
+        			<td>
+        			</tr> 
+
+							
+
+								<!--<tr><td>
                         Choose your Department: </td><td>
                         <select name="dept_name" id="scid" disabled="" style="width:150%;">
                         <option value="">select department</option>
-                        </select>
+								<?php foreach($this->result as $record) 
+								$deptname = $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?>
+								 </select>
                         </td></tr>
-                        <tr><td> Select your Role: </td><td>
-                        <select name="role_name"  style="width:150%;">
+								-->
+        					    <tr><td> Select your Role: </td><td>
+                        <select name="role_name"  style="width:100%;">
                         <option value="" disabled selected>-------------Select Role---------------</option>
                         <?php foreach($this->roleresult as $datas): ?>
                         <option value="<?php echo $datas->role_id; ?>"><?php echo $datas->role_name; ?></option>
@@ -110,7 +130,7 @@
                        <tr>
                       <td>User Type :</td>
                  <td>
-                    <select name="usertype" class="my_dropdown" style="width:150%;">
+                    <select name="usertype" class="my_dropdown" style="width:100%;">
                     <option value="" disabled selected>------Select User Type------</option>  
                     <option value="Administrator" class="dropdown-item">Administrator</option>
                     <option value="Faculty" class="dropdown-item">Faculty</option>
@@ -121,7 +141,7 @@
                 </td> 
             </tr>
              <tr><td> Select Username: </td><td>
-                        <select name="username" class="my_dropdown" style="width:150%;">
+                        <select name="username" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected>-------------Select Username---------------</option>
                           <?php foreach($this->loginuser as $datas): ?>
                         <option value="<?php echo $datas->id; ?>"><?php echo $datas->username; ?></option>

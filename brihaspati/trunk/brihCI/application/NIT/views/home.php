@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Welcome to IGNTU</title>
+        <title>Welcome to NIT Sikkim</title>
 	<meta charset="utf-8">
-	<title>IGNTU:offline payment</title>
+	<title>NIT Sikkim:offline payment</title>
 		<!--<link rel="shortcut icon" href="<?php //echo base_url('assets/images'); ?>/index.jpg">-->
 	<link rel="icon" href="<?php echo base_url('uploads/logo'); ?>/nitsindex.png" type="image/png">	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">

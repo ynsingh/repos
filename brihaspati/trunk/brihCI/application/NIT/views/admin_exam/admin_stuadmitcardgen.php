@@ -70,10 +70,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$smid)->sm_sccode;
 				if($orgid != $scid){
 					echo "<tr>";
-					echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
+					/*echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
 					echo "<b>University Name : </b>";
                       			echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
-					echo "</td>";
+					echo "</td>";*/
 					echo "</tr>";
 				$orgid = $scid; 
 				$count =1;				

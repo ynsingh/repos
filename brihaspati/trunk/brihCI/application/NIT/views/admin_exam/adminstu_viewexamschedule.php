@@ -85,12 +85,12 @@
 
 		
 		if($orgid != $centerid){
-			echo "<tr>";
+			/*echo "<tr>";
 			echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
 			echo "<b>Institute Name : </b>";
                       		echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$centerid)->org_name;
 			echo "</td>";
-			echo "</tr>";
+			echo "</tr>";*/
 		$orgid = $centerid; 
 		$count =1;				
 		}

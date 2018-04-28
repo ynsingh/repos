@@ -130,8 +130,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <form action="<?php echo site_url('adminstuexam/exam_scheduleadd');?>" method="POST">
 
  <table style="width:100%;" align=right border=0>
-	<tr>
-		<td width=170><label>Institute Name :</label> </td>
+	<!--<tr>
+	<td width=170><label>Institute Name :</label> </td>
 		<td> <select class="dropdown" name="examsch_center">
 			<option disabled selected>Select Institute</option>
 			<?php foreach($exam_center as $row){?>
@@ -139,7 +139,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php }?>
 			</select>
 	     </td>
-	</tr>
+	</tr> -->
 	
 	<tr><td>
         	<label for="text">Program Category :</label>

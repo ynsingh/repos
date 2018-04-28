@@ -32,7 +32,7 @@
             <thead><tr>
                 <th>Student Name</th>
                 <th>Father's Name</th>
-                <th>Address</th>
+               <!-- <th>Address</th>-->
                 <th>Email-Id</th>
                 <th>Mobile No</th>
                 <!--<th>Institute Name</th>-->
@@ -47,7 +47,6 @@
                                 foreach($this->tresult as $row){
 						
 						$stufname = $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
-					
 						$stulname = $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;
 						$smid=$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$row->userid)->sm_id;
 						$stu_fathername=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$smid)->spar_fathername;
@@ -58,10 +57,10 @@
 						//$stu_center = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
 						$stu_dept = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
 						$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
-                                        	$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+                  $prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
 						$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
 
-					if($scid !=$row->scid){
+					/*if($scid !=$row->scid){
 				?>
 					<tr>
 						<td colspan=10 style="font-size:18px;text-align:center;">
@@ -72,7 +71,7 @@
 					</tr>
                      				<?php $scid =$row->scid;
 						//$serial_no = 1;
-					}	
+					}	*/
 					
                                         echo "<tr>";
                                         echo " <td>";
@@ -84,9 +83,9 @@
                                         echo "<td align=\"center\">";
                                        if(!empty($stu_fathername)){ echo $stu_fathername; }
                                         echo "</td>";
-                                        echo " <td align=\"center\">";
-                                        if(!empty($stu_add)){ echo $stu_add; }
-                                        echo " </td>";
+                                       // echo " <td align=\"center\">";
+                                        //if(!empty($stu_add)){ echo $stu_add; }
+                                        //echo " </td>";
                                         echo " <td align=\"center\">";
                                         if(!empty($username)){ echo $username;}
                                         echo " </td>";

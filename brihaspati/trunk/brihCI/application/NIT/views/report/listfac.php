@@ -50,7 +50,7 @@
                         if( count($this->tresult) ):
                                 foreach($this->tresult as $row){
    				if(!empty($row->userid)){
-					if($orgid != $row->scid){
+					/*if($orgid != $row->scid){
 						echo "<tr>";
 						echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
 						echo "<b>Institute Name : </b>";
@@ -59,7 +59,7 @@
 						echo "</tr>";
 						$orgid = $row->scid; 
 									
-					}
+					}*/
                                         echo "<tr>";
 					echo "<td align=\"center\">";
 					echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;

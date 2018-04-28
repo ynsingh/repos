@@ -311,12 +311,12 @@ class Adminstuexam extends CI_Controller
 		$userid = $this->session->userdata('id_user');
 		$data['pcategory'] = $this->commodel->get_list('programcategory');
 		//$data['exam_center'] = $this->commodel->get_list('study_center');
-		$data['exam_center'] = $this->commodel->get_list('org_profile');
+		//$data['exam_center'] = $this->commodel->get_list('org_profile');
 		$data['prgname'] =  $this->commodel->get_list('program');
 		$data['exmname'] =  $this->commodel->get_list('examtype');
 		$data['deptname'] =  $this->result = $this->commodel->get_list('Department');
 		 if(isset($_POST['addexamsch'])) {
-                 	 $this->form_validation->set_rules('examsch_center','Exam Center Name','trim|xss_clean|required');
+                 	// $this->form_validation->set_rules('examsch_center','Exam Center Name','trim|xss_clean|required');
 	                 $this->form_validation->set_rules('examsch_prgid','Exam Programme Name','trim|xss_clean|required');
                 	 $this->form_validation->set_rules('examsch_deptid','Exam Department Name','trim|xss_clean|required');
         	         $this->form_validation->set_rules('examsch_sem','Exam Semester','trim|xss_clean|required');
@@ -328,7 +328,7 @@ class Adminstuexam extends CI_Controller
 			$cdate=date("Y-m-d");
 				$acadyear = $this->input->post('examsch_session',TRUE);
                 	        $examschdata = array(
-                        	        'exsc_centerid' =>$_POST['examsch_center'],
+                        	     //   'exsc_centerid' =>$_POST['examsch_center'],
 					'exsc_progcatid' =>$_POST['prgcategoryid'],
                                 	'exsc_prgid'=>$_POST['examsch_prgid'],
 	                                'exsc_deptid'=>$_POST['examsch_deptid'],
@@ -370,7 +370,7 @@ class Adminstuexam extends CI_Controller
 	
    public function exam_scheduleedit($id){
 	//$data['exam_center'] = $this->commodel->get_list('study_center');
-	$data['exam_center'] = $this->commodel->get_list('org_profile');	
+	//$data['exam_center'] = $this->commodel->get_list('org_profile');	
 	$data['exmname'] =  $this->commodel->get_list('examtype');
 	$examcenterrow=$this->commodel->get_listrow('studentexam_schedule','exsc_id', $id);
         if ($examcenterrow->num_rows() < 1)
@@ -383,14 +383,14 @@ class Adminstuexam extends CI_Controller
 	
 	//$prgcatname = $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$exam_schedule->exsc_progcatid)->prgcat_name;
        // $univname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$exam_schedule->exsc_centerid)->org_name;       
-		$data['exmsch_center'] = array(
+		/*$data['exmsch_center'] = array(
                'name' => 'exmsch_center',
                'id' => 'exmsch_center',
                'size' => '40',
                'value' => $exam_schedule->exsc_centerid,	
 		//'value' => $univname,
 	       'readonly' => 'readonly'
-               );
+               );*/
 
 		$data['exmsch_progcat'] = array(
                'name' => 'exmsch_progcat',
@@ -457,7 +457,7 @@ class Adminstuexam extends CI_Controller
                );
 	       $data['id'] = $id;
 /*Form Validation*/
-		 $this->form_validation->set_rules('exmsch_center','Exam Center Code','trim|xss_clean|required');
+		 //$this->form_validation->set_rules('exmsch_center','Exam Center Code','trim|xss_clean|required');
                  $this->form_validation->set_rules('exmsch_progcat','Exam Program Category','trim|xss_clean|required');
 		 $this->form_validation->set_rules('exmsch_dept','Exam Department','trim|xss_clean|required');
 		 $this->form_validation->set_rules('exmsch_prog','Exam Programme','trim|xss_clean|required');
@@ -470,7 +470,7 @@ class Adminstuexam extends CI_Controller
 /* Re-populating form */
    	         if ($_POST){
 		
-            	 	$data['exmsch_center']['value'] = $this->input->post('examsch_center', TRUE);
+            	 	//$data['exmsch_center']['value'] = $this->input->post('examsch_center', TRUE);
             		$data['exmsch_progcat']['value'] = $this->input->post('examsch_progcat', TRUE);
 			$data['exmsch_dept']['value'] = $this->input->post('examsch_dept', TRUE);
 			$data['exmsch_prog']['value'] = $this->input->post('examsch_prog', TRUE);
@@ -487,7 +487,7 @@ class Adminstuexam extends CI_Controller
                  	return;
                  }
 		else{
-	            	$exm_center = $this->input->post('exmsch_center', TRUE);
+	            	//$exm_center = $this->input->post('exmsch_center', TRUE);
         	    	$exm_prgcat = $this->input->post('exmsch_progcat', TRUE);
 			$exm_dept = $this->input->post('exmsch_dept', TRUE);
 			$exm_prog = $this->input->post('exmsch_prog', TRUE);
@@ -500,8 +500,8 @@ class Adminstuexam extends CI_Controller
 			
         	        $logmessage = "";
 	
-			if($exam_schedule->exsc_centerid != $exm_center)
-                		$logmessage = "Add University Name" .$exam_schedule->exsc_centerid. " changed by " .$exm_center;
+			//if($exam_schedule->exsc_centerid != $exm_center)
+                		//$logmessage = "Add University Name" .$exam_schedule->exsc_centerid. " changed by " .$exm_center;
 			if($exam_schedule->exsc_progcatid != $exm_prgcat)
                 		$logmessage = "Add Program Category" .$exam_schedule->exsc_centerid. " changed by " .$exm_prgcat;
 			if($exam_schedule->exsc_deptid != $exm_dept)
@@ -529,7 +529,7 @@ class Adminstuexam extends CI_Controller
 
 
 			$update_exschdata = array(
-               			'exsc_centerid' => $exm_center,
+               		//	'exsc_centerid' => $exm_center,
 		               	'exsc_progcatid' => $exm_prgcat,
 	       			'exsc_deptid' => $exm_dept,
 	       			'exsc_prgid' => $exm_prog,
@@ -626,7 +626,7 @@ class Adminstuexam extends CI_Controller
 			$studata['currentacadyear']=$currentacadyear;
 			$scid = $row->sm_sccode;
 			//$studata['scname'] = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
-			$studata['scname'] = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
+			//$studata['scname'] = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
 			$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
 			$studata['coursename'] = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '. $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )';
 			$studata['sturollno'] = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$smid)->senex_rollno;
@@ -676,9 +676,9 @@ class Adminstuexam extends CI_Controller
 		$data['getscid'] = $getscid;
 
 		//$data['sclist'] = $this->commodel->get_list('study_center');
-		$data['sclist'] = $this->commodel->get_list('org_profile');
+		//$data['sclist'] = $this->commodel->get_list('org_profile');
 
-		$this->load->view('admin_exam/adminstu_attsheet',$data);
+		$this->load->view('admin_exam/adminstu_attsheetz',$data);
 	}
 	
 	public function searchattsheet(){
@@ -703,7 +703,7 @@ class Adminstuexam extends CI_Controller
 				if(!empty($stcenter)){
 					$sdata = 'sp_smid,sp_deptid,sp_programid,sp_sccode';
 					$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem,'sp_sccode' => $scenter);
-       					$getattsheet1 = $this->commodel->get_distinctrecord('student_program',$sdata,$wharray);
+       			$getattsheet1 = $this->commodel->get_distinctrecord('student_program',$sdata,$wharray);
 					$data['getattsheet1'] = $getattsheet1;
 					$this->logger->write_logmessage("update", "Exam Attendence sheet data for each enter".$getattsheet1);
 					$this->attsheetpdf($getattsheet1);
@@ -729,7 +729,7 @@ class Adminstuexam extends CI_Controller
 	public function attsheetpdf($getattsheet){
 		$data['getattsheet']=$getattsheet;	
 		$currentacadyear = $this->datesemmodel->getcurrentAcadYear();
-                $semester = $this->datesemmodel->getcurrentSemester();
+      $semester = $this->datesemmodel->getcurrentSemester();
 		$getsem = sizeof($semester);
 
 		foreach($getattsheet as $row){
@@ -803,7 +803,7 @@ class Adminstuexam extends CI_Controller
 		$data['getverifie'] = $getverifie;
 
 		//$data['sclist'] = $this->commodel->get_list('study_center');
-		$data['sclist'] = $this->commodel->get_list('org_profile');
+		//$data['sclist'] = $this->commodel->get_list('org_profile');
 		
 		$this->load->view('admin_exam/adminstu_formverifie',$data);
 	}

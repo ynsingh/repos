@@ -200,35 +200,39 @@ class Upl extends CI_Controller
                     {       
                         $datal = explode(",", $line);
 			$flag=false;
-	//		print_r($datal);
-			if (count($datal) >= 15){
-                            $jeemainno = $datal[0];
-			    $jeeappno = $datal[1];	
-                            $entexamname = $datal[2];
-                            $entexamrollno = $datal[3];
-                            $course_name = $datal[4];
-                            $branchname = $datal[5];
-                            $name = $datal[6];
-			    $dob = $datal[7];	
-                            $email = $datal[8];
-                            $father_name = $datal[9];
-                            $marks = $datal[10];
-                            $admission_quota = $datal[11];
-                            $category  = $datal[12];
-                            $meritlist_no = $datal[13];
-                            $lastdate_admission = $datal[14];
+			//print_r( $datal);die;
+
+			if (count($datal) >= 14){
+                           
+			    $jeeappno = $datal[0];	
+                            $entexamname = $datal[1];
+			    $jeemainno = $datal[2];	
+                           // $entexamrollno = $datal[3];
+                            $course_name = $datal[3];
+                            $branchname = $datal[4];
+                            $name = $datal[5];
+			    $dob = $datal[6];	
+                            $email = $datal[7];
+                            $father_name = $datal[8];
+                            $marks = $datal[9];
+                            $admission_quota = $datal[10];
+                            $category  = $datal[11];
+                            $meritlist_no = $datal[12];
+                            $lastdate_admission = $datal[13];
 
                             // check for duplicate
                            // $isdup= $this->commodel->isduplicate('admissionmeritlist','student_email',$email);
-			   $isdup= $this->commodel->isduplicate('admissionmeritlist','jeeapplication_no',$jeeappno); 	
+			   $isdup= $this->commodel->isduplicate('admissionmeritlist','application_no',$jeeappno); 
+				
                             if(!$isdup){
 				    	// insert into student merit list db
 					$dataurt = array(
 				           //'application_no'=> $appno,
-					   'jee_mainno'=> $jeemainno,
-					   'jeeapplication_no'=> $jeeappno,
+					   //'jee_mainno'=> $jeemainno,
+					   'application_no'=> $jeeappno,	
 				           'entexamname'=> $entexamname,
-				           'entexamrollno'=> $entexamrollno,
+					   'entexamrollno'=> $jeemainno,	
+				           //'entexamrollno'=> $entexamrollno,
 				           'course_name'=> $course_name,
 				           'branchname'=> $branchname,
 				           'student_name'=> $name,
@@ -242,6 +246,7 @@ class Upl extends CI_Controller
 				           'lastdate_admission'=> $lastdate_admission,
 				           'admission_taken'=> 'No'
         	    			);
+					
 					$userflagurt=$this->commodel->insertrec('admissionmeritlist', $dataurt) ;
 					if($userflagurt){
                                              $sub='You are eligible for the admission' ;
@@ -305,7 +310,7 @@ class Upl extends CI_Controller
                             //	$this->session->set_flashdata('error', ' insufficient data');
 			    $i++;
 
-			}
+			}	
                     }
                     if($flag){
 			$this->session->set_flashdata('error', ' File without data');

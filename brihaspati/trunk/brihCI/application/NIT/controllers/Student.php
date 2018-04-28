@@ -67,7 +67,7 @@ class Student extends CI_Controller {
 							'course_name'    => $this->input->post('Sprogramname'),
 							//'branchname'     => $this->input->post('Sbranchname'),
 							'student_email'  => $this->input->post('Semail')*/
-							'jee_mainno' => $this->input->post('Sanumber'),
+							'entexamrollno' => $this->input->post('Sanumber'),
 							'application_no'    => $this->input->post('Sjeeanumber'),
 							'student_dob'  => $this->input->post('Sdateofbirth')				
 						);
@@ -170,7 +170,7 @@ class Student extends CI_Controller {
 				// set the student master and application number in session
 				$data = [
 					'username' => $applicationno,
-                        	        'sm_id' => $smid,
+                       'sm_id' => $smid,
 					'app_no' => $applicationno,
 			                'id_role' => 3
 			                ];
@@ -288,6 +288,7 @@ class Student extends CI_Controller {
 			$whdata = array('prg_name' => $prgname,'prg_branch' => $branchname);
 			$data['prgcat'] = $this->commodel->get_distinctrecord('program','prg_category,prg_id',$whdata);
 			$data['fathername'] = $stu_addmisdata->father_name;
+			$data['dob'] = $stu_addmisdata->student_dob;	
 		}
 	//check admission last date for student
 	//$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
@@ -1355,13 +1356,13 @@ class Student extends CI_Controller {
 				
 				//update student master
 				$cdate = date('Y-m-d H:i:s');				
-				$step3 = array(
-					'step3_status'	       =>		 1,
-					'step3_date'	       =>		 $cdate
+				$step2 = array(
+					'step2_status'	       =>		 1,
+					'step2_date'	       =>		 $cdate
 				);
 				$this->db->where('student_masterid',$id);
-				$stp3update = $this->db->update('student_admissionstep', $step3);
-				if ($stp3update)
+				$stp2update = $this->db->update('student_admissionstep', $step2);
+				if ($stp2update)
                 	        {
                                 	$this->logger->write_logmessage("update","File updated", "Step 3 file update");
 					$this->logger->write_dblogmessage("update","File updated", "Step 3 file update");
@@ -1387,11 +1388,118 @@ class Student extends CI_Controller {
 		$mailid = $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Sid)->sm_email;
 		$data['email'] = $mailid;
 
+		$stuname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Sid)->sm_fname;
+		$data['stuname'] = $stuname;
+
 		if(isset($_POST['stu_doclist'])) {
-			// add insert code	
-			redirect('student/student_step4');
-		}		
-		
+			//add error code
+			for($i=1;$i<=22;$i++)
+			{
+			 	$docremark = $this->input->post('stu_remark'.$i.'4');
+
+				if(!empty($docremark)){
+					$this->form_validation->set_rules($docremark, $docremark, 'trim|xss_clean');
+				}
+			}
+			//if($this->form_validation->run() == FALSE)
+			//{	
+				//$this->session->set_flashdata("err_message","You are not selected any documents.");
+				//redirect('student/student_checklist');
+			//}else{
+			// add insert code
+			$errstring = NULL;
+			for($j=1;$j<=22;)
+			{
+				$remark='';
+				$docori='';
+				$docdup='';
+				$sdocname='';
+
+				$sdocname = $_POST['stu_check'.$j.'1'];
+				$remark = $this->input->post('stu_remark'.$j.'4');
+				$docori = $this->input->post('cb'.$j.'2');
+				$docdup = $this->input->post('cb'.$j.'3');
+				//print_r($docori);die;
+				$docflag = false;
+				if(($j==1) || ($j==2)){
+					
+					if((!empty($docori)) || (!empty($docdup))){
+						$docflag=true;
+					}
+					else{
+						//remove first data if j is 2
+						if(!empty($j == 1)){
+							$docdelete = $this->commodel->deleterow('student_doclist','sdlist_smid',$Sid);
+							$this->session->set_flashdata("err_message","You are not select document".' '.$sdocname);
+							redirect('student/student_checklist');	
+						}
+						elseif(!empty($j == 2)){
+							$docdelete = $this->commodel->deleterow('student_doclist','sdlist_smid',$Sid);
+							$this->session->set_flashdata("err_message","You are not select document".' '.$sdocname);
+							redirect('student/student_checklist');	
+						}
+						
+					}
+
+				}
+				else{
+					
+					if((!empty($docori)) || (!empty($docdup)) || (!empty($remark))){
+						$docflag = true;
+					}
+					else{
+						//$docflag = false;
+						//redirect('student/student_checklist');	
+					}
+				}	
+				if($docflag){
+					$doccheck = array(
+						'sdlist_smid' 		=> $Sid,
+						'sdlist_docname' 	=> $sdocname,
+						'sdlist_docoriginal' 	=> $docori,
+						'sdlist_docduplicate' 	=> $docdup,
+						'sdlist_remarks' 	=> $remark,
+						
+					);
+				
+					$docinsert = $this->commodel->insertrec('student_doclist',$doccheck);
+					
+					if(!$docinsert)
+					{
+                   				$this->logger->write_logmessage("insert", "Student Document Not Checked.".$stuname );
+                    				$this->logger->write_dblogmessage("insert", "Student Document Not Checked".$stuname);
+						$errstring = $errstring.'Student Document Name'.$sdocname.'Not Recorded<br>';
+                   				//$this->session->set_flashdata("err_message","There are some document not selected.");
+						//redirect('student/student_checklist');
+                			}
+                			else{
+                    				$this->logger->write_logmessage("insert","Student Document Check List Successfully Submitted.".$stuname);
+                    				$this->logger->write_dblogmessage("insert", "Student Document Check List Successfully Submitted.".$stuname);
+						$errstring = $errstring.'Student Document Name'.' '.$sdocname.' '.'Recorded<br>';
+                   				//$this->session->set_flashdata("success", "Student Document Successfully Submitted.");
+						//redirect('student/student_step4');
+						//redirect('student/student_checklist');
+                			}	
+
+				}//
+			$j=$j+1;
+			}//for close
+			//print_r($doccheck);die;
+				$cdate = date('Y-m-d H:i:s');				
+				$step3 = array(
+					'step3_status'	       =>		 1,
+					'step3_date'	       =>		 $cdate
+				);
+				$this->db->where('student_masterid',$Sid);
+				$stp3update = $this->db->update('student_admissionstep', $step3);
+				$this->session->set_flashdata("success", $errstring);
+				redirect('student/student_step4');
+				//redirect('student/student_checklist');
+		//}//close if validation	
+		//else{echo 'invalid';die;
+		//	redirect('student/student_checklist');
+		//}//validation else close	
+		}//isset post if close
 		$this->load->view('student/student_checklist',$data);
 	}
 
@@ -1758,9 +1866,16 @@ class Student extends CI_Controller {
 		             		$this->db->where('entexamrollno',$ano);
     					$this->db->update('admissionmeritlist',$stuentmerit);
 
-
+					$prgid =  $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
+					
+					$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+					$prgname1 = explode('.',$prgname);
+					$degree = $prgname1[0];
+					//print_r($degree);die;
+					$stu_prgcode =  $this->commodel->get_listspfic1('program','prg_code','prg_id',$Sid)->prg_code;
+					
 					// update into student entry exit
-					$sdate = date('Y-m-d H:i:s');
+					/*$sdate = date('Y-m-d H:i:s');
 					$ydate = date('Y');
 					$rollno = '';
 					$maxrollno = $this->db->query('SELECT MAX(senex_rollno) AS `maxsenex_rollno` FROM `student_entry_exit`')->row()->maxsenex_rollno;
@@ -1769,7 +1884,13 @@ class Student extends CI_Controller {
 					{
 						$rollno = $maxrollno+1;
 					}
-					else{$rollno = $ydate.'0001';}
+					else{$rollno = $ydate.'0001';}*/
+					$cdate = date('Y');
+					$cyear = substr($cdate, -2);
+					
+					$rollno = $degree.$cyear.$stu_prgcode.$Sid;
+					
+					//print_r($rollno);die;
 					$stuentpdate = array(
 		                		'senex_rollno'           =>	$rollno,
 						'senex_dateofadmission'	 =>	$sdate,
@@ -1782,7 +1903,7 @@ class Student extends CI_Controller {
                     			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_entry_exit table." );
 
 				//update student admission status table
-				$prgid =  $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;		
+				//$prgid =  $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;		
 				$stu_stupdate = array(
 		                		'sas_prgid'           =>	$prgid,
 						'sas_admissiondate'   =>	$sdate,

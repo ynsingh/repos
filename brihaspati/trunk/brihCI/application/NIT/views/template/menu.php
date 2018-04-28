@@ -143,7 +143,7 @@ echo "<ul class=\"sf-menu\">";
                                         echo "</li>";	*/				
 				echo "</ul>";
 			echo "</li>";
-					echo "<li>";
+					/*echo "<li>";
                                                 echo "<a href=" . ">Audit Trails</a>";
                                                 echo "<ul>";
                                                         echo "<li>";
@@ -151,6 +151,8 @@ echo "<ul class=\"sf-menu\">";
                                                         echo "</li>";
                                                 echo "</ul>";
                                         echo "</li>";
+																	*/
+
                      /*   echo "<li>";
                                 echo "<a href=" . ">Entrance</a>";
                                 echo "<ul>";
@@ -328,14 +330,14 @@ echo "<ul class=\"sf-menu\">";
 			echo "<li>";
 				echo "<a href=" . ">Archives</a>";
 				echo "<ul>";
-					echo "<li>";
-						echo "<a href=" . ">Audit Trails</a>";
-						echo "<ul>";
-							echo "<li>";
-								echo anchor('audittr/logdetail', 'Log Details', array('title' => 'Log Details'));
-							echo "</li>";
-						echo "</ul>";
-  					echo "</li>";
+					//echo "<li>";
+						//echo "<a href=" . ">Audit Trails</a>";
+						//echo "<ul>";
+							//echo "<li>";
+								//echo anchor('audittr/logdetail', 'Log Details', array('title' => 'Log Details'));
+							//echo "</li>";
+						//echo "</ul>";
+  					//echo "</li>";
 					echo "<li>";
 						echo anchor('archive/feesmastera', 'Fees Master Archive', array('title' => 'Fees Master Archive'));
 					echo "</li>";
@@ -364,8 +366,17 @@ echo "<ul class=\"sf-menu\">";
 
 				echo "</ul>";
 			echo "</li>";
+						echo "<li>";
+                                       echo "<a href=" . ">Audit Trails</a>";
+                                       echo "<ul>";
+                                       echo "<li>";
+                                       echo anchor('audittr/logdetail', 'Log Details', array('title' => 'Log Details'));
+                                       echo "</li>";
+                                       echo "</ul>";
+                                       echo "</li>";
+																	
 
-			echo "<li>";
+				echo "<li>";
 				echo "<a href=" . ">Downloads</a>";
 				echo "<ul>";
 					//echo "<li>";

@@ -114,14 +114,15 @@
 
             	<td colspan=15 style="font-size:18px;"><b>Programme Category :</b>
 		<?php echo $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name; 
-		echo " &nbsp";"&nbsp";"&nbsp";"&nbsp";?>
+		echo "&nbsp";"&nbsp";"&nbsp";"&nbsp";?>
    
 	 <?php $prgcatid =$row->prg_category; 
 		echo "<b>Program Name :</b>";
 		echo " &nbsp"; 
 	   echo "$row->prg_name</td></tr>";
-		//echo "<tr><td><b>Program Branch:</b>";
-		//echo " $row->prg_branch";
+		//echo "<td><b>Program Branch:</b>";
+		//echo " &nbsp";
+		//echo " $row->prg_branch</td>";
 	$count= 1;
 	} 
 		//echo "</td>";
@@ -135,7 +136,7 @@
 	     <!--<td><?php //echo $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;?></td>	-->
             
             <!--<td><?php echo $row->prg_name;?></td>-->
-           	<td><?php echo $row->prg_branch;?></td>
+           <td><?php echo $row->prg_branch;?></td>
             <td><?php echo $row->prg_code;?></td>
             <td><?php echo $row->prg_short;?></td>
             

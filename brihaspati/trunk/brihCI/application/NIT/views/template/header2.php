@@ -14,6 +14,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <img src="<?php //echo base_url(); ?>uploads/logo/logo1.png" alt="logo">
 
 </div> -->
+<!--<table style="width:100%;"><tr><td>
+<img src="<?php //echo base_url(); ?>uploads/logo/demo.gif" alt="logo" align=left>	
+</td></tr></table>-->
 <table style="width:100%;"><tr><td>
-<img src="<?php echo base_url(); ?>uploads/logo/niitsikkim.png" alt="logo" align=left>	
+<img src="<?php echo base_url(); ?>uploads/logo/Demo.jpg" alt="logo" style="width:100%;">	
 </td></tr></table>

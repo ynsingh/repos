@@ -69,7 +69,7 @@ function calculate() {
 
             echo form_open('adminstuexam/exam_scheduleedit/' . $id);
 		?>
-		<tr>
+		<!--<tr>
 		<td><label class="control-label">Institute Name</label></td>
                 <td>
                 <select style="height:35px;width:100%" name="exmsch_center"  id="exmsch_center" >
@@ -80,7 +80,7 @@ echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$exmsch_c
                 	<option value="<?php echo $datas->org_id; ?>"><?php echo $datas->org_name; ?></option>
                 <?php endforeach; ?>
                 </select>
-                </td></tr>
+                </td></tr> -->
 		<td><label  class="control-label">Program Category</label></td>
                 <td>
                 <select style="height:35px;width:100%" name="exmsch_progcat" >

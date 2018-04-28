@@ -51,7 +51,7 @@
                 <th>Position (Designation)</th>
                 <th>Email Id</th>
                 <th>Mobile</th>
-                <th>Campus Name</th>
+               <!-- <th>Campus Name</th>-->
                 <th>Department Name</th>
                 <!-- <th></th>-->
                  </tr>
@@ -72,9 +72,9 @@
                                         echo " <td align=\"center\">";
                                         echo $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;
                                         echo "</td>";
-                                        echo " <td align=\"center\">";
+                                       /* echo " <td align=\"center\">";
                                         echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
-                                        echo "</td>";
+                                        echo "</td>";*/
                                         echo " <td align=\"center\">";
                                         echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
                                         echo "</td>";

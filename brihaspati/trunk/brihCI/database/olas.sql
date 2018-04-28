@@ -423,6 +423,7 @@ CREATE TABLE `admissionmeritlist` (
         `course_name` VARCHAR(255) NOT NULL ,
         `branchname` VARCHAR(255) DEFAULT NULL ,
         `student_name` VARCHAR(255) NOT NULL ,
+	`student_dob` varchar(255) NOT NULL,	
         `student_email` VARCHAR(255) NOT NULL ,
         `father_name` VARCHAR(255) NOT NULL ,
         `marks` INT(5) NOT NULL ,
@@ -1319,6 +1320,26 @@ ALTER TABLE `student_attendance`
 ALTER TABLE `student_attendance`
   MODIFY `satd_id` int(11) NOT NULL AUTO_INCREMENT;
 
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `student_doclist`
+--
+
+CREATE TABLE `student_doclist` (
+  `sdlist_id` int(11) NOT NULL,
+  `sdlist_smid` int(11) DEFAULT NULL,
+  `sdlist_docname` varchar(255) DEFAULT NULL,
+  `sdlist_docoriginal` varchar(255) DEFAULT NULL,
+  `sdlist_docduplicate` varchar(255) DEFAULT NULL,
+  `sdlist_remarks` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `student_doclist`
+  ADD PRIMARY KEY (`sdlist_id`) USING BTREE;
+
+ALTER TABLE `student_doclist`
+  MODIFY `sdlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 

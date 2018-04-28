@@ -3,10 +3,13 @@
 * @author Sumit Saxena(sumitsesaxena@gmail.com)       *
 *******************************************************/
 /**************************************Step 5 print page code start********************************************/
+body {
+	min-width:100%;
+}		
 	@page {
 	
  	/*position:absolute; */	
-	size: auto;
+	size: landscape;
  	 margin: 0mm;
        }
 .TFtable tr td{
@@ -22,7 +25,7 @@
 #b1{display:none;}
 #b2{display:none;}
 
-.textname{background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;height:30px;padding:5px;margin-top:-3px;font-weight:bold;}
+.textname{background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;height:30px;padding:5px;margin-top:-3px;font-weight:bold;width:90%;}
 #styleTable th{background-color:#38B0DE;color:white;font-size:20px;height:10px;border-bottom:1px solid black;}
 .TFtable td{font-weight:normal;}
 .TFtable{width:98%;}
@@ -31,7 +34,7 @@
 #acadhead2 tr th{font-size:15px;}
 #padd{margin-top:0px;}
 
-#formbody2{margin-top:80px;}
+#formbody2{margin-top:80px;size: landscape;}
 #declaration{margin-top:0px;font-size:15px;}
 #declaration2{margin-top:10px;font-size:15px;}
 #declaration3{margin-top:0px;font-size:15px;}

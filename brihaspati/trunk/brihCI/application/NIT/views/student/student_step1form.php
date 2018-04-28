@@ -121,7 +121,7 @@ function filladd()
 			<!---<label for="ennumber">Study Centers</label></br>--->
 			<label for="ennumber">Institute Name</label></br>
 			<select name="stu_addcenter" style="height:37px;font-size:18px;font-weight:bold;" >
-			<option  disabled selected>Select Institute</option>
+			<!--<option  disabled selected>Select Institute</option>-->
 			<?php foreach($stu_studycenter as $data){?>
 				<option value="<?php echo $data->org_id;?>"><?php echo $data->org_name; ?></option>
 			<?php }?>
@@ -236,11 +236,11 @@ function filladd()
 			 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
   			  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
 
-		<label>Select Date Of Birth</label></br>
-		<input id="dob" type="text" name="stu_adddob" placeholder="Enter Your Dob" value="<?php echo isset($_POST["stu_adddob"]) ? $_POST["stu_adddob"] : ''; ?>" readonly>
+		<label>Date Of Birth</label></br>
+		<input id="dob" type="text" name="stu_adddob" placeholder="Enter Your Dob" value="<?php echo $dob; ?>" readonly>
 
 			<script>
-				$('#dob').datepicker({
+				/*$('#dob').datepicker({
  				onSelect: function(value, ui) {
  			        console.log(ui.selectedYear)
        				var today = new Date(), 
@@ -256,13 +256,15 @@ function filladd()
     				dateFormat: 'yy-mm-dd',
      				//defaultDate: '1yr',
     				yearRange: 'c-47:c+10',
-				});
+				});*/
 			</script>	
 		</td>
 		<td>	
 			<label for="Co-ordinator Contact">Your Age</label></br>
-			<textarea id="age" placeholder="Your Age" name="stu_addage" style="height:37px;font-size:15px;width:100%;font-weight:bold;" 
-			 readonly required></textarea>	
+			<input id="dob" type="text" placeholder="Your Age" name="stu_addage" value="<?php $cdate = date('Y-m-d');
+		echo $age = $cdate-$dob; ?>" readonly>
+			<!--<textarea id="age" placeholder="Your Age" name="stu_addage" style="height:37px;font-size:15px;width:100%;font-weight:bold;" 
+			 readonly required></textarea>	-->
 			
 		</td>
 	</tr>

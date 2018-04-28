@@ -26,7 +26,7 @@ class Report  extends CI_Controller
 // View faculty list
     public function listfac() {
         $datawh = array('roleid' => '2');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',2);
+        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,deptid','roleid',2);
         $this->load->view('report/listfac');
         return;
 	}
@@ -34,7 +34,7 @@ class Report  extends CI_Controller
 // View staff list
     public function liststaff() {
         $datawh = array('roleid' => '4');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',4);
+        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,deptid','roleid',4);
         $this->load->view('report/liststaff');
         return;
 	}
@@ -43,7 +43,7 @@ class Report  extends CI_Controller
 
     public function liststu() {
         $datawh = array('roleid' => '3');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',3);
+        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,deptid','roleid',3);
         $this->load->view('report/liststu');
    } 
 

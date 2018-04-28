@@ -47,12 +47,12 @@ class Map extends CI_Controller
      
 	public function mapscprgseat(){
        
-        $data['campus'] = $this->mapmodel->get_Campus();
+       // $data['campus'] = $this->mapmodel->get_Campus();
         $data['program'] =$this->mapmodel->get_Programlist();
         if(isset($_POST['mapscprgseat'])) {
 
             /*Form Validation*/
-            $this->form_validation->set_rules('campus','Campus','trim|required|callback_ischeck');
+           // $this->form_validation->set_rules('campus','Campus','trim|required|callback_ischeck');
             $this->form_validation->set_rules('program','Program','trim|required|callback_ischeck');
             $this->form_validation->set_rules('seatno','Number of Seat','trim|required|is_numeric|callback_ischeck|callback_check_prgseat');
             $this->form_validation->set_rules('gender','Gender','trim|required|callback_ischeck');
@@ -63,17 +63,17 @@ class Map extends CI_Controller
             {  
                 //echo "this is prgid============";
                 $program = $this->input->post('program', TRUE);
-                $campus = $this->input->post('campus', TRUE);
+                //$campus = $this->input->post('campus', TRUE);
                 $gender = $this->input->post('gender', TRUE);
                 $seatno = $this->input->post('seatno', TRUE);
                 $academicyear= $this->input->post('academicyear', TRUE);
                 $semester = $this->input->post('semester', TRUE);
             
                 $data_prg=explode('#',$program);
-                $newcampus=explode('#',$campus);
+                //$newcampus=explode('#',$campus);
                 $data = array(
                     'spsc_prg_id'=>$data_prg[0],
-                    'spsc_sc_code'=>$newcampus[0],                   
+                    //'spsc_sc_code'=>$newcampus[0],                   
                     'spsc_gender'=>$gender,
                     'spsc_totalseat'=>$seatno,
                     'spsc_acadyear'=>$academicyear,
@@ -147,19 +147,19 @@ class Map extends CI_Controller
     */
      public function editscprgseat($id){
        
-        $this->db->from('seat_program_studycenter')->where('spsc_id', $id);
+       // $this->db->from('seat_program_studycenter')->where('spsc_id', $id);
         $eset_data_q = $this->db->get();
         
         $editeset_data = $eset_data_q->row();
        
         
         /* Form fields */
-       
+      /* 
         $data['campus']= array(
             'value' => $this->mapmodel->get_studycenername($editeset_data->spsc_sc_code),
             'size'  =>'35',
             'readonly'=>'true',
-        );
+        );*/
                
         $data['program'] =array(
             'value' => $this->mapmodel->get_Programseat($editeset_data->spsc_prg_id),
@@ -190,7 +190,7 @@ class Map extends CI_Controller
         $data['id'] = $id;
         
         /*Form Validation*/
-        $this->form_validation->set_rules('campus','Campus');
+       // $this->form_validation->set_rules('campus','Campus');
         $this->form_validation->set_rules('program','Program');
         $this->form_validation->set_rules('seatno','Number of Seat','trim|required|is_numeric');
         $this->form_validation->set_rules('gender','Gender','trim|required');
@@ -219,7 +219,7 @@ class Map extends CI_Controller
         }
         else
         {    
-            $data_campus = $this->input->post('campus', TRUE);
+            //$data_campus = $this->input->post('campus', TRUE);
             $data_program = $this->input->post('program', TRUE);
             $data_seatno = $this->input->post('seatno', TRUE);
             $data_gender = $this->input->post('gender', TRUE);
@@ -240,7 +240,7 @@ class Map extends CI_Controller
             $newseat=$stno+$data_seatno-$editeset_data->spsc_totalseat;
             if(!($newseat <= $prgstno)){
                 $availsno=$this->availableseat($prgstno,$stno);
-               // print_r("availsno===>".$availsno);
+               	// print_r("availsno===>".$availsno);
                 $this->session->set_flashdata("err_message", 'number of seat should be less then or equal to the program seat ->  available seat is '.$availsno);
                 $this->load->view("map/editscprgseat",$data);
                 //redirect("map/editscprgseat",$data);
@@ -249,7 +249,7 @@ class Map extends CI_Controller
             }
             $update_data = array(
                'spsc_prg_id' => $editeset_data->spsc_prg_id,
-               'spsc_sc_code' => $editeset_data->spsc_sc_code,
+              // 'spsc_sc_code' => $editeset_data->spsc_sc_code,
                'spsc_gender'  => $data_gender,
                'spsc_totalseat' => $data_seatno,
                'spsc_acadyear'  => $data_academicyear,
@@ -257,7 +257,7 @@ class Map extends CI_Controller
                'spsc_modifierid' => $this->session->userdata('username'), 
                'spsc_modifydate' => date('y-m-d')
             ); 
-            $result=$this->commodel->updaterec('seat_program_studycenter', $update_data,'spsc_id',$id);
+            //$result=$this->commodel->updaterec('seat_program_studycenter', $update_data,'spsc_id',$id);
             if(! $result)
             {
                 $this->logger->write_logmessage("error", "Error in update study center with program seat "   . $val_msg . "program--- ".$val_msg1);
@@ -356,9 +356,11 @@ class Map extends CI_Controller
 			$sarray='sub_id,sub_name';
 			$wharray = array('sub_semester' => $parts[0],'sub_program' => $parts[1] );
 			$subject = $this->commodel->get_listarry('subject',$sarray,$wharray);
+			echo "<option disabled selected>Select Subject</option>";
 		foreach($subject as $datas): 
-				echo "<option  id='subid' value='$datas->sub_id'>"."$datas->sub_name"."</option>";
+				echo "<option   value='$datas->sub_id'>"."$datas->sub_name"."</option>";
   		endforeach;
+		
 	 }
 
 //This function has been created for display the list of degree on the basis of program category
@@ -390,9 +392,9 @@ class Map extends CI_Controller
         $data['subjectdesc'] = array('name' => 'subjectdesc','id' => 'subjectdesc','maxlength' => '100','size' => '30','value' => '',);
         $this->form_validation->set_rules('subjectname','Subject Name','trim|required');
         $this->form_validation->set_rules('subjecttype','Programme Category','trim|required');
-  //      $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
+  //    $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
         $this->form_validation->set_rules('subjectno','Paper No','trim|required|numeric');
-      //  $this->form_validation->set_rules('papername','Paper Name','trim|required');
+      // $this->form_validation->set_rules('papername','Paper Name','trim|required');
         $this->form_validation->set_rules('subjectcode','Paper Code','trim|required');
         $this->form_validation->set_rules('subjectshrname','Paper Short Name','trim');
         $this->form_validation->set_rules('subjectdesc','Paper Description','trim');
@@ -750,6 +752,7 @@ class Map extends CI_Controller
 			$wharray = array('subp_sem' => $parts[0],'subp_degree' => $parts[1],'subp_sub_id' => $parts[2] );
 			$subject = $this->commodel->get_listarry('subject_paper',$sarray,$wharray);
 		foreach($subject as $datas): 
+				
 				echo "<option  id='papername' value='$datas->subp_id'>"."$datas->subp_name"."</option>";
   		endforeach;
 	 }
@@ -758,11 +761,11 @@ class Map extends CI_Controller
   */
    public function subjectteacher(){
        // $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
-	 $this->scresult = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
+	$this->scresult = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
         $this->pnresult = $this->commodel->get_listspfic2('program','prg_id,prg_name,prg_branch', '','','','prg_id,prg_name,prg_branch');
 	
        if(isset($_POST['subjectteacher'])) {
-            $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
+        //    $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
             $this->form_validation->set_rules('deptname','Department Name','xss_clean|required');
             $this->form_validation->set_rules('academicyear','Academic Year','trim|xss_clean|required');
             $this->form_validation->set_rules('programname','Program Name','trim|xss_clean|required');
@@ -780,11 +783,12 @@ class Map extends CI_Controller
            $papername = $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $paperid)->subp_name;
            $teacher = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $teachid)->firstname . $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $teachid)->lastname;
 
-	$pstdatacheck = array('pstp_scid'=>$_POST['campusname'], 'pstp_prgid'=>$_POST['programname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
+	//$pstdatacheck = array('pstp_scid'=>$_POST['campusname'], 'pstp_prgid'=>$_POST['programname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
+	$pstdatacheck = array('pstp_prgid'=>$_POST['programname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
         
-	$orgid = $this->commodel->get_listspfic1('org_profile','org_id','org_code',$_POST['campusname'])->org_id;	
+	//$orgid = $this->commodel->get_listspfic1('org_profile','org_id','org_code',$_POST['campusname'])->org_id;	
         $datapst = array(
-        'pstp_scid'=>$orgid,
+        //'pstp_scid'=>$orgid,
         'pstp_prgid'=>$_POST['programname'],
         'pstp_subid'=>$_POST['subjectname'],
         'pstp_papid'=>$_POST['papername'],
@@ -1187,34 +1191,41 @@ class Map extends CI_Controller
 
         public function userroletype()
         {
-        $this->scresult   = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
+
+        //$this->scresult   = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
+		  $this->deptresult=$this->commodel->get_listspfic2('Department','dept_id', 'dept_name');
+//print_r($this->deptresult);
+
         $this->roleresult = $this->commodel->get_listspfic2('role','role_id', 'role_name');
         $this->loginuser  = $this->loginmodel->get_userlist('edrpuser','id','username');
 
         if(isset($_POST['userroletype'])) {
 
         /*Form Validation*/
-        $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean|required');
-        $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
+       // $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean');
         $this->form_validation->set_rules('role_name','Role Name','trim|xss_clean|required');
         $this->form_validation->set_rules('usertype','Usertype','trim|xss_clean|required');
         $this->form_validation->set_rules('username','User Name','trim|xss_clean|required');
 
         if($this->form_validation->run() == TRUE)
-        {
+        {/*
                $Campus = $this->input->post('campus',TRUE);
-		$orgid=$this->commodel->get_listspfic1('org_profile', 'org_id', 'org_code', $Campus)->org_id;	
+		$orgid=$this->commodel->get_listspfic1('org_profile', 'org_id', 'org_code', $Campus)->org_id;	*/
 		//check for duplicate
 	        $datadup = array('roleid' => $_POST['role_name'],'usertype'=>$_POST['usertype'],'userid'=>$_POST['username']);
                		$datauserrole = array(
                 	//	'scid'=>$this->scid,
-                		'scid'=>$orgid,
+
+                	//	'scid'=>$orgid,
                 		'deptid'=>$_POST['dept_name'],
                 		'roleid'=>$_POST['role_name'],
                 		'usertype'=>$_POST['usertype'],
                 		'userid'=>$_POST['username'],
                 		'ext1'=>'null',
           		);
+			//
+print_r($datauserrole);die;
        	$this->is_exist = $this->commodel->isduplicatemore('user_role_type',$datadup);
       	if ($this->is_exist == 1)
         	{
@@ -1295,7 +1306,7 @@ class Map extends CI_Controller
         $data['scid']= array(
             //'value' =>$editeset_data->scid,
            // 'value' =>$this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$editeset_data->scid)->sc_name,
-	'value' =>$this->commodel->get_listspfic1('org_profile','org_name', 'org_id',$editeset_data->scid)->org_name,
+	//			  'value' =>$this->commodel->get_listspfic1('org_profile','org_name', 'org_id',$editeset_data->scid)->org_name,
             'size'  =>'35',
             'readonly'=>'true',
         );
