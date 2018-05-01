@@ -22,7 +22,7 @@
 		var val=val;
 	   	$.ajax({
 		type: "POST",
-		url: "<?php echo base_url();?>slcmsindex.php/map/getdeptlist",
+		url: "<?php echo base_url();?>nitindex.php/map/getdeptlist",
 		data: {"campusname" : val},
 		dataType:"html",
 		success: function(data){
@@ -35,7 +35,7 @@
 	        var tl=tl;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/map/teacherlist",
+                url: "<?php echo base_url();?>nitindex.php/map/teacherlist",
                 data: {"deptname" : tl},
                 dataType:"html",
                 success: function(data){
@@ -87,7 +87,7 @@
 		var branch = branch;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/map/degreelist",
+                url: "<?php echo base_url();?>nitindex.php/map/degreelist",
                 data: {"subjecttype" : branch},
                 dataType:"html",
                 success: function(data){
@@ -102,7 +102,7 @@ function getsubj(combid){
                 var combid = sem+","+degree;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/map/subList",
+                url: "<?php echo base_url();?>nitindex.php/map/subList",
                 data: {"sem_degree" : combid},
                 dataType:"html",
                 success: function(data){
@@ -118,7 +118,7 @@ function getpaperName(idcomb){
                 var idcomb = sem+","+degree+","+sub;
 		$.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/map/Listofpapers",
+                url: "<?php echo base_url();?>nitindex.php/map/Listofpapers",
                 data: {"sem_degree_sub" : idcomb},
                 dataType:"html",
                 success: function(data){
@@ -168,7 +168,7 @@ function getpaperName(idcomb){
    <div> 
    <form id="myform" action="<?php echo site_url('map/subjectteacher');?>" method="POST" class="form-inline">
    <table>
- 	<<<tr>
+ 	<tr>
             <td>Campus Name :</td>
             <td>
             	<select name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">

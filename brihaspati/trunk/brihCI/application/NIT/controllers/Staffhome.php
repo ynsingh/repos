@@ -33,8 +33,8 @@ class Staffhome extends CI_Controller
         $this->email=$this->login->get_listspfic1('edrpuser','email','id',$this->session->userdata('id_user'));
         $this->campusid=$this->cmodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
         $this->campusname=$this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
-        $this->orgcode=$this->cmodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
-        $this->orgname=$this->cmodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
+        //$this->orgcode=$this->cmodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
+        //$this->orgname=$this->cmodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
         $this->dptid=$this->cmodel->get_depid('user_role_type',$this->session->userdata('id_user'),2);
         $this->deptname=$this->cmodel->get_listspfic1('Department','dept_name','dept_id',$this->dptid->deptid);
         /*get course Detail*/

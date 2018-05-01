@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <table style="font-size:20px;">
 <form action='<?php echo site_url('adminstuexam/searchattsheet'); ?>' method="POST">
-	<tr>
+	<!--<tr>
 		<td align=left><b>Generate Exam-Attendance Sheet : </b></td>
 		<td align=left>
 			<select name="attstudy_center" style="height:30px;width:100%;font-size:18px;" required>
@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<td colspan=3 align=right><span style="font-size:12px;">Select Institute then click search button to view all attendance sheet.</span></td>
 		</tr>
 
-	</tr>
+	</tr>-->
 </form>
 
 </table>
@@ -75,7 +75,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<table style="width:100%;font-size:19px;" border=0 class="TFtable">
 	<thead>
-		<tr><th>Sr. No.</th><th>University Name</th><th>Department Name</th><th>Action</th></tr>
+		<!--<tr><th>Sr. No.</th><th>University Name</th><th>Department Name</th><th>Action</th></tr>-->
+		<tr><th>Sr. No.</th><th>Department Name</th><th>Action</th></tr>
 	</thead>
 	<tbody>
 	<tr>
@@ -95,7 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$smid  = $row->sp_smid;
 			$sutcid = $this->commodel->get_listspfic1('student_program','sp_sccode','sp_smid',$smid)->sp_sccode;
 			//$cname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sutcid)->sc_name;
-			$cname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$sutcid)->org_name;
+			//$cname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$sutcid)->org_name;
 			$departtid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$smid)->sp_deptid;
 			if(!empty($departtid)){
 				$deptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$departtid)->dept_name;
@@ -107,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			if(file_exists($atturl)) {
 		?>
 		<td><?php echo $i++;?></td>
-		<td><?php echo $cname;?></td>
+		<!--<td><?php echo $cname;?></td>-->
 		<td><?php echo $deptname;?></td>
 		<td >
 <?php //if($yee == $year){?>

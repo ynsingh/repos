@@ -94,7 +94,8 @@ echo "</table>";
                                         echo " </td>";
 					
 					echo " <td align=\"center\">";
-					echo $row->jee_mainno;
+					//echo $row->jee_mainno;
+						echo $row->entexamrollno;
                                         echo " </td>";
 					echo " <td align=\"center\">";
 					echo $row->application_no;

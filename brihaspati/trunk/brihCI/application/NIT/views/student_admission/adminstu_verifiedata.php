@@ -93,10 +93,10 @@ select{width:98%;height:40px;font-size:18px;font-size:18px;}
 			<label>Name of the Applicant</label></br>
 			<?php echo $name;?>
 		</td>		
-		<td>	
+		<!--<td>	
 			<label for="nnumber">Institute Name</label></br>
 			<?php echo $scname;?>
-		</td>
+		</td>-->
 
 		<td>	
 			<label for="nnumber">Programme Category</label></br>
@@ -240,7 +240,9 @@ select{width:98%;height:40px;font-size:18px;font-size:18px;}
 	</thead>
 	<thead  style="background-color:#067eb7;color:white;font-size:20px;text-align:left;">
 		<tr>
-			<th>Class</th><th>Institute Name</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>
+			<!--<th>Class</th><th>Institute Name</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>-->
+			<th>Class</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>
+		
 		<tr>
 	</thead>	
 	<tbody>
@@ -252,7 +254,7 @@ select{width:98%;height:40px;font-size:18px;font-size:18px;}
 		<tr>
 			
 			<td><input type="text" placeholder="Enter Class Name" name="classname<?php echo $i;?>1" value="<?php echo $row->sedu_class;?>" readonly></td>
-			<td><input type="text" placeholder="Enter Institute Name" name="institutename<?php echo $i;?>2" value="<?php echo $row->sedu_institution;?>" readonly></td>
+			<!--<td><input type="text" placeholder="Enter Institute Name" name="institutename<?php echo $i;?>2" value="<?php echo $row->sedu_institution;?>" readonly></td>-->
 			<td><input type="text" placeholder="Enter Board Name" name="board<?php  echo $i;?>3" value="<?php echo $row->sedu_board;?>" readonly></td>
 			<td><input type="text" placeholder="Enter Subject Name" name="subject<?php  echo $i;?>4" value="<?php echo $row->sedu_subject;?>" readonly></td>
 			<td><input type="text" placeholder="Enter Passing Year" name="passingyear<?php  echo $i;?>5" value="<?php echo $row->sedu_passingyear;?>" readonly></td>

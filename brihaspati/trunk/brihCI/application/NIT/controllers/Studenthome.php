@@ -62,11 +62,11 @@ class Studenthome extends CI_Controller
             $data['dept_name'] = $dept_name;
 
             //get study center code.
-            $sc_code = $stud_master1->sm_sccode;  
-		$sc_name = $this->commodel->get_listrow('org_profile','org_id',$sc_code)->row()->org_name;
+            //$sc_code = $stud_master1->sm_sccode;  
+		//$sc_name = $this->commodel->get_listrow('org_profile','org_id',$sc_code)->row()->org_name;
           // $sc_name = $this->commodel->get_listrow('study_center','sc_id',$sc_code)->row()->sc_name;
 		//print_r($sc_name);
-                $data['sc_name'] = $sc_name;
+                //$data['sc_name'] = $sc_name;
 
             //get degree
 
@@ -197,10 +197,25 @@ class Studenthome extends CI_Controller
            // $subjectid1 = $studsemsubject->row()->sp_subid1;
 
 	$stud_prg_id = $stud_prg_rec->row()->sp_id; 
-        $subjectid1 = $stud_prg_rec->row()->sp_subid1;
-	//print_r($stud_prg_id);	print_r($subjectid1);
-            if($subjectid1 == 0)
+       // $subjectid1 = $stud_prg_rec->row()->sp_subid1;
+		$stusub1 = 'sp_subid1';
+		$subdata = array(
+			//'sp_id' => $stud_prg_id,
+			'sp_smid' => $stid,
+			'sp_semester' => $noofsemester,
+			
+		);
+       		$subject = $this->commodel->get_listspficemore('student_program',$stusub1,$subdata);
+		//print_r($subjectid1);die;
+		//print_r($stud_prg_id);	print_r($subject);
+		foreach($subject as $row){
+			$subjectid1 = $row->sp_subid1;
+			//print_r($subjectid1);die;
+			//print_r($subjectid1);die;
+		
+            if($subjectid1 == NULL)
             {
+		$this->session->set_flashdata('success','Select Your '.$noofsemester.' Semester Subjects.');	
                 redirect('studenthome/studentsubject/');
             }
             else
@@ -269,7 +284,7 @@ class Studenthome extends CI_Controller
         
                 $data['subject'] = $subject;
             }
-            
+          }
             $stud_par_rec = $this->commodel->get_listrow('student_parent','spar_smid',$stid);
 	    $stud_add1 = $stud_par_rec->row();
 	 //   print_r($stud_add1);

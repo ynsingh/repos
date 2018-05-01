@@ -130,12 +130,12 @@
                                 foreach($getstuid as $row){	
 				$scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$row->sp_smid)->sm_sccode;
 				if($orgid != $scid){
-					echo "<tr>";
-					echo "<td colspan=9 style='text-align:center;font-size:18px;'>";
-					echo "<b>Institute Name : </b>";
-                                       		echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
-					echo "</td>";
-					echo "</tr>";
+					//echo "<tr>";
+					//echo "<td colspan=9 style='text-align:center;font-size:18px;'>";
+				//	echo "<b>Institute Name : </b>";
+                                       	//	echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
+					//echo "</td>";
+					//echo "</tr>";
 				$orgid = $scid;				
 				}
 				 echo "<tr>";

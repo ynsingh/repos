@@ -65,7 +65,7 @@
 	//echo "</br>";
      //	echo $this->session->userdata('id_user'); 
 	echo "<table><tr><td valign=top>";
-	echo "<table align = \"center\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+	echo "<table align = \"center\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;border-radius:0px 0px 20px 0px;box-shadow: 0px 5px 10px 0px #888888;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
 	echo "Profile";
@@ -73,7 +73,7 @@
         echo "</tr>";
 	echo "<tr>";
 	echo "<td>";
-        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse; \">";
 	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
 
@@ -83,8 +83,8 @@
 //	echo $this->result->sm_lname;
 	echo "</td></tr>";
 	//echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Campus</b> </td><td>";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Institute</b> </td><td>";	
-	echo $sc_name; //name of the campus
+	//echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Institute</b> </td><td>";	
+	//echo $sc_name; //name of the campus
 	echo "</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Department<b></td><td>";
 	echo $dept_name; //dept of the student with study center
@@ -130,7 +130,7 @@
 
 	echo "</td><td valign=\"top\">";
 
-	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;border-radius:0px 0px 20px 0px;box-shadow: 0px 5px 10px 0px #888888;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
         echo "Program and Subject Status";
@@ -200,6 +200,10 @@
     echo $row->sp_semester; //semester
 	echo "</td><td style=\"padding: 8px 8px 8px 20px;\"> ";
      //   echo $this->result->org_code; //subject qualify status
+	/*if(($row->sp_semester == 1) || ($row->sp_semester == 2)|| ($row->sp_semester == 3)|| ($row->sp_semester == 4)|| ($row->sp_semester == 5)|| ($row->sp_semester == 6)|| ($row->sp_semester == 7)|| ($row->sp_semester == 8)){
+		echo 'Passed';
+
+	}*/
 	echo "</td></tr>";
     }
     }
@@ -221,7 +225,7 @@
 
 	echo "</td><td valign=\"top\">";
 
-        echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;border-radius:0px 0px 20px 0px;box-shadow: 0px 5px 10px 0px #888888;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
         echo "Program and Fees Status";
@@ -232,7 +236,7 @@
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;\">";
 	echo "<tbody align=\"left\">";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td colspan=4>";
+	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\" colspan=2><b>Program Name</b></td><td colspan=3>";
     echo $degree_name; //name of the program
         echo "</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Academic Year</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Semester</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Type</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Amount</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Status</b></td></tr>";
