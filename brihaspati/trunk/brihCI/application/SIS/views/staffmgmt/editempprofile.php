@@ -648,7 +648,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="emppost" style="font-size:15px;">Shown against the Post<font></font></label>
 			<div><select name="emppost" id="emppostid" required style="width:300px;">
                     <?php if(!empty($editdata->emp_post)):;?>
-			<option value="<?php echo $editdata->emp_post;?>"><?php echo $editdata->emp_post;?></option>
+			<!--<option value="<?php //echo $editdata->emp_post;?>"><?php //echo $editdata->emp_post;?></option>
+                        -->
+                        <option value="<?php 
+                        echo $this->commodel->get_listspfic1('designation','desig_id','desig_name',$editdata->emp_post)->desig_id ?>">
+                        <?php echo $editdata->emp_post;?></option>
                         <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                          <?php endif;?>

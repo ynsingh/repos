@@ -234,6 +234,9 @@ class Staffmgmt extends CI_Controller
                 $file_ext = end( $fileExt1);
                 $new_name = $empcode.".".$file_ext; 
 		}
+                else{
+                   $new_name=''; 
+                }
 		$email = $_POST['emailid'];
 		if(empty($email)){
                     $email = $empcode .'@tanuvas.org.in';
@@ -253,14 +256,20 @@ class Staffmgmt extends CI_Controller
                 if(!empty($_POST['netqual'])){
                     if($_POST['netqual'] =='Yes'){
                         $netdetail=$_POST['netqual'].",".$_POST['netqualyes'];
+                        $netpassyear = $_POST['passyear'];
+                         $netdispln = $_POST['netdiscipline'];   
                     }
                     else{
                         $netdetail=$_POST['netqual'];
+                        $netpassyear=NULL;
+                        $netdispln=NULL;
                     }
                     
                 }
                 else{
                     $netdetail=NULL;
+                    $netpassyear=NULL;
+                    $netdispln=NULL;
                 }
 
                 //-------------------------------------------------------------
@@ -333,8 +342,8 @@ class Staffmgmt extends CI_Controller
                     'emp_phdinstname'           =>$_POST['phdinstname'],
                     'emp_phdunivdeput'          =>$udval,
                     'emp_netqualified'          =>$netdetail,
-                    'emp_netpassingyear'        =>$_POST['passyear'],
-                    'emp_netdiscipline'         =>$_POST['netdiscipline'],
+                    'emp_netpassingyear'        =>$netpassyear,
+                    'emp_netdiscipline'         =>$netdispln,
                     'emp_vciregno'              =>$_POST['vciregno'],
                     'emp_vciregdate'            =>$_POST['vciregdate'],
                     'emp_photoname'             =>$new_name 
@@ -392,11 +401,14 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_logmessage("insert", "data insert in employee_master table.");
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
 
-		/* insert record in service details , if uo then update in uolist table  and if hod then update in hod list table */
-                    
-                    
-                    
                     $empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email',$_POST['emailid'])->emp_id;
+                    /* insert record in service details , if uo then update in uolist table  and if hod then update in hod list table */
+                    $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+                    //$shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emp_post'])->desig_id;
+                    $this->sismodel->insertsdetail($empid,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,
+                    $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],date('y-m-d'),date('y-m-d'),date('y-m-d'));    
+                                       
+                    
                     if(!empty($_POST['asignname'])){
                         if($_POST['asignname'] == 'Others'){
                             $asignname=$_POST['asignname'].",".$_POST['asignother'];
@@ -404,6 +416,9 @@ class Staffmgmt extends CI_Controller
                         else{
                             $asignname=$_POST['asignname'];
                         }
+                    }
+                    else{
+                        $asignname=NULL;
                     }
                     $dataasign=array(
                         'aa_empid'              =>$empid,
@@ -451,6 +466,7 @@ class Staffmgmt extends CI_Controller
                     /*************************************close updating the staff position table*****************/
                     /* upload photo*/
                     $msg='';
+                    $msgphoto='';
                     if(!empty($_FILES['userfile']['name'])){
                         $empcode=$_POST['empcode'];
                         $new_name = $empcode; 
@@ -681,6 +697,7 @@ class Staffmgmt extends CI_Controller
        	    $empoldcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$id)->emp_code;     
             $bankname=$this->input->post('bankname');
             $ifsccode= $this->input->post('ifsccode');
+            $emppostname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['emppost'])->desig_name; 
             //$emp_post= $this->input->post('emppost');
             //$emppostid= $this->commodel->get_listspfic1('designation','desig_id','desig_namedesig_id',$emp_post)->desig_id;     
            // $uocuid= $this->input->post('uocontrol');  
@@ -753,7 +770,7 @@ class Staffmgmt extends CI_Controller
                 'emp_schemeid'                   => $this->input->post('schemecode'),
                 'emp_desig_code'                 => $this->input->post('designation'),
                 
-                'emp_post'                       => $this->input->post('emppost'),
+                'emp_post'                       =>$emppostname,
 // enabled by nks close
                 'emp_gender'                     => $this->input->post('gender'),
                 'emp_community'                  => $this->input->post('community'),
@@ -920,7 +937,11 @@ class Staffmgmt extends CI_Controller
             $sub = 'Employee Profile Updated';
             $this->mailmodel->mailsnd($_POST['emailid'],$sub,$mess,'');
 		
-		/* insert record in service details with check duplicate , if uo then update in uolist table  and if hod then update in hod list table */
+            /* insert record in service details with check duplicate , if uo then update in uolist table  and if hod then update in hod list table */
+            $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+           // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
+            $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,
+            $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],date('y-m-d'),date('y-m-d'),date('y-m-d'));
 
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );

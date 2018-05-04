@@ -403,6 +403,76 @@ class SIS_model extends CI_Model
     }//function close
     /***********************************close of staff position*********************************************/  
     
+    /************Add employee record in service details table at the time of profile creation*************/
+    public function insertsdetail($empid,$campus,$uocid,$deptid,$desigid,$schemeid,$ddoid,$group,$pbid,$gradepay,$sapostid,$pbdate,$joindate,$relvdate){
+        /* update record in  additional assignments */
+        $dupcheck = array(
+            'empsd_empid'       =>$empid,   
+            'empsd_campuscode'  =>$campus,
+            'empsd_ucoid'       =>$uocid,
+            'empsd_deptid'      =>$deptid,
+            'empsd_schemeid'    =>$schemeid,
+            'empsd_ddoid'       =>$ddoid,
+            'empsd_group'       =>$group,
+            'empsd_shagpstid'   =>$sapostid,
+            'empsd_desigcode '  =>$desigid,
+            'empsd_pbid'        =>$pbid,
+            'empsd_pbdate'      =>$pbdate,
+            'empsd_gradepay'    =>$gradepay
+                 
+        ); 
+        $emidexits= $this->sismodel->isduplicatemore('employee_servicedetail',$dupcheck);
+        if(!$emidexits){
+            $data = array(
+                'empsd_empid'       =>$empid,   
+                'empsd_campuscode'  =>$campus,
+                'empsd_ucoid'       =>$uocid,
+                'empsd_deptid'      =>$deptid,
+                'empsd_schemeid'    =>$schemeid,
+                'empsd_ddoid'       =>$ddoid,
+                'empsd_group'       =>$group,
+                'empsd_shagpstid'   =>$sapostid,
+                'empsd_desigcode '  =>$desigid,
+                'empsd_pbid'        =>$pbid,
+                'empsd_pbdate'      =>$pbdate,
+                'empsd_gradepay'    =>$gradepay,
+                'empsd_dojoin'      =>$joindate,
+                'empsd_dorelev'     =>$relvdate
+                 
+             ); 
+            /* insert record in  service detail */
+            $this->sismodel->insertrec('employee_servicedetail', $data);
+            $this->logger->write_logmessage("insert", "data insert in servicedetail table.");
+            $this->logger->write_dblogmessage("insert", "data insert in servicedetail table." );
+        }
+        else{
+            
+            $data = array(
+                'empsd_empid'       =>$empid,   
+                'empsd_campuscode'  =>$campus,
+                'empsd_ucoid'       =>$$uocid,
+                'empsd_deptid'      =>$deptid,
+                'empsd_schemeid'    =>$schemeid,
+                'empsd_ddoid'       =>$ddoid,
+                'empsd_group'       =>$group,
+                'empsd_shagpstid'   =>$sapostid,
+                'empsd_desigcode '  =>$desigid,
+                'empsd_pbid'        =>$pbid,
+                'empsd_pbdate'      =>$pbdate,
+                'empsd_gradepay'    =>$gradepay,
+                'empsd_dojoin'      =>$joindate,
+                'empsd_dorelev'     =>$relvdate
+                 
+            ); 
+           /* update record in  service detail */
+            $this->sismodel->updaterec('employee_servicedetail', $data,'empsd_id',$id);
+            $this->logger->write_logmessage("update", "data update in serrvicedetail table.");
+            $this->logger->write_dblogmessage("update", "data update in servicedetail table." ); 
+        }
+    }
+    
+    /************closer  employee record in service details table at the time of profile creation*************/
+    
     function __destruct() {
         $this->db2->close();
     }
