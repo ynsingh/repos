@@ -212,7 +212,7 @@ function __construct() {
 								$msg1=" The Party name or party role is missing";
 							}
 							else{
-								$msg1= $this->addoneparty($data[0],$data[1],$data[2],$data[3],$data[4],$data[5],$data[6],$data[7],$data[8],$data[9],$data[10],$data[11],$data[12],$data[13],$data[14],$data[15],$data[16],$data[17]);
+								$msg1= $this->addoneparty($data[0],$data[1],$data[2],$data[3],$data[4],$data[5],$data[6],$data[7],$data[8],$data[9],$data[10],$data[11],$data[12],$data[13],$data[14],$data[15],$data[16],$data[17],$data[18]);
 								//$msg1= addoneparty($data_pname,$data_partyrole,$data_address,$data_accountemail,$data_mnumber,$data_bankname,$data_branchname,$data_bankaddress,$data_bacnumber,$data_ifsccode,$data_pannum,$data_uidnum,$data_tannum,$data_stnm,$data_vatnum,$data_gstnum,$data_op_balance_dc,$data_opbal);
 							}
 			//				print_r($msg1);
@@ -280,6 +280,14 @@ function __construct() {
                         "invites/Speaker" => "Invites/Speaker",
                         "officers" => "Officers",
                         "others" => "Others",
+                );
+
+		$data['pfnumber'] = array(
+                        'name' => 'pfnumber',
+                        'id' => 'pfnumber',
+                        'maxlength' => '13',
+                        'size' => '40',
+                        'value' => '',
                 );
 
 		$data['mnumber'] = array(
@@ -398,6 +406,7 @@ function __construct() {
 		$this->form_validation->set_rules('partyrole', 'Party Category', 'trim|required');
 
 		//$this->form_validation->set_rules('sacunitid', 'Secondary Accounting Unit', 'trim|required|max_length[10]');
+		$this->form_validation->set_rules('pfnumber', 'PF Number','trim');
 		$this->form_validation->set_rules('mnumber', 'Mobile Number','trim|max_length[13]');
 		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|valid_email');
 		$this->form_validation->set_rules('address', 'Address', 'trim');
@@ -419,6 +428,7 @@ function __construct() {
 		{
 			$data['pname']['value'] = $this->input->post('pname', TRUE);
 			//$data['sacunitid']['value'] = $this->input->post('sacunitid', TRUE);
+			$data['pfnumber']['value'] = $this->input->post('pfnumber', TRUE);
 			$data['mnumber']['value'] = $this->input->post('mnumber', TRUE);
 			$data['accountemail']['value'] = $this->input->post('accountemail', TRUE);
 			$data['address']['value'] = $this->input->post('address', TRUE);
@@ -446,6 +456,7 @@ function __construct() {
 		else
 		{
 			$data_pname = $this->input->post('pname', TRUE);
+                        $data_pfnumber = $this->input->post('pfnumber', TRUE);
                         $data_mnumber = $this->input->post('mnumber', TRUE);
                         $data_accountemail = $this->input->post('accountemail', TRUE);
                         $data_address = $this->input->post('address', TRUE);
@@ -464,7 +475,7 @@ function __construct() {
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_partyrole = $this->input->post('partyrole', TRUE);
 
-			$msg1= $this->addoneparty($data_pname,$data_partyrole,$data_address,$data_accountemail,$data_mnumber,$data_bankname,$data_branchname,$data_bankaddress,$data_bacnumber,$data_ifsccode,$data_pannum,$data_uidnum,$data_tannum,$data_stnm,$data_vatnum,$data_gstnum,$data_op_balance_dc,$data_opbal);
+			$msg1= $this->addoneparty($data_pname,$data_partyrole,$data_pfnumber,$data_address,$data_accountemail,$data_mnumber,$data_bankname,$data_branchname,$data_bankaddress,$data_bacnumber,$data_ifsccode,$data_pannum,$data_uidnum,$data_tannum,$data_stnm,$data_vatnum,$data_gstnum,$data_op_balance_dc,$data_opbal);
 
 //add in new method
 /*
@@ -743,7 +754,7 @@ function __construct() {
 	}
 
 
-	function addoneparty($data_pname,$data_partyrole,$data_address,$data_accountemail,$data_mnumber,$data_bankname,$data_branchname,$data_bankaddress,$data_bacnumber,$data_ifsccode,$data_pannum,$data_uidnum,$data_tannum,$data_stnm,$data_vatnum,$data_gstnum,$data_op_balance_dc,$data_opbal){
+	function addoneparty($data_pname,$data_partyrole,$data_pfnumber,$data_address,$data_accountemail,$data_mnumber,$data_bankname,$data_branchname,$data_bankaddress,$data_bacnumber,$data_ifsccode,$data_pannum,$data_uidnum,$data_tannum,$data_stnm,$data_vatnum,$data_gstnum,$data_op_balance_dc,$data_opbal){
 	
 			$secunit_id="";
 			if($data_partyrole == "faculty"){
@@ -859,7 +870,7 @@ function __construct() {
                         $pdetail = $this->db->get();
                         foreach ($pdetail->result() as $row)
                         {
-                                //$sacunit=$row->sacunit;
+                                $pfnumber=$row->pfnumber;
                                 $emailid=$row->email;
                                 $acnum=$row->bancacnum;
                                 $pan=$row->pan;
@@ -868,6 +879,13 @@ function __construct() {
                                 $stnumber=$row->staxnum;
                                 $vat=$row->vat;
                                 $gst=$row->gst;
+				if($data_pfnumber !=""){
+                                if($pfnumber == $data_pfnumber)
+                                {
+                                        $msg1= ' Party with Personal File Number /Roll Number ' .$data_pfnumber. ' already exist. ';
+					return $msg1;
+                                }
+                                }
 				if($data_accountemail !=""){
                                 if($emailid == $data_accountemail)
                                 {
@@ -936,6 +954,7 @@ function __construct() {
                         $insert_data=array(
                                 'sacunit' =>$secondary_id,
                                 'partyname' =>$data_pname,
+                                'pfnumber' =>$data_pfnumber,
                                 'mobnum' =>$data_mnumber,
                                 'email' =>$data_accountemail,
                                 'address' =>$data_address,
@@ -1005,6 +1024,13 @@ function __construct() {
 			'value' => $update_detail->sacunit,
 		);
 
+                $data['pfnumber'] = array(
+                        'name' => 'pfnumber',
+                        'id' => 'pfnumber',
+                        'maxlength' => '13',
+                        'size' => '40',
+                        'value' => $update_detail->pfnumber,
+                );
                 $data['mnumber'] = array(
                         'name' => 'mnumber',
                         'id' => 'mnumber',
@@ -1120,6 +1146,7 @@ function __construct() {
 		/* Form validations */
 		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
 		$this->form_validation->set_rules('partyrole', 'Party Category', 'trim|required');
+		$this->form_validation->set_rules('pfnumber', 'PF Number','trim');
 		$this->form_validation->set_rules('mnumber', 'Mobile Number');
 		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|valid_email');
 		$this->form_validation->set_rules('address', 'Address', 'trim');
@@ -1141,6 +1168,7 @@ function __construct() {
 		{
 			$data['pname']['value'] = $this->input->post('pname', TRUE);
 			$data['mnumber']['value'] = $this->input->post('mnumber', TRUE);
+			$data['pfnumber']['value'] = $this->input->post('pfnumber', TRUE);
 			$data['accountemail']['value'] = $this->input->post('accountemail', TRUE);
 			$data['address']['value'] = $this->input->post('address', TRUE);
 			$data['bacnumber']['value'] = $this->input->post('bacnumber', TRUE);
@@ -1168,6 +1196,7 @@ function __construct() {
 		else
 		{
 			$data_pname = $this->input->post('pname', TRUE);
+                        $data_pfnumber = $this->input->post('pfnumber', TRUE);
                         $data_mnumber = $this->input->post('mnumber', TRUE);
                         $data_accountemail = $this->input->post('accountemail', TRUE);
                         $data_address = $this->input->post('address', TRUE);
@@ -1254,6 +1283,7 @@ function __construct() {
 			$update_data=array(
 				'partyname' =>$data_pname,
 				'mobnum' =>$data_mnumber,
+				'pfnumber' =>$data_pfnumber,
 				'email' =>$data_accountemail, 
 				'address' =>$data_address,
 				'permanentaddress' =>$data_address, 

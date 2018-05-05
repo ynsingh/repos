@@ -28,11 +28,11 @@
 	
 	echo "<p>";
 	echo "<span id=\"tooltip-target-2\">";
-	echo form_label('Mobile Number', 'mnumber');
+	echo form_label('PF Number', 'pfnumber');
 	echo "<br />";
-	echo form_input($mnumber);
+	echo form_input($pfnumber);
 	echo "</span>";
-	echo "<span id=\"tooltip-content-2\">Mobile Number should be ten/thirteen digits</span>";	
+	echo "<span id=\"tooltip-content-2\">PF Number should be alpha numeric</span>";	
 	echo "</p>";
 	
 	echo "<p>";
@@ -158,6 +158,15 @@
 	echo "<span id=\"tooltip-content-7\">Service Tax Number should be 15 digit</span>";	
 	echo "</p>";
 	
+	echo "<p>";
+	echo "<span id=\"tooltip-target-2\">";
+	echo form_label('Mobile Number', 'mnumber');
+	echo "<br />";
+	echo form_input($mnumber);
+	echo "</span>";
+	echo "<span id=\"tooltip-content-2\">Mobile Number should be ten/thirteen digits</span>";	
+	echo "</p>";
+
 	echo "</tr>";
         echo "</table>";
         echo "</td>";

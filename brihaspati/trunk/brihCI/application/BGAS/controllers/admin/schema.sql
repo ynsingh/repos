@@ -234,6 +234,7 @@ CREATE TABLE IF NOT EXISTS addsecondparty (
         id int(11) NOT NULL AUTO_INCREMENT,
         sacunit VARCHAR(25) NOT NULL,
         partyname VARCHAR(255) NOT NULL,
+        pfnumber VARCHAR(55) DEFAULT NULL,
         mobnum VARCHAR (25) DEFAULT NULL,
         email VARCHAR(100) DEFAULT NULL,
         address VARCHAR(255) DEFAULT NULL,

@@ -39,7 +39,7 @@
 | routes must come before any wildcard or regular expression routes.
 |
 */
-
+$route['bgasapi'] = 'bgasapi';
 $route['default_controller'] = "welcome";
 $route['scaffolding_trigger'] = "";
 

@@ -31,11 +31,11 @@
 
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Mobile Number', 'mnumber');
+	echo form_label('PF Number', 'pfnumber');
 	echo "<br />";
-	echo form_input($mnumber);
+	echo form_input($pfnumber);
 	echo "</span>";
-	echo "<span id=\"tooltip-content-1\">Mobile Number should be ten digits</span>";	
+	echo "<span id=\"tooltip-content-1\">PF Number should be alpha numeric</span>";	
 	echo "</p>";
 	
 	echo "<p>";
@@ -155,6 +155,15 @@
 	echo form_dropdown_dc('op_balance_dc', $op_balance_dc);
         echo " ";
 	echo form_input($opbal);
+	echo "</p>";
+
+	echo "<p>";
+	echo "<span id=\"tooltip-target-1\">";
+	echo form_label('Mobile Number', 'mnumber');
+	echo "<br />";
+	echo form_input($mnumber);
+	echo "</span>";
+	echo "<span id=\"tooltip-content-1\">Mobile Number should be ten digits</span>";	
 	echo "</p>";
 
 	echo "</tr>";

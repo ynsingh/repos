@@ -135,7 +135,25 @@ function __construct() {
 		$entry_q = $this->db->get();
 		return $entry_q->row();
 	}
-	
+
+	function get_entryid($number, $entry_type_id)
+        {
+                $this->db->select('id')->from('entries')->where('number', $number)->where('entry_type', $entry_type_id)->limit(1);
+                $entry_q = $this->db->get();
+		$result = $entry_q->row();
+		$entryid = $result->id; 
+		return  $entryid;
+        }
+
+	function  get_entryitemid($entry_id, $dc,$data_ledger_cid)	
+	{
+		$this->db->select('id')->from('entry_items')->where('entry_id',$entry_id)->where('dc', $dc)->where('ledger_id', $data_ledger_cid)->limit(1);
+		$entry_q = $this->db->get();
+                $result = $entry_q->row();
+                $entryid = $result->id;
+                return  $entryid;
+	}
+
 	function get_all_entry_types()
         {
                 $options = array();
@@ -158,6 +176,14 @@ function __construct() {
 		$entry_type_name = $type_entry->name;
 		return $entry_type_name;
 	}
+	function get_id_of_entry_type($entry_type_name)
+        {
+                $this->db->select('id')->from('entry_types')->where('name',$entry_type_name)->limit(1);
+                $tye_entry = $this->db->get();
+                $type_entry = $tye_entry->row();
+                $entry_type_id = $type_entry->id;
+                return $entry_type_id;
+        }
 
 	function get_all_entry_items_ledger_notfund($entry_id,$income_id)
 	{
