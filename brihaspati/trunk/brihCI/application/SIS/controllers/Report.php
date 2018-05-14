@@ -43,18 +43,22 @@ class Report  extends CI_Controller
 	}
 
     public function deptemployeelist(){
-        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_schemeid";
+        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
         $whorder = "emp_uocid asc, emp_dept_code  asc, emp_post asc";
-	$cdate = date('y-m-d');
+	$cdate = date('Y-m-d');
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $dept  = $this->input->post('dept');
-
+		 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
-            $this->deptmt = $dept;
+	    if((!empty($dept))&&($dept != "null")){
+            	$this->deptmt = $dept;
+	    }else{
+		$this->deptmt= "All";
+	    }
 
             //echo "dept===".$dept."www==".$wtype."uo===".$uoff;
             if($dept != "null"){
@@ -116,7 +120,11 @@ class Report  extends CI_Controller
 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
-            $this->deptmt = $dept;
+	    if((!empty($dept))&&($dept != "null")){
+                $this->deptmt = $dept;
+            }else{
+                $this->deptmt= "All";
+            }
 
 	   if($dept != "null" && $dept != "All"){
                 //echo "if case dept of filter";
@@ -172,7 +180,12 @@ class Report  extends CI_Controller
 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
-            $this->desigm = $desig;
+	    if((!empty($desig))&&($desig != "null")){
+            	$this->desigm = $desig;
+            }else{
+                $this->desigm = "All";
+            }
+
             //echo "desig===".$desig."www==".$wtype."uo===".$uoff;
             if($desig != "null" && $desig != "All"){
                 //echo "if case dept of filter";
@@ -213,7 +226,7 @@ class Report  extends CI_Controller
 
         /***************************************View Employee List******************************************************/
     public function viewprofile($id=0) {
-	$cdate = date('y-m-d');
+	$cdate = date('Y-m-d');
         // add doris geater than current date and reason is null  in whdata
         $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
         //  get role id and user id
@@ -250,7 +263,7 @@ class Report  extends CI_Controller
 	*/
                 $datawh['emp_worktype'] = $worktype;
                 $datawh['emp_name LIKE ']= $filter.'%';
-	    	$empdata['emprecord'] = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no',$datawh);
+	    	$empdata['emprecord'] = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_photoname,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no',$datawh);
 //		add this code as join query
 	/*	$selectfield="empsd_campuscode,empsd_ucoid,empsd_deptid,empsd_desigcode,empsd_schemeid";
 	        $whdata = array ('empsd_empid'=>$emp_id);
@@ -288,25 +301,38 @@ public function disciplinewiselist(){
 	$this->sc=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code','','sc_name asc');
 	$this->sub=$this->commodel->get_orderlistspficemore('subject','sub_id,sub_name,sub_code','','sub_name asc');
 
-	$cdate = date('y-m-d');
+	$cdate = date('Y-m-d');
         $selectfield ="emp_dept_code, emp_name, emp_desig_code,emp_specialisationid";
-	$whdata = array ('emp_specialisationid >' => 0,'emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
+	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
         $whorder = "emp_specialisationid";
+	//$names='';
 	if(isset($_POST['filter'])) {
 		$camp = $this->input->post('camp');
-            	$subj = $this->input->post('subj');		
+            	$subj[] = $this->input->post('subj');	
 		$this->camp = $camp;
-		$this->subj = $subj;
+	//	$this->subj = $subj[];
 		
 		if(!empty($camp))
 			$whdata['emp_scid']=$camp;
-		if(!empty($subj))
-			$whdata['emp_specialisationid']=$subj;
-		$this->result = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+		$i=0;
+		if(!empty($subj)){
+			foreach($subj as $row){
+			$this->subj = $row[$i];	
+			$names = $row;
+			
+		//	$this->db->or_where_in('username', $names);
+		//	$whdata['emp_specialisationid']=$row[$i];
+			$i++;
+			}
+		}
+	//	print_r($names);die;
+		if(empty($names))
+			$whdata['emp_specialisationid >'] = 0;
+		$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,$names,$whorder);
 
 	}else{
-	
-        	$this->result = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+		$whdata['emp_specialisationid >'] = 0;
+        	$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'',$whorder);
 	}
         $this->logger->write_logmessage("view"," view  Discipline Wise Report " );
         $this->logger->write_dblogmessage("view"," view  Discipline Wise Report ");
@@ -324,7 +350,11 @@ public function disciplinewiselist(){
 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
-            $this->deptmt = $dept;
+	    if((!empty($dept))&&($dept != "null")){
+                $this->deptmt = $dept;
+            }else{
+                $this->deptmt= "All";
+            }
 
             //echo "dept===".$dept."\nwt==".$wtype."\nuo===".$uoff;
             $data['tnttype'] =  $wtype;  
@@ -358,7 +388,7 @@ public function disciplinewiselist(){
         $selectfield ="emp_desig_code,emp_dept_code,emp_name";
         //$whdata = array ('emp_worktype' => 'Teaching');
         $whorder = "emp_desig_code  asc";
-	$cdate = date('y-m-d');
+	$cdate = date('Y-m-d');
        // $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
@@ -368,9 +398,17 @@ public function disciplinewiselist(){
             $desig  = $this->input->post('desig');
 
       	    $this->wtyp = $wtype;
-            $this->uolt = $uoff;
-            $this->deptmt = $dept;
-	    $this->desigm = $desig;
+            $this->desigm= $desig;
+	    if((!empty($dept))&&($dept != "null")){
+                $this->deptmt = $dept;
+            }else{
+                $this->deptmt= "All";
+            }
+	    if((!empty($uoff))&&($uoff != "null")){
+                $this->uolt = $uoff;
+            }else{
+            	$this->uolt = 'All';
+            }
            // echo "dept===".$dept."wt==".$wtype."uo===".$uoff."desig==".$desig;
             if($desig != "null" || $uoff != "null" || $dept != "null" ){
                 //echo "ifcase dept of filter";
@@ -471,12 +509,12 @@ public function disciplinewiselist(){
     }
 
     public function positionsummary(){
-        $selectfield ="sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
+        $selectfield ="sp_emppost,sp_group,sp_sancstrenght,sp_position,sp_vacant";
         //$whdata = array ('sp_tnt' => 'Non Teaching');
         $whdata = '';
 	$whdata = $this->getwhdata();
 //	print_r($whdata); die;
-        $whorder = "sp_emppost asc";
+        $whorder = "sp_group,sp_emppost asc";
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             	$wtype = $this->input->post('wtype');
@@ -536,7 +574,7 @@ public function disciplinewiselist(){
     }
     /*Professor list report and service period*/
     public function professorlist(){
-	$cdate = date('y-m-d');
+	$cdate = date('Y-m-d');
         $selectfield ="emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";        
 	$whorder = "emp_doj asc";
 	$desig=null;

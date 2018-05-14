@@ -97,6 +97,7 @@
             <thead>
                 <tr>
                     <th>Sr.No</th>
+                    <th></th>
                     <th>Employee Name</th>
                     <th>Campus Name</th>
                    <!-- <th>University Officer Control</th> -->
@@ -114,7 +115,13 @@
                     <?php foreach($emprecord as $record){ ?>
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
-                            <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link')); ?></td>
+
+		   <?php if(!empty($record->emp_photoname)):?>
+		<td><p><img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php else :?>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php endif;?>
+<td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link')); ?></td>
 			<?php
 // array('name' => $name, 'title' => $title, 'status' => $status); 
 //SELECT m1.*      FROM employee_servicedetail m1 LEFT JOIN employee_servicedetail m2      ON (m1.empsd_empid = m2.empsd_empid AND m1.empsd_dojoin < m2.empsd_dojoin)      WHERE m1.empsd_empid = 715 and m2.empsd_dojoin IS NULL;

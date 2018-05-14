@@ -64,7 +64,7 @@ class Staffmgmt extends CI_Controller
 	 $whdata = array('emp_dept_code' => $deptid);
 */
 	 $selectfield ="emp_id,emp_code,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
-         $whorder = "emp_dept_code asc,emp_desig_code asc";
+         $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
         //$whdata = array('sp_uo'=> $uo);
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";

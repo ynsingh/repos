@@ -121,6 +121,9 @@ $(document).ready(function(){
                 </td>
             </tr>
         </table><br>
+<?php 
+	$hdeptid=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;	
+?>
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>
@@ -178,7 +181,7 @@ $(document).ready(function(){
                             <td><?php echo $record->emp_aadhaar_no; ?></td>
                             <td> <?php 
 		//		$roleid=$this->session->userdata('id_role');
-                                if(($roleid == 1)||($roleid == 5)){
+                                if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 				}
 				?></td>

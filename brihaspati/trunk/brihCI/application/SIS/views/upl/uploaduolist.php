@@ -62,7 +62,7 @@
             ;?>
         </div>
          <table   style="font-size:13px;" >
-            <tr><td align="left" colspan=6><b>Note : The file extension should be in csv. The format of HOD list file is </b>
+            <tr><td align="left" colspan=6><b>Note : The file extension should be in csv. The format of UO list file is </b>
                 </td>
             </tr>
             <tr><td><b> Email Id </b></td><td><b> PF No </b> </td><td><b> UO Code </b> </td><td><b> UO Name  </b></td><td><b> Date From </b> <td><b> Date To </b>

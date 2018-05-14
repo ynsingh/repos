@@ -121,7 +121,7 @@
             <tr style="font-weight:bold;">
                 <td>  Select Type
                     <select name="wtype" id="wtype" style="width:250px;"> 
-			<?php if  (!empty($this->wtyp)){ ?>
+			<?php if(!empty($this->wtyp)){ ?>
                         <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                         <?php  }else{ ?>
 
@@ -134,7 +134,7 @@
                 </td> 
                <td>  Select UO
                     <select name="uoff" id="uoff" style="width:270px;"> 
-			 <?php if  ((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
+			 <?php if((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
                         <option value="<?php echo $this->uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$this->uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$this->uolt)->code ." )"; ?></option>
                         <?php  }else{ ?>
 
@@ -144,7 +144,7 @@
                 </td> 
                 <td><div>  Select Department
                     <select name="dept" id="dept" style="width:250px;"> 
-			 <?php if  ((!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
+			 <?php if((!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
                         <option value="<?php echo $this->deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$this->deptmt)->dept_code ." )"; ?></option>
                         <?php  }else{ ?>
 
@@ -232,7 +232,9 @@
 			echo "<tr>";
 			echo "<td>". $serial_no++ ." </td>";
 			echo "<td> $record->emp_name</td>";
-			echo "<td> $record->emp_post</td>";
+			echo "<td>"; 
+			echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;	
+			echo "</td>";
 			echo "<td>";
 			echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name ;	
 			echo " ( ".$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->emp_schemeid)->sd_code ." )";	

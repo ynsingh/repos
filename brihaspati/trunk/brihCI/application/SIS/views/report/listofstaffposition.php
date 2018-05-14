@@ -260,7 +260,8 @@
                                     echo  $emp->emp_name;    
                                     echo "</td>";
                                     echo "<td>";
-                                    echo  $emp->emp_post;
+                                    //echo  $emp->emp_post;
+                                   echo  $this->commodel->get_listspfic1('designation','desig_name','desig_id', $emp->emp_desig_code)->desig_name ;
                                     echo "</td>";
                                     echo "</tr>";
                                 }

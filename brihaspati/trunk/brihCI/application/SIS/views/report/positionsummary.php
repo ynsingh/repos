@@ -70,6 +70,7 @@
                 <tr>
                     <th>Sr.No</th>
                     <th>Name of the Post</th>
+                  <!--  <th>Group</th>-->
                     <th>Sanctioned Strength</th>
                     <th>Position</th>
                     <th>Vacancy</th>
@@ -86,6 +87,7 @@
                 if( count($records) ):  ?>
                 	<?php foreach($records  as $record) { 
 				$poid =$record->sp_emppost;
+				$grp =$record->sp_group;
 				$ss = $record->sp_sancstrenght;
 				$sp = $record->sp_position;
 				$sv = $record->sp_vacant;
@@ -95,18 +97,30 @@
 					$sv = $sv1 + $sv;
 				}
 			
-				$rc[$poid] =array('poid' => $poid,'ss'=> $ss,'sp'=> $sp,'sv' => $sv); 
+				$rc[$poid] =array('poid' => $poid,'group'=>$grp,'ss'=> $ss,'sp'=> $sp,'sv' => $sv); 
 				$poid1 = $poid;
 				$ss1 = $ss;
 				$sp1 = $sp;
 				$sv1 = $sv;
                 	}; 
 
+			$grpn='';$grptv='A';$ssgrp=0; $spgrp=0;$svgrp=0;
 			foreach($rc  as $rc1) {
+				if(!($grptv === $rc1['group'])){
+					echo "<tr><td colspan=2> <b> Group Total : </b> </td><td>".$ssgrp."</td><td>".$spgrp."</td><td>".$svgrp."</td></tr>";
+					$grptv = $rc1['group'];
+					$ssgrp=0; $spgrp=0;$svgrp=0;
+				}
+				if(!($grpn === $rc1['group'])){
+					echo "<tr><td colspan=6> <b> Group : </b>".$rc1['group']." </td></tr>";
+					$grpn = $rc1['group'];
+				}
                             echo "<tr><td>";
                             echo $serial_no++;;
                             echo "</td><td>";
                             echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$rc1['poid'])->desig_name;
+                //            echo "</td><td>";
+		//		echo $rc1['group'];
                             echo "</td><td>";
                             echo $rc1['ss'];
                             echo "</td><td>";
@@ -115,6 +129,9 @@
                             echo $rc1['sv'];
                             echo "</td></tr>";
                         
+					$ssgrp=	$ssgrp + $rc1['ss']; 
+					$spgrp= $spgrp + $rc1['sp'];
+					$svgrp= $svgrp + $rc1['sv'];
                             $totalss = $totalss+$rc1['ss'];
                             $totalsp = $totalsp+$rc1['sp'];
                             $totalsv = $totalsv+$rc1['sv'];
@@ -125,6 +142,7 @@
                     <td colspan= "13" align="center"> No Records found...!</td> 
                 <?php endif;?>
                
+					<?php echo "<tr><td colspan=2> <b> Group Total : </b> </td><td>".$ssgrp."</td><td>".$spgrp."</td><td>".$svgrp."</td></tr>"; ?>
                     <tr>
                         <td></td>
                         <td><b>Grand Total:</b></td>

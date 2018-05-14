@@ -6,13 +6,21 @@
  <html>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="http://172.26.82.20/~guest/brihCI/assets/css/tablestyle.css"> 
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+	<link href="<?php echo base_url(); ?>assets/css/jquery.multiselect.css" rel="stylesheet" />
+        <script src="<?php echo base_url(); ?>assets/js/jquery.multiselect.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/1.12.4jquery.min.js"></script>
         <style type="text/css" media="print">
         @page {
                 size: auto;   /* auto is the initial value */
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
+	<style>
+		ul li{
+			list-style:none;
+		}
+	</style>	
           <script>
              function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
@@ -23,7 +31,6 @@
                 document.body.innerHTML = originalContents;
             }
         </script>     
-       
     </head>
     <body>
 
@@ -47,7 +54,8 @@
                 </td>
 
                  <td><div> Select Subject
-                    <select name="subj" id="subj" style="width:400px;">
+			
+                    <select name="subj[]" id="subj" style="width:400px;"  multiple>
 			<? if  (!empty($this->subj)){ ?>
 			<option value="<?php echo $this->subj; ?>" > <?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name ." ( ".$this->commodel->get_listspfic1('subject','sub_code','sub_id' ,$this->subj)->sub_code ." )"; ?></option>
 			<?  }else{ ?>
@@ -70,6 +78,16 @@
         </td>
             </tr>
         </table>
+       <script>
+		$('document').ready(function(){
+			$('#subj').multiselect({
+				columns:1,
+				placeholder: 'Select Subject',
+				search: true,
+				selectAll: true
+			});
+		});
+	</script>
 </form>
     <table width="100%">
     

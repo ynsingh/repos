@@ -89,7 +89,7 @@ class SIS_model extends CI_Model
         $this->db2->where($data);
         return $this->db2->get()->result();
     }
-	//    getting different field from table - $selectfield ('a,b,c');
+    //    getting different field from table - $selectfield ('a,b,c');
     //    $whdata = array('name' => $name, 'title' => $title, 'status' => $status);
     //    $whorder = ("column1 asc,column2 desc");
     public function get_orderlistspficemore($tbname,$selectfield,$whdata,$whorder){
@@ -105,7 +105,25 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
- // get the join  table result value
+    public function get_orderlistspficemoreorwh($tbname,$selectfield,$whdata,$orwhin,$whorder){
+        $this->db2->flush_cache();
+        $this->db2->from($tbname);
+        $this->db2->select($selectfield);
+        if($whdata != ''){
+                $this->db2->where($whdata);
+        }
+	if($orwhin != ''){
+		$this->db2->where_in('emp_specialisationid', $orwhin);
+	}
+        if($whorder != ''){
+                $this->db2->order_by($whorder);
+        }
+        return $this->db2->get()->result();
+    }
+
+	
+
+    // get the join  table result value
     public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$jtype,$whdata){
             $this->db2->flush_cache();
             $this->db2->select($selectfield);
@@ -134,7 +152,7 @@ class SIS_model extends CI_Model
             $this->db2->select($selectfield);
             $this->db2->from($tbname);
             if($whdata != ''){
-                        $this->db2->where($whdata);
+                $this->db2->where($whdata);
             }
 	    if($whorder != ''){
                 $this->db2->order_by($whorder);
@@ -291,8 +309,10 @@ class SIS_model extends CI_Model
     /** colse this function for get hod user list according to study center************************/
     
     public function emplist($uo,$dept,$post){
+	$post1 = $this->commodel->get_listspfic1('designation','desig_name','desig_id', $post)->desig_name;
         $selectfield ="emp_name,emp_desig_code,emp_post,emp_email";
-        $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_desig_code' => $post );
+        //$whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_desig_code' => $post );
+        $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_post' => $post1 );
         $whorder = "emp_post asc";
         $data = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         return $data;
