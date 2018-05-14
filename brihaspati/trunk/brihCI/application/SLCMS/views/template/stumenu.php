@@ -58,6 +58,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('request/fees_deposit', 'Fees Deposit', array('title' => 'Semester Fees Deposit'));
 					echo "</li>";
+					echo "<li>";
+						echo anchor('scholarship/schreg', 'Scholarship Registration', array('title' => 'Scholarship Registration'));
+					echo "</li>";
 				echo "</ul>";
 			
 			echo "</li>";
@@ -87,6 +90,17 @@ echo "<ul class=\"sf-menu\">";
 				echo "</ul>";
 				
 			echo "</li>";
+
+			echo "<li>";
+                                echo "<a href=" . ">Report</a>";
+                        echo "<ul>";
+                                        echo "<li>";
+                                                echo anchor('scholarship/schstatus', 'Scholarship Status', array('title' => 'Scholarship Status'));
+                                        echo "</li>";
+                                        echo "</ul>";
+					 echo "</li>";
+
+
 			echo "<li>";
 				echo "<a href=" . ">Profile</a>";
 				 echo "<ul>";
