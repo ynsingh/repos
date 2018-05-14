@@ -470,7 +470,7 @@ class SIS_model extends CI_Model
             $data = array(
                 'empsd_empid'       =>$empid,   
                 'empsd_campuscode'  =>$campus,
-                'empsd_ucoid'       =>$$uocid,
+                'empsd_ucoid'       =>$uocid,
                 'empsd_deptid'      =>$deptid,
                 'empsd_schemeid'    =>$schemeid,
                 'empsd_ddoid'       =>$ddoid,

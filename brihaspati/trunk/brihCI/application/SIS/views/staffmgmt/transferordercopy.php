@@ -35,7 +35,7 @@
             <br/><?php 
                // foreach ($this->data as $detail){
                     echo "<tr><td style=font-size:9;> USO No.</td><td style=font-size:9;>". $detail->uit_uso_no ."</td>";
-                    echo "<td align=right style=\"font-size:9;float:right;margin-left:500px;\">Dated: ". $detail->uit_date. "</td></tr>";
+                    echo "<td align=right style=\"font-size:9;float:right;margin-left:500px;\">Dated: ". date('d-m-Y H:i:s',strtotime($detail->uit_date)). "</td></tr>";
                     echo "<tr><td style=font-size:9;>Rc No.</td><td style=font-size:9;>".$detail->uit_rc_no."</td></tr>";
                     echo "<tr><td style=font-size:9;>Subject:</td><td style=font-size:9;>".$detail->uit_subject."</td></tr>";
                     echo "<tr><td style=font-size:9;>Reference:</td><td style=font-size:9;>".$detail->uit_referenceno."</td></tr>";
@@ -63,8 +63,8 @@
             </table><br/><br/>
             <table class="TFtable" style="width:100%;" >
                 <tr><td style="font-size:9;">TTA Detail: <?php echo $detail->uit_tta_detail;?></td>
-                    <td style="font-size:9;" >Date of relieve : <?php echo $detail->uit_dateofrelief;?></td>
-                    <td style="font-size:9;">Expected Date of joining : <?php echo $detail->uit_dateofjoining;?></td>
+                    <td style="font-size:9;" >Date of relieve : <?php echo date('d-m-Y H:i:s',strtotime($detail->uit_dateofrelief));?></td>
+                    <td style="font-size:9;">Expected Date of joining : <?php echo date('d-m-Y H:i:s',strtotime($detail->uit_dateofjoining));?></td>
                 </tr>
             </table>
             <br/><table class="TFtable" style="width:100%;" >
@@ -78,8 +78,8 @@
                 <tr><td style="font-size:9;">The <?php echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$detail->uit_staffname)->emp_name;?></td></tr>
                 <br/><br/>
                 <tr><td style="font-size:9;">Copy To</td></tr>
-                <tr><td style="font-size:9;">Head of department <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name ."," .$detail->uit_workdept_from; ?></td></tr>
-                <tr><td style="font-size:9;">UO concerned <?php echo $detail->uit_uoc_from.",".$this->lgnmodel->get_listspfic1('authorities','name','id' ,$detail->uit_uoc_to)->name;?></td></tr>
+                <tr><td style="font-size:9;">Head of department <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name ."," .$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_workdept_from)->dept_name; ?></td></tr>
+                <tr><td style="font-size:9;">UO concerned <?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$detail->uit_uoc_from)->name.",".$this->lgnmodel->get_listspfic1('authorities','name','id' ,$detail->uit_uoc_to)->name;?></td></tr>
                 <tr><td style="font-size:9;">The Administrative Officer,TANUVAS</td></tr>
                 <tr><td style="font-size:9;"><?php echo $detail->uit_email_sentto;?></td></tr>
             </table>

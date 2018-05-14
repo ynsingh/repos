@@ -186,34 +186,58 @@
                 
                 /************************select designation on basis of employee type *******************/
                        
-                $('#emptypeto').on('change',function(){
+               /* $('#emptypeto').on('change',function(){
                     var emp_type = $('#emptypeto').val();
                     if(emp_type == ''){
-                        $('#desigidto,#postto').prop('disabled',true);
+                        $('#desigidto').prop('disabled',true);
                     }
                     else{
              
-                        $('#desigidto,#postto').prop('disabled',false);
+                        $('#desigidto').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/staffmgmt/gettypedesiglist",
+                            url: "<// ?php echo base_url();?>sisindex.php/staffmgmt/gettypedesiglist",
                             type: "POST",
                             data: {"emptypeid" : emp_type},
                             dataType:"html",
                             success:function(data){
                             
                                 $('#desigidto').html(data.replace(/^"|"$/g, ''));
-                                $('#postto').html(data.replace(/^"|"$/g, ''));
-                                                      
+                                                                                
                             },
                             error:function(data){
-                            //alert("data in error==="+data);
                                 alert("error occur..!!");
                             }
                                             
                         });
                     }
+                }); */
+                $('#grpid').on('change',function(){
+                    var grp_id = $(this).val();
+                    if(grp_id == ''){
+                        $('#desigidto').prop('disabled',true);
+                    }
+                    else{
+             
+                        $('#desigidto').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
+                            type: "POST",
+                            data: {"group" : grp_id},
+                            dataType:"html",
+                            success:function(data){
+                                $('#desigidto').html(data.replace(/^"|"$/g, ''));
+                       
+                            },
+                            error:function(data){
+                                //alert("data in error part==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                                            
+                        });
+                    }
                 }); 
-            
+
                 /*********************closer of designation***************************************/
                 
                 /************************select employee on basis of uco,dept,scheme,employee type,designation *******************/
@@ -297,6 +321,123 @@
                
                 });  //method empname
                 /**********************************End of empdetail on selection of employee ename script*********************************/
+            
+                /************************select shown against the post value *****************************************************/
+                $('#desigidto').on('change',function(){
+                    var sc_code = $('#camp').val();
+                    var uoc_id = $('#uocidto').val();
+                    var dept_id = $('#scidto').val();
+                    //var schm_id = $('#schmid').val();
+                    var desig_id = $('#desigidto').val();
+                    var wrktype_id = $('#emptypeto').val();
+                    var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id;
+                   //    alert("vales======"+cudshmdesigwrktype);
+                    if(desig_id == ''){
+                        $('#postto').prop('disabled',true);
+                    }
+                    else{
+                        $('#postto').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
+                            type: "POST",
+                            data: {"combsix" : cudshmdesigwrktype},
+                            dataType:"html",
+                            success:function(data){
+                                var empdata=data;
+                                var val1 = empdata.replace(/\"/g,"");
+                                $('#postto').html(data.replace(/^"|"$/g, ''));
+                                if(val1.trim() === "No vacancy"){
+                                    alert('Sorry, No vacancy available for this post');
+                                    $('#my_id').submit();
+                                   
+                                }   
+                                               
+                            },
+                            error:function(data){
+                                //alert("data in error part==="+data);
+                                alert("error occur..!!");
+                            }
+                                            
+                        });
+                    }
+                }); 
+                                          
+            /************************closer for shown against the post*****************************************/
+            
+            /************************select DDO on basis of campus department schemes*******************/
+            $('#schmidto').on('change',function(){
+                var sc_code = $('#camp').val();
+                var dept_id = $('#scidto').val();
+                var schm_id = $('#schmidto').val();
+                var campdeptschm = sc_code+","+dept_id+","+schm_id;
+                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
+                if(schm_id == ''){
+                    $('#ddoid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#ddoid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getddolist",
+                        type: "POST",
+                        data: {"combthree" : campdeptschm},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#ddoid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /*********************closer of DDO********************************************/
+            
+                
+            /************************Employee type******************************************************************/
+            
+            $('#postto').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocidto').val();
+                var dept_id = $('#scidto').val();
+              //  var desig_id = $('#desigidto').val();
+                var empost_id = $('#postto').val();
+                var wrktype_id = $('#emptypeto').val();
+                var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+empost_id+","+wrktype_id;
+               // alert("comin script===bsix===="+cudshmpostwrktype);
+                if(empost_id == ''){
+                   $('#vtypeid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#vtypeid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemptypeposition",
+                        type: "POST",
+                        data: {"combfive" : cudshmpostwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("seema455==="+data);
+                            
+                            $('#vtypeid').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee type******************************************************************/
+                
                 /**Allows only letters, numbers and spaces. All other characters will return an error.******************************/
                 $('.keyup-characters').keyup(function() {
                 $('span.error-keyup-2').remove();
@@ -345,7 +486,7 @@
             <table style="margin-left:0%;border:1px solid gray;width:100%;">
                 <tr><thead><th  style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="3">&nbsp;&nbsp;Staff Transfer and Posting Form</th></thead></tr>    
                 
-                <?php echo form_open_multipart('staffmgmt/stafftransfer');?>
+                <?php echo form_open_multipart('staffmgmt/stafftransfer','id="my_id"');?>
                 <!--<form action="<//?php echo site_url('staffmgmt/stafftransfer');?>" method="POST" class="form-inline">-->
                     <tr>
                         <td><label for="registrarname" style="font-size:15px;">Registrar Name<font color='Red'>*</font></label>
@@ -395,7 +536,8 @@
                         
                             </select><div>
                         </td>
-                        <td><label for="employeetype" style="font-size:15px;">Employee Type From<font color='Red'>*</font></label>
+                        
+                        <td><label for="employeetype" style="font-size:15px;">Working Type From<font color='Red'>*</font></label>
                             <div><select name="employeetype" id="emptype" required="required"> 
                                 <option value="">------------ Select Employee Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
@@ -429,6 +571,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
+                        <div> <select id="camp" style="width:350px;" name="campus" required> 
+                            <option selected="selected" disabled selected>--------Campus Name-----</option>
+                            <?php foreach($this->campus as $camdata): ?>	
+   				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
+                            <?php endforeach; ?>
+                      
+                            </select></div>
+                        </td> 
                         <td><label for="uocontrol" style="font-size:15px;">University Officer Control To<font color='Red'>*</font></label>
                             <div><select name="uocontrolto" id="uocidto" required> 
                                 <option value="">------- Select University Officer Control ---------</option>
@@ -443,21 +594,49 @@
                                <option value="">----------------- Select Department ------------</option>
                             </select></div>
                         </td>
+                        
+                    </tr>
+                    <tr>
                         <td><label for="schemecode" style="font-size:15px;">Scheme Name To<font color='Red'>*</font></label>
                             <div><select required name="schemto" id="schmidto"> 
                             <option selected="selected" disabled selected>----------------- Select Scheme ------------------</option>
                         
                             </select><div>
                         </td>
+                        <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer To<font color='Red'>*</font></label>
+                            <div><select name="ddo" id="ddoid" required style="width:350px;"> 
+                            <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
+                            </select></div>
+                        </td>
+                        <td><label for="payband" style="font-size:15px;">Pay Band To<font color='Red'>*</font></label>
+                        <div><select name="payband" required style="width:300px;"> 
+                        <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
+                        <?php foreach($this->salgrd as $salgrddata): ?>	
+                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
+                            </option> 
+ 			<?php endforeach; ?>
+                       
+                        </select></div>
+                        </td>
                         
                     </tr>
                     <tr>
-                        <td><label for="employeetype" style="font-size:15px;">Employee Type To<font color='Red'>*</font></label>
+                        
+                        <td><label for="employeetype" style="font-size:15px;">Working Type To<font color='Red'>*</font></label>
                             <div><select name="emptypeto" id="emptypeto" required="required"> 
                                 <option value="">------------ Select Employee Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
                                 <option value="Non Teaching">Non Teaching</option>                     
                             </select></div>
+                        </td>
+                        <td><label for="group" style="font-size:15px;">Group To<font color='Red'>*</font></label>
+                        <div><select name="group" id="grpid" required style="width:300px;"> 
+                        <option selected="selected" disabled selected>------------ Select Group ---------</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        </select></div>
                         </td>
                         <td><label for="desigto" style="font-size:15px;">Designation To<font color='Red'>*</font></label>
                             <div><select required name="desigto" id="desigidto"> 
@@ -465,41 +644,52 @@
                               
                             </select></div>
                         </td>
-                        <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
-                            <div><select required name="postto" id="postto"> 
-                               <option value="">--------------- Select Post ------------------------</option>
-                            <!--<div><input type="text" name="postto" class="keyup-characters" value="<?php echo isset($_POST["postto"]) ? $_POST["postto"] : ''; ?>" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>-->
-                        </td>
+                        
                         <!--<td><label for="postfrom" style="font-size:15px;">Post From<font color='Red'>*</font></label>
                             <div><input type="text" name="postfrom" id="postfrom"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                         </td>-->
                     </tr>
                     <tr>
                         
+                        <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
+                            <div><select required name="postto" id="postto"> 
+                               <option value="">--------------- Select Post ------------------------</option>
+                            <!--<div><input type="text" name="postto" class="keyup-characters" value="<?php echo isset($_POST["postto"]) ? $_POST["postto"] : ''; ?>" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>-->
+                        </td>
+                        <td><label for="emptype" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
+                            <div><select id="vtypeid" name="vacanttype" required style="width:300px;"> 
+                            <option selected="selected" disabled selected>-------- Select Employee Type ------</option>
+                            <!--<option value="Permanent">Permanent</option>
+                            <option value="Temporary">Temporary</option>-->
+                            </select><div>
+                        </td> 
                         <td><label for="dateofrelief" style="font-size:15px;">Date of Relieve</label>
                             <div><input type="text" name="dateofrelief" id="Dateofrelief"  value="<?php echo isset($_POST["dateofrelief"]) ? $_POST["dateofrelief"] : ''; ?>" size="40" />
                             </div>
                         </td>
+                                               
+                    </tr>
+                    <tr>
                         <td><label for="expdoj" style="font-size:15px;">Expected Date of joining</label>
                             <div><input type="text" name="expdoj" id="expDateofjoin"  value="<?php echo isset($_POST["expDateofjoin"]) ? $_POST["expDateofjoin"] : ''; ?>" size="40" /></div>  
                         </td> 
-                         <td><label for="subject" style="font-size:15px;">Subject<font color='Red'>*</font></label>
+                        <td><label for="subject" style="font-size:15px;">Subject<font color='Red'>*</font></label>
                             <div><textarea name="subject" rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" required="required" placeholder="Enter text here...."></textarea><div>
                         </td>
-                    </tr>
-                    <tr>
-                       
                         <td><label for="ordercontent" style="font-size:15px;">Order Content<font color='Red'>*</font></label>
                             <div><textarea name="ordercontent" rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" required="required" placeholder="Enter text here...."></textarea>
                             </div>
                         </td>
+                                               
+                    </tr>
+                    <tr>
                         <td><label for="ttadetail" style="font-size:15px;">TTA Detail</label>
                             <div><textarea name="ttadetail" rows="5" cols="50"  placeholder="Enter text here...."></textarea></div>
                         </td>
                         <td><label for="emailsentto" style="font-size:15px;">Email Sent To</label>
                             <div><textarea name="emailsentto" rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" required="required" placeholder="Enter text here...."></textarea></div>
                         </td>
-                    </tr>
+                    </tr>    
                     <!--<tr>
                         <td><label for="emailsentto" style="font-size:15px;">Email Sent To</label>
                             <div><textarea name="emailsentto" rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" required="required" placeholder="Enter text here...."></textarea></div>
@@ -518,9 +708,9 @@
                         <td><label for="empname" style="font-size:15px;">Employee Name<font color='Red'>*</font></label>
                             <div><select name="empname" id="empname" class="empdet"> 
                                 <option value="">-------------------- Select Employee Name --------------</option>
-                                <?php foreach($this->usrlist as $usrdata): ?>	
-                                    <option value="<?php echo $usrdata->emp_id; ?>"><?php echo $usrdata->emp_name; ?></option> 
-                                <?php endforeach; ?>
+                                < // ?php foreach($this->usrlist as $usrdata): ?>	
+                                    <option value="<// ?php echo $usrdata->emp_id; ?>">< // ?php echo $usrdata->emp_name; ?></option> 
+                                < //?php endforeach; ?>
                                                    
                             </select></div>
                         </td>
@@ -533,13 +723,13 @@
                             <div><select name="uocontrolto" required> 
                                 <option value="">------------ Select University Officer Control -------------</option>
                                 
-                                <?php foreach($this->uoc as $ucodata): ?>	
-                                    <option value="<?php echo $ucodata->id; ?>"><?php echo $ucodata->name; ?></option> 
-                                <?php endforeach; ?>
+                                <// ?php foreach($this->uoc as $ucodata): ?>	
+                                    <option value="< // ?php echo $ucodata->id; ?>">< // ?php echo $ucodata->name; ?></option> 
+                                <// ?php endforeach; ?>
                             </select></div>
                         </td>
                         <td><label for="dateofrelief" style="font-size:15px;">Date of Relieve</label>
-                            <div><input type="text" name="dateofrelief" id="Dateofrelief"  value="<?php echo isset($_POST["dateofrelief"]) ? $_POST["dateofrelief"] : ''; ?>" size="40" /></div>
+                            <div><input type="text" name="dateofrelief" id="Dateofrelief"  value="<// ?php echo isset($_POST["dateofrelief"]) ? $_POST["dateofrelief"] : ''; ?>" size="40" /></div>
                         </td>
                     </tr>
                     <tr>
@@ -552,7 +742,7 @@
                             </select></div>
                         </td>
                         <td><label for="expdoj" style="font-size:15px;">Expected Date of joining</label>
-                            <div><input type="text" name="expdoj" id="expDateofjoin"  value="<?php echo isset($_POST["expDateofjoin"]) ? $_POST["expDateofjoin"] : ''; ?>" size="40" /></div>  
+                            <div><input type="text" name="expdoj" id="expDateofjoin"  value="<// ?php echo isset($_POST["expDateofjoin"]) ? $_POST["expDateofjoin"] : ''; ?>" size="40" /></div>  
                         </td>    
                     </tr>
                     <tr>
@@ -562,9 +752,9 @@
                         <td colspan="2"><label for="desigto" style="font-size:15px;">Designation To<font color='Red'>*</font></label>
                             <div><select required name="desigto" > 
                                <option value="">--------------------- Select Designation -------------------</option>
-                                <?php foreach($this->desig as $desigdata): ?>	
-                                    <option value="<?php echo $desigdata->desig_id; ?>"><?php echo $desigdata->desig_name; ?></option> 
-                                <?php endforeach; ?>
+                                <// ?php foreach($this->desig as $desigdata): ?>	
+                                    <option value="<// ?php echo $desigdata->desig_id; ?>"><// ?php echo $desigdata->desig_name; ?></option> 
+                                <// ?php endforeach; ?>
                             </select></div>
                         </td>
                         
@@ -574,7 +764,7 @@
                             <div><input type="text" name="postfrom" id="postfrom"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                         </td>
                         <td colspan="2"><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
-                            <div><input type="text" name="postto" class="keyup-characters" value="<?php echo isset($_POST["postto"]) ? $_POST["postto"] : ''; ?>" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
+                            <div><input type="text" name="postto" class="keyup-characters" value="<// ?php echo isset($_POST["postto"]) ? $_POST["postto"] : ''; ?>" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                            -->
                             <!-- <select required name="postto"> 
                               <option value="">-------Select Post-----</option>  

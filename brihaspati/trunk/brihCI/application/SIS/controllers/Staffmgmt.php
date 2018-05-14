@@ -970,7 +970,10 @@ class Staffmgmt extends CI_Controller
     function stafftransfer(){ 
     
         //$this->usrlist=$this->sismodel->get_list('employee_master');;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
         $this->uoc=$this->lgnmodel->get_list('authorities');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master'); 
         //$this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         if(isset($_POST['stafftransfer'])){
             /* Form validation*/
@@ -1020,6 +1023,7 @@ class Staffmgmt extends CI_Controller
                 
                     'uit_staffname'                    => $this->input->post('empname'),
                     'uit_workingpost_from'             => $this->input->post('postfrom'),
+                    'uit_scid_to'                       =>  $this->input->post('campus'),
                     'uit_uoc_to'                       => $this->input->post('uocontrolto'),
                     'uit_dept_to'                      => $this->input->post('deptto'),
                     'uit_desig_to'                      => $this->input->post('desigto'),
@@ -1031,11 +1035,15 @@ class Staffmgmt extends CI_Controller
                     'uit_email_sentto'                 => $this->input->post('emailsentto'),
                     'uit_emptypeto'                    => $this->input->post('emptypeto'),
                     'uit_schm_from'                    => $this->input->post('schemfrom'),
-                    'uit_schm_to'                      => $this->input->post('schemto')
+                    'uit_schm_to'                      => $this->input->post('schemto'),
+                    'uit_ddoid_to'                       => $this->input->post('ddo'),
+                    'uit_group_to'                     => $this->input->post('group'),
+                    'uit_paybandid_to'                   => $this->input->post('payband'),
+                    'uit_vacanttype_to'                   => $this->input->post('vacanttype'),
                 
                 );  
                 
-                 $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
+                $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
                
                 /* write code for update staff_position table and staff_position_archive.*/
                 if(!$usrinputtfr_flag){
@@ -1045,6 +1053,36 @@ class Staffmgmt extends CI_Controller
                     $this->load->view('staffmgmt/stafftransfer', $data);
                 }
                 else{
+                    /* insert record in service details with check duplicate and  update in empprofile table table */
+                    $id=$_POST['empname'];
+                    $postto=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['postto'])->desig_name;
+                    $empdata = array(
+                        'emp_dept_code'    => $_POST['deptto'],
+                        'emp_desig_code'   => $_POST['desigto'],
+                        'emp_post'         => $postto,
+                        'emp_worktype'     => $_POST['emptypeto'],
+                        'emp_salary_grade' => $_POST['payband'],
+                        'emp_schemeid'     => $_POST['schemto'],
+                        'emp_scid'         => $_POST['campus'] ,
+                        'emp_uocid'        => $_POST['uocontrolto'],
+                        'emp_uocuserid'    => $_POST['uocontrolto'],
+                        'emp_ddouserid'    => $_POST['ddo'],
+                        'emp_ddoid'        => $_POST['ddo'],
+                        'emp_group'        => $_POST['group'],
+                    
+                    );
+                    $upempdata_flag=$this->sismodel->updaterec('employee_master', $empdata,'emp_id',$id);
+                    
+                    $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['desigto'])->desig_code;
+                    // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
+                    $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],$desigcode,
+                    $_POST['schemto'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],date('y-m-d'),date('y-m-d'),$_POST['dateofrelief']);
+                       
+                    /*************************************updating the staff position table*****************/
+                   
+                    $this->sismodel->updatestaffposition($_POST['campus'],$_POST['uocontrolto'], $_POST['deptto'],$_POST['postto'],$_POST['emptypeto'],$_POST['vacanttype']) ;
+                   
+                    /*************************************close updating the staff position table*****************/
                     $emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $_POST['empname'])->emp_code;
                     $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $_POST['empname'])->emp_name;
                     $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$_POST['deptto'])->dept_name; 

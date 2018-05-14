@@ -717,6 +717,44 @@ CREATE TABLE `Staff_Performance_Data` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `salaryhead_configuration
+--
+
+CREATE TABLE `salaryhead_configuration` (
+  `shc_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `shc_emptypeid` int(11)  NOT NULL,
+  `shc_salheadid` varchar(255)  NOT NULL,
+  `shc_scid` int(11)  Default NULL,
+  `shc_creatorid` varchar(255) NOT NULL,
+  `shc_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `shc_modifierid` varchar(255) NOT NULL,
+  `shc_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+
+--
+-- Table structure for table `salaryhead_defaultvalue
+--
+
+CREATE TABLE `salaryhead_defaultvalue` (
+  `shdv_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `shdv_paybandid` int(11)  NOT NULL,
+  `shdv_salheadid` int(11)  NOT NULL,
+  `shdv_defaultvalue` double  Default 0,
+  `shdv_remarks` varchar(255)  Default NULL,
+  `shdv_creatorid` varchar(255) NOT NULL,
+  `shdv_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `shdv_modifierid` varchar(255) NOT NULL,
+  `shdv_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+
 --
 -- Table structure for table `tax_slab_master`
 --
@@ -799,11 +837,17 @@ CREATE TABLE user_input_transfer (
         uit_desig_from varchar(255) NOT NULL,
         uit_staffname varchar(255) NOT NULL,
         uit_workingpost_from varchar(255) NOT NULL,
+	uit_scid_to  int(11) default NULL,
         uit_uoc_to varchar(255) NOT NULL,
         uit_dept_to varchar(255) NOT NULL,
+	uit_desig_to  varchar(255) NOT NULL,
         uit_post_to varchar(255) NOT NULL,
         uit_schm_from INT(11) default NULL,
         uit_schm_to INT(11) default NULL,
+	uit_ddoid_to int(11) default NULL,
+	uit_group_to  varchar(50) default NULL,
+	uit_paybandid_to int(11) default NULL,
+	uit_vacanttype_to  varchar(255) default NULL,
         uit_tta_detail blob NOT NULL,
         uit_dateofrelief datetime NOT NULL,
         uit_dateofjoining datetime NOT NULL,

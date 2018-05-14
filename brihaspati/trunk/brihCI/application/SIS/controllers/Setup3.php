@@ -578,4 +578,188 @@ class Setup3 extends CI_Controller
     }
        
     /*********************  closer Add Employee type form  *******************************************/
+    
+    
+    /*********************  Salary Head Configuration form  *******************************************/
+    public function salhead_config(){
+        
+        $this->emptype= $this->sismodel->get_list('employee_type');
+        $this->salhead =$this->sismodel->get_list('salary_head');
+        $data=array();
+        $shconf=array();
+        $emptype = $this->input->post('emptype', TRUE);
+        if(!empty($emptype)){
+            $data['seloption'] = $emptype;
+            //$data['seloption'] = $emptype;
+            $this->confval=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid ','shc_emptypeid',$emptype);
+            if(!empty($this->confval)){
+                $data['shconf']=$this->confval->shc_salheadid;
+            }
+                       
+        }
+        if(isset($_POST['update'])){
+                      
+            $checklist = $this->input->post('check_list', TRUE);
+            $shlist=(join(", ", $checklist));
+                     
+            $dupexists=$this->sismodel->isduplicate('salaryhead_configuration','shc_emptypeid',$emptype);
+            if(!$dupexists){
+                $updata = array(
+                    'shc_emptypeid'                 =>$emptype,
+                    'shc_salheadid'                 =>$shlist,
+                    'shc_scid'                      =>NULL,
+                    'shc_creatorid'                 =>$this->session->userdata('username'),
+                    'shc_creatordate'               =>date('y-m-d'),
+                    'shc_modifierid'                =>$this->session->userdata('username'),
+                    'shc_modifydate'                =>date('y-m-d'),
+                 );
+                $shconfigflag = $this->sismodel->insertrec('salaryhead_configuration', $updata);
+            }
+            else{
+               
+                $updata = array(
+                    'shc_emptypeid'                 =>$emptype,
+                    'shc_salheadid'                 =>$shlist,
+                    'shc_scid'                      =>NULL,
+                   // 'shc_creatorid'                 =>$this->session->userdata('username'),
+                    //'shc_creatordate'               =>date('y-m-d'),
+                    'shc_modifierid'                =>$this->session->userdata('username'),
+                    'shc_modifydate'                =>date('y-m-d'),
+                );
+                $shconfigflag = $this->sismodel->updaterec('salaryhead_configuration',$updata,'shc_emptypeid',$emptype);
+              //  $emptype = $this->input->post('seloption', TRUE);
+                //$data['seloption'] = $emptype;
+            }
+            
+            if (!$shconfigflag)
+            {
+                $this->logger->write_logmessage("insert","Trying to add Employee type wise salary head configuration ", " employee type wise salary head configuration is not added ".$etname);
+                $this->logger->write_dblogmessage("insert","Trying to add Employee type wise salary head configuration ", "employee type wise salary head configuration is not added ".$etname);
+                $this->session->set_flashdata('err_message','Error in Employee type wise salary head configuration - '  , 'error');
+                redirect('setup3/salhead_config');
+            }
+            else{
+               
+                $this->logger->write_logmessage("insert","Employee type wise salary head configuration ", "Employee type wise salary head configuration added  successfully...");
+                $this->logger->write_dblogmessage("insert","Employee type wise salary head configuration ", "Employee type wise salary head configuration added  successfully...");
+                $this->session->set_flashdata("success", "  Employee type wise salary head configuration updated successfully...");
+                redirect('setup3/salhead_config',$data);
+               // $this->load->view('setup3/add_salheadconfig',$data);
+                //return;
+                
+            }
+                          
+            
+        }
+        $this->load->view('setup3/add_salheadconfig',$data);
+         
+    }
+    /*********************  closer Salary Head Configuration form  *******************************************/
+    
+    /*********************  Salary Head  Default value  form *******************************************/
+    public function shdefaultvalue(){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->salhead =$this->sismodel->get_list('salary_head');
+        $data=array();
+        $pband = $this->input->post('payband', TRUE);
+       if(isset($_POST['load'])){
+            if(!empty($pband)){
+                $selectfield ="shdv_paybandid, shdv_salheadid,shdv_defaultvalue";
+                $whdata = array ('shdv_paybandid' => $pband,'shdv_defaultvalue != ' => NULL);
+                $is_exist= $this->sismodel->isduplicate('salaryhead_defaultvalue','shdv_paybandid',$pband);
+                //echo "exitt=====".$is_exist;
+                //die;
+                if($is_exist){
+                    $data['seloption'] = $pband;
+                    //echo "exitt==if===";
+                    $cdata = $this->sismodel->get_listspficemore('salaryhead_defaultvalue',$selectfield,$whdata);
+                    $data['shdvalue']=$cdata;
+                }
+                else{
+                    $data['seloption'] = $pband;
+                    //echo "exitt==else===";
+                    $cdata='';
+                    $data['shdvalue']=$cdata;
+                    redirect('setup3/shdefaultvalue/'.$data['seloption']);
+                    //return;
+                }
+           
+           
+            }
+        }
+        if(isset($_POST['update'])){
+            $tsize = $this->input->post('totalsize', TRUE);
+          //  echo "tsize====".$tsize;
+            for ($i=0; $i<$tsize ;$i++){
+                $shid = $this->input->post('sheadid'.$i, TRUE);
+                $dfvalue= $this->input->post('defaultval'.$i, TRUE); 
+                // echo "shid====".$shid."dval====".$dfvalue,"pb===".$pband;
+                $dupdata=array(
+                    'shdv_paybandid'                 =>$pband,
+                    'shdv_salheadid'                 =>$shid,   
+                );
+                $dupexists=$this->sismodel->isduplicatemore('salaryhead_defaultvalue',$dupdata);
+                if(!$dupexists){
+                    
+                    $updata = array(
+                        'shdv_paybandid'                 =>$pband,
+                        'shdv_salheadid'                 =>$shid,
+                        'shdv_defaultvalue'              =>$dfvalue,
+                        'shdv_remarks'                   =>NULL,
+                        'shdv_creatorid'                 =>$this->session->userdata('username'),
+                        'shdv_creatordate'               =>date('y-m-d'),
+                        'shdv_modifierid'                =>$this->session->userdata('username'),
+                        'shdv_modifydate'                =>date('y-m-d'),
+                    ); 
+               
+                    $shdvalflag = $this->sismodel->insertrec('salaryhead_defaultvalue', $updata);
+             
+                }
+                else{
+                
+              
+                    $updata = array(
+                        'shdv_paybandid'                 =>$pband,
+                        'shdv_salheadid'                 =>$shid,
+                        'shdv_defaultvalue'              =>$dfvalue,
+                        'shdv_remarks'                   =>NULL,
+                        //'shdv_creatorid'                 =>$this->session->userdata('username'),
+                        //'shdv_creatordate'               =>date('y-m-d'),
+                        'shdv_modifierid'                =>$this->session->userdata('username'),
+                        'shdv_modifydate'                =>date('y-m-d'),
+                    ); 
+                    $datawh=array('shdv_paybandid' => $pband,'shdv_salheadid' => $shid);
+                    $cdata = $this->sismodel->get_listspficemore('salaryhead_defaultvalue','shdv_id',$datawh);
+                    $sdid=$cdata[0]->shdv_id;
+                    $shdvalflag = $this->sismodel->updaterec('salaryhead_defaultvalue',$updata,'shdv_id',$sdid);
+                }
+                
+            
+            }//totalsize  
+            if (!$shdvalflag)
+            {
+                $this->logger->write_logmessage("insert","Trying to add Payband wise salary head default value ", " Payband wise salary head default value is not added ".$etname);
+                $this->logger->write_dblogmessage("insert","Trying to add Payband wise salary head default value ", " Payband wise salary head default value is not added ".$etname);
+                $this->session->set_flashdata('err_message','Error in  Payband wise salary head default value - '  , 'error');
+                redirect('setup3/shdefaultvalue',$data);
+            }
+            else{
+                $this->logger->write_logmessage("insert"," Payband wise salary head default value ", "Payband wise salary head default value added  successfully...");
+                $this->logger->write_dblogmessage("insert","  Payband wise salary head default value ", "Payband wise salary head default value added  successfully...");
+                $this->session->set_flashdata("success", "   Payband wise salary head default value updated successfully...");
+                redirect("setup3/shdefaultvalue",$data);
+            }
+        }
+        $this->load->view('setup3/shdefaultvalue',$data);
+        
+    }
+    /*********************  closer Salary Head Default value  *******************************************/
+    
+    /*********************  Salary Processing  Salary Slip  form *******************************************/
+   /* public function salaryslip(){
+        $this->load->view('setup3/salaryslip',$data);
+        
+    }*/
+    /*********************  Salary Processing  Salary Slip  form *******************************************/
+    
 }//class    

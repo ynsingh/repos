@@ -149,7 +149,7 @@ echo "<ul class=\"sf-menu\" >";
                                                 echo anchor('setup3/salhead_config', 'Salary Head Configuration', array('title' => 'Salary Head Configuration'));
                                         echo "</li>";
                                         echo "<li>";
-                                                echo anchor('setup3/', 'Salary Head Default Values', array('title' => 'Salary Head Default Values'));
+                                                echo anchor('setup3/shdefaultvalue', 'Salary Head Default Values', array('title' => 'Salary Head Default Values'));
                                         echo "</li>";
                                         echo "<li>";
                                                 echo anchor('setup3/', 'Salary Processing', array('title' => 'Salary Processing'));
