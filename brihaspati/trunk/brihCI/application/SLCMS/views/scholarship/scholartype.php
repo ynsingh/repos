@@ -66,7 +66,7 @@
         <?php
               
 	     
-                        echo anchor('scholarship/editscholar/' . $row-> sr_id  , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
+                        echo anchor('scholarship/editscholar/' . $row-> sch_id  , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
         
 	    echo "</td>";
             echo "</tr>";

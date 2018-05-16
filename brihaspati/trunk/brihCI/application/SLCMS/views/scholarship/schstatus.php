@@ -90,7 +90,7 @@
 		
 		<td><?php echo "<b>Program Name-: </b>".$this->pname."<br/> "."<b>Department Name-: </b>".$this->depname."<br/> "."<b>Semester-: </b>".$this->sem;  ?></td>
 		
-		<td><?php echo $this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sr_id',$this->said)->sch_name; ?></td>
+		<td><?php echo $this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sch_id',$this->said)->sch_name; ?></td>
 		<td><?php echo $reason = $row->sa_rejres; ?></td>
             	<td> <?php $lst = $row->sa_status;
 			if($lst == 0){

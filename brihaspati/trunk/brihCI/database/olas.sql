@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 /*scholarship*/
 
 CREATE TABLE `scholarship` (
-  `sr_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sch_id` int(11) NOT NULL AUTO_INCREMENT,
   `sch_code` varchar(100) DEFAULT NULL,
   `sch_type` varchar(255) DEFAULT NULL,
   `sch_name` varchar(255) DEFAULT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `scholarship` (
   `sch_startyear` varchar(255) NOT NULL,
   `sch_startdate` DATE,
   `sch_enddate` DATE,
- PRIMARY KEY (sr_id)
+ PRIMARY KEY (sch_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `schapply` (

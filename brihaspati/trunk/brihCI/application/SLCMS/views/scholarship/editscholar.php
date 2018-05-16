@@ -145,7 +145,7 @@ $( function() {
 
 <?php
                 echo "<td>";
-                    echo form_hidden('sr_id', $id);
+                    echo form_hidden('sch_id', $id);
                    echo"<td>";
                     echo form_submit('submit', 'Update');
                    echo " ";

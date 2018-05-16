@@ -38,7 +38,7 @@ public function addscholar() {
                  if(isset($_POST['addscholar'])) {
 	    $this->form_validation->set_rules('sch_code','Scholarship code','trim|xss_clean|required|alpha_numeric');
             $this->form_validation->set_rules('sch_type','Scholarship Type','trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('sch_name','Scholarship Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('sch_name','Scholarship Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isschExist');
             $this->form_validation->set_rules('sch_des','Scholarship Description','trim|xss_clean|required');
 	    $this->form_validation->set_rules('sch_provider','Scholarship Provider','trim|xss_clean|required|alpha_numeric_spaces');	
 	    $this->form_validation->set_rules('sch_startyear','Scholarship Start Year','trim|xss_clean|required');	
@@ -57,27 +57,42 @@ public function addscholar() {
 		'sch_enddate'=>$_POST['sch_enddate'],
 
             );
+
            $ltflag=$this->commodel->insertrec('scholarship', $data) ;
            if(!$ltflag)
            {
                 $this->logger->write_logmessage("insert"," Error in adding  scholarship type ", " Scholarship data insert error . "  );
-                $this->logger->write_dblogmessage("in•••••sert"," Error in adding  scholarship type ", "Scholarship data insert error . " );
+                $this->logger->write_dblogmessage("insert"," Error in adding  scholarship type ", "Scholarship data insert error . " );
                 $this->session->set_flashdata('err_message','Error in adding scholarship type - ' . $_POST['name'] , 'error');
                 $this->load->view('scholarship/addscholar');
            }
           else{
                 $this->logger->write_logmessage("insert"," add scholarship type ", "Add Scholarship Type record added successfully..."  );
-                $this->logger->write_dblogmessage("in•••••sert"," add scholarship type ", "Add Scholarship Type record added successfully..." );
+                $this->logger->write_dblogmessage("insert"," add scholarship type ", "Add Scholarship Type record added successfully..." );
                 $this->session->set_flashdata("success", "Scholarship added successfully...");
                 redirect("scholarship/scholartype", "refresh");
-              }
+              
+             }
            }
 
         }
       $this->load->view('scholarship/addscholar');
     }
-/********************** This function check for duplicate Scholar*********************/
 
+public function isschExist($sch_name) {
+
+        $is_exist = $this->commodel->isduplicate('scholarship','sch_name',$sch_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isschExist', 'scholarship Name [' .$sch_name. '] already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+}
+/********************** This function check for duplicate Scholar*********************/
+/*
 public function isScholarExist($sch_name) {
 
         $is_scholarist = $this->commodel->isduplicate('scholartype','sch_name',$sch_name);
@@ -90,7 +105,7 @@ public function isScholarExist($sch_name) {
             return true;
         }
     }
-
+*/
 
 
 
@@ -98,7 +113,7 @@ public function isScholarExist($sch_name) {
     
 public function editscholar($id) {
 
-	$scholarrow=$this->commodel->get_listrow('scholarship','sr_id', $id);
+	$scholarrow=$this->commodel->get_listrow('scholarship','sch_id', $id);
 
  	if ($scholarrow->num_rows() < 1)
         {
@@ -233,7 +248,7 @@ public function editscholar($id) {
                
             );
 
-	    $scholardflag=$this->commodel->updaterec('scholarship', $update_data,'sr_id', $id);
+	    $scholardflag=$this->commodel->updaterec('scholarship', $update_data,'sch_id', $id);
             if(!$scholardflag)
             {
                 $this->logger->write_logmessage("error","Edit scholar Setting error", "Edit scholar Setting details. $logmessage ");
@@ -252,7 +267,7 @@ public function editscholar($id) {
 
 /**********************************Student Registration Form********************************/
 public function schreg() {
-		$this->schname=$this->commodel->get_listspfic2('scholarship','sr_id', 'sch_name,sch_code');
+		$this->schname=$this->commodel->get_listspfic2('scholarship','sch_id', 'sch_name,sch_code');
 		$suid=$this->session->userdata('id_user');
 		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
 		$this->cacadyer = $this->usermodel->getcurrentAcadYear();
@@ -384,7 +399,7 @@ public function schapplydet() {
 	$this->ncid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
 	$this->pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;//print_r($this->pname);die;
 	$this->said=$this->commodel->get_listspfic1('schapply','sa_name','sa_id',$row->sa_id)->sa_name;
-	$this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sr_id',$this->said)->sch_name;
+	$this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sch_id',$this->said)->sch_name;
 	$ldata['cacadyer'] =  $this->cacadyer;
 	$ldata['stname'] =  $this->name;
 	$ldata['stfname'] =  $this->fathname;
@@ -613,7 +628,7 @@ public function schvarify($id) {
                'id' => 'sa_name',
                'maxlength' => '50',
                'size' => '40',
-               'value' => $this->commodel->get_listspfic1('scholarship','sch_name','sr_id',$this->said)->sch_name,
+               'value' => $this->commodel->get_listspfic1('scholarship','sch_name','sch_id',$this->said)->sch_name,
 		'readonly' => 'readonly'
                );
 
@@ -736,7 +751,7 @@ public function schvarify($id) {
 	$this->pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
 	//print_r($Stuid);
 	$this->said=$this->commodel->get_listspfic1('schapply','sa_name','sa_name',$row->sa_name)->sa_name;	
-	$this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sr_id',$this->said)->sch_name;
+	$this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sch_id',$this->said)->sch_name;
 	$ldata['stname'] =  $this->name;
 	$ldata['stfname'] =  $this->fathname;
 	$ldata['stgender'] =  $this->gender;
@@ -788,7 +803,7 @@ public function rejectedscholar(){
 	$this->pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
 	//print_r($Stuid);
 	$this->said=$this->commodel->get_listspfic1('schapply','sa_name','sa_name',$row->sa_name)->sa_name;	
-	$this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sr_id',$this->said)->sch_name;
+	$this->saname=$this->commodel->get_listspfic1('scholarship','sch_name','sch_id',$this->said)->sch_name;
 	
 	$ldata['stname'] =  $this->name;
 	$ldata['stfname'] =  $this->fathname;
