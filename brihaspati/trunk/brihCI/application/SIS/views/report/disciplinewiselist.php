@@ -68,6 +68,8 @@
 <?php }?>
 
                     </select>
+		</td><td>
+		   You have to<br> choose multiple <br>subject by<br> pressing Ctrl
 
                 </td>
 

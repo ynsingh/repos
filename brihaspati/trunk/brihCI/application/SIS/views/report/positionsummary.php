@@ -82,6 +82,7 @@
 		$totalss= 0;
                 $totalsp= 0;
 		$totalsv= 0;
+		$ssgrp=0; $spgrp=0;$svgrp=0;
 		$rc= array();
 		$poid1=0;$ss1=0;$sp1=0;$sv1=0;
                 if( count($records) ):  ?>
@@ -102,7 +103,7 @@
 				$ss1 = $ss;
 				$sp1 = $sp;
 				$sv1 = $sv;
-                	}; 
+                	} 
 
 			$grpn='';$grptv='A';$ssgrp=0; $spgrp=0;$svgrp=0;
 			foreach($rc  as $rc1) {
@@ -142,7 +143,7 @@
                     <td colspan= "13" align="center"> No Records found...!</td> 
                 <?php endif;?>
                
-					<?php echo "<tr><td colspan=2> <b> Group Total : </b> </td><td>".$ssgrp."</td><td>".$spgrp."</td><td>".$svgrp."</td></tr>"; ?>
+		<?php echo "<tr><td colspan=2> <b> Group Total : </b> </td><td>".$ssgrp."</td><td>".$spgrp."</td><td>".$svgrp."</td></tr>"; ?>
                     <tr>
                         <td></td>
                         <td><b>Grand Total:</b></td>

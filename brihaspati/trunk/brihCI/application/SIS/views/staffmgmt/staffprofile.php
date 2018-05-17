@@ -770,16 +770,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="dateofretirement" style="font-size:15px;">Date Of Retirement</label>
                     <div><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="30" />
                 </div></td>
-                <td><label for="phdstatus" style="font-size:15px;">Phd Status</label>
-                    <div><select name="phdstatus" style="width:300px;"> 
-                        <option value="">-------------- Phd Status -------------</option>
-                        <option value="Complete">Complete</option>
-                        <option value="Not Complete">Not Complete</option>
-                    </select></div>
-                </td>
-                <td><label for="dateofphd" style="font-size:15px;">Date Of Phd Completion</label>
-                    <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="27" />
-                </div></td>    
+                <td><label for="dateofprob" style="font-size:15px;">Date of Probation</label>
+                    <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo isset($_POST["dateofprob"]) ? $_POST["dateofprob"] : ''; ?>"class="form-control" size="30" />
+                <div></td>
+                 <td><label for="dateofregular" style="font-size:15px;">Date of Regularisation</label>
+                    <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo isset($_POST["dateofregular"]) ? $_POST["dateofregular"] : ''; ?>"class="form-control" size="30" />
+                <div></td> 
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
@@ -836,12 +832,6 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                  </div></td>
             </tr>
             <tr>
-                <td><label for="dateofprob" style="font-size:15px;">Date of Probation</label>
-                    <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo isset($_POST["dateofprob"]) ? $_POST["dateofprob"] : ''; ?>"class="form-control" size="30" />
-                <div></td>
-                 <td><label for="dateofregular" style="font-size:15px;">Date of Regularisation</label>
-                    <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo isset($_POST["dateofregular"]) ? $_POST["dateofregular"] : ''; ?>"class="form-control" size="30" />
-                <div></td> 
                 <td><label for="Qualification" style="font-size:15px;">Qualification</label>
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="28" >
                 </div></td>
@@ -859,6 +849,17 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <tr><td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
             <tr>
+                <td><label for="phdstatus" style="font-size:15px;">Phd Status</label>
+                    <div><select name="phdstatus" style="width:300px;"> 
+                        <option value="">-------------- Phd Status -------------</option>
+                        <option value="Complete">Complete</option>
+			<option value="Undergoing">Undergoing</option>
+                        <option value="Not Registered">Not Registered</option>
+                    </select></div>
+                </td>
+                <td><label for="dateofphd" style="font-size:15px;">Date Of Phd Completion</label>
+                    <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="27" />
+                </div></td>    
                 <td><label for="Discipline " style="font-size:15px;">Discipline</label>
                 <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="phD Discipline........" size="28" >
                 </div></td>
@@ -869,6 +870,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Part time">Part time</option>
                     </select></div>
                 </td>
+            </tr>
+            <tr>
                 <td><label for="InstName" style="font-size:15px;">Institute Name</label>
                 <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD Institute Name........" size="28" >
                 </div></td>
@@ -879,8 +882,6 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="No">No</option>
                     </select></div>
                 </td>    
-            </tr>
-            <tr>
                 <td><label for="udeput" style="font-size:15px;">If YES  </label>
                 <div><input type="radio" name="udeput" id="udeput" value="withsalary">with Salary &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="udeput" id="udeput2" value="withoutsalary">without Salary
@@ -895,6 +896,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                        
                     </select>   
                 </div></td>
+            </tr>
+            <tr>
                 <td><label for="leavedatefrom" style="font-size:15px;">Leave From</label>
                     <div><input type="text" name="leavedatefrom" id="leavedatefrom" value="<?php echo isset($_POST["leavedatefrom"]) ? $_POST["leavedatefrom"] : ''; ?>"class="form-control" size="30" />
                 <div></td>
@@ -970,15 +973,17 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </div></td>
             </tr>
             <tr>
-                <td><label for="asignplace" style="font-size:15px;">Place</label>
+                <td><label for="asignplace" style="font-size:15px;">Assignment Place</label>
                 <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="28" >
                 </div></td>
+            </tr>
+            <tr>
            <!-- </tr>
             <tr> -->
                 <td><label for="remarks" style="font-size:15px;">Remarks</label>
                     <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="2" cols="35"  placeholder="Remarks......"></textarea>
                 </div></td>
-                <td><label for="Address" style="font-size:15px;">Address</label>
+                <td><label for="Address" style="font-size:15px;">Residential Address</label>
                     <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="4" cols="40"  placeholder="Address..."></textarea>
                 </div></td>
                 <td><label for="userfile" style="font-size:15px;">Upload Photo</label>

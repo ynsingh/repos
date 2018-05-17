@@ -37,7 +37,7 @@ class Staffmgmt extends CI_Controller
 	// add doris geater than current date and reason is null  in whdata
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
         //  get role id and user id
-/*        $rlid=$this->session->userdata('id_role');
+        $rlid=$this->session->userdata('id_role');
         if ($rlid == 5){
                 $usrid=$this->session->userdata('id_user');
                 $deptid = '';
@@ -48,7 +48,7 @@ class Staffmgmt extends CI_Controller
                 }
                 $whdata['emp_dept_code'] = $deptid;
         }
-*/	
+	
 
 
 /*	$roleid=$this->session->userdata('id_role');	

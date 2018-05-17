@@ -637,7 +637,10 @@ public function disciplinewiselist(){
         $comb_data = $this->sismodel->get_distinctrecord('employee_master','emp_uocid',$datawh);
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>-------Select University Officer--------';
-        $uo_select_box.='<option value='.All.'>'.All. ' ';
+//	$usrname=$this->session->userdata('username');
+  //      if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        	$uo_select_box.='<option value='.All.'>'.All. ' ';
+    //    }
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $auoname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
@@ -684,6 +687,17 @@ public function disciplinewiselist(){
        // $parts = explode(',',$combid); 
        // echo "sc===".$combid;
         $datawh=array('emp_worktype' => $combid);
+	$rlid=$this->session->userdata('id_role');
+        if ($rlid == 5){
+                $usrid=$this->session->userdata('id_user');
+                $deptid = '';
+                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                foreach($resu as $rw){
+                        $deptid=$rw->deptid;
+                }
+                $datawh['emp_dept_code'] = $deptid;
+        }
 	$whorder = 'emp_desig_code asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_desig_code',$datawh,$whorder);
         $desig_select_box =' ';
@@ -765,8 +779,10 @@ public function disciplinewiselist(){
     /********************slect uo list according to selection type**********************/
     public function getspuolist(){
         $combid= $this->input->post('worktype');
-	$datawh ='';
-        $rlid=$this->session->userdata('id_role');
+	//$datawh ='';
+	$whdata = '';
+        $whdata = $this->getwhdata();
+        /*$rlid=$this->session->userdata('id_role');
         if ($rlid == 5){
         	$usrid=$this->session->userdata('id_user');
                 $deptid = '';
@@ -776,15 +792,19 @@ public function disciplinewiselist(){
                 	$deptid=$rw->deptid;
                 }
                 $datawh = array ('sp_dept' => $deptid);
-        }
-        $datawh['sp_tnt'] = $combid;
+        }*/
+        $whdata['sp_tnt'] = $combid;
 
 //        $datawh=array('sp_tnt' => $combid);
 	$whorder = 'sp_uo asc';
-        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$datawh,$whorder);
+        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$whdata,$whorder);
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>-------Select University Officer--------';
-        $uo_select_box.='<option value='.All.'>'.All. ' ';
+	$usrname=$this->session->userdata('username');
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        	$uo_select_box.='<option value='.All.'>'.All. ' ';
+        }
+        //$uo_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $auoname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->sp_uo)->name;
@@ -824,7 +844,11 @@ public function disciplinewiselist(){
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$datawh,$whorder);
         $pt_select_box =' ';
         $pt_select_box.='<option value=null>-------Select Post--------';
-        $pt_select_box.='<option value='.All.'>'.All. ' ';
+	$usrname=$this->session->userdata('username');
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        	$pt_select_box.='<option value='.All.'>'.All. ' ';
+        }
+//        $pt_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 
@@ -839,8 +863,10 @@ public function disciplinewiselist(){
     
      public function getuolist_sp(){
         $combid= $this->input->post('worktype');
-        $datawh=array('sp_tnt' => $combid);
-	$rlid=$this->session->userdata('id_role');
+	 $whdata = '';
+        $whdata = $this->getwhdata();
+        $whdata['sp_tnt'] = $combid;
+/*	$rlid=$this->session->userdata('id_role');
         if ($rlid == 5){
                 $usrid=$this->session->userdata('id_user');
                 $deptid = '';
@@ -851,12 +877,16 @@ public function disciplinewiselist(){
                 }
                 $datawh['sp_dept'] = $deptid;
         }
-
+*/
 	$whorder = 'sp_uo asc';
-        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$datawh,$whorder);
+        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$whdata,$whorder);
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>----Select University Officer-----';
-        $uo_select_box.='<option value='.All.'>'.All. ' ';
+	$usrname=$this->session->userdata('username');
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        	$uo_select_box.='<option value='.All.'>'.All. ' ';
+        }
+        //$uo_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $auoname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->sp_uo)->name;
@@ -893,7 +923,11 @@ public function disciplinewiselist(){
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_dept',$datawh,$whorder);
         $dept_select_box =' ';
         $dept_select_box.='<option value=null>----Select Department-------';
-        $dept_select_box.='<option value='.All.'>'.All. ' ';
+	$usrname=$this->session->userdata('username');
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        	$dept_select_box.='<option value='.All.'>'.All. ' ';
+        }
+        //$dept_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->sp_dept)->dept_name;
@@ -908,7 +942,9 @@ public function disciplinewiselist(){
     /********************select post list according to selection type**********************/
     public function getpostlist_sp(){
         $combid= $this->input->post('worktype');
-	$datawh ='';
+	 $whdata = '';
+        $whdata = $this->getwhdata();
+/*	$datawh ='';
                 $rlid=$this->session->userdata('id_role');
                 if ($rlid == 5){
                         $usrid=$this->session->userdata('id_user');
@@ -920,13 +956,17 @@ public function disciplinewiselist(){
                         }
                         $datawh = array ('sp_dept' => $deptid);
                 }
-
-        $datawh['sp_tnt'] = $combid;
+*/
+        $whdata['sp_tnt'] = $combid;
 	$whorder = 'sp_emppost asc';
-        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$datawh,$whorder);
+        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$whdata,$whorder);
         $post_select_box =' ';
         $post_select_box.='<option value=null>----------- Select Post ---------------';
-        $post_select_box.='<option value='.All.'>'.All. ' ';
+	$usrname=$this->session->userdata('username');
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        	$post_select_box.='<option value='.All.'>'.All. ' ';
+        }
+        //$post_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $postname=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->sp_emppost)->desig_name;
