@@ -147,13 +147,13 @@
 
 	$(document).ready(function(){
                        
-             $('#uo').on('change',function(){
+                $('#uo').on('change',function(){
                 var sc_code = $('#campus').val();
                 var uoc_id = $('#uo').val();
                 var combid = sc_code+","+uoc_id;
                 //alert("combid=="+combid);
                 if(uoc_id == ''){
-                    $('#dept').prop('disabled',true);
+                $('#dept').prop('disabled',true);
                 }
                 else{
              

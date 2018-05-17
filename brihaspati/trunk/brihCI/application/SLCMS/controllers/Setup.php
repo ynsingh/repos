@@ -1483,7 +1483,7 @@ class Setup extends CI_Controller
      public function fees() {
                
         	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
-        	$this->prgresult = $this->common_model->get_distinctrecord('program','prg_name','');
+       	$this->prgresult = $this->common_model->get_distinctrecord('program','prg_name','');
                 $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');
 
 

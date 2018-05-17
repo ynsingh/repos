@@ -19,7 +19,7 @@ class Report  extends CI_Controller
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"lgnmodel"); 
         $this->load->model('SIS_model',"sismodel");
-	$this->load->helper('download');
+		  $this->load->helper('download');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -42,6 +42,58 @@ class Report  extends CI_Controller
         return;
 	}
 
+/*
+//Faculty Leave Home
+	 public function Facultyhome() {
+        $this->load->view('report/Facultyhome');
+        return;
+	}
+
+//Apply for leave
+	 public function leaveapply() {
+		  	$this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
+       		        if(isset($_POST['leaveapply'])) {
+                        $this->form_validation->set_rules('le_type','Leave Type','trim|xss_clean|required');
+                        $this->form_validation->set_rules('le_desc','Leave Description','trim|xss_clean|required');
+                        $this->form_validation->set_rules('le_from_date','From Date','trim|xss_clean|required');
+                        $this->form_validation->set_rules('le_to_date','To Date','trim|xss_clean|required');
+                               			   }
+ //if form validation true
+              if($this->form_validation->run()==TRUE){
+             		      $data = array(
+			'la_type'=>$_POST['le_type'],
+			'la_userid' => $this->session->userdata('id_user'),
+                        'la_desc'=>$_POST['le_desc'],
+                        'la_from_date'=>$_POST['le_from_date'],
+                        'la_to_date'=>$_POST['le_to_date'],
+                       
+                        );
+                        $leaveapply=$this->sismodel->insertrec('leave_apply', $data);
+                        if (!$leaveapply){
+                   		$this->logger->write_logmessage("insert"," Error in adding Leave Description ", "Leave description data insert error . "  );
+                  		$this->logger->write_dblogmessage("insert"," Error in adding Leave from date ", " Leave from date data insert error . " );
+                   		$this->session->set_flashdata('err_message','Error in adding To Date- ' . $_POST['lt_from_date'] , 'error');
+                    		redirect('report/leaveapply');
+                        } 
+                			else{
+                  			$this->logger->write_logmessage("insert"," add Leave Description ", " Leave applied successfully..."  );
+                  			$this->logger->write_dblogmessage("insert"," add Leave from date ", "Leave applied successfully..." );
+                  			$this->session->set_flashdata("success", "Leave applied successfully...");
+                   			redirect("report/leaveapply");
+                    }
+            }    
+    
+        $this->load->view('report/leaveapply');
+        return;
+	}
+
+//View leave Status
+	 public function Leave_status() {
+        $this->load->view('report/Leave_status');
+        return;
+	}
+
+*/
     public function deptemployeelist(){
         $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
         $whorder = "emp_uocid asc, emp_dept_code  asc, emp_post asc";

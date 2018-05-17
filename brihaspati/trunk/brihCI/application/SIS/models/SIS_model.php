@@ -307,7 +307,16 @@ class SIS_model extends CI_Model
         return $data;
     }
     /** colse this function for get hod user list according to study center************************/
-    
+    //get the list of all/specific  records with  one specific fields for specific values
+    public function get_listspficarry($tbname,$selfield1,$fieldname='',$fieldvalue=''){
+		$this->db->flush_cache();
+		$this->db->from($tbname);
+		$this->db->select($selfield1);
+		if (($fieldname != '') && ($fieldvalue !='')){
+			$this->db->where($fieldname, $fieldvalue);
+		}
+        return $this->db->get()->result();
+    }
     public function emplist($uo,$dept,$post){
 	$post1 = $this->commodel->get_listspfic1('designation','desig_name','desig_id', $post)->desig_name;
         $selectfield ="emp_name,emp_desig_code,emp_post,emp_email";
