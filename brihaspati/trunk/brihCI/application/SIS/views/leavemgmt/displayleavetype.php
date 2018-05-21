@@ -14,12 +14,12 @@
 	<table width="100%">
             <tr>
                 <?php
-                 echo "<td align=\"left\" width=\"5%\">";
+                 echo "<td align=\"left\" width=\"10%\">";
                  echo anchor('leavemgmt/leavetype/', "Add Leave Type", array('title' => 'Add Detail','class' =>'top_parent'));
                  echo "</td>";
-					  echo "<td align=\"left\" width=\"5%\">";
+					  /*echo "<td align=\"left\" width=\"5%\">";
                  echo anchor('leavemgmt/viewela/', "View Earned Leave", array('title' => 'Detail','class' =>'top_parent'));
-                 echo "</td>";
+                 echo "</td>";*/
 					  echo "<td align=\"left\" width=\"13%\">";
 					  echo "<b>Leave Type Details</b>";
 					  echo "</td>";

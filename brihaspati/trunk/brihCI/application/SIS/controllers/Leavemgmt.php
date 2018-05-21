@@ -998,9 +998,19 @@ public function viewela()
 			
 			$lrm="";
 			$i=0;
-			//get the current year
-			//$cyear = date('Y');
-			//get the list of users			
+			
+			//get the list of users		
+			//if(isset($_POST['filter'])) {
+            //echo "ifcase post of filter";
+            /*$etype = $this->input->post('etype');
+            
+	    		$this->etyp = $etype;
+				$whdata = array('emp_post'=>$this->etyp);
+				$rest=$this->sismodel->get_orderlistspficemore('employee_master','emp_email',$whdata,'');*/
+            
+	   
+
+	
 		  	$rest=$this->sismodel->get_orderlistspficemore('employee_master','emp_email','','');
 			foreach($rest as $rw)
 			{
@@ -1035,8 +1045,8 @@ public function viewela()
                $this->fldata[$i] = $ldata;
                $i++;
 					}
-            
-		}
+         }   
+		//}
 		$this->load->view('leavemgmt/viewela');
 }	
 

@@ -15,7 +15,8 @@
 		 <table width="100%">
           <tr><td>
              <div>
-                <?php echo anchor('leavemgmt/staffleavedetails/', "View Leave Details", array('title' => 'View Leave Taken' ,'class' =>'top_parent'));?>
+                <td><?php echo anchor('leavemgmt/staffleavedetails/', "View Leave Details", array('title' => 'View Leave Taken' ,'class' =>'top_parent'));?></td>
+					 <td><?php echo anchor('leavemgmt/viewels/', "View Earned Leave Details", array('title' => 'View Earned Leave Taken' ,'class' =>'top_parent'));?></td>
 					 <?php echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
                     	 echo "<b>Leave Status</b>";
                     	 echo "</td>";
@@ -57,7 +58,7 @@
           </thead>
 			 <tbody>
 				<?php
-		 			if( count($this->fldata) ):
+		 			if(!empty($this->fldata)):
         			$count =0;
                foreach ($this->fldata as $row)
         			{

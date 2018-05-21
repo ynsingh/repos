@@ -113,7 +113,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "</ul>";
 				echo "</li>";
  */
-/*			echo "<li>";
+			echo "<li>";
 				echo "<a href=" . ">Reports</a>";
 				echo "<ul>";
 					echo "<li>";
@@ -135,7 +135,7 @@ echo "<ul class=\"sf-menu\">";
 					
 					
 				echo "</ul>";
-			echo "</li>";*/
+			echo "</li>";
 			echo "<li>";
 				echo "<a href=" . ">Requests</a>";
 				echo "<ul>";

@@ -12,9 +12,12 @@
 
 <body>
 	<table width="100%">
-            <tr>
+            <tr>	
+					<td width="7%">
+				 	<?php echo anchor('leavemgmt/leavestatus/', "Leave Status", array('title' => 'View Leave Status' ,'class' =>'top_parent'));?>
+				 	</td>
                 <?php
-                 echo "<td align=\"center\" width=\"13%\">";
+                 echo "<td align=\"left\" width=\"10%\">";
 					  echo "<b>Earned Leave Details</b>";
 					  echo "</td>";
 					  ?>

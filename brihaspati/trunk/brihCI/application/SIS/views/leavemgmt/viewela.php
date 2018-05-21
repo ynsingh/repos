@@ -11,18 +11,30 @@
   </head>
 
 <body>
+
 	<table width="100%">
-            <tr>
-					 <td width="10%"> <?php echo anchor('leavemgmt/displayleavetype/', "View Leave Type", array('title' => 'Display Leave Type' ,'class' =>'top_parent'));?> </td>
-                <?php
-                 echo "<td align=\"left\" width=\"13%\">";
-					  echo "<b>Earned Leave Details</b>";
-					  echo "</td>";
-					  ?>
-                <div>
+			<tr>
+		   <td width="15%"> <?php echo anchor('leavemgmt/displayleavetype/', "View Leave Type", array('title' => 'Display Leave Type' ,'class' =>'top_parent'));?> </td>
+                <td align="right" width="100%">  <b>Select Employee Post</b>
+                    <select name="etype" id="etype" style="width:250px;"> 								
+                      <option value="" disabled selected>--------Select Post-------</option>                       
+                      <option value="Assistant">Assistant</option>
+                      <option value="Non Teaching"> Non Teaching</option>
+                    </select>                                     
+                </td>                
+                <td align="right"><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
+            </tr>    
+        </table>   
+ 
+        <table width="100%">
+				<tr>
+            	<td width="100%" style=" background-color: graytext;">             
+                	<div style="height:30px;margin-left:560px;"><b>Earned Leave Details</b></div>
+               </td>        
+               <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+               <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
@@ -31,12 +43,11 @@
                 <?php
                 };
                 ?>
-                </div>
-            </tr>
-	</table>
-		
-       <div class="scroller_sub_page">
-        	<table class="TFtable" >
+               </div>
+				</tr>
+ 		 </table>		
+        <div class="scroller_sub_page">
+         <table class="TFtable" >
             <thead>
 						<tr>
                      <th>S.No</th>
