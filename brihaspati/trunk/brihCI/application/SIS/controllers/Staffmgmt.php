@@ -1072,17 +1072,20 @@ class Staffmgmt extends CI_Controller
                     
                     );
                     $upempdata_flag=$this->sismodel->updaterec('employee_master', $empdata,'emp_id',$id);
-                    
+                    /****************************************insert record in service particular************************************************/
                     $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['desigto'])->desig_code;
                     // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
                     $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],$desigcode,
                     $_POST['schemto'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],date('y-m-d'),date('y-m-d'),$_POST['dateofrelief']);
                        
-                    /*************************************updating the staff position table*****************/
-                   
+                    /*************************************updating the staff position table******************************************************************/
+                    $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;
+                    //descrease position and increase vacancy from old data(means from )
+                    $this->sismodel->updatestaffposition2($_POST['campusfrom'],$_POST['uocfrom'],$_POST['deptfrom'],$postfrom,$_POST['employeetype'],$_POST['empptfrom'],$_POST['schemfrom']);
+                    //increase in position and decrease vacancy from new data(means to)
                     $this->sismodel->updatestaffposition($_POST['campus'],$_POST['uocontrolto'], $_POST['deptto'],$_POST['postto'],$_POST['emptypeto'],$_POST['vacanttype']) ;
                    
-                    /*************************************close updating the staff position table*****************/
+                    /*************************************close updating the staff position table************************************************/
                     $emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $_POST['empname'])->emp_code;
                     $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $_POST['empname'])->emp_name;
                     $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$_POST['deptto'])->dept_name; 
@@ -1140,7 +1143,7 @@ class Staffmgmt extends CI_Controller
                 //$designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
             //    $values='uocfrom='. $detail->emp_uocid.', deptfrom=' .$detail->emp_dept_code.',desigfrom='. $detail->emp_desig_code.',postfrom='.$detail->emp_post;
                 //$values=$uocname.',' .$deptname.','. $designame.','.$detail->emp_post;
-                $values=$detail->emp_post;
+                $values=$detail->emp_post.",".$detail->emp_type_code;
                      
             }
             /*$scid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$emp)->emp_scid;
