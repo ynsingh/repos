@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
     </head>
 <script>
+
 $(document).ready(function(){
                 /****************************************** start post********************************/
                 $('#wtype').on('change',function(){

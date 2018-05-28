@@ -179,7 +179,7 @@
                     </select> 
                 </td> 
                 <td> Department
-                    <select name="dept" id="dept" style="width:250px;"> 
+                    <select name="dept[]" id="dept" style="width:250px;" multiple> 
 			 <?php if ( (!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
                         <option value="<?php echo $this->deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$this->deptmt)->dept_code ." )"; ?></option>
                         <?php  }else{ ?>
@@ -188,12 +188,27 @@
                       <!--<option value="All" >All</option> -->
                     </select> 
                     
+                </td><td>
+                   You have to<br> choose multiple <br>subject by<br> pressing Ctrl
+
                 </td>
+
                 <td valign="bottom">
                     <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
                 </td>
             </tr>    
         </table>       
+<script>
+                $('document').ready(function(){
+                        $('#dept').multiselect({
+                                columns:1,
+                                placeholder: 'Select Department',
+                                search: true,
+                                selectAll: true
+                        });
+                });
+        </script>
+
     <table width="100%">
        <tr style=" background-color: graytext;"> 
         <td valign="top">

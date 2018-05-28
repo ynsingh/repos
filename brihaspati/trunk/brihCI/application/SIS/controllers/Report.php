@@ -42,78 +42,35 @@ class Report  extends CI_Controller
         return;
 	}
 
-/*
-//Faculty Leave Home
-	 public function Facultyhome() {
-        $this->load->view('report/Facultyhome');
-        return;
-	}
-
-//Apply for leave
-	 public function leaveapply() {
-		  	$this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
-       		        if(isset($_POST['leaveapply'])) {
-                        $this->form_validation->set_rules('le_type','Leave Type','trim|xss_clean|required');
-                        $this->form_validation->set_rules('le_desc','Leave Description','trim|xss_clean|required');
-                        $this->form_validation->set_rules('le_from_date','From Date','trim|xss_clean|required');
-                        $this->form_validation->set_rules('le_to_date','To Date','trim|xss_clean|required');
-                               			   }
- //if form validation true
-              if($this->form_validation->run()==TRUE){
-             		      $data = array(
-			'la_type'=>$_POST['le_type'],
-			'la_userid' => $this->session->userdata('id_user'),
-                        'la_desc'=>$_POST['le_desc'],
-                        'la_from_date'=>$_POST['le_from_date'],
-                        'la_to_date'=>$_POST['le_to_date'],
-                       
-                        );
-                        $leaveapply=$this->sismodel->insertrec('leave_apply', $data);
-                        if (!$leaveapply){
-                   		$this->logger->write_logmessage("insert"," Error in adding Leave Description ", "Leave description data insert error . "  );
-                  		$this->logger->write_dblogmessage("insert"," Error in adding Leave from date ", " Leave from date data insert error . " );
-                   		$this->session->set_flashdata('err_message','Error in adding To Date- ' . $_POST['lt_from_date'] , 'error');
-                    		redirect('report/leaveapply');
-                        } 
-                			else{
-                  			$this->logger->write_logmessage("insert"," add Leave Description ", " Leave applied successfully..."  );
-                  			$this->logger->write_dblogmessage("insert"," add Leave from date ", "Leave applied successfully..." );
-                  			$this->session->set_flashdata("success", "Leave applied successfully...");
-                   			redirect("report/leaveapply");
-                    }
-            }    
-    
-        $this->load->view('report/leaveapply');
-        return;
-	}
-
-//View leave Status
-	 public function Leave_status() {
-        $this->load->view('report/Leave_status');
-        return;
-	}
-
-*/
     public function deptemployeelist(){
         $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
         $whorder = "emp_uocid asc, emp_dept_code  asc, emp_post asc";
 	$cdate = date('Y-m-d');
+        // add doris geater than current date and reason is null  in whdata
+	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
-            $dept  = $this->input->post('dept');
+            $dept[]  = $this->input->post('dept');
 		 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
-	    if((!empty($dept))&&($dept != "null")){
-            	$this->deptmt = $dept;
-	    }else{
-		$this->deptmt= "All";
+	    $whdata['emp_worktype']=$wtype;
+            if($uoff !="All"){
+	    	$whdata['emp_uocid']=$uoff;
 	    }
-
+	    $i=0;
+	    if((!empty($dept))&&($dept != "null")){
+                        foreach($dept as $row){
+                        $this->deptmt = $row[$i];
+                        $names = $row;
+                        $i++;
+                        }
+                }
+//	    $orwhin=array('emp_dept_code'=>$names);
             //echo "dept===".$dept."www==".$wtype."uo===".$uoff;
-            if($dept != "null"){
+           /* if($dept != "null"){
                 if($dept!= "All" && $uoff !="All"){
                     //echo "step1".$dept."uo==".$uoff;
                     $whdata = array ('emp_worktype' => $wtype,'emp_uocid' => $uoff,'emp_dept_code'=> $dept);
@@ -141,16 +98,16 @@ class Report  extends CI_Controller
                 else{
                     $whdata = array ('emp_worktype' => $wtype);   
                 }
-            }
-        // add doris geater than current date and reason is null  in whdata
-	    $whdata['emp_leaving'] = NULL;
-            $whdata['emp_dor>='] = date('y-m-d');
-            $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+            }*/
+		if(!empty($names)){
+			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
+	
+		}else{
+			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
+		}
+            //$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         }
         else{
-            //echo "else case of filter";
-        // add doris geater than current date and reason is null  in whdata
-	    $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
             $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         }
         
@@ -380,11 +337,13 @@ public function disciplinewiselist(){
 	//	print_r($names);die;
 		if(empty($names))
 			$whdata['emp_specialisationid >'] = 0;
-		$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,$names,$whorder);
+
+//		$orwhin=array('emp_specialisationid' => $names);
+		$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_specialisationid',$names,$whorder);
 
 	}else{
 		$whdata['emp_specialisationid >'] = 0;
-        	$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'',$whorder);
+        	$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
 	}
         $this->logger->write_logmessage("view"," view  Discipline Wise Report " );
         $this->logger->write_dblogmessage("view"," view  Discipline Wise Report ");
@@ -438,29 +397,42 @@ public function disciplinewiselist(){
 
     public function desigemployeelist(){
         $selectfield ="emp_desig_code,emp_dept_code,emp_name";
-        //$whdata = array ('emp_worktype' => 'Teaching');
         $whorder = "emp_desig_code  asc";
 	$cdate = date('Y-m-d');
-       // $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
-            $dept  = $this->input->post('dept');
+            $dept[]  = $this->input->post('dept');
             $desig  = $this->input->post('desig');
 
       	    $this->wtyp = $wtype;
             $this->desigm= $desig;
-	    if((!empty($dept))&&($dept != "null")){
-                $this->deptmt = $dept;
-            }else{
-                $this->deptmt= "All";
-            }
+		$whdata['emp_worktype'] = $wtype;
+		if($uoff != "null" && $uoff != "All" && $uoff != ""){
+			$whdata['emp_uocid'] = $uoff;
+		}
+		if($dept != "null" && $dept != "All" && $dept != ""){
+			$i=0;
+			foreach($dept as $row){
+                        	$this->deptmt = $row[$i];
+                        	$names = $row;
+				$i++;
+                        }
+		}
+		if($desig != "null" && $desig != "All" && $desig != ""){
+			 $whdata['emp_desig_code'] = $desig;
+		}
+//	    if((!empty($dept))&&($dept != "null")){
+  //              $this->deptmt = $dept;
+    //        }
 	    if((!empty($uoff))&&($uoff != "null")){
                 $this->uolt = $uoff;
             }else{
             	$this->uolt = 'All';
             }
+/*
            // echo "dept===".$dept."wt==".$wtype."uo===".$uoff."desig==".$desig;
             if($desig != "null" || $uoff != "null" || $dept != "null" ){
                 //echo "ifcase dept of filter";
@@ -518,14 +490,21 @@ public function disciplinewiselist(){
                 }//noall
                             
             }//ifnot null
+*/
 	// add doris geater than current date and reason is null  in whdata
-            $whdata['emp_leaving'] = NULL;
-            $whdata['emp_dor>='] = date('y-m-d');
-            $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+          //  $whdata['emp_leaving'] = NULL;
+          //  $whdata['emp_dor>='] = date('y-m-d');
+		if(!empty($names)){
+                        $data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
+
+                }else{
+                        $data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
+		}
+      //      $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         }//ifbutton
         else{
 	// add doris geater than current date and reason is null  in whdata
-            $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+        //    $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
             $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         }
         $this->logger->write_logmessage("view"," view designation wise employee list" );
@@ -721,7 +700,7 @@ public function disciplinewiselist(){
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
         $dept_select_box =' ';
         $dept_select_box.='<option value=null>-------Select Department--------';
-        $dept_select_box.='<option value='.All.'>'.All. ' ';
+  //      $dept_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
@@ -816,7 +795,7 @@ public function disciplinewiselist(){
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
         $dept_select_box =' ';
         $dept_select_box.='<option value=null>------- Select Department ------';
-        $dept_select_box.='<option value='.All.'>'.All. ' ';
+   //     $dept_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 

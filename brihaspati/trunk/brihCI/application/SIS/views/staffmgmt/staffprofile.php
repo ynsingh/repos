@@ -852,7 +852,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="phdstatus" style="font-size:15px;">Phd Status</label>
                     <div><select name="phdstatus" style="width:300px;"> 
                         <option value="">-------------- Phd Status -------------</option>
-                        <option value="Complete">Complete</option>
+                        <option value="Completed">Completed</option>
 			<option value="Undergoing">Undergoing</option>
                         <option value="Not Registered">Not Registered</option>
                     </select></div>

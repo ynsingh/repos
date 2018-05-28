@@ -1,15 +1,15 @@
-use payroll;
+use payrolltanuvas;
 CREATE TABLE `leave_apply` (
   `la_id` int(11) NOT NULL auto_increment,
   `la_userid` varchar(50) NOT NULL,
   `la_deptid` varchar(50) NOT NULL,
   `la_type` varchar(50) NOT NULL,
   `la_year` varchar(10) NOT NULL,
-  `applied_la_from_date` DATETIME DEFAULT 0,
-  `applied_la_to_date` DATETIME DEFAULT 0,
+  `applied_la_from_date` DATETIME DEFAULT null,
+  `applied_la_to_date` DATETIME DEFAULT null ,
   `la_days` decimal(5,2) NOT NULL default 0,
-  `granted_la_from_date` DATETIME DEFAULT 0,
-  `granted_la_to_date` DATETIME DEFAULT 0,
+  `granted_la_from_date` DATETIME DEFAULT null,
+  `granted_la_to_date` DATETIME DEFAULT null,
   `la_taken` decimal(5,2)NOT NULL default 0,
   `la_status` int(11) default '0',
   `la_desc` varchar(100) NOT NULL,

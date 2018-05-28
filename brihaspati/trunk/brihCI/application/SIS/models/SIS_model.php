@@ -105,7 +105,7 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
-    public function get_orderlistspficemoreorwh($tbname,$selectfield,$whdata,$orwhin,$whorder){
+    public function get_orderlistspficemoreorwh($tbname,$selectfield,$whdata,$orfield,$orwhin,$whorder){
         $this->db2->flush_cache();
         $this->db2->from($tbname);
         $this->db2->select($selectfield);
@@ -113,7 +113,8 @@ class SIS_model extends CI_Model
                 $this->db2->where($whdata);
         }
 	if($orwhin != ''){
-		$this->db2->where_in('emp_specialisationid', $orwhin);
+		$this->db2->where_in($orfield, $orwhin);
+//		$this->db2->where_in($orwhin);
 	}
         if($whorder != ''){
                 $this->db2->order_by($whorder);

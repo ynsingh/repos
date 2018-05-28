@@ -645,7 +645,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('bankacno','Bank ACC No','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
             $this->form_validation->set_rules('fathername','Father Name','trim|xss_clean');
-            $this->form_validation->set_rules('emailid','E-Mail ID','trim|required');
+            //$this->form_validation->set_rules('emailid','E-Mail ID','trim|required');
             $this->form_validation->set_rules('Address','Address','trim|xss_clean');
             
             $this->form_validation->set_rules('mothertongue','MotherTongue','trim|xss_clean');

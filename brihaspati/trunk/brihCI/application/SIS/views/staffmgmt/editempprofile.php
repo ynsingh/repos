@@ -970,7 +970,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                             <option selected="true" disabled="disabled">--------- Select Phd Status ---------</option>
                         <?php endif?>
-                        <option value="Complete">Complete</option>
+                        <option value="Completed">Completed</option>
                         <option value="Undergoing">Undergoing</option>
                         <option value="Not Registered">Not Registered</option>
                     </select><div>

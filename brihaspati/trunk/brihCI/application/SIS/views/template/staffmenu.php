@@ -116,7 +116,7 @@ echo "<ul class=\"sf-menu\">";
 			echo "<li>";
 				echo "<a href=" . ">Reports</a>";
 				echo "<ul>";
-					echo "<li>";
+	/*				echo "<li>";
 						echo anchor('report/liststu', 'Student List', array('title' => 'Student List'));
 					echo "</li>";
 					echo "<li>";
@@ -124,7 +124,7 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 					echo "<li>";
 						echo anchor('report/liststaff', 'Staff List', array('title' => 'Staff List'));
-					echo "</li>";					
+					echo "</li>";					*/
 					echo "<li>";
                   //echo anchor('leavemgmt/earnedleave', 'Earned Leave Details', array('title' => 'Details'));
 						echo anchor('leavemgmt/viewels', 'Earned Leave Details', array('title' => 'View Earned Leave Details'));
