@@ -42,19 +42,21 @@ $(document).ready(function() {
 //		$ledger_group_active = utf8_decode(urldecode($this->session->userdata('group_name'))).'#'.$this->session->userdata('ledger_group_id');
 //		$group_name = utf8_decode(urldecode($this->session->userdata('group_name')));
 //		}
-//	echo $ledger_group_active;die;
+//	echo $ledger_group_active;
+//	die;
 //	print_r($ledger_group_id);
 	echo "<p>";
 //	echo "<label for=\"ledger_group_id\" style=\"font-size:15px;\"> Parent group </label>";
-//	echo "<br />";
+	//	echo "<br />";
+	//	
 ?>
 <!--	<select name="ledger_group_id" id="ledger_group_id" class="ledger-parent" style="width:300px;">
-		<option value="<?php echo $ledger_group_active ?>"><?php echo $group_name; ?></option> -->
+		<option value="<?php //echo $ledger_group_active ?>"><?php //echo $group_name; ?></option> -->
 <?php	
 			//print_r($ledger_group_id);die;
 //			foreach($ledger_group_id as $id=>$name): ?>
-<!--			 <option value="<?php echo $id; ?>"><?php echo $name; ?></option>-->
-	<?	//endforeach;
+<!--			 <option value="<?php //echo $id; ?>"><?php //echo $name; ?></option>-->
+	<?php	//endforeach;
 //	echo "</select>"
 //	die;
 //	echo "<br />";

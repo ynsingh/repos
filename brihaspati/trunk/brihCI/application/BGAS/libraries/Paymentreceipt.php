@@ -350,7 +350,7 @@ class paymentreceipt
 	{	
 		$counter = 1;
 		$CI =& get_instance();
-		$CI->db->select('id,amount,dc,secunitid,entry_id')->from('entry_items')->where('ledger_id', '4')->where('dc', 'C');
+		$CI->db->select('id,amount,dc,secunitid,entry_id')->from('entry_items')->where('ledger_id', '60')->where('dc', 'C');
         	$query_result = $CI->db->get();
         	$result = $query_result->result();
         	$no_rows = $query_result->num_rows();
@@ -364,6 +364,7 @@ class paymentreceipt
                 	$CI->db->select('partyname,pan,vat,staxnum,sacunit')->from('addsecondparty')->where('sacunit', $secunitid);
                 	$party_result = $CI->db->get();
                 	$p_detail = $party_result->result();
+					if(!empty($p_detail)){
 			foreach($p_detail as $row)
 			{
 				echo "<tr>";
@@ -375,20 +376,37 @@ class paymentreceipt
 				echo "<td>". $row->staxnum."</td>";
 				echo "<td>". $row->sacunit."</td>";
 			}
+					}else{
+				echo "<tr>";
+				echo "<td align=\"center\">". $counter. "</td>";
+				$counter++;
+				echo "<td></td>";
+				echo "<td></td>";
+				echo "<td></td>";
+				echo "<td></td>";
+				echo "<td></td>";	
+					}
 
                 	$CI->db->select('date,narration')->from('entries')->where('id', $entry_id);
                 	$entry_result = $CI->db->get();
                 	$entry_detail = $entry_result->result();
+					if(!empty($entry_detail)){
 			foreach($entry_detail as $row1)
 			{
 				$datetime = $row1->date;
 				$date = date_mysql_to_php($datetime);
 				echo "<td>".$date. "</td>";
-                        	echo "<td>". $row1->narration ."</td>";
+                echo "<td>". $row1->narration ."</td>";
 			}
-			echo "<td align=\"center\">". $entry_items_id."</td>";
-                        echo "<td align=\"center\">". $amount ."</td>";			
+			}
+			else{
+				echo "<td></td>";
+                echo "<td></td>";
+			}
+				echo "<td align=\"center\">". $entry_items_id."</td>";
+                echo "<td align=\"center\">". $amount ."</td>";			
         	}	
+			
 	}
 
 // added by @kanchan on date 2015 04 10

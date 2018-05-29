@@ -318,9 +318,9 @@ $width="100%";
 				'size' => '40',
 				'value' => '',
 			);
-			if ($_POST)
+			if($_POST)
 			{
-				$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+				$data['search_by_active'] = $this->input->post('search_by', TRUE);
 				$data['text']['value'] = $this->input->post('text', TRUE);                       
 			}
 			/* Form Validation */
@@ -1250,14 +1250,14 @@ $width="100%";
                                         'ledger_code' => $code_ledg_dat,
                                         );
                                         }
-                                $add_value = $opening_bal + $dr_total1;
-                                if($data_ledger_dc == "C")
-                                {
-                                        $data_amount = $data_all_cr_amount[$id];
-                                        $cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+                                	$add_value = $opening_bal + $dr_total1;
+                                	if($data_ledger_dc == "C")
+                               	 	{
+                                        	$data_amount = $data_all_cr_amount[$id];
+                                        	$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
 
-                                if(($opening_bal > 0 || $dr_total1 > 0) && ($opening_bal >= $cr_total || $dr_total1 >= $cr_total || $add_value >= $cr_total))
-                                {
+                                	if(($opening_bal > 0 || $dr_total1 > 0) && ($opening_bal >= $cr_total || $dr_total1 >= $cr_total || $add_value >= $cr_total))
+                                	{
                                          $insert_ledger_data = array(
                                         'entry_id' => $entry_id,
                                         'ledger_id' => $data_ledger_id,
@@ -1268,12 +1268,12 @@ $width="100%";
 					'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
                                         'ledger_code' => $code_ledg_dat,
-                                );
+                                	);
+                                	}else{
+                                	}
+                                	}
                                 }else{
-                                }
-                                }
-                                }else{
-                                $insert_ledger_data = array(
+                                	$insert_ledger_data = array(
                                         'entry_id' => $entry_id,
                                         'ledger_id' => $data_ledger_id,
                                         'amount' => $data_amount,
@@ -1283,7 +1283,7 @@ $width="100%";
                                         'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
                                         'ledger_code' => $code_ledg_dat,
-                                );
+                                	);
                                 }
 
 

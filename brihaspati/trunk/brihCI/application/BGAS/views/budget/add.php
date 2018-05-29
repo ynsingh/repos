@@ -41,12 +41,17 @@ $(document).ready(function() {
 	echo "<br />";
 	echo form_input($budget_amount);
 	echo "</p>";
-
+		$options = array(
+            "" => "Select",
+            "Anually" => "Anually",
+            "Quaterlly" => "Quaterlly",
+		);
 	echo "<p>";
         echo form_label('Budget type', 'budget_type');
         echo "<br />";
-        echo form_input($budget_type);
-        echo "</p>";
+		echo form_dropdown('budget type', $options);
+       // echo form_input($budget_type);
+    echo "</p>";
 
 	$data = array(
     	'name'        => 'budget_over',
