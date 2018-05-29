@@ -71,22 +71,22 @@ class Payment_model extends CI_Model {
 
     function get_all_expense_detail($id)
     {
-		$total1="0";
-        $total2="0";
-        $total3="0";
-        $total4="0";
+		$total1=0.00;
+        $total2=0.00;
+        $total3=0.00;
+        $total4=0.00;
         $counter =0;
         $ledg_id = "";
         $ledger_id ="";
-        $total="0";
-        $total_amount="";
+        $total=0.00;
+        $total_amount=0.00;
 		$num_row="";
-		$sum_all="";
-		$sum_total ="";
-        $dr_sum_total = "";
-        $cr_sum_total = "";
-        $cr_sum ="";
-        $dr_total= "";
+		$sum_all=0.00;
+		$sum_total =0.00;
+        $dr_sum_total = 0.00;
+        $cr_sum_total = 0.00;
+        $cr_sum =0.00;
+        $dr_total= 0.00;
         $this->load->library('session');
         $date1 = $this->session->userdata('date1');
         $date2 = $this->session->userdata('date2');
@@ -177,33 +177,37 @@ class Payment_model extends CI_Model {
 
 	function get_all_income_detail($id)
 	{
-		$counter ="";
-		$sum_total ="";
-		$cr_total ="";
-		$dr_total ="";
-		$total1 = 0;
-		$total2 =0;
-		$t1 ="0";
-		$t2 ="0";
-		$t3 = "0";
-		$t4 = "0";
-		$t01 = "0";
-        $t02 = "0";
-        $t03 = "0";
-        $t04 = "0";
-		$fund_amount = "";
-		$diff = 0;
-		$transit = 0;
+		$counter =0;
+		$sum_total =0.00;
+		$cr_total =0.00;
+		$dr_total =0.00;
+		$total1 = 0.00;
+		$total2 =0.00;
+		$t1 =0.00;
+		$t2 =0.00;
+		$t3 = 0.00;
+		$t4 = 0.00;
+		$t01 = 0.00;
+        $t02 = 0.00;
+        $t03 = 0.00;
+        $t04 = 0.00;
+		$fund_amount = 0.00;
+		$diff = 0.00;
+		$transit = 0.00;
         $this->load->library('session');
         $date1 = $this->session->userdata('date1');
         $date2 = $this->session->userdata('date2');
 		$this->db->select('code')->from('groups')->where('id', $id);
         $code_result= $this->db->get();
         $code = $code_result->row();
+        //echo "code----id---->";print_r($code);
         $this->db->select('id')->from('ledgers');
+        if(!empty($code))
+        {
         foreach( $code as $code1){
                $this->db->like('code', $code1);
          }
+        }
         $query_result =$this->db->get();
         $no_row = $query_result->num_rows();
 
@@ -391,7 +395,7 @@ class Payment_model extends CI_Model {
                         $total = $expense->total; 
 		 }
                             
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="";
 
                 /* 
@@ -401,7 +405,8 @@ class Payment_model extends CI_Model {
 		$doc = new DOMDocument();
                 $doc->formatOutput = true;
 
-                $file_name=$type."-".$database."-".$curr_year.".xml";
+                //echo $file_name=$type."-".$database."-".$curr_year.".xml";echo "<br>";
+                echo "Datain--->".$file_name=$type."-".$database.".xml";echo "<br>";
                 $tt=$acctpath."/".$file_name;
 
                 if(file_exists($tt))
@@ -543,7 +548,7 @@ class Payment_model extends CI_Model {
 	function xml_read($file_name, $name){
 		$amount="0.00";
 		if(file_exists($file_name))
-                {
+        {
 			$xml=simplexml_load_file($file_name);
 			foreach($xml->children() as $books){
 				if($books->Group_Name == $name)
@@ -551,7 +556,6 @@ class Payment_model extends CI_Model {
 				if($amount == 0)
 					$amount="0.00";
 			} 	
-
 		}
                 return $amount;
 	}
@@ -613,7 +617,7 @@ class Payment_model extends CI_Model {
                         $total = $expense->total;
                  }
 
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="";
 
                 /* 

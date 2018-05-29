@@ -109,36 +109,6 @@
 			echo "</table>";
 			echo "</td>";//end of payment side....
 			echo "</tr>";
-		//Previous code
-		/*$net_income_total = -$net_income_total; /* Converting to positive value since Cr */
-		/*$net_old_income_total = -$net_old_income_total; /* Converting to positive value since Cr */
-
-		/* Showing Net P/L : Payment */
-		//$nettotal = $net_expense_total;
-		//$net_old_total = $net_old_expense_total;
-		//closing of bank and cash account....
-		/*echo "<tr valign=\"top\" class=\"total-area\">";
-		echo "<td>";
-                echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
-                echo "<tr valign=\"top\" class=\"tr-balance\">";
-                echo "<td width=\"$left_width\" class=\"bold\">Bank Or Cash Closing Balance</td>";
-                echo "<td></td>";
-                echo "<td></td>";
-                echo "</tr>";
-                echo "</table>";
-                echo "</td>";
-
-		echo "<td>";
-                echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
-                echo "<tr valign=\"top\" class=\"tr-balance\">";
-                echo "<td></td>";
-                echo "<td></td>";
-                echo "<td align=\"right\" class=\"bold\">".convert_amount_dc($ledbalance)."</td>";
-                echo "</tr>";
-                echo "</table>";
-                echo "</td>";
-
-		echo"</tr>";*/
 		//end....
 
 		//for Total balance....
@@ -166,7 +136,25 @@
 		echo "</table>";
 		echo "</td>";
 		echo "</tr>";//end of Total balance....    */
-		echo "</table>"; 
+		echo "</table>";
+/*
+        echo "<td>";
+                echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
+                echo "<tr valign=\"top\" class=\"tr-balance\">";
+                echo "<td></td>";
+                echo "<td></td>";
+                echo "<td align=\"right\" class=\"bold\">".convert_amount_dc($ledbalance)."</td>";
+                echo "</tr>";
+                echo "</table>";
+                echo "</td>";
+
+        echo"</tr>";*/
+
+
+
+
+
+ 
 	}
 	if(! $print_preview)
 	{

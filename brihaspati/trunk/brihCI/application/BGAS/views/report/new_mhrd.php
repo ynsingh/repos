@@ -44,7 +44,7 @@
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
 	echo "<thead><tr><th align=\"center\" width=\"30%\">SOURCES OF FUNDS</th><th align=\"center\" width=\"30%\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	$this->load->library('reportlist1');
-        $liability = new Reportlist1();
+    $liability = new Reportlist1();
 	$income = new Reportlist1();
 	$diff_total = $income->income_expense_diff();
 //        $liability->new_mhrd(2);
@@ -65,7 +65,7 @@
 
         echo "<td align=\"right\" class=\"bold\">";
       //  echo money_format('%!i', convert_cur($mhrd_total));
-        echo convert_amount_dc(-$mhrd_total);//add (-) for convert amount to cr
+        //echo convert_amount_dc(-$mhrd_total);//add (-) for convert amount to cr
         echo "</td>"; 
         echo "</tr>";
         echo "</table>";
@@ -75,9 +75,9 @@
         $this->load->library('reportlist1');
         $asset = new Reportlist1();
 //        $asset->new_mhrd(1);
-	$asset->new_mhrd(1, 'view', 'NULL');//add for previous year value
-	$mhrd_total=$asset->total_mhrd; // add for previous value total
-	$asset_total1 = $asset->curr_total;  
+	    $asset->new_mhrd(1, 'view', 'NULL');//add for previous year value
+	    $mhrd_total=$asset->total_mhrd; // add for previous value total
+	    $asset_total1 = $asset->curr_total;  
         echo "<tr>";
         echo "<td class=\"bold\">";
                 echo "Total";

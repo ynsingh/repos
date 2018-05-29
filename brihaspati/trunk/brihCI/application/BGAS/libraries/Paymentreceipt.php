@@ -96,7 +96,7 @@ class paymentreceipt
 					}
 					//code for writig xml... 
                                         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                        $file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
+                                        $file_name="Payment"."-".$current_active_account.".xml";
 	                                $tt=$acctpath."/".$file_name;
 					$paymentlist2=$CI->payment_model->xml_read($tt,$name);
 					if($acc == "view" && $database == "NULL" )
@@ -202,7 +202,7 @@ class paymentreceipt
                         }
                     	}
 			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="Receipt"."-".$current_active_account."-".$prev_year.".xml";
+                        $file_name="Receipt"."-".$current_active_account.".xml";
                         $tt=$acctpath."/".$file_name;
                         $receiptlist2=$CI->payment_model->xml_read($tt,$name);
 
@@ -288,7 +288,7 @@ class paymentreceipt
 		$type1 =$type."_Name";
         	$doc = new DOMDocument();
 	        $doc->formatOutput = true;
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
 	        $file_name="";
         	$file_name=$type."-".$database."-".$curr_year.".xml";
 	        $tt=$acctpath."/".$file_name;
@@ -462,12 +462,13 @@ class paymentreceipt
 
 	function ledgers_op_cl_balance($type,$ledg_id,$database,$name,$curr_year, $op_balance, $op_balance_dc)
         {
+                //echo "ledgers_op_cl_balance--->";
                 $CI =& get_instance();
                 if($name !=  'Depreciation' && $name !=  'Current Assets' && $name !=  'Committed Fund'){
                 $type1 =$type."_Name";
                 $doc = new DOMDocument();
                 $doc->formatOutput = true;
-                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="";
                 $file_name=$type."-".$database."-".$curr_year.".xml";
                 $tt=$acctpath."/".$file_name;
