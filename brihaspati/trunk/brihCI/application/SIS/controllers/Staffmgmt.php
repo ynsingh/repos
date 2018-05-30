@@ -1102,7 +1102,7 @@ class Staffmgmt extends CI_Controller
                     Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
                     '.$this->regname.'<br/>'.$this->uitdesig;
                     $attachment=$this->sismodel->gentransferordertpdf($_POST['empname']);
-                   // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,$attachment,'All');
+                    $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,$attachment,'');
                    // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'','Sis');
                     if($this->mailstoperson){
                         //echo "in if part mail";
@@ -1975,7 +1975,9 @@ class Staffmgmt extends CI_Controller
      
     public function getuocdeptlist(){
         $combid = $this->input->post('campuoc');
-        $datawh=array('dept_uoid' => $combid);
+        $parts = explode(',',$combid);
+        $sccode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$parts[0])->sc_code;
+        $datawh=array('dept_sccode'=> $sccode,'dept_uoid' => $parts[1]);
         $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
         $dept_select_box ='';
         $dept_select_box.='<option value="">------- Select Department ----------------------';
@@ -2231,5 +2233,34 @@ class Staffmgmt extends CI_Controller
     }
     
     /*******************************************closer grade list********************************/
+    
+    /* This function has been created for get the vacant shown against position */
+    public function getemppostpositionnew(){
+        $combval = $this->input->post('combfive');
+        $parts = explode(',',$combval);
+        /******************Query for filteraion the post************************************/
+        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+                       'sp_schemecode' => $parts[3], 'sp_tnt' => $parts[4]);
+        $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_emppost,sp_vacant',$datawh);
+        $emppost_select_box ='';
+        $emppost_select_box.='<option value="">-------------- Select Post -----------------';
+        if(!empty($emppost_data)){ 
+        	
+            foreach($emppost_data as $records){ 
+                if($records->sp_vacant > 0){ 
+                    $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$records->sp_emppost)->desig_name;
+                    $emppost_select_box.='<option value='.$records->sp_emppost.'>'.$emppost_name.' ';
+                  
+                }//if
+            }//foreach    
+        } //if close   
+        else{
+            $emppost_select_box='No vacancy';
+        }
+        echo json_encode($emppost_select_box);
+                        
+    }
+       
+    /***********************************shown against position*********************************************/   
 }    
 

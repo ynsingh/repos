@@ -26,9 +26,9 @@
                 /************************select department on basis of uoc *******************/
                        
                 $('#uocid').on('change',function(){
-                    //var sc_code = $('#camp').val();
+                    var sc_code = $('#campfrom').val();
                     var uoc_id = $('#uocid').val();
-                    //var combid = sc_code+","+uoc_id;
+                    var combid = sc_code+","+uoc_id;
                     //alert("combid=="+combid);
                     if(uoc_id == ''){
                         $('#scid').prop('disabled',true);
@@ -39,7 +39,7 @@
                         $.ajax({
                             url: "<?php echo base_url();?>sisindex.php/staffmgmt/getuocdeptlist",
                             type: "POST",
-                            data: {"campuoc" : uoc_id},
+                            data: {"campuoc" : combid},
                             dataType:"html",
                             success:function(data){
                             
@@ -122,10 +122,9 @@
                 /************************select department on basis of uoc *******************/
                        
                 $('#uocidto').on('change',function(){
-                    //var sc_code = $('#camp').val();
+                    var sc_code = $('#camp').val();
                     var uoc_id = $('#uocidto').val();
-                    //var combid = sc_code+","+uoc_id;
-                    //alert("combid=="+combid);
+                    var combid = sc_code+","+uoc_id;
                     if(uoc_id == ''){
                         $('#scidto').prop('disabled',true);
                     }
@@ -135,7 +134,7 @@
                         $.ajax({
                             url: "<?php echo base_url();?>sisindex.php/staffmgmt/getuocdeptlist",
                             type: "POST",
-                            data: {"campuoc" : uoc_id},
+                            data: {"campuoc" : combid},
                             dataType:"html",
                             success:function(data){
                             
@@ -143,7 +142,7 @@
                        
                             },
                             error:function(data){
-                            //alert("data in error==="+data);
+                           // alert("data in error==="+data);
                                 alert("error occur..!!");
                             }
                                             
@@ -328,20 +327,20 @@
                     var sc_code = $('#camp').val();
                     var uoc_id = $('#uocidto').val();
                     var dept_id = $('#scidto').val();
-                    //var schm_id = $('#schmid').val();
+                    var schm_id = $('#schmidto').val();
                     var desig_id = $('#desigidto').val();
                     var wrktype_id = $('#emptypeto').val();
-                    var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id;
-                   //    alert("vales======"+cudshmdesigwrktype);
+                    var cudshmwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+wrktype_id;
+                    //   alert("vales======"+cudshmwrktype);
                     if(desig_id == ''){
                         $('#postto').prop('disabled',true);
                     }
                     else{
                         $('#postto').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
+                            url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostpositionnew",
                             type: "POST",
-                            data: {"combsix" : cudshmdesigwrktype},
+                            data: {"combfive" : cudshmwrktype},
                             dataType:"html",
                             success:function(data){
                                 var empdata=data;
