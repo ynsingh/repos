@@ -18,13 +18,13 @@
         }
     </script>
 
-      <table>
-            <tr colspan="2"><td>
+      <table width="100%">
+            <tr><td>
 		<?php
         	   echo anchor('setup/displaysalarygrademaster', 'Salary Grade List', array('class' => 'top_parent'));
 	        ?>
 
-                <div align="left" style="margin-left:0%;width:95%;">
+                <div>
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 
@@ -94,6 +94,40 @@
                     
                 echo "</td>";
             echo "</tr>";
+
+echo "<tr>";
+               echo "<td>";
+               echo form_label('Salary Level ','sgm_level');
+
+                echo "</td>";
+                echo "<td>";
+                $level=$sgm_level['value'];
+                    echo "<select name=\"sgm_level\"class=\"my_dropdown\" style=\"width:100%;\">";
+                    echo "<option value=$level \"class=\"dropdown-item\">$level</option>";
+                     echo "<option value=selected disabled \"class=\"dropdown-item\">------select------</option>";
+                    echo "<option value=\"level-1\" class=\"dropdown-item\">level-1</option>";
+                    echo "<option value=\"level-2\" class=\"dropdown-item\">level-2</option>";
+                    echo "<option value=\"level-3\" class=\"dropdown-item\">level-3</option>";
+                    echo "<option value=\"level-4\" class=\"dropdown-item\">level-4</option>";
+                    echo "<option value=\"level-5\" class=\"dropdown-item\">level-5</option>";
+                    echo "<option value=\"level-6\" class=\"dropdown-item\">level-6</option>";
+                    echo "<option value=\"level-7\" class=\"dropdown-item\">level-7</option>";
+                    echo "<option value=\"level-8\" class=\"dropdown-item\">level-8</option>";
+                    echo "<option value=\"level-9\" class=\"dropdown-item\">level-9</option>";
+                    echo "<option value=\"level-10\" class=\"dropdown-item\">level-10</option>";
+                    echo "<option value=\"level-11\" class=\"dropdown-item\">level-11</option>";
+                    echo "<option value=\"level-12\" class=\"dropdown-item\">level-12</option>";
+                    echo "<option value=\"level-13\" class=\"dropdown-item\">level-13</option>";
+                    echo "<option value=\"level-13A\" class=\"dropdown-item\">level-13A</option>";
+                    echo "<option value=\"level-14\" class=\"dropdown-item\" >level-14</option>";
+                    echo "<option value=\"level-15\" class=\"dropdown-item\">level-15</option>";
+                    echo "<option value=\"level-16\" class=\"dropdown-item\">level-16</option>";
+                    echo "<option value=\"level-17\" class=\"dropdown-item\">level-17</option>";
+                    echo "<option value=\"level-18\" class=\"dropdown-item\">level-18</option>";
+                    echo "</select>";
+
+                echo "</td>";
+                echo "</tr>";
             //echo "</p>";
         
             // echo "<p>";

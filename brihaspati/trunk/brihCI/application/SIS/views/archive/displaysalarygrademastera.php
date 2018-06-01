@@ -47,6 +47,7 @@
         <th>Salary Grade Max </th>
         <th>Salary Grade Min</th>
         <th>Salary Grade Pay Band </th>
+        <th>Salary Grade Level</th>
         <th>Archiver's Name </th>
         <th>Archiver's Date </th>
         </thead></tr>
@@ -63,6 +64,7 @@
                     <td><?php echo $row->sgma_max ;?> </td>
                     <td><?php echo $row->sgma_min ;?></td>
 		    <td><?php echo $row->sgma_gradepay ?> </td>
+                    <td><?php echo $row->sgma_level?></td>
                     <td><?php echo $this->logmodel->get_listspfic1('edrpuser', 'username', 'id', $row->sgma_archuserid)->username ?> </td>
                     <td><?php echo $row->sgma_archdate ?> </td>
 

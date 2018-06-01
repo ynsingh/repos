@@ -28,7 +28,7 @@
 	    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
             echo "</td>";
          ?>
-	<div align="left" style="margin-left:0%;width:95%;">
+	<div align="left" style="width:100%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -54,7 +54,8 @@
         <th>Salary Grade Name </th>
         <th>Salary Grade Max </th>
         <th>Salary Grade Min</th>
-        <th>Salary Grade Pay Band </th>
+        <th>Salary Grade Pay </th>
+        <th>Salary Level </th>
         <th> Action </th>
         </thead></tr>
 	<tbody>
@@ -69,7 +70,8 @@
                     <td><?php echo $row->sgm_name;?> </td>
                     <td><?php echo $row->sgm_max ;?> </td>
                     <td><?php echo $row->sgm_min ;?></td>
-		    <td><?php echo $row->sgm_gradepay ?> </td>
+		    <td><?php echo $row->sgm_gradepay ;?> </td>
+                    <td><?php echo $row->sgm_level;?> </td>
              	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
                </tr>

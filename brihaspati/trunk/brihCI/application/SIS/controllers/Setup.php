@@ -3592,33 +3592,52 @@ public function salarygrademaster(){
 
         if(isset($_POST['salarygrademaster'])) {
             $this->form_validation->set_rules('sgmname','Salary Grade Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
-            $this->form_validation->set_rules('sgmmax','Salary Grade Master Max','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('sgmmin','Salary Grade Master Min','trim|xss_clean|required|numeric');
-            $this->form_validation->set_rules('sgmgradepay','Salary Grade Master Gradepay','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('sgmmax','Salary Grade Master Max','trim|xss_clean|required|is_natural_no_zero');
+            $this->form_validation->set_rules('sgmmin','Salary Grade Master Min','trim|xss_clean|required|is_natural_no_zero');
+            $this->form_validation->set_rules('sgmgradepay','Salary Grade Master Gradepay','trim|xss_clean|is_natural_no_zero|required');
+            $this->form_validation->set_rules('sgmlevel','salary Grade Master Level','trim|xss_clean|required');
+            
+             
 
             if($this->form_validation->run()==TRUE){
 
 	    $sgmn = $this->input->post("sgmname");		
-	    $sgmmax = $this->input->post("sgmmax");		
-	    $sgmmin = $this->input->post("sgmmin");		
-	    $sgmgrade = $this->input->post("sgmgradepay");		
-	    	
-            $data = array(
+	    $sgmmax = $this->input->post("sgmmax");
+            $sgmmin = $this->input->post("sgmmin");
+            $sgmgrade = $this->input->post("sgmgradepay");
+            $sgmlevel =$this->input->post("sgmlevel");
+                
+
+              
+           $data = array(
                 'sgm_name'=>strtoupper($_POST['sgmname']),
                 'sgm_max'=>strtoupper($_POST['sgmmax']),
                 'sgm_min'=>strtoupper($_POST['sgmmin']),
-                'sgm_gradepay'=>$_POST['sgmgradepay']
+                'sgm_gradepay'=>($_POST['sgmgradepay']),
+                'sgm_level'=>($_POST['sgmlevel'])
+                
 
-            );
+           );
+			
            $saldatadup = $this->SIS_model->isduplicatemore('salary_grade_master', $data);
 
-                   if($saldatadup == 1 ){
-
-                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Salary Grade Master Name' = $sgmn, 'Salary Grade Master Max' = $sgmmax , 'Salary Grade Master Min' =$sgmmin .");
+               if($saldatadup == 1 ){
+                 $this->session->set_flashdata("err_message", "Record already exists with this combination. 'Salary Grade Master Name' = $sgmn, 'Salary Grade Master Max' = $sgmmax , 'Salary Grade Master Min' =$sgmmin,'salary Grade Master Level=$sgmlevel .");
                         redirect('setup/salarygrademaster');
                         return;
                  }
            else{
+		//echo $_POST['sgmmax']."min val".$_POST['sgmmin'];
+		//die;
+
+	     if($_POST['sgmmax'] < $_POST['sgmmin'] ){
+		 $this->session->set_flashdata("err_message", "Salary Grade min amount must be less than Salary Grade max amount");
+                       $this->load->view('setup/salarygrademaster');
+                        return;
+
+		}
+		else{
+			
 
            $sgmflag=$this->SIS_model->insertrec('salary_grade_master', $data) ;
            if(!$sgmflag)
@@ -3634,9 +3653,10 @@ public function salarygrademaster(){
                 $this->session->set_flashdata("success", "Salary Grade Master added successfully...");
                 redirect("setup/displaysalarygrademaster", "refresh");
               }
-           }
-	 }
-        }
+           }//else max grade cond		
+            }//else
+	  }//form validation
+        }//post button
       $this->load->view('setup/salarygrademaster');
    }
 
@@ -3656,7 +3676,7 @@ public function displaysalarygrademaster(){
      * @return type
      */
    public function editsalarygrademaster($sgm_id) {
-        $sgm_data_q=$this->SIS_model->get_listrow('salary_grade_master','sgm_id', $sgm_id);
+      $sgm_data_q=$this->SIS_model->get_listrow('salary_grade_master','sgm_id', $sgm_id);
         if ($sgm_data_q->num_rows() < 1)
         {
            redirect('setup/editsalarygrademaster');
@@ -3697,13 +3717,22 @@ public function displaysalarygrademaster(){
            'value' => $SalaryGradeMaster_data->sgm_gradepay,
 
         );
+     
+        $data['sgm_level']= array(
+         'name' => 'sgm_level',
+         'id' => 'sgm_level',
+         'maxlength' => '255',
+          'size' => '40',
+          'value' => $SalaryGradeMaster_data->sgm_level,
+          );
 
         $data['sgm_id'] = $sgm_id;
 
         $this->form_validation->set_rules('sgm_name','Salary Grade Master Name  ','trim|xss_clean|required|alpha_numeric_spaces');
-        $this->form_validation->set_rules('sgm_max','Salary Grade Master Max ','trim|xss_clean|required|numeric');
-        $this->form_validation->set_rules('sgm_min','Salary Grade Master Min ','trim|xss_clean|required|numeric');
-        $this->form_validation->set_rules('sgm_gradepay','Salary Grade Master Gradepay ','trim|xss_clean|numeric');
+        $this->form_validation->set_rules('sgm_max','Salary Grade Master Max ','trim|xss_clean|required|numeric|is_natural_no_zero');
+        $this->form_validation->set_rules('sgm_min','Salary Grade Master Min ','trim|xss_clean|required|numeric|is_natural_no_zero');
+        $this->form_validation->set_rules('sgm_gradepay','Salary Grade Master Gradepay ','trim|xss_clean|numeric|is_natural_no_zero');
+        $this->form_validation->set_rules('sgm_level','Salary Grade Master Level ','trim|xss_clean|required');                                                                                                
 
         if ($_POST)
         {
@@ -3711,6 +3740,7 @@ public function displaysalarygrademaster(){
             $data['sgm_max']['value'] = $this->input->post('sgm_max', TRUE);
             $data['sgm_min']['value'] = $this->input->post('sgm_min', TRUE);
             $data['sgm_gradepay']['value'] = $this->input->post('sgm_gradepay', TRUE);
+            $data['sgm_level']['value'] =$this->input->post('sgm_level',TRUE);
         }
         if ($this->form_validation->run() == FALSE)
         {
@@ -3724,6 +3754,7 @@ public function displaysalarygrademaster(){
             $sgm_max = strtoupper($this->input->post('sgm_max', TRUE));
             $sgm_min = strtoupper($this->input->post('sgm_min', TRUE));
             $sgm_gradepay = $this->input->post('sgm_gradepay', TRUE);
+            $sgm_level =$this->input->post('sgm_level',TRUE);
             //$sgm_id = $sgm_id;
             $logmessage = "";
             if($SalaryGradeMaster_data->sgm_name != $sgm_name)
@@ -3734,6 +3765,8 @@ public function displaysalarygrademaster(){
                 $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_min. " changed by " .$sgm_min;
             if($SalaryGradeMaster_data->sgm_gradepay != $sgm_gradepay)
                 $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_gradepay. " changed by " .$sgm_gradepay;
+            if($SalaryGradeMaster_data->sgm_level !=$sgm_level)
+                $logmessage = " Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_level. "changed by ".$sgm_level;
 
             $instdatasgma = array(
 	       'sgma_sgmid'=> $sgm_id,	
@@ -3741,6 +3774,7 @@ public function displaysalarygrademaster(){
                'sgma_max' => $SalaryGradeMaster_data->sgm_max,
                'sgma_min' => $SalaryGradeMaster_data->sgm_min,
                'sgma_gradepay'=> $SalaryGradeMaster_data->sgm_gradepay,
+               'sgma_level' =>$SalaryGradeMaster_data->sgm_level,
                'sgma_archuserid'=>$this->session->userdata('id_user'),
                'sgma_archdate'=>date('y-m-d')
             );
@@ -3750,17 +3784,28 @@ public function displaysalarygrademaster(){
                'sgm_max' => $sgm_max,
                'sgm_min' => $sgm_min,
                'sgm_gradepay'=> $sgm_gradepay,
+               'sgm_level' =>$sgm_level
             );
 
            $saldatadupe = $this->SIS_model->isduplicatemore('salary_grade_master', $update_data);
 
                    if($saldatadupe == 1 ){
 
-                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Salary Grade Master Name' = $sgm_name, 'Salary Grade Master Max' = $sgm_max , 'Salary Grade Master Min' =$sgm_min .");
-                        redirect('setup/displaysalarygrademaster/');
+                        $this->session->set_flashdata("err_message", "Record  already exist with this combination. 'Salary Grade Master Name' = $sgm_name, 'Salary Grade Master Max' = $sgm_max , 'Salary Grade Master Min' =$sgm_min .");
+                           $this->load->view('setup/editsalarygrademaster', $data);
                         return;
                  }
          else{
+
+          if($_POST['sgm_max'] < $_POST['sgm_min'] ){
+		 $this->session->set_flashdata("err_message", "Salary Grade min amount must be less than Salary Grade max amount");
+             $this->load->view('setup/editsalarygrademaster', $data);
+            return;
+                       
+
+		}
+             
+            else{
 	 $sgflag=$this->SIS_model->insertrec('salary_grade_master_archive', $instdatasgma);
          if(!$sgflag)
             {
@@ -3775,7 +3820,7 @@ public function displaysalarygrademaster(){
                 $this->logger->write_logmessage("error","Error in update Salary Grade Master ", "Error in Salary Grade Master record update. $logmessage . " );
                 $this->logger->write_dblogmessage("error","Error in update Salary Grade Master ", "Error in Salary Grade Master record update. $logmessage ." );
                 $this->session->set_flashdata('err_message','Error updating Salary Grade Master - ' . $logmessage . '.', 'error');
-                $this->load->view('setup/editsalarygrademaster', $data);
+                 $this->load->view('setup/editsalarygrademaster',$update_data);
             }
             else{
                 $this->logger->write_logmessage("update","Edit Salary Grade Master", "Salary Grade Master record updated successfully... $logmessage . " );
@@ -3783,9 +3828,11 @@ public function displaysalarygrademaster(){
                 $this->session->set_flashdata('success','Salary Grade Master record updated successfully...');
                 redirect('setup/displaysalarygrademaster/');
                 }
+              
+              }
 	    }
         }//else
-        redirect('setup/editsalarygrademaster/');
+        $this->load->view('setup/editsalarygrademaster');
     }
 
 

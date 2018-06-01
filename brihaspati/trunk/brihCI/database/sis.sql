@@ -449,6 +449,7 @@ CREATE TABLE `salary_grade_master` (
   `sgm_max` int(11) NOT NULL default '0',
   `sgm_min` int(11) NOT NULL default '0',
   `sgm_gradepay` int(11) NOT NULL default '500',
+  'sgm_level' varchar(255) NOT NULL  default '0',
   `sgm_org_id` int(11) NOT NULL default '1',
    PRIMARY KEY  (`sgm_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -465,6 +466,7 @@ CREATE TABLE `salary_grade_master_archive` (
      `sgma_max` int(11) NOT NULL default '0',
      `sgma_min` int(11) NOT NULL default '0',
      `sgma_gradepay` int(11) NOT NULL default '500',
+     'sgma_level' varchar (255) NOT NULL default '0',
      `sgma_org_id` int(11) NOT NULL default '1',
      `sgma_archuserid` int(11) NOT NULL,
      `sgma_archdate`  date NOT NULL,
