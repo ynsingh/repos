@@ -165,6 +165,7 @@ class Report  extends CI_Controller
                 }
             }
 	 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+        
         }
         else{
             //echo "else case of filter";
@@ -299,6 +300,7 @@ class Report  extends CI_Controller
 	$whdata = array ('empsd_empid' => $emp_id);
 	$whorder = 'empsd_dojoin desc';
 	$emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
+	$emp_data['addassign'] = $this->sismodel->get_listrow('additional_assignments','aa_empid',$emp_id);
         //$emp_data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
         $this->load->view('report/viewfull_profile',$emp_data);

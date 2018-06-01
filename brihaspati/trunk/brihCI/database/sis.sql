@@ -147,6 +147,8 @@ CREATE TABLE  employee_servicedetail(
 	empsd_schemeid int(9) DEFAULT NULL,
 	empsd_ddoid int(9) DEFAULT NULL,
 	empsd_group varchar(9) DEFAULT NULL,
+	empsd_worktype VARCHAR(255) NOT NULL,
+	empsd_level VARCHAR(255) NOT NULL,
 	empsd_shagpstid varchar(9) DEFAULT NULL, 
         empsd_desigcode  varchar(255) NOT NULL ,
         empsd_pbid INT(11) NOT NULL,

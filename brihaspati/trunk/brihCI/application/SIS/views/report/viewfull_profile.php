@@ -29,7 +29,7 @@
                 document.body.innerHTML = originalContents;
             }
 		 function goBack() {
-        		window.history.back();
+        		window.history.go(-2);
 	        }
 
         </script>
@@ -43,7 +43,7 @@
                 
             </td> 
 	 <td align=right>
-<?php		echo "<button onclick=\"goBack()\" >Back</button>"; ?>
+        <a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a>
 	</td>
         </tr>
     </table>        
@@ -85,7 +85,7 @@
 			<td>Phone No. </br><?php echo $data->emp_phone;?></td>
 		</tr>
 		<tr>	
-			<td>E-mail Id </br> <?php echo $data->emp_email;?></td>
+			<td>E-mail Id </br> <?php echo $data->emp_secndemail;?></td>
 		</tr>
 		<tr></tr>
 		<tr><td height=60></td><tr>
@@ -123,8 +123,9 @@
 
                             </td>
                         <tr>
-                </table>	
+                </table>
            <table class="TFtable" style="width:100%;">
+<tr><td colspan="4"><label for="Work Information" style="font-size:17px;color:#0099CC"><b>Work Information:</b></label></td> </tr>
 			<tr>
 				<td>
 <?php   			echo	"<b>Campus Name</b> <br>";
@@ -150,7 +151,7 @@
 					echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$data->emp_schemeid)->sd_name;
 ?>
 				</td>
-			</tr>              
+			</tr>
   			<tr>
                                 <td>
 <?php   echo    "<b>Drawing and Disbursing Officer</b> <br>".$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddouserid)->ddo_name; ?>
@@ -179,22 +180,11 @@
                                 <td>
 <?php   echo    "<b>Employee Type</b> <br>".$data->emp_type_code; ?>
                                 </td>
-                                <td>
-<?php   echo    "<b>Employee PF No</b> <br>".$data->emp_code; ?>
-                                </td>
-                        </tr>
-
-			<tr>
-                                <td>
-<?php   echo    "<b>Employee Name</b> <br>".$data->emp_name ;?>
-                                </td>
-                                <td>
-
-<?php   echo    "<b>Fathers Name</b> <br>".$data->emp_father; ?>
-                                </td>
-                                <td>
+  <td>
 <?php   echo    "<b>Application Order No</b> <br>".$data->emp_apporderno; ?>
                                 </td>
+</tr>
+<tr>
                                 <td>
 <?php   
 		$splsub = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$data->emp_specialisationid);
@@ -204,23 +194,7 @@
 		}
  ?>
                                 </td>
-                        </tr>
-			<tr>
-                                <td>
-<?php   echo    "<b>Gender</b> <br>".$data->emp_gender;?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Community</b> <br>".$data->emp_community;?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Religion</b> <br>".$data->emp_religion;?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Caste</b> <br>".$data->emp_caste;?>
-                                </td>
-                        </tr>
-<tr>
-                                <td>
+<td>
 <?php   
 	 		    $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_grade)->sgm_name;
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_grade)->sgm_max;
@@ -231,20 +205,76 @@
 					echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
 ?>
                                 </td>
-                                <td>
+<td>
 <?php   echo    "<b>Basic Pay</b> <br>".$data->emp_basic;?>
                                 </td>
+   
                                 <td>
 <?php   echo    "<b>Emolution</b> <br>".$data->emp_emolution;?>
                                 </td>
+</tr>
+<tr>
                                 <td>
 <?php   echo    "<b>NHIS ID No</b> <br>".$data->emp_nhisidno;?>
                                 </td>
-                        </tr>
+  <td>
+<?php   echo    "<b>Date of Appointment</b> <br>". implode('-', array_reverse(explode('-', $data->emp_doj)));?>
+                                </td>
+                                <td>
+<?php   echo    "<b>Date of Retirement</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dor)));?>
+                                </td>
+ <td>
+<?php   echo    "<b>Date of Probation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doprobation)));?>
+                                </td>
+</tr>
 <tr>
+  <td>
+<?php   echo    "<b>Date of Regularisation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doregular)));?>
+                                </td>
+ <td>
+<?php  // echo    "<b>Date of HGP</b> <br>".date('d-m-Y', strtotime($data->emp_dateofHGP ));?>
+<?php   echo    "<b>Date of HGP</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofHGP)));?>
+                               </td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+
+<tr><td colspan="4"><label for="Personal Informatiom" style="font-size:17px;color:#0099CC"><b>Personal Infomation:</b></label></td> </tr>
+<tr>
+                                <td>
+<?php   echo    "<b>Employee PF No</b> <br>".$data->emp_code; ?>
+                                </td>
+                       
+                                <td>
+<?php   echo    "<b>Employee Name</b> <br>".$data->emp_name ;?>
+                                </td>
+                                <td>
+
+<?php   echo    "<b>Fathers Name</b> <br>".$data->emp_father; ?>
+                                </td>
+                              
+                       
+                                <td>
+<?php   echo    "<b>Gender</b> <br>".$data->emp_gender;?>
+                                </td>
+ </tr>
+			<tr>
+                                <td>
+<?php   echo    "<b>Community</b> <br>".$data->emp_community;?>
+                                </td>
+                                <td>
+<?php   echo    "<b>Religion</b> <br>".$data->emp_religion;?>
+                                </td>
+                                <td>
+<?php   echo    "<b>Caste</b> <br>".$data->emp_caste;?>
+                                </td>
                                 <td>
 <?php   echo    "<b>Whether Physically handicapped</b> <br>".$data->emp_phstatus;?>
                                 </td>
+</tr>
+<tr>
                                 <td>
 <?php   echo    "<b>Details of PH</b> <br>".$data->emp_phdetail;?>
                                 </td>
@@ -254,38 +284,12 @@
                                 <td>
 <?php   echo    "<b>Date of Birth</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dob)));?>
                                 </td>
-                        </tr>
-<tr>
-                                <td>
-<?php   echo    "<b>Date of Appointment</b> <br>". implode('-', array_reverse(explode('-', $data->emp_doj)));?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Date of Retirement</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dor)));?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Phd Status</b> <br>".$data->emp_phd_status;?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Date of Phd Completion</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofphd)));?>
-                                </td>
-                        </tr>
-<tr>
-                                <td>
-<?php   echo    "<b>ASSR Exam Status</b> <br>".$data->emp_AssrExam_status?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Date of ASSR Exam</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam))) ;?>
-                                </td>
-                                <td>
-<?php  // echo    "<b>Date of HGP</b> <br>".date('d-m-Y', strtotime($data->emp_dateofHGP ));?>
-<?php   echo    "<b>Date of HGP</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofHGP)));?>
-                                </td>
-                                <td>
+<td>
 <?php   echo    "<b>Pan No</b> <br>".$data->emp_pan_no;?>
                                 </td>
                         </tr>
 <tr>
-                                <td>
+<td>
 <?php 
 	  $fulldata=$data->emp_bank_ifsc_code;
                     $bname=explode(",",$fulldata);
@@ -294,53 +298,145 @@
                                 <td>
 <?php   echo    "<b>IFSC Code</b> <br>".$bname[1]; ?>
                                 </td>
+
                                 <td>
 <?php   echo    "<b>Bank ACC No</b> <br>".$data->emp_bank_accno;?>
                                 </td>
                                 <td>
 <?php   echo    "<b>Aadhaar No</b> <br>".$data->emp_aadhaar_no;?>
                                 </td>
-                        </tr>
-<tr>
+</tr>
+                              
+                                <!--td>
+<?php   //echo   <b>Phd Status</b> <br>".$data->emp_phd_status;?>
+                                </td>
                                 <td>
-<?php   echo    "<b>E-Mail ID</b> <br>".$data->emp_email;?>
+<?php  // echo  "<b>Date of Phd Completion</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofphd)));?>
+                                </td-->
+<tr><td colspan="4"><label for="Educationcal Informatiom" style="font-size:17px;color:#0099CC"><b>Educational Infomation:</b></label></td> </tr>
+ <td>
+<?php   echo    "<b>Qualification</b> <br>".$data->emp_qual;?>
+                                </td>
+                                <td>
+<?php   echo    "<b>ASSR Exam Status</b> <br>".$data->emp_AssrExam_status?>
+                                </td>
+                                <td>
+<?php   echo    "<b>Date of ASSR Exam</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam))) ;?>
+                                </td>
+<td>
+<?php   echo    "<b>Grade</b> <br>".$data->emp_grade;?>
+</td>
+</tr>
+<tr><td colspan="4"><label for="Communication Informatiom" style="font-size:17px;color:#0099CC"><b>Communication Infomation:</b></label></td> </tr>  
+<tr>                              
+                                <td>
+<!--?php   echo    "<b>E-Mail ID</b> <br>".$data->emp_email;?-->
+<?php   echo    "<b>Email Id</b> <br>".$data->emp_secndemail;?>
+
                                 </td>
                                 <td>
 <?php   echo    "<b>Phone/Mobile</b> <br>".$data->emp_phone;?>
                                 </td>
+ <td>
+<?php   echo    "<b>Residential Address</b> <br>".$data->emp_address;?>
+                                </td>
+<td>
+</td>
+</tr>
+<tr><td colspan="4"><label for="Other Informatiom" style="font-size:17px;color:#0099CC"><b>Other Infomation:</b></label></td> </tr>
+<tr>
                                 <td>
 <?php   echo    "<b>Mother Tongue</b> <br>".$data->emp_mothertongue;?>
                                 </td>
                                 <td>
 <?php   echo    "<b>Nativity</b> <br>".$data->emp_citizen;?>
+                                </td> 
+                                <td>
+<?php   echo    "<b>Remarks</b> <br>".$data->emp_remarks;?>                                </td>
+</td>
+<td>
+</td>
+</tr>
+<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>PhD Details:</b></label></td> </tr>
+<tr><td><b>Phd Status</b><br><?php echo $data->emp_phd_status;?></td><td><b>Date of Phd Completion</b><br><?php   echo implode('-', array_reverse(explode('-', $data->emp_dateofphd)));?></td><td><b>Discipline</b><br><?php   echo    $data->emp_phddiscipline;?></td> <td><b>PhD Type</b><br><?php   echo    $data->emp_phdtype;?></td></tr><tr><td><b>Institute Name</b><br><?php echo$data->emp_phdinstname;?></td><td><b> Deputed by Unversity</b><br><?php
+          $udep=$data->emp_phdunivdeput;
+                    $udepnew=explode(",",$udep);
+          echo    $udepnew[0];?>
+</td>
+<?php if((!empty($udepnew[0])) && ($udepnew[0] == "No")){ ?>
+<td>
+<?php  
+echo    "<b>If NO (Type of Leave availed for Ph.D) </b> <br>";
+echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$udepnew[1])->lt_name;?>
+				 <td>
+<?php  echo    "<b>Leave From</b> <br>".$udepnew[2];?>
                                 </td>
+</tr>
+<tr>
+<td>
+<?php echo    "<b>Leave To</b> <br>".$udepnew[3];?>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<?php } ?>
+<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>NET Details:</b></label></td> </tr>
+                                </td>
+        <?php
+          $ntq=$data->emp_netqualified;
+                if(!empty($ntq)){
+                    $ntqnew=explode(",",$ntq);
+echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
+</td><td><b>Organiser</b><br><?php   echo    $ntqnew[1];?></td><td><b>Year of Passing</b><br><?php   echo    implode('-', array_reverse(explode('-', $data->emp_netpassingyear)));?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
+<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Veterinary Council of india (VCI) Registration:</b></label></td> </tr>
+<tr>
+<td>
+<?php   echo    "<b>Registration No</b> <br>".$data->emp_vciregno;?>
+</td>
+<td>
+<?php   echo    "<b>Date of Registration</b> <br>".date('d-m-Y',strtotime($data->emp_vciregdate));?>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
                         </tr>
-			<tr>
-                                <td>
-<?php   echo    "<b>Date of Probation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doprobation)));?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Date of Regularisation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doregular)));?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Qualification</b> <br>".$data->emp_qual;?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Grade</b> <br>".$data->emp_grade;?>
-                                </td>
+<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Additional Assignments:</b></label></td> </tr>
+                        <tr style="background:none repeat scroll 0 0 #9D9D9D";>
+                            <td><b>Name of the Assignment</b></td>
+                            <td><b>Date From</b></td>
+                            <td><b>Date To</b></td>
+                            <td><b>Assignment Place</b></td>
                         </tr>
-			<tr>    
+<?php if( count($addassign->result()) ):
+   foreach($addassign->result() as $recrd){
+        if(!empty($recrd->aa_asigname)){
+
+?>
+<tr>
                                 <td>
-<?php   echo    "<b>Address</b> <br>".$data->emp_address;?>
-                                </td>
-                                <td>
-<?php   echo    "<b>Remarks</b> <br>".$data->emp_remarks;?>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                        </tr>
+<?php   echo $recrd->aa_asigname;?>
+</td>
+ <td>
+<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodfrom));?>
+</td>
+<td>
+<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodto));?>
+</td>
+<td>
+<?php   echo $recrd->aa_place;?>
+</td></tr>
+ <?php }}; ?>
+<tr>
+                        <?php else : ?>
+                            <td colspan= "13" align="center"> No Records found...!</td>
+                        <?php endif;?>
+</tr>
 		</table>
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                         <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -366,27 +462,26 @@
 				}
 				?>
 				
-                            </td>   
+                            </td>  
                         <tr>
 		</table>
 		<table class="TFtable" align="center">
                     <thead>
                         <tr>
-                            <th>Place of working</th>
-                            <th>U O</th>
-                            <th>Department</th>
-                            <th>Designation</th>
-                            <th>AGP</th>
-                            <th>Date of AGP</th>
-                            <th>From</th>
-                            <th>To</th>
+                            <th>Campus Details</th>
+                            <th>Designation Details</th>
+                            <th>AGP/Grade Pay Details</th>
+                            <th>From/To</th>
                             <th colspan="2">Total service (YY/MM/DD)</th>
                         </tr>
                     </thead>
                     <tbody>
                         
                         <?php if( !empty($servicedata) ):  ?>
-                            <?php foreach($servicedata as $record){;?>
+                            <?php foreach($servicedata as $record){;
+//print_r($record);
+//die;
+?>
                             <tr>
                                 <td>
                                     
@@ -394,32 +489,39 @@
                                     $cname=$this->commodel->get_listspfic1('study_center','sc_name','sc_code',$record->empsd_campuscode)->sc_name;
                                     echo $cname."&nbsp;"."(".$record->empsd_campuscode.")";
                                     ?-->
-				<?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name; 
-				      echo "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->empsd_campuscode)->sc_code.")";
-				?> </td>
-
-				<td><?php if ($record->empsd_ucoid != 0) echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name; ?> </td>
-                                <td><?php if ($record->empsd_deptid != 0)echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name; ?> </td>
+				<?php $sc=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name; 
+				"&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->empsd_campuscode)->sc_code.")";
+				 if ($record->empsd_ucoid != 0) $uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name; 
+                                 if ($record->empsd_deptid != 0)$dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name; 
+				 $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
+				 $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name; 
+				echo "<b>Campus-: </b>".$sc."<br/> "."<b>UO-: </b>".$uo."<br/> "."<b>Dept-: </b>".$dept."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
+                                ?>
+				</td>
                                 <td>
-                                    <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name; ?>
-                                </td>
-                                 <td>
+                                    <?php 
+				    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->empsd_desigcode)->desig_name; 
+				    $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
+				    $group=$record->empsd_group;
+				    $worktype=$record->empsd_worktype;
+				    echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
+                                    ?>
+                               </td>
+<td> 
                                     <?php
                                     $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name; 
                                     $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
                                     $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
                                     $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
-                                    echo $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
-                                    ;?>
+				    $dateofagp=implode('-', array_reverse(explode('-', $record->empsd_pbdate))); 
+				    $gradepay=$record->empsd_gradepay;
+                                    $level=$record->empsd_level;
+                                    echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; ?>
                                 </td>
                                 <td>
-                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_pbdate))); ?>
-                                </td>
-                                <td>
-                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
-                                </td>
-                                <td>
-                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
+                                    <?php  $dojoin=implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
+                                    <?php  $dorelve=implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
+				    <?php echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;?>
                                 </td>
                                 <td>
                                     <?php 
@@ -429,7 +531,7 @@
                                     echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d." "
                                     ;?>
                                 </td>
-                                <td >
+                                <td>
                                 <?php 
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 						echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));
@@ -604,7 +706,7 @@
 		<table style="width:100%;">
         	<tr>
         	<td align=right>
-		<?php      	echo "<button onclick=\"goBack()\" >Back</button>"; ?>
+		<a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a>
         	</td>
         	</tr>
     		</table>

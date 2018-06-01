@@ -86,6 +86,177 @@
                     });
                 }
               }); 
+/************************select schemes on the basis of department*******************/
+                       
+             $('#scid').on('change',function(){
+                //var sc_code = $('#camp').val();
+                //var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                //var campuocdept = sc_code+","+uoc_id+","+dept_id;
+                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"comb=="+campuocdept);
+                if(dept_id == ''){
+                    $('#schmid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#schmid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getnewdeptschemelist",
+                        type: "POST",
+                       // data: {"combthree" : campuocdept},
+                         data: {"combdept" : dept_id},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("ok===="); 
+                            //alert("data==1="+data);
+                            $('#schmid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+        /*********************closer of scheme**************************************************/    
+/************************select DDO on basis of campus department schemes*******************/
+            $('#schmid').on('change',function(){
+                var sc_code = $('#camp').val();
+               // var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                var schm_id = $('#schmid').val();
+                //var campuocdeptschm = sc_code+","+uoc_id+","+dept_id+","+schm_id;
+                var campdeptschm = sc_code+","+dept_id+","+schm_id;
+                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
+                if(schm_id == ''){
+                    $('#ddoid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#ddoid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getddolist",
+                        type: "POST",
+                        //data: {"combfour" : campuocdeptschm},
+                        data: {"combthree" : campdeptschm},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#ddoid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+        /*********************closer of DDO********************************************/
+/************************select Designation on basis of Group*******************/
+            $('#grpid').on('change',function(){
+                var grp_id = $(this).val();
+                if(grp_id == ''){
+                    $('#desigid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#desigid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
+                        type: "POST",
+                        data: {"group" : grp_id},
+                        dataType:"html",
+                        success:function(data){
+                            $('#desigid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            });
+
+ /************************select shown against the post value *****************************************************/
+             $('#desigid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                //var schm_id = $('#schmid').val();
+                var desig_id = $('#desigid').val();
+               // var grp_id =  $('#grpid').val();
+                var wrktype_id = $('#worktypeid').val();
+                //var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+grp_id+","+wrktype_id;
+                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id;
+                //alert("comin script===bsix===="+cudshmdesigwrktype);
+                if(desig_id == ''){
+                    $('#emppostid').prop('disabled',true);
+                }
+                else{
+                    $('#emppostid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
+                        type: "POST",
+                        data: {"combsix" : cudshmdesigwrktype},
+                        dataType:"html",
+                        success:function(data){
+                           // alert("data===in script="+data);
+                            var empdata=data;
+                            var val1 = empdata.replace(/\"/g,"");
+                            $('#emppostid').html(data.replace(/^"|"$/g, ''));
+                            if(val1.trim() === "No vacancy"){
+                               // var strmess = new String("Sorry, No vacancy available for this post");
+                                alert('Sorry, No vacancy available for this post');
+                               // alert(strmess.fontcolor( "red" ));
+                               $('#my_id').submit();
+                                   
+                            }   
+                                               
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+
+            /************************closer for shown against the post*****************************************/
+ $("#payband").on('change',function(){
+                        var leaveid = $(this).val();
+                       //alert("seema======"+leaveid);
+                        if(leaveid == ''){
+                               $('#gradepay').prop('disabled',true);
+                        }
+                        else{
+                         $('#gradepay').prop('disabled',false);
+                            $.ajax({
+                                url: "<?php echo base_url();?>sisindex.php/empmgmt/getgrade",
+                                type: "POST",
+                                data: {"payband" : leaveid},
+                                dataType:"html",
+                                success:function(data){
+                                   var ldata=data;
+                         $('#gradepay').val(ldata.replace(/\"/g,""));
+                            },
+                            error:function(data){
+                                alert("error occur..!!");
+                            }
+                        });
+                    }
+                  });
+
             }); 
         </script>
   
@@ -170,25 +341,116 @@
                         </select>
                     </td>
                 </tr>
- 
+<tr>
+                    <td>Scheme<font color='Red'>*</font></td>
+			<td><select name="schemecode" style="width:350px;"id="schmid" required>
+                            <?php if(!empty($servicedata->empsd_schemeid)):;?>
+                            <option value="<?php echo $servicedata->empsd_schemeid;?>"><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$servicedata->empsd_schemeid)->sd_name; ?></option>
+                            <?php else:?>
+                          <option value="">Select Scheme</option>
+                        <?php endif;?>
+
+                        </select>
+                    </td>
+                </tr>
+		<tr>
+		<td>Drawing and Disbursing Officer<font color='Red'>*</font></td>
+		<td><select name="ddo" style="width:350px;"id="ddoid" required>
+                            <?php if(!empty($servicedata->empsd_ddoid)):;?>
+                            <option value="<?php echo $servicedata->empsd_ddoid;?>"><?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$servicedata->empsd_ddoid)->ddo_name; ?></option>
+                            <?php else:?>
+                          <option value="">Select DDO</option>
+                        <?php endif;?>
+
+                        </select>
+                    </td>
+                </tr>
+			<td>Working Type<font color='Red'>*</font></td>
+                        <td><select id="worktypeid" name="workingtype" style="width:350px;">
+                        <?php if(!empty($servicedata->empsd_worktype)):;?>
+                        <option value="<?php echo $servicedata->empsd_worktype;?>"><?php echo $servicedata->empsd_worktype;?></option>
+                        <?php else:?>
+                        <option value="">-----------Select Working Type--------</option>
+                        <?php endif;?>
+                        <option value="Teaching">Teaching</option>
+                        <option value="Non Teaching">Non Teaching</option>
+                        </select>
+                </td>
+
+<tr>
+                <td>Group<font color='Red'>*</font></td>
+		 <td><select name="group" style="width:350px;" id="grpid" required>
+                            <?php if(!empty($servicedata->empsd_group)):;?>
+                            <option value="<?php echo $servicedata->empsd_group;?>"><?php echo $servicedata->empsd_group;?></option>
+                            <?php else:?>
+                          <option value="">Select DDO</option>
+                        <?php endif;?>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+  
+                        </select> 
+                    </td>   
+                </tr>
+
 		<tr>
 		    <td>Designation<font color='Red'>*</font></td>
                         <td><select name="designation" id="desigid" required style="width:350px;"> 
                             <?php if(!empty($servicedata->empsd_desigcode)):;?> 
-                            <option value="<?php echo $servicedata->empsd_desigcode;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$servicedata->empsd_desigcode)->desig_name;?></option>    
+                            <option value="<?php echo $servicedata->empsd_desigcode;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$servicedata->empsd_desigcode)->desig_name;?></option>    
                             <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                             <?php endif;?>
-                            <?php foreach($this->desig as $desigdata): ?>	
-                                <option value="<?php echo $desigdata->desig_code; ?>"><?php echo $desigdata->desig_name; ?></option> 
-                            <?php endforeach; ?>
                         </select>
                     </td>
                 </tr>
-                
+
+                <tr>
+                <td>Shown Against The Post<font color='Red'>*</font></td>
+<td><select name="emppost" id="emppostid"  style="width:350px;" required>
+                            <?php if(!empty($servicedata->empsd_shagpstid)):;?>
+                            <option value="<?php echo $servicedata->empsd_shagpstid;?>"><?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $servicedata->empsd_shagpstid)->desig_name ?></option>
+                            <?php else:?>
+                          <option value="">Select Shown Against The Post</option>
+                        <?php endif;?>
+                            
+                        </select> 
+                    </td>   
+                </tr>
+<tr>
+                <td>Level<font color='Red'>*</font></td>
+                 <td><select name="level" style="width:350px;" id="lvel" required>
+                            <?php if(!empty($servicedata->empsd_level)):;?>
+                            <option value="<?php echo $servicedata->empsd_level;?>"><?php echo $servicedata->empsd_level;?></option>
+                            <?php else:?>
+                         <option value="">Select Level</option>
+                         <?php endif;?>
+			<option value="Level-1">Level-1</option>
+                        <option value="Level-2">Level-2</option>
+                        <option value="Level-3">Level-3</option>
+                        <option value="Level-4">Level-4</option>
+                        <option value="Level-5">Level-5</option>
+                        <option value="Level-6">Level-6</option>
+                        <option value="Level-7">Level-7</option>
+                        <option value="Level-8">Level-8</option>
+                        <option value="Level-9">Level-9</option>
+                        <option value="Level-10">Level-10</option>
+                        <option value="Level-11">Level-11</option>
+                        <option value="Level-12">Level-12</option>
+                        <option value="Level-13">Level-13</option>
+                        <option value="Level-14">Level-14</option>
+                        <option value="Level-15">Level-15</option>
+                        <option value="Level-16">Level-16</option>
+                        <option value="Level-17">Level-17</option>
+                        <option value="Level-18">Level-18</option>
+                        </select>
+                    </td>
+                </tr>
+ 
                 <tr>
                     <td>Pay Band<font color='Red'>*</font></td>
-                    <td><select name="payband" required style="width:350px;">
+                    <td><select name="payband" id="payband" required style="width:350px;" onchange="gradelist(this.value)">
                         <?php if(!empty($servicedata->empsd_pbid)):;?>
                         <option value="<?php echo $servicedata->empsd_pbid;?>">
                             <?php
@@ -212,7 +474,7 @@
                 
                 <tr>
                     <td>Grade Pay<font color='Red'></font></td>
-                        <td><input type="text" name="gradepay" id="gradepay" value="<?php echo $servicedata->empsd_gradepay;?>"  size="40" >
+                        <td><input type="text" name="gradepay" id="gradepay" value="<?php echo $servicedata->empsd_gradepay;?>"  size="40" readonly>
                     </td>
                 </tr>
                 <tr>

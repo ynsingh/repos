@@ -84,7 +84,7 @@
 	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
         <table width="100%">
-                <tr><td colspan="8">
+                <tr><td colspan="11">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr> <td colspan="8"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
@@ -97,7 +97,7 @@
                       
                 </td></tr>
                 <!--<tr></tr>-->
-                <tr><td>
+                <tr><td colspan="9">
                     <p><b>Personal Information :</b></p>
                 </td></tr>
                 <tr></tr>
@@ -107,7 +107,7 @@
                     <td>Employee Name :</td>
                     <td><?php echo $record->emp_name ;?></td> 
                     <td>Fathers Name :</td>
-                    <td colspan="2"><?php echo $record->emp_father; ?></td>
+                    <td colspan="22"><?php echo $record->emp_father; ?></td>
                
                 </tr>
                 <tr></tr>
@@ -177,56 +177,48 @@
                
                 </tr>
                 <tr></tr>
-                <tr><td colspan="8">    
+                <tr><td colspan="11">    
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td>
+                <tr><td colspan="9">
                     <p><b>Communication Information:</b></p>
                 <tr><td>
                 <tr></tr>
-                <tr> 
-                    <td>E-Mail ID : </td>
-                    <td><?php echo $record->emp_email; ?></td> 
+                <tr>
+		<td>Email Id:</td>
+                <td><?php   echo $record->emp_secndemail; ?></td> 
                     <td>Phone/Mobile No :</td>
                     <td><?php echo $record->emp_phone; ?></td> 
-                    <td>Address :</td>
-                    <td colspan="2" ><?php echo $record->emp_address;?></td>
+                    <td>Residential Address:</td>
+                    <td><?php echo $record->emp_address;?></td>
                
                 </tr>
                 
-                <tr><td colspan="8">    
+                <tr><td colspan="11">    
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td>
+                <tr><td colspan="9">
                     <p><b>Educational Information:</b></p>
                 </td></tr>    
                 <tr></tr>
                 <tr> 
-                    <td>Qualification : </td>
+                    <td>Qualification:</td>
                     <td><?php echo $record->emp_qual;?></td> 
-                    <td>Phd Status :</td>
-                    <td><?php echo $record->emp_phd_status;?></td> 
-                    <td>Date Of Phd Completion :</td>
-                    <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofphd))); ?></td>
-               
-                </tr>
-                <tr></tr>
-                <tr> 
-                    <td>ASSR Exam : </td>
+                    <td>ASSR Exam:</td>
                     <td><?php echo $record->emp_AssrExam_status;?></td> 
-                    <td>Date Of ASSR Exam :</td>
+                    <td>Date Of ASSR Exam:</td>
                     <td colspan="3"> <?php echo implode('-', array_reverse(explode('-', $record->emp_dateofAssrExam))) ;?></td> 
                    <!-- <td>Date Of Phd Completion :</td>
                     <td><?php echo $record->emp_post; ?></td>-->
                
                 </tr>
-                <tr><td colspan="8">    
+                <tr><td colspan="11">    
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td>   
+                <tr><td colspan="9">   
                     <p><b>Work Information:</b></p>
                 </td></tr>
                 <tr></tr>
@@ -237,9 +229,9 @@
 				echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
 ?>
                     </td>
-                    <td>University Officer Control : </td>
-                    <td>
-<?php 
+                    <td>University Officer Control:</td>
+		    <td>
+		    <?php 
 			$authname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$record->emp_uocid)->name;
                         $authcode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$record->emp_uocid)->code;
                         	echo  $authname." " . "( ".$authcode." )";    
@@ -294,7 +286,7 @@
                     <td><?php echo $record->emp_pnp;?></td> 
                     <td>Employee Type :</td>
                     <td> <?php echo $record->emp_type_code;?></td> 
-                    <td>Application Order No :</td>
+                    <td>Application Order No:</td>
                     <td colspan="2"><?php echo $record->emp_apporderno ?></td>
                
                 </tr>
@@ -345,11 +337,11 @@
                     <td colspan="6"><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofHGP))); ?></td> 
                 </tr> 
                 <tr></tr>
-                <tr><td colspan="8">
+                <tr><td colspan="11">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr> 
-                <tr><td>
+                <tr><td colspan="9">
                     <p><b>Other Information :</b></p>
                 </td></tr>
                 <tr></tr>
@@ -360,17 +352,132 @@
                     <td><?php echo $record->emp_citizen; ?></td> 
                     <td>Remarks :</td>
                     <td colspan="2"><?php echo $record->emp_remarks;?></td>
-               
-                </tr>
+		       
+			</tr>
                 <tr></tr>
-                <tr><td colspan="8">
+		 <tr><td colspan="11">
+                    <HR  COLOR="#6699FF" SIZE="3">
+                </td></tr>
+		 <tr><td colspan="9">
+                    <p><b>PhD Details:</b></p>
+                </td></tr>
+		<tr></tr>
+                <tr>
+                  <td>Phd Status :</td>
+                    <td><?php echo $record->emp_phd_status;?></td> 
+                    <td>Date Of Phd Completion:</td>
+                    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofphd))); ?></td>
+		<td>Discipline:</td>
+		<td><?php   echo $record->emp_phddiscipline;?></td>
+                </tr><tr>
+		<td>PhD Type:</td>
+		<td><?php   echo $record->emp_phdtype;?></td>
+		<td>Institute Name:</td>
+		<td><?php   echo $record->emp_phdinstname;?></td>
+		<?php
+          	$udep=$record->emp_phdunivdeput;
+                    $udepnew=explode(",",$udep);
+		?>
+		<?php if((!empty($udepnew[0])) && ($udepnew[0] == "No")){ ?>
+         	<td>Deputed by Unversity:</td>
+		<td><?php  echo $udepnew[0]; ?></td>
+                </tr>
+                <tr>
+		<td>If NO (Type of Leave availed for Ph.D):</td>
+		<td><?php echo $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$udepnew[1])->lt_name;?></td>
+		<td>Leave From:</td>
+		<td><?php   echo $udepnew[2]; ?></td>
+		<td>Leave To:</td>
+		<td><?php   echo $udepnew[3]; ?></td>
+		<?php } ?>
+                </tr>
+		<tr></tr>
+		 <tr><td colspan="11">
+                    <HR  COLOR="#6699FF" SIZE="3">
+                </td></tr>
+                 <tr><td colspan="9">
+                    <p><b>NET Details:</b></p>
+                </td></tr>
+                <tr></tr>
+                <tr>
+		<?php
+		$ntq=$record->emp_netqualified;
+                if(!empty($ntq)){
+                    $ntqnew=explode(",",$ntq);
+		?>
+		<td>NET qualified:</td>
+		<td><?php   echo $ntqnew[0]; ?></td>
+		<td>Organisar:</td>
+		<td><?php echo $ntqnew[1]; ?></td>
+		<td>Year of Passing:</td>
+		<td><?php  echo implode('-', array_reverse(explode('-', $record->emp_netpassingyear)));?></td>
+		</tr>
+		<tr>
+		<td>Discipline:</td>
+		<td><?php   echo $record->emp_netdiscipline;}?></td>
+		</tr>
+		<tr></tr>
+		<tr><td colspan="11">
+                    <HR  COLOR="#6699FF" SIZE="3">
+                </td></tr>
+                 <tr><td colspan="9">
+                    <p><b>Veterinary Council of india (VCI) Registration:</b></p>
+                </td></tr>
+                <tr></tr>
+                <tr>
+		<td>Registration No</td>
+		<td><?php   echo $record->emp_vciregno; ?></td>
+		<td>Date of Registration:</td>
+		<td><?php echo date('d-m-Y',strtotime($record->emp_vciregdate));?></td>
+		</tr>
+		<tr></tr>
+		<tr><td colspan="11">
+                    <HR  COLOR="#6699FF" SIZE="3">
+		 </td></tr>
+                <tr></tr>
+                <tr><td colspan="9">
+                    <p><b>Additional Assignments:</b></p>
+                </td>
+		<td colspan="9" align="right">
+            	</td>
+                </tr>
+                <tr></tr> 
+                <tr>
+		<?php if( count($addassign->result()) ):  ?>
+		<td colspan="2"><b>Name of the Assignment</b></td>
+                <td colspan="2"><b>Date From</b></td>
+                <td colspan="2"><b>Date To</b></td>
+		<td colspan="2"><b>Place</b></td>
+                <tbody>
+                            <?php foreach($addassign->result() as $recrd){
+		if(!empty($recrd->aa_asigname)){?>
+		<tr>
+                                <td colspan="2">
+		<?php   echo $recrd->aa_asigname;?>
+		</td>
+		 <td colspan="2">
+		<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodfrom));?>
+		</td>
+		<td colspan="2">
+		<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodto));?>
+		</td>
+		<td colspan="2">
+		<?php   echo $recrd->aa_place;?>
+		</td>
+		 <?php }}; ?>
+                        <?php else : ?>
+                            <td colspan= "13" align="center"> No Records found...!</td>
+                        <?php endif;?>
+                </tbody>
+		</tr>
+	<tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
                 <tr><td>
                     <p><b>Service Data :</b></p>
                     </td>
-                    <td colspan="8" align="right">
+                    <td colspan="9" align="right">
                     <?php
                        // if(count($servicedata->result())){
                           //  echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
@@ -384,51 +491,55 @@
                 <tr></tr>
                 <tr>
                     <?php if( count($servicedata) ):  ?>
-                    <td><b>Place of working</b></td>
-                    <td><b>Designation</b></td>
-                    <td><b>AGP</b></td>
-                    <td><b>Grade Pay</b></td>
-                    <td><b>Date of AGP</b></td>
-                    <td><b>From</b></td>
-                    <td><b>To</b></td>
-                    <td><b>Total service (YY/MM/DD)</b></td>
+                            <td colspan="2"><b>Campus Details</b></td>
+                            <td colspan="2"><b>Designation Details</b></td>
+                            <td colspan="2"><b>AGP/Grade Pay Details</b></td>
+                            <td colspan="2"><b>From/To</b></td>
+                            <td colspan="2"><b>Total service (YY/MM/DD)</b></td>
                     <tbody>
                         
                             <?php foreach($servicedata as $record){;?>
                             <tr>
-                                <td>
+                                <td colspan="2">
                                     
                                     <?php
-                                    $cname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->empsd_campuscode)->sc_name;
-                                    $ccode=$this->commodel->get_listspfic1('study_center','sc_code','sc_id',$record->empsd_campuscode)->sc_code;
-                                    echo $cname." ( ".$ccode." ) ";
-                                    ?>
+				 $sc=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name;
+                                 "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->empsd_campuscode)->sc_code.")";
+                                 if ($record->empsd_ucoid != 0) $uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name;
+				 if ($record->empsd_deptid != 0)$dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name;
+                                 $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name; 
+				 $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name; 
+				echo "<b>Campus-: </b>".$sc."<br/> "."<b>UO-: </b>".$uo."<br/> "."<b>Dept-: </b>".$dept."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
+                                ?>
                                 </td>
-                                <td>
-                                    <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name; ?>
-                                </td>
-                                 <td>
+                                <td colspan="2">
+				<?php 
+				$desig=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->empsd_desigcode)->desig_name; 
+                                $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
+				$group=$record->empsd_group;
+				$worktype=$record->empsd_worktype;
+                                echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;?>
+				</td>
+
+                                 <td colspan="2">
                                     <?php
                                     $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name; 
                                     $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
                                     $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
                                     $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
-                                    echo $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
-                                    ;?>
+				    $dateofagp=implode('-', array_reverse(explode('-', $record->empsd_pbdate)));
+			            $gradepay=$record->empsd_gradepay;
+				    $level=$record->empsd_level;
+                                    echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; ?>
                                 </td>
-                                <td>
-                                    <?php echo $record->empsd_gradepay; ?>
+
                                 </td>
-                                <td>
-                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_pbdate))); ?>
+                                <td colspan="2">
+				    <?php  $dojoin=implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
+                                    <?php  $dorelve=implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
+				    <?php echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;?>
                                 </td>
-                                <td>
-                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
-                                </td>
-                                <td>
-                                    <?php echo implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
-                                </td>
-                                <td>
+                                <td colspan="2">
                                     <?php 
                                     $date1 = new DateTime($record->empsd_dojoin);
                                     $date2 = new DateTime($record->empsd_dorelev);
@@ -450,14 +561,14 @@
                     <?php endif;?>
 		</tr>
                 <tr></tr>
-                <tr><td colspan="8">
+                <tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="2">
                 </td></tr>
                 <tr></tr>
                 <tr><td>
                     <p><b>Performance Data :</b></p>
                     </td>
-                    <td colspan="7" align="right">
+                    <td colspan="11" align="right">
                     <?php
                  /*       if(count($performancedata)){
                             echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
@@ -471,7 +582,7 @@
                 <tr></tr>
                 <?php if(count($performancedata)):;?>
                     <tr></tr> 
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Awards and Medals : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Awards and Medals : </b></td></tr>
                     <tr>
                         <td><b>Description</b></td>
                         <td> <b>Number of Medals</b></td>
@@ -491,7 +602,7 @@
                             </tr>   
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Publications : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Publications : </b></td></tr>
                     <tr>
                         <td><b>Description</b></td>
                         <td><b> National</b></td>
@@ -514,7 +625,7 @@
                             </tr>   
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Project handled : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Project handled : </b></td></tr>
                     <tr>
                         <td><b>Number of Projects handled</b></td>
                         <td colspan="4"> <b>Fund outlay</b></td>
@@ -527,7 +638,7 @@
                            
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Training attended (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Training attended (Seminar / Symposium / Workshop etc.) : </b></td></tr>
                     <tr>
                         <td></td>
                         <td colspan="4"><b> Number of Trainings attended</b></td>
@@ -543,7 +654,7 @@
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Training conducted (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Training conducted (Seminar / Symposium / Workshop etc.) : </b></td></tr>
                     <tr>
                         <td></td>
                         <td colspan="4"><b> Number of Trainings conducted</b></td>
@@ -559,7 +670,7 @@
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Students Guided : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Students Guided : </b></td></tr>
                     <tr>
                         <td></td>
                         <td colspan="4"><b> Number of students guided</b></td>
@@ -579,7 +690,7 @@
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:grey;width:100%;"><td colspan="8"><b>Guest lecture delivered : </b></td></tr>
+                    <tr style=" background-color:grey;width:100%;"><td colspan="11"><b>Guest lecture delivered : </b></td></tr>
                     <tr>
                         <tbody>
                             <tr>
@@ -603,11 +714,11 @@
                         
                     </tr>   
                     <?php else : ?>
-                    <td colspan= "7" align="center"> No Records found...!</td>
+                    <td colspan= "11" align="center"> No Records found...!</td>
                     <?php endif;?>
             
                 <tr></tr>
-                <tr><td colspan="8">
+                <tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="2">
                 </td></tr>
         

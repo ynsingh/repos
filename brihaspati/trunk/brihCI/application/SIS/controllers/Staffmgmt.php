@@ -1910,20 +1910,21 @@ class Staffmgmt extends CI_Controller
         $emppost_select_box.='<option value="">-------------- Select Post -----------------';
         if(!empty($emppost_data)){ 
         	//echo json_encode("post=vaccancy==1=".$emppost_data->sp_vacant);
-            foreach($emppost_data as $records){ 
-                if($records->sp_vacant > 0){ 
+           // foreach($emppost_data as $records){ 
+             //   if($records->sp_vacant > 0){ 
                     /*$datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
                         'sp_schemecode'=> $parts[3],'sp_group' => $parts[5],'sp_tnt' => $parts[6]); */ 
-                    $datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],'sp_tnt' => $parts[4]); 
-                    $emppost_finaldata = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_vacant',$datawh2);
+                    $datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],'sp_tnt' => $parts[4],'sp_vacant>' =>0); 
+                    //$emppost_finaldata = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_vacant',$datawh2);
+                    $emppost_finaldata = $this->sismodel->get_distinctrecord('staff_position', 'sp_emppost',$datawh2);
                     foreach($emppost_finaldata as $empdata){
                         $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$empdata->sp_emppost)->desig_name;
-                        if($empdata->sp_vacant > 0){    
+                       // if($empdata->sp_vacant > 0){    
                             $emppost_select_box.='<option value='.$empdata->sp_emppost.'>'.$emppost_name.' ';
-                        }  
+                        //}  
                     }//foreach    
-                }//if
-            }//foreach    
+              //  }//if
+            //}//foreach    
         } //if close   
         else{
             $emppost_select_box='No vacancy';
@@ -2218,7 +2219,7 @@ class Staffmgmt extends CI_Controller
         $combid = $this->input->post('wtype');
         echo json_encode($combid);
         $grade_select_box ='';
-        $grade_select_box.='<option value="">------- Select Grade -----------------';
+        $grade_select_box.='<option value>------- Select Grade -----------------';
         if($combid == 'Teaching'){
             $grade_select_box.='<option value='.'Career'.''.'Advance(CA)'.'>'.'Career'.''.'Advance(CA)'.'';
             $grade_select_box.='<option value='.'Regular(R)'.'>'.'Regular(R)'.'';    
