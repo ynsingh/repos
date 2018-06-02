@@ -44,9 +44,11 @@ $(document).ready(function(){
 
             function verify(){
                 var x=document.getElementById("wtype").value;
-                var y=document.getElementById("post").value;
-                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
-                    alert("please select option for search !!");
+		var y=document.getElementById("post").value;
+		var z=document.getElementById("strin").value;
+		if(((x == 'null') && (y == 'null') && (z == 'null')) || ((x == '') && (y == '') && (z == ''))){
+                //if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
+                    alert("Please use at least one option either select or type string for search !!");
                     return false;
                 };
 
@@ -117,7 +119,10 @@ $(document).ready(function(){
                      <!-- <option value="All" >All</option> -->
                     </select>
                <!-- </td>
-                <td>-->
+		<td>-->
+		 Search String
+                                                         <input type="text" name="strin" id="strin" style="width:100" placeholder="Enter String" value="<?php echo isset($_POST["emp_name"]) ? $_POST["dept_name"] :  ''; ?>">
+
                     <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
                 </td>
             </tr>

@@ -48,56 +48,28 @@ class Staffmgmt extends CI_Controller
                 }
                 $whdata['emp_dept_code'] = $deptid;
         }
-	
-
-
-/*	$roleid=$this->session->userdata('id_role');	
-	$userid=$this->session->userdata('id_user');
-	$deptid = '';
-	$whdatad = array('userid' => $userid,'roleid' => $roleid);
-	$resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
-		foreach($resu as $rw){
-			$deptid=$rw->deptid;
-		}
-	$whdata = '';
-	if (!empty($deptid))
-	 $whdata = array('emp_dept_code' => $deptid);
-*/
 	 $selectfield ="emp_id,emp_code,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
-        //$whdata = array('sp_uo'=> $uo);
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
-            $post  = $this->input->post('post');
-           /* if(!empty($post) && (!empty($deptid))){
-                if($post != 'All'){
-                        $whdata = array('emp_worktype'=> $wtype,'emp_desig_code' =>$post,'emp_dept_code' => $deptid);
-                }
-                else{
-                        $whdata = array('emp_worktype'=> $wtype,'emp_dept_code' => $deptid);
-                }
-
+	    $post  = $this->input->post('post');
+	    $strin = $this->input->post('strin');
+	    if((!empty($wtype)) && ($wtype != 'null') && ($wtype != ' ')){
+                       $whdata['emp_worktype'] = $wtype;
             }
-            elseif (!empty($post)){
-                if($post != 'All'){
-                        $whdata = array('emp_worktype'=> $wtype,'emp_desig_code' =>$post);
-                }
-                else{
-                        $whdata = array('emp_worktype'=> $wtype);
-                }
-            }*/
-            if (!empty($post)){
-                if($post != 'All'){
-                        $whdata['emp_worktype']= $wtype;
-                        $whdata['emp_desig_code'] =$post;
-                }
-                else{
-                        $whdata['emp_worktype']= $wtype;
-                }
+            if((!empty($post)) && ($post != 'null') && ($post != ' ') && ($post != "All")){
+                        $whdata['emp_desig_code'] = $post;
+            }else{
+                        $post="All";
+            }
+	    // for string search
+            if(!empty($strin)) {
+                        $whdata['emp_name LIKE ' ] ='%'.$strin.'%';
             }
 		 $this->wtyp = $wtype;
-                 $this->desigm = $post;
+	         $this->desigm = $post;
+	    	 $this->strin = $strin;
 	         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
          }
          else{
@@ -2055,7 +2027,6 @@ class Staffmgmt extends CI_Controller
         }
         
         if(isset($_POST['update'])){
-           
             $reason = $this->input->post('resret');
             $dateofleaving = $this->input->post('dateofleaving');
             $remark = $this->input->post('remark');
@@ -2086,7 +2057,6 @@ class Staffmgmt extends CI_Controller
             $dupdata = $this->sismodel->isduplicatemore('staff_retirement', $dupdetail);
 
             if($dupdata == 1 ){
-
                 $this->session->set_flashdata("err_message", "Record is already exist . 'Employee PF No' = $empcode  , ' Email'= $empemail .");
                 redirect('staffmgmt/staffretirement');
                 return;
@@ -2116,7 +2086,6 @@ class Staffmgmt extends CI_Controller
                 );
                 $empmasterflag=$this->sismodel->updaterec('employee_master', $empup_data, 'emp_id', $selempid);
                 /*update staff position table on staff retirement*/
-                
                 $dept=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$selempid)->emp_dept_code;
                 $desig=$this->sismodel->get_listspfic1('employee_master', 'emp_desig_code', 'emp_id',$selempid)->emp_desig_code;
                 $worktype=$this->sismodel->get_listspfic1('employee_master', 'emp_worktype', 'emp_id',$selempid)->emp_worktype;
@@ -2133,15 +2102,12 @@ class Staffmgmt extends CI_Controller
                 else{
                     $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ");
                     $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully");
-            
                 }
                 $this->logger->write_logmessage("insert","staff retirement record insert " , "staff retirement record inserted successfully... ");
                 $this->logger->write_dblogmessage("insert","staff retirement record insert" , "staff retirement record inserted successfully... ");
                 $this->session->set_flashdata('success','staff retirement record inserted successfully '.' Employee PF No ='. $empcode .' Email='. $empemail);
                 redirect('staffmgmt/staffretirement');
             }
-         
-           
         }//if update button
         $fields="sre_empid,sre_empcode,sre_empemailid,sre_doj,sre_dor,sre_reason,sre_reasondate";  
         $data['records'] = $this->sismodel->get_orderlistspficemore('staff_retirement',$fields,'','sre_reasondate asc');
