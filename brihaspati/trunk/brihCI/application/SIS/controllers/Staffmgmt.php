@@ -378,7 +378,7 @@ class Staffmgmt extends CI_Controller
                     $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
                     //$shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emp_post'])->desig_id;
                     $this->sismodel->insertsdetail($empid,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,
-                    $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],date('y-m-d'),date('y-m-d'),date('y-m-d'));    
+                    $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','');    
                                        
                     
                     if(!empty($_POST['asignname'])){
@@ -477,6 +477,11 @@ class Staffmgmt extends CI_Controller
                     //if sucess send mail to user with login details 
                     $sub='User Registration in Staff information System';
                     $mess="Your registration is completed. The user id ".$_POST['emailid']." and password is ".$passwd ."\r\n".'Kindly check with website:'."\r\n". site_url('welcome');
+			$secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_email',$_POST['emailid'])->emp_secndemail;
+                                if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
+                                        $mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
+                                }
+
                     $mailstoperson =$this->mailmodel->mailsnd($_POST['emailid'], $sub, $mess,'');
                     //  mail flag check 	
                     if($mailstoperson){
@@ -907,13 +912,17 @@ class Staffmgmt extends CI_Controller
             
             $mess = 'Your Employee data updated Successfully.';
             $sub = 'Employee Profile Updated';
+	    $secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_email',$_POST['emailid'])->emp_secndemail;
+                  if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
+                         $mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
+                  }
             $this->mailmodel->mailsnd($_POST['emailid'],$sub,$mess,'');
 		
             /* insert record in service details with check duplicate , if uo then update in uolist table  and if hod then update in hod list table */
             $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
            // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
             $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,
-            $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],date('y-m-d'),date('y-m-d'),date('y-m-d'));
+            $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','');
 
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
@@ -991,7 +1000,7 @@ class Staffmgmt extends CI_Controller
                     'uit_emptype'                      => $this->input->post('employeetype'),
                     'uit_uoc_from'                     => $this->input->post('uocfrom'),
                     'uit_workdept_from'                => $this->input->post('deptfrom'),
-                    'uit_desig_from'                   => $this->input->post('designation'),
+                    'uit_desig_from'                   => $this->input->post('desigfrom'),
                 
                     'uit_staffname'                    => $this->input->post('empname'),
                     'uit_workingpost_from'             => $this->input->post('postfrom'),
@@ -1048,7 +1057,7 @@ class Staffmgmt extends CI_Controller
                     $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['desigto'])->desig_code;
                     // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
                     $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],$desigcode,
-                    $_POST['schemto'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],date('y-m-d'),date('y-m-d'),$_POST['dateofrelief']);
+                    $_POST['schemto'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],'','','');
                        
                     /*************************************updating the staff position table******************************************************************/
                     $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;

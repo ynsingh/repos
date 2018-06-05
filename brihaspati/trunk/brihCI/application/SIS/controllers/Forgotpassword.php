@@ -63,6 +63,12 @@ class Forgotpassword extends CI_Controller
                                 redirect('forgotpassword/forgotpass');
                                 return;
                         }else{
+				// send mail to user
+                                $secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_email',$data_user_name)->emp_secndemail;
+                                if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
+                                        $mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
+                                }
+
 				$mails=$this->mailmodel->mailsnd($data_user_name,$sub,$mess,'');
 				if($mails){
                                 $this->logger->write_logmessage("update","Please check your email to reset password.", "successfully" .$data_user_name);
@@ -189,6 +195,12 @@ class Forgotpassword extends CI_Controller
                                         $this->logger->write_logmessage("success",'User reset key is removed from the system' . $data_user_name);
 	                              	$this->logger->write_dblogmessage("success","User reset key is removed from the system" . $data_user_name);
                                 }
+				// send mail to user
+                                $secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_email',$data_user_name)->emp_secndemail;
+                                if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
+                                        $mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
+                                }
+
                                 // send mail to user
                                 $this->mailmodel->mailsnd($data_user_name,$sub,$mess,'');
 				redirect('welcome');
