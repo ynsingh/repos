@@ -878,6 +878,7 @@ CREATE TABLE user_input_transfer (
         uit_desig_from varchar(255) NOT NULL,
         uit_staffname varchar(255) NOT NULL,
         uit_workingpost_from varchar(255) NOT NULL,
+	uit_scid_from  int(11) Default null,
 	uit_scid_to  int(11) default NULL,
         uit_uoc_to varchar(255) NOT NULL,
         uit_dept_to varchar(255) NOT NULL,

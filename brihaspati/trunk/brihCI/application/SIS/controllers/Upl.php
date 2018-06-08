@@ -481,63 +481,150 @@ class Upl extends CI_Controller
                     $flag=false;
                    // $colcount = count($getData);
                     //if($colcount >= 21){
-                    if(count($getData) >= 21){
-                        $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_name', $getData[0])->emp_id;
+                    if(count($getData) >= 23){
+                        $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code', $getData[5])->emp_id;
+                        $scid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',  $empid)->emp_scid;
+                        $uoid=$this->sismodel->get_listspfic1('employee_master', 'emp_uocid', 'emp_id',  $empid)->emp_uocid;
+                        $deptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',  $empid)->emp_dept_code;
+                        $schmid=$this->sismodel->get_listspfic1('employee_master', 'emp_schemeid', 'emp_id',  $empid)->emp_schemeid;
+                        $wtype=$this->sismodel->get_listspfic1('employee_master', 'emp_worktype', 'emp_id',  $empid)->emp_worktype;
+                        $desigid=$this->sismodel->get_listspfic1('employee_master', 'emp_desig_code', 'emp_id',  $empid)->emp_desig_code;
+                        $sap=$this->sismodel->get_listspfic1('employee_master', 'emp_post', 'emp_id', $empid)->emp_post;
+                        //$emptype=$this->sismodel->get_listspfic1('employee_master', 'emp_type_code', 'emp_code', $getData[0])->emp_type_code;
+                        
+                        $regnameto=trim($getData[0]);
+                        $regdisgto=trim($getData[1]);
+                        $usono=trim($getData[2]);
+                        $rcno=trim($getData[3]);
+                        $refno=trim($getData[4]);
+                        $scidto=$this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_code', trim($getData[6]))->sc_id;
+                        $uocto=$this->lgnmodel->get_listspfic1('authorities', 'id', 'code',trim($getData[7]))->id;
+                        $deptto=$this->commodel->get_listspfic1('Department', 'dept_id', 'dept_code',trim($getData[8]))->dept_id;
+                        $schto=$this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_code',trim($getData[9]))->sd_id;
+                        $ddoto=$this->sismodel->get_listspfic1('ddo', 'ddo_id', 'ddo_code',trim($getData[10]))->ddo_id;
+                        $agpto=trim($getData[11]);
+                        $wtyto=trim($getData[12]);
+                        $groupto=trim($getData[13]);
+                        $desigto=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',trim($getData[14]))->desig_id;
+                        $sapto=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',trim($getData[15]))->desig_id;
+                        $emptyto=trim($getData[16]);
+                        $sub=trim($getData[17]);
+                        $orcontent=trim($getData[18]);
+                        $tta=trim($getData[19]);
+                        $dorel=trim($getData[20]);
+                        $doj=trim($getData[21]);
+                        $emailto=trim($getData[22]);
                         $datuit = array(
                             //'uit_staffname'         => $getData[0], //get id
-                            'uit_staffname'         => $empid, 
-                            'uit_registrarname'     => trim($getData[1]),
-                            'uit_desig'             => trim($getData[2]),
-                            'uit_uso_no'            => trim($getData[3]),
+                           
+                            'uit_registrarname'     => $regnameto,
+                            'uit_desig'             => $regdisgto,
+                            'uit_uso_no'            => $usono,
                             'uit_date'              => date('y-m-d'), 
-                            'uit_rc_no'             => trim($getData[4]),
-                            'uit_subject'           => trim($getData[5]), 
-                            'uit_referenceno'       => trim($getData[6]),
-                            'uit_ordercontent'      => trim($getData[7]),
-                            'uit_emptype'           => trim($getData[8]),
-                            'uit_uoc_from'          => trim($getData[9]),
-                            'uit_uoc_to'            => trim($getData[10]), //getid
-                            'uit_workdept_from'     => trim($getData[11]),
-                            'uit_dept_to'           => trim($getData[12]), //getid
-                            'uit_desig_from'        => trim($getData[13]),
-                            'uit_desig_to'          => trim($getData[14]), ///getid
-                            'uit_workingpost_from'  => trim($getData[15]),
-                            'uit_post_to'           => trim($getData[16]),
-                            'uit_tta_detail'        => trim($getData[17]),
-                            'uit_dateofrelief'      => trim($getData[18]),
-                            'uit_dateofjoining'     => trim($getData[19]),
-                            'uit_email_sentto '     => trim($getData[20]),
+                            'uit_rc_no'             => $rcno,
+                            'uit_subject'           => $sub, 
+                            'uit_referenceno'       => $refno,
+                           
+                            'uit_ordercontent'      => $orcontent,
+                            'uit_emptype'           => $wtype,
+                            'uit_emptypeto'         => $wtyto,
+                            'uit_uoc_from'          => $uoid,
+                            'uit_workdept_from'     => $deptid,
+                            
+                            'uit_desig_from'        => $desigid,
+                            'uit_staffname'         => $empid, 
+                            'uit_workingpost_from'  => $sap,
+                            'uit_scid_from'         => $scid,
+                            'uit_scid_to'           => $scidto,
+                            
+                            'uit_uoc_to'            => $uocto, //getid
+                            'uit_dept_to'           => $deptto, //getid
+                            /********************************************/
+                            'uit_desig_to'          => $desigto, ///getid
+                            'uit_post_to'           => $sapto,
+                                                       
+                            'uit_schm_from'         => $schmid,
+                            'uit_schm_to'           => $schto, 
+                            'uit_ddoid_to'          => $ddoto,
+                            'uit_group_to'          => $groupto,
+                            'uit_paybandid_to'      => $agpto,
+                            'uit_vacanttype_to'     => $wtyto,
+                            
+                            'uit_tta_detail'        => $tta,
+                            'uit_dateofrelief'      => $dorel,
+                            'uit_dateofjoining'     => $doj,
+                            'uit_email_sentto '     => $emailto,
+                            
                             
                         );
                         $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $datuit);
                         if($usrinputtfr_flag){
-                            $emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $empid)->emp_code;
-                            $empname=$getData[0];
-                            $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$getData[12])->dept_name; 
+                            /****update in employee master**********/
+                            $post=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$sapto)->desig_name;
+                            $empdata = array(
+                                'emp_dept_code'    => $deptto,
+                                'emp_desig_code'   => $desigto,
+                                'emp_post'         => $post,
+                                'emp_worktype'     => $wtyto,
+                                'emp_salary_grade' => $agpto,
+                                'emp_schemeid'     => $schto,
+                                'emp_scid'         => $scidto ,
+                                'emp_uocid'        => $uocto,
+                                'emp_uocuserid'    => $uocto,
+                                'emp_ddouserid'    => $ddoto,
+                                'emp_ddoid'        => $ddoto,
+                                'emp_group'        => $groupto,
+                    
+                            );
+                            $upempdata_flag=$this->sismodel->updaterec('employee_master', $empdata,'emp_id',$empid);
+                            
+                            /******* insert in service detail ************/ 
+                            $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$desigto)->desig_code;
+                            // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
+                            $this->sismodel->insertsdetail($empid,$scidto,$uocto,$deptto,$desigcode,$schto,$ddoto,$groupto,$agpto,'',$sapto,
+                            date('y-m-d'),0000-00-00,0000-00-00);
+                            
+                            /**************update staff position record also *****************/
+                            $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$sap)->desig_id;
+                            $empptfrom=$this->sismodel->get_listspfic1('employee_master', 'emp_type_code', 'emp_id',  $empid)->emp_type_code;
+                            //descrease position and increase vacancy from old data(means from )
+                            $this->sismodel->updatestaffposition2($scid,$uoid,$deptid,$postfrom,$wtype,$empptfrom, $schmid);
+                            //increase in position and decrease vacancy from new data(means to)
+                            $this->sismodel->updatestaffposition($scidto,$uocto, $deptto,$sapto,$wtyto,$emptyto);
+                                                        
+                            /****************************************************************/
+                            
+                            //$emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $empid)->emp_code;
+                            $emppfno=$getData[5];
+                            //$empname=$getData[0];
+                            $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $empid)->emp_name;
+                            //$deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$getData[12])->dept_name; 
+                            $deptname=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptto)->dept_name; 
                             $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
                             //$this->regname=$this->input->post('registrarname');
                             //$this->uitdesig=$this->input->post('designation');
                             //$mail_sent_to=$_POST['emailsentto'];
                             $sub='Employee Transfer And Posting - Letter  ' ;
-                            $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptto.'with immediate effect.<br/>
+                            $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptname.'with immediate effect.<br/>
                             Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
-                            '.$getData[1].'<br/>'.$getData[2];
+                            '.$getData[0].'<br/>'.$getData[1];
+                           // '.$getData[1].'<br/>'.$getData[2];
                            // $this->load->library('../controllers/staffmgmt');
                             $attachment=$this->sismodel->gentransferordertpdf($empid);
-                            // $this->mailstoperson =$this->mailmodel->mailsnd('$getData[20]', $sub, $mess,$attachment,'All');
-                            $this->mailstoperson='';
+                            //$this->mailstoperson =$this->mailmodel->mailsnd('$getData[20]', $sub, $mess,$attachment,'All');
+                            $this->mailstoperson=$this->mailmodel->mailsnd($emailto, $sub, $mess,$attachment,'');;
                             if($this->mailstoperson){
                                 //echo "in if part mail";
                                 $error[] ="At row".$i."sufficient data and mail sent sucessfully";
                                 $mailmsg='Transfer and Promotion order ....Mail send successfully';
-                                $this->logger->write_logmessage("insert"," Transfer and Promotion order ",'mail send successfully  to '.$getData[20] );
-                                $this->logger->write_dblogmessage("insert"," Transfer and Promotion order",'mail send successfully  to '.$getData[20]);
+                                $this->logger->write_logmessage("insert"," Transfer and Promotion order ",'mail send successfully  to '.$emailto);
+                                $this->logger->write_dblogmessage("insert"," Transfer and Promotion order",'mail send successfully  to '.$emailto);
                             }
                             else{
                                 //echo "in else part";
                                 $mailmsg='Mail does not sent';
-                                $this->logger->write_logmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$getData[20]);
-                                $this->logger->write_dblogmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$getData[20]);
+                                $this->logger->write_logmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$emailto);
+                                $this->logger->write_dblogmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$emailto);
                             }//else close   
                             
                             $this->logger->write_logmessage("insert","Staff Transfer and Posting", " Employee transfer record insert successfully ");

@@ -62,14 +62,18 @@
                     <?php foreach($records as $record){ ?>
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
-                            <td><?php echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$record->uit_staffname)->emp_name;; ?></td>
+                            <td><?php $empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$record->uit_staffname)->emp_name;
+                                      $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$record->uit_staffname)->emp_code;
+                                      echo $empname."(" . $pfno .")"; 
+                                ?>
+                            </td>
                             <td><?php echo date('d-m-Y H:i:s',strtotime($record->uit_dateofrelief));?></td>
                             <td><?php echo date('d-m-Y H:i:s',strtotime($record->uit_dateofjoining));?></td>
                             <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->uit_uoc_to)->name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->uit_dept_to)->dept_name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_desig_to)->desig_name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_post_to)->desig_name; ?></td>
-                            <td> <?php echo anchor("staffmgmt/transferordercopy/{$record->uit_staffname}","View Transfer order copy",array('title' => 'View Transfer order' , 'class' => 'red-link')); ?></td>
+                            <td> <?php echo anchor("staffmgmt/transferordercopy/{$record->uit_id}","View Transfer order copy",array('title' => 'View Transfer order' , 'class' => 'red-link')); ?></td>
                         </tr>
                     <?php }; ?>
                 <?php else : ?>

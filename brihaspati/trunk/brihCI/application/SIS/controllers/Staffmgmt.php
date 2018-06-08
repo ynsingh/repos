@@ -1004,10 +1004,11 @@ class Staffmgmt extends CI_Controller
                 
                     'uit_staffname'                    => $this->input->post('empname'),
                     'uit_workingpost_from'             => $this->input->post('postfrom'),
-                    'uit_scid_to'                       =>  $this->input->post('campus'),
+                    'uit_scid_from'                    => $this->input->post('campusfrom'),
+                    'uit_scid_to'                      => $this->input->post('campus'),
                     'uit_uoc_to'                       => $this->input->post('uocontrolto'),
                     'uit_dept_to'                      => $this->input->post('deptto'),
-                    'uit_desig_to'                      => $this->input->post('desigto'),
+                    'uit_desig_to'                     => $this->input->post('desigto'),
                     'uit_post_to'                      => $this->input->post('postto'),
                     'uit_tta_detail'                   => $this->input->post('ttadetail'),
                 
@@ -1017,10 +1018,10 @@ class Staffmgmt extends CI_Controller
                     'uit_emptypeto'                    => $this->input->post('emptypeto'),
                     'uit_schm_from'                    => $this->input->post('schemfrom'),
                     'uit_schm_to'                      => $this->input->post('schemto'),
-                    'uit_ddoid_to'                       => $this->input->post('ddo'),
+                    'uit_ddoid_to'                     => $this->input->post('ddo'),
                     'uit_group_to'                     => $this->input->post('group'),
-                    'uit_paybandid_to'                   => $this->input->post('payband'),
-                    'uit_vacanttype_to'                   => $this->input->post('vacanttype'),
+                    'uit_paybandid_to'                 => $this->input->post('payband'),
+                    'uit_vacanttype_to'                => $this->input->post('vacanttype'),
                 
                 );  
                 
@@ -1083,7 +1084,7 @@ class Staffmgmt extends CI_Controller
                     Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
                     '.$this->regname.'<br/>'.$this->uitdesig;
                     $attachment=$this->sismodel->gentransferordertpdf($_POST['empname']);
-                    $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,$attachment,'');
+                    $this->mailstoperson =$this->mailmodel->mailsnd($mail_sent_to, $sub, $mess,$attachment,'');
                    // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'','Sis');
                     if($this->mailstoperson){
                         //echo "in if part mail";
@@ -1163,9 +1164,9 @@ class Staffmgmt extends CI_Controller
         $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
         $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
         $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',1)->org_pincode;
-        $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
-        $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
-        $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$id);
+        $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_id',$id)->uit_registrarname;
+        $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_id',$id)->uit_desig;
+        $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_id',$id);
         $spec_data['detail'] = $this->data->row();
         $this->load->library('pdf');
         $this->pdf->set_paper("A4", "portrait");

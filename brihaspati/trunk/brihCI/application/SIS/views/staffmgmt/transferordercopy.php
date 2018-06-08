@@ -55,9 +55,43 @@
                 <tbody>-->
                     <tr align="center">
                         <td><?php echo 1; ?></td>
-                        <td><?php echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$detail->uit_staffname)->emp_name;?>
-                            &nbsp;<?php echo " , ". $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_to)->desig_name;?></td>
-                        <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_post_to)->desig_name.", ".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name;?></td>
+                        <td><?php
+                                $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$detail->uit_staffname)->emp_code;
+                                $is_exist= $this->sismodel->isduplicate('hod_list','hl_empcode',$pfno);
+                                if($is_exist){
+                                    $cdate = date('Y-m-d');
+                                    $selectfield="hl_dateto";
+                                    $whdata = array ('hl_empcode' => $pfno);
+                                    $whorder = 'hl_dateto desc';
+                                    $emp_data['rama']= $this->sismodel->get_orderlistspficemore('hod_list',$selectfield,$whdata,$whorder);
+                                    $todate=$emp_data['rama'][0]->hl_dateto;
+
+                                    if($todate >= $cdate){        
+                                        echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$detail->uit_staffname)->emp_name."("."HEAD".")";
+                                    }
+                                    else{
+                                        echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$detail->uit_staffname)->emp_name;
+                                    }
+                                }
+                                else{
+                                    echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$detail->uit_staffname)->emp_name;
+                                }
+                            ?>
+                            
+                            <?php echo "<br/> ". $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_from)->desig_name;?>
+                            <?php echo " <br/> Working against the post of ". $detail->uit_workingpost_from.",";?>
+                            <?php echo "<br/>". $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_from)->sd_name.",";?>
+                            <?php echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_workdept_from)->dept_name.",";?>
+                            <?php echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_from)->sc_name;?> 
+                            
+                        </td>
+                        <td>
+                            <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_to)->desig_name;?>
+                            <?php echo "<br/>Against the vacant post of  ".$this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_post_to)->desig_name.",";?>
+                            <?php echo "<br/>".$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_to)->sd_name.",";?>
+                            <?php echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name.",";?>
+                            <?php echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_to)->sc_name;?>
+                        </td>
                     </tr>    
                <!-- </tbody> -->   
             </table><br/><br/>
