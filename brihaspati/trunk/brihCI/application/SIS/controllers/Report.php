@@ -135,17 +135,24 @@ class Report  extends CI_Controller
                 $this->deptmt= "All";
             }
 
-	   if($dept != "null" && $dept != "All"){
+           $whdata['sp_tnt'] = $wtype;
+	   if(($dept != "null") && ($dept != "All")){
+		$whdata['sp_dept']= $dept;
+	   }
+	   if(($uoff != "null") && ($uoff != "All")){	
+		$whdata['sp_uo'] = $uoff;
+	   }
+	  /* if($dept != "null" && $dept != "All"){
                 //echo "if case dept of filter";
                 if($uoff != "All"){
-                    $whdata['sp_tnt'] = $wtype;
+            //        $whdata['sp_tnt'] = $wtype;
                     $whdata['sp_dept']= $dept;
 		    if($this->session->userdata('id_role') != 10){
                     	$whdata['sp_uo'] = $uoff;
 		    }
                 }
                 else{
-                    $whdata['sp_tnt'] = $wtype;
+         //           $whdata['sp_tnt'] = $wtype;
                     $whdata['sp_dept']= $dept;
                 }
 
@@ -154,16 +161,17 @@ class Report  extends CI_Controller
 
                 if($uoff != "All"){
 
-                    $whdata['sp_tnt'] = $wtype;
+           //         $whdata['sp_tnt'] = $wtype;
 		    if($this->session->userdata('id_role') != 10){
                     	$whdata['sp_uo'] = $uoff;
 		    }
                 }
                 else{
 
-                    $whdata['sp_tnt'] = $wtype;
+             //       $whdata['sp_tnt'] = $wtype;
                 }
             }
+	*/
 	 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
         
         }
@@ -195,8 +203,15 @@ class Report  extends CI_Controller
             }else{
                 $this->desigm = "All";
             }
+            $whdata['sp_tnt'] = $wtype;
+	    if($desig != "null" && $desig != "All"){
+		 $whdata['sp_emppost']= $desig;
+	    }
+	    if(($uoff != "null") && ($uoff != "All")){
+                $whdata['sp_uo'] = $uoff;
+           }
 
-            //echo "desig===".$desig."www==".$wtype."uo===".$uoff;
+/*            //echo "desig===".$desig."www==".$wtype."uo===".$uoff;
             if($desig != "null" && $desig != "All"){
                 //echo "if case dept of filter";
                 if($uoff != "All"){
@@ -221,7 +236,7 @@ class Report  extends CI_Controller
                 else{
                     $whdata['sp_tnt'] = $wtype;
                 }
-            }
+            }*/
             $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
         }
         else{
@@ -353,26 +368,39 @@ public function disciplinewiselist(){
 }
 
     public function listofstaffposition(){
+	$whorder = "sp_uo asc, sp_dept asc";
+   //     $whdata = '';
 	$whdata = $this->getwhdata();       
         $selectfield ="sp_uo";
+        $data['tnttype']='';
+        $data['seldept']='';
         if(isset($_POST['filter'])) {
              //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $dept  = $this->input->post('dept');
 
-	    $this->wtyp = $wtype;
+	    $data['tnttype'] = $this->wtyp = $wtype;
             $this->uolt = $uoff;
 	    if((!empty($dept))&&($dept != "null")){
-                $this->deptmt = $dept;
+               $data['seldept'] = $this->deptmt = $dept;
             }else{
                 $this->deptmt= "All";
             }
 
+            $whdata['sp_tnt'] = $wtype;
+	    if(($dept != "null") && ($dept != "All")){
+                $whdata['sp_dept']= $dept;
+           }
+           if(($uoff != "null") && ($uoff != "All")){
+                $whdata['sp_uo'] = $uoff;
+           }
+
+
             //echo "dept===".$dept."\nwt==".$wtype."\nuo===".$uoff;
-            $data['tnttype'] =  $wtype;  
-            $data['seldept']=$dept;
-            if($wtype!= " "){
+      //      $data['tnttype'] =  $wtype;  
+        //    $data['seldept']= $dept;
+ /*           if($wtype!= " "){
                 if($uoff !="All"){
                  	$whdata['sp_tnt'] = $wtype;
 			if($this->session->userdata('id_role') != 10){
@@ -382,14 +410,15 @@ public function disciplinewiselist(){
                 else{
                     	$whdata['sp_tnt'] = $wtype;
                 }
-                $data['records'] = $this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
             }
+*/	//	print_r($whdata);
+                $data['records'] = $this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
+//		$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
             
         }
         else{
-            $data['tnttype']='';
-            $data['seldept']='';
             $data['records'] = $this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
+//		$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
         }
         $this->logger->write_logmessage("view"," view list staff position list" );
         $this->logger->write_dblogmessage("view"," view list staff position list");
@@ -585,15 +614,16 @@ public function disciplinewiselist(){
             $post  = $this->input->post('post');
 		$this->wtyp = $wtype;
 		$this->desigm = $post;
+            $whdata['sp_tnt']=$wtype;
             if(!empty($post) && ($post!="All")){
                 //$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post);
-		 $whdata['sp_tnt']=$wtype;
+		// $whdata['sp_tnt']=$wtype;
 		 $whdata['sp_emppost']=$post;
             }
-            else{
+      //      else{
                 //$whdata = array('sp_tnt'=> $wtype);
-		 $whdata['sp_tnt']=$wtype;
-            }
+	//	 $whdata['sp_tnt']=$wtype;
+          //  }
 //print_r($whdata); die;
             $data['allpost']=$this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
          }

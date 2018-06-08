@@ -414,6 +414,7 @@ class Empmgmt extends CI_Controller
                 redirect('empmgmt/add_sevicedata');
             }//formvalidation
             else{
+		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
                 $data = array(
                     'empsd_empid'           =>$empid,
                     'empsd_campuscode'      =>$_POST['campus'],
@@ -423,7 +424,7 @@ class Empmgmt extends CI_Controller
                     'empsd_ddoid'           =>$_POST['ddo'],
 		    'empsd_worktype'        =>$_POST['workingtype'],
                     'empsd_group'           =>$_POST['group'],
-                    'empsd_desigcode'       =>$_POST['designation'],
+                    'empsd_desigcode'       =>$desigcode,
 		    'empsd_shagpstid'       =>$_POST['emppost'],
 		    'empsd_level'           =>$_POST['level'],
                     'empsd_pbid'            =>$_POST['payband'],
@@ -571,6 +572,7 @@ class Empmgmt extends CI_Controller
 		$worktype=$this->input->post('workingtype', TRUE);
                 $group=$this->input->post('group', TRUE);
                 $desigc = $this->input->post('designation', TRUE);
+		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$desigc)->desig_code;
 		$emppost = $this->input->post('emppost', TRUE);
 		$level = $this->input->post('level', TRUE);
                 $payb = $this->input->post('payband', TRUE);
@@ -594,7 +596,7 @@ class Empmgmt extends CI_Controller
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_worktype. " changed by " .$worktype;
 		if($eds_data['servicedata']->empsd_group != $group)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_group. " changed by " .$group;
-                if($eds_data['servicedata']->empsd_desigcode != $desigc)
+                if($eds_data['servicedata']->empsd_desigcode != $desigcode)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_desigcode. " changed by " .$desigc;
 		if($eds_data['servicedata']-> empsd_shagpstid != $emppost)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_shagpstid. " changed by " .$emppost;
@@ -619,7 +621,7 @@ class Empmgmt extends CI_Controller
 		    'empsd_ddoid'           =>$ddo,
 		    'empsd_worktype'        =>$worktype,
 		    'empsd_group'           =>$group,
-                    'empsd_desigcode'       =>$desigc,
+                    'empsd_desigcode'       =>$desigcode,
 		    'empsd_shagpstid'       =>$emppost,
 		    'empsd_level'           =>$level,
                     'empsd_pbid'            =>$payb,

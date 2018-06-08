@@ -154,7 +154,7 @@
 			</tr>
   			<tr>
                                 <td>
-<?php   echo    "<b>Drawing and Disbursing Officer</b> <br>".$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddouserid)->ddo_name; ?>
+<?php   echo    "<b>Drawing and Disbursing Officer</b> <br>".$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddoid)->ddo_name; ?>
                                 </td>
                                 <td>
 
@@ -166,6 +166,7 @@
                                 <td>
 <?php   			echo    "<b>Designation</b> <br>";
 					echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name; 
+//					echo 'Head
 ?>
                                 </td>
                         </tr>
@@ -420,7 +421,16 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
 ?>
 <tr>
                                 <td>
-<?php   echo $recrd->aa_asigname;?>
+ <?php
+                        if(substr($recrd->aa_asigname, 0, 7) === "Others,"){
+                                $rstr=substr($recrd->aa_asigname, 7, strlen($recrd->aa_asigname));
+                                echo $rstr;
+
+                        }
+                        else{
+                                echo $recrd->aa_asigname;
+                        }
+                ?>
 </td>
  <td>
 <?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodfrom));?>
@@ -500,7 +510,7 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
 				</td>
                                 <td>
                                     <?php 
-				    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->empsd_desigcode)->desig_name; 
+				    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name; 
 				    $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
 				    $group=$record->empsd_group;
 				    $worktype=$record->empsd_worktype;

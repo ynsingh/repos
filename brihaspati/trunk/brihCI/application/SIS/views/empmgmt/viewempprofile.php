@@ -261,7 +261,7 @@
 ?>
 		</td> 
                     <td>Drawing and Disbursing Officer :</td>
-                    <td> <?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->emp_ddouserid)->ddo_name;?></td> 
+                    <td> <?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->emp_ddoid)->ddo_name;?></td> 
                     <td>Working Type :</td>
                     <td colspan="2"><?php echo $record->emp_worktype;?></td>
                
@@ -453,7 +453,16 @@
 		if(!empty($recrd->aa_asigname)){?>
 		<tr>
                                 <td colspan="2">
-		<?php   echo $recrd->aa_asigname;?>
+		<?php   
+			if(substr($recrd->aa_asigname, 0, 7) === "Others,"){ 
+				$rstr=substr($recrd->aa_asigname, 7, strlen($recrd->aa_asigname));
+				echo $rstr;
+				
+			} 
+			else{ 
+				echo $recrd->aa_asigname; 
+			}
+		?>
 		</td>
 		 <td colspan="2">
 		<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodfrom));?>
@@ -514,7 +523,7 @@
                                 </td>
                                 <td colspan="2">
 				<?php 
-				$desig=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->empsd_desigcode)->desig_name; 
+				$desig=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name; 
                                 $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
 				$group=$record->empsd_group;
 				$worktype=$record->empsd_worktype;

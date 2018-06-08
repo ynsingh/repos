@@ -216,6 +216,8 @@
 		$nop = 0;	
                 $type_tnt=$tnttype;
                 $ddropdept=$seldept;
+         //       $type_tnt=$this->wtyp;
+           //     $ddropdept=$this->deptmt;
 //                echo "type_tnt==".$type_tnt."seldept==".$ddropdept;
                if( count($records) ):  ?>
                     <?php foreach($records as $record){
