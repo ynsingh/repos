@@ -10,7 +10,7 @@
     	$fy_start=explode("-",$date1);
     	$fy_end=explode("-",$date2);
 
-	$count = "";
+//	$count = "";
     	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
     	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 

@@ -105,7 +105,8 @@ CREATE TABLE `bgasAccData` (
   `hostname` varchar(255) NOT NULL DEFAULT 'localhost',
   `port` int(9) NOT NULL DEFAULT '3306',
   `dbtype` varchar(255) NOT NULL DEFAULT 'mysql',
-  `dblable` varchar(255) NOT NULL
+  `dblable` varchar(255) NOT NULL,
+  `prevyeardb` VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

@@ -286,17 +286,17 @@ function newschedules_model()
 
 	function get_old_asset_depvalue($id)
 	{
-		//$dep_op_value = "";
-		$dep_op_sum  = "";
-		$old_curr_sum = "";
+		$dep_op_value = 0;
+		$dep_op_sum  = 0;
+		$old_curr_sum = 0;
 		$dep_opening_value1 = 0;
 		$dep_opening_value2 = 0;
 		$dep_opening_value3 = 0;
 		$old_curr_plan = 0;
 		$old_curr_nonplan = 0;
 		$old_curr_other = 0;
-                //$current_dep_value = "";
-		//$old_current_value = "";
+                $current_dep_value = 0;
+		$old_current_value = 0;
                 $total_dep = 0.00;
 		$old_asset_dep = array();
 
@@ -356,17 +356,17 @@ function newschedules_model()
 
 	function get_new_asset_depvalue($id)
 	{
-		//$dep_op_value = "";
-		$dep_op_sum = "";
-		$new_curr_sum = "";
-                $current_dep_value = "";
+		$dep_op_value = 0;
+		$dep_op_sum = 0;
+		$new_curr_sum = 0;
+                $current_dep_value = 0;
 		$dep_opening_value1 = 0;
 		$dep_opening_value2 = 0;
 		$dep_opening_value3 = 0;
                 $new_curr_plan = 0;
 		$new_curr_nonplan = 0;
 		$new_curr_other = 0;
-		$new_current_value = "";
+		$new_current_value = 0;
                 $total_dep = 0.00;
                 $new_asset_dep = array();
 
@@ -425,14 +425,14 @@ function newschedules_model()
 
 	function get_old_asset_depvalue1($ledg_id)
 	{
-		$dep_op_value = "";
+		$dep_op_value =0;
 		$dep_opening_value1 = 0;
 		$dep_opening_value2 = 0;
 		$old_curr_plan = 0;
 		$old_curr_nonplan = 0;
-		$dep_op_value = "";
-                $current_dep_value = "";
-		$old_current_value = "";
+		$dep_op_value = 0;
+                $current_dep_value = 0;
+		$old_current_value = 0;
                 $total_dep = 0.00;
 		$old_asset_dep = array();
 
@@ -479,14 +479,14 @@ function newschedules_model()
 
 	function get_new_asset_depvalue1($ledg_id)
 	{
-		$dep_op_value = "";
+		$dep_op_value = 0;
 		$dep_opening_value1 = 0;
 		$dep_opening_value2 = 0;
                 $new_curr_plan = 0;
 		$new_curr_nonplan = 0;
-		$dep_op_value = "";
-                $current_dep_value = "";
-		$new_current_value = "";
+		$dep_op_value = 0;
+                $current_dep_value = 0;
+		$new_current_value = 0;
                 $total_dep = 0.00;
                 $new_asset_dep = array();
 
@@ -627,8 +627,8 @@ function newschedules_model()
 	function get_exp_receipt_total($project_name,$id)
     	{
 		//echo "id=========>$id";
-		$dr_sum_total = "";
-		$cr_sum_total = "";
+		$dr_sum_total = 0;
+		$cr_sum_total = 0;
 		$total = array();
 		$CI =&get_instance();
         	$CI->load->library('session');
@@ -681,11 +681,11 @@ function newschedules_model()
                 $cl_balance4a = 0;
 		$op_bal_dr = 0;
 		$op_bal_cr = 0;
-                $dep_op_value = "";
+                $dep_op_value = 0;
 		$ledg_other_cr_ded = 0;
 		$ledg_other_cr_dep = 0;
 		$ledg_other_dr_total = 0;
-                $current_dep_value = "";
+                $current_dep_value = 0;
 		$ledg_plan_cr_ded = 0;
 		$ledg_plan_cr_dep = 0;
                 $ledg_plan_dr_total = 0;

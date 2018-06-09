@@ -65,7 +65,7 @@
 
         echo "<td align=\"right\" class=\"bold\">";
       //  echo money_format('%!i', convert_cur($mhrd_total));
-        //echo convert_amount_dc(-$mhrd_total);//add (-) for convert amount to cr
+        echo convert_amount_dc(-$mhrd_total);//add (-) for convert amount to cr
         echo "</td>"; 
         echo "</tr>";
         echo "</table>";

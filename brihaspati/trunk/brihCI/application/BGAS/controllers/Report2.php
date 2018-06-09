@@ -1522,9 +1522,8 @@ function __construct() {
 		$data['print_preview'] = 'FALSE';
 
 		if ($count == '9'){
-		$this->template->load('template', 'report2/schedule_template1', $data);
+			$this->template->load('template', 'report2/schedule_template1', $data);
 		}elseif($count == '17'){
-
 			$this->template->load('template', 'report2/schedule_template3', $data);
 		}elseif($count == '15A'){
 			$this->template->load('template', 'report2/schedule_template4', $data);

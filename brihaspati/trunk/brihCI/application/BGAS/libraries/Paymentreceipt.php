@@ -8,6 +8,7 @@ class paymentreceipt
 		$CI =& get_instance();
 		$CI->load->model('payment_model');
 		$CI->load->library('session');
+		$CI->load->library('Reportlist1');
                 return;
         }
 		
@@ -40,6 +41,8 @@ class paymentreceipt
         	$date1 = $CI->session->userdata('date1');
         	$date2 = $CI->session->userdata('date2');
 		$current_active_account = $CI->session->userdata('active_account');
+		$rlt1=new Reportlist1();
+		$datapreveous=$rlt1->getprevyrdb($current_active_account);
 		if($type == "Payment")
        		{
     			$CI->db->select('name,code,id')->from('groups')->where('parent_id <=',4)->where('parent_id !=',3)->where('parent_id !=',0);
@@ -95,8 +98,10 @@ class paymentreceipt
                         		}
 					}
 					//code for writig xml... 
-                                        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                        $file_name="Payment"."-".$current_active_account.".xml";
+					$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
+                                       // $file_name="Payment"."-".$current_active_account.".xml";
+					$file_name="Payment"."-".$datapreveous.".xml";
+//					print_r($file_name); die;
 	                                $tt=$acctpath."/".$file_name;
 					$paymentlist2=$CI->payment_model->xml_read($tt,$name);
 					if($acc == "view" && $database == "NULL" )
@@ -108,8 +113,9 @@ class paymentreceipt
                         		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
 					//echo "</tr>";
 					//code for writig xml... 
-			/*		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        		$file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
+/*					$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                        //	$file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
+                        		$file_name="Payment"."-".$current_active_account.".xml";
                         		$tt=$acctpath."/".$file_name;
 			if(file_exists($tt))
                         {
@@ -129,7 +135,7 @@ class paymentreceipt
             			$paymentlist1 = @$paymentnode1->item($i)->nodeValue;
             			$paymentlist2 = @$paymentnode2->item($i)->nodeValue;
             			$paymentlist3 = @$paymentnode3->item($i)->nodeValue;
-			}//if xml...*/
+			}//if xml... */
 				$type_total = $type_total + $paymentlist2;
 				$i++;
                         	echo "<td align=\"right\">" . convert_amount_dc($paymentlist2) . "</td>"; 
@@ -201,8 +207,9 @@ class paymentreceipt
                             	$total = $cr_sum_total - $dr_sum_total;
                         }
                     	}
-			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="Receipt"."-".$current_active_account.".xml";
+			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
+                        //$file_name="Receipt"."-".$current_active_account.".xml";
+                        $file_name="Receipt"."-".$datapreveous.".xml";
                         $tt=$acctpath."/".$file_name;
                         $receiptlist2=$CI->payment_model->xml_read($tt,$name);
 
@@ -213,8 +220,8 @@ class paymentreceipt
             			echo "&nbsp;" .  $name;
             			echo "</td>";
             			echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
-
-			/*if(file_exists($tt))
+/*
+			if(file_exists($tt))
                         {
 				$doc = new DomDocument();
             			$doc->formatOutput = true;
@@ -231,7 +238,7 @@ class paymentreceipt
             			$receiptlist1 = @$receiptnode1->item($i)->nodeValue;
             			$receiptlist2 = @$receiptnode2->item($i)->nodeValue;
             			$receiptlist3 = @$receiptnode3->item($i)->nodeValue;
-			}//if xml..*/
+			}//if xml.. */
 				$type_total = $type_total + $receiptlist2;
 				//$i++;
                         	echo "<td align=\"right\">" . convert_amount_dc(-$receiptlist2) . "</td>";
@@ -249,7 +256,8 @@ class paymentreceipt
 		    }//foreach
 	    }//else  
     }
-	/*function add_payment_receipt_sub_ledgers($code ,$type)
+	/* 
+	 * function add_payment_receipt_sub_ledgers($code ,$type)
         {
 		//echo"jkreuio".$code;
 		$payment_total=0;
@@ -265,7 +273,7 @@ class paymentreceipt
                 {
 			 $total = $CI->Payment_model->get_paymentreceipt_ledger_balance($row->id, $type, $code);
 			if($total != NULL){
-                        if($row->name != 'Transfer Account' && $row->name != 'Transit Income'){
+				if($row->name != 'Transfer Account' && $row->name != 'Transit Income'){ 
 			/* echo "<tr class=\"tr-ledger\">";
                                         echo "<td class=\"td-ledger\">";
                                         echo "&nbsp;" . anchor('report/ledgerst/' . $row->id, $row->name, array('title' => $row->name . ' Ledger Statement', 'style' => 'color:#000000'));
@@ -290,7 +298,8 @@ class paymentreceipt
 	        $doc->formatOutput = true;
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
 	        $file_name="";
-        	$file_name=$type."-".$database."-".$curr_year.".xml";
+        	$file_name=$type."-".$database.".xml";
+        	//$file_name=$type."-".$database."-".$curr_year.".xml";
 	        $tt=$acctpath."/".$file_name;
 		if(file_exists($tt))
         	{	
@@ -460,17 +469,20 @@ class paymentreceipt
   		}
         }//send_mail 
 
-	function ledgers_op_cl_balance($type,$ledg_id,$database,$name,$curr_year, $op_balance, $op_balance_dc)
-        {
+	function ledgers_op_cl_balance($type,$ledg_id,$cadatabase,$name,$curr_year, $op_balance, $op_balance_dc)
+	{
                 //echo "ledgers_op_cl_balance--->";
                 $CI =& get_instance();
+		 $CI->logger->write_logmessage("insert", "In carry farword methed-In library Payment Receipt - entering and current active account is  ".$cadatabase);
                 if($name !=  'Depreciation' && $name !=  'Current Assets' && $name !=  'Committed Fund'){
                 $type1 =$type."_Name";
                 $doc = new DOMDocument();
                 $doc->formatOutput = true;
                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
                 $file_name="";
-                $file_name=$type."-".$database."-".$curr_year.".xml";
+                //$file_name=$type."-".$database."-".$curr_year.".xml";
+                $file_name=$type."-".$cadatabase.".xml";
+		 $CI->logger->write_logmessage("insert", "In carry farword methed-In library Payment Receipt - file name ".$file_name ."  and current active account is  ".$cadatabase);
                 $tt=$acctpath."/".$file_name;
                 if(file_exists($tt))
                 {

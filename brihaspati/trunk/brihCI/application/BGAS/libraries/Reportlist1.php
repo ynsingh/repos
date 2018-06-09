@@ -6,9 +6,9 @@ class Reportlist1
 		$CI =& get_instance();
                 $CI->load->model('Group_model');
                 $CI->load->model('Ledger_model');
-		        //$CI->load->model('ledger_model');
+	        //$CI->load->model('ledger_model');
                 $CI->load->model('payment_model');
-		        $CI->load->model('depreciation_model');
+	        $CI->load->model('depreciation_model');
                 $CI->load->model('investment_model');
                 $CI->load->model('newschedules_model');
 		        return;
@@ -16,8 +16,6 @@ class Reportlist1
 	
 	function init($id)
 	{
-//        echo "<br>";
-        //echo "id in Replist1--->".$id;
 		$CI =& get_instance();
 		if ($id == 0)
 		{
@@ -141,6 +139,17 @@ class Reportlist1
 			}
 		}
 	}
+	function getprevyrdb($caacc){
+		$CI =& get_instance();
+		$db1=$CI->load->database('login', TRUE);
+            	$db1->from('bgasAccData')->where('dblable', $caacc);
+            	$accdetail = $db1->get();
+		foreach ($accdetail->result() as $row)
+            	{
+        	        $datapreveous = $row->prevyeardb;
+		}
+		return $datapreveous;
+	}
 
 	//Method for display New MHRD format-2015 @kanchan
         function new_mhrd($id, $type,$database)
@@ -148,8 +157,8 @@ class Reportlist1
             $CI =& get_instance();
             $current_active_account = $CI->session->userdata('active_account');
 		//for previous
-            $CI =& get_instance();
-            $db1=$CI->load->database('login', TRUE);
+          //  $CI =& get_instance();
+  /*          $db1=$CI->load->database('login', TRUE);
             $db1->from('bgasAccData')->where('dblable', $current_active_account);
             $accdetail = $db1->get();
             //print_r(sizeof($accdetail->result()));
@@ -164,18 +173,19 @@ class Reportlist1
             //echo "get_op_balance_agg===>".$databasehost.$databasename.$databaseport.$databaseusername.$databasepassword;
             }
 
-    
+   */ 
+	    $datapreveous=$this->getprevyrdb($current_active_account);
 
 	        	$x=0;
                 $mhrdlist1=0;
                 $mhrd_total=0;
                // $CI =& get_instance();
-		        $prev_year=$this->get_fy_year();
+		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-
+// check this
                 $db = $CI->Payment_model->database_name();
-		        $diff = $this->income_expense_diff();
+		$diff = $this->income_expense_diff();
                 $diff_total = -($diff);
                 $counter = 0;
                 $sum = 0;
@@ -259,7 +269,7 @@ class Reportlist1
 			
 			$sum=0;
 			$y=0;
-            $counter = 3;
+            		$counter = 3;
 			$flag="true";
 			//code for previous year
 	                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
@@ -417,9 +427,11 @@ class Reportlist1
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
         	$current_active_account = $CI->session->userdata('active_account');
             	$id = $CI->Ledger_model->get_group_id($code);
-                $parent = $CI->Ledger_model->get_group_name($id);
+		$parent = $CI->Ledger_model->get_group_name($id);
+		$datapreveous=$this->getprevyrdb($current_active_account);
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
                 $CI->db->select('name,code,id,op_balance, op_balance_dc')->from('ledgers')->where('group_id',$id);
                 $ledger_detail = $CI->db->get();
@@ -552,8 +564,10 @@ class Reportlist1
 		$current_active_account = $CI->session->userdata('active_account');
                 $id = $CI->Group_model->get_group_id($code);
 		$name = $CI->Group_model->get_group_name($id);
+		$datapreveous=$this->getprevyrdb($current_active_account);
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
@@ -858,6 +872,8 @@ d Investments')
                 $credit_total=0;
                 $closing_balance=0;
 		$dep_opening_balance=0;
+		$dep_op_balance=0;
+		$current_depreciation=0;
 		$current_depreciation_amount=0;
                 $current_year_value = 0.00;
 		$total_depreciation  = 0;
@@ -870,9 +886,11 @@ d Investments')
                 $current_active_account = $CI->session->userdata('active_account');
                 $prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
-                $curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$datapreveous=$this->getprevyrdb($current_active_account);
                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
                 $id = $CI->Group_model->get_group_id($code);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
@@ -1120,9 +1138,11 @@ d Investments')
                 $current_active_account = $CI->session->userdata('active_account');
 		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
-                $curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$datapreveous=$this->getprevyrdb($current_active_account);
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
 
 		$id = $CI->Group_model->get_id('Capital Work-In-Progress');
@@ -1246,9 +1266,11 @@ d Investments')
 		$current_active_account = $CI->session->userdata('active_account');
 		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
-                $curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$datapreveous=$this->getprevyrdb($current_active_account);
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
 
 
@@ -2482,9 +2504,11 @@ d Investments')
                 $current_active_account = $CI->session->userdata('active_account');
                 $prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
-                $curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$curr_year=($year[0]+1) ."-" . ($year[1]+1);
+		$datapreveous=$this->getprevyrdb($current_active_account);
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
 		$CI->db->select('id,name,code')->from('groups')->where('parent_id',$id);
         	$main1 = $CI->db->get();
@@ -2653,9 +2677,11 @@ d Investments')
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
                 /*Get current label*/
-                $current_active_account = $CI->session->userdata('active_account');
+		$current_active_account = $CI->session->userdata('active_account');
+		$datapreveous=$this->getprevyrdb($current_active_account);
                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$datapreveous.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
 
                 $CI->db->select('id,name,code')->from('groups')->where('parent_id',$id);
@@ -3742,9 +3768,8 @@ d Investments')
 	}
 
 	function income_exp_mhrdnew($id,$type,$database)
-    {
-        
-	    $i=0;
+    	{
+	$i=0;
         $c =14;
         $counter=8;
         $total = 0.00;
@@ -3755,7 +3780,8 @@ d Investments')
 	    $prev_year=$this->get_fy_year();
     	$year=explode("-",$prev_year); 
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-        $current_active_account = $CI->session->userdata('active_account');
+	$current_active_account = $CI->session->userdata('active_account');
+	$datapreveous=$this->getprevyrdb($current_active_account);
 	    $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
 
         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
@@ -3766,7 +3792,12 @@ d Investments')
         {
         	$name = $row->name;
             	$code =$row->code;
-            	$ledg_id = $row->id;
+		$ledg_id = $row->id;
+		$income = new Reportlist1();
+		$income->init($ledg_id);
+		$total = $income->total;
+                $sum = $sum + $total;
+
 		//print_r($code."=" );
 		if($type == 'view'){
            	echo "<tr class=\"tr-group\">";
@@ -3777,14 +3808,16 @@ d Investments')
 		}
         if($id == 3 && $type == "view" && $database == "NULL" )
         {
-			$file_name="Income"."-".$current_active_account."-".$prev_year.".xml";echo "<br>";
+			//$file_name="Income"."-".$current_active_account."-".$prev_year.".xml";echo "<br>";
+			//$file_name="Income"."-".$current_active_account.".xml";echo "<br>";
+			$file_name="Income"."-".$datapreveous.".xml";echo "<br>";
 
 			$tt=$acctpath."/".$file_name;
-            $counter++;
-			$income = new Reportlist1();
-                        $income->init($ledg_id);
-                        $total = $income->total;
-                        $sum = $sum + $total;
+            		$counter++;
+			//$income = new Reportlist1();
+                      //  $income->init($ledg_id);
+                    //    $total = $income->total;
+                  //      $sum = $sum + $total;
                         $total = 0 - $total;
                         $paymentlist2=$CI->payment_model->xml_read($tt,$name);
 			$type_total=$type_total+(float)$paymentlist2;
@@ -3795,17 +3828,21 @@ d Investments')
                 	echo "<td align=\"right\">" . convert_amount_dc($paymentlist2) . "</td>";
                 	echo"</tr>";
                }
-
+        	if($id == 3 && $type != "view")
+		{
+                        $data = $CI->payment_model->xml_creation('Income',$ledg_id,$database,$name,$curr_year,$total);
+                        }
 		if($id == 4 && $type == "view" && $database == "NULL")
             	{
 			//$file_name="Expense"."-".$current_active_account."-".$prev_year.".xml";
-			$file_name="Expense"."-".$current_active_account.".xml";
+			//$file_name="Expense"."-".$current_active_account.".xml";
+			$file_name="Expense"."-".$datapreveous.".xml";
 			$tt=$acctpath."/".$file_name;	
-			$income = new Reportlist1();
-                	$income->init($ledg_id);
-                	$total = $income->total;
-                	$sum = $sum + $total;
-                	$paymentlist2=$CI->payment_model->xml_read($tt,$name);
+		//	$income = new Reportlist1();
+                //	$income->init($ledg_id);
+                //	$total = $income->total;
+		//	$sum = $sum + $total;
+			$paymentlist2=$CI->payment_model->xml_read($tt,$name);
                 	$type_total=$type_total+(float)$paymentlist2;
 			$this->total=$type_total;
                 	if($name == 'Depreciation'){
@@ -3818,7 +3855,11 @@ d Investments')
                 	echo "<td align=\"right\">".convert_amount_dc($total)."</td>";
                 	echo "<td align=\"right\">" . convert_amount_dc($paymentlist2) . "</td>";
                 	echo"</tr>";
-            }//if expence
+		}//if expence
+		if($id == 4 && $type != "view")
+		{
+                        $data = $CI->payment_model->xml_creation('Expense',$ledg_id,$database,$name,$curr_year,$total);
+                }
         }//foreach
         $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
         $main = $CI->db->get();
@@ -3840,7 +3881,8 @@ d Investments')
         }//foreach
 		if($id == 3  ){
 			//$file_name="Income"."-".$current_active_account."-".$prev_year.".xml";
-			$file_name="Income"."-".$current_active_account.".xml";
+			//$file_name="Income"."-".$current_active_account.".xml";
+			$file_name="Income"."-".$datapreveous.".xml";
                 	$tt=$acctpath."/".$file_name;
 			$paymentlist2=$CI->payment_model->xml_read($tt,'Direct Ledger');
 			if($type == 'view'){
@@ -3852,7 +3894,8 @@ d Investments')
 		}
             	if($id == 4  ){
 			//$file_name="Expense"."-".$current_active_account."-".$prev_year.".xml";
-			$file_name="Expense"."-".$current_active_account.".xml";
+			//$file_name="Expense"."-".$current_active_account.".xml";
+			$file_name="Expense"."-".$datapreveous.".xml";
                         $tt=$acctpath."/".$file_name;
                         $paymentlist2=$CI->payment_model->xml_read($tt,'Direct Ledger');
 			if($type == 'view'){
@@ -3977,9 +4020,11 @@ d Investments')
         $curr_year = $fy_start[0] ."-" .$fy_end[0];
         $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
         $id = $CI->Ledger_model->get_group_id($code);
-        $parent = $CI->Ledger_model->get_group_name($id);
+	$parent = $CI->Ledger_model->get_group_name($id);
+	$datapreveous=$this->getprevyrdb($current_active_account);
 	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-        $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        $file_name="schedule_".$count."-".$datapreveous.".xml";
         $tt=$acctpath."/".$file_name;
         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
         //$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
@@ -4283,7 +4328,6 @@ d Investments')
         $prev_nonplan_total=0;
         $prev_plan_sfc_total=0;
         $str = 'a';
-
         $current_active_account = $CI->session->userdata('active_account');
         $CI->db->from('settings');
         $detail = $CI->db->get();
@@ -4299,11 +4343,12 @@ d Investments')
         $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
 
         $id = $CI->Ledger_model->get_group_id($code);
-        $parent = $CI->Ledger_model->get_group_name($id);
+	$parent = $CI->Ledger_model->get_group_name($id);
+	$datapreveous=$this->getprevyrdb($current_active_account);
 	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-        $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        $file_name="schedule_".$count."-".$datapreveous.".xml";
         $tt=$acctpath."/".$file_name;
-
 
         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
         //$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
@@ -4624,9 +4669,11 @@ d Investments')
         $year=explode("-",$prev_year); 
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
         $current_active_account = $CI->session->userdata('active_account');
-        $id = $CI->Ledger_model->get_group_id($code);
+	$id = $CI->Ledger_model->get_group_id($code);
+	$datapreveous=$this->getprevyrdb($current_active_account);
 	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-        $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        $file_name="schedule_".$count."-".$datapreveous.".xml";
         $tt=$acctpath."/".$file_name;
         $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
         $ledger_detail = $CI->db->get();
@@ -4677,9 +4724,11 @@ d Investments')
         $year=explode("-",$prev_year);
         $curr_year=($year[0]+1) ."-" . ($year[1]+1);
 	$CI = & get_instance();
-        $current_active_account = $CI->session->userdata('active_account');
+	$current_active_account = $CI->session->userdata('active_account');
+	$datapreveous=$this->getprevyrdb($current_active_account);
 	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-        $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        $file_name="schedule_".$count."-".$datapreveous.".xml";
         $tt=$acctpath."/".$file_name;
         $id = $CI->Ledger_model->get_group_id($code);
         $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
@@ -4729,9 +4778,11 @@ d Investments')
         $current_active_account = $CI->session->userdata('active_account');
         $prev_year=$this->get_fy_year();
         $year=explode("-",$prev_year);
-        $curr_year=($year[0]+1) ."-" . ($year[1]+1);
+	$curr_year=($year[0]+1) ."-" . ($year[1]+1);
+	$datapreveous=$this->getprevyrdb($current_active_account);
         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-        $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        $file_name="schedule_".$count."-".$datapreveous.".xml";
         $tt=$acctpath."/".$file_name;
         $id = $CI->Ledger_model->get_group_id($code);
         $parent = $CI->Ledger_model->get_group_name($id);
@@ -4868,9 +4919,11 @@ d Investments')
         $current_active_account = $CI->session->userdata('active_account');
 	$prev_year=$this->get_fy_year();
         $year=explode("-",$prev_year);
-        $curr_year=($year[0]+1) ."-" . ($year[1]+1);
+	$curr_year=($year[0]+1) ."-" . ($year[1]+1);
+	$datapreveous=$this->getprevyrdb($current_active_account);
         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-        $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+        $file_name="schedule_".$count."-".$datapreveous.".xml";
         $tt=$acctpath."/".$file_name;
 
             $group_id = $CI->Group_model->get_id('Grant/Subsidies and Donations');
@@ -5361,10 +5414,11 @@ d Investments')
 		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-
+		$datapreveous=$this->getprevyrdb($current_active_account);
                 // code for reading previous year data from xml
                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
 
             	$id = $CI->Group_model->get_id('Designated-Earmarked/Endowment Funds');
@@ -5638,10 +5692,11 @@ d Investments')
 		$prev_year=$this->get_fy_year();
                 $year=explode("-",$prev_year);
                 $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-
+		$datapreveous=$this->getprevyrdb($current_active_account);
                 //code for reading previous year data from xml
                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/BGAS/xml');
-                $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                //$file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
+                $file_name="schedule_".$count."-".$datapreveous.".xml";
                 $tt=$acctpath."/".$file_name;
 
                 $id = $CI->Group_model->get_id('Designated-Earmarked/Endowment Funds');

@@ -70,7 +70,7 @@ $(document).ready(function(){
                         <?php echo "<th id=\"change_order\">"."Party Name"." ".img(array('src' => asset_url() . "assets/bgas/mages/icons/rsz_scrollup.png"))." ". "<span align=\"right\">" . img(array('src' => asset_url() . "images/icons/rsz_scrolldown.png")). ""; ?>
 
                         <th>Party Type</th>
-                        <th>PF Number</th>
+                        <th>Employee Code/Roll Number</th>
                         <th>Mobile NO.</th>
                         <th>Email Id</th>
                         <th>Bank A/C No.</th>

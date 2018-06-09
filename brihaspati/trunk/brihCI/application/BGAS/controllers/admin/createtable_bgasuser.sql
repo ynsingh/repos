@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS bgasAccData
 	port int(9) NOT NULL default 3306,
 	dbtype VARCHAR (255) NOT NULL default 'mysql',
 	dblable VARCHAR (255) NOT NULL,
+	prevyeardb VARCHAR(255) NOT NULL, 
 	PRIMARY KEY(id),
 	UNIQUE(databasename),
 	UNIQUE (dblable)

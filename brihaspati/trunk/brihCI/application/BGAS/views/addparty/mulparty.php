@@ -16,7 +16,7 @@
         echo "</p>";
         echo "<td>";
         echo "<td width=\"70%\">";
-	echo " <b>The  file should be txt file and format of file is</b> <font color=\"blue\">party_name; party_role; party_number(PF Number/Roll No); party_address; account_email; mobile_number; bank_name; branch_name; bank_address; bank_account_number; ifsccode; pan_number; uid_number; tan_number; service_tax_number; vat_number; gst_number; opening_balance_type; opening_balance_amount.</font> <b>The party name and party role are mandatory.</b><br>Ex.<br>abc;faculty;C1234;;;;;;;;;;;;;;;;;;";
+	echo " <b>The  file should be txt file and format of file is</b> <font color=\"blue\">party_name; party_role; party_number(Employee Code/Roll No); party_address; account_email; mobile_number; bank_name; branch_name; bank_address; bank_account_number; ifsccode; pan_number; uid_number; tan_number; service_tax_number; vat_number; gst_number; opening_balance_type; opening_balance_amount.</font> <b>The party name and party role are mandatory.</b><br>Ex.<br>abc;faculty;C1234;;;;;;;;;;;;;;;;;;";
         echo "<td>";
 	
 	echo "</tr>";

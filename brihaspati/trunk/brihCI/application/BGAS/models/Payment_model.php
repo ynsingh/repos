@@ -405,8 +405,9 @@ class Payment_model extends CI_Model {
 		$doc = new DOMDocument();
                 $doc->formatOutput = true;
 
-                //echo $file_name=$type."-".$database."-".$curr_year.".xml";echo "<br>";
-                echo "Datain--->".$file_name=$type."-".$database.".xml";echo "<br>";
+                $file_name=$type."-".$database.".xml";echo "<br>";
+                //$file_name=$type."-".$database."-".$curr_year.".xml";echo "<br>";
+          //      echo "Datain--->".$file_name=$type."-".$database.".xml";echo "<br>";
                 $tt=$acctpath."/".$file_name;
 
                 if(file_exists($tt))
@@ -548,7 +549,7 @@ class Payment_model extends CI_Model {
 	function xml_read($file_name, $name){
 		$amount="0.00";
 		if(file_exists($file_name))
-        {
+        	{ 
 			$xml=simplexml_load_file($file_name);
 			foreach($xml->children() as $books){
 				if($books->Group_Name == $name)
@@ -627,7 +628,8 @@ class Payment_model extends CI_Model {
                 $doc = new DOMDocument();
                 $doc->formatOutput = true;
 
-                $file_name=$type."-".$database."-".$curr_year.".xml";
+                //$file_name=$type."-".$database."-".$curr_year.".xml";
+                $file_name=$type."-".$database.".xml";
                 $tt=$acctpath."/".$file_name;
 
                 if(file_exists($tt))

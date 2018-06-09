@@ -26,8 +26,8 @@
 		<?php echo "</p>";
 		echo form_close();
 	}
-	$tot_op_bal='';
-	$total_cl_bal='';
+	$tot_op_bal=0;
+	$total_cl_bal=0;
 	$this->load->library('Paymentreceipt');
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');

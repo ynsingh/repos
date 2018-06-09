@@ -590,7 +590,7 @@ var $ledgers = array();
 			return $total;
 		}
 		else {
-			$this->messages->add('Previous Year\'s data does not exist.', 'success');
+//			$this->messages->add('Previous Year\'s data does not exist.', 'success');
 			return 0;
 		}
 	}
@@ -631,6 +631,7 @@ var $ledgers = array();
 			return $total;
 		}
 		else {
+//			$this->messages->add('Previous Year\'s data does not exist.', 'success');
 			return 0;
 		}
 			
@@ -641,13 +642,21 @@ var $ledgers = array();
 		//echo $ledger_id."==";		
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
 		$op_bal_q = $this->db->get();
-//		print_r($op_bal_q); die;
-		if (!empty($op_bal_q))
+		//		print_r($op_bal_q); die;
+		if ($op_bal = $op_bal_q->row())
+//		if (!empty($op_bal_q))
 		{
 			//echo "<br>";
 			//print_r($op_bal->op_balance."==".$op_bal->op_balance_dc);
 			//return;
-			$op_bal = $op_bal_q->row();
+	//		$op_bal = $op_bal_q->row();
+//			$op_bal = $op_bal_q-> result();
+//			print_r($op_bal->op_balance."==".$op_bal->op_balance_dc);
+			//			print_r($op_bal); die;
+//			//			$news[0]->title;
+//			$a=$op_bal[0]->op_balance;
+//			$b=$op_bal[0]->op_balance_dc;
+//			return array($a, $b);
 			return array($op_bal->op_balance, $op_bal->op_balance_dc);
 		}
 		else

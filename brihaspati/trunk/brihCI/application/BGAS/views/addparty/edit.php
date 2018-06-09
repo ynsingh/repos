@@ -31,7 +31,7 @@
 
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('PF Number', 'pfnumber');
+	echo form_label('Employee Code/Roll Number', 'pfnumber');
 	echo "<br />";
 	echo form_input($pfnumber);
 	echo "</span>";
