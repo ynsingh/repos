@@ -239,7 +239,8 @@ class Upl extends CI_Controller
 //							die;	
                                                     if((!empty($schemeid)) && (!empty($desigtid)) && (!empty($sapostname)) && (!empty($ddoid))){
                                        
-                                                        $dataem = array(
+							    $dataem = array(
+							    'emp_userid'	   => $userid,    
                                                             'emp_code'             => $pfno,
                                                             'emp_name'             => $empname,
                                                             'emp_specialisationid' => '',

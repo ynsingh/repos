@@ -368,7 +368,8 @@ class Staffmgmt extends CI_Controller
                 $emdupl= $this->sismodel->isduplicate('employee_master','emp_email',$_POST['emailid']);
                 if(!$emdupl){
                         
-                    /* insert record in  employeemaster */
+			/* insert record in  employeemaster */
+			$data['emp_userid']=$usrid;
                     $this->sismodel->insertrec('employee_master', $data);
                     $this->logger->write_logmessage("insert", "data insert in employee_master table.");
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );

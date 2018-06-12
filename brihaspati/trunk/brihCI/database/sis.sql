@@ -186,6 +186,7 @@ insert into employee_type values (3,'R01','Regular','REG','Y',0.0,'admin','2018-
 
 CREATE TABLE `employee_master` (
   `emp_id` int(11) NOT NULL auto_increment,
+  `emp_userid` int(11) default 0,
   `emp_code` varchar(30) NOT NULL,
   `emp_name` varchar(70) NOT NULL,
   `emp_dept_code` int(11) NOT NULL,
