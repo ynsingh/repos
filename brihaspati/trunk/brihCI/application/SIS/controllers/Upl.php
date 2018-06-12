@@ -106,7 +106,7 @@ class Upl extends CI_Controller
                         $flag=false;
                         //print_r($datal);
                         // if (count($datal) >= 13){
-                        if (count($datal) == 18){
+                        if (count($datal) == 19){
                             $pfno= trim($datal[0]);
                             $empname = trim($datal[1]);
                             $campus = trim($datal[2]);
@@ -122,8 +122,9 @@ class Upl extends CI_Controller
                             $emp_type=trim($datal[11]);
                             $pbcode = trim($datal[12]);
                             $dob = trim($datal[13]);
-                            $doa = trim($datal[14]);
-			    $email = trim($datal[15]);
+                            $dor = trim($datal[14]);
+                            $doa = trim($datal[15]);
+			    $email = trim($datal[16]);
 			    
 			    if(empty($email)){
 				    $email = $pfno .'@tanuvas.org.in';
@@ -132,8 +133,8 @@ class Upl extends CI_Controller
 			    	$email = $pfno .'@tanuvas.org.in';			
 			    }*/	
                             $email1 = trim($email, " ");
-                            $bankacc = trim($datal[16]);
-                            $aadhar = trim($datal[17]);
+                            $bankacc = trim($datal[17]);
+                            $aadhar = trim($datal[18]);
                             $mobile ='';
                             $role = 4;
                         
@@ -267,7 +268,7 @@ class Upl extends CI_Controller
                                                             'emp_dateofphd'       =>'',
                                                             'emp_AssrExam_status' =>'',
                                                             'emp_dateofAssrExam'  =>'',
-                                                            'emp_dor'             =>'',
+                                                            'emp_dor'             =>$dor,
                                                             'emp_dateofHGP'       =>'',
                                                             'emp_pan_no'          =>'',
                                        
