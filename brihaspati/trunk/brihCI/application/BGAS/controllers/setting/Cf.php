@@ -12,6 +12,7 @@ class Cf extends CI_Controller{
                 $this->load->library('accountlist');
                 $this->load->model('Ledger_model');
                 $this->load->model('payment_model');      
+                $this->load->model('Secunit_model');      
 
 		/* Check access */
 
@@ -1283,6 +1284,48 @@ class Cf extends CI_Controller{
                                                         $cf_status = FALSE;
                                                 }
 
+					}
+					//change start by nks
+					$this->logger->write_logmessage("insert", "In carry farword methed-  inserting record in old_sponsored_asset_register and current active account is  ".$current_active_account);
+                                        $seloldsponassreg = "SELECT * FROM old_sponsored_asset_register ORDER BY id ASC";
+                                        $resultoldsponassreg = $dsn1->query($seloldsponassreg);
+
+                                        foreach ($resultoldsponassreg as $row)
+                                        {
+                                                $oldsponassreg1 = $row['id'];
+                                                $oldsponassreg2 = $row['asset_id'];
+                                                $oldsponassreg3 = $row['date_of_purchase'];
+                                                $oldsponassreg4 = $row['code'];
+                                                $oldsponassreg5 = $row['fund_name'];
+                                                if( !$dsn->query("INSERT INTO old_sponsored_asset_register (id, asset_id, date_of_purchase, code, fund_name) VALUES ($oldsponassreg1,$oldsponassreg2,$oldsponassreg3,$oldsponassreg4,$oldsponassreg)"))
+                                                {
+                        $this->logger->write_logmessage("error", "In carry farword methed-  inserting record in old_sponsored_asset_register " .$oldsponassreg2 ." and fund name is ".$oldsponassreg ."and current active account is  ".$current_active_account);
+                                                        $this->messages->add('Failed to add old_sponsored_asset_register.', 'error');
+                                                        $cf_status = FALSE;
+                                                }
+
+                                        }
+
+
+					$this->logger->write_logmessage("insert", "In carry farword methed-  inserting record in old spon asset register from new_sponsored_asset_register and current active account is  ".$current_active_account);
+                                        $selnewsponassreg = "SELECT * FROM new_sponsored_asset_register ORDER BY id ASC";
+                                        $resultnewsponassreg = $dsn1->query($selnewsponassreg);
+
+                                        foreach ($resultnewsponassreg as $row)
+                                        {
+                                               // $newfunassreg1 = $row['id'];
+                                                $newsponassreg2 = $row['asset_id'];
+                                                $newsponassreg3 = $row['date_of_purchase'];
+                                                $newsponassreg4 = $row['code'];
+                                                $newsponassreg5 = $row['fund_name'];
+                                                //if( !$dsn->query("INSERT INTO old_fund_asset_register (id, asset_id, date_of_purchase, code, fund_name) VALUES ($newfunassreg1,$newfunassreg2,$newfunassreg3,$newfunassreg4,$newfunassreg)"))
+                                                if( !$dsn->query("INSERT INTO old_sponsored_asset_register (asset_id, date_of_purchase, code, fund_name) VALUES ($newsponassreg2,$newsponassreg3,$newsponassreg4,$newsponassreg)"))
+                                                {
+                        $this->logger->write_logmessage("error", "In carry farword methed-  inserting record in old spon asset register from new_sponsored_asset_register " .$newsponassreg2 ." and fund anme is ".$newsponassreg ."and current active account is  ".$current_active_account);
+                                                        $this->messages->add('Failed to add old_spon_asset register from new_sponsored_asset_register.', 'error');
+                                                        $cf_status = FALSE;
+                                                }
+
                                         }
 
 /*				
@@ -1388,9 +1431,15 @@ class Cf extends CI_Controller{
                             $addsecparty15 = $row['staxnum'];
                             $addsecparty16 = $row['vat'];
                             $addsecparty17 = $row['gst'];
-                            $addsecparty18 = $row['partyrole'];
-                            $addsecparty19 = $row['opbal'];
-                            $addsecparty20 = $row['dc'];
+			    $addsecparty18 = $row['partyrole'];
+			    $sopbal=$this->Secunit_model->get_secop_balance1($sec_unit_id);
+			    if($sopbal>=0)
+				    $sdc="D";
+			    else
+				    $sdc="C";
+
+                            $addsecparty19 = abs($sopbal);
+                            $addsecparty20 = $sdc;
         	        	    if( ! $dsn->query("INSERT INTO addsecondparty (id, sacunit, partyname, mobnum, email, address, permanentaddress, bancacnum, bankname,  branchname, ifsccode, bankaddress, pan, tan, staxnum, vat, gst, partyrole, opbal, dc) VALUES ('$addsecparty1', '$addsecparty2', '$addsecparty3', '$addsecparty4', '$addsecparty5', '$addsecparty6', '$addsecparty7', '$addsecparty8', '$addsecparty9', '$addsecparty10', '$addsecparty11', '$addsecparty12', '$addsecparty13', '$addsecparty14', '$addsecparty15', '$addsecparty16', '$addsecparty17', '$addsecparty18', '$addsecparty19', '$addsecparty20')"))
                 	        {
 			$this->logger->write_logmessage("insert", "In carry farword methed- inserting record in addsecondparty " .$addsecparty3 ." and op bal is ".$addsecparty19 ."and current active account is  ".$current_active_account);

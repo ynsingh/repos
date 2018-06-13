@@ -35,16 +35,16 @@
 
 	$count=0;
         $fund_length = count($fund);
-        $this->db->from('settings');
-        $value = $this->db->get();
+       // $this->db->from('settings');
+       // $value = $this->db->get();
         /*foreach($value->result() as $row)
         {
                 $ins_name = $row->ins_name;
                 $fy_start = explode("-",$row->fy_start);
                 $fy_end = explode("-",$row->fy_end);
         }*/
-        $curr_year = $fy_start[0] ."-" .$fy_end[0];
-        $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
+       // $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        //$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
         $this->db->select('id, sanc_type')->from('entries');
         $entry_id = $this->db->get();
@@ -223,19 +223,19 @@
 	echo "<table border=\"1\" class=\"simple-table\"  width=\"70%\" align=\"left\">";
 	echo "<thead><tr><td width=\"90\" colspan=\"2\" class=\"bold\">Sanction letter No. & Date</td><td colspan=\"2\" align=\"center\" class=\"bold\">General</td><td colspan=\"2\" align=\"center\" class=\"bold\">SCSP</td><td colspan=\"2\" align=\"center\" class=\"bold\">TSP</td><td colspan=\"2\" align=\"center\" class=\"bold\">NER</td></tr></thead>";
 	echo "<tr><td colspan=\"2\"></td><td class=\"bold\">OH:35</td><td class=\"bold\">OH:31</td><td class=\"bold\">OH:35</td><td class=\"bold\">OH:31</td><td class=\"bold\">OH:35</td><td class=\"bold\">OH:31</td><td class=\"bold\">OH:35</td><td class=\"bold\">OH:31</td>";
-	$general_total1 = '';
-	$general_total2 = '';
-	$scsp_total1 = '';
-	$scsp_total2 = '';
-	$tsp_total1 = '';
-	$tsp_total2 = '';
-	$ner_total1 = '';
-	$ner_total2 = '';
-	$OH35_total = '';
-	$OH31_total = '';
-	$total = '';
-	$total_plan_expenditure = '';
-	$income_total = '';
+	$general_total1 = 0;
+	$general_total2 = 0;
+	$scsp_total1 = 0;
+	$scsp_total2 = 0;
+	$tsp_total1 = 0;
+	$tsp_total2 = 0;
+	$ner_total1 = 0;
+	$ner_total2 = 0;
+	$OH35_total = 0;
+	$OH31_total = 0;
+	$total = 0;
+	$total_plan_expenditure = 0;
+	$income_total = 0;
 	
 	$this->db->distinct();
 	$this->db->select('sanc_letter_date')->from('entries')->where('sanc_type','plan');
@@ -545,9 +545,9 @@
 	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">Director</font></td><td></td>";
 	echo "</tr>";
 	echo "<tr>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> IIT Kanpur</font></td>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> IIT Kanpur</font></td><td></td>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> IIT Kanpur</font></td><td></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> ".$ins_name."</font></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> ".$ins_name."</font></td><td></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">".$ins_name." </font></td><td></td>";
 	echo "</tr>";
 	echo "</table>";////end(table5)
 	echo "</tbody>";

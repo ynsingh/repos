@@ -42,16 +42,16 @@
 
 	$count=0;
         $fund_length = count($fund);
-        $this->db->from('settings');
-        $value = $this->db->get();
+       // $this->db->from('settings');
+        //$value = $this->db->get();
         /*foreach($value->result() as $row)
         {
                 $ins_name = $row->ins_name;
                 $fy_start = explode("-",$row->fy_start);
                 $fy_end = explode("-",$row->fy_end);
         }*/
-        $curr_year = $fy_start[0] ."-" .$fy_end[0];
-        $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
+       // $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        //$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
         $this->db->select('id, sanc_type')->from('entries');
 	$entry_id = $this->db->get();
@@ -392,15 +392,15 @@
 	echo "<table border=\"0\"  width=\"70%\">";
 
 	echo "<tr>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">Sr. Deputy Registrar (F&A) </font></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">Deputy Registrar (F&A) </font></td>";
 	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">Finance Officer</font><td></td></td>";
 	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">Director</font></td><td></td>";
 	echo "</tr>";
 
 	echo "<tr>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> IIT Kanpur</font></td>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> IIT Kanpur</font></td><td></td>";
-	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> IIT Kanpur</font></td><td></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\"> ".$ins_name."</font></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">".$ins_name." </font></td><td></td>";
+	echo "<td class=\"bold\" align=\"center\" colspan=\"2\"><font size=\"3\" face=\"Arial\">".$ins_name." </font></td><td></td>";
 	echo "</tr>";
 
 	echo "</table>";

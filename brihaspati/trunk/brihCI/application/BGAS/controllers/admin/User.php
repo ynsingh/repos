@@ -899,9 +899,9 @@ class User extends CI_Controller {
 		}
 
 		/* Form validations */
-		$this->form_validation->set_rules('user_name', 'username', 'trim|required' . $user_id);
-		$this->form_validation->set_rules('user_password', 'Password', 'trim|required' . $user_id);
-		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email' . $user_id);
+		$this->form_validation->set_rules('user_name', 'username', 'trim|required');
+		$this->form_validation->set_rules('user_password', 'Password', 'trim|required');
+		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
 		$this->form_validation->set_rules('category_type', 'Category Type', 'trim|required');
 		$this->form_validation->set_rules('user_mobile', 'Mobile No.', 'trim');
@@ -909,8 +909,8 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_components', 'Components', 'trim|required');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 		//Validation of fields(firstname and lastname) added by @RAHUL
-		$this->form_validation->set_rules('user_firstname', 'firstname', 'trim|required' . $user_id);
-		$this->form_validation->set_rules('user_lastname', 'lastname', 'trim|required' . $user_id);
+		$this->form_validation->set_rules('user_firstname', 'firstname', 'trim|required');
+		$this->form_validation->set_rules('user_lastname', 'lastname', 'trim|required');
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
