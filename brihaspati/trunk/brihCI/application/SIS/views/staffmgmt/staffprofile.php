@@ -783,7 +783,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><select name="assrexam" style="width:350px;"> 
                         <option value="">---------------- ASSR Exam Status -------------</option>
                         <option value="Passed">Passed</option>
-                        <option value="Fail">Fail</option>
+			<option value="Not Qualified">Not Qualified</option>
+                        <option value="Not Appeared">Not Appeared</option>
+                        <option value="Not Registered">Not Registered</option>
+                        <option value="Not Applicable">Not Applicable</option>
                     </select></div>
                 </td>
                 <td><label for="assrexamdate" style="font-size:15px;">Date Of ASSR Exam</label>

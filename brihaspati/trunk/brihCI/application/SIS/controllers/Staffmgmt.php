@@ -33,7 +33,7 @@ class Staffmgmt extends CI_Controller
     /* Display Employee record */
 
     public function employeelist(){
-	$cdate = date('y-m-d');
+	$cdate = date('Y-m-d');
 	// add doris geater than current date and reason is null  in whdata
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
         //  get role id and user id

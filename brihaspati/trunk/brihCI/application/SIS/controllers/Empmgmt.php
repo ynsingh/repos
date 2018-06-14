@@ -36,6 +36,13 @@ class Empmgmt extends CI_Controller
         $data['record'] = $empmaster_data->row();
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $data['emp_id']=$emp_id;
+
+	$cdate = date('Y-m-d');
+	$this->headflag="false";
+	$empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_email', $currentuser)->emp_code;
+	$hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+	$this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
 	$selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
         $whorder = 'empsd_dojoin desc';

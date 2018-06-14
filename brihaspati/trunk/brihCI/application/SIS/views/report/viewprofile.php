@@ -139,7 +139,18 @@
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
 <!--                            <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>-->
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>
-                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?></td>
+                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
+				$cdate = date('Y-m-d');
+			        $headflag="false";
+			        //$empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_email', $currentuser)->emp_code;
+			        $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
+			        $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+		
+				if($headflag){
+		                	echo " & Head";
+                                }
+		
+				?></td>
                             <td><?php echo $record->emp_email; ?></td>
                             <td><?php echo $record->emp_phone; ?></td>
                             <td><?php echo $record->emp_aadhaar_no; ?></td>

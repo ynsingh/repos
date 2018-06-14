@@ -206,6 +206,7 @@
                 <?php $serial_no = 1;
 		$ouoid = 0;
 		$odid = 0;
+		$ossid=0;
 		
                if( count($records) ):  ?>
                     <?php foreach($records as $record){
@@ -228,6 +229,16 @@
                         echo "</b></td></tr>";
 			$odid = $record->sp_dept;
 			$serial_no = 1;
+                        }
+			if($ossid !=$record->sp_schemecode){
+                        echo "<tr><td colspan=5 align=left><b> Scheme : ";
+                        echo "&nbsp;&nbsp;";
+                       // echo "<div style=\"text-align:center;\">";
+                        echo strtoupper($this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->sp_schemecode)->sd_name);
+                        echo " ( ".$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->sp_schemecode)->sd_code ." )";
+                        echo "</b></td></tr>";
+                        $ossid = $record->sp_schemecode;
+                        $serial_no = 1;
                         }
 			echo "<tr>";
                         echo "<td>";

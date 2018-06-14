@@ -875,7 +875,10 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             <option selected="true" disabled="disabled">----------- Select ASSR Exam Status ---------</option>
                         <?php endif?>
                         <option value="Passed">Passed</option>
-                        <option value="Fail">Fail</option>
+                        <option value="Not Qualified">Not Qualified</option>
+                        <option value="Not Appeared">Not Appeared</option>
+                        <option value="Not Registered">Not Registered</option>
+                        <option value="Not Applicable">Not Applicable</option>
                     </select></div>
                 </td>
                 <td><label for="assrexamdate" style="font-size:15px;">Date of ASSR Exam</label>

@@ -117,8 +117,8 @@ class Report  extends CI_Controller
     }
 
     public function staffstrengthlist(){
-        $selectfield ="sp_uo, sp_dept,sp_emppost, sp_sancstrenght , sp_position , sp_vacant,sp_type";
-        $whorder = "sp_uo asc, sp_dept  asc";
+        $selectfield ="sp_uo, sp_dept,sp_emppost, sp_schemecode,sp_sancstrenght , sp_position , sp_vacant,sp_type";
+        $whorder = "sp_uo asc, sp_dept  asc, sp_schemecode  asc";
 	$whdata= '';
 	$whdata = $this->getwhdata();
 	if(isset($_POST['filter'])) {
@@ -300,6 +300,7 @@ class Report  extends CI_Controller
             $empdata1=array();
             $empdata['emprecord']=$empdata1;
         }
+	
         $this->load->view('report/viewprofile',$empdata);
         return;
 	}
@@ -309,6 +310,13 @@ class Report  extends CI_Controller
 	//get id for employee to show data	
 	$emp_id = $this->uri->segment(3);
         $emp_data['emp_id']=$emp_id;
+
+	//for adding head next to designation
+	$this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
 	//get all profile and service data
 	$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
 	$selectfield="*";
@@ -368,10 +376,10 @@ public function disciplinewiselist(){
 }
 
     public function listofstaffposition(){
-	$whorder = "sp_uo asc, sp_dept asc";
+	$whorder = "sp_uo asc, sp_dept asc, sp_schemecode  asc";
    //     $whdata = '';
 	$whdata = $this->getwhdata();       
-        $selectfield ="sp_uo";
+        $selectfield ="sp_uo,sp_schemecode";
         $data['tnttype']='';
         $data['seldept']='';
         if(isset($_POST['filter'])) {
@@ -684,8 +692,11 @@ public function disciplinewiselist(){
 	public function uolist(){
         $today= date("Y-m-d H:i:s");
 //        $whdata=array('hl_dateto >='=> $today);
-        $selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname";
-        $data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
+        $selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
+	$whorder="ul_id ASC,  ul_modifydate DESC";
+//	get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
+        //$data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
+        $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,'',$whorder);
         $this->logger->write_logmessage("view"," view list of UO in report " );
         $this->logger->write_dblogmessage("view"," view list of UO in report");
         $this->load->view('report/uolist',$data);

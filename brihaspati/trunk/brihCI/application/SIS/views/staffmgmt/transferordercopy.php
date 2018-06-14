@@ -78,19 +78,22 @@
                                 }
                             ?>
                             
-                            <?php echo "<br/> ". $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_from)->desig_name;?>
-                            <?php echo " <br/> Working against the post of ". $detail->uit_workingpost_from.",";?>
-                            <?php echo "<br/>". $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_from)->sd_name.",";?>
-                            <?php echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_workdept_from)->dept_name.",";?>
-                            <?php echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_from)->sc_name;?> 
+                            <?php  
+//				print_r($detail->uit_desig_from);
+				if(!empty($detail->uit_desig_from)){
+					echo "<br/> ". $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_from)->desig_name;}?>
+                            <?php if(!empty($detail->uit_workingpost_from)){echo " <br/> Working against the post of ". $detail->uit_workingpost_from.",";}?>
+                            <?php if(!empty($detail->uit_schm_from)){echo "<br/>". $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_from)->sd_name.",";}?>
+                            <?php if(!empty($detail->uit_workdept_from)){echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_workdept_from)->dept_name.",";}?>
+                            <?php if(!empty($detail->uit_scid_from)){echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_from)->sc_name;}?> 
                             
                         </td>
                         <td>
-                            <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_to)->desig_name;?>
-                            <?php echo "<br/>Against the vacant post of  ".$this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_post_to)->desig_name.",";?>
-                            <?php echo "<br/>".$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_to)->sd_name.",";?>
-                            <?php echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name.",";?>
-                            <?php echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_to)->sc_name;?>
+                            <?php if(!empty($detail->uit_desig_to)){echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_to)->desig_name;}?>
+                            <?php if(!empty($detail->uit_post_to)){echo "<br/>Against the vacant post of  ".$this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_post_to)->desig_name.",";}?>
+                            <?php if(!empty($detail->uit_schm_to)){echo "<br/>".$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_to)->sd_name.",";}?>
+                            <?php if(!empty($detail->uit_dept_to)){echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name.",";}?>
+                            <?php if(!empty($detail->uit_scid_to)){echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_to)->sc_name;}?>
                         </td>
                     </tr>    
                <!-- </tbody> -->   

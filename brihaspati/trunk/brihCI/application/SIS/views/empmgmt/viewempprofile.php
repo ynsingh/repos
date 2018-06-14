@@ -171,9 +171,9 @@
                     <td>Aadhaar No : </td>
                     <td colspan="6" ><?php echo $record->emp_aadhaar_no; ?></td> 
                     <!--<td>IFSC Code :</td>
-                    <td> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
+                    <td> <?php //echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
                     <td>Bank ACC No :</td>
-                    <td><?php echo $record->emp_post; ?></td>-->
+                    <td><?php //echo $record->emp_post; ?></td>-->
                
                 </tr>
                 <tr></tr>
@@ -274,6 +274,9 @@
                     <td> 
 <?php
 				echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
+				if($this->headflag){
+				echo " & Head";
+				}
 ?>
 			</td> 
                     <td>Shown Against The Post :</td>

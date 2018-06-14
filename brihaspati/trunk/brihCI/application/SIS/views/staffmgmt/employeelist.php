@@ -179,7 +179,18 @@ $(document).ready(function(){
                             <?php else : ?>
                             <td></td>
                             <?php endif;?>
-                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?></td>
+                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
+				$cdate = date('Y-m-d');
+                                $headflag="false";
+                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
+                                $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+                                if($headflag){
+                                        echo " & Head";
+                                }
+		
+			
+				?></td>
 			   <!-- <td><?php //echo $record->emp_post; ?></td>-->
                            <!-- <td></td>-->
                             <td><?php echo $record->emp_email; ?></td>
