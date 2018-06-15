@@ -50,7 +50,12 @@
 	<?php
          /*   echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>Brihaspati General Accounting System</h2><br>"."<h2>Payment Voucher</h2><br>". $this->config->item('account_ins_name'); " </td>"; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 */
-		echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >"."<h4>" . $this->config->item('account_ins_name')."</h4>"."<h2>Brihaspati General Accounting System</h2>"."<h2>Payment Voucher</h2>"." </td>"; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+		echo $this->config->item('account_name'); ?><br>
+		<?php echo $this->config->item('account_address') . "</td>"; ?>
+		<?php //echo "<td align=\"center\" class=\"bold\" >"."<h4>" . $this->config->item('account_ins_name')."</h4>"."<h2>Brihaspati General Accounting System</h2>"."<h2>Payment Voucher</h2>"." </td>";?> 
+		<?php echo "<td align=\"center\" class=\"bold\" >"."<h4>" . $this->config->item('account_ins_name')."</h4>"."<h2>". ADDRESSHEAD ."</h2>"."<h2>Payment Voucher</h2>"." </td>"; 
+		echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> 
+		- <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 <!--	<br/>
 	<div id="print-entry-type1" style="text-decoration:underline;" ><span class="value"><b><font size="5" face="Arial"  >Payment Voucher</b></span></div>
 	<br />

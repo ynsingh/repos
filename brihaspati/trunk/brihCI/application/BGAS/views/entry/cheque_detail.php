@@ -53,7 +53,9 @@
         ?>
 
 	<br>
-	<?php  echo"<font  size=\"5\">"; echo" Brihaspati General Accounting System "; ?>
+	<?php  echo"<font  size=\"5\">"; 
+		//echo " Brihaspati General Accounting System "; 
+		echo  ADDRESSHEAD ; ?>
 	<br>
 	<br>
 	<?php

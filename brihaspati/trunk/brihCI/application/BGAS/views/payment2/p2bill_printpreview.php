@@ -73,9 +73,10 @@
         echo "</td>";
 
         echo "<td align=\"center\">";
-        echo "<strong>".$this->config->item('account_ins_name')."</strong>";
-        echo "<br>";
-        echo "<strong>Brihaspati General Accounting System</strong>";
+       // echo "<strong>".$this->config->item('account_ins_name')."</strong>";
+       // echo "<br>";
+        //echo "<strong>Brihaspati General Accounting System</strong>";
+        echo "<strong>". ADDRESSHEAD ."</strong>";
         echo "<br>";
         echo "<strong>Payment Voucher<strong>";
         echo "</td>";

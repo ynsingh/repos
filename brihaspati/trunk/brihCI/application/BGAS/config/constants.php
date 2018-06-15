@@ -36,6 +36,18 @@ define('FOPEN_READ_WRITE_CREATE', 				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT', 			'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+/*
+|--------------------------------------------------------------------------
+| Address Head for view report
+|--------------------------------------------------------------------------
+|
+| These modes are used when when prining or download report
+| define('ADDRESSHEAD','Brihaspati General Accounting System');
+|
+*/
+
+define('ADDRESSHEAD','भारतीय     वन  प्रबंधन  संस्थान  <br>  INDIAN INSTITUTE OF FOREST MANAGEMENT <br> (An autonomous institute of Ministry of Environment, Forest and Climate Change, Govt. of India )');
+
 
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */

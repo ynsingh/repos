@@ -68,9 +68,10 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 	echo "</td>"; 
 
 	echo "<td align=\"center\">";
-	echo "<strong>".$this->config->item('account_ins_name')."</strong>";
-	echo "<br>";
-	echo "<strong>Brihaspati General Accounting System</strong>";
+//	echo "<strong>".$this->config->item('account_ins_name')."</strong>";
+//	echo "<br>";
+	//echo "<strong>Brihaspati General Accounting System</strong>";
+	echo "<strong>". ADDRESSHEAD ."</strong>";
 	echo "<br>";
 	echo "<strong>".$current_entry_type['name']." Entry<strong>";
 	echo "</td>";
