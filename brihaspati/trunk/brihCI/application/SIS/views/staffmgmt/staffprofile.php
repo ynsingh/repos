@@ -53,7 +53,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 //alert(retDate);
                 // var lastDayWithSlashes = (retDate.getFullYear()+ '/' + (retDate.getMonth() + 1)+'/' +retDate.getDate());
                 var lastDayWithSlashes = new Date(retDate.getFullYear(), retDate.getMonth() + 1, 0);
-                var lastDay = (lastDayWithSlashes.getFullYear()+ '/' + (lastDayWithSlashes.getMonth() +1)+ '/' + lastDayWithSlashes.getDate());
+                //var lastDay = (lastDayWithSlashes.getFullYear()+ '/' + (lastDayWithSlashes.getMonth() +1)+ '/' + lastDayWithSlashes.getDate());
+                var lastDay = (lastDayWithSlashes.getFullYear()+ '-' + (lastDayWithSlashes.getMonth() +1)+ '-' + lastDayWithSlashes.getDate());
                 //alert(lastDayWithSlashes);
                 return $('#Dateofretir').val(lastDay);
                

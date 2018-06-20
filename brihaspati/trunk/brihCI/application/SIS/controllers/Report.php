@@ -312,6 +312,7 @@ class Report  extends CI_Controller
         $emp_data['emp_id']=$emp_id;
 
 	//for adding head next to designation
+	$cdate=date('Y-m-d');
 	$this->headflag="false";
         $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
         $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );

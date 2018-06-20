@@ -62,33 +62,14 @@
 </tr>
         </table>
 
-<?php
-//				print_r($servicedata);
-		/*		if(!empty($servicedata)){
-                                        foreach($servicedata as $recod){
-                                                $currscnme=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $recod->empsd_campuscode)->sc_name;
-                                                $curruonme=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $recod->empsd_ucoid)->name;
-                                                $curruocode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id', $recod->empsd_ucoid)->code;
-                                                $currdeptnme=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $recod->empsd_deptid)->dept_name;
-                                                $currschnme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$recod->empsd_schemeid)->sd_name;
-                                                $currdesnme=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$recod->empsd_desigcode)->desig_name;
-                                                $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$recod->empsd_pbid)->sgm_name;
-                                                $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$recod->empsd_pbid)->sgm_max;
-                                                $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$recod->empsd_pbid)->sgm_min;
-                                                $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$recod->empsd_pbid)->sgm_gradepay;
-                                                $currpband= $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
-                                        break;
-                                        }
-                                }*/
-?>
 	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
-        <table width="100%">
-                <tr><td colspan="11">
+        <table width="100%" border=0>
+                <tr><td colspan="10">
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
-                <tr> <td colspan="8"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
-               <tr><td align="center" colspan="8">
+                <tr style=" background-color:grey;width:100%;"> <td colspan="10"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
+               <tr><td align="center" colspan="10">
                     <?php if(!empty($record->emp_photoname)):;?>
                         <img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="85" height="100">
                     <?php else:?>
@@ -97,7 +78,7 @@
                       
                 </td></tr>
                 <!--<tr></tr>-->
-                <tr><td colspan="9">
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Personal Information :</b></p>
                 </td></tr>
                 <tr></tr>
@@ -181,7 +162,7 @@
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td colspan="9">
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Communication Information:</b></p>
                 <tr><td>
                 <tr></tr>
@@ -199,7 +180,7 @@
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td colspan="9">
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Educational Information:</b></p>
                 </td></tr>    
                 <tr></tr>
@@ -218,7 +199,7 @@
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td colspan="9">   
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">   
                     <p><b>Work Information:</b></p>
                 </td></tr>
                 <tr></tr>
@@ -344,7 +325,7 @@
                     <HR COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr> 
-                <tr><td colspan="9">
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Other Information :</b></p>
                 </td></tr>
                 <tr></tr>
@@ -361,7 +342,7 @@
 		 <tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
-		 <tr><td colspan="9">
+		 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>PhD Details:</b></p>
                 </td></tr>
 		<tr></tr>
@@ -398,7 +379,7 @@
 		 <tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
-                 <tr><td colspan="9">
+                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>NET Details:</b></p>
                 </td></tr>
                 <tr></tr>
@@ -423,7 +404,7 @@
 		<tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
-                 <tr><td colspan="9">
+                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Veterinary Council of india (VCI) Registration:</b></p>
                 </td></tr>
                 <tr></tr>
@@ -438,11 +419,11 @@
                     <HR  COLOR="#6699FF" SIZE="3">
 		 </td></tr>
                 <tr></tr>
-                <tr><td colspan="9">
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Additional Assignments:</b></p>
                 </td>
-		<td colspan="9" align="right">
-            	</td>
+<!--		<td colspan="9" align="right">
+            	</td>-->
                 </tr>
                 <tr></tr> 
                 <tr>
@@ -486,10 +467,10 @@
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
                 <tr></tr>
-                <tr><td>
+                <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Service Data :</b></p>
                     </td>
-                    <td colspan="9" align="right">
+                  <!--  <td colspan="9" align="right">
                     <?php
                        // if(count($servicedata->result())){
                           //  echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
@@ -498,7 +479,7 @@
                            // echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
                         //}    
                     ?>
-                    </td>
+                    </td>-->
                 </tr>
                 <tr></tr>
                 <tr>
