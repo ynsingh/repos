@@ -14,7 +14,8 @@
  * @author Neha Khullar(nehukhullar@gmail.com) department Archive
  * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
  * @Modification : Om Prakash(omprakashkgp@gmail.com) Dec-2017, check for duplicate entry,
- * Scheme archive, salary grade master archive 
+ * Scheme archive, salary grade master archive
+ * @author Neha Khullar(nehukhullar@gmail.com) add Society  
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -529,7 +530,7 @@ class Setup extends CI_Controller
                 $logmessage = $logmessage . "Program Min Time ".$program_data->prg_mintime ." changed by " .$data_prgmintime;
             if($program_data->prg_maxtime != $data_prgmaxtime)
                 $logmessage = $logmessage . "Program Max Time " .$program_data->prg_maxtime. " changed by " .$data_prgmaxtime;
-                 if($program_data->prg_credit != $data_prgcredit)
+            if($program_data->prg_credit != $data_prgcredit)
                 $logmessage = $logmessage . "Program Credit " .$program_data->prg_credit. " changed by " .$data_prgcredit;
               
                 
@@ -1069,7 +1070,7 @@ class Setup extends CI_Controller
 		$ddatacheck = array('dept_uoid'=>strtoupper($_POST['authorities']), 'dept_orgcode'=>strtoupper($_POST['orgprofile']), 'dept_sccode'=>strtoupper($_POST['studycenter']), 'dept_code'=>strtoupper($_POST['dept_code']), 'dept_name'=>ucwords(strtolower($_POST['dept_name'])) );
                
 		     $data = array(
-                               'dept_uoid'=>strtoupper($_POST['authorities']),
+                                'dept_uoid'=>strtoupper($_POST['authorities']),
                                 'dept_orgcode'=>strtoupper($_POST['orgprofile']),
                                 'dept_sccode'=>strtoupper($_POST['studycenter']),
                                 'dept_schoolcode'=>strtoupper($_POST['dept_schoolcode']),
@@ -4148,6 +4149,299 @@ public function displaysalarygrademaster(){
             return true;
         }
     }
- // ########################### End of DDO Module  ########################################################	
+ // ########################### End of DDO Module  ########################################################
+
+// =============== Add Society Module =========================================================================================================== 
+
+ 
+public function addsociety(){
+
+        if(isset($_POST['addsociety'])) {
+            $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean');
+            
+
+
+            if($this->form_validation->run()==TRUE){
+            $data = array(
+                'soc_code'=>($_POST['soc_code']),    
+                'soc_name'=>ucfirst(strtolower($_POST['soc_name'])),
+                'soc_remark'=>ucwords($_POST['soc_remark']),
+                'soc_creatorid'=>$this->session->userdata('id_user'),
+                'soc_creatordate'=>date('y-m-d'),
+                'soc_modifierid'=>$this->session->userdata('id_user'),
+                'soc_modifydate' => date('y-m-d'),
+                                    
+            );
+             
+            $soc_code = $_POST['soc_code'];
+            $soc_name = $_POST['soc_name'];
+            $soc_remark = $_POST['soc_remark'];
+               $data1 = array(
+                'soc_code'=>$_POST['soc_code'],    
+                'soc_name'=>$_POST['soc_name'],
+            );
+
+
+             // print_r($data);die;
+             $socdatadupe = $this->SIS_model->isduplicatemore('society_master_list', $data1);
+            // print_r($socdatadupe);die;
+
+                   if($socdatadupe == 1 ){
+            
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Society Code' = $soc_code, 'Society Name' = $soc_name.");
+                        redirect('setup/addsociety');
+                        return;
+                 }
+           else{     
+  
+              $socflag=$this->SIS_model->insertrec('society_master_list', $data) ;
+              if(!$socflag)
+               {    
+
+                $this->logger->write_logmessage("insert"," Error in adding societydetails ", " SocietyDetails data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding societydetails  ", " SocietyDetails data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding societydetails - ' . $_POST['soc_name'] , 'error');
+                $this->load->view('setup/addsociety');
+
+	      }
+
+          else{ 
+		$this->logger->write_logmessage("insert"," add societydetails ", "societydetails record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add societydetails ", "societydetails record added successfully..." );
+                $this->session->set_flashdata("success", "society details added successfully...");
+                redirect("setup/displaysociety", "refresh");
+               }             
+            }
+          }
+        }    
+     $this->load->view('setup/addsociety');
+   }
+
+
+public function displaysociety(){
+
+        $this->result = $this->SIS_model->get_list('society_master_list');
+        $this->logger->write_logmessage("view"," View ", "society Master display successfully..." );
+        $this->logger->write_dblogmessage("view"," View society  Master", "Society Master successfully..." );
+        $this->load->view('setup/displaysociety',$this->result);
+    }
+
+/**This function is used for update Society records
+     * @param type $id
+     * @return type
+     */
+         
+
+    public function editsociety($soc_id) {
+        $soc_data_q=$this->SIS_model->get_listrow('society_master_list','soc_id', $soc_id);
+        if ($soc_data_q->num_rows() < 1)
+        {
+           redirect('setup/editsociety');
+        }
+        $society_data = $soc_data_q->row();
+        /* Form fields */
+
+
+          /*$data['soc_userid'] = array(
+            'name' => 'soc_userid',
+            'id' => 'soc_userid',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $Society_data->soc_userid,
+            'readonly' => 'readonly'
+        );*/
+
+         $data['soc_code'] = array(
+            'name' => 'soc_code',
+            'id' => 'soc_code',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $society_data->soc_code,
+           // 'readonly' => 'readonly'
+        );
+
+         $data['soc_name'] = array(
+            'name' => 'soc_name',
+            'id' => 'soc_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $society_data->soc_name,
+        );
+
+        $data['soc_remark'] = array(
+           'name' => 'soc_remark',
+           'id' => 'soc_remark',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_remark,
+
+        );
+       
+        $data['soc_creatorid'] = array(
+           'name' => 'soc_creatorid',
+           'id' => 'soc_creatorid',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_creatorid,
+
+        );
+
+       $data['soc_creatordate'] = array(
+           'name' => 'soc_creatordate',
+           'id' => 'soc_creatordate',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_creatordate,
+
+        );
+   
+        $data['soc_modifierid'] = array(
+           'name' => 'soc_modifierid',
+           'id' => 'soc_modifierid',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_modifierid,
+
+        );
+
+        $data['soc_modifydate'] = array(
+           'name' => 'soc_modifydate',
+           'id' => 'soc_modifydate',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_modifydate,
+
+        );
+
+
+  $data['soc_id'] = $soc_id;
+
+        //$this->form_validation->set_rules('soc_userid','Society UserId','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean|required');
+       // $this->form_validation->set_rules('soc_creatorid','Society CreatorId','trim|xss_clean|required|numeric');
+       // $this->form_validation->set_rules('soc_creatordate','Society CreatorDate','trim|xss_clean');
+        $this->form_validation->set_rules('soc_modifierid','Society ModifierId','trim|xss_clean');
+        $this->form_validation->set_rules('soc_modifydate','Society ModifyDate','trim|xss_clean');
+
+
+        if ($_POST)
+        {
+           // $data['soc_userid']['value'] = $this->input->post('soc_userid', TRUE);
+            $data['soc_code']['value'] = $this->input->post('soc_code', TRUE);
+            $data['soc_name']['value'] = $this->input->post('soc_name', TRUE);
+            $data['soc_remark']['value'] = $this->input->post('soc_remark', TRUE);
+            $data['soc_creatorid']['value'] = $this->input->post('soc_creatorid', TRUE);
+            $data['soc_creatordate']['value'] = $this->input->post('soc_creatordate', TRUE);
+            $data['soc_modifierid']['value'] = $this->input->post('soc_modifierid', TRUE);
+            $data['soc_modifydate']['value'] = $this->input->post('soc_modifydate', TRUE);
+
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editsociety', $data);
+            return;
+        }
+        else
+        {
+            $soc_code = strtoupper($this->input->post('soc_code', TRUE));
+            $soc_name = strtoupper($this->input->post('soc_name', TRUE));
+            $soc_remark = strtoupper($this->input->post('soc_remark', TRUE));
+            $soc_date = strtoupper($this->input->post('soc_date', TRUE));   
+            //$soc_id = $soc_id;
+            $logmessage = "";
+
+          
+            // if($Society_data->soc_id != $soc_id)
+              //  $logmessage = "Add Society " .$society_data->soc_id. " changed by " .$soc_id;
+
+
+             if($society_data->soc_code != $soc_code)
+                $logmessage = "Add Society " .$society_data->soc_code. " changed by " .$soc_code;
+
+
+             if($society_data->soc_name != $soc_name)
+                $logmessage = "Add Society " .$society_data->soc_name. " changed by " .$soc_name;
+
+
+             if($society_data->soc_remark != $soc_remark)
+                $logmessage = "Add Society " .$society_data->soc_remark. " changed by " .$soc_remark;
+
+
+            // if($society_data->soc_creatorid != $soc_creatorid)
+              //  $logmessage = "Add Society " .$society_data->soc_creatorid. " changed by " .$soc_creatorid;
+
+
+            // if($society_data->soc_creatordate != $soc_creatordate)
+              //  $logmessage = "Add Society " .$society_data->soc_creatordate. " changed by " .$soc_creatordate;
+
+           
+            // if($society_data->soc_modifierid != $soc_modifierid)
+              //  $logmessage = "Add Society " .$society_data->soc_modifierid. " changed by " .$soc_modifierid;
+
+
+             if($society_data->soc_modifydate != $soc_modifydate)
+                $logmessage = "Add Society " .$society_data->soc_modifydate. " changed by " .$soc_modifydate;
+
+         
+ 
+              $update_data = array(
+              // 'soc_code' =>$soc_code,
+               'soc_code'=>($_POST['soc_code']),
+               'soc_name'=>ucfirst(strtolower($_POST['soc_name'])),
+               'soc_remark'=>ucwords($_POST['soc_remark']),
+               'soc_modifierid'=>$this->session->userdata('id_user'),             
+               'soc_modifydate' => $soc_modifydate,
+
+
+            );
+               $socdatadupe = $this->SIS_model->isduplicatemore('society_master_list', $update_data);
+
+                   if($socdatadupe == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Society Name' = $soc_name, 'Society Code' = $soc_code , 'Society Remark' =$soc_remark .");
+                        redirect('setup/displaysociety/');
+                        return;
+                 }
+         else{
+
+           
+
+           $socflag=$this->SIS_model->updaterec('society_master_list', $update_data, 'soc_id', $soc_id);
+           if(!$socflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Society ", "Error in Society record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Society ", "Error in Society record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Society - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editsociety', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Society", "Edit Society record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Society", "Edit Society record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Society record updated successfully...');
+                redirect('setup/displaysociety/');
+                }
+        }//else
+
+        redirect('setup/editsociety/');
+    }
+
+
+
+ }
+
 }
+
+
+
+
+
+
+
+
+
 

@@ -89,9 +89,11 @@ echo "<ul class=\"sf-menu\" >";
 																/*echo "<li>";
 		                                                echo anchor('leavemgmt/earnedleave', 'View EL', array('title' => 'Leave Type'));
                 		                           echo "</li>";*/
-																echo "</ul>";
-               echo "</li>";
-
+						echo "</ul>";
+               				echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('setup/displaysociety', 'Society Master', array('title' => 'Society Master'));
+                                        echo "</li>";
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";
@@ -112,6 +114,10 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
 						echo anchor('map/hodlist', 'Set HOD', array('title' => 'Set HOD'));
 					echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('map/uolist', 'Set UO', array('title' => 'Set UO'));
+                                        echo "</li>";
+ 
 				/*	echo "<li>";
 						echo anchor('map/viewddoucodeptsh', 'Map Campus,UO,DDO with Dept', array('title' => 'Map DDO with UCO'));
 					echo "</li>";
