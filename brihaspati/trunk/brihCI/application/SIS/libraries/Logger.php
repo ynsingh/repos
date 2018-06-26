@@ -9,12 +9,10 @@ class Logger
 {
 	public function __construct()
 	{
-		return;
+		$this->CI =& get_instance();
+		$this->CI->db2=$this->CI->load->database('payroll', TRUE);
+	//	return;
 	}
-//	function Logger()
-//	{
-//		return;
-//	}
 
 	/*
 	 * Write message to file log  Levels defined are :
@@ -93,10 +91,10 @@ class Logger
 
 	function write_dblogmessage($level = "view", $title = "", $desc = "")
         {
-                $CI =& get_instance();
+              //  $CI =& get_instance();
 
                 /* Check if logging is enabled. Skip if it is not enabled */
-                if ($CI->config->item('log') == "0")
+                if ($this->CI->config->item('log') == "0")
                         return;
 
                 $data['date'] = date("Y-m-d H:i:s");
@@ -107,21 +105,21 @@ class Logger
                         case "view": $data['level'] = 3; break;
                         default: $data['level'] = 3; break;
                 }
-                $data['host_ip'] = $CI->input->ip_address();
-                $data['user'] = $CI->session->userdata('username');
+                $data['host_ip'] = $this->CI->input->ip_address();
+                $data['user'] = $this->CI->session->userdata('username');
                 $data['url'] = uri_string();
-                $data['user_agent'] = $CI->input->user_agent();
+                $data['user_agent'] = $this->CI->input->user_agent();
                 $data['message_title'] = $title;
                 $data['message_desc'] = $desc;
-                $CI->db->insert('logs', $data);
+                $this->CI->db2->insert('logs', $data);
                 return;
         }
 
         function read_recent_messages()
         {
-                $CI =& get_instance();
-                $CI->db->from('logs')->order_by('id', 'desc')->limit(20);
-                $logs_q = $CI->db->get();
+               // $CI =& get_instance();
+                $this->CI->db2->from('logs')->order_by('id', 'desc')->limit(20);
+                $logs_q = $this->CI->db2->get();
                 if ($logs_q->num_rows() > 0)
                 {
                         return $logs_q;

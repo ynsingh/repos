@@ -4,7 +4,8 @@
  defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
- * @name Cronejob.php
+ * @name Cronjob.php
+ * @author Nagendra Kumar Singh (nksinghiitk@gmail.com) Earned Leave, run 
  * @author Manorama Pal (palseema30@gmail.com) Autoretirement 
  */
  
@@ -22,9 +23,19 @@ class Cronjob extends CI_Controller
             redirect('welcome');
         }
     }
- 
+
+
+	public function run()
+ 	{
+    		$this->load->library('CronRunner');
+    		$cron = new CronRunner();
+    		$cron->run();
+ 	}
+
+
+
     public function index(){
-       
+ 	echo "This is cron page";       
     }
     /* this function is created to check staff retire date for the staff retirement process */
     public function autoretirement(){ 
@@ -72,6 +83,68 @@ class Cronjob extends CI_Controller
         }
         
     }
+
+    	/* earned leave*/
+	public function earnedleave() {
+        	$letype = "Earned Leave";
+                $earn=15;
+                //  get the current year
+                $cyear = date('Y');
+                //  get the current month
+                $cmonth = date('m');
+                //  get the current day
+                $cday = date('d');
+                //if(($cmonth==12)&&($cday==31))
+                //{
+                	//get the list of users
+                        $rest=$this->sismodel->get_orderlistspficemore('employee_master','emp_email','','');
+                        foreach($rest as $rw)
+                        {
+                                $email = $rw->emp_email;
+                                $eid = $this->logmodel->get_listspfic1('edrpuser','id','username',$email)->id;
+                                //check the entry exist for this user
+                                $whdata = array('le_userid'=>$eid,'le_type'=>$letype,'le_year'=>$cyear);
+                                $is_exist = $this->sismodel->isduplicatemore('leave_earned',$whdata);
+                        	if(!($is_exist))
+                        	{
+          				// check for earned leave  used this year or not if yes then calculate remaining
+                                        $lid=$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name',$letype)->lt_id;
+                                        // get master values on the basis of leave type
+                                        $msval=$this->sismodel->get_listspfic1('leave_type_master','lt_value','lt_id',$lid)->lt_value;
+                                        // get the academic year
+                                        $cyear = date('Y');
+                                        // get the sum of leave taken on the basis of year, user, leave type
+                                        $whdata1 = array('la_status'=>1,'la_userid' => $eid,'la_type'=>$lid, 'la_year'=>$cyear);
+                                        // $res= $this->sismodel->get_listspficemore('leave_apply','sum(la_taken) as latk',$whdata1);
+                                        $res= $this->sismodel->get_listspficemore('leave_apply','sum(la_days) as ldays',$whdata1);
+                                        foreach ($res as $row1)
+                                        {
+                                                //$ltval = $row1->latk;
+                                                $ltval = $row1->ldays;
+                                        }
+                                        // calculte the leave remaining = master value - taken value
+                                        $lrmain = $msval - $ltval;
+                                        // create data array for this user
+                                        $data = array(
+                                                'le_type'=>$letype,
+                                                'le_userid' => $eid ,
+                                                'le_year' => $cyear,
+                                                'le_earned'=> $lrmain
+                                        );
+					$leaveearned=$this->sismodel->insertrec('leave_earned', $data);
+					if(!$retupdateflag)
+                			{
+						$this->logger->write_logmessage("error"," Trying to insert in  Leave Earned record", "Leave Earned record is not added may be list is empty. Employee Userid = ".$eid." Year ".$cyear ." Remaiing E L ".$lrmain);
+						$this->logger->write_dblogmessage("error","Trying to insert in  Leave Earned record", "Leave Earned record is not added may be list is empty.Employee Userid = ".$eid." Year ".$cyear ." Remaiing E L ".$lrmain);
+					}
+                                //        $this->lrmain=$lrmain;
+                                }
+        		}
+                //}
+ //               $this->result = $this->sismodel->get_list('leave_earned');
+   //             $this->load->view('leavemgmt/earnedleave');
+     //           return;
+	}
    
 }    
     

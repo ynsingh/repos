@@ -82,6 +82,24 @@ CREATE TABLE `bankprofile_archive` (
 
 -- ---------------------------------------------------------
 --
+-- Table structure for table `cron`
+--
+
+
+CREATE TABLE `cron` (
+`id` int(5) NOT NULL,
+`name` varchar(100) DEFAULT NULL,
+`command` varchar(255) NOT NULL,
+`interval_sec` int(10) NOT NULL,
+`last_run_at` datetime DEFAULT NULL,
+`next_run_at` datetime DEFAULT NULL,
+`is_active` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+-- ---------------------------------------------------------
+--
 -- Table structure for table `cudsdmap (Campus id, UO id, Dept id, Scheme id and DDO id)`
 --
 
@@ -298,6 +316,29 @@ CREATE TABLE employee_master_support (
  ems_extention_date date default  NULL,
  PRIMARY KEY  (ems_id)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `hod_list`
+--
+
+CREATE TABLE `hod_list` (
+  `hl_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `hl_userid` int(11)  NOT NULL,
+  `hl_empcode` varchar(100)  NOT NULL,
+  `hl_deptid` int(10)  NOT NULL,
+  `hl_scid` int(10) NOT NULL,
+  `hl_uopid` int(3) NULL,
+  `hl_datefrom` datetime NOT NULL,
+  `hl_dateto` datetime NOT NULL,
+  `hl_status` varchar(50) NOT NULL,
+  `hl_creatorid` varchar(255) NOT NULL,
+  `hl_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `hl_modifierid` varchar(255) NOT NULL,
+  `hl_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+   UNIQUE (`hl_userid`,`hl_deptid`,`hl_scid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `leave_type_master`
@@ -438,8 +479,46 @@ ALTER TABLE `map_scheme_department_archive`
 ALTER TABLE `map_scheme_department_archive`
   MODIFY `msda_id` int(11) NOT NULL AUTO_INCREMENT;
 
--- ----------------------------------------------------------
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Salary Head`
+--
 
+CREATE TABLE `salary_head` (
+  `sh_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `sh_code` varchar(50)  NOT NULL,
+  `sh_name` varchar(255)  NOT NULL,
+  `sh_shortname` varchar(50)  Default NULL,
+  `sh_type` varchar(50)  NOT NULL,
+  `sh_calc_type` varchar(50)  NOT NULL,
+  `sh_taxable` varchar(50)  NOT NULL,
+  `sh_category` varchar(50)  Default 'GS',
+  `sh_ledgercode` varchar(255)  Default NULL,
+  `sh_description` varchar(255)  Default NULL,
+  `sh_creatorid` varchar(255) NOT NULL,
+  `sh_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sh_modifierid` varchar(255) NOT NULL,
+  `sh_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+   UNIQUE (`sh_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `salary_formula `
+--
+
+CREATE TABLE `salary_formula` (
+  `sf_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `sf_salhead_id` INT(11)  NOT NULL,
+  `sf_formula` varchar(255)  NOT NULL,
+  `sf_description` varchar(255)  Default NULL,
+  `sf_creatorid` varchar(255) NOT NULL,
+  `sf_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sf_modifierid` varchar(255) NOT NULL,
+  `sf_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+   /*UNIQUE (`sf_id`)*/
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- ----------------------------------------------------------
 --
 -- Table structure for table `salary_grade_master`
 --
@@ -512,8 +591,125 @@ CREATE TABLE `scheme_department_archive` (
      `sda_archdate`  date NOT NULL,
       PRIMARY KEY (sda_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- -------------------------------------------------------------------
 
+-- -------------------------------------------------------
+--
+-- Table structure for society_master_list
+--
+
+CREATE TABLE `society_master_list` (
+  `soc_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `soc_scode` varchar(100)  NOT NULL,
+  `soc_sname` varchar(255) NOT NULL,
+  `soc_sremark` varchar(100) NOT NULL,
+  `soc_creatorid` varchar(255) NOT NULL,
+  `soc_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `soc_modifierid` varchar(255) NOT NULL,
+  `soc_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+   UNIQUE (`soc_sname`,`soc_scode`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Staff deputation perticulars`
+--
+
+CREATE TABLE `staff_deputation_perticulars` (
+  `sdp_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `sdp_userid` int(11)  NOT NULL,
+  `sdp_empcode` varchar(55)  NOT NULL,
+  `sdp_deputation` varchar(255)  NOT NULL,
+  `sdp_specification` varchar(50)  Default NULL,
+  `sdp_fromdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdp_todate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdp_creatorid` varchar(255) NOT NULL,
+  `sdp_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdp_modifierid` varchar(255) NOT NULL,
+  `sdp_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Staff department Exam passed details`
+--
+
+CREATE TABLE `staff_department_exam_perticulars` (
+  `sdep_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `sdep_userid` int(11)  NOT NULL,
+  `sdep_empcode` varchar(55)  NOT NULL,
+  `sdep_examname` varchar(255)  NOT NULL, 
+  `sdep_specification` varchar(50)  Default NULL,
+  `sdep_passdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdep_creatorid` varchar(255) NOT NULL,
+  `sdep_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdep_modifierid` varchar(255) NOT NULL,
+  `sdep_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Staff working arrangements`
+--
+
+CREATE TABLE `staff_working_arrangements_perticulars` (
+  `swap_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `swap_userid` int(11)  NOT NULL,
+  `swap_empcode` varchar(55)  NOT NULL,
+  `swap_ocampus` varchar(255)  NOT NULL,
+  `swap_ouo` varchar(255)  NOT NULL,
+  `swap_odept` varchar(255)  NOT NULL,
+  `swap_wcampus` varchar(255)  NOT NULL,
+  `swap_wuo` varchar(255)  NOT NULL,
+  `swap_wdept` varchar(255)  NOT NULL,
+  `swap_creatorid` varchar(255) NOT NULL,
+  `swap_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `swap_modifierid` varchar(255) NOT NULL,
+  `swap_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Staff recruitment perticulars`
+--
+
+CREATE TABLE `staff_recruitment_perticulars` (
+  `srp_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `srp_userid` int(11)  NOT NULL,
+  `srp_empcode` varchar(55)  NOT NULL,
+  `srp_methodrecrtmnt` varchar(255)  NOT NULL,
+  `srp_subcategory` varchar(255)  Default NULL,
+  `srp_detail` varchar(255)  Default NULL,
+  `srp_compassionname` varchar(255)  Default NULL,
+  `srp_compassiondesig` varchar(255)  Default NULL,
+  `srp_compassiondept` varchar(255)  Default NULL,
+  `srp_creatorid` varchar(255) NOT NULL,
+  `srp_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `srp_modifierid` varchar(255) NOT NULL,
+  `srp_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `Staff disciplinary actions perticulars`
+--
+
+CREATE TABLE `staff_disciplinary_actions_perticulars` (
+  `sdap_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `sdap_userid` int(11)  NOT NULL,
+  `sdap_empcode` varchar(55)  NOT NULL,
+  `sdap_punishnature` varchar(255)  NOT NULL,
+  `sdap_punishreason` varchar(255)  NOT NULL,
+  `sdap_punishstatus` varchar(255)  NOT NULL,
+  `sdap_fromdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdap_todate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdap_creatorid` varchar(255) NOT NULL,
+  `sdap_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdap_modifierid` varchar(255) NOT NULL,
+  `sdap_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -------------------------------------------------------------------
 --
 -- Table structure for table `staff_position`
 --
@@ -816,6 +1012,28 @@ CREATE TABLE `tax_slab_master` (
    UNIQUE KEY `tsm_fy` (`tsm_fy`,`tsm_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `uo_list`
+--
+
+CREATE TABLE `uo_list` (
+  `ul_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `ul_userid` int(11)  NOT NULL,
+  `ul_empcode` varchar(100)  NOT NULL,
+  `ul_authuoid` int(11)  NOT NULL,
+  `ul_uocode` varchar(100)  NOT NULL,
+  `ul_uoname` varchar(255) NOT NULL,
+  `ul_datefrom` datetime NOT NULL,
+  `ul_dateto` datetime NOT NULL,
+  `ul_status` varchar(50) NOT NULL,
+  `ul_creatorid` varchar(255) NOT NULL,
+  `ul_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `ul_modifierid` varchar(255) NOT NULL,
+  `ul_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+   UNIQUE (`ul_userid`,`ul_uoname`,`ul_uocode`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 --
 -- Table structure for table `user_role_type`
@@ -897,96 +1115,6 @@ CREATE TABLE user_input_transfer (
         uit_email_sentto blob default NULL,
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
-
--- -------------------------------------------------------------------
-
---
--- Table structure for table `Salary Head`
---
-
-CREATE TABLE `salary_head` (
-  `sh_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `sh_code` varchar(50)  NOT NULL,
-  `sh_name` varchar(255)  NOT NULL,
-  `sh_shortname` varchar(50)  Default NULL,
-  `sh_type` varchar(50)  NOT NULL,
-  `sh_calc_type` varchar(50)  NOT NULL,
-  `sh_taxable` varchar(50)  NOT NULL,
-  `sh_category` varchar(50)  Default 'GS',
-  `sh_ledgercode` varchar(255)  Default NULL,
-  `sh_description` varchar(255)  Default NULL,
-  `sh_creatorid` varchar(255) NOT NULL,
-  `sh_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `sh_modifierid` varchar(255) NOT NULL,
-  `sh_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-   UNIQUE (`sh_code`)
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -------------------------------------------------------------------
-
---
--- Table structure for table `salary_formula `
---
-
-CREATE TABLE `salary_formula` (
-  `sf_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `sf_salhead_id` INT(11)  NOT NULL,
-  `sf_formula` varchar(255)  NOT NULL,
-  `sf_description` varchar(255)  Default NULL,
-  `sf_creatorid` varchar(255) NOT NULL,
-  `sf_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `sf_modifierid` varchar(255) NOT NULL,
-  `sf_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
-   /*UNIQUE (`sf_id`)*/
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -------------------------------------------------------------------
---
--- Table structure for table `hod_list`
---
-
-CREATE TABLE `hod_list` (
-  `hl_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `hl_userid` int(11)  NOT NULL,
-  `hl_empcode` varchar(100)  NOT NULL,
-  `hl_deptid` int(10)  NOT NULL,
-  `hl_scid` int(10) NOT NULL,
-  `hl_uopid` int(3) NULL,
-  `hl_datefrom` datetime NOT NULL,
-  `hl_dateto` datetime NOT NULL,
-  `hl_status` varchar(50) NOT NULL,
-  `hl_creatorid` varchar(255) NOT NULL,
-  `hl_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `hl_modifierid` varchar(255) NOT NULL,
-  `hl_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-   UNIQUE (`hl_userid`,`hl_deptid`,`hl_scid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- -------------------------------------------------------------------
---
--- Table structure for table `uo_list`
---
-
-CREATE TABLE `uo_list` (
-  `ul_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `ul_userid` int(11)  NOT NULL,
-  `ul_empcode` varchar(100)  NOT NULL,
-  `ul_authuoid` int(11)  NOT NULL,
-  `ul_uocode` varchar(100)  NOT NULL,
-  `ul_uoname` varchar(255) NOT NULL,
-  `ul_datefrom` datetime NOT NULL,
-  `ul_dateto` datetime NOT NULL,
-  `ul_status` varchar(50) NOT NULL,
-  `ul_creatorid` varchar(255) NOT NULL,
-  `ul_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `ul_modifierid` varchar(255) NOT NULL,
-  `ul_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-   UNIQUE (`ul_userid`,`ul_uoname`,`ul_uocode`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- -------------------------------------------------------------------
 
