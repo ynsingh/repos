@@ -22,7 +22,7 @@ class Map extends CI_Controller
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"loginmodel"); 
 	$this->load->model('SIS_model', "sismodel"); 
-        
+	$this->load->model("Mailsend_model","mailmodel");        
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -2132,5 +2132,255 @@ public function schemedept(){
         }//buton check
         $this->load->view('map/edit_hod',$data);
      }//func closer    
-}
+ /*---------------------------------------controller function for UO list-----------------------------------------------------*/
+  public function setuo(){
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+//	$this->authresult=$this->loginmodel->get_listspfic2('authorities','id','name');
+	$selectfield ="priority,code,name,id";
+        $whorder = "priority asc";
+        $this->authresult=$this->loginmodel->get_orderlistspficemore('authorities',$selectfield,'',$whorder);
+        //$this->uo=$this->sismodel->get_list('uo_list');
+	if(isset($_POST['setuo'])) {
+            
+            $this->form_validation->set_rules('campus','Campus Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('deptname','Department Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('usrname','User Name','trim|xss_clean');
+            $this->form_validation->set_rules('emailid','Email Id','trim|xss_clean|valid_email');
+            $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
+            $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
+            $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
+            
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('map/set_uo');
+                return;
+            }//formvalidation
+            else{
+                
+                /** check dulicate entry and insert in edrpuser table**********************/
+             $isdup= $this->loginmodel->isduplicate('edrpuser','username',$_POST['emailid']);
+                $parts = explode('@',$_POST['emailid']); 
+                $passwd=md5($parts[0]);
+                if(!$isdup){
+                    $dataeu = array(
+                        'username'=> $_POST['emailid'],
+                        'password'=> $passwd,
+                        'email'=> $_POST['emailid'],
+                        'componentreg'=> '*',
+                        'mobile'=>'',
+                        'status'=>1,
+                        'category_type'=>'UO',
+                        'is_verified'=>1
+                    );
+                    /*insert record in edrpuser table*/
+                 $userflageu=$this->loginmodel->insertrec('edrpuser', $dataeu);
+                    $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+                    if($userflageu){
+                        // insert into  user profile db1
+                        $dataup = array(
+                            'userid' => $userid,
+                            'firstname' => 'Head of the Department',
+                            'lang' => 'english',
+                            'mobile' => '',
+                            'status' => 1
+                        );
+                        $userflagup=$this->loginmodel->insertrec('userprofile', $dataup);
+                    }//if $userflageu closer
+                }//ifdupedrpuser check closer     
+                /*************************check for duplicate entry in uo list and insert in table*************/
+              $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+                $dupuo = array('ul_userid' =>$userid/* ,'hl_scid' => $_POST['campus'],'ul_deptid'=> $_POST['deptname']*/);
+              $isdupuo= $this->sismodel->isduplicatemore('uo_list',$dupuo);
+                // $isdupuo= $this->loginmodel->isduplicatemore('authorities',$dupuo);
+                if(!$isdupuo){
+                    $usr =$this->session->userdata('username'); 
+                   // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+                    $pfno='';
+                    if(!empty($_POST['usrname'])){
+                        $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
+                    }
+//print_r($pfno);die;
+                    //   $authuoid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['authresult'])->priority;
+		   // $authuoid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['authresult'])->code;
+		    $datauo = array(
+                        'ul_userid'=> $userid,
+                        'ul_empcode'=> $pfno,
+			'ul_authuoid'=>$_POST['uo'],                        
+                        'ul_datefrom'=> $_POST['DateFrom'],
+                        'ul_dateto'=> $_POST['DateTo'],
+                        'ul_status'=> $_POST['status'],
+                        'ul_creatorid'=> $usr,
+                        'ul_creatordate'=> date('Y-m-d'),
+                        'ul_modifierid'=> $usr,
+                        'ul_modifydate'=> date('Y-m-d'),
+                        'ul_uoname' =>$this->loginmodel->get_listspfic1('authorities', 'name','priority', $record->ul_authuoid)->name,
+                        'ul_uocode' =>$this->loginmodel->get_listspfic1('authorities','code','priority',$record->ul_authuoid)->code,
+
+                    );
+
+
+                    $uolistflag=$this->sismodel->insertrec('uo_list', $datauo) ;
+                    /* insert into user_role_type */
+                   $dataurt = array(
+                        'userid'=> $userid,
+                        'roleid'=> 5,
+                        //'deptid'=> $_POST['deptname'],
+                       // 'scid'=>  $_POST['campus'],
+                        'usertype'=>'UO'
+                    );
+                    $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
+                    $sub=' Registred as a UO' ;
+                    $mess="You are registered as a UO. Your login id ".$_POST['emailid'] ." and password is ".$passwd ;
+                    //$mails = $this->mailmodel->mailsnd($email, $sub, $mess,'','Sis');
+                    $mails = '';
+		    $mails =$this->mailmodel->mailsnd($_POST['emailid'], $sub, $mess,'');
+                   //$this->mailmodel->mailsnd('$_POST['emailid']', $sub, $mess,'','Sis');
+                    //  mail flag check                         
+                    if($mails){
+                        $mailmsg='Please check your mail for username and password....Mail send successfully';
+                        $this->logger->write_logmessage("insert"," add uo edrpuser, userprofile, uo_list and user_role_type ", "record added successfully for.".$pfno ." ".$_POST['emailid'] );
+                        $this->logger->write_dblogmessage("insert"," add staff edrpuser, userprofile, uo_list and user_role_type ", "record added successfully for.".$pfno ." ".$_POST['emailid'] );
+                    }
+                    else{
+                        $mailmsg='Mail does not sent';
+                        $this->logger->write_logmessage("insert"," add uo edrpuser,userprofile, uo_list and user role type ", "record added successfully for.".$pfno ." ".$_POST['emailid'] ." and mail does not sent");
+                        $this->logger->write_dblogmessage("insert"," add uo edrpuser,userprofile, uo_list and user role type ", "record added successfully for.".$pfno ." ".$_POST['emailid']." and mail does not sent" );
+                                       
+                    }
+                    $this->logger->write_logmessage("insert", "record insert successfully.");
+                    $this->logger->write_dblogmessage("insert", "record insert successfully." );
+                    $this->session->set_flashdata('success',' UO added successfully with pfno=' .$pfno. ",emailid= " . $_POST['emailid'] .".    ".$mailmsg);
+                    redirect('map/uolist');
+                   
+                }// if $isdupuo closer 
+                else{
+                    $this->session->set_flashdata('err_message', 'email id already exists for this uo.');
+                    redirect('map/uolist');
+                  
+                }
+                
+            }//closer else form run true          
+       }//button check
+        $this->load->view('map/set_uo');
+      
+    }
+/************************************** Display UO List *************************/
+public function uolist(){
+        $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+        $selectfield ="*";
+        $whorder = "ul_authuoid asc";
+        $data['records']=$this->sismodel->get_orderlistspficemore('uo_list',$selectfield,'',$whorder);
+
+      //  $data['records'] = $this->sismodel->get_list('uo_list');
+        $this->logger->write_logmessage("view"," view uo list" );
+        $this->logger->write_dblogmessage("view"," view uo list");
+        $this->load->view('map/viewuo_list',$data);
+    }
+    
+    /***************************************************edit uo details*************************/
+     public function edituo($id){
+        
+        $data['id'] = $id;
+        $data['uodata'] = $this->sismodel->get_listrow('uo_list','ul_id',$id)->row();
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+//        $this->authresult=$this->loginmodel->get_listspfic2('authorities','id','name');
+	$selectfield ="priority,code,name,id";
+        $whorder = "priority asc";
+        $this->authresult=$this->loginmodel->get_orderlistspficemore('authorities',$selectfield,'',$whorder);
+        //$this->uo=$this->sismodel->get_list('uo_list');
+        if(isset($_POST['edituo'])) {
+            
+            $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean');
+            $this->form_validation->set_rules('deptname','Department Name','trim|xss_clean');
+            $this->form_validation->set_rules('usrname','User Name','trim|xss_clean');
+            $this->form_validation->set_rules('emailid','Email Id','trim|required|xss_clean|valid_email');
+            $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
+            $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
+            $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
+            
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('map/edit_uo',$data);
+                return;
+            }//formvalidation
+            else{
+                $uoid = $this->input->post('uo', TRUE); 
+                $campus = $this->input->post('campus', TRUE);
+                $deptname = $this->input->post('deptname', TRUE);
+                $usrname = $this->input->post('usrname', TRUE);
+                $datefrom = $this->input->post('DateFrom', TRUE);
+                $dateto = $this->input->post('DateTo', TRUE);
+                $emailid = $this->input->post('emailid', TRUE);
+                $status = $this->input->post('status', TRUE);
+                //$pfno = $this->input->post('usrname', TRUE);
+		//date check
+		$frmd = strtotime($datefrom);
+		$tod = strtotime($dateto);
+		if($tod >$frmd){
+
+                $logmessage = "";
+                if($data['uodata']->ul_empcode != $pfno)
+                    $logmessage = "Edit UO user " .$data['uodata']->ul_empcode . " changed by " .$pfno;
+                if($data['uodata']->ul_datefrom != $datefrom)
+                    $logmessage = "Edit UO Date from " .$data['uodata']->ul_datefrom . " changed by " .$datefrom;
+                if($data['uodata']->ul_dateto != $dateto)
+                    $logmessage = "Edit UO Date To " .$data['uodata']->ul_dateto . " changed by " .$dateto;
+                 if($data['uodata']->ul_status != $status)
+                    $logmessage = "Edit  UO Status " .$data['uodata']->ul_status . " changed by " .$status;
+                 if($data['uodata']->ul_userid !=$emailid)
+                    $logmessage = "Edit UO Emailid " .$data['uodata']->ul_userid . " changed by " .$emailid;
+                $pfno='';
+                if(!empty($_POST['usrname'])){
+                    if($data['uodata']->ul_empcode != $_POST['usrname']){
+                        $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
+                    }
+                    else{
+                      $pfno=$data['uodata']->ul_empcode;
+                    }
+                }
+                $usr =$this->session->userdata('username'); 
+                $datauo = array(
+                    'ul_empcode'=> $pfno,
+                    'ul_authuoid'=> $uoid,
+                    'ul_datefrom'=> $datefrom,
+                    'ul_dateto'=> $dateto,
+                    'ul_status'=> $status,
+                    'ul_creatorid'=> $usr,
+                    'ul_creatordate'=> date('Y-m-d'),
+                    'ul_modifierid'=> $usr,
+                    'ul_modifydate'=> date('Y-m-d'),
+                );
+			if($data['uodata']->ul_empcode != $pfno){
+				$userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+				 $datauo['ul_userid']=$userid;
+    				$datauo['ul_uoname']=$this->loginmodel->get_listspfic1('authorities', 'name','priority', $uoid)->name;
+                               $datauo['ul_uocode']=$this->loginmodel->get_listspfic1('authorities','code','priority',$uoid)->code;
+                    		 $editshforflag=$this->sismodel->insertrec('uo_list', $datauo) ;
+			}
+			else{
+                                $editshforflag=$this->sismodel->updaterec('uo_list', $datauo, 'ul_id', $id);
+			}
+                      if (!$editshforflag){ 
+                        $this->logger->write_logmessage("error","Edit UO Detail", "Edit UO Detail. $logmessage ");
+                        $this->logger->write_dblogmessage("error","Edit UO Detail", "Edit UO Detail. $logmessage ");
+                        $this->session->set_flashdata('err_message','Edit UO Detail - ' . $logmessage . '.', 'error');
+                        $this->load->view('map/edit_uo', $datauo);
+                      }
+                     else{
+                        $this->logger->write_logmessage("update","Edit UO Detail by".$this->session->userdata('username') , "Edit UO Detail. $logmessage ");
+                        $this->logger->write_dblogmessage("update","Edit UO Detail by".$this->session->userdata('username') , "Edit UO Detail. $logmessage ");
+                        $this->session->set_flashdata('success','UO details updated successfully pfno ='.$pfno." Email Id = "."[ " .$_POST['emailid']. " ]");
+                        redirect("map/uolist");
+                    }
+		}else{
+                        $this->session->set_flashdata('err_message','Edit UO Detail - To date must be grater than from date. From date = '.$datefrom .' To date = '.$dateto, 'error');
+		}
+            }//else form validation true
+        }//buton check
+        $this->load->view('map/edit_uo',$data);
+     }//func closer    
+}//end class
+
+
+
     

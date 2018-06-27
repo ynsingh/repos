@@ -73,61 +73,38 @@
 		$i=1;
                 if( count($allsc) ):  ?>
                     <?php foreach($allsc as $record){
+
+
 		
 			echo "<tr>";
 			echo "<td>";
 				echo $i;
 			echo "</td>";
                         echo "<td>";
-				echo $record->ul_uoname;
-				echo " ( ";
-				echo $record->ul_uocode;
-				echo " ) ";
+				if (!empty($record->ul_authuoid)){
+                               echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->ul_authuoid)->name; 
+			       echo " ( ";
+                               echo $this->lgnmodel->get_listspfic1('authorities','code','id',$record->ul_authuoid)->code;
+                               echo " ) ";
+                              echo " ( ";
+                                     echo $this->lgnmodel->get_listspfic1('authorities','priority','id',$record->ul_authuoid)->priority;
+                                      echo " ) ";
+				}
 			echo "</td>";
 			echo "<td>";
 				
 //				$empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
+				if (!empty($record->ul_empcode)){
 				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
-//				if (!empty($empname)){ echo $empname;}
+				}
+				if (!empty($record->ul_userid)){ 
 				echo " ( ";
 				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
 				echo " ) ";
+				}
                         echo "</td>";
 			$i++;
                         echo "</tr>";
-           /* 
-                        if($cid !=$record->hl_scid){    
-                            echo "<tr>";
-                            echo "<td colspan=2 style=\"text-align:center;\">";
-                            echo " <b> Campus Name : ";
-                            echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->hl_scid)->sc_name;
-                            echo " ( ".$this->commodel->get_listspfic1('study_center','sc_code','sc_id',$record->hl_scid)->sc_code." )";
-                            echo "</b></td>";
-                            echo "</tr>";
-                            $cid=$record->hl_scid;
-                        }
-                        $hodlist=$this->sismodel->hoduser($record->hl_scid);
-                        foreach($hodlist as $record2){
-                        if($did !=$record2->hl_deptid){    
-                            echo "<tr>";
-                            echo "<td colspan=2 ><b>";
-                            echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record2->hl_deptid)->dept_name;
-                            echo " ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id',$record2->hl_deptid)->dept_code ." )";
-                            echo "</b></td>";
-                            echo "</tr>";
-                        
-                            $did=$record2->hl_deptid;
-                        } 
-                        echo "<tr>";
-                        echo "<td > </td>";
-                        echo "<td>";
-                        $username=$this->lgnmodel->get_listspfic1('edrpuser','username','id',$record2->hl_userid)->username;
-                        echo $username;
-                        echo "</td>";
-                        echo "</tr>";
-
-                        }    
-                       */          
                     ?>
                 <?php }; ?>
             <?php else : ?>

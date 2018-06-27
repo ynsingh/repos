@@ -693,7 +693,8 @@ public function disciplinewiselist(){
 	public function uolist(){
         $today= date("Y-m-d H:i:s");
 //        $whdata=array('hl_dateto >='=> $today);
-        $selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
+        //$selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
+	$selectfield ="ul_userid,ul_empcode, ul_authuoid,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$whorder="ul_id ASC,  ul_modifydate DESC";
 //	get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
         //$data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
