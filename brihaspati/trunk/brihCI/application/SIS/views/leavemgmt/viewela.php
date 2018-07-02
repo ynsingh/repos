@@ -12,19 +12,19 @@
 
 <body>
 
-	<table width="100%">
+	<!--<table width="100%">
 			<tr>
-		   <td width="15%"> <?php echo anchor('leavemgmt/displayleavetype/', "View Leave Type", array('title' => 'Display Leave Type' ,'class' =>'top_parent'));?> </td>
+		   <td width="15%"> <?php //echo anchor('leavemgmt/displayleavetype/', "View Leave Type", array('title' => 'Display Leave Type' ,'class' =>'top_parent'));?> </td>
                 <td align="right" width="100%">  <b>Select Employee Post</b>
                     <select name="etype" id="etype" style="width:250px;"> 								
                       <option value="" disabled selected>--------Select Post-------</option>                       
-                      <option value="Assistant">Assistant</option>
+                      <!--<option value="Assistant">Assistant</option>
                       <option value="Non Teaching"> Non Teaching</option>
                     </select>                                     
                 </td>                
                 <td align="right"><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
             </tr>    
-        </table>   
+        </table>  --> 
  
         <table width="100%">
 				<tr>
@@ -49,36 +49,38 @@
         <div class="scroller_sub_page">
          <table class="TFtable" >
             <thead>
-						<tr>
+		<tr>
                      <th>S.No</th>
-                    	<th>User Name</th>
-					   	<th>Leave Remaining</th>
+                     <th>User Name</th>
+	             <th>Leave Remaining</th>
                 </tr>
-				</thead>
+		</thead>
 
 				<tbody>
 		  		<?php 
-				   if(!empty($this->fldata)):
-        			$count =0;
-               foreach ($this->fldata as $row)
+				 if(!empty($this->fldata)):
+        			//$count =0;
+				$count=$this->uri->segment(3, 0);
+              			foreach ($this->fldata as $row)
         			{
-         		?>
-            	<tr>
+         			?>
+            			<tr>
 					 <td> <?php echo ++$count; ?> </td>
 					 <td> <?php echo $row['fname'] ?>
-							<?php echo $row['lname'] ?>
-					 		( <?php echo anchor("leavemgmt/viewell/{$row['userid']}", $row['userid'], array('title' => 'Details' , 'class' => 'red-link')) . " ";?>)</td>
+				    	      <?php echo $row['lname'] ?>
+					      ( <?php echo anchor("leavemgmt/viewell/{$row['userid']}", $row['userid'], array('title' => 'Details' , 'class' => 'red-link')) . " ";?>)</td>
 					 <td> <?php echo $row['ltremain'] ?></td>
-            	</tr>
+            			</tr>
 
 				<?php
-		        }
-			   ?>
+		        	}
+			   	?>
 				<?php else : ?>
               <td colspan= "8" align="center"> No Records found...!</td>
             <?php endif;?>
 				</tbody>
          </table>
+		<?php echo $this->pagination->create_links(); ?>
        </div>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>

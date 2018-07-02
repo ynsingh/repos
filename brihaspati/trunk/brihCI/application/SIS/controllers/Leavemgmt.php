@@ -13,8 +13,8 @@ class Leavemgmt extends CI_Controller
     function __construct() {
         parent::__construct();
         $this->load->model('login_model','logmodel'); 
-		  $this->load->model('common_model','commodel'); 
-		  $this->load->model('User_model','usermodel'); 
+	$this->load->model('common_model','commodel'); 
+	$this->load->model('User_model','usermodel'); 
         $this->load->model('SIS_model','sismodel');
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
@@ -139,7 +139,7 @@ public function editleave($lt_id) {
         );
 			
 			
-			$data['lt_remarks'] = array(
+	$data['lt_remarks'] = array(
            'name' => 'lt_remarks',
            'id' => 'lt_remarks',
            'maxlength' => '50',
@@ -160,7 +160,7 @@ public function editleave($lt_id) {
             $data['lt_name']['value'] = $this->input->post('lt_name', TRUE);
             $data['lt_code']['value'] = $this->input->post('lt_code', TRUE);
             $data['lt_short']['value'] = $this->input->post('lt_short', TRUE);            
-	    		$data['lt_value']['value'] = $this->input->post('lt_value', TRUE);
+	    $data['lt_value']['value'] = $this->input->post('lt_value', TRUE);
             $data['lt_remarks']['value'] = $this->input->post('lt_remarks', TRUE);
         }
         if ($this->form_validation->run() == FALSE)
@@ -991,64 +991,60 @@ public function viewels()
 	$this->load->view('leavemgmt/viewels');
 }
 
-/* View earned leave details admin */
+	/* View earned leave details admin */
 
-public function viewela()
-{
-			
-			$lrm="";
-			$i=0;
-			
-			//get the list of users		
-			//if(isset($_POST['filter'])) {
-            //echo "ifcase post of filter";
-            /*$etype = $this->input->post('etype');
-            
-	    		$this->etyp = $etype;
-				$whdata = array('emp_post'=>$this->etyp);
-				$rest=$this->sismodel->get_orderlistspficemore('employee_master','emp_email',$whdata,'');*/
-            
-	   
+	public function viewela()
+	{
 
-	
-		  	$rest=$this->sismodel->get_orderlistspficemore('employee_master','emp_email','','');
-			foreach($rest as $rw)
-			{
+		$lrm="";
+		$i=0;
+		$perp=10;
+		$this->load->library('pagination');
+		//get the list of users		
+	  	$rest=$this->sismodel->get_orderlistspficemore('employee_master','emp_email','','');
+		$rowsd = count($rest);
+		$config['base_url'] = base_url() . "sisindex.php/leavemgmt/viewela"; 
+		$config['total_rows'] = $rowsd;
+		$config['per_page'] = $perp;
+		$this->pagination->initialize($config);
+		$start=$this->uri->segment(3, 0);
+		$end = $start + $perp;
+		foreach($rest as $rw)
+		{
+			if(($i >= $start) && ($i < $end)){
 				$m="";
 				$email = $rw->emp_email;
 				$eid = $this->logmodel->get_listspfic1('edrpuser','id','username',$email)->id;
 				$whdata = array('le_userid'=>$eid);
 				$lr = $this->sismodel->get_listspficemore('leave_earned','le_earned',$whdata);
-				 foreach($lr as $row)
-					{
-						$lrm=$row->le_earned;
-						$m=$lrm+$m;
-					}
-					$fname=$this->logmodel->get_listspfic1('userprofile','firstname','userid',$eid)->firstname;
-					$lname=$this->logmodel->get_listspfic1('userprofile','lastname','userid',$eid)->lastname;
-					if($lrm=="")
-					{
+				foreach($lr as $row)
+				{
+					$lrm=$row->le_earned;
+					$m=$lrm+$m;
+				}
+				$fname=$this->logmodel->get_listspfic1('userprofile','firstname','userid',$eid)->firstname;
+				$lname=$this->logmodel->get_listspfic1('userprofile','lastname','userid',$eid)->lastname;
+				if($lrm=="")
+				{
 					$lrm="--";
 					$ldata['fname'] =  $fname ;
 					$ldata['lname'] =  $lname ;
-               $ldata['userid'] =  $email ;
-               $ldata['ltremain'] = $m; 
-               $this->fldata[$i] = $ldata;
-               $i++;
-					}
-					else
-					{
+	        	       		$ldata['userid'] =  $email ;
+            				$ldata['ltremain'] = $m; 
+				}
+				else
+				{
 					$ldata['fname'] =  $fname ;
 					$ldata['lname'] =  $lname ;
 					$ldata['userid'] =  $email ;
-               $ldata['ltremain'] = $m; 
-               $this->fldata[$i] = $ldata;
-               $i++;
-					}
-         }   
-		//}
+			               	$ldata['ltremain'] = $m; 
+				}
+	       		        $this->fldata[$i] = $ldata;
+			}
+              		$i++;
+         	}
 		$this->load->view('leavemgmt/viewela');
-}	
+	}	
 
 /*View earned leave details single staff member from admin*/
 
