@@ -6,24 +6,50 @@ if ( ! function_exists('date_php_to_mysql'))
 	{
 		$CI =& get_instance();
 		$current_date_format = $CI->config->item('account_date_format');
-		list($d, $m, $y) = array(0, 0, 0);
+		//		list($d, $m, $y) = array(0, 0, 0);
+		$date="1970-01-02";
+//		echo $dt;
+		if((!empty($dt)) && (isset($dt))){ 
+		$tim="00:00:00";
+		$dtt = explode(" ",$dt);
+		$date_array = explode("/",$dtt[0]);
+//		print_r($date_array);
 		switch ($current_date_format)
 		{
 		case 'dd/mm/yyyy':
-			list($d, $m, $y) = explode('/', $dt);
+			$var_day = $date_array[0]; //day seqment
+			$var_month = $date_array[1]; //month segment
+			$var_year = $date_array[2]; //year segment
+			if (!empty($var_year)){
+				$date = "$var_year-$var_month-$var_day $tim";
+			}
+			//	list($d, $m, $y) = explode('/', $dt);
+		//	$date = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $tim', $dt);
 			break;
 		case 'mm/dd/yyyy':
-			list($m, $d, $y) = explode('/', $dt);
+			$var_day = $date_array[1]; //day seqment
+			$var_month = $date_array[0]; //month segment
+			$var_year = $date_array[2]; //year segment
+			$date = "$var_year-$var_month-$var_day $tim";
+	//		list($m, $d, $y) = explode('/', $dt);
+		//	$date = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$1-$2 $tim', $dt);
 			break;
 		case 'yyyy/mm/dd':
-			list($y, $m, $d) = explode('/', $dt);
+			$var_day = $date_array[2]; //day seqment
+			$var_month = $date_array[1]; //month segment
+			$var_year = $date_array[0]; //year segment
+			$date = "$var_year-$var_month-$var_day $tim";
+	//		list($y, $m, $d) = explode('/', $dt);
+			//$date = preg_replace('#(\d{4})/(\d{2})/(\d{2})\s(.*)#', '$1-$2-$3 $tim', $dt);
 			break;
 		default:
 			$CI->messages->add('Invalid date format. Check your account settings.', 'error');
-			return "";
-		}
-		$ts = mktime(0, 0, 0, $m, $d, $y);
-		return date('Y-m-d H:i:s', $ts);
+			return $date;
+		}//end switch
+		}//end if empty and set
+	//	$ts = mktime(0, 0, 0, $m, $d, $y);
+	//	return date('Y-m-d H:i:s', $ts);
+		return $date;
 	}
 }
 
@@ -33,24 +59,47 @@ if ( ! function_exists('date_php_to_mysql_end_time'))
 	{
 		$CI =& get_instance();
 		$current_date_format = $CI->config->item('account_date_format');
-		list($d, $m, $y) = array(0, 0, 0);
+		//list($d, $m, $y) = array(0, 0, 0);
+		$date="1970-01-02";
+//		if(!empty($dt)){ 
+		if((!empty($dt)) && (isset($dt))){
+		$tim="23:59:59";
+		$dtt = explode(" ",$dt);
+                $date_array = explode("/",$dtt[0]);
 		switch ($current_date_format)
 		{
 		case 'dd/mm/yyyy':
-			list($d, $m, $y) = explode('/', $dt);
+			$var_day = $date_array[0]; //day seqment
+			$var_month = $date_array[1]; //month segment
+			$var_year = $date_array[2]; //year segment
+			$date = "$var_year-$var_month-$var_day $tim";
+		//	list($d, $m, $y) = explode('/', $dt);
+	//		$date = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $tim', $dt);
 			break;
 		case 'mm/dd/yyyy':
-			list($m, $d, $y) = explode('/', $dt);
+			$var_day = $date_array[1]; //day seqment
+			$var_month = $date_array[0]; //month segment
+			$var_year = $date_array[2]; //year segment
+			$date = "$var_year-$var_month-$var_day $tim";
+		//	list($m, $d, $y) = explode('/', $dt);
+	//		$date = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$1-$2 $tim', $dt);
 			break;
 		case 'yyyy/mm/dd':
-			list($y, $m, $d) = explode('/', $dt);
+			$var_day = $date_array[2]; //day seqment
+			$var_month = $date_array[1]; //month segment
+			$var_year = $date_array[0]; //year segment
+			$date = "$var_year-$var_month-$var_day $tim";
+		//	list($y, $m, $d) = explode('/', $dt);
+			//$date = preg_replace('#(\d{4})/(\d{2})/(\d{2})\s(.*)#', '$1-$2-$3 $tim', $dt);
 			break;
 		default:
 			$CI->messages->add('Invalid date format. Check your account settings.', 'error');
 			return "";
 		}
-		$ts = mktime("23", "59", "59", $m, $d, $y);
-		return date('Y-m-d H:i:s', $ts);
+		}
+	//	$ts = mktime("23", "59", "59", $m, $d, $y);
+	//	return date('Y-m-d H:i:s', $ts);
+		return $date;
 	}
 }
 
@@ -61,6 +110,7 @@ if ( ! function_exists('date_mysql_to_php'))
 		$ts = human_to_unix($dt);
 		$CI =& get_instance();
 		$current_date_format = $CI->config->item('account_date_format');
+		if (date('Y', $ts) != 1970 ){
 		switch ($current_date_format)
 		{
 		case 'dd/mm/yyyy':
@@ -76,7 +126,8 @@ if ( ! function_exists('date_mysql_to_php'))
 			$CI->messages->add('Invalid date format. Check your account settings.', 'error');
 			return "";
 		}
-		return;
+		}
+		return "";
 	}
 }
 
@@ -95,6 +146,7 @@ if ( ! function_exists('date_mysql_to_php_display'))
 		$ts = human_to_unix($dt);
 		$CI =& get_instance();
 		$current_date_format = $CI->config->item('account_date_format');
+		if (date('Y', $ts) != 1970 ){
 		switch ($current_date_format)
 		{
 		case 'dd/mm/yyyy':
@@ -110,7 +162,8 @@ if ( ! function_exists('date_mysql_to_php_display'))
 			$CI->messages->add('Invalid date format. Check your account settings.', 'error');
 			return "";
 		}
-		return;
+		}
+		return "";
 	}
 }
 

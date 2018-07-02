@@ -131,9 +131,10 @@ class MY_Form_validation extends CI_Form_validation {
 	{
 		$CI =& get_instance();
 		$cur_date = date_php_to_mysql($str);
+//		echo $str;
+//		print_r($cur_date); die;
 		$start_date = $CI->config->item('account_fy_start');
 		$end_date = $CI->config->item('account_fy_end');
-
 		if ($cur_date < $start_date)
 		{
 			$CI->form_validation->set_message('is_date_within_range', 'The %s is less than start of current financial year.');

@@ -23,7 +23,7 @@ class Logger
 	 * 2 - update
 	 * 3 - view 
 	 */
-	function write_logmessage($level = "view", $title = "", $desc = "") 	
+	function write_message($level = "view", $title = "", $desc = "") 	
 	{
 		$CI =& get_instance();
 
