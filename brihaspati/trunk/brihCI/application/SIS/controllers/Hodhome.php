@@ -25,8 +25,8 @@ class Hodhome extends CI_Controller
  
     public function index() {
         /* set role id in session*/
-	$data = [ 'id_role' => 5 ];
-        $this->session->set_userdata($data);
+//	$data = [ 'id_role' => 5 ];
+  //      $this->session->set_userdata($data);
         /* get logged user detail from different tables (firstname, lastname, email, campus name, org name, department name)
          * using login model and common model
          */

@@ -158,7 +158,8 @@ CREATE TABLE `ddo_archive` (
 --
 CREATE TABLE  employee_servicedetail(
         empsd_id INT(11) NOT NULL AUTO_INCREMENT ,
-        empsd_empid  INT(11) NOT NULL ,
+        empsd_empid  INT(11) NOT NULL,
+	empsd_orderno varchar(100) default NULL,
         empsd_campuscode  varchar(255) NOT NULL ,
         empsd_ucoid INT(11) NOT NULL,
         empsd_deptid INT(11) NOT NULL,
@@ -277,6 +278,8 @@ CREATE TABLE `employee_master` (
   `emp_netdiscipline`  VARCHAR(255) default NULL,
   `emp_vciregno` VARCHAR(255) default NULL,
   `emp_vciregdate` datetime default NULL ,
+  `emp_maritalstatus` varchar(100) default NULL,
+  `emp_seniortyid` varchar(50) default NULL,
    PRIMARY KEY  (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

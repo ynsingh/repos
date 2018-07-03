@@ -87,7 +87,9 @@
 		<tr>	
 			<td>E-mail Id </br> <?php echo $data->emp_secndemail;?></td>
 		</tr>
-		<tr></tr>
+		<tr>
+			<td>Name </br> <?php echo $data->emp_name;?></td>
+		</tr>
 		<tr><td height=60></td><tr>
     </table>
 	   
@@ -239,6 +241,7 @@
 <?php   echo    "<b>Date of HGP</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofHGP)));?>
                                </td>
 <td>
+<?php   echo    "<b>Seniority No</b> <br>".$data->emp_seniortyid;?>
 </td>
 <td>
 </td>
@@ -348,6 +351,9 @@
 </tr>
 <tr><td colspan="4"><label for="Other Informatiom" style="font-size:17px;color:#0099CC"><b>Other Infomation:</b></label></td> </tr>
 <tr>
+<td>
+<?php   echo    "<b>Marital Status</b> <br>".$data->emp_maritalstatus;?>
+</td>
                                 <td>
 <?php   echo    "<b>Mother Tongue</b> <br>".$data->emp_mothertongue;?>
                                 </td>
@@ -355,9 +361,7 @@
 <?php   echo    "<b>Nativity</b> <br>".$data->emp_citizen;?>
                                 </td> 
                                 <td>
-<?php   echo    "<b>Remarks</b> <br>".$data->emp_remarks;?>                                </td>
-</td>
-<td>
+<?php   echo    "<b>Remarks</b> <br>".$data->emp_remarks;?>                               
 </td>
 </tr>
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>PhD Details:</b></label></td> </tr>
@@ -714,7 +718,8 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                     <td colspan= "7" align="center"> No Records found...!</td>
                     <?php endif;?>
                     
-                </table>
+		</table>
+		<?php include 'other_profile_perticulars.php'; ?>
 		<table style="width:100%;">
         	<tr>
         	<td align=right>

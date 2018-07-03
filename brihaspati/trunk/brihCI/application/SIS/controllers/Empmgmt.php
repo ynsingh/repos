@@ -414,6 +414,7 @@ class Empmgmt extends CI_Controller
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
             $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
+            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
@@ -436,9 +437,11 @@ class Empmgmt extends CI_Controller
 		    'empsd_level'           =>$_POST['level'],
                     'empsd_pbid'            =>$_POST['payband'],
                     'empsd_gradepay'        =>$_POST['gradepay'],
+                    'empsd_orderno'        =>$_POST['orderno'],
                     'empsd_pbdate'          =>$_POST['DateofAGP'],
                     'empsd_dojoin'          =>$_POST['Datefrom'],
-                    'empsd_dorelev'         =>$_POST['Dateto']
+		    'empsd_dorelev'         =>$_POST['Dateto'],
+		    'empsd_orderno'         =>''
                 );
                 $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
                 if(!$servdataflag)
@@ -563,6 +566,7 @@ class Empmgmt extends CI_Controller
 	    $this->form_validation->set_rules('level','Level','trim|required|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','trim|required|xss_clean');
             $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
+            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
@@ -584,6 +588,7 @@ class Empmgmt extends CI_Controller
 		$level = $this->input->post('level', TRUE);
                 $payb = $this->input->post('payband', TRUE);
                 $gradepay = $this->input->post('gradepay', TRUE);
+                $orderno = $this->input->post('orderno', TRUE);
                 $dataofagp = $this->input->post('DateofAGP', TRUE);
                 $datefrom = $this->input->post('Datefrom', TRUE);
                 $dateto = $this->input->post('Dateto', TRUE);
@@ -613,6 +618,8 @@ class Empmgmt extends CI_Controller
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbid. " changed by " .$payb;
                 if($eds_data['servicedata']->empsd_gradepay != $gradepay)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_gradepay. " changed by " .$gradepay;
+                if($eds_data['servicedata']->empsd_orderno != $orderno)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_orderno. " changed by " .$orderno;
                 if($eds_data['servicedata']->empsd_pbdate != $dataofagp)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbdate. " changed by " .$dataofagp;
                 if($eds_data['servicedata']->empsd_dojoin != $datefrom)
@@ -633,9 +640,11 @@ class Empmgmt extends CI_Controller
 		    'empsd_level'           =>$level,
                     'empsd_pbid'            =>$payb,
                     'empsd_gradepay'        =>$gradepay,
+                    'empsd_orderno'        =>$orderno,
                     'empsd_pbdate'          =>$dataofagp,
                     'empsd_dojoin'          =>$datefrom,
-                    'empsd_dorelev'         =>$dateto
+		    'empsd_dorelev'         =>$dateto,
+		    'empsd_orderno' 	    =>''
                 );
                 $empserviceflag=$this->sismodel->updaterec('employee_servicedetail', $edit_data, 'empsd_id', $id);
                 if(!$empserviceflag)
@@ -668,6 +677,385 @@ class Empmgmt extends CI_Controller
         }   
     }
     /****************************  Closer UPDATE DATA *************************/
+    /***********************************Start Add service detail******************************************/
+    public function add_disciplindata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+
+        if(isset($_POST['addservdata'])) {	
+            //form validation
+            $this->form_validation->set_rules('punishtype','Nature of Punishment','trim|required|xss_clean');
+	    $this->form_validation->set_rules('reason','Reason','trim|xss_clean');
+            $this->form_validation->set_rules('status','Status','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
+            $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_disciplindata');
+            }//formvalidation
+            else{
+                $data = array(
+                    'sdap_userid'           	=>$empuserid,
+                    'sdap_empcode'      	=>$empcode,
+                    'sdap_punishnature'         =>$_POST['punishtype'],
+                    'sdap_punishreason'         =>$_POST['reason'],
+                    'sdap_punishstatus'        	=>$_POST['status'],
+                    'sdap_fromdate'           	=>$_POST['Datefrom'],
+		    'sdap_todate'        	=>$_POST['Dateto'],
+                    'sdap_creatorid'           	=>$this->session->userdata('username'),
+                    'sdap_creatordate'       	=>date('Y-m-d'),
+		    'sdap_modifierid'       	=>$this->session->userdata('username'),
+		    'sdap_modifydate'           =>date('Y-m-d'),
+                );
+                $servdataflag=$this->sismodel->insertrec('staff_disciplinary_actions_perticulars', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff_disciplinary_actions_perticulars record", "Error in insert staff_disciplinary_actions_perticulars record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff_disciplinary_actions_perticulars record ", "Error in insert staff_disciplinary_actions_perticulars record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff_disciplinary_actions_perticulars record ');
+                    $this->load->view('empmgmt/add_disciplindata',$data);
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add staff_disciplinary_actions_perticulars Data", "staff_disciplinary_actions_perticulars record insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add staff_disciplinary_actions_perticulars Data", "staff_disciplinary_actions_perticulars record insert successfully ." );
+                    $this->session->set_flashdata('success','staff_disciplinary_actions_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                }
+            }//else
+        }//ifpost button
+        $this->load->view('empmgmt/add_disciplindata');
+    }//function close
+    /***********************************Start Add service detail******************************************/
+    public function add_recmethddata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+
+        if(isset($_POST['addservdata'])) {	
+            //form validation
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|xss_clean');
+	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
+	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
+	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_recmethddata');
+            }//formvalidation
+            else{
+                $data = array(
+                    'srp_userid'           =>$empid,
+                    'srp_empcode'      =>$_POST['campus'],
+                    'srp_methodrecrtmnt'           =>$_POST['uocontrol'],
+                    'srp_subcategory'          =>$_POST['department'],
+                    'srp_detail'        =>$_POST['schemecode'],
+                    'srp_compassionname'           =>$_POST['ddo'],
+		    'srp_compassiondesig'        =>$_POST['workingtype'],
+                    'srp_compassiondept'           =>$_POST['group'],
+                    'srp_creatorid'       =>$this->session->userdata('username'),
+		    'srp_creatordate'       =>date('Y-m-d'),
+		    'srp_modifierid'           =>$this->session->userdata('username'),
+                    'srp_modifydate'            =>date('Y-m-d'),
+                );
+                $servdataflag=$this->sismodel->insertrec('staff_recruitment_perticulars', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff_recruitment_perticulars record", "Error in insert staff_recruitment_perticulars record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff_recruitment_perticulars record ", "Error in insert staff_recruitment_perticulars record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff_recruitment_perticulars record ');
+                    $this->load->view('empmgmt/add_recmethddata',$data);
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("insert","Add staff_recruitment_perticulars Data", "staff_recruitment_perticulars insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add staff_recruitment_perticulars Data", "staff_recruitment_perticulars record insert successfully ." );
+                    $this->session->set_flashdata('success','staff_recruitment_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_recmethddata');
+    }//function close
+    /***********************************Start Add service detail******************************************/
+    public function add_leavepertdata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+ 
+
+        if(isset($_POST['addservdata'])) {	
+            //form validation
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|xss_clean');
+	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
+	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
+	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|required|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_leavepertdata');
+            }//formvalidation
+            else{
+		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+                $data = array(
+                    'empsd_empid'           =>$empid,
+                    'empsd_campuscode'      =>$_POST['campus'],
+                    'empsd_ucoid'           =>$_POST['uocontrol'],
+                    'empsd_deptid'          =>$_POST['department'],
+                    'empsd_schemeid'        =>$_POST['schemecode'],
+                    'empsd_ddoid'           =>$_POST['ddo'],
+		    'empsd_worktype'        =>$_POST['workingtype'],
+                    'empsd_group'           =>$_POST['group'],
+                    'empsd_desigcode'       =>$desigcode,
+		    'empsd_shagpstid'       =>$_POST['emppost'],
+		    'empsd_level'           =>$_POST['level'],
+                    'empsd_pbid'            =>$_POST['payband'],
+                    'empsd_gradepay'        =>$_POST['gradepay'],
+                    'empsd_orderno'        =>$_POST['orderno'],
+                    'empsd_pbdate'          =>$_POST['DateofAGP'],
+                    'empsd_dojoin'          =>$_POST['Datefrom'],
+		    'empsd_dorelev'         =>$_POST['Dateto'],
+		    'empsd_orderno'         =>''
+                );
+                $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff service record", "Error in insert staff service record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff service record ", "Error in insert staff service record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff service record ');
+                    $this->load->view('empmgmt/add_leavepertdata',$data);
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("insert","Add Staff Service Data", "Staff Service record insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add Staff Service Data", "Staff Service record insert successfully ." );
+                    $this->session->set_flashdata('success','Service Data record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_leavepertdata');
+    }//function close
+    /***********************************Start Add service detail******************************************/
+    public function add_deputatdata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+
+        if(isset($_POST['addservdata'])) {	
+            //form validation
+            $this->form_validation->set_rules('deputation','Deputation','trim|required|xss_clean');
+	    $this->form_validation->set_rules('specify','Specification','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
+	    $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_deputatdata');
+            }//formvalidation
+            else{
+                $data = array(
+                    'sdp_userid'           =>$empuserid,
+                    'sdp_empcode'      	   =>$empcode,
+                    'sdp_deputation'       =>$_POST['deputation'],
+                    'sdp_specification'    =>$_POST['specify'],
+                    'sdp_fromdate'         =>$_POST['Datefrom'],
+                    'sdp_todate'           =>$_POST['Dateto'],
+		    'sdp_creatorid'        =>$this->session->userdata('username'),
+                    'sdp_creatordate'      =>date('Y-m-d'),
+                    'sdp_modifierid'       =>$this->session->userdata('username'),
+		    'sdp_modifydate'       =>date('Y-m-d'),
+                );
+                $servdataflag=$this->sismodel->insertrec('staff_deputation_perticulars', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff_deputation_perticulars record", "Error in insert staff_deputation_perticulars record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff_deputation_perticulars record ", "Error in insert staff_deputation_perticulars record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff_deputation_perticulars record ');
+                    $this->load->view('empmgmt/add_deputatdata',$data);
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add staff_deputation_perticulars Data", "Staff staff_deputation_perticulars insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add staff_deputation_perticulars Data", "Staff_deputation_perticulars successfully ." );
+                    $this->session->set_flashdata('success','staff_deputation_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_deputatdata');
+    }//function close
+    /***********************************Start Add service detail******************************************/
+    public function add_deptexamdata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+        if(isset($_POST['addservdata'])) {	
+            //form validation
+            $this->form_validation->set_rules('deptexam','Departmental Exam','trim|required|xss_clean');
+	    $this->form_validation->set_rules('specify','Specify','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date Of Passing','trim|xss_clean|required');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_deptexamdata');
+            }//formvalidation
+            else{
+                $data = array(
+                    'sdep_userid'           	=>$empuserid,
+                    'sdep_empcode'     		=>$empcode,
+                    'sdep_examname'           	=>$_POST['deptexam'],
+                    'sdep_specification'        =>$_POST['specify'],
+                    'sdep_passdate'        	=>$_POST['Datefrom'],
+                    'sdep_creatorid'           	=>$this->session->userdata('username'),
+		    'sdep_creatordate'        	=>date('Y-m-d'),
+                    'sdep_modifierid'           =>$this->session->userdata('username'),
+                    'sdep_modifydate`'       	=>date('Y-m-d'),
+                );
+                $servdataflag=$this->sismodel->insertrec('staff_department_exam_perticulars', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff_department_exam_perticulars record", "Error in insert staff_department_exam_perticulars record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff_department_exam_perticulars record ", "Error in insert staff_department_exam_perticulars record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff_department_exam_perticulars record ');
+                    $this->load->view('empmgmt/add_deptexamdata',$data);
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add staff_department_exam_perticulars Data", "staff_department_exam_perticulars record insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add staff_department_exam_perticulars Data", "Staff_department_exam_perticulars record insert successfully ." );
+                    $this->session->set_flashdata('success','Staff_department_exam_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_deptexamdata');
+    }//function close
+    /***********************************Start Add service detail******************************************/
+    public function add_workarrangdata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+ 
+
+        if(isset($_POST['addservdata'])) {	
+            //form validation
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|xss_clean');
+	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
+	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
+	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_workarrangdata');
+            }//formvalidation
+            else{
+		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+                $data = array(
+                    'swap_userid'           =>$empid,
+                    'swap_empcode'      =>$_POST['campus'],
+                    'swap_ocampus'           =>$_POST['uocontrol'],
+                    'swap_ouo'          =>$_POST['department'],
+                    'swap_odept'        =>$_POST['schemecode'],
+                    'swap_wcampus'           =>$_POST['ddo'],
+		    'swap_wuo'        =>$_POST['workingtype'],
+                    'swap_wdept'           =>$_POST['group'],
+                    'swap_creatorid'       =>$this->session->userdata('username'),
+		    'swap_creatordate'       =>date('Y-m-d'),
+		    'swap_modifierid'           =>$this->session->userdata('username'),
+                    'swap_modifydate'            =>date('Y-m-d'),
+                );
+                $servdataflag=$this->sismodel->insertrec('staff_working_arrangements_perticulars', $data) ;
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff_working_arrangements_perticulars  record", "Error in insert  staff_working_arrangements_perticulars record." );
+                    $this->logger->write_dblogmessage("error","Error in insert   staff_working_arrangements_perticulars record ", "Error in insert  staff_working_arrangements_perticulars record" );
+                    $this->session->set_flashdata('err_message','Error in insert  staff_working_arrangements_perticulars record ');
+                    $this->load->view('empmgmt/add_workarrangdata',$data);
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("insert","Add  staff_working_arrangements_perticulars Data", "Staff  staff_working_arrangements_perticulars insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add  staff_working_arrangements_perticulars Data", "Staff_working_arrangements_perticulars record insert successfully ." );
+                    $this->session->set_flashdata('success','Staff_working_arrangements_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_workarrangdata');
+    }//function close
                                                 
 }//classcloser    
     

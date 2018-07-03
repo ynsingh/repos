@@ -7,7 +7,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
     <head>
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
-        <script type="text/javascript" src="<//?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
@@ -661,7 +661,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="fathername" style="font-size:15px;">Fathers Name</label>
                     <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="30" >
                 </div></td>
-                <td><label for="orderno" style="font-size:15px;"> Application Order No</label>
+                <td><label for="orderno" style="font-size:15px;">  Appointment Order No</label>
                     <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="27">
                 </div></td>
                 <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
@@ -840,7 +840,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="28" >
                 </div></td>
                 <td><label for="empgrade" style="font-size:15px;"> Grade  </label>
-                        <div><select name="empgrade" id="empgrade"  style="width:300px;">
+                        <div><select name="empgrade" id="empgrade"  style="width:270px;">
                         <option selected="selected" disabled selected >-------- Select Grade --------</option>        
 			<!--<option value="">------------ Select Grade ---------</option>
                        	<option value="Career Advance (CA)">Career Advance (CA)</option>
@@ -849,6 +849,18 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Special Grade (SplG)">Special Grade (SplG)</option> -->
 			</select></div>
                 </td>
+		<td><label for="maritalstatus" style="font-size:15px;">Marital Status</label>
+			<div><select name="maritalstatus" id="maritalstatus"  style="width:270px;">
+                        <option selected="selected" disabled selected >-------- Marital Status --------</option>
+                        <option value="Married">Married</option>
+                        <option value="Unmarried">Unmarried</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                        </select>
+                </div></td>
+                <td><label for="seniorityno" style="font-size:15px;">Seniority No</label>
+                    <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo isset($_POST["seniorityno"]) ? $_POST["seniorityno"] : ''; ?>" placeholder="Seniority No...." size="28" >
+                </div></td>
                           
             </tr>
             <tr><td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>

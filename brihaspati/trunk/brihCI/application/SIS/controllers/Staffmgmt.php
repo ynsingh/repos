@@ -178,6 +178,8 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
             $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
             $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
+            $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean');
+            $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
             
             
             //Repopulate forms value
@@ -318,8 +320,9 @@ class Staffmgmt extends CI_Controller
                     'emp_netdiscipline'         =>$netdispln,
                     'emp_vciregno'              =>$_POST['vciregno'],
                     'emp_vciregdate'            =>$_POST['vciregdate'],
-                    'emp_photoname'             =>$new_name 
-                        
+                    'emp_photoname'             =>$new_name, 
+		    'emp_maritalstatus'		=>$_POST['maritalstatus'],
+		    'emp_seniortyid'		=>$_POST['seniorityno'],	    
                         
                 );
 		if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
@@ -378,8 +381,7 @@ class Staffmgmt extends CI_Controller
                     /* insert record in service details , if uo then update in uolist table  and if hod then update in hod list table */
                     $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
                     //$shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emp_post'])->desig_id;
-                    $this->sismodel->insertsdetail($empid,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,
-                    $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','');    
+                    $this->sismodel->insertsdetail($empid,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,$_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','',$_POST['orderno']);    
                                        
                     
                     if(!empty($_POST['asignname'])){
@@ -664,6 +666,9 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
             $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
 
+	    $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean');
+            $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
+
             if($this->form_validation->run() == FALSE){
                 //redirect('staffmgmt/editempprofile/'.$id);
                 $this->load->view('staffmgmt/editempprofile',$editemp_data);
@@ -809,7 +814,9 @@ class Staffmgmt extends CI_Controller
                 'emp_netpassingyear'             =>$netpass,
                 'emp_netdiscipline'              =>$netdpln,
                 'emp_vciregno'                   =>$_POST['vciregno'],
-                'emp_vciregdate'                 =>$_POST['vciregdate'],   
+		'emp_vciregdate'                 =>$_POST['vciregdate'],   
+		'emp_maritalstatus'         	 =>$_POST['maritalstatus'],
+                'emp_seniortyid'            	 =>$_POST['seniorityno'],
             );
 //print_r($data);
             /* upload photo*/
@@ -922,8 +929,7 @@ class Staffmgmt extends CI_Controller
             /* insert record in service details with check duplicate , if uo then update in uolist table  and if hod then update in hod list table */
             $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
            // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
-            $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,
-            $_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','');
+            $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,$_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','',$this->input->post('orderno'));
 
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
@@ -1058,8 +1064,7 @@ class Staffmgmt extends CI_Controller
                     /****************************************insert record in service particular************************************************/
                     $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['desigto'])->desig_code;
                     // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
-                    $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],$desigcode,
-                    $_POST['schemto'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],'','','');
+                    $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],$desigcode,$_POST['schemto'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],'','','',$this->input->post('usono'));
                        
                     /*************************************updating the staff position table******************************************************************/
                     $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;

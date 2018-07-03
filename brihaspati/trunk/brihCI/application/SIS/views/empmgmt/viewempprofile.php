@@ -150,12 +150,14 @@
                 <tr></tr>
                 <tr> 
                     <td>Aadhaar No : </td>
-                    <td colspan="6" ><?php echo $record->emp_aadhaar_no; ?></td> 
+                    <td><?php echo $record->emp_aadhaar_no; ?></td> 
                     <!--<td>IFSC Code :</td>
                     <td> <?php //echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
                     <td>Bank ACC No :</td>
                     <td><?php //echo $record->emp_post; ?></td>-->
-               
+                    <td>Marital Status : </td>
+                    <td colspan="4" ><?php echo $record->emp_maritalstatus; ?></td>
+   
                 </tr>
                 <tr></tr>
                 <tr><td colspan="11">    
@@ -318,7 +320,9 @@
                 <tr></tr>
                 <tr>
                     <td>Date Of HGP: </td>
-                    <td colspan="6"><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofHGP))); ?></td> 
+		    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofHGP))); ?></td> 
+	            <td>Seniority No: </td>
+                    <td colspan="4"><?php echo $record->emp_seniortyid; ?></td>
                 </tr> 
                 <tr></tr>
                 <tr><td colspan="11">

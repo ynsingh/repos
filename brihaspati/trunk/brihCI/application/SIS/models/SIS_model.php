@@ -434,7 +434,7 @@ class SIS_model extends CI_Model
     /***********************************close of staff position*********************************************/  
     
     /************Add employee record in service details table at the time of profile creation*************/
-    public function insertsdetail($empid,$campus,$uocid,$deptid,$desigid,$schemeid,$ddoid,$group,$pbid,$gradepay,$sapostid,$pbdate,$joindate,$relvdate){
+    public function insertsdetail($empid,$campus,$uocid,$deptid,$desigid,$schemeid,$ddoid,$group,$pbid,$gradepay,$sapostid,$pbdate,$joindate,$relvdate,$orderno){
         /* update record in  additional assignments */
         $dupcheck = array(
             'empsd_empid'       =>$empid,   
@@ -467,7 +467,8 @@ class SIS_model extends CI_Model
                 'empsd_pbdate'      =>$pbdate,
                 'empsd_gradepay'    =>$gradepay,
                 'empsd_dojoin'      =>$joindate,
-                'empsd_dorelev'     =>$relvdate
+		'empsd_dorelev'     =>$relvdate,
+		'empsd_orderno'     =>$orderno
                  
              ); 
             /* insert record in  service detail */
@@ -491,7 +492,8 @@ class SIS_model extends CI_Model
                 'empsd_pbdate'      =>$pbdate,
                 'empsd_gradepay'    =>$gradepay,
                 'empsd_dojoin'      =>$joindate,
-                'empsd_dorelev'     =>$relvdate
+		'empsd_dorelev'     =>$relvdate,
+		'empsd_orderno'     =>$orderno
                  
             ); 
            /* update record in  service detail */

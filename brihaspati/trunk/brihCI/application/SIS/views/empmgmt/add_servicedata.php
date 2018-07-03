@@ -420,6 +420,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Order No<font color='Red'></font></td>
+
+		    <td>
+                            <input type="text" name="orderno" id="orderno" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                    </td>
+                </tr>
+                <tr>
                     <td>Date of AGP<font color='Red'></font></td>
                         <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
                     </td>

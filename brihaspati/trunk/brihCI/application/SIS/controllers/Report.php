@@ -325,8 +325,21 @@ class Report  extends CI_Controller
 	$whorder = 'empsd_dojoin desc';
 	$emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
 	$emp_data['addassign'] = $this->sismodel->get_listrow('additional_assignments','aa_empid',$emp_id);
-        //$emp_data['servicedata'] = $this->sismodel->get_listrow('employee_servicedetail','empsd_empid',$emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
+	$whdata = array ('sdp_empcode' => $empcode);
+	$emp_data['deputdata'] = $this->sismodel->get_orderlistspficemore('staff_deputation_perticulars',$selectfield,$whdata,'');
+	$whdata = array ('sdep_empcode' => $empcode);
+	$emp_data['deptexamdata'] = $this->sismodel->get_orderlistspficemore('staff_department_exam_perticulars',$selectfield,$whdata,'');
+	$whdata = array ('swap_empcode' => $empcode);
+	$emp_data['workarrangdata'] = $this->sismodel->get_orderlistspficemore('staff_working_arrangements_perticulars',$selectfield,$whdata,'');
+	$whdata = array ('srp_empcode' => $empcode);
+	$emp_data['recruitdata'] = $this->sismodel->get_orderlistspficemore('staff_recruitment_perticulars',$selectfield,$whdata,'');
+	$whdata = array ('sdap_empcode' => $empcode);
+	$emp_data['disciplinactdata'] = $this->sismodel->get_orderlistspficemore('staff_disciplinary_actions_perticulars',$selectfield,$whdata,'');
+	//for leave perticular
+//	$whdata = array ('empsd_empid' => $empcode);
+//	$emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
+	$emp_data['leavedata'] = '';
         $this->load->view('report/viewfull_profile',$emp_data);
   }
 

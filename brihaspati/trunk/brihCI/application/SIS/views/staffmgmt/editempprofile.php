@@ -703,7 +703,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo $editdata->emp_father; ?>" placeholder="Fathers Name..." size="30" >
                     </div>    
                 </td>
-                <td><label for="orderno" style="font-size:15px;"> Application Order No</label>
+                <td><label for="orderno" style="font-size:15px;"> Appointment Order No</label>
                     <div><input type="text" name="orderno"  value="<?php echo $editdata->emp_apporderno ?>" placeholder="order No..." size="27">
                 </div></td>
                 <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
@@ -962,7 +962,24 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="Special Grade (SplG)">Special Grade (SplG)</option>
 			<?php }?>
                     </select></div>
-                </td>
+		</td>
+		<td><label for="maritalstatus" style="font-size:15px;">Marital Status</label>
+                        <div><select name="maritalstatus" id="maritalstatus"  style="width:270px;">
+			<?php if(!empty($editdata->emp_maritalstatus)):;?>
+                        <option value="<?php echo $editdata->emp_maritalstatus;?>"><?php echo $editdata->emp_maritalstatus;?></option>
+                        <?php else:?>
+                        <option selected="" >-------- Marital Status --------</option>
+                        <?php endif?>
+                        <option value="Married">Married</option>
+                        <option value="Unmarried">Unmarried</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                        </select>
+                </div></td>
+                <td><label for="seniorityno" style="font-size:15px;">Seniority No</label>
+                    <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo $editdata->emp_seniortyid; ?>" placeholder="Seniority No...." size="28" >
+                </div></td>
+
             </tr>
             <tr><td colspan="4"><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
             <tr>
