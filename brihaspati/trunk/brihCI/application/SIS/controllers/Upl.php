@@ -510,11 +510,11 @@ class Upl extends CI_Controller
                         $desigto=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',trim($getData[14]))->desig_id;
                         $sapto=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_code',trim($getData[15]))->desig_id;
                         $emptyto=trim($getData[16]);
-                        $sub=trim($getData[17]);
-                        $orcontent=trim($getData[18]);
-                        $tta=trim($getData[19]);
-                        $dorel=trim($getData[20]);
-                        $doj=trim($getData[21]);
+                        $dorel=trim($getData[17]);
+                        $doj=trim($getData[18]);
+                        $sub=trim($getData[19]);
+                        $orcontent=trim($getData[20]);
+                        $tta=trim($getData[21]);
                         $emailto=trim($getData[22]);
                         $datuit = array(
                             //'uit_staffname'         => $getData[0], //get id
