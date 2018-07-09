@@ -82,7 +82,7 @@
                     <td>Specification<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="specify" id="specify" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="specify" id="specify" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>

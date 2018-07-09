@@ -947,7 +947,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo $editdata->emp_qual;?>" placeholder="Qualification........" size="28" >
                 </div></td>
 
-		<td colspan=3><label for="empgrade" style="font-size:15px;"> Grade  </label>
+		<td ><label for="empgrade" style="font-size:15px;"> Grade  </label>
                         <div><select name="empgrade" id="empgrade"  style="width:300px;">
 			<?php if(!empty($editdata->emp_grade)):;?>
                         <option value="<?php echo $editdata->emp_grade;?>"><?php echo $editdata->emp_grade;?></option>

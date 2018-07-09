@@ -146,7 +146,7 @@
                                 <td>
                                 <?php 
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-						echo anchor("empmgmt/edit_deputatdata/{$record->empsd_id}","Edit",array('title' => ' Edit Deputation Data' , 'class' => 'red-link'));
+				//		echo anchor("empmgmt/edit_deputatdata/{$record->empsd_id}","Edit",array('title' => ' Edit Deputation Data' , 'class' => 'red-link'));
 					}
 				?>
                                 </td> 
@@ -201,7 +201,7 @@
                                 <td>
                                 <?php 
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-						echo anchor("empmgmt/edit_deptexamdata/{$record->empsd_id}","Edit",array('title' => ' Edit Departmental Exam Data' , 'class' => 'red-link'));
+				//		echo anchor("empmgmt/edit_deptexamdata/{$record->empsd_id}","Edit",array('title' => ' Edit Departmental Exam Data' , 'class' => 'red-link'));
 					}
 				?>
                                 </td> 
@@ -271,7 +271,7 @@
                                 <td>
                                 <?php 
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-						echo anchor("empmgmt/edit_workarrangdata/{$record->empsd_id}","Edit",array('title' => ' Edit Working Arrangement Data' , 'class' => 'red-link'));
+				//		echo anchor("empmgmt/edit_workarrangdata/{$record->empsd_id}","Edit",array('title' => ' Edit Working Arrangement Data' , 'class' => 'red-link'));
 					}
 				?>
                                 </td> 
@@ -403,7 +403,7 @@
                                 <td>
                                 <?php 
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-						echo anchor("empmgmt/edit_disciplindata/{$record->empsd_id}","Edit",array('title' => ' Edit Disciplinary Action Data' , 'class' => 'red-link'));
+				//		echo anchor("empmgmt/edit_disciplindata/{$record->empsd_id}","Edit",array('title' => ' Edit Disciplinary Action Data' , 'class' => 'red-link'));
 					}
 				?>
                                 </td> 

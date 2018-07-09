@@ -63,18 +63,35 @@ class Cronjob extends CI_Controller
                 $retupdateflag=$this->sismodel->insertrec('staff_retirement', $empdata);
                 if(!$retupdateflag)
                 {
-                    $this->logger->write_logmessage("error"," Trying to insert in  staff retirement record", "staff retirement record is not added. Employee PF No' = $combdata->emp_code$empcode ");
-                    $this->logger->write_dblogmessage("error","Trying to insert in  staff retirement record", "staff retirement record is not added. Employee PF No' = $combdata->emp_code$empcode ");
+                    $this->logger->write_logmessage("error"," Trying to insert in  staff retirement record", "staff retirement record is not added. Employee PF No' = ".$combdata->emp_code  );
+                    $this->logger->write_dblogmessage("error","Trying to insert in  staff retirement record", "staff retirement record is not added. Employee PF No' = ".$combdata->emp_code  );
                 }    
                 $empup_data = array(
                   'emp_leaving' => 'superannuation' 
                 );
                 $empmasterflag=$this->sismodel->updaterec('employee_master', $empup_data, 'emp_id', $combdata->emp_id);
                 if(!$empmasterflag){
-                    $this->logger->write_logmessage("error","Error in update employee profile ", "Error in employee profile updation" );
-                    $this->logger->write_dblogmessage("error","Error in update employee profile", "Error in employee profile updation");
+                    $this->logger->write_logmessage("error","Error in update employee profile ", "Error in employee profile updation".$combdata->emp_code );
+                    $this->logger->write_dblogmessage("error","Error in update employee profile", "Error in employee profile updation".$combdata->emp_code);
                 }    
-            
+           	/*update staff position table on staff retirement*/
+                $dept=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$combdata->emp_id)->emp_dept_code;
+                $desig=$this->sismodel->get_listspfic1('employee_master', 'emp_desig_code', 'emp_id',$combdata->emp_id)->emp_desig_code;
+                $worktype=$this->sismodel->get_listspfic1('employee_master', 'emp_worktype', 'emp_id',$combdata->emp_id)->emp_worktype;
+                $emptype=$this->sismodel->get_listspfic1('employee_master', 'emp_type_code', 'emp_id',$combdata->emp_id)->emp_type_code;
+                $empscid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$combdata->emp_id)->emp_scid;
+                $empuocid=$this->sismodel->get_listspfic1('employee_master', 'emp_uocid', 'emp_id',$combdata->emp_id)->emp_uocid;
+                $empschmid=$this->sismodel->get_listspfic1('employee_master', 'emp_schemeid', 'emp_id',$combdata->emp_id)->emp_schemeid;
+                $upspdata_flag=$this->sismodel->updatestaffposition2($empscid,$empuocid,$dept,$desig,$worktype,$emptype,$empschmid);
+                if(!$upspdata_flag){
+                    $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" .$combdata->emp_code);
+                    $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update".$combdata->emp_code);
+                }
+                else{
+                    $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ".$combdata->emp_code);
+                    $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully".$combdata->emp_code);
+                }
+ 
             }//foreach
         }//ifdordata
         else{

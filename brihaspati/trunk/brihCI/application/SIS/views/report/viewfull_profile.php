@@ -16,9 +16,10 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
+<?php $print=false;  $current="basic"; ?>
         <script>
       
-            function printDiv(printme) {
+         function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
                 var originalContents = document.body.innerHTML;      
                 document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
@@ -27,10 +28,10 @@
                 window.print();  
                 // document.body.style.fontSize = "initial";
                 document.body.innerHTML = originalContents;
-            }
-		 function goBack() {
+         }
+	 function goBack() {
         		window.history.go(-2);
-	        }
+        }
 
         </script>
 
@@ -71,27 +72,7 @@
 <tr>
 <td valign="top" width=170>
 
-<table border=1 class="TFtable">
-		<tr>
-			<?php if(!empty($data->emp_photoname)):?>
-                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/'.$data->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;" id="pimg"></td>
-                         <?php else :?>
-                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;" id="pimg"></td>
-			 <?php endif;?>
-			
-			
-		</tr>
-		<tr>
-			<td>Phone No. </br><?php echo $data->emp_phone;?></td>
-		</tr>
-		<tr>	
-			<td>E-mail Id </br> <?php echo $data->emp_secndemail;?></td>
-		</tr>
-		<tr>
-			<td>Name </br> <?php echo $data->emp_name;?></td>
-		</tr>
-		<tr><td height=60></td><tr>
-    </table>
+		<?php include 'profiletab.php'; ?>
 	   
 </td>
 <?php     $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; ?>
@@ -105,22 +86,6 @@
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
                                         echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
                                 }
-/*				if( !empty($servicedata) ){  
-                             		foreach($servicedata as $record){
-						$currscnme=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name;
-						$curruonme=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name;
-						$curruocode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id', $record->empsd_ucoid)->code;
-                                 		$currdeptnme=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name;
-						$currschnme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
-						$currdesnme=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name;
-                                    		$pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name;
-	                                	$pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
-        	                	        $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
-                		                $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
-                                    		$currpband= $pbname."(".$pbmin."-".$pbmax.")".$pbgp;
-					break;
-					}
-				}*/
                                 ?>
 
                             </td>
@@ -186,7 +151,7 @@
 <?php   echo    "<b>Employee Type</b> <br>".$data->emp_type_code; ?>
                                 </td>
   <td>
-<?php   echo    "<b>Application Order No</b> <br>".$data->emp_apporderno; ?>
+<?php   echo    "<b>Appointment Order No</b> <br>".$data->emp_apporderno; ?>
                                 </td>
 </tr>
 <tr>
@@ -467,6 +432,7 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                             </td>
                         <tr>
                 </table>
+<?php if($print){ ?>
 <br>
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -720,6 +686,7 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                     
 		</table>
 		<?php include 'other_profile_perticulars.php'; ?>
+<?php  } ?>
 		<table style="width:100%;">
         	<tr>
         	<td align=right>

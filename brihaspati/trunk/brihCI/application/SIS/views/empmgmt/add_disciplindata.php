@@ -80,14 +80,14 @@
                     <td>Reason<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="reason" id="reason" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="reason" id="reason" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40">
                     </td>
                 </tr>
                 <tr>
                     <td>Status<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="status" id="status" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="status" id="status" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>

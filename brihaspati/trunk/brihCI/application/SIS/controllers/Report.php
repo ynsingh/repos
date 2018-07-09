@@ -44,7 +44,7 @@ class Report  extends CI_Controller
 
     public function deptemployeelist(){
         $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
-        $whorder = "emp_uocid asc, emp_dept_code  asc, emp_post asc";
+        $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
         // add doris geater than current date and reason is null  in whdata
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
@@ -68,37 +68,6 @@ class Report  extends CI_Controller
                         $i++;
                         }
                 }
-//	    $orwhin=array('emp_dept_code'=>$names);
-            //echo "dept===".$dept."www==".$wtype."uo===".$uoff;
-           /* if($dept != "null"){
-                if($dept!= "All" && $uoff !="All"){
-                    //echo "step1".$dept."uo==".$uoff;
-                    $whdata = array ('emp_worktype' => $wtype,'emp_uocid' => $uoff,'emp_dept_code'=> $dept);
-                }
-                else{
-                    if($uoff !="All" ){
-                        $whdata = array ('emp_worktype' => $wtype,'emp_uocid' => $uoff);      
-                    }
-                    else{
-                        if($uoff =="All" && $dept =="All" ){
-                            $whdata = array ('emp_worktype' => $wtype);
-                        }
-                        else{
-                            $whdata = array ('emp_worktype' => $wtype,'emp_dept_code'=> $dept);
-                        }
-                    }
-                }
-          
-            }
-            else{
-                // echo "else case dept of filter";
-                if($uoff!= "All"){
-                    $whdata = array ('emp_worktype' => $wtype,'emp_uocid' => $uoff);
-                }
-                else{
-                    $whdata = array ('emp_worktype' => $wtype);   
-                }
-            }*/
 		if(!empty($names)){
 			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
 	
@@ -306,7 +275,6 @@ class Report  extends CI_Controller
 	}
     
     public function viewfull_profile() {
-	  
 	//get id for employee to show data	
 	$emp_id = $this->uri->segment(3);
         $emp_data['emp_id']=$emp_id;
@@ -343,16 +311,192 @@ class Report  extends CI_Controller
         $this->load->view('report/viewfull_profile',$emp_data);
   }
 
-############################## Discipline Wise List ##########################################
+  public function service_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('empsd_empid' => $emp_id);
+        $whorder = 'empsd_dojoin desc';
+        $emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
+
+        $this->load->view('report/service_profile',$emp_data);
+  }
+
+  public function performance_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('empsd_empid' => $emp_id);
+        $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
+
+        $this->load->view('report/performance_profile',$emp_data);
+  }
+
+  public function leave_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('empsd_empid' => $emp_id);
+        //for leave perticular
+//      $whdata = array ('empsd_empid' => $empcode);
+//      $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
+        $emp_data['leavedata'] = '';
+        
+        $this->load->view('report/leave_profile',$emp_data);
+  }
+
+public function deputation_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('sdp_empcode' => $empcode);
+        $emp_data['deputdata'] = $this->sismodel->get_orderlistspficemore('staff_deputation_perticulars',$selectfield,$whdata,'');
+
+        $this->load->view('report/deputation_profile',$emp_data);
+  }
+
+public function deptexam_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('sdep_empcode' => $empcode);
+        $emp_data['deptexamdata'] = $this->sismodel->get_orderlistspficemore('staff_department_exam_perticulars',$selectfield,$whdata,'');
+
+        $this->load->view('report/deptexam_profile',$emp_data);
+  }
+
+public function workorder_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('swap_empcode' => $empcode);
+        $emp_data['workarrangdata'] = $this->sismodel->get_orderlistspficemore('staff_working_arrangements_perticulars',$selectfield,$whdata,'');
+        $this->load->view('report/workorder_profile',$emp_data);
+  }
+
+public function recruit_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('srp_empcode' => $empcode);
+        $emp_data['recruitdata'] = $this->sismodel->get_orderlistspficemore('staff_recruitment_perticulars',$selectfield,$whdata,'');
+        $this->load->view('report/recruit_profile',$emp_data);
+  }
+public function disciplin_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('sdap_empcode' => $empcode);
+        $emp_data['disciplinactdata'] = $this->sismodel->get_orderlistspficemore('staff_disciplinary_actions_perticulars',$selectfield,$whdata,'');
+        $this->load->view('report/disciplin_profile',$emp_data);
+  }
+#############################f Discipline Wise List ##########################################
+
 
 public function disciplinewiselist(){
 	$this->sc=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code','','sc_name asc');
 	$this->sub=$this->commodel->get_orderlistspficemore('subject','sub_id,sub_name,sub_code','','sub_name asc');
 
 	$cdate = date('Y-m-d');
-        $selectfield ="emp_dept_code, emp_name, emp_desig_code,emp_specialisationid";
+        $selectfield ="emp_dept_code, emp_id,emp_code,emp_name, emp_desig_code,emp_specialisationid";
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
-        $whorder = "emp_specialisationid";
+        $whorder = "emp_specialisationid asc, emp_desig_code asc ";
 	//$names='';
 	if(isset($_POST['filter'])) {
 		$camp = $this->input->post('camp');
