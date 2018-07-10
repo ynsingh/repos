@@ -714,6 +714,28 @@ CREATE TABLE `staff_disciplinary_actions_perticulars` (
 
 -- -------------------------------------------------------------------
 --
+-- Table structure for table `Staff PostwBudget arrangements`
+--
+
+CREATE TABLE `staff_postwbudget_particulars` (
+  `spwp_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `spwp_empid` int(11)  NOT NULL,
+  `spwp_uitid` int(11)  NOT NULL,
+  `spwp_ocampus` varchar(255)  NOT NULL,
+  `spwp_ouo` varchar(255)  NOT NULL,
+  `spwp_odept` varchar(255)  NOT NULL,
+  `spwp_wcampus` varchar(255)  NOT NULL,
+  `spwp_wuo` varchar(255)  NOT NULL,
+  `spwp_wdept` varchar(255)  NOT NULL,
+  `spwp_creatorid` varchar(255) NOT NULL,
+  `spwp_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `spwp_modifierid` varchar(255) NOT NULL,
+  `spwp_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -------------------------------------------------------------------
+--
 -- Table structure for table `staff_position`
 --
 
@@ -1087,7 +1109,7 @@ CREATE TABLE user_input_transfer (
         uit_id INT(11) NOT NULL AUTO_INCREMENT ,
         uit_registrarname  varchar(255) NOT NULL ,
         uit_desig  varchar(255) NOT NULL ,
-        uit_uso_no  INT(11) NOT NULL ,
+        uit_uso_no  varchar(255) default  NULL ,
         uit_date datetime NOT NULL,
         uit_rc_no varchar(255) NOT NULL,
         uit_subject blob NOT NULL,
@@ -1113,8 +1135,8 @@ CREATE TABLE user_input_transfer (
 	uit_paybandid_to int(11) default NULL,
 	uit_vacanttype_to  varchar(255) default NULL,
         uit_tta_detail blob NOT NULL,
-        uit_dateofrelief datetime NOT NULL,
-        uit_dateofjoining datetime NOT NULL,
+        uit_dateofrelief datetime default '1970-01-01 00:00:00',
+        uit_dateofjoining datetime default '1970-01-01 00:00:00',
         uit_email_sentto blob default NULL,
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
