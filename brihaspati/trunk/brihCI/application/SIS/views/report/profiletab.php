@@ -16,6 +16,11 @@
 }
 
 /* Style the active class, and buttons on mouse-over */
+ .btn1:hover {
+    background-color: lightgreen;
+    color: white;
+}
+
 .active, .btn {
     background-color: #666;
     color: white;
@@ -50,7 +55,7 @@
 			<?php if($current == 'basic') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/viewfull_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Basic Profile</a> </b></td>
 		</tr>
@@ -58,7 +63,7 @@
 			<?php if($current == 'service') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/service_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Service Particulars</a></b> </td>
 		</tr>
@@ -66,7 +71,7 @@
 			<?php if($current == 'perform') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
 		</tr>
@@ -74,7 +79,7 @@
 			<?php if($current == 'leave') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
 		</tr>
@@ -82,7 +87,7 @@
 			<?php if($current == 'deputation') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/deputation_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Deputation Particulars</a></b> </td>
 		</tr>
@@ -90,7 +95,7 @@
 			<?php if($current == 'deptexam') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/deptexam_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Departmental Exam Passed Details</a></b> </td>
 		</tr>
@@ -98,7 +103,7 @@
 			<?php if($current == 'workorder') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/workorder_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Working Arrangement Particulars</a></b> </td>
 		</tr>
@@ -106,7 +111,7 @@
 			<?php if($current == 'recruit') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/recruit_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Recruitment Particulars</a></b> </td>
 		</tr>
@@ -114,7 +119,7 @@
 			<?php if($current == 'disciplin') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
-				<td>
+				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/disciplin_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Disciplinary Action Details</a></b> </td>
 		</tr>

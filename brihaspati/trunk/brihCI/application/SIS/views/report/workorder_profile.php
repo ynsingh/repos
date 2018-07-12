@@ -86,7 +86,7 @@
                             <td align="right">
                                 <?php
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-                        //              echo anchor("empmgmt/add_workarrangdata/{$emp_id}"," Add ",array('title' => ' Add Working Arrangement Data' , 'class' => 'red-link'));
+                                      echo anchor("empmgmt/add_workarrangdata/{$emp_id}"," Add ",array('title' => ' Add Working Arrangement Data' , 'class' => 'red-link'));
                                 }
                                 ?>
 
@@ -121,21 +121,23 @@
                                 ?>
                                 </td>
                                 <td>
-                                    <?php
-                                $sc=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->swap_wcampus)->sc_name;
-                                "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->swap_wcampus)->sc_code.")";
-                                 if ($record->swap_wuo != 0) $uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->swap_wuo)->name;
-                                 if ($record->swap_wdept != 0)$dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->swap_wodept)->dept_name;
+                                    <?php 
+				$sc1='';$uo1='';$dept1='';
+				if((!isset($record->swap_wcampus))&&(!empty($record->swap_wcampus))){
+                                $sc1=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->swap_wcampus)->sc_name. "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->swap_wcampus)->sc_code.")";
+				}
+                                 if ($record->swap_wuo != 0) $uo1=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->swap_wuo)->name;
+                                 if ($record->swap_wdept != 0)$dept1=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->swap_wodept)->dept_name;
 //                               $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
 //                               $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name; 
-                                 echo "<b>Campus-: </b>".$sc."<br/> "."<b>UO-: </b>".$uo."<br/> "."<b>Dept-: </b>".$dept;
+                                 echo "<b>Campus-: </b>".$sc1."<br/> "."<b>UO-: </b>".$uo1."<br/> "."<b>Dept-: </b>".$dept1;
                                  //."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
                                     ?>
                                </td>
                                 <td>
                                 <?php
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-                                                echo anchor("empmgmt/edit_workarrangdata/{$record->empsd_id}","Edit",array('title' => ' Edit Working Arrangement Data' , 'class' => 'red-link'));
+//                                                echo anchor("empmgmt/edit_workarrangdata/{$record->empsd_id}","Edit",array('title' => ' Edit Working Arrangement Data' , 'class' => 'red-link'));
                                         }
                                 ?>
                                 </td>

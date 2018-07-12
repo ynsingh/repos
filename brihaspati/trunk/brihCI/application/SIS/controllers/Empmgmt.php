@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name Empffmgmt.php
+ * @author Nagendra Kumar Singh(nksinghiitk@gmail.com) 
  * @author Manorama Pal (palseema30@gmail.com) Employee Profile, Service and Performance data.
  */
 
@@ -743,26 +744,26 @@ class Empmgmt extends CI_Controller
 
         if(isset($_POST['addservdata'])) {	
             //form validation
-            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
-	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
-            $this->form_validation->set_rules('department','Department','trim|xss_clean');
-	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
-	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
-	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+            $this->form_validation->set_rules('recmthd','Method Of Recruitment','trim|required|xss_clean');
+	    $this->form_validation->set_rules('dsubgrp','Sub Group','trim|xss_clean');
+            $this->form_validation->set_rules('grpdetails','Sub Group Details','trim|xss_clean');
+	    $this->form_validation->set_rules('compname','Compassion Name','trim|xss_clean');
+	    $this->form_validation->set_rules('desig','Designation','trim|xss_clean');
+	    $this->form_validation->set_rules('dept','Department','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/add_recmethddata');
             }//formvalidation
             else{
                 $data = array(
-                    'srp_userid'           =>$empid,
-                    'srp_empcode'      =>$_POST['campus'],
-                    'srp_methodrecrtmnt'           =>$_POST['uocontrol'],
-                    'srp_subcategory'          =>$_POST['department'],
-                    'srp_detail'        =>$_POST['schemecode'],
-                    'srp_compassionname'           =>$_POST['ddo'],
-		    'srp_compassiondesig'        =>$_POST['workingtype'],
-                    'srp_compassiondept'           =>$_POST['group'],
+                    'srp_userid'           =>$empuserid,
+                    'srp_empcode'      =>$empcode,
+                    'srp_methodrecrtmnt'           =>$_POST['recmthd'],
+                    'srp_subcategory'          =>$_POST['dsubgrp'],
+                    'srp_detail'        =>$_POST['grpdetails'],
+                    'srp_compassionname'           =>$_POST['compname'],
+		    'srp_compassiondesig'        =>$_POST['desig'],
+                    'srp_compassiondept'           =>$_POST['dept'],
                     'srp_creatorid'       =>$this->session->userdata('username'),
 		    'srp_creatordate'       =>date('Y-m-d'),
 		    'srp_modifierid'           =>$this->session->userdata('username'),
@@ -777,9 +778,6 @@ class Empmgmt extends CI_Controller
                     $this->load->view('empmgmt/add_recmethddata',$data);
                 }
                 else{
-                    $this->roleid=$this->session->userdata('id_role');
-                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
-                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
                     $this->logger->write_logmessage("insert","Add staff_recruitment_perticulars Data", "staff_recruitment_perticulars insert successfully." );
                     $this->logger->write_dblogmessage("insert","Add staff_recruitment_perticulars Data", "staff_recruitment_perticulars record insert successfully ." );
                     $this->session->set_flashdata('success','staff_recruitment_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
@@ -992,41 +990,41 @@ class Empmgmt extends CI_Controller
         $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
         $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-        //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
 	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
-        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
  
 
         if(isset($_POST['addservdata'])) {	
             //form validation
-            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+            $this->form_validation->set_rules('workdept','Is Working in Same Department','trim|required|xss_clean');
+	    $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean');
 	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
             $this->form_validation->set_rules('department','Department','trim|xss_clean');
-	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
-	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
-	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
-	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
-            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+/*	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
+	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean'); */
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/add_workarrangdata');
             }//formvalidation
             else{
-		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+        $empcamp=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+        $empuo=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+        $empdept=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+		if(isset($_POST['campus'])){ $wcamp = $_POST['campus'];} else {$wcamp='';}
+		if(isset($_POST['uocontrol'])){ $wuo = $_POST['uocontrol'];} else {$wuo='';}
+		if(isset($_POST['department'])){ $wdept = $_POST['department'];} else {$wdept='';}
                 $data = array(
-                    'swap_userid'           =>$empid,
-                    'swap_empcode'      =>$_POST['campus'],
-                    'swap_ocampus'           =>$_POST['uocontrol'],
-                    'swap_ouo'          =>$_POST['department'],
-                    'swap_odept'        =>$_POST['schemecode'],
-                    'swap_wcampus'           =>$_POST['ddo'],
-		    'swap_wuo'        =>$_POST['workingtype'],
-                    'swap_wdept'           =>$_POST['group'],
-                    'swap_creatorid'       =>$this->session->userdata('username'),
-		    'swap_creatordate'       =>date('Y-m-d'),
-		    'swap_modifierid'           =>$this->session->userdata('username'),
-                    'swap_modifydate'            =>date('Y-m-d'),
+                    'swap_userid'       =>$empuserid,
+                    'swap_empcode'      =>$empcode,
+                    'swap_ocampus'      =>$empcamp,
+                    'swap_ouo'          =>$empuo,
+                    'swap_odept'        =>$empdept,
+                    'swap_wcampus'      =>$wcamp,
+		    'swap_wuo'        	=>$wuo,
+                    'swap_wdept'        =>$wdept,
+                    'swap_creatorid'    =>$this->session->userdata('username'),
+		    'swap_creatordate'  =>date('Y-m-d'),
+		    'swap_modifierid'   =>$this->session->userdata('username'),
+                    'swap_modifydate'   =>date('Y-m-d'),
                 );
                 $servdataflag=$this->sismodel->insertrec('staff_working_arrangements_perticulars', $data) ;
                 if(!$servdataflag)
@@ -1037,9 +1035,6 @@ class Empmgmt extends CI_Controller
                     $this->load->view('empmgmt/add_workarrangdata',$data);
                 }
                 else{
-                    $this->roleid=$this->session->userdata('id_role');
-                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
-                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
                     $this->logger->write_logmessage("insert","Add  staff_working_arrangements_perticulars Data", "Staff  staff_working_arrangements_perticulars insert successfully." );
                     $this->logger->write_dblogmessage("insert","Add  staff_working_arrangements_perticulars Data", "Staff_working_arrangements_perticulars record insert successfully ." );
                     $this->session->set_flashdata('success','Staff_working_arrangements_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");

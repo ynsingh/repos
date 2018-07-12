@@ -371,17 +371,24 @@ class Report  extends CI_Controller
 
         //get all profile and service data
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
-        $selectfield="*";
-        $whdata = array ('empsd_empid' => $emp_id);
+        $empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
+        $selectfield="la_type,granted_la_from_date,granted_la_to_date,la_taken";
+        $whdata = array ('la_userid' => $empuserid,'la_status' =>'1');
+//	get the id of these leave type
+//	$orwhin = array('UEL on ML', 'EL', 'METERNITY LEAVE','EOL');
+        $leaveid1 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Unearned Leave on Medical Leave')->lt_id;
+        $leaveid2 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Earned Leave')->lt_id;
+        $leaveid3 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Meternity Leave')->lt_id;
+        $leaveid4 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Extra Ordinary Leave')->lt_id;
+	$orwhin = array($leaveid1,$leaveid2,$leaveid3,$leaveid4);
         //for leave perticular
-//      $whdata = array ('empsd_empid' => $empcode);
-//      $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
-        $emp_data['leavedata'] = '';
+     //   $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,'');
+        $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
         
         $this->load->view('report/leave_profile',$emp_data);
   }
 
-public function deputation_profile() {
+  public function deputation_profile() {
 
         //get id for employee to show data      
         $emp_id = $this->uri->segment(3);

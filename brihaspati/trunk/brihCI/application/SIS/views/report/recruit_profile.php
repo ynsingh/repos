@@ -86,7 +86,7 @@
                             <td align="right">
                                 <?php
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-                        //              echo anchor("empmgmt/add_recmethddata/{$emp_id}"," Add ",array('title' => ' Add Recruitment Method Data' , 'class' => 'red-link'));
+                                      echo anchor("empmgmt/add_recmethddata/{$emp_id}"," Add ",array('title' => ' Add Recruitment Method Data' , 'class' => 'red-link'));
                                 }
                                 ?>
 
@@ -136,7 +136,7 @@
                                 <td>
                                 <?php
                                 if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-                                                echo anchor("empmgmt/edit_recmethddata/{$record->empsd_id}","Edit",array('title' => ' Edit Recruitment Method Data' , 'class' => 'red-link'));
+                        //                        echo anchor("empmgmt/edit_recmethddata/{$record->empsd_id}","Edit",array('title' => ' Edit Recruitment Method Data' , 'class' => 'red-link'));
                                         }
                                 ?>
                                 </td>

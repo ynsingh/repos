@@ -2126,7 +2126,8 @@ class Staffmgmt extends CI_Controller
             }
         }//if update button
         $fields="sre_empid,sre_empcode,sre_empemailid,sre_doj,sre_dor,sre_reason,sre_reasondate";  
-        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_retirement',$fields,'','sre_reasondate asc');
+	$whdata = array('sre_reason !='=>'superannuation');
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_retirement',$fields,$whdata,'sre_reasondate asc');
         $this->logger->write_logmessage("view"," view staff retirement list" );
         $this->logger->write_dblogmessage("view"," view staff retirement list");
         $this->load->view('staffmgmt/staffretirement',$data);
@@ -2249,7 +2250,8 @@ class Staffmgmt extends CI_Controller
      /* get retired staff list*/
     public function retiredstafflist(){ 
         $fields="sre_empid,sre_empcode,sre_empemailid,sre_doj,sre_dor,sre_reason,sre_reasondate";  
-        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_retirement',$fields,'','sre_reasondate asc');
+	$whdata = array('sre_reason'=>'superannuation');
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_retirement',$fields,$whdata,'sre_reasondate asc');
         $this->logger->write_logmessage("view"," view staff retirement list" );
         $this->logger->write_dblogmessage("view"," view staff retirement list");
         $this->load->view('staffmgmt/retiredstafflist',$data);

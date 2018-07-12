@@ -357,6 +357,9 @@ CREATE TABLE `leave_type_master` (
    PRIMARY KEY  (`lt_id`),
    UNIQUE KEY `lt_name` (`lt_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO `leave_type_master` (`lt_id`, `lt_name`, `lt_code`, `lt_short`, `lt_value`, `lt_remarks`) VALUES ('1', 'Extra Ordinary Leave', 'EOL ', 'EOL ', '20', 'Extra Ordinary Leave'), ('2', 'Earned Leave', 'EL ', 'EL ', '30', 'Earned Leave'), ('3', 'Meternity Leave', 'ML', 'ML', '30', 'Meternity Leave'), ('4', 'Unearned Leave On Medical Leave', 'UELML', 'UEL ON ML', '30', 'Unearned Leave On Medical Leave');
 -- --------------------------------------------------------
 
 --

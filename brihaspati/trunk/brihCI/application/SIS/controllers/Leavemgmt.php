@@ -33,7 +33,7 @@ public function leavetype(){
         if(isset($_POST['leavetype'])) {
             $this->form_validation->set_rules('lt_name','Leave Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isLeaveTypeExist');
             $this->form_validation->set_rules('lt_code','Leave Code','trim|xss_clean|required|alpha_numeric');
-            $this->form_validation->set_rules('lt_short','Leave Short','trim|xss_clean|required|alpha_numeric');
+            $this->form_validation->set_rules('lt_short','Leave Short','trim|xss_clean|required');
             $this->form_validation->set_rules('lt_value','Leave Value','trim|xss_clean|required|numeric|is_natural');
 
             if($this->form_validation->run()==TRUE){
