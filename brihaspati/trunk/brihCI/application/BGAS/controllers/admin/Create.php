@@ -316,7 +316,7 @@ class Create extends CI_Controller {
                     $data_sql_accounts = parse_ini_file($ini_file);
                     $data_database_admin_username = $data_sql_accounts['sql_admin_name'];
                     $data_database_admin_password = $data_sql_accounts['sql_admin_password'];
-					$new_link = mysqli_connect($data_database_host, $data_database_admin_username, $data_database_admin_password);
+				$new_link = mysqli_connect($data_database_host, $data_database_admin_username, $data_database_admin_password);
 	          		if (mysqli_connect_errno())
                     {
                         echo "Failed to connect to MySQL: " . mysqli_connect_error();
@@ -362,6 +362,7 @@ class Create extends CI_Controller {
 								$db_create_q = 'CREATE DATABASE ' . mysqli_real_escape_string($new_link, $data_database_name).'; ';
 								$db_create_q1 = 'GRANT ALL ON '. mysqli_real_escape_string($new_link, $data_database_name).'.* TO '. mysqli_real_escape_string($new_link,$data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysqli_real_escape_string($new_link, $data_database_password).'"; ';
 								$db_create_q2 = 'GRANT ALL ON '. mysqli_real_escape_string($new_link, $data_database_name).'.* TO '. mysqli_real_escape_string($new_link, $data_database_username).'@localhost IDENTIFIED BY "'. mysqli_real_escape_string($new_link, $data_database_password).'"; ';
+
 								if (mysqli_query($new_link, $db_create_q))
 								{
 									$eflag=false;
@@ -372,14 +373,18 @@ class Create extends CI_Controller {
 									$eflag1=false;
 									$this->messages->add('Granting permission to user to access new database  with local ip.', 'success');
 								} 
+								else{
+									$this->messages->add('the query is '.$db_create_q1.' and another query is '.$db_create_q2, 'error'); 
+									 $this->messages->add('Error Granting permission to user to access new database  with local ip.'. mysqli_error($new_link), 'error');
+								}
 								if (mysqli_query($new_link,$db_create_q2))
 								{
 									$eflag2=false;
 									$this->messages->add('Granting permission to user to access new database  with local name.', 'success');
 								} 
 								if ($eflag ||$eflag1  || $eflag2) {
+									$this->messages->add('Error creating account database by root. '. mysqli_error($new_link) , 'error');
 									mysqli_close($new_link);
-									$this->messages->add('Error creating account database. ' , 'error');
 									$this->template->load('admin_template', 'admin/create', $data);
 									return;
 								}
@@ -397,7 +402,7 @@ class Create extends CI_Controller {
 
 			/* Setting database */
 			//$new_link = mysqli_connect($data_database_host, $data_database_admin_username, $data_database_admin_password);
-			$dsn = mysqli_connect($data_database_host, $data_database_username, $data_database_password, $data_database_name);
+		//	$dsn = mysqli_connect($data_database_host, $data_database_username, $data_database_password, $data_database_name);
 			//if ($dsn->connect_errno) {
     			//echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 			//}
@@ -417,12 +422,12 @@ class Create extends CI_Controller {
             {
                 echo "Failed to connect to MySQL: " . mysqli_connect_error();
             }
-            else
-                echo "connect to MySQL: ";
+          //  else
+            //    echo "connect to MySQL: ";
             $res = mysqli_query($dsn,"SHOW TABLES");
             if (!$dsn)
             {
-                $this->messages->add('Error connecting to database.', 'error');
+                $this->messages->add('Error connecting to database 1.', 'error');
                 $this->template->load('admin_template', 'admin/create', $data);
                 return;
             }/* else if ($newacc->_error_message() != "") {
@@ -462,7 +467,7 @@ class Create extends CI_Controller {
 				/* Initial account setup */
 				//if $data_chart_account is minimal
 				if (($data_chart_account == 'minimal') || ($data_chart_account == '')){
-					$setup_initial_data = read_file('system/application/controllers/admin/minimal.sql');
+					$setup_initial_data = read_file(realpath(BASEPATH.'../application/BGAS/controllers/admin/minimal.sql'));
 				}
 				/*elseif ( $data_chart_account == 'mhrd'){
 					$setup_initial_data = read_file('system/application/controllers/admin/mhrdedu.sql');
@@ -472,7 +477,7 @@ class Create extends CI_Controller {
 				}
 					//else $data_chart_account is standard
 				elseif ( $data_chart_account == 'standard'){
-					$setup_initial_data = read_file('system/application/controllers/admin/initialize.sql');
+					$setup_initial_data = read_file(realpath(BASEPATH.'../application/BGAS/controllers/admin/initialize.sql'));
 				}
                 $setup_initial_data_array = explode(";", $setup_initial_data);
 				foreach($setup_initial_data_array as $row)
@@ -500,11 +505,11 @@ class Create extends CI_Controller {
 				//$dsn->trans_start();
 				$resultnew = mysqli_query($dsn,"INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (1, '$data_account_name', '$data_account_address', '$data_account_email', '$data_fy_start', '$data_fy_end', '$data_account_currency', '$data_account_date', '$data_account_timezone', 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, '$data_org_name', '', '$data_unit_name', '$ledger_name', '$liability_ledger_name', '$data_chart_account', 'true')");
 
-               echo  "INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')";
+//               echo  "INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')";
 
 
 
-                echo "I am here";print_r($resultnew);
+//                echo "I am here";print_r($resultnew);
 				//if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')))
                 if(!$resultnew)
 				{
@@ -543,13 +548,15 @@ class Create extends CI_Controller {
                     'port' => $data_database_port,
                     'dbtype' => $data_database_type,
                     'dblable' => $data_account_label,
+		    'prevyeardb' => "",
                    );
 
                 if ( ! $db1->insert($tablebad, $insert_data))
                 {
                     $db1->trans_rollback();
-                    $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
-					$db1->close();
+                    $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.'.$db1->last_query(), 'error');
+		//	print_r($db1->error());
+		$db1->close();
                     $this->template->load('admin_template', 'admin/create', $data);
                     return;
                 } else {

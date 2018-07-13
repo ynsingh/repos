@@ -411,6 +411,9 @@ $(document).ready(function() {
                                                 echo anchor('report2/tds_report','TDS Report', array('title'=>'TDS Report'));
                                         echo"</li>";
 					echo"<li>";
+                                                echo anchor('report2/tdsdep_report','TDS Deposit Report', array('title'=>'TDS Deposit Report'));
+                                        echo"</li>";
+					echo"<li>";
                                                 echo anchor('report2/sundry_credit_report','Sundry Creditors Report', array('title'=>'Sundry Creditors Report'));
                                         echo"</li>";
 					echo"<li>";

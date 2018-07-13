@@ -373,7 +373,7 @@ class paymentreceipt
                 	$CI->db->select('partyname,pan,vat,staxnum,sacunit')->from('addsecondparty')->where('sacunit', $secunitid);
                 	$party_result = $CI->db->get();
                 	$p_detail = $party_result->result();
-					if(!empty($p_detail)){
+			if(!empty($p_detail)){
 			foreach($p_detail as $row)
 			{
 				echo "<tr>";
@@ -394,26 +394,26 @@ class paymentreceipt
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td></td>";	
-					}
+			}
 
                 	$CI->db->select('date,narration')->from('entries')->where('id', $entry_id);
                 	$entry_result = $CI->db->get();
                 	$entry_detail = $entry_result->result();
-					if(!empty($entry_detail)){
+			if(!empty($entry_detail)){
 			foreach($entry_detail as $row1)
 			{
 				$datetime = $row1->date;
 				$date = date_mysql_to_php($datetime);
 				echo "<td>".$date. "</td>";
-                echo "<td>". $row1->narration ."</td>";
+       			         echo "<td>". $row1->narration ."</td>";
 			}
 			}
 			else{
 				echo "<td></td>";
-                echo "<td></td>";
+                		echo "<td></td>";
 			}
 				echo "<td align=\"center\">". $entry_items_id."</td>";
-                echo "<td align=\"center\">". $amount ."</td>";			
+                		echo "<td align=\"center\">". $amount ."</td>";			
         	}	
 			
 	}

@@ -1101,11 +1101,15 @@ function __construct() {
 		
                 );
 		 $data['payment_mode'] = array(
-                       "select" =>"Select",
-			"cash" => "Cash",
-                        "cheque"=> "Cheque",
-			"bank transfer"=>"Bank Transfer",
-			"dd"=>"Demand Draft",
+			 "select" =>"Select",
+			 "1" => "Cheque", 
+			 "2" => "Cash",
+			 "3" => "Bank Transfer",
+			 "4" => "Credit Card", 
+			 "5" => "Debit Card" , 
+			 "6" => "Demand Draft",
+			 "7" => "IPO",
+			 "8" => "Others"
                 );
 		$data['secunitid'] = array(
                         'name' => 'being',
@@ -1286,6 +1290,7 @@ function __construct() {
                                         'backward_refrence_id' => '0',
 					'secunitid' => $secunitid,
 					'ledger_code' => $code_ledg_val,
+					'paymentby' => $payment_mode,
                                		 );
                                 	if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                		 {
@@ -1304,6 +1309,7 @@ function __construct() {
                                         'backward_refrence_id' => '0',
 					'secunitid' => $secunitid,
 					'ledger_code' => $code_ledg_exp,
+					'paymentby' => $payment_mode,
                                		 );
                                 	if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                		 {
@@ -1325,6 +1331,7 @@ function __construct() {
                                        		   'backward_refrence_id' => '0',
 						   'secunitid' => $secunitid,
 						   'ledger_code' => $code_ledg_val,
+						   'paymentby' => $payment_mode,
                                         	    );
                                         	if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                         	 {
@@ -1344,6 +1351,7 @@ function __construct() {
                                         		'backward_refrence_id' => '0',
 							'secunitid' => $secunitid,
 							'ledger_code' => $code_ledg_exp,
+							'paymentby' => $payment_mode,
                                             		 );
                                        		 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                         	 {
@@ -1365,6 +1373,7 @@ function __construct() {
                                                         'backward_refrence_id' => '0',
                                                         'secunitid' => $secunitid,
 							'ledger_code' => $code_ledg_fnd,
+							'paymentby' => $payment_mode,
                                                          );
                                                  if ( ! $this->db->insert('entry_items', $insert_fund_data))
                                                  {
@@ -1390,7 +1399,8 @@ function __construct() {
                                                 	 'forward_refrence_id' => '0',
                                                 	 'backward_refrence_id' => '0',
                                                 	 'secunitid' => $secunitid,
-							'ledger_code' => $code_ledg_inc,
+							 'ledger_code' => $code_ledg_inc,
+							 'paymentby' => $payment_mode,
                                         		 );
 
                                         	 if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1431,6 +1441,7 @@ function __construct() {
                                                    'backward_refrence_id' => '0',
                                                    'secunitid' => $secunitid,
 						   'ledger_code' => $code_ledg_val,
+						   'paymentby' => $payment_mode,
                                                     );
                                                 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                                  {
@@ -1449,6 +1460,7 @@ function __construct() {
                                                         'backward_refrence_id' => '0',
                                                         'secunitid' => $secunitid,
 							'ledger_code' => $code_ledg_exp,
+							'paymentby' => $payment_mode,
                                                          );
                                                  if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                                  {

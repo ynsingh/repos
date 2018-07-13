@@ -1247,7 +1247,8 @@ $width="100%";
                                         'forward_refrence_id' => '0',
                                         'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
-                                        'ledger_code' => $code_ledg_dat,
+					'ledger_code' => $code_ledg_dat,
+					'paymentby'=> $data_cheque,
                                         );
                                         }
                                 	$add_value = $opening_bal + $dr_total1;
@@ -1267,7 +1268,8 @@ $width="100%";
                                         'forward_refrence_id' => '0',
 					'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
-                                        'ledger_code' => $code_ledg_dat,
+					'ledger_code' => $code_ledg_dat,
+					'paymentby'=> $data_cheque,
                                 	);
                                 	}else{
                                 	}
@@ -1282,7 +1284,8 @@ $width="100%";
                                         'forward_refrence_id' => '0',
                                         'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
-                                        'ledger_code' => $code_ledg_dat,
+					'ledger_code' => $code_ledg_dat,
+					'paymentby'=> $data_cheque,
                                 	);
                                 }
 
@@ -1403,7 +1406,8 @@ $width="100%";
                		                        		'forward_refrence_id' => '0',
 	                               		        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secunitid,
-                                        			'ledger_code' => $code_ledg_fnd,
+								'ledger_code' => $code_ledg_fnd,
+								'paymentby'=> $data_cheque,
 	        	                                );
 	
         		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1431,7 +1435,8 @@ $width="100%";
                                                         	'forward_refrence_id' => '0',
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
-                                        			'ledger_code' => $code_ledg_inc1,
+								'ledger_code' => $code_ledg_inc1,
+								'paymentby'=> $data_cheque,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1452,7 +1457,8 @@ $width="100%";
                		                        		'forward_refrence_id' => '0',
 	                               		        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secunitid,
-                                        			'ledger_code' => $code_ledg_fnd,
+								'ledger_code' => $code_ledg_fnd,
+								'paymentby'=> $data_cheque,
 	        	                                );
 	
         		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1480,7 +1486,8 @@ $width="100%";
                                                         	'forward_refrence_id' => '0',
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
-                                        			'ledger_code' => $code_ledg_inc1,
+								'ledger_code' => $code_ledg_inc1,
+								'paymentby'=> $data_cheque,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -2586,6 +2593,7 @@ $width="100%";
 	                                                	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secondunitid,
 								'ledger_code' => $code_ledg_fnd,
+								'paymentby'=> $data_cheque,
                 	                        	);
 
                         	                	if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -2641,6 +2649,7 @@ $width="100%";
         	                                        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secondunitid,
 								'ledger_code' => $code_ledg_inc,
+								'paymentby'=> $data_cheque,
                         	                	);
 							if ( ! $this->db->insert('entry_items', $insert_income_data))
                 	                        	{
@@ -2664,6 +2673,7 @@ $width="100%";
 						'update_date' => $updatedate,
 						'secunitid' => $secondunitid,
 						'ledger_code' => $code_ledg_dat,
+						'paymentby'=> $data_cheque,
 					);				
 
 					if ( ! $this->db->insert('entry_items', $insert_ledger_data))
@@ -3479,6 +3489,7 @@ $width="100%";
                                         'entry_id'=>$entry_id,
 					'entry_type'=>$entry_type,
 					'ledger_id'=>$ledger_id,
+					'paymentby'=> $row->paymentby,
                                 );
                                 $counter++;
                         }

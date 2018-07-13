@@ -409,9 +409,31 @@ function __construct() {
                         return;
 
 		}
+		if($statement == 'tdsdep_report')
+		{
+			$this->load->helper('text');
+
+                        $data['width'] = "70%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                      //  $data['sec_uni_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/tdsdep_report";
+                        $data['title'] =  "TDS Deposit Report";
+                        $data['print_preview'] = TRUE;
+			 $data['result']=$this->gettdsdepentry();
+                      //  $data['entry_date1'] = $date1;
+                      //  $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                     //   $this->session->unset_userdata('date1');
+                     //   $this->session->unset_userdata('date2');
+                        return;
+
+		}
 
 		if ($statement == "schedule")
-        {
+        	{
 	        $arr = array();
 	        $arr['code'] = $code;
 
@@ -1354,6 +1376,51 @@ function __construct() {
 	
         return;
 	}
+
+	function gettdsdepentry(){
+		$this->db->select('id');
+                $this->db->from('ledgers');
+                $this->db->limit(1);
+                $this->db->where('name','TDS');
+                $legid=$this->db->get()->row();
+
+
+                $this->db->select('amount,dc,entry_id,date,narration');
+                $this->db->from('entry_items');
+                $this->db->join('entries','entry_items.entry_id=entries.id','LEFT');
+                //$this->db->where('entry_items.ledger_id', '60')->where('entry_items.dc', 'D');
+                $this->db->where('entry_items.ledger_id', $legid)->where('entry_items.dc', 'D');
+                $query_result = $this->db->get();
+                //$data['result'] = $query_result->result();
+                return $query_result->result();
+	}
+	
+	function tdsdep_report()
+        {
+        	$data['print_preview'] = 'FALSE';
+	        $this->template->set('page_title', 'TDS Deposit Report');
+        	$this->template->set('nav_links', array('report2/printpreview/tdsdep_report' => 'Print Preview'));
+		$data['result']=$this->gettdsdepentry();
+/*
+		$this->db->select('id');
+		$this->db->from('ledgers');
+		$this->db->limit(1);
+		$this->db->where('name','TDS');
+		$legid=$this->db->get()->row();
+
+
+		$this->db->select('amount,dc,entry_id,date,narration');
+		$this->db->from('entry_items');
+		$this->db->join('entries','entry_items.entry_id=entries.id','LEFT');
+		//$this->db->where('entry_items.ledger_id', '60')->where('entry_items.dc', 'D');
+		$this->db->where('entry_items.ledger_id', $legid)->where('entry_items.dc', 'D');
+                $query_result = $this->db->get();
+                $data['result'] = $query_result->result();
+*/
+		$this->template->load('template', 'report2/tdsdep_report', $data);
+        	return;
+	}
+
 
 	function profitandloss_mhrdnew()
 	{
