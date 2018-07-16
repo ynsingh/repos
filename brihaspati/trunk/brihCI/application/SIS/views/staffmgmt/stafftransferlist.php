@@ -61,6 +61,7 @@
               <?php if( count($records) ):  ?>
                     <?php foreach($records as $record){ ?>
                         <tr>
+                            <?php if($record->uit_transfertype!='multipletransfer'):?>
                             <td><?php echo $serial_no++; ?></td>
                             <td><?php $empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$record->uit_staffname)->emp_name;
                                       $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$record->uit_staffname)->emp_code;
@@ -74,6 +75,7 @@
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_desig_to)->desig_name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_post_to)->desig_name; ?></td>
                             <td> <?php echo anchor("staffmgmt/transferordercopy/{$record->uit_id}","View Transfer order copy",array('title' => 'View Transfer order' , 'class' => 'red-link')); ?></td>
+                        <?php endif;?>    
                         </tr>
                     <?php }; ?>
                 <?php else : ?>

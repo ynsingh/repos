@@ -191,7 +191,7 @@ class SIS_model extends CI_Model
     
     /*************************************Start transfer order pdf *****************************************************************************/
     
-    public function gentransferordertpdf($empid){
+   public function gentransferordertpdf($empid){
         
         $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
         $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
@@ -213,6 +213,7 @@ class SIS_model extends CI_Model
 	$pth='uploads/SIS/transferorder/'.$year.'/'.$emp_pf.'.pdf';
 	$this->genpdf($temp,$pth);
     }
+    
     public function genpdf($content,$path){
 	$this->load->library('pdf');
 	$this->pdf = new DOMPDF();	
@@ -505,6 +506,54 @@ class SIS_model extends CI_Model
     
     /************closer  employee record in service details table at the time of profile creation*************/
     
+    /************************************start generate multiple transfer order pdf for staff**********************/
+    public function insertdata($tbname, $datar){
+        $this->db2->trans_start();
+        if(! $this->db2->insert($tbname, $datar))
+        {
+            $this->db2->trans_rollback();
+            return false;
+        }
+        else {
+            $entry_id = $this->db2->insert_id();
+            $this->db2->trans_complete();
+            return $entry_id;
+        }     
+    }
+    /************************************closer generate multiple transfer order pdf for staff**********************/
+    public function multipleorder($selectuitid){
+        $spec_data['orgname']=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
+        $spec_data['orgaddres']=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
+        $spec_data['orgpincode']=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',1)->org_pincode;
+        if(!empty($selectuitid)){
+            //foreach($selectuitid as $allids)
+            //$spec_data['detail'] = $this->data->row();
+            $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_id',$selectuitid[0]);
+            $ddata=$this->data->row();
+            $spec_data['regname']=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_id',$ddata->uit_id)->uit_registrarname;
+            $spec_data['uitdesig']=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_id',$ddata->uit_id)->uit_desig;
+           // $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_id',$allids);
+           // $spec_data['detail'] = $this->data->row();
+            $spec_data['alldetail'] = $selectuitid;
+            $year=date('Y');
+            // move file to directory code for photo
+            $desired_dir = 'uploads/SIS/multitransferordercopy/'.$year;
+            // Create directory if it does not exist
+            if(is_dir($desired_dir)==false){
+                mkdir($desired_dir, 0700,true);
+            }
+           // $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
+            //add pdf code to store and view pdf file
+            $temp = $this->load->view('staffmgmt/multitransferordercopy', $spec_data, TRUE);
+           // $pth='uploads/SIS/transferorder/'.$year.'/'.$emp_pf.'.pdf';
+            $today = date("Ymdhms");      
+            $pth='uploads/SIS/multitransferordercopy/'.$year.'/'.'multitransferorder'.$today.'.pdf';
+            $this->genpdf($temp,$pth);
+        }
+        else{
+            print_r(" I am in else loop of generate multipleorders for the staff transfer");
+        }
+    }
     function __destruct() {
         $this->db2->close();
     }

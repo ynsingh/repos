@@ -94,14 +94,22 @@
                             <?php if(!empty($detail->uit_schm_to)){echo "<br/>".$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$detail->uit_schm_to)->sd_name.",";}?>
                             <?php if(!empty($detail->uit_dept_to)){echo "<br/>".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name.",";}?>
                             <?php if(!empty($detail->uit_scid_to)){echo "<br/>".$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$detail->uit_scid_to)->sc_name;}?>
+                            <?php if(!empty($detail->uit_transfertype)){
+                                    $ttype=explode(",",$detail->uit_transfertype);
+                                    if($ttype[0] =="mutual"){
+                                        echo ", vice ".$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$ttype[1])->emp_name;
+                                        echo "<br/>transferred";
+                                        
+                                    }
+                            };?>
                         </td>
                     </tr>    
                <!-- </tbody> -->   
             </table><br/><br/>
             <table class="TFtable" style="width:100%;" >
                 <tr><td style="font-size:9;">TTA Detail: <?php echo $detail->uit_tta_detail;?></td>
-                    <td style="font-size:9;" >Date of relieve : <?php echo date('d-m-Y H:i:s',strtotime($detail->uit_dateofrelief));?></td>
-                    <td style="font-size:9;">Expected Date of joining : <?php echo date('d-m-Y H:i:s',strtotime($detail->uit_dateofjoining));?></td>
+                    <!--<td style="font-size:9;" >Date of relieve : <?php // echo date('d-m-Y H:i:s',strtotime($detail->uit_dateofrelief));?></td>
+                    <td style="font-size:9;">Expected Date of joining : <?php // decho date('d-m-Y H:i:s',strtotime($detail->uit_dateofjoining));?></td>-->
                 </tr>
             </table>
             <br/><table class="TFtable" style="width:100%;" >

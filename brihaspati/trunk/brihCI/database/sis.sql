@@ -1141,6 +1141,7 @@ CREATE TABLE user_input_transfer (
         uit_dateofrelief datetime default '1970-01-01 00:00:00',
         uit_dateofjoining datetime default '1970-01-01 00:00:00',
         uit_email_sentto blob default NULL,
+	uit_transfertype varchar(255) default NULL,
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
 
