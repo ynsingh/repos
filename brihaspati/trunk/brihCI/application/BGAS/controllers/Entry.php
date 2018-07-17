@@ -10,6 +10,7 @@ function __construct() {
                 $this->load->model('Budget_model');
                 $this->load->library('GetParentlist');
                 $this->load->model('Secunit_model');
+                $this->load->model('BGAS_model');
 
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -946,6 +947,8 @@ $width="100%";
 		}
 		else
 		{
+
+
 			$data_check =+ $this->input->post('check', TRUE);
 			
 				/* Checking for Valid Ledgers account and Debit and Credit Total */
@@ -1148,7 +1151,6 @@ $width="100%";
 				'vendor_voucher_number' => $vendor_number,
 				'purchase_order_no' => $purchase_order_no
 			);
-
 			if ( ! $this->db->insert('entries', $insert_data))
 			{
 				$this->db->trans_rollback();
@@ -1160,8 +1162,9 @@ $width="100%";
 			else 
 			{
 				$entry_id = $this->db->insert_id();
+				$this->logger->write_message("insert", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1");
 			}
-
+	//		echo  $entry_id;
 			/* Adding ledger accounts */
 			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
 			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
@@ -1185,7 +1188,7 @@ $width="100%";
 			{
 				$data_ledger_dc = $data_all_ledger_dc[$id];
 				$data_ledger_id = $data_all_ledger_id[$id];
-                        	      
+                        	$data_payt_id = $data_cheque[$id];      
 				if ($data_ledger_id < 1)
 					continue;
 				$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
@@ -1228,7 +1231,7 @@ $width="100%";
 				$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
 				$code_ledg_fnd = $this->Ledger_model->get_code($fund_ledger);
 				//$code_ledg_inc = $this->Ledger_model->get_code($income_id);
-				
+	
 				//added by kanchan
 				$add_value = $opening_bal + $dr_total;
                                 if($this->startsWith($code_ledg_dat, '2001'))
@@ -1248,7 +1251,7 @@ $width="100%";
                                         'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
 					'ledger_code' => $code_ledg_dat,
-					'paymentby'=> $data_cheque,
+					'paymentby'=> $data_payt_id,
                                         );
                                         }
                                 	$add_value = $opening_bal + $dr_total1;
@@ -1269,11 +1272,11 @@ $width="100%";
 					'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
 					'ledger_code' => $code_ledg_dat,
-					'paymentby'=> $data_cheque,
+					'paymentby'=> $data_payt_id,
                                 	);
-                                	}else{
+					}else{
                                 	}
-                                	}
+					}
                                 }else{
                                 	$insert_ledger_data = array(
                                         'entry_id' => $entry_id,
@@ -1285,7 +1288,7 @@ $width="100%";
                                         'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
 					'ledger_code' => $code_ledg_dat,
-					'paymentby'=> $data_cheque,
+					'paymentby'=> $data_payt_id,
                                 	);
                                 }
 
@@ -1300,7 +1303,8 @@ $width="100%";
                                 }
 				else 
 				{
-                                	$entry_items_id = $this->db->insert_id();
+					$entry_items_id = $this->db->insert_id();
+					$this->logger->write_message("insert", "Aadding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 2 success");
                                	}
 				$this->db->from('ledgers')->where('id', $data_ledger_id);
                               	$query_q = $this->db->get();
@@ -1333,7 +1337,7 @@ $width="100%";
                                         	$asset_id = $this->db->insert_id();
                                 	}
 				}
-
+			// for making entry in fund ledger start
 				if($data_ledger_dc == 'C')
 				{
                                 	$expense_type = $data_all_expense_type[$id];
@@ -1381,6 +1385,7 @@ $width="100%";
                                                 }	
                                		}
                            	} 
+			// for making entry in fund ledger close 
 	
 				if($fund_ledger > 0 && $data_ledger_dc == 'D')
 				{
@@ -1407,7 +1412,7 @@ $width="100%";
 	                               		        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secunitid,
 								'ledger_code' => $code_ledg_fnd,
-								'paymentby'=> $data_cheque,
+								'paymentby'=> $data_payt_id,
 	        	                                );
 	
         		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1436,7 +1441,7 @@ $width="100%";
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
 								'ledger_code' => $code_ledg_inc1,
-								'paymentby'=> $data_cheque,
+								'paymentby'=> $data_payt_id,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1458,7 +1463,7 @@ $width="100%";
 	                               		        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secunitid,
 								'ledger_code' => $code_ledg_fnd,
-								'paymentby'=> $data_cheque,
+								'paymentby'=> $data_payt_id,
 	        	                                );
 	
         		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1487,7 +1492,7 @@ $width="100%";
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
 								'ledger_code' => $code_ledg_inc1,
-								'paymentby'=> $data_cheque,
+								'paymentby'=> $data_payt_id,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1577,6 +1582,7 @@ $width="100%";
 						'paymentreceiptby' => $data_cheque[$id],
                                                 'update_cheque_no' => $data_cheque[$id],
 						'secunitid' => $secunitid,
+						'amount' =>$data_amount,
 					);
                            		if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
 					{
@@ -2593,7 +2599,7 @@ $width="100%";
 	                                                	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secondunitid,
 								'ledger_code' => $code_ledg_fnd,
-								'paymentby'=> $data_cheque,
+								'paymentby'=> $data_cheque[$id],
                 	                        	);
 
                         	                	if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -2649,7 +2655,7 @@ $width="100%";
         	                                        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secondunitid,
 								'ledger_code' => $code_ledg_inc,
-								'paymentby'=> $data_cheque,
+								'paymentby'=> $data_cheque[$id],
                         	                	);
 							if ( ! $this->db->insert('entry_items', $insert_income_data))
                 	                        	{
@@ -2673,7 +2679,7 @@ $width="100%";
 						'update_date' => $updatedate,
 						'secunitid' => $secondunitid,
 						'ledger_code' => $code_ledg_dat,
-						'paymentby'=> $data_cheque,
+						'paymentby'=> $data_cheque[$id],
 					);				
 
 					if ( ! $this->db->insert('entry_items', $insert_ledger_data))

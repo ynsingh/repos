@@ -14,6 +14,7 @@ if ( ! function_exists('date_php_to_mysql'))
 		$dtt = explode(" ",$dt);
 		$date_array = explode("/",$dtt[0]);
 //		print_r($date_array);
+		if(sizeof($date_array)==3){
 		switch ($current_date_format)
 		{
 		case 'dd/mm/yyyy':
@@ -46,6 +47,7 @@ if ( ! function_exists('date_php_to_mysql'))
 			$CI->messages->add('Invalid date format. Check your account settings.', 'error');
 			return $date;
 		}//end switch
+		}//end size of array
 		}//end if empty and set
 	//	$ts = mktime(0, 0, 0, $m, $d, $y);
 	//	return date('Y-m-d H:i:s', $ts);
@@ -65,7 +67,8 @@ if ( ! function_exists('date_php_to_mysql_end_time'))
 		if((!empty($dt)) && (isset($dt))){
 		$tim="23:59:59";
 		$dtt = explode(" ",$dt);
-                $date_array = explode("/",$dtt[0]);
+		$date_array = explode("/",$dtt[0]);
+		if(sizeof($date_array)==3){
 		switch ($current_date_format)
 		{
 		case 'dd/mm/yyyy':
@@ -95,6 +98,7 @@ if ( ! function_exists('date_php_to_mysql_end_time'))
 		default:
 			$CI->messages->add('Invalid date format. Check your account settings.', 'error');
 			return "";
+		}
 		}
 		}
 	//	$ts = mktime("23", "59", "59", $m, $d, $y);

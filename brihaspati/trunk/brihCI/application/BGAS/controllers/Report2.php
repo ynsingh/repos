@@ -10,6 +10,7 @@ function __construct() {
                 $this->load->model('Group_model');
                 $this->load->model('Secunit_model');
                 $this->load->model('Payment_model');
+                $this->load->model('BGAS_model');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('user/login');
@@ -431,6 +432,54 @@ function __construct() {
                         return;
 
 		}
+
+		if($statement == 'feependlist_report')
+                {
+                        $this->load->helper('text');
+
+                        $data['width'] = "70%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                      //  $data['sec_uni_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/feependlist_report";
+                        $data['title'] =  "Pending Fees Report";
+                        $data['print_preview'] = TRUE;
+                         $data['result']=$this->getpendinglist();
+                      //  $data['entry_date1'] = $date1;
+                      //  $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                     //   $this->session->unset_userdata('date1');
+                     //   $this->session->unset_userdata('date2');
+                        return;
+
+                }
+
+
+		if($statement == 'feepend_report')
+                {
+                        $this->load->helper('text');
+
+                        $data['width'] = "70%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                      //  $data['sec_uni_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/feepend_report";
+                        $data['title'] =  "Fees Report";
+                        $data['print_preview'] = TRUE;
+                         $data['result']=$this->getfeesentry();
+                      //  $data['entry_date1'] = $date1;
+                      //  $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                     //   $this->session->unset_userdata('date1');
+                     //   $this->session->unset_userdata('date2');
+                        return;
+
+                }
+
 
 		if ($statement == "schedule")
         	{
@@ -1377,12 +1426,88 @@ function __construct() {
         return;
 	}
 
-	function gettdsdepentry(){
-		$this->db->select('id');
+	function getpendinglist(){
+		$legid=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable')->id;
+		$whdata=array('ledger_id' => $legid);
+		$secunitlist=$this->BGAS_model->get_distinctrecord('entry_items','secunitid',$whdata);
+		$i=0;
+		foreach( $secunitlist as $row1){
+			$secid=$row1->secunitid;
+			$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'D');
+			$sumdb=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totdb',$whdata,'');
+			foreach($sumdb as $row2){
+				$dbamt = $row2->totdb;
+			}
+			$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'C');
+                        $sumcr=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totcr',$whdata,'');
+                        foreach($sumcr as $row3){
+                                $cramt = $row3->totcr;
+                        }
+			if($dbamt >$cramt){
+				$sdata['secunit']=$secid;
+				$sdata['dbamt']=$dbamt;
+				$sdata['cramt']=$cramt;
+				$data[$i]=$sdata;
+			}
+			$i++;
+		}
+                return $data;
+
+	}
+
+	function feependlist_report(){
+		$data['print_preview'] = 'FALSE';
+                $this->template->set('page_title', 'Fees Pending  Report');
+		$this->template->set('nav_links', array('report2/printpreview/feependlist_report' => 'Print Preview'));
+		$data['result']=$this->getpendinglist();
+
+		$this->template->load('template', 'report2/feependlist_report', $data);
+		//$this->template->load('template', 'report2/feepend_report', $data);
+                return;
+	}
+
+	function getfeesentry(){
+		$legid=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable')->id;
+		//$this->db->select('id');
+                //$this->db->from('ledgers');
+                //$this->db->limit(1);
+               // $this->db->where('name','Fees Receivable');
+               // $legid=$this->db->get()->row()->id;
+			//echo $legid; die();
+                $selectfield='amount,dc,secunitid,ledger_code,update_date ';
+                $whdata=array('ledger_id' => $legid);
+                $whorder="secunitid asc,dc asc";
+                return $this->BGAS_model->get_orderlistspficemore('entry_items',$selectfield,$whdata,$whorder);
+	}
+
+	function feepend_report(){
+		$data['print_preview'] = 'FALSE';
+                $this->template->set('page_title', 'Fees  Report');
+		$this->template->set('nav_links', array('report2/printpreview/feepend_report' => 'Print Preview'));
+		/*$this->db->select('id');
                 $this->db->from('ledgers');
                 $this->db->limit(1);
-                $this->db->where('name','TDS');
-                $legid=$this->db->get()->row();
+                $this->db->where('name','Fees Receivable');
+		$legid=$this->db->get()->row()->id;
+//echo $legid; die();
+		$selectfield='amount,dc,secunitid,ledger_code';
+		$whdata=array('ledger_id' => $legid);
+		$whorder="secunitid asc,dc asc";
+		$data['result']=$this->BGAS_model->get_orderlistspficemore('entry_items',$selectfield,$whdata,$whorder);
+		 */
+		$data['result']=$this->getfeesentry();
+
+		$this->template->load('template', 'report2/feepend_report', $data);
+                return;
+	}
+
+	function gettdsdepentry(){
+		$legid=$this->BGAS_model->get_listspfic1('ledgers','id','name','TDS')->id;
+		//$this->db->select('id');
+                //$this->db->from('ledgers');
+               // $this->db->limit(1);
+               // $this->db->where('name','TDS');
+                //$legid=$this->db->get()->row()->id;
 
 
                 $this->db->select('amount,dc,entry_id,date,narration');

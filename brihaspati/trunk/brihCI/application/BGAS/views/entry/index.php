@@ -116,7 +116,7 @@
                     	echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#87CEEB\">";
                       	else
                    	echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#AFEEEE\">";
-              		$this->db->select('name,bank_name,ledger_id,update_cheque_no')->from('cheque_print')->where('entry_no',$row->id);
+              		$this->db->select('name,bank_name,ledger_id,update_cheque_no,paymentreceiptby')->from('cheque_print')->where('entry_no',$row->id);
                  	$ledger_q = $this->db->get();
                 	$no_of_row=$ledger_q->num_rows();
                  	echo "<td style=\"text-align:center;\">" . $row->id . "</td>";
@@ -176,11 +176,12 @@
                                 		$cheque_print_status = $row2->cheque_print_status;
                                         	$cheque_bounce_status = $row2->cheque_bounce_status;
                                       		$No_of_bounce_cheque = $row2->No_of_bounce_cheque;
-                                 	}
+					}
                                    	//Print cheque initially.........
 					if($cheque_print_status == 0 && $cheque_bounce_status == 0)
                                     	{
-                                    		echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque/DD/BT', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                                    		//echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque/DD/BT', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                                    		echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, $this->BGAS_model->getprtype($row1->paymentreceiptby), array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
                                             	echo"<br>";
                                    	}
                                 	//Print cheque if bounced..........
@@ -201,7 +202,7 @@
                 		{
                         		if($update_chequ_no != '0')
 					{
-                                		echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque/DD/BT', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                                		echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, $this->BGAS_model->getprtype($row1->paymentreceiptby), array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
                         		}
                 		}
         		}
