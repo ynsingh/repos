@@ -643,13 +643,13 @@ var $ledgers = array();
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
 		$op_bal_q = $this->db->get();
 		//		print_r($op_bal_q); die;
-		if ($op_bal = $op_bal_q->row())
-//		if (!empty($op_bal_q))
+	//	if ($op_bal = $op_bal_q->row())
+		if (!empty($op_bal_q))
 		{
 			//echo "<br>";
 			//print_r($op_bal->op_balance."==".$op_bal->op_balance_dc);
 			//return;
-	//		$op_bal = $op_bal_q->row();
+			$op_bal = $op_bal_q->row();
 //			$op_bal = $op_bal_q-> result();
 //			print_r($op_bal->op_balance."==".$op_bal->op_balance_dc);
 			//			print_r($op_bal); die;
@@ -781,7 +781,7 @@ var $ledgers = array();
 			$op_type="D";
 		else 
 			$op_type="C";
-		return array($op_balance, $op_type);;
+		return array($op_balance, $op_type);
 	}
 	/* get op_balance of previous year database */
 	function get_prev_year_op_balance($ledger_id)

@@ -14,7 +14,7 @@
     	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
 //	$counter = "";	
-//	$count = "";
+	$count = 10;
   //  	$counter1 = (2 * $counter) + 4;
     //	$counter2 = $counter + 1;
 //    $this->load->library('reportlist1');

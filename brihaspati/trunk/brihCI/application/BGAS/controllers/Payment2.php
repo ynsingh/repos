@@ -1426,7 +1426,7 @@ function __construct() {
 			"5" => "Debit Card" ,
 			"6" => "Demand Draft",
 			"7" => "IPO",
-		       	"8" => "Others"
+		       	"8" => "Others",
 			"liability"=>"Liability",
                 );
 		

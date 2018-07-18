@@ -37,35 +37,6 @@ function __construct() {
 	var $code;
 	var $children_groups = array();
 	var $counter = 1;
-
-//	function Report()
-//	{
-		//parent::Controller();
-                /*
-		$this->load->model('newschedules_model');
-		$this->load->model('Setting_model');
-		$this->load->model('entry_model');
-		$this->load->model('Ledger_model');
-		$this->load->model('Budget_model');
-		$this->load->model('Group_model');
-		$this->load->model('Depreciation_model');
-		$this->load->model('Payment_model');
-		$this->load->model('Tag_model');
-	        //$this->load->helper('pdf_helper');
-		$this->load->library('pdf');
-		$this->load->library('session');
-		$this->load->helper('url');
-		*/
-		/* Check access */
-//		if ( ! check_access('view reports'))
-//		{
-//			$this->messages->add('Permission denied.', 'error');
-//			redirect('');
-//		return;
-//		}
-
-//		return;
-//	}
 	
 	function index()
 	{
@@ -1952,8 +1923,8 @@ function __construct() {
 	function trialbalance($period = NULL)
 	{
 		$this->template->set('page_title', 'Trial Balance');
-		//$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF'));
-        $this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdfpreview/trialbalance' => 'Download PDF','aggregation/aggregatetrialbalance' => 'View Aggregate '));
+		$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdfpreview/trialbalance' => 'Download PDF'));
+        	//$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdfpreview/trialbalance' => 'Download PDF','aggregation/aggregatetrialbalance' => 'View Aggregate '));
 		
 		$data['width'] = "70%";
 		$default_end_date;

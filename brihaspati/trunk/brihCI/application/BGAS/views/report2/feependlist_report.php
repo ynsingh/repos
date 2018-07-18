@@ -22,8 +22,14 @@
 		$dbamt=0;$cramt=0;$balamt=0;$totdbamt=0;  $totcramt=0;
 		foreach($result as $row){
 			echo "<tr>";
-                        echo "<td>".$i . "</td>";
-			echo "<td>". $this->BGAS_model->get_listspfic1('addsecondparty','partyname','sacunit',$row['secunit'])->partyname."</td>";
+			echo "<td>".$i . "</td>";
+			if(!empty($row['secunit'])){
+				$partynme=$this->BGAS_model->get_listspfic1('addsecondparty','partyname','sacunit',$row['secunit'])->partyname;
+			}
+			else{
+				$partynme='';
+			}
+			echo "<td>". $partynme ."</td>";
 			echo "<td>". $row['dbamt']. "</td>";
 			echo "<td>". $row['cramt'] . "</td>";
 			$bal = $row['dbamt'] - $row['cramt'];
@@ -34,7 +40,7 @@
 	}
 	else{
 		echo "<tr>";
-		echo "<td> No Record found </td>";
+		echo "<td colspan=5> No Record found </td>";
 		echo "</tr>";
 	}
 	echo "</table>";

@@ -13,7 +13,8 @@
     	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
     	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
-//	$count = "";
+	//$count = "";
+	$count = "";
 	$this->load->library('reportlist1');
     	$object = new Reportlist1();
 	//if(!($print_preview))

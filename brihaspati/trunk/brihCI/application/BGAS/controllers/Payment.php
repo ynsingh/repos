@@ -17,19 +17,6 @@ function __construct() {
         }
     }
 
-        function Payment()
-        {
-                parent::Controller();
-                //$this->load->model('Entry_model');
-                //$this->load->model('Ledger_model');
-                //$this->load->model('Tag_model');
-		//$this->load->model('Payment_model');
-		//$this->load->model('Budget_model');
-		//$this->load->model('Secunit_model');
-		//$this->load->library('GetParentlist');
-                return;
-        }
-
         function index()
         {
                 redirect('entry/show/payment');
@@ -1109,7 +1096,8 @@ function __construct() {
 			 "5" => "Debit Card" , 
 			 "6" => "Demand Draft",
 			 "7" => "IPO",
-			 "8" => "Others"
+			 "8" => "Others",
+			 "liability"=>"Liability",
                 );
 		$data['secunitid'] = array(
                         'name' => 'being',

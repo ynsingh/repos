@@ -1,13 +1,9 @@
 <?php
 
 class User_model extends CI_Model {
-function User_model()
-	{
   function __construct() {
         parent::__construct();
  }
-		//parent::Model();
-	}
 
 	function get_user_name($userid)
 	{

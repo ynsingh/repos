@@ -341,7 +341,7 @@ class Reportlist1
                                 		{
                         		        	$ledger_name = $rowled->name;
                                 			$ledger_id =$rowled->id;
-                                			$d_total = $CI->ledger_model->get_balancesheet_ledger_balance($ledger_id);
+                                			$d_total = $CI->Ledger_model->get_balancesheet_ledger_balance($ledger_id);
 				                    		$d_sum = $d_sum + $d_total;
                         		        }//foreach
                     					$asset_total1 = $asset_total + $d_sum;
@@ -709,7 +709,7 @@ d Investments')
                         $ledg_name = $row1->name;
                         $ledg_id =$row1->id;
 			$previous_bal=$CI->payment_model->xml_read($tt,$ledg_name);
-			$total = $CI->ledger_model->get_balancesheet_ledger_balance($ledg_id);
+			$total = $CI->Ledger_model->get_balancesheet_ledger_balance($ledg_id);
                         $sum=$sum+$total;
 			if($type == 'view'){
                         echo "<tr class=\"tr-ledger\">";
@@ -4177,7 +4177,7 @@ d Investments')
                         echo "&nbsp;&nbsp;&nbsp;&nbsp" .  $sub_g_name;
                         echo "</td>";
 			}
-                        $sub_g_total = $CI->ledger_model->get_ledger_balance2($sub_g_id);
+                        $sub_g_total = $CI->Ledger_model->get_ledger_balance2($sub_g_id);
                         
                         $sub_plan_total = $sub_g_total['plan'];
                         $sub_non_plan_total = $sub_g_total['nonplan'];
@@ -4578,9 +4578,13 @@ d Investments')
                 echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp".$str.") ".$ledger_name;
                 echo "</td>";
 		}
-                $str++;
-                $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
-//		print_r($total1);
+		$str++;
+//		print_r($ledger_id);
+//		print_r($ledger_name); //die();
+		$total1 = $CI->Ledger_model->get_ledger_balance2($ledger_id);
+//		print_r($ledger_name);
+//		echo "I am here";
+//		print_r($total1); die();
 		$plan_total=0;
 		$non_plan_total=0;
 		$plan_sfc=0;

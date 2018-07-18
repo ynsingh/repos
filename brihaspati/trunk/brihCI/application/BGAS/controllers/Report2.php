@@ -1431,6 +1431,7 @@ function __construct() {
 		$whdata=array('ledger_id' => $legid);
 		$secunitlist=$this->BGAS_model->get_distinctrecord('entry_items','secunitid',$whdata);
 		$i=0;
+		$ldata= array();
 		foreach( $secunitlist as $row1){
 			$secid=$row1->secunitid;
 			$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'D');
@@ -1447,11 +1448,11 @@ function __construct() {
 				$sdata['secunit']=$secid;
 				$sdata['dbamt']=$dbamt;
 				$sdata['cramt']=$cramt;
-				$data[$i]=$sdata;
+				$ldata[$i]=$sdata;
 			}
 			$i++;
 		}
-                return $data;
+                return $ldata;
 
 	}
 

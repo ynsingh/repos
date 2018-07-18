@@ -1,7 +1,7 @@
 <?php
 	echo form_open('ckeditor');
 	
-	$var = getcwd().'/docs/notesToAccount.txt';
+	$var = getcwd().'/docs/BGAS/notesToAccount.txt';
 
 	$myfile = fopen($var, 'r') or die("Unable to open file!");
 

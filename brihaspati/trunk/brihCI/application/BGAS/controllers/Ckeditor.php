@@ -102,11 +102,11 @@ class Ckeditor extends CI_Controller {
 		$this->load->library('session');
                 $unspent_type = $this->session->userdata('unspent_type');
                 if($unspent_type == 'non-plan'){
-		$var = getcwd().'/docs/'.Date("F d, Y").'nonplan_report'.'.txt';
+		$var = getcwd().'/docs/BGAS/'.Date("F d, Y").'nonplan_report'.'.txt';
 		}elseif($unspent_type == 'plan'){
-			 $var = getcwd().'/docs/'.Date("F d, Y").'plan_report'.'.txt';
+			 $var = getcwd().'/docs/BGAS/'.Date("F d, Y").'plan_report'.'.txt';
 		}else{
-		$var = getcwd().'/docs/notesToAccount.txt';
+		$var = getcwd().'/docs/BGAS/notesToAccount.txt';
 		}
 		$file_content = file_get_contents($var);
 		$this->data['textarea'] = array(
@@ -126,7 +126,7 @@ class Ckeditor extends CI_Controller {
 
 		$editor_data = $_POST['content'];
 
-		$var = getcwd().'/docs/notesToAccount.txt';
+		$var = getcwd().'/docs/BGAS/notesToAccount.txt';
 
 
 
