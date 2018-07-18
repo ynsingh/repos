@@ -178,8 +178,10 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
             $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
             $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
-            $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean');
+            $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean|numeric');
             $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
+            $this->form_validation->set_rules('spousename','Spouse Name','trim|xss_clean');
+            $this->form_validation->set_rules('jsession','Session','trim|xss_clean');
             
             
             //Repopulate forms value
@@ -323,6 +325,8 @@ class Staffmgmt extends CI_Controller
                     'emp_photoname'             =>$new_name, 
 		    'emp_maritalstatus'		=>$_POST['maritalstatus'],
 		    'emp_seniortyid'		=>$_POST['seniorityno'],	    
+		    'emp_spousename'		=>$_POST['spousename'],	    
+		    'emp_jsession'		=>$_POST['jsession'],	    
                         
                 );
 		if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
@@ -666,8 +670,10 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
             $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
 
-	    $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean');
+	    $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean|numeric');
             $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
+            $this->form_validation->set_rules('spousename','Spouse Name','trim|xss_clean');
+            $this->form_validation->set_rules('session','Session','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
                 //redirect('staffmgmt/editempprofile/'.$id);
@@ -817,6 +823,8 @@ class Staffmgmt extends CI_Controller
 		'emp_vciregdate'                 =>$_POST['vciregdate'],   
 		'emp_maritalstatus'         	 =>$_POST['maritalstatus'],
                 'emp_seniortyid'            	 =>$_POST['seniorityno'],
+                'emp_spousename'            	 =>$_POST['spousename'],
+                'emp_jsession'            	 =>$_POST['jsession'],
             );
 //print_r($data);
             /* upload photo*/

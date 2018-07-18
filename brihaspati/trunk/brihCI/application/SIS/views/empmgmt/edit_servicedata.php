@@ -485,13 +485,36 @@
                 <tr>
                     <td>Date From<font color='Red'>*</font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo $servicedata->empsd_dojoin; ?>"  size="40" required="required">
+			<select name="fsession" style="width:110px;" id="fsession" required>
+                <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
                     <td>Date To<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo $servicedata->empsd_dorelev; ?>"  size="40" >
+			<select name="tsession" style="width:110px;" id="tsession" required>
+                <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
                     </td>   
                 </tr>
+
+		<tr>
+            <td>Upload Attachment</td>
+            <td><input type='file' name='userfile' size='20' style="font-size:15px;"/>
+            <?php if(!empty($servicedata->empsd_filename)):;?>
+            <td colspan="2">
+		<a href="<?php echo base_url().'uploads/SIS/serviceattachment/'.$servicedata->empsd_filename ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php echo $servicedata->empsd_filename ?>">Download the pdf</a>
+            </td>
+            <?php endif;?>  
+            </td>
+        </tr>
+
                 <tr></tr><tr></tr>
                 <tr style="background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">

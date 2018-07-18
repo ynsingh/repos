@@ -549,7 +549,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <div style="margin-left:10%;">
             <tr>
                 <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
-                    <div> <select id="camp" style="width:350px;" name="campus" required> 
+                    <div> <select id="camp" style="width:300px;" name="campus" required> 
                         <option selected="selected" disabled selected>--------Campus Name-----</option>
                        <?php foreach($this->campus as $camdata): ?>	
    				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
@@ -594,7 +594,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <tr style="height:10px;"></tr>-->
             <tr>
             <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer<font color='Red'>*</font></label>
-                    <div><select name="ddo" id="ddoid" required style="width:350px;"> 
+                    <div><select name="ddo" id="ddoid" required style="width:300px;"> 
                         <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
                     </select></div>
                 </td>
@@ -649,21 +649,27 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select><div>
                 </td> 
                 <td><label for="empcode" style="font-size:15px;">Employee PF No<font color='Red'>*</font></label>
-                    <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo isset($_POST["empcode"]) ? $_POST["empcode"] : ''; ?>" placeholder="employee PF No..." size="27"  required pattern="[a-zA-Z0-9 ]+" required="required">
+                    <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo isset($_POST["empcode"]) ? $_POST["empcode"] : ''; ?>" placeholder="employee PF No..." size="33"  required pattern="[a-zA-Z0-9 ]+" required="required">
                 </div></td>
               
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="empname" style="font-size:15px;">Employee Name <font color='Red'>*</font></label>
-                    <div><input type="text" name="empname"  class="keyup-characters" value="<?php echo isset($_POST["empname"]) ? $_POST["empname"] : ''; ?>" placeholder="employee name..." size="35" required="required">
+                    <div><input type="text" name="empname"  class="keyup-characters" value="<?php echo isset($_POST["empname"]) ? $_POST["empname"] : ''; ?>" placeholder="employee name..." size="33" required="required">
                 </div></td>
                 <td><label for="fathername" style="font-size:15px;">Fathers Name</label>
-                    <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="30" >
+                    <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="33" >
+                </div></td>
+                <td><label for="spousename" style="font-size:15px;">Spouse Name</label>
+                    <div><input type="text" name="spousename" class="keyup-characters" value="<?php echo isset($_POST["spousename"]) ? $_POST["spousename"] : ''; ?>" placeholder="Spouse Name..." size="33" >
                 </div></td>
                 <td><label for="orderno" style="font-size:15px;">  Appointment Order No</label>
-                    <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="27">
+                    <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="33">
                 </div></td>
+            </tr>
+            <!--<tr style="height:10px;"></tr>-->
+            <tr>
                 <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
                     <div><select name="specialisation" style="width:300px;"> 
                         <option value="0">----------- Major Subject -----------</option>
@@ -674,11 +680,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                
-            </tr>
-            <!--<tr style="height:10px;"></tr>-->
-            <tr>
                  <td><label for="gender" style="font-size:15px;">Gender</label>
-                    <div><select name="gender" style="width:350px;"> 
+                    <div><select name="gender" style="width:300px;"> 
                         <option value="">---------------- Select Gender ------------------</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -706,13 +709,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Jainism">Jainism</option>
                     </select><div>
                 </td>
-                <td><label for="caste" style="font-size:15px;">Caste</label>
-                    <div><input type="text" name="caste" value="<?php echo isset($_POST["caste"]) ? $_POST["caste"] : ''; ?>" placeholder="Caste..." size="27" >
-                </div></td>
-                       
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
+                <td><label for="caste" style="font-size:15px;">Caste</label>
+                    <div><input type="text" name="caste" value="<?php echo isset($_POST["caste"]) ? $_POST["caste"] : ''; ?>" placeholder="Caste..." size="33" >
+                </div></td>
+                       
                 <td><label for="payband" style="font-size:15px;">Pay Band<font color='Red'>*</font></label>
                     <div><select name="payband" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
@@ -724,25 +727,25 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="basicpay" style="font-size:15px;">Basic Pay</label>
-                    <div><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo isset($_POST["basicpay"]) ? $_POST["basicpay"] : ''; ?>" placeholder="Basic pay..." size="30" >
+                    <div><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo isset($_POST["basicpay"]) ? $_POST["basicpay"] : ''; ?>" placeholder="Basic pay..." size="33" >
                 </div></td> 
                                        
                 <td><label for="emolution" style="font-size:15px;">Emolution</label>
-                    <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo isset($_POST["emolution"]) ? $_POST["emolution"] : ''; ?>" placeholder="Emolution..." size="27" >
+                    <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo isset($_POST["emolution"]) ? $_POST["emolution"] : ''; ?>" placeholder="Emolution..." size="33" >
                 </div></td> 
-                <td><label for="empnhisidno" style="font-size:15px;">NHIS ID No</label>
-                    <div><input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo isset($_POST["empnhisidno"]) ? $_POST["empnhisidno"] : ''; ?>" placeholder="NHIS ID NO..." size="27">
-                </div></td>
-                
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
+                <td><label for="empnhisidno" style="font-size:15px;">NHIS ID No</label>
+                    <div><input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo isset($_POST["empnhisidno"]) ? $_POST["empnhisidno"] : ''; ?>" placeholder="NHIS ID NO..." size="33">
+                </div></td>
+                
                 <td><label for="phstatus" style="font-size:15px;">Whether Physically Handicapped<font color='Red'>*</font>  </label>
                 <div><input type="radio" name="phstatus" value="yes">Yes &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="phstatus" value="no">No
                 </div></td>
                 <td><label for="phdetail" style="font-size:15px;">Details Of PH</label>
-                <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo isset($_POST["phdetail"]) ? $_POST["phdetail"] : ''; ?>" placeholder="Details of PH..." size="30">
+                <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo isset($_POST["phdetail"]) ? $_POST["phdetail"] : ''; ?>" placeholder="Details of PH..." size="33">
                 </div></td>
                 <td><label for="Sabgroup" style="font-size:15px;">Blood Group</label>
                    <div><select name="Sabgroup" class="form-control" id="register_name" style="width:300px;">
@@ -758,30 +761,36 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 				
 	 		</select></div>		
                 </td>
+            </tr>
+            <!--<tr style="height:10px;"></tr>-->
+            <tr>
                 <td><label for="DateofBirth" style="font-size:15px;">Date Of Birth<font color='Red'>*</font></label>
-                    <div><input type="text" name="DateofBirth" id="Dateofbirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>"  size="27" required="required">
+                    <div><input type="text" name="DateofBirth" id="Dateofbirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>"  size="33" required="required">
                 </div></td>     
                          
-            </tr>
-            <!--<tr style="height:10px;"></tr>-->
-            <tr>
                 <td><label for="dateofjoining" style="font-size:15px;">Date Of Appointment:<font color='Red'>*</font></label>
-                    <div><input type="text" name="dateofjoining" value="<?php echo isset($_POST["dateofjoining"]) ? $_POST["dateofjoining"] : ''; ?>" id="StartDate"  size="35" required="required">
-                </div></td>                 
+                    <div><input type="text" name="dateofjoining" value="<?php echo isset($_POST["dateofjoining"]) ? $_POST["dateofjoining"] : ''; ?>" id="StartDate"  size="15" required="required">
+			<select name="jsession" style="width:140px;" id="jsession" required>
+                		<option selected="selected" disabled selected>Select Session</option>
+                        	<option value="Forenoon">Forenoon</option>
+                        	<option value="Afternoon">Afternon</option>
+                        </select>
+                     </div>
+		</td>                 
                 <td><label for="dateofretirement" style="font-size:15px;">Date Of Retirement</label>
-                    <div><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="30" />
+                    <div><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="33" />
                 </div></td>
                 <td><label for="dateofprob" style="font-size:15px;">Date of Probation</label>
-                    <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo isset($_POST["dateofprob"]) ? $_POST["dateofprob"] : ''; ?>"class="form-control" size="30" />
+                    <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo isset($_POST["dateofprob"]) ? $_POST["dateofprob"] : ''; ?>"class="form-control" size="33" />
                 <div></td>
-                 <td><label for="dateofregular" style="font-size:15px;">Date of Regularisation</label>
-                    <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo isset($_POST["dateofregular"]) ? $_POST["dateofregular"] : ''; ?>"class="form-control" size="30" />
-                <div></td> 
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
+                 <td><label for="dateofregular" style="font-size:15px;">Date of Regularisation</label>
+                    <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo isset($_POST["dateofregular"]) ? $_POST["dateofregular"] : ''; ?>"class="form-control" size="33" />
+                <div></td> 
                 <td><label for="assrexam" style="font-size:15px;">ASSR Exam</label>
-                    <div><select name="assrexam" style="width:350px;"> 
+                    <div><select name="assrexam" style="width:300px;"> 
                         <option value="">---------------- ASSR Exam Status -------------</option>
                         <option value="Passed">Passed</option>
 			<option value="Not Qualified">Not Qualified</option>
@@ -791,56 +800,56 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="assrexamdate" style="font-size:15px;">Date Of ASSR Exam</label>
-                    <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo isset($_POST["assrexamdate"]) ? $_POST["assrexamdate"] : ''; ?>"class="form-control" size="30" />
+                    <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo isset($_POST["assrexamdate"]) ? $_POST["assrexamdate"] : ''; ?>"class="form-control" size="33" />
                 <div></td>    
                 
                 <td><label for="dateofhgp" style="font-size:15px;">Date Of HGP</label>
-                    <div><input type="text" name="dateofhgp" id="Dateofhgp1" value="<?php echo isset($_POST["dateofhgp"]) ? $_POST["dateofhgp"] : ''; ?>" class="form-control" size="28" />
+                    <div><input type="text" name="dateofhgp" id="Dateofhgp1" value="<?php echo isset($_POST["dateofhgp"]) ? $_POST["dateofhgp"] : ''; ?>" class="form-control" size="33" />
                 </div></td>
+            </tr>
+            <!--<tr style="height:10px;"></tr>-->
+            <tr>
                 
                 <td><label for="panno" style="font-size:15px;">Pan No</label>
-                    <div><input type="text" name="panno" id="txtPANNumber" MaxLength="10" value="<?php echo isset($_POST["panno"]) ? $_POST["panno"] : ''; ?>" placeholder="Pan No..." size="27" >
+                    <div><input type="text" name="panno" id="txtPANNumber" MaxLength="10" value="<?php echo isset($_POST["panno"]) ? $_POST["panno"] : ''; ?>" placeholder="Pan No..." size="33" >
                 </div></td> 
                
-            </tr>
-            <!--<tr style="height:10px;"></tr>-->
-            <tr>
                 <td><label for="bankname" style="font-size:15px;">Bank Name</label>
-                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo isset($_POST["bankname"]) ? $_POST["bankname"] : ''; ?>" placeholder="Bank Name..." size="35" >
+                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo isset($_POST["bankname"]) ? $_POST["bankname"] : ''; ?>" placeholder="Bank Name..." size="33" >
                 </div></td>
                 <td><label for="ifsccode" style="font-size:15px;">IFSC Code</label>
-                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo isset($_POST["ifsccode"]) ? $_POST["ifsccode"] : ''; ?>" placeholder="IFSC CODE..." size="30" >
+                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo isset($_POST["ifsccode"]) ? $_POST["ifsccode"] : ''; ?>" placeholder="IFSC CODE..." size="33" >
                 </div></td>
                 <td><label for="bankacno" style="font-size:15px;">Bank ACC No<font color='Red'>*</font></label>
-                   <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo isset($_POST["bankacno"]) ? $_POST["bankacno"] : ''; ?>" placeholder="Bank Acc No..." size="28" required="required">
+                   <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo isset($_POST["bankacno"]) ? $_POST["bankacno"] : ''; ?>" placeholder="Bank Acc No..." size="33" required="required">
                 </div></td>
-                <td><label for="Aadharrno" style="font-size:15px;">Aadhaar No<font color='Red'>*</font></label>
-                    <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="27" required="required">
-                </div></td>
-                            
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
+                <td><label for="Aadharrno" style="font-size:15px;">Aadhaar No<font color='Red'>*</font></label>
+                    <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="33" required="required">
+                </div></td>
+                            
                 
                 <td><label for="emailid" style="font-size:15px;">E-Mail ID<font color='Red'>*</font></label>
-                   <div><input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID..." size="35" required="required">
+                   <div><input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID..." size="33" required="required">
                 </div></td>
                 <td><label for="phonemobileno" style="font-size:15px;">Phone/Mobile</label>
-                    <div><input type="text" name="phonemobileno" class="keyup-numeric" MaxLength="13" value="<?php echo isset($_POST["phonemobileno"]) ? $_POST["phonemobileno"] : ''; ?>" placeholder="Phone/Mobile No..." size="30" >
+                    <div><input type="text" name="phonemobileno" class="keyup-numeric" MaxLength="13" value="<?php echo isset($_POST["phonemobileno"]) ? $_POST["phonemobileno"] : ''; ?>" placeholder="Phone/Mobile No..." size="33" >
                 </div></td>
                 <td><label for="mothertongue" style="font-size:15px;">Mother Tongue</label>
-                    <div><input type="text" name="mothertongue"  class="keyup-characters" value="<?php echo isset($_POST["mothertongue"]) ? $_POST["mothertongue"] : ''; ?>" placeholder="Mother Tongue..." size="28" >
+                    <div><input type="text" name="mothertongue"  class="keyup-characters" value="<?php echo isset($_POST["mothertongue"]) ? $_POST["mothertongue"] : ''; ?>" placeholder="Mother Tongue..." size="33" >
                 </div></td> 
-                 <td><label for="nativity" style="font-size:15px;">Nativity</label>
-                    <div><input type="text" name="nativity" class="keyup-characters" value="<?php echo isset($_POST["nativity"]) ? $_POST["nativity"] : ''; ?>" placeholder="Nativity..." size="28" >
-                 </div></td>
             </tr>
             <tr>
+                 <td><label for="nativity" style="font-size:15px;">Nativity</label>
+                    <div><input type="text" name="nativity" class="keyup-characters" value="<?php echo isset($_POST["nativity"]) ? $_POST["nativity"] : ''; ?>" placeholder="Nativity..." size="33" >
+                 </div></td>
                 <td><label for="Qualification" style="font-size:15px;">Qualification</label>
-                    <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="28" >
+                    <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="33" >
                 </div></td>
                 <td><label for="empgrade" style="font-size:15px;"> Grade  </label>
-                        <div><select name="empgrade" id="empgrade"  style="width:270px;">
+                        <div><select name="empgrade" id="empgrade"  style="width:300px;">
                         <option selected="selected" disabled selected >-------- Select Grade --------</option>        
 			<!--<option value="">------------ Select Grade ---------</option>
                        	<option value="Career Advance (CA)">Career Advance (CA)</option>
@@ -850,7 +859,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 			</select></div>
                 </td>
 		<td><label for="maritalstatus" style="font-size:15px;">Marital Status</label>
-			<div><select name="maritalstatus" id="maritalstatus"  style="width:270px;">
+			<div><select name="maritalstatus" id="maritalstatus"  style="width:300px;">
                         <option selected="selected" disabled selected >-------- Marital Status --------</option>
                         <option value="Married">Married</option>
                         <option value="Unmarried">Unmarried</option>
@@ -858,12 +867,17 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Widowed">Widowed</option>
                         </select>
                 </div></td>
+</tr><tr>
                 <td><label for="seniorityno" style="font-size:15px;">Seniority No</label>
-                    <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo isset($_POST["seniorityno"]) ? $_POST["seniorityno"] : ''; ?>" placeholder="Seniority No...." size="28" >
+                    <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo isset($_POST["seniorityno"]) ? $_POST["seniorityno"] : ''; ?>" placeholder="Seniority No...." size="33" >
                 </div></td>
+		<td> </td>
+		<td> </td>
+		<td> </td>
                           
             </tr>
-            <tr><td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
+            <tr>
+		<td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
             <tr>
                 <td><label for="phdstatus" style="font-size:15px;">Phd Status</label>
                     <div><select name="phdstatus" style="width:300px;"> 
@@ -874,10 +888,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="dateofphd" style="font-size:15px;">Date Of Phd Completion</label>
-                    <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="27" />
+                    <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="33" />
                 </div></td>    
                 <td><label for="Discipline " style="font-size:15px;">Discipline</label>
-                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="phD Discipline........" size="28" >
+                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="phD Discipline........" size="33" >
                 </div></td>
                 <td><label for="phdtype" style="font-size:15px;">PhD Type</label>
                     <div><select name="phdtype" style="width:300px;"> 
@@ -889,7 +903,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <tr>
                 <td><label for="InstName" style="font-size:15px;">Institute Name</label>
-                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD Institute Name........" size="28" >
+                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD Institute Name........" size="33" >
                 </div></td>
                 <td><label for="univdeput" style="font-size:15px;">Whether Deputed by Unversity</label>
                     <div><select name="univdeput" id="univdeput" style="width:300px;"> 
@@ -915,10 +929,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <tr>
                 <td><label for="leavedatefrom" style="font-size:15px;">Leave From</label>
-                    <div><input type="text" name="leavedatefrom" id="leavedatefrom" value="<?php echo isset($_POST["leavedatefrom"]) ? $_POST["leavedatefrom"] : ''; ?>"class="form-control" size="30" />
+                    <div><input type="text" name="leavedatefrom" id="leavedatefrom" value="<?php echo isset($_POST["leavedatefrom"]) ? $_POST["leavedatefrom"] : ''; ?>"class="form-control" size="33" />
                 <div></td>
                 <td><label for="leavedateto" style="font-size:15px;">Leave To</label>
-                    <div><input type="text" name="leavedateto" id="leavedateto" value="<?php echo isset($_POST["leavedateto"]) ? $_POST["leavedateto"] : ''; ?>"class="form-control" size="30" />
+                    <div><input type="text" name="leavedateto" id="leavedateto" value="<?php echo isset($_POST["leavedateto"]) ? $_POST["leavedateto"] : ''; ?>"class="form-control" size="33" />
                 <div></td>
             </tr>
             <tr><td><label for="NET Details: " style="font-size:15px;"><b>NET Details</b></label></td></tr>
@@ -938,24 +952,24 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select>   
                 </div></td>
                 <td><label for="passdate" style="font-size:15px;">Year of Passing</label>
-                    <div><input type="text" name="passyear" id="passyear" value="<?php echo isset($_POST["passyear"]) ? $_POST["passyear"] : ''; ?>" placeholder="Year of Passing Date  ........" size="30" />
+                    <div><input type="text" name="passyear" id="passyear" value="<?php echo isset($_POST["passyear"]) ? $_POST["passyear"] : ''; ?>" placeholder="Year of Passing Date  ........" size="33" />
                 <div></td>
                 <td><label for="netdiscipline" style="font-size:15px;">Discipline</label>
-                <div><input type="text" name="netdiscipline" id="netdiscipline" class="keyup-characters" value="<?php echo isset($_POST["netdiscipline"]) ? $_POST["netdiscipline"] : ''; ?>" placeholder="NET Discipline........" size="28" >
+                <div><input type="text" name="netdiscipline" id="netdiscipline" class="keyup-characters" value="<?php echo isset($_POST["netdiscipline"]) ? $_POST["netdiscipline"] : ''; ?>" placeholder="NET Discipline........" size="33" >
                 </div></td>
             </tr>
             <tr>
-            <td><label for="vci " style="font-size:15px;"><b>Veterinary Council of india (VCI) Registration: </b></label></td>   
+            <td><label for="vci " style="font-size:15px;"><b>Veterinary Council (VC) Registration: </b></label></td>   
             </tr>
             <tr>
                 <td><label for="vciregno" style="font-size:15px;">Registration No</label>
-                <div><input type="text" name="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="VCI Registration No........" size="28" >
+                <div><input type="text" name="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="VCI Registration No........" size="33" >
                 </div></td>
                 <td colspan="2"><label for="vciregdate" style="font-size:15px;">Date of Registration</label>
-                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo isset($_POST["vciregdate"]) ? $_POST["vciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="28" >
+                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo isset($_POST["vciregdate"]) ? $_POST["vciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="33" >
                 </div></td>
                 <td><label for="secondary emailid" style="font-size:15px;">Secondary Email Id</label>
-                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="28" >
+                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
                 </div></td>
             </tr>
             <tr>
@@ -977,37 +991,37 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select>   
                 </div></td> 
                 <td><label for="asignother" style="font-size:15px;">Others</label>
-                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php echo isset($_POST["asignother"]) ? $_POST["asignother"] : ''; ?>" placeholder="Others........" size="28" >
+                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php echo isset($_POST["asignother"]) ? $_POST["asignother"] : ''; ?>" placeholder="Others........" size="33" >
             <!--</tr>
             <tr>-->
                 
                 <td><label for="asigndatefrom" style="font-size:15px;">Date From</label>
-                <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php echo isset($_POST["vasigndatefrom"]) ? $_POST["asigndatefrom"] : ''; ?>" placeholder="Date From........" size="28" >
+                <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php echo isset($_POST["vasigndatefrom"]) ? $_POST["asigndatefrom"] : ''; ?>" placeholder="Date From........" size="33" >
                 </div></td>
                 <td><label for="asigndateto" style="font-size:15px;">Date To</label>
-                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php echo isset($_POST["asigndateto"]) ? $_POST["asigndateto"] : ''; ?>" placeholder="Date To ........" size="28" >
+                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php echo isset($_POST["asigndateto"]) ? $_POST["asigndateto"] : ''; ?>" placeholder="Date To ........" size="33" >
                 </div></td>
             </tr>
             <tr>
                 <td><label for="asignplace" style="font-size:15px;">Assignment Place</label>
-                <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="28" >
+                <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="33" >
                 </div></td>
             </tr>
             <tr>
            <!-- </tr>
             <tr> -->
                 <td><label for="remarks" style="font-size:15px;">Remarks</label>
-                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="2" cols="35"  placeholder="Remarks......"></textarea>
+                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="2" cols="40"  placeholder="Remarks......"></textarea>
                 </div></td>
                 <td><label for="Address" style="font-size:15px;">Residential Address</label>
                     <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="4" cols="40"  placeholder="Address..."></textarea>
                 </div></td>
-                <td><label for="userfile" style="font-size:15px;">Upload Photo</label>
+                <td colspan=2><label for="userfile" style="font-size:15px;">Upload Photo</label>
                    <div>
                         <input type="file" name='userfile' accept="image/*" onchange="preview_image(event)">
                         <!--<input type='file' name='userfile' size='20' class='upload-image' />-->
                     <!--<img id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>-->
-                    <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
+                    <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>
                 </div>
                 </td>
             </tr>

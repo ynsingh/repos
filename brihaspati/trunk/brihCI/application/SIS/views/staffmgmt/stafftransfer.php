@@ -44,9 +44,9 @@
                 border: none;
                 outline: none;
                 cursor: pointer;
-                padding: 6px 8px;
+                padding: 6px 0px;
                 transition: 0.3s;
-                font-size: 17px;
+                font-size: 16px;
             }
 
             .tab-links a:hover {
@@ -672,7 +672,7 @@
                                 echo  "Employee Promotion from";
                             }
                             if($ttype=='mutual'){
-                               echo "Employee mutal Transfer from"; 
+                               echo "Employee mutual Transfer from"; 
                             }
                             if($ttype=='singletransfer'){
                           
@@ -762,7 +762,7 @@
                            echo  "Employee Promotion To";
                         }
                         if($ttype=='mutual'){
-                               echo "Employee mutal Transfer To"; 
+                               echo "Employee mutual Transfer To"; 
                         }
                         if($ttype=='singletransfer'){
                             echo "Employee Single Transfer To";

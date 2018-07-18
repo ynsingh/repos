@@ -70,13 +70,22 @@
  
 <tr>
 <td valign="top" width=170>
-
-		<?php include 'profiletab.php'; ?>
+<?php	
+//	if($roleid == 4){
+//		include 'empprofiletab.php';
+//	}else{
+		include 'profiletab.php'; 
+//	}
+?>
 	   
 </td>
 <?php     
-	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
 	$roleid=$this->session->userdata('id_role');
+	if($roleid == 5){
+		$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
+		$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode; 
+		$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id; 
+	}
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -148,7 +157,7 @@
                                 <td>
                                     <?php  $dojoin=implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
                                     <?php  $dorelve=implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
-				    <?php echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;?>
+				    <?php echo "<b>From-: </b>".$dojoin ." ".$record->empsd_fsession."<br>"."<b>To-: </b>".$dorelve ." " .$record->empsd_tsession;?>
                                 </td>
                                 <td>
                                     <?php 

@@ -43,7 +43,7 @@ class Report  extends CI_Controller
 	}
 
     public function deptemployeelist(){
-        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
+        $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
         $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
         // add doris geater than current date and reason is null  in whdata
@@ -600,7 +600,7 @@ public function disciplinewiselist(){
 
 
     public function desigemployeelist(){
-        $selectfield ="emp_desig_code,emp_dept_code,emp_name";
+        $selectfield ="emp_id,emp_code,emp_desig_code,emp_dept_code,emp_name";
         $whorder = "emp_desig_code  asc";
 	$cdate = date('Y-m-d');
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
@@ -811,7 +811,7 @@ public function disciplinewiselist(){
     /*Professor list report and service period*/
     public function professorlist(){
 	$cdate = date('Y-m-d');
-        $selectfield ="emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";        
+        $selectfield ="emp_id,emp_code,emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";        
 	$whorder = "emp_doj asc";
 	$desig=null;
         $whdata=array('emp_leaving' => NULL,'emp_dor>='=>$cdate);

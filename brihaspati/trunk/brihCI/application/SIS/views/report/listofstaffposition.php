@@ -259,7 +259,7 @@
                                     echo "<tr>";
                                     echo "<td></td><td></td><td></td>";
                                     echo "<td>";
-                                    echo  $emp->emp_name;    
+				echo anchor("report/viewfull_profile/{$emp->emp_id}",$emp->emp_name." ( "."PF No:".$emp->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
                                     echo "</td>";
                                     echo "<td>";
                                     //echo  $emp->emp_post;

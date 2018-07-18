@@ -3007,7 +3007,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('pan_number','Pan Number','trim|xss_clean|alpha_numeric_spaces|required');
             $this->form_validation->set_rules('tan_number','Tan Number','trim|xss_clean|alpha_numeric_spaces|required');
             $this->form_validation->set_rules('gst_number','Gst Number','trim|xss_clean|alpha_numeric_spaces|required');
-            $this->form_validation->set_rules('aadhar_number','Aadhar Number','trim|xss_clean|numeric|required');
+            $this->form_validation->set_rules('aadhar_number','Aadhar Number','trim|xss_clean|numeric');
             $this->form_validation->set_rules('org_id','Org Id','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('remark','Remark','trim|xss_clean');
 
@@ -3236,7 +3236,7 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('pan_number','Bankdetails PanNumber ','trim|xss_clean|alpha_numeric_spaces|required');
         $this->form_validation->set_rules('tan_number','Bankdetails TanNumber ','trim|xss_clean|required|alpha_dash');
         $this->form_validation->set_rules('gst_number','Bankdetails GstNumber ','trim|xss_clean|alpha_numeric_spaces|required');
-        $this->form_validation->set_rules('aadhar_number','Bankdetails AadharNumber ','trim|xss_clean|numeric|required');
+        $this->form_validation->set_rules('aadhar_number','Bankdetails AadharNumber ','trim|xss_clean|numeric');
         $this->form_validation->set_rules('org_id','Bankdetails OrgId ','trim|xss_clean|alpha_numeric_spaces');
         $this->form_validation->set_rules('remark','Bankdetails Remark ','trim|xss_clean');
 

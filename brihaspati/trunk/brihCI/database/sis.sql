@@ -175,6 +175,9 @@ CREATE TABLE  employee_servicedetail(
         empsd_pbdate date NOT NULL,
         empsd_dojoin date NOT NULL,
         empsd_dorelev date NOT NULL,
+	empsd_filename varchar(500) default null,
+	empsd_fsession varchar(100) default null,
+	empsd_tsession varchar(100) default null,
         PRIMARY KEY (empsd_id)
 )ENGINE = InnoDB;
 -- ---------------------------------------------------------
@@ -217,6 +220,7 @@ CREATE TABLE `employee_master` (
   `emp_email` varchar(30) default NULL,
   `emp_dob` date default NULL,
   `emp_doj` date default NULL,
+  `emp_jsession` varchar(100) default null,
   `emp_salary_grade` int(11) NOT NULL,
   `emp_pnp` VARCHAR(255) default NULL,
   `emp_bank_accno` varchar(20) default NULL,
@@ -227,7 +231,8 @@ CREATE TABLE `employee_master` (
   `emp_religion` VARCHAR(255) default NULL ,
   `emp_caste` VARCHAR(255) default NULL,
   `emp_mothertongue` VARCHAR(255) default NULL,
-  `emp_father` varchar(100) default NULL,
+  `emp_father` varchar(255) default NULL,
+  `emp_spousename` varchar(255) default null,
   `emp_basic` int(11) NOT NULL default 0,
   `emp_emolution` int(11) default 0, 
   `emp_title` varchar(50) default NULL,
@@ -279,7 +284,7 @@ CREATE TABLE `employee_master` (
   `emp_vciregno` VARCHAR(255) default NULL,
   `emp_vciregdate` datetime default NULL ,
   `emp_maritalstatus` varchar(100) default NULL,
-  `emp_seniortyid` varchar(50) default NULL,
+  `emp_seniortyid` int(10) default NULL,
    PRIMARY KEY  (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

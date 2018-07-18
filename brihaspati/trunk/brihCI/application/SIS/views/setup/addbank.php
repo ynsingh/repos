@@ -121,7 +121,7 @@
             <tr>
                 <td><label for="account number" class="control-label">Account Number:</label></td>
                 <td>
-                <input type="text" MaxLength="11" name="account_number" class="form-control" size="40" value= "<?php echo isset($_POST["account_number"]) ? $_POST["account_number"] : ''; ?>" /><br>
+                <input type="text" MaxLength="16" name="account_number" class="form-control" size="40" value= "<?php echo isset($_POST["account_number"]) ? $_POST["account_number"] : ''; ?>" /><br>
 
                 </td>
                 <td>

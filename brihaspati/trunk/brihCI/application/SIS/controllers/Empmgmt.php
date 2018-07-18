@@ -418,11 +418,21 @@ class Empmgmt extends CI_Controller
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/add_sevicedata');
             }//formvalidation
             else{
+		 $name='';
+                if(!empty($_FILES['userfile']['name'])){
+
+                    $newFileName = $_FILES['userfile']['name'];
+                    $fileExt1 = explode('.', $newFileName);
+                    $file_ext = end( $fileExt1);
+                    $name = $empid.".".$newFileName;
+                }
+
 		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
                 $data = array(
                     'empsd_empid'           =>$empid,
@@ -441,10 +451,48 @@ class Empmgmt extends CI_Controller
                     'empsd_orderno'        =>$_POST['orderno'],
                     'empsd_pbdate'          =>$_POST['DateofAGP'],
                     'empsd_dojoin'          =>$_POST['Datefrom'],
+		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$_POST['Dateto'],
-		    'empsd_orderno'         =>''
+		    'empsd_tsession'	    =>$_POST['tsession'],
+		    'empsd_orderno'         =>'',
+		    'empsd_filename'	    => $name,
                 );
                 $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
+		$uplflag=false;
+                if(!empty($name)){
+                    $_FILES['userFile']['name'] = $_FILES['userfile']['name'];
+                    $_FILES['userFile']['type'] = $_FILES['userfile']['type'];
+                    $_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
+                    $_FILES['userFile']['size'] = $_FILES['userfile']['size'];
+                    $config['upload_path'] = 'uploads/SIS/serviceattachment/';
+                    $config['max_size'] = '20480000';
+                    $config['allowed_types'] = 'pdf';
+                    $config['file_name'] = $name;
+                    $config['overwrite'] = TRUE;
+                    $this->load->library('upload',$config);
+                    $this->upload->initialize($config);
+
+                    if($this->upload->do_upload('userfile')){
+                        $uploadData = $this->upload->data();
+                        $picture = $uploadData['file_name'];
+                        $this->logger->write_logmessage("insert","upload staff service data file ", "Staff Service Data file attach successfully");
+                        $uplflag=true;
+                    }
+                    else{
+                        $picture = '';
+                        $error =  array('error' => $this->upload->display_errors());
+                        foreach ($error as $item => $value):
+                            $ferror = $ferror.$value;
+                        endforeach;
+                        $ferror=str_replace("\r\n","",$ferror);
+                        $simsg = "The permitted size of document is 20MB";
+                        $ferror = $simsg.$ferror;
+                        $this->logger->write_logmessage("insert","File upload error", $ferror);
+                        $this->logger->write_dblogmessage("insert","File upload error", $ferror);
+                        $uplflag=false;
+                    }
+                }
+
                 if(!$servdataflag)
                 {
                     $this->logger->write_logmessage("error","Error in insert staff service record", "Error in insert staff service record." );
@@ -571,6 +619,8 @@ class Empmgmt extends CI_Controller
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+	    $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
+
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/edit_sevicedata');
@@ -627,7 +677,15 @@ class Empmgmt extends CI_Controller
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_dojoin. " changed by " .$datefrom;
                 if($eds_data['servicedata']->empsd_dorelev != $dateto)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_dorelev. " changed by " .$dateto;
-                
+               $new_name='';
+                if(!empty($_FILES['userfile']['name'])){
+                    
+                    $newFileName = $_FILES['userfile']['name'];
+                    $fileExt1 = explode('.', $newFileName);
+                    $file_ext = end( $fileExt1);
+                    $new_name = $id.".".$newFileName; 
+                }    
+ 
                 $edit_data = array(
                     'empsd_campuscode'      =>$campus,
 		    'empsd_ucoid'           =>$uocontrol,
@@ -644,9 +702,44 @@ class Empmgmt extends CI_Controller
                     'empsd_orderno'        =>$orderno,
                     'empsd_pbdate'          =>$dataofagp,
                     'empsd_dojoin'          =>$datefrom,
+		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$dateto,
-		    'empsd_orderno' 	    =>''
+		    'empsd_tsession'	    =>$_POST['tsession'],
+		    'empsd_orderno' 	    =>'',
+		    'empsd_filename'	    => $new_name,
                 );
+		
+		$msgfile='';
+                if(!empty($_FILES['userfile']['name'])){
+                    
+                    $config['upload_path'] = 'uploads/SIS/serviceattachment/';
+                    $config['max_size'] = '20480000';
+                    $config['allowed_types'] = 'pdf';
+                    $config['file_name'] = $new_name;
+                    $config['overwrite'] = TRUE;
+                    $this->load->library('upload',$config);
+                    if(! $this->upload->do_upload()){
+                        $ferror='';
+                        $error = array('error' => $this->upload->display_errors()); 
+                        foreach ($error as $item => $value):
+                        $ferror = $ferror ."</br>". $item .":". $value;
+                        endforeach;
+                        $simsg = "The permitted size of file is 20MB";
+                        $ferror = $simsg.$ferror;
+                        $this->logger->write_logmessage("uploadfile","file upload error", $ferror);
+                        $this->logger->write_dblogmessage("uploadfile","file upload error", $ferror);
+                        $this->session->set_flashdata('err_message', $ferror);
+                        $this->load->view('empmgmt/edit_servicedata', $edpref_data);
+                      
+                    }
+                    else { 
+                        $upload_data=$this->upload->data();
+                        $msgfile=" and Attachment" ;
+                    } 
+            
+                }//userfileifcond
+
+
                 $empserviceflag=$this->sismodel->updaterec('employee_servicedetail', $edit_data, 'empsd_id', $id);
                 if(!$empserviceflag)
                 {

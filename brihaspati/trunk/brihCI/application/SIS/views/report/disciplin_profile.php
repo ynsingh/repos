@@ -98,8 +98,9 @@
                         <tr>
                             <th>Nature of Punishment</th>
                             <th>Reason</th>
-                            <th>Status</th>
-                            <th></th>
+                            <th>Date of Issuing order</th>
+                            <th>Date of Revoking the order</th>
+                            <th>Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,7 +119,17 @@
                                     echo $record->sdap_punishreason;
                                     ?>
                                </td>
-<td>
+				<td>
+                                    <?php
+                                echo $record->sdap_fromdate;
+?>
+                                </td>
+				<td>
+                                    <?php
+                                echo $record->sdap_todate;
+?>
+                                </td>
+				<td>
                                     <?php
                                 echo $record->sdap_punishstatus;
 ?>

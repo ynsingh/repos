@@ -112,28 +112,28 @@
                 <tr>
                     <td>Sub Group Details<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="grpdetails" id="grpdetails" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="grpdetails" id="grpdetails" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Compassion Name<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="compname" id="compname" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="compname" id="compname" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Designation<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="desig" id="desig" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="desig" id="desig" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Department<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="dept" id="dept" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
+                            <input type="text" name="dept" id="dept" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
                     </td>
                 </tr>
                 <tr></tr><tr></tr>

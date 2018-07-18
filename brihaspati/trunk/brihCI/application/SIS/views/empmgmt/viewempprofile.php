@@ -61,15 +61,18 @@
 <!--            </td>-->
 </tr>
         </table>
+<?php $print=false;  $current="basic"; ?>
 
 	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
         <table width="100%" border=0>
-                <tr><td colspan="10">
+                <!--<tr><td colspan="10">
                     <HR COLOR="#6699FF" SIZE="3">
-                </td></tr>
+                </td></tr>-->
                 <tr style=" background-color:grey;width:100%;"> <td colspan="10"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
-               <tr><td align="center" colspan="10">
+               <tr><td valign="top"><table>
+		<tr>
+		<td align="center" colspan="10">
                     <?php if(!empty($record->emp_photoname)):;?>
                         <img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="85" height="100">
                     <?php else:?>
@@ -77,6 +80,19 @@
                     <?php endif?>
                       
                 </td></tr>
+		<tr>
+		<td valign="top" width=170>
+
+                <?php 
+		//	$emp_id=$record->emp_id;
+		//	include 'empprofiletab.php'; 
+		?>
+
+		</td>
+
+		</tr>
+</table>
+		</td><td><table>
                 <!--<tr></tr>-->
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Personal Information :</b></p>
@@ -88,25 +104,27 @@
                     <td>Employee Name :</td>
                     <td><?php echo $record->emp_name ;?></td> 
                     <td>Fathers Name :</td>
-                    <td colspan="22"><?php echo $record->emp_father; ?></td>
+                    <td colspan="2"><?php echo $record->emp_father; ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
+                    <td>Spouse Name : </td>
+                    <td><?php echo $record->emp_spousename ;?></td> 
                     <td>Gender : </td>
                     <td><?php echo $record->emp_gender;?></td> 
                     <td>Community :</td>
-                    <td><?php echo $record->emp_community;?></td> 
-                    <td>Religion :</td>
-                    <td colspan="2"><?php echo $record->emp_religion;?></td>
+                    <td  colspan="2"><?php echo $record->emp_community;?></td> 
                
                 </tr>
                 <tr></tr>
                 <tr> 
+                    <td>Religion :</td>
+                    <td><?php echo $record->emp_religion;?></td>
                     <td>Caste : </td>
                     <td><?php echo $record->emp_caste; ?></td> 
                     <td>Whether Physically Handicapped :</td>
-                    <td><div>
+                    <td  colspan="2"><div>
 			<?php if($record->emp_phstatus == 'yes'){
 					echo "Yes";
 				}else{
@@ -117,22 +135,22 @@
                         <input type="radio" name="phstatus" value="no" <?php // echo ($record->emp_phstatus == 'no'?'checked="checked"':'"checked"'); ?> >No
 -->
                     </div> </td> 
-                    <td>Details Of PH :</td>
-                    <td colspan="2"><?php echo $record->emp_phdetail; ?><td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
+                    <td>Details Of PH :</td>
+                    <td><?php echo $record->emp_phdetail; ?><td>
                     <td>Blood Group : </td>
                     <td><?php echo $record->emp_bloodgroup;?></td> 
                     <td>Date Of Birth :</td>
-                    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dob))); ?></td> 
-                    <td>Pan No :</td>
-                    <td colspan="2"><?php echo $record->emp_pan_no;?></td>
+                    <td  colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_dob))); ?></td> 
                
                 </tr>
                 <tr></tr>
                 <tr> 
+                    <td>Pan No :</td>
+                    <td><?php echo $record->emp_pan_no;?></td>
                     <td>Bank Name : </td>
                     <td>
                         <?php 
@@ -142,13 +160,13 @@
                         ;?>
                     </td> 
                     <td>IFSC Code :</td>
-                    <td><?php echo $bname[1]; ?></td> 
-                    <td>Bank ACC No :</td>
-                    <td colspan="2"><?php echo $record->emp_bank_accno; ?></td>
+                    <td  colspan="2"><?php echo $bname[1]; ?></td> 
                
                 </tr>
                 <tr></tr>
                 <tr> 
+                    <td>Bank ACC No :</td>
+                    <td><?php echo $record->emp_bank_accno; ?></td>
                     <td>Aadhaar No : </td>
                     <td><?php echo $record->emp_aadhaar_no; ?></td> 
                     <!--<td>IFSC Code :</td>
@@ -156,7 +174,7 @@
                     <td>Bank ACC No :</td>
                     <td><?php //echo $record->emp_post; ?></td>-->
                     <td>Marital Status : </td>
-                    <td colspan="4" ><?php echo $record->emp_maritalstatus; ?></td>
+                    <td colspan="2" ><?php echo $record->emp_maritalstatus; ?></td>
    
                 </tr>
                 <tr></tr>
@@ -305,7 +323,7 @@
                     <td>NHIS ID No :</td>
                     <td> <?php echo $record->emp_nhisidno; ?></td> 
                     <td>Date Of Appointment :</td>
-                    <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_doj))); ?></td>
+                    <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_doj)))." ".$record->emp_jsession; ?></td>
                
                 </tr>
                 <tr></tr>
@@ -409,7 +427,7 @@
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
                  <tr style=" background-color:grey;width:100%;"><td colspan="10">
-                    <p><b>Veterinary Council of india (VCI) Registration:</b></p>
+                    <p><b>Veterinary Council (VC) Registration:</b></p>
                 </td></tr>
                 <tr></tr>
                 <tr>
@@ -467,6 +485,7 @@
                         <?php endif;?>
                 </tbody>
 		</tr>
+
 	<tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="3">
                 </td></tr>
@@ -534,7 +553,7 @@
                                 <td colspan="2">
 				    <?php  $dojoin=implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
                                     <?php  $dorelve=implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
-				    <?php echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;?>
+				    <?php echo "<b>From-: </b>".$dojoin." ".$record->empsd_fsession."<br>"."<b>To-: </b>".$dorelve ." " .$record->empsd_tsession;?>
                                 </td>
                                 <td colspan="2">
                                     <?php 
@@ -717,7 +736,9 @@
                 <tr></tr>
                 <tr><td colspan="11">
                     <HR  COLOR="#6699FF" SIZE="2">
-                </td></tr>
+                </td></tr> 
+		</table>
+		</td></tr>
         
          </div>   
  </div>   

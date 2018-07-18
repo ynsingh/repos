@@ -41,20 +41,19 @@
 	</table>
 		
        <div class="scroller_sub_page">
-        	<table class="TFtable" >
-            <thead>
-						<tr>
-                     <th>S.No</th>
-                     <th>Leave Name</th>
-			    	      <th>Leave Code</th>
-                     <th>Short Name</th>
-							<th>Leave Description</th>
-                     <th>Total no. of days</th>
-                     <th>Action</th>
-						</tr>
-				</thead>
-
-				<tbody>
+        <table class="TFtable" >
+        <thead>
+		<tr>
+                     	<th>S.No</th>
+                     	<th>Leave Name</th>
+	    	     	<th>Leave Code</th>
+                    	<th>Short Name</th>
+			<th>Leave Description</th>
+                     	<th>Max Limit(days)</th>
+                     	<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
 		  			<?php
         			$count =0;
 					if(!empty($this->result))

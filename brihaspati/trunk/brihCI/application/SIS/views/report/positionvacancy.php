@@ -206,7 +206,7 @@
                     $opid1=$record->sp_emppost;
                     //$selectfield ="emp_name,emp_post,emp_dor";
                     //$whdata=array('emp_uocid' => $data->sp_uo,'emp_dept_code' =>$data->sp_dept,'emp_schemeid' =>$data->sp_schemecode,'emp_desig_code' =>$record->sp_emppost);
-                    $selectfield ="emp_name,emp_desig_code,emp_post,emp_dor";
+                    $selectfield ="emp_id,emp_code,emp_name,emp_desig_code,emp_post,emp_dor";
 		    $emppost1=$this->commodel->get_listspfic1('designation','desig_name','desig_id', $record->sp_emppost)->desig_name;
                     $whdata=array('emp_uocid' => $data->sp_uo,'emp_dept_code' =>$data->sp_dept,'emp_schemeid' =>$data->sp_schemecode,'emp_post' =>$emppost1);
                     $whorder = "emp_name asc";
@@ -216,7 +216,10 @@
                         echo "<td> </td>";
                         echo "<td> </td>";
                         echo "<td> </td>";
-                        echo "<td>". $emp->emp_name ." </td>";
+                        echo "<td>";
+			echo anchor("report/viewfull_profile/{$emp->emp_id}",$emp->emp_name." ( "."PF No:".$emp->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
+//			. $emp->emp_name .
+			echo " </td>";
                         //echo "<td>". $emp->emp_post ." </td>";
                         echo "<td>". $this->commodel->get_listspfic1('designation','desig_name','desig_id', $emp->emp_desig_code)->desig_name ." </td>";
                         echo "<td>". $emp->emp_dor ." </td>";

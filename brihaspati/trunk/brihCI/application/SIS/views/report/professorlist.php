@@ -184,7 +184,10 @@
                          foreach($emplist as $record){
                             echo "<tr>";
                             echo "<td>".$serial_no++."</td>";
-                            echo "<td>". $record-> emp_name." </td>";
+                            echo "<td>";
+				echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
+	//			. $record-> emp_name.
+			    echo "</td>";
                             echo "<td> ".implode('-', array_reverse(explode('-', $record->emp_dor)))."</td>";
                             echo "<td>";
                             if(!empty($record->emp_specialisationid)){

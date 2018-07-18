@@ -70,9 +70,12 @@
 			<td>Nature of Punishment<font color='Red'>*</font></td>
                         <td><select id="punishtypeid" name="punishtype" required style="width:350px;">
                         <option selected="selected" disabled selected>------------- Punishment Type -------------</option>
-                        <option value="Punishment">Punishment</option>
                         <option value="Censure">Censure</option>
                         <option value="Memo">Memo</option>
+                        <option value="Suspension">Suspension</option>
+                        <option value="Dismissal">Dismissal</option>
+                        <option value="Removal from Service">Removal from Service</option>
+                        <option value="Increment withheld">Increment withheld</option>
                     </select>
                 </td>
                 </tr>
@@ -84,21 +87,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Status<font color='Red'></font></td>
-
-		    <td>
-                            <input type="text" name="status" id="status" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date From<font color='Red'>*</font></td>
+                    <td>Date of Issuing order<font color='Red'>*</font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" required="required" >
                     </td>
                 </tr>
                 <tr>
-                    <td>Date To<font color='Red'></font></td>
+                    <td>Date of Revoking the order<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
                     </td>   
+                </tr>
+                <tr>
+                    <td>Remarks<font color='Red'></font></td>
+
+		    <td>
+                            <input type="text" name="status" id="status" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
+                    </td>
                 </tr>
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">

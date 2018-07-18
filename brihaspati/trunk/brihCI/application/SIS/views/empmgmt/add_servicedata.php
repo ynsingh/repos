@@ -303,7 +303,7 @@
                 <tr></tr><tr></tr>
                 <tr>
                     <td>Campus Name <font color='Red'>*</font></td>
-                        <td><select id="camp" style="width:350px;" name="campus" required> 
+                        <td colspan=2><select id="camp" style="width:350px;" name="campus" required> 
                             <option selected="selected" disabled selected>--------Campus Name-----</option>
                             <?php foreach($this->campus as $camdata): ?>
 			     <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>	
@@ -313,35 +313,35 @@
                 </tr> 
 		<tr>
  		<td>University Officer Control<font color='Red'>*</font></td>
-		<td><select name="uocontrol" style="width:350px;"id="uocid" required>
+		<td colspan=2><select name="uocontrol" style="width:350px;"id="uocid" required>
 		<option selected="selected" disabled selected>--------University Officer Control -----</option>
 		</select>
 		</td>
 		</tr>
 		<tr>
 		<td>Department<font color='Red'>*</font></td>
-		<td><select name="department" style="width:350px;"id="scid" required>
+		<td colspan=2><select name="department" style="width:350px;"id="scid" required>
 		<option selected="selected" disabled selected>--------Department-----</option>
 		</select>
 		</td>
 	</tr>
 <tr>
                 <td>Scheme Name<font color='Red'>*</font></td>
-                <td><select name="schemecode" style="width:350px;"id="schmid" required>
+                <td colspan=2><select name="schemecode" style="width:350px;"id="schmid" required>
                 <option selected="selected" disabled selected>--------Scheme Name-----</option>
                 </select>
                 </td>
         </tr>
 <tr>
                 <td>Drawing and Disbursing Officer<font color='Red'>*</font></td>
-                <td><select name="ddo" style="width:350px;"id="ddoid" required>
+                <td colspan=2><select name="ddo" style="width:350px;"id="ddoid" required>
                 <option selected="selected" disabled selected>--------Drawing and Disbursing Officer-----</option>
                 </select>
                 </td>
        		</tr>
 		<tr>
 			<td>Working Type<font color='Red'>*</font></td>
-                        <td><select id="worktypeid" name="workingtype" required style="width:350px;">
+                        <td colspan=2><select id="worktypeid" name="workingtype" required style="width:350px;">
                         <option selected="selected" disabled selected>------------- Working Type -------------</option>
                         <option value="Teaching">Teaching</option>
                         <option value="Non Teaching">Non Teaching</option>
@@ -350,7 +350,7 @@
 
 	<tr>
                 <td>Group<font color='Red'>*</font></td>
-                <td><select name="group" style="width:350px;" id="grpid" required>
+                <td colspan=2><select name="group" style="width:350px;" id="grpid" required>
 		<option selected="selected" disabled selected>------------ Select Group ---------</option>
                         <option value="A">A</option>
                         <option value="B">B</option>
@@ -361,7 +361,7 @@
         </tr>
                 <tr>
                     <td>Designation<font color='Red'>*</font></td>
-                        <td><select name="designation" id="desigid"  style="width:350px;" required> 
+                        <td colspan=2><select name="designation" id="desigid"  style="width:350px;" required> 
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                         </select>
                     </td>
@@ -370,14 +370,14 @@
 	<tr>
 
                     <td>Shown Against The Post<font color='Red'>*</font></td>
-                        <td><select name="emppost" id="emppostid"  style="width:350px;" required>
+                        <td colspan=2><select name="emppost" id="emppostid"  style="width:350px;" required>
                             <option selected="selected" disabled selected>-------Shown Against The Post---------</option>
                         </select>
                     </td>
                 </tr>
 	 <tr>
                 <td>Level<font color='Red'>*</font></td>
-                <td><select name="level" style="width:350px;" id="lvel" required>
+                <td colspan=2><select name="level" style="width:350px;" id="lvel" required>
                 <option selected="selected" disabled selected>------------ Select Level---------</option>
                         <option value="Level-1">Level-1</option>
                         <option value="Level-2">Level-2</option>
@@ -402,7 +402,7 @@
         </tr>		
 			<tr>
 	    <td>Pay Band<font color='Red'>*</font></td>
-                    <td><select name="payband" id="payband" style="width:350px;" onchange="gradelist(this.value)"> 
+                    <td colspan=2><select name="payband" id="payband" style="width:350px;" onchange="gradelist(this.value)"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
@@ -415,32 +415,47 @@
                 
                 <tr>
                     <td>Grade Pay<font color='Red'></font></td>
-		    <td>
+		    <td colspan=2>
                             <input type="text" name="gradepay" id="gradepay" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>Order No<font color='Red'></font></td>
 
-		    <td>
+		    <td colspan=2>
                             <input type="text" name="orderno" id="orderno" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>Date of AGP<font color='Red'></font></td>
-                        <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
+                        <td colspan=2><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Date From<font color='Red'>*</font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" required="required" >
-                    </td>
+                    
+			 <select name="fsession" style="width:110px;" id="fsession" required>
+                <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select></td>
                 </tr>
                 <tr>
                     <td>Date To<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
-                    </td>   
+			 <select name="tsession" style="width:110px;" id="tsession" required>
+                <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select></td>
                 </tr>
+        <tr>
+            <td>Upload Attachment</td>
+            <td colspan=2><input type='file' name='userfile' size='20' style="font-size:15px;"/>
+            </td>
+        </tr>
+
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">

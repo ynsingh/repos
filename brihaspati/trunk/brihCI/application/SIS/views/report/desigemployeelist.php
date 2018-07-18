@@ -254,7 +254,10 @@
                         }
 			echo "<tr>";
 			echo "<td>". $serial_no++ ." </td>";
-			echo "<td> $record->emp_name</td>";
+			echo "<td>";
+			echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
+			// $record->emp_name
+			echo "</td>";
 			echo "<td> ";
                         echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
 			echo " ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->emp_dept_code)->dept_code ." )";

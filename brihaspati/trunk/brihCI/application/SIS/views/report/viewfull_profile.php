@@ -75,15 +75,25 @@
 		<?php include 'profiletab.php'; ?>
 	   
 </td>
-<?php     $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; ?>
+<?php     
+//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
+	$roleid=$this->session->userdata('id_role');
+        if($roleid == 5){
+                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
+                $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
+        }
+
+?>
 <td>		
 	 <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                         <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                             <td align=left colspan=4><b>Basic Profile Details</b></td>
                             <td align="right">
                                 <?php
-				$roleid=$this->session->userdata('id_role');
-                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
+		//		$roleid=$this->session->userdata('id_role');
+                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
                                         echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
                                 }
                                 ?>
@@ -188,7 +198,7 @@
 <?php   echo    "<b>NHIS ID No</b> <br>".$data->emp_nhisidno;?>
                                 </td>
   <td>
-<?php   echo    "<b>Date of Appointment</b> <br>". implode('-', array_reverse(explode('-', $data->emp_doj)));?>
+<?php   echo    "<b>Date of Appointment</b> <br>". implode('-', array_reverse(explode('-', $data->emp_doj)))." ".$data->emp_jsession;?>
                                 </td>
                                 <td>
 <?php   echo    "<b>Date of Retirement</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dor)));?>
@@ -225,13 +235,17 @@
 
 <?php   echo    "<b>Fathers Name</b> <br>".$data->emp_father; ?>
                                 </td>
+                                <td>
+
+<?php   echo    "<b>Spouce Name</b> <br>".$data->emp_spousename; ?>
+                                </td>
                               
                        
+ </tr>
+			<tr>
                                 <td>
 <?php   echo    "<b>Gender</b> <br>".$data->emp_gender;?>
                                 </td>
- </tr>
-			<tr>
                                 <td>
 <?php   echo    "<b>Community</b> <br>".$data->emp_community;?>
                                 </td>
@@ -241,11 +255,11 @@
                                 <td>
 <?php   echo    "<b>Caste</b> <br>".$data->emp_caste;?>
                                 </td>
+</tr>
+<tr>
                                 <td>
 <?php   echo    "<b>Whether Physically handicapped</b> <br>".$data->emp_phstatus;?>
                                 </td>
-</tr>
-<tr>
                                 <td>
 <?php   echo    "<b>Details of PH</b> <br>".$data->emp_phdetail;?>
                                 </td>
@@ -255,11 +269,11 @@
                                 <td>
 <?php   echo    "<b>Date of Birth</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dob)));?>
                                 </td>
+                        </tr>
+<tr>
 <td>
 <?php   echo    "<b>Pan No</b> <br>".$data->emp_pan_no;?>
                                 </td>
-                        </tr>
-<tr>
 <td>
 <?php 
 	  $fulldata=$data->emp_bank_ifsc_code;
@@ -273,6 +287,8 @@
                                 <td>
 <?php   echo    "<b>Bank ACC No</b> <br>".$data->emp_bank_accno;?>
                                 </td>
+                        </tr>
+<tr>
                                 <td>
 <?php   echo    "<b>Aadhaar No</b> <br>".$data->emp_aadhaar_no;?>
                                 </td>
@@ -364,7 +380,7 @@ echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$u
                     $ntqnew=explode(",",$ntq);
 echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
 </td><td><b>Organiser</b><br><?php   echo    $ntqnew[1];?></td><td><b>Year of Passing</b><br><?php   echo    implode('-', array_reverse(explode('-', $data->emp_netpassingyear)));?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
-<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Veterinary Council of india (VCI) Registration:</b></label></td> </tr>
+<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Veterinary Council (VC) Registration:</b></label></td> </tr>
 <tr>
 <td>
 <?php   echo    "<b>Registration No</b> <br>".$data->emp_vciregno;?>

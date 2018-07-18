@@ -321,7 +321,7 @@ class SIS_model extends CI_Model
     }
     public function emplist($uo,$dept,$post){
 	$post1 = $this->commodel->get_listspfic1('designation','desig_name','desig_id', $post)->desig_name;
-        $selectfield ="emp_name,emp_desig_code,emp_post,emp_email";
+        $selectfield ="emp_id,emp_code,emp_name,emp_desig_code,emp_post,emp_email";
         //$whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_desig_code' => $post );
         $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_post' => $post1 );
         $whorder = "emp_post asc";

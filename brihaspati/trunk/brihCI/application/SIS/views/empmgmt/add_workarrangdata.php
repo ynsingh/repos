@@ -24,7 +24,7 @@
 		
 		$('#workdeptid').on('change',function(){
                 var recmthd = $(this).val();
-                if(recmthd == 'Yes'){
+                if(recmthd == 'No'){
                     $('#camp,#uocid,#scid').prop('disabled',false);
                 }
                 else{
