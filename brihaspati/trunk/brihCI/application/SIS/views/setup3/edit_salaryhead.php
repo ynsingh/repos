@@ -11,6 +11,17 @@
        // window.location="<?php echo site_url('setup3/salaryhead_list/');?>";
         window.history.back();
         }
+        $(document).ready(function(){
+            $("#btnUpload").on('click',function(){
+                var emptype= $('#emptnt').val(); 
+                alert("emptyy==="+emptype);
+                if( emptype === null || emptype === ''){
+                    alert("Please select Employee type..!!");
+                    return false;
+                } 
+               
+            });
+        });    
     </script>
     </head>
     <body>
@@ -53,6 +64,21 @@
             <form id="myform" action="<?php echo site_url('setup3/update_salheaddata/'.$id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <table>
+                <tr>
+                    <td><label for="salhtnt" class="control-label">Employee Type:</label></td>
+                    <td>
+                        <select name="salhtnt" id="emptnt" class="my_dropdown" style="width:100%;">
+                        <?php if(!empty($salhdata->sh_tnt)):;?>
+                        <option value="<?php echo $salhdata->sh_tnt;?>"><?php echo $salhdata->sh_tnt;?></option>      
+                        <?php else:?>
+                	<option value="" disabled selected >------Select ---------------</option>
+                        <?php endif;?>
+                	<option value="Teaching">Teaching</option>
+                	<option value="Non Teaching">Non Teaching</option>
+                                
+			</select>
+                    </td>
+	     	</tr>
                 <tr>
                 	<td><label for="salh_code" class="control-label">Salary Head Code:</label></td>
                         <td><input type="text" name="salh_code" value="<?php echo $salhdata->sh_code ;?>"  size="40" /><br></td>
@@ -156,7 +182,7 @@
                 <tr>
                     <td></td>
                     <td>
-                    <button name="updatesalhead">Update</button>
+                    <button name="updatesalhead" id="btnUpload">Update</button>
                     </form>    
                     <button onclick="goBack()">Back</button>
 

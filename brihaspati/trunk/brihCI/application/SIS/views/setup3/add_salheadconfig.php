@@ -57,12 +57,15 @@
                         <select id="emptype" style="width:350px;" name="emptype" required onchange="this.form.submit();"> 
                         <?php if (!empty($seloption)) :?>
                         <option value="<?php echo $seloption;?>"><?php 
-                        echo $this->sismodel->get_listspfic1('employee_type','empt_name ','empt_id',$seloption)->empt_name;?></option>
+                        $name=$this->sismodel->get_listspfic1('employee_type','empt_name ','empt_id',$seloption)->empt_name;
+                        $code=$this->sismodel->get_listspfic1('employee_type','empt_code ','empt_id',$seloption)->empt_code;
+                        $tnt=$this->sismodel->get_listspfic1('employee_type','empt_tnt ','empt_id',$seloption)->empt_tnt;
+                        echo $name."( ".$code.", ".$tnt. " )";?></option>
                         <?php else: ?>
                         <option selected="selected" disabled selected>--------Select Employee Type-----</option>
                         <?php endif ;?>
                             <?php foreach($this->emptype as $emptdata): ?>	
-   				<option value="<?php echo $emptdata->empt_id; ?>"><?php echo $emptdata->empt_name."( ".$emptdata->empt_code." )"; ?></option> 
+   				<option value="<?php echo $emptdata->empt_id; ?>"><?php echo $emptdata->empt_name."( ".$emptdata->empt_code.", ".$emptdata->empt_tnt. " )"; ?></option> 
                             <?php endforeach; ?>
                         </select>
                     </td> 

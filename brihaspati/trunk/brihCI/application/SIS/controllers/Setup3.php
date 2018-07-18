@@ -14,8 +14,7 @@ class Setup3 extends CI_Controller
     function __construct() {
         parent::__construct();
 	$this->load->model('common_model','commodel'); 
-	//$this->load->model('dependrop_model','depmodel'); 
-	$this->load->model('login_model','logmodel');
+	$this->load->model('login_model','lgnmodel');
 	$this->load->model('SIS_model',"sismodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -51,6 +50,7 @@ class Setup3 extends CI_Controller
                 $data = array(
                     'sh_code'                  =>$_POST['salh_code'],
                     'sh_name'                  =>$_POST['salh_name'],
+                    'sh_tnt'                   =>$_POST['salhtnt'], 
                     'sh_shortname'             =>$_POST['salh_nickname'],
                     
                     'sh_type'                  =>$_POST['salh_type'],
@@ -67,6 +67,7 @@ class Setup3 extends CI_Controller
                 $dupcheck = array(
                    // 'sh_code'                  =>$_POST['salh_code'],
                     'sh_name'                  =>$_POST['salh_name'],
+                    'sh_tnt'                   =>$_POST['salhtnt'],
                     //'sh_shortname'             =>$_POST['salh_nickname'],
                                                     
                 ); 
@@ -128,7 +129,23 @@ class Setup3 extends CI_Controller
 
     public function salaryhead_list(){
         $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
-	$data['records'] = $this->sismodel->get_list('salary_head');
+	$data['records']= $this->sismodel->get_list('salary_head');
+        $data['teach']= array();
+        $data['nonteach']=array();
+        $data['tntboth']=array();
+        foreach($data['records'] as $record){
+            if($record->sh_tnt == NULL){
+                array_push($data['tntboth'],$record->sh_id);
+            }
+            if($record->sh_tnt =='Teaching'){
+                array_push($data['teach'],$record->sh_id);
+            
+            }
+            if($record->sh_tnt =='Non Teaching'){
+            array_push($data['nonteach'],$record->sh_id);
+            
+            }
+        }
         $this->logger->write_logmessage("view"," view Salary head list" );
         $this->logger->write_dblogmessage("view"," view Salary head list");
         $this->load->view('setup3/salaryhead_list',$data);
@@ -167,6 +184,7 @@ class Setup3 extends CI_Controller
             }//formvalidation
             else{
                 $shcode = $this->input->post('salh_code', TRUE);
+                $shtnt= $this->input->post('salhtnt', TRUE);
                 $shname = $this->input->post('salh_name', TRUE);
                 $shnickname = $this->input->post('salh_nickname', TRUE);
                 $salhtype = $this->input->post('salh_type', TRUE);
@@ -196,6 +214,7 @@ class Setup3 extends CI_Controller
                 $edit_data = array(
                     'sh_code'                  =>$_POST['salh_code'],
                     'sh_name'                  =>$_POST['salh_name'],
+                    'sh_tnt'                   =>$_POST['salhtnt'],
                     'sh_shortname'             =>$_POST['salh_nickname'],
                     'sh_type'                  =>$_POST['salh_type'],
                     'sh_calc_type'             =>$_POST['salh_caltype'],
@@ -229,6 +248,7 @@ class Setup3 extends CI_Controller
                      $dupcheck = array(
                        // 'sh_code'                  =>$_POST['salh_code'],
                         'sh_name'                  =>$_POST['salh_name'],
+                        'sh_tnt'                   =>$_POST['salhtnt'],
                 
                     ); 
                     $salhdup = $this->sismodel->isduplicatemore('salary_head', $dupcheck);
@@ -264,7 +284,7 @@ class Setup3 extends CI_Controller
     /************************************** Display salary heads for formula  **************************/
 
     public function salaryformula_list(){
-	$selectfield="salary_head.sh_id, salary_head.sh_code, salary_head.sh_name, salary_formula.sf_id, salary_formula.sf_formula";
+	$selectfield="salary_head.sh_id, salary_head.sh_code, salary_head.sh_name, salary_head.sh_tnt,salary_formula.sf_id, salary_formula.sf_formula";
 	$joincond = 'salary_formula.sf_salhead_id = salary_head.sh_id';
 	$whdata = array('salary_head.sh_calc_type'=> 'Y');
 	$data['formulrecord'] =$this->sismodel->get_jointbrecord('salary_head',$selectfield,'salary_formula',$joincond,'left',$whdata);
@@ -291,7 +311,7 @@ class Setup3 extends CI_Controller
                 return;
             }//formvalidation
             else{
-                
+                              
                 $data = array(
                     'sf_salhead_id'            =>$id,
                     'sf_formula'               =>$_POST['salh_formula'],
@@ -395,6 +415,7 @@ class Setup3 extends CI_Controller
                 $data = array(
                     'empt_code'                  =>$_POST['emptype_code'],
                     'empt_name'                  =>$_POST['emptype_name'],
+                    'empt_tnt'                  =>$_POST['emptnt'],
                     'empt_shortname'             =>$_POST['emptype_sname'],
                     'empt_pfapplies'             =>$_POST['pfapplies'],
                     'empt_maxpflimit'            =>$_POST['maxpf_limit'],
@@ -406,17 +427,17 @@ class Setup3 extends CI_Controller
                 $dupcheck = array(
                     'empt_code'                  =>$_POST['emptype_code'],
                     'empt_name'                  =>$_POST['emptype_name'],
+                    'empt_tnt'                  =>$_POST['emptnt'],
                                
                 ); 
-                
+              
                 $etname = $this->input->post('empt_name', TRUE);
-               
                 $emptdup = $this->sismodel->isduplicatemore('employee_type', $dupcheck);
                 if($emptdup == 1 ){
-
-                      $this->session->set_flashdata("err_message", "Record is already exist with this 'Employee Type Name = $etname' ");
-                      $this->load->view('setup3/employeetype');
-                      return;
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this 'Employee Type Name = $etname' ");
+                    $this->load->view('setup3/employeetype');
+                    return;
                 }
                 else{
                     $emptyeflag=$this->sismodel->insertrec('employee_type', $data);
@@ -495,6 +516,7 @@ class Setup3 extends CI_Controller
             else{
                 $etcode = $this->input->post('emptype_code', TRUE);
                 $etname = $this->input->post('emptype_name', TRUE);
+                $etype = $this->input->post('emptnt', TRUE);
                 $etnickname = $this->input->post('emptype_sname', TRUE);
                 $etpfaply = $this->input->post('pfapplies', TRUE);
                 $etpfmaxlimit = $this->input->post('maxpf_limit', TRUE);
@@ -515,6 +537,7 @@ class Setup3 extends CI_Controller
                 $editdata = array(
                     'empt_code'                  =>$_POST['emptype_code'],
                     'empt_name'                  =>$_POST['emptype_name'],
+                    'empt_tnt'                  =>$_POST['emptnt'],
                     'empt_shortname'             =>$_POST['emptype_sname'],
                     'empt_pfapplies'             =>$_POST['pfapplies'],
                     'empt_maxpflimit'            =>$_POST['maxpf_limit'],
@@ -690,7 +713,7 @@ class Setup3 extends CI_Controller
         if(isset($_POST['update'])){
             $tsize = $this->input->post('totalsize', TRUE);
           //  echo "tsize====".$tsize;
-            for ($i=0; $i<$tsize ;$i++){
+            for ($i=0; $i<$tsize ;$i++){                        
                 $shid = $this->input->post('sheadid'.$i, TRUE);
                 $dfvalue= $this->input->post('defaultval'.$i, TRUE); 
                 // echo "shid====".$shid."dval====".$dfvalue,"pb===".$pband;
@@ -755,11 +778,11 @@ class Setup3 extends CI_Controller
     }
     /*********************  closer Salary Head Default value  *******************************************/
     
-    /*********************  Salary Processing  Salary Slip  form *******************************************/
-   /* public function salaryslip(){
-        $this->load->view('setup3/salaryslip',$data);
+    /*********************   Salary Slip  form *********************************************************/
+     public function salaryslip(){
+        $this->load->view('setup3/salaryslip');
         
-    }*/
-    /*********************  Salary Processing  Salary Slip  form *******************************************/
+    }
+    /********************* closer  Salary Slip  form *********************************************************/
     
 }//class    

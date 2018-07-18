@@ -65,7 +65,11 @@
                             <td>
                                 <?php echo $record->empt_code;?>
                             </td>    
-                            <td><?php echo $record->empt_name; ?></td>
+                            <td><?php echo $record->empt_name." ";
+                                    if(!empty($record->empt_tnt)){
+                                       echo '( '.$record->empt_tnt .' )';
+                                                
+                                    }?></td>
                             <td><?php echo $record->empt_shortname; ?></td>
                             <td><?php
                                 if($record->empt_pfapplies == "Y"){

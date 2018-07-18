@@ -54,11 +54,16 @@
             <table>
                 <tr>
                 	<td><label for="salh_code" class="control-label">Salary Head Code:</label></td>
-                        <td><input type="text" name="salh_code" value="<?php echo $this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$salhdata->sf_salhead_id)->sh_code;?>"  size="40" readonly /><br></td>
+                        <td><input type="text" name="salh_code" value="<?php 
+                        echo $this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$salhdata->sf_salhead_id)->sh_code;
+                        ?>"  size="40" readonly /><br></td>
 	     	</tr>
                 <tr>
                 	<td><label for="salh_name" class="control-label">Salary Head Name:</label></td>
-                	<td><input type="text" name="salh_name" value="<?php echo $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$salhdata->sf_salhead_id)->sh_name;?>" size="40" readonly /><br></td>
+                	<td><input type="text" name="salh_name" value="<?php 
+                        echo $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$salhdata->sf_salhead_id)->sh_name;
+                        echo "( ".$this->sismodel->get_listspfic1('salary_head','sh_tnt','sh_id',$salhdata->sf_salhead_id)->sh_tnt." )";
+                        ?>" size="40" readonly /><br></td>
 	     	</tr>
                 <tr>
                     <td><label for="salh_formula" class="control-label">Apply Formula:</label></td>

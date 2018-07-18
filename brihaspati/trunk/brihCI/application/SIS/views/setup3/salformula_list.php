@@ -60,7 +60,12 @@
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
                             <td><?php echo $record->sh_code; ?></td>
-                            <td><?php echo $record->sh_name; ?></td>
+                            <td><?php
+                            echo $record->sh_name;
+                            if(!empty($record->sh_tnt)){
+                                echo " ( ".$record->sh_tnt." ) ";
+                            }
+                                    ; ?></td>
                             <td><?php
                                 if(!empty($record->sf_formula)){
                                     echo $record->sf_formula; 

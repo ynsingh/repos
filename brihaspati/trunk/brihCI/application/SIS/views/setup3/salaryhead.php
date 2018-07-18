@@ -7,6 +7,19 @@
         <?php $this->load->view('template/header'); ?>
     
     </head>
+    <script>
+        $(document).ready(function(){
+            $("#btnUpload").on('click',function(){
+                var emptype= $('#emptnt').val(); 
+                alert("emptyy==="+emptype);
+                if( emptype === null || emptype === ''){
+                    alert("Please select Employee type..!!");
+                    return false;
+                } 
+               
+            });
+        });    
+    </script>         
     <body><table width="100%">
             <tr>
                 <?php
@@ -45,6 +58,16 @@
         <div>
             <form action="<?php echo site_url('setup3/salaryhead');?>" method="POST" enctype="multipart/form-data">
             <table>
+                <tr>
+                    <td><label for="salhtnt" class="control-label">Employee Type:</label></td>
+                    <td>
+                        <select name="salhtnt" id="emptnt" class="my_dropdown" style="width:100%;">
+                        <option value="" disabled selected >------Select ---------------</option>
+                	<option value="Teaching">Teaching</option>
+                	<option value="Non Teaching">Non Teaching</option>
+			</select>
+                    </td>
+	     	</tr>
                 <tr>
                 	<td><label for="salh_code" class="control-label">Salary Head Code:</label></td>
                 	<td><input type="text" name="salh_code" value="<?php echo isset($_POST["salh_code"]) ? $_POST["salh_code"] : ''; ?>" class="form-control" size="40" /><br></td>
@@ -106,7 +129,7 @@
                 <tr>
                     <td></td>
                     <td>
-                    <button name="addsalaryhead">Submit</button>
+                    <button name="addsalaryhead" id="btnUpload">Submit</button>
                     <button name="reset" >Clear</button>
 
                     </td>

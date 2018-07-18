@@ -8,8 +8,9 @@
         
     <script> 
          
-        /************************************Accepts only 0 – 9**********************************************/
+        
         $(document).ready(function(){
+            /************************************Accepts only 0 – 9**********************************************/
             $('.keyup-numeric').keyup(function() {
                 $('span.error-keyup-1').hide();
                 var inputVal = $(this).val();
@@ -18,8 +19,18 @@
                     $(this).after('<span class="error error-keyup-1"><font color="red">Numeric characters only.</font></span>');
                 }
             });
-         });    
             /************************************ close Accepts only 0 – 9**********************************************/
+            $("#btnUpload").on('click',function(){
+                var emptype= $('#emptnt').val(); 
+                alert("emptyy==="+emptype);
+                if( emptype === null || emptype === ''){
+                    alert("Please select Employee type..!!");
+                    return false;
+                } 
+               
+            });
+        });    
+        
     </script>
     </head>
     <body><table width="100%">
@@ -61,6 +72,16 @@
             <form action="<?php echo site_url('setup3/employeetype');?>" method="POST" enctype="multipart/form-data">
             <table>
                 <tr>
+                	<td><label for="emptnt" class="control-label">Employee Type:</label></td>
+                        <td>
+                            <select name="emptnt" id="emptnt" class="my_dropdown" style="width:100%;">
+                		<option value="" disabled selected >------Select ---------------</option>
+                		<option value="Teaching">Teaching</option>
+                		<option value="Non Teaching">Non Teaching</option>
+			    </select>
+                        </td>
+	     	</tr>
+                <tr>
                 	<td><label for="emptype_code" class="control-label">Employee Type Code:</label></td>
                 	<td><input type="text" name="emptype_code" value="<?php echo isset($_POST["emptype_code"]) ? $_POST["emptype_code"] : ''; ?>" placeholder="Employee Type Name" class="form-control" size="40" /><br></td>
 	     	</tr>
@@ -91,7 +112,7 @@
                 <tr>
                     <td></td>
                     <td>
-                    <button name="addemptype">Submit</button>
+                    <button name="addemptype" id="btnUpload">Submit</button>
                     <input type="reset" name="Reset" value="Clear"/>
                     
                     </td>

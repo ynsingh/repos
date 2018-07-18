@@ -42,6 +42,8 @@
         </table>
         <div class="scroller_sub_page">
         <table class="TFtable" >
+            <!--<form name="actionForm" action="action.php" method="post" onsubmit="return deleteConfirm();"/>-->
+            <form id="myform" action="<?php echo site_url('setup3/salaryhead_list/');?>" method="POST" enctype="multipart/form-data">
             <thead>
                 <tr>
                     <th>Sr.No</th>
@@ -61,67 +63,273 @@
             </thead>
             <tbody>
                 <?php $serial_no = 1;?>
-              <?php if( count($records) ):  ?>
-                    <?php foreach($records as $record){ ?>
+            <!--------------------------------------bothtnt heads ------------------------------------>
+            
+            <?php if( count($tntboth) ):  ?>
+                    <tr> <td colspan="13"><?php echo "<b>Common Salary Heads</b>"; ?></td></tr>
+                    <?php foreach($tntboth as $record){ ?>
                         <tr>
+                        
                             <td><?php echo $serial_no++; ?></td>
                             
                             <td>
-                                <?php if(!empty($record->sh_ledgercode)):?>
-                                <?php echo $record->sh_ledgercode;?>
-                                <?php endif;?>
+                                <?php $ledgercode=$this->sismodel->get_listspfic1('salary_head','sh_ledgercode','sh_id',$record);
+                                   if(!empty($ledgercode)){     
+                                    $lcode=$ledgercode->sh_ledgercode; 
+                               
+                                    echo $lcode;
+                                   } ?>
+                                    
                             </td>    
-                            <td><?php echo $record->sh_code; ?></td>
-                            <td><?php echo $record->sh_name; ?></td>
-                            <td><?php echo $record->sh_shortname; ?></td>
-                            <td><?php echo $record->sh_category; ?></td>
-                            <td>
-                                <?php if($record->sh_type == "I"): ?>
-                                <input type="checkbox" name="Income" checked ="true" value="<?php echo $record->sh_type; ?>" />
-                                <?php else : ?>
-                                <input type="checkbox" name="Income"  value="<?php echo $record->sh_type; ?>" />
-                                <?php endif;?>
-                            </td>
-                            <td>
-                                <?php if($record->sh_type == "D"): ?>
-                                <input type="checkbox" name="Deduction" checked ="true" value="<?php echo $record->sh_type; ?>" />
-                                <?php else : ?>
-                                <input type="checkbox" name="Income"  value="<?php echo $record->sh_type; ?>" />
-                                <?php endif;?>
-                            </td>
-                            <td>
-                                <?php if($record->sh_calc_type == "Y"): ?>
-                                <input type="checkbox" name="formula" checked ="true"  value="<?php echo $record->sh_calc_type; ?>" />
-                                <?php else : ?>
-                                <input type="checkbox" name="formula"  value="<?php echo $record->sh_calc_type; ?>" />
-                                <?php endif;?>
-                            </td>
-                            <td>
-                                <?php if($record->sh_taxable == "Y"): ?>
-                                <input type="checkbox" name="taxable" checked ="true" value="<?php echo $record->sh_taxable; ?>" />
-                                <?php else : ?>
-                                <input type="checkbox" name="taxable" value="<?php echo $record->sh_taxable; ?>" />
-                                <?php endif;?>
-                            </td>
-                            <td><?php echo $record->sh_description; ?></td>
-                            <td> <?php echo anchor("setup3/edit_salaryhead/{$record->sh_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
-                            </td>
+                            <td><?php $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$record)->sh_code;
+                                echo $hcode; ?></td>
+                            <td><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$record)->sh_name;
+                                echo $shname; 
+                               /* $shtnt=$this->sismodel->get_listspfic1('salary_head','sh_tnt','sh_id',$record);
+                                if(!empty($shtnt)){
+                                    $tnt=$shtnt->sh_tnt;
+                                    echo '( '.$tnt .' )';
+                                }*/
+                            ?></td>
+                            <td><?php $shortname=$this->sismodel->get_listspfic1('salary_head','sh_shortname','sh_id',$record);
+                                if(!empty($shortname)){
+                                    $shortn=$shortname->sh_shortname;
+                                 echo $shortn;
+                                }?></td>
+                            <td><?php $catrgy=$this->sismodel->get_listspfic1('salary_head','sh_category','sh_id',$record);
+                                if(!empty($catrgy)){
+                                    $shcatrgy=$catrgy->sh_category;
+                                    echo $shcatrgy; 
+                                }?></td>
                             
+                            
+                            <td> 
+                                
+                                <?php $shtype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$record)->sh_type;
+                                if($shtype == "I"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',I,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',I,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php if($shtype == "D"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',D,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',D,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php $shcaltype=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$record)->sh_calc_type;
+                                if($shcaltype == "Y"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php $shtaxable=$this->sismodel->get_listspfic1('salary_head','sh_taxable','sh_id',$record)->sh_taxable;
+                                if($shtaxable == "Y"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',T,'.$shtaxable; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td><?php  $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                                if(!empty($shdesc)){
+                                    $description=$shdesc->sh_description;
+                                echo $description; }?></td>
+                            <td> <?php echo anchor("setup3/edit_salaryhead/{$record}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
+                            </td>
+                            <input type="hidden" name="item_id" value="<?php echo $record;?>"/>
                         </tr>
                         
                     <?php }; ?>
-                    <!--   <tr>
-                            <td colspan="12">
-                            <?php //echo form_open_multipart('setup3/salaryhead_list');?>
-                            <div><input type='submit' name='applydata' id="btnUpload"  value='Apply'/></div> 
-                            </form>
+                    
+                <?php else : ?>
+                    <td colspan= "13" align="center"> No Records found...!</td>
+                <?php endif;?>
+            <!-------------------------------------------------end both------------------------------->
+             <!--------------------------------------teaching heads ------------------------------------>
+              <?php if( count($teach) ):  ?>
+                    <tr> <td colspan="13"><?php echo "<b>Teaching Salary Heads</b>"; ?></td></tr>
+                    <?php foreach($teach as $record){ ?>
+                        <tr>
+                        
+                            <td><?php echo $serial_no++; ?></td>
+                            
+                            <td>
+                                <?php $ledgercode=$this->sismodel->get_listspfic1('salary_head','sh_ledgercode','sh_id',$record);
+                                   if(!empty($ledgercode)){     
+                                    $lcode=$ledgercode->sh_ledgercode; 
+                               
+                                    echo $lcode;
+                                   } ?>
+                                    
+                            </td>    
+                            <td><?php $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$record)->sh_code;
+                                echo $hcode; ?></td>
+                            <td><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$record)->sh_name;
+                                echo $shname; 
+                                $shtnt=$this->sismodel->get_listspfic1('salary_head','sh_tnt','sh_id',$record);
+                                if(!empty($shtnt)){
+                                    $tnt=$shtnt->sh_tnt;
+                                    echo '( '.$tnt .' )';
+                                }
+                            ?></td>
+                            <td><?php $shortname=$this->sismodel->get_listspfic1('salary_head','sh_shortname','sh_id',$record);
+                                if(!empty($shortname)){
+                                    $shortn=$shortname->sh_shortname;
+                                 echo $shortn;
+                                }?></td>
+                            <td><?php $catrgy=$this->sismodel->get_listspfic1('salary_head','sh_category','sh_id',$record);
+                                if(!empty($catrgy)){
+                                    $shcatrgy=$catrgy->sh_category;
+                                    echo $shcatrgy; 
+                                }?></td>
+                            
+                            
+                            <td> 
+                                
+                                <?php $shtype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$record)->sh_type;
+                                if($shtype == "I"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',I,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',I,'.$shtype; ?>" />
+                                <?php endif;?>
                             </td>
-                        </tr>   -->   
+                            <td>
+                                <?php if($shtype == "D"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',D,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',D,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php $shcaltype=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$record)->sh_calc_type;
+                                if($shcaltype == "Y"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php $shtaxable=$this->sismodel->get_listspfic1('salary_head','sh_taxable','sh_id',$record)->sh_taxable;
+                                if($shtaxable == "Y"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',T,'.$shtaxable; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td><?php  $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                                if(!empty($shdesc)){
+                                    $description=$shdesc->sh_description;
+                                echo $description; }?></td>
+                            <td> <?php echo anchor("setup3/edit_salaryhead/{$record}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
+                            </td>
+                            <input type="hidden" name="item_id" value="<?php echo $record;?>"/>
+                        </tr>
+                        
+                    <?php }; ?>
+                    
+                <?php else : ?>
+                    <td colspan= "13" align="center"> No Records found...!</td>
+                <?php endif;?>
+               <!--------------------------------------end teaching heads ------------------------------------>      
+               <!-----------------------------------NON taeching---------------------------------------> 
+               
+               <?php if( count($nonteach) ):  ?>
+                    <tr> <td colspan="13"><?php echo "<b> Non Teaching Salary Heads</b>"; ?></td></tr>
+                    <?php foreach($nonteach as $record){ ?>
+                        <tr>
+                        
+                            <td><?php echo $serial_no++; ?></td>
+                            
+                            <td>
+                                <?php $ledgercode=$this->sismodel->get_listspfic1('salary_head','sh_ledgercode','sh_id',$record);
+                                   if(!empty($ledgercode)){     
+                                    $lcode=$ledgercode->sh_ledgercode; 
+                               
+                                    echo $lcode;
+                                   } ?>
+                                    
+                            </td>    
+                            <td><?php $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$record)->sh_code;
+                                echo $hcode; ?></td>
+                            <td><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$record)->sh_name;
+                                echo $shname; 
+                                $shtnt=$this->sismodel->get_listspfic1('salary_head','sh_tnt','sh_id',$record);
+                                if(!empty($shtnt)){
+                                    $tnt=$shtnt->sh_tnt;
+                                    echo '( '.$tnt .' )';
+                                }
+                            ?></td>
+                            <td><?php $shortname=$this->sismodel->get_listspfic1('salary_head','sh_shortname','sh_id',$record);
+                                if(!empty($shortname)){
+                                    $shortn=$shortname->sh_shortname;
+                                 echo $shortn;
+                                }?></td>
+                            <td><?php $catrgy=$this->sismodel->get_listspfic1('salary_head','sh_category','sh_id',$record);
+                                if(!empty($catrgy)){
+                                    $shcatrgy=$catrgy->sh_category;
+                                    echo $shcatrgy; 
+                                }?></td>
+                            
+                            
+                            <td> 
+                                
+                                <?php $shtype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$record)->sh_type;
+                                if($shtype == "I"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',I,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',I,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php if($shtype == "D"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',D,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',D,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php $shcaltype=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$record)->sh_calc_type;
+                                if($shcaltype == "Y"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
+                                <?php $shtaxable=$this->sismodel->get_listspfic1('salary_head','sh_taxable','sh_id',$record)->sh_taxable;
+                                if($shtaxable == "Y"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',T,'.$shtaxable; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td><?php  $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                                if(!empty($shdesc)){
+                                    $description=$shdesc->sh_description;
+                                echo $description; }?></td>
+                            <td> <?php echo anchor("setup3/edit_salaryhead/{$record}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
+                            </td>
+                            <input type="hidden" name="item_id" value="<?php echo $record;?>"/>
+                        </tr>
+                        
+                    <?php }; ?>
+                    
                 <?php else : ?>
                     <td colspan= "13" align="center"> No Records found...!</td>
                 <?php endif;?>
                
 		</tbody>
+               <!-- <tr>
+                    <td colspan="12">
+                        <div><button  name='applydata'>Update</button></div> 
+                    </td>
+                </tr> -->
+                </form>
         </table>
         </div><!------scroller div------>
         <p> &nbsp; </p>
