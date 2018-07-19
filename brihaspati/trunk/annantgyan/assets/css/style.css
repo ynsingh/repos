@@ -1,0 +1,132 @@
+body{margin: 0;padding: 0;}
+.navbar-brand-centered {
+        position: absolute;
+        left: 50%;
+        display: block;
+        width: 160px;
+        text-align: center;
+        background-color: transparent;
+    }
+    .navbar>.container .navbar-brand-centered, 
+    .navbar>.container-fluid .navbar-brand-centered {
+        margin-left: -80px;
+    }
+#menu{
+    background-color:  #23a923 ;
+    color:white;
+}
+
+#menu ul{
+    background-color:  #23a923 ;
+    color: white;
+}
+
+#menu ul li a{
+    
+    color: black;
+    font-size: 18px;
+}
+
+
+
+
+#menu ul li a:hover{
+    background-color:white;
+    color: black;
+    font-size: 18px;
+}
+
+ /*card create*/
+ #card{background: white;padding: 2em; box-shadow: 5px 10px 18px #888888;}
+
+/*ongoing style*/
+
+#bgstyle{
+    border:1px solid black;
+    padding: 5px 5px 5px 5px;
+    text-align: center; 
+    border-radius: 15px 15px; 
+    box-shadow: 5px 10px 18px #888888;
+}
+
+#card {box-shadow: 5px 10px 18px #888888;}
+
+/*Footer css*/
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color:  #23a923 ;
+    color: black;
+   text-align: center;
+   font-size: 18px;
+}
+
+/*course content css*/
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { border-width: 0px; }
+.nav-stacked > li + li {
+    margin-top: 0px;
+}
+.nav-tabs > li > a {
+    padding: 5px 10px 5px 10px !important;
+    text-align:left; 
+    font-size: 18px;
+    /*color:  #3498db ;
+    background-color: #E3F2FD;*/
+    color:  black ;
+    background-color: white;
+    border: 0px;
+    border-radius: 0px;
+
+    margin: 0;
+}
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+    background-color: #448AFF; 
+    color: black;
+    z-index: 99;
+    transition: all 0.5s ease 0s;
+}
+.nav-tabs > li.active > a {
+   color:  #3498db ;
+   background-color: #2962FF;
+    box-shadow: 0 0px 5px rgba(0, 0, 0, .6);
+    z-index: 100;
+}
+.nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+   color:  black ;
+   background-color: #2962FF;   
+   box-shadow: 0 0px 5px rgba(0, 0, 0, .6);
+   transition: all 0.5s ease 0s;
+}
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 1px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  transition: all 0.5s ease 0s;
+  
+}
+.text-center li a{color:#79522f;}
+.btn-primary {
+    background-color: #2962FF;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #0D47A1;
+}
