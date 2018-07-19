@@ -1427,33 +1427,37 @@ function __construct() {
 	}
 
 	function getpendinglist(){
-		$legid=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable')->id;
-		$whdata=array('ledger_id' => $legid);
-		$secunitlist=$this->BGAS_model->get_distinctrecord('entry_items','secunitid',$whdata);
-		$i=0;
 		$ldata= array();
-		foreach( $secunitlist as $row1){
-			$secid=$row1->secunitid;
-			$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'D');
-			$sumdb=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totdb',$whdata,'');
-			foreach($sumdb as $row2){
-				$dbamt = $row2->totdb;
+		$rec=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable');
+		if(!empty($rec)){
+			$legid=$rec->id;
+		
+			$whdata=array('ledger_id' => $legid);
+			$secunitlist=$this->BGAS_model->get_distinctrecord('entry_items','secunitid',$whdata);
+			$i=0;
+		
+			foreach( $secunitlist as $row1){
+				$secid=$row1->secunitid;
+				$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'D');
+				$sumdb=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totdb',$whdata,'');
+				foreach($sumdb as $row2){
+					$dbamt = $row2->totdb;
+				}
+				$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'C');
+                    $sumcr=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totcr',$whdata,'');
+                    foreach($sumcr as $row3){
+                        $cramt = $row3->totcr;
+                    }
+				if($dbamt >$cramt){
+					$sdata['secunit']=$secid;
+					$sdata['dbamt']=$dbamt;
+					$sdata['cramt']=$cramt;
+					$ldata[$i]=$sdata;
+				}
+				$i++;
 			}
-			$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'C');
-                        $sumcr=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totcr',$whdata,'');
-                        foreach($sumcr as $row3){
-                                $cramt = $row3->totcr;
-                        }
-			if($dbamt >$cramt){
-				$sdata['secunit']=$secid;
-				$sdata['dbamt']=$dbamt;
-				$sdata['cramt']=$cramt;
-				$ldata[$i]=$sdata;
-			}
-			$i++;
-		}
-                return $ldata;
-
+		}                
+		return $ldata;
 	}
 
 	function feependlist_report(){
@@ -1468,17 +1472,16 @@ function __construct() {
 	}
 
 	function getfeesentry(){
-		$legid=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable')->id;
-		//$this->db->select('id');
-                //$this->db->from('ledgers');
-                //$this->db->limit(1);
-               // $this->db->where('name','Fees Receivable');
-               // $legid=$this->db->get()->row()->id;
-			//echo $legid; die();
-                $selectfield='amount,dc,secunitid,ledger_code,update_date ';
-                $whdata=array('ledger_id' => $legid);
-                $whorder="secunitid asc,dc asc";
-                return $this->BGAS_model->get_orderlistspficemore('entry_items',$selectfield,$whdata,$whorder);
+		$res=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable');
+		if(!empty($res)){
+			$legid=$res->id;
+		
+            $selectfield='amount,dc,secunitid,ledger_code,update_date ';
+            $whdata=array('ledger_id' => $legid);
+            $whorder="secunitid asc,dc asc";
+            return $this->BGAS_model->get_orderlistspficemore('entry_items',$selectfield,$whdata,$whorder);
+		}
+		return '';
 	}
 
 	function feepend_report(){

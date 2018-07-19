@@ -1,7 +1,7 @@
 <?php
  	echo form_open('ckeditor');
 
-        $var = getcwd().'/docs/'.$file_name;
+        $var = getcwd().'/docs/BGAS'.$file_name;
 
         $myfile = fopen($var, 'r') or die("Unable to open file!");
 

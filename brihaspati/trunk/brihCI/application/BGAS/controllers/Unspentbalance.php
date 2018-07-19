@@ -122,7 +122,7 @@ function __construct() {
 		$report_name=' 2015'.$report_type.".txt";
 		$full_name=$filename.','. $report_name;
                 //set path where we want to delete file...
-                $path=$this->upload_path= realpath(BASEPATH.'../docs');
+                $path=$this->upload_path= realpath(BASEPATH.'../docs/BGAS');
 		$file_list = get_filenames($path);
 		$arr_len=count($file_list);
 		for($i=0; $i<$arr_len; $i++){
@@ -147,7 +147,7 @@ function __construct() {
                 $full_name=$filename.','. $report_name;
 		$this->load->helper('file');
 		$this->load->helper('url'); //You should autoload this one ;)
-	   	$path=$this->upload_path= realpath(BASEPATH.'../docs');
+	   	$path=$this->upload_path= realpath(BASEPATH.'../docs/BGAS');
                 $file_list = get_filenames($path);
                 $arr_len=count($file_list);
                 for($i=0; $i<$arr_len; $i++){

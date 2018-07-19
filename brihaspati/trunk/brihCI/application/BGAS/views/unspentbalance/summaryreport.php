@@ -22,7 +22,7 @@
 	{
 		ob_start();
 	}
-	$docs_path_url = realpath(BASEPATH.'../docs');
+	$docs_path_url = realpath(BASEPATH.'../docs/BGAS');
         $file_list = get_filenames($docs_path_url);
         $arr_len = count($file_list);
         $file_name = Date("F d, Y").'summary_report'.'.txt';
@@ -116,10 +116,11 @@
 			echo "<tbody>";
         		for($i=0; $i<$arr_len; $i++)
 			{
+				//echo $file_list[$i];
                 		$exp_date = explode(",",$file_list[$i]);
                 		if($file_list[$i] != 'notesToAccount.txt')
 				{
-                        		if(@$exp_date[1] == ' 2015summary_report.txt')
+                        		if(@$exp_date[1] == ' '.Date("Y").'summary_report.txt')
 					{
                         			echo "<tr>";
                                 		echo "<p>";
@@ -331,7 +332,7 @@ echo "<tr>";
 	if(!$make_txt)
 	{
 		// Get the content that is in the buffer and put it in your file //
-		file_put_contents('docs/'.Date("F d, Y").'summary_report'.'.txt', ob_get_contents());
+		file_put_contents('docs/BGAS/'.Date("F d, Y").'summary_report'.'.txt', ob_get_contents());
 	}
 	if(!$print_preview)
 	{
