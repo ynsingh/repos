@@ -76,8 +76,14 @@
 	   
 </td>
 <?php     
-	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
+//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
+//	$roleid=$this->session->userdata('id_role');
 	$roleid=$this->session->userdata('id_role');
+        if($roleid == 5){
+                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
+                $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
+        }
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -85,7 +91,9 @@
                             <td align=left colspan=4><b>Working Arrangement Particulars</b></td>
                             <td align="right">
                                 <?php
-                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+  //                              if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+				
+				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
                                       echo anchor("empmgmt/add_workarrangdata/{$emp_id}"," Add ",array('title' => ' Add Working Arrangement Data' , 'class' => 'red-link'));
                                 }
                                 ?>
@@ -136,7 +144,8 @@
                                </td>
                                 <td>
                                 <?php
-                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
 //                                                echo anchor("empmgmt/edit_workarrangdata/{$record->empsd_id}","Edit",array('title' => ' Edit Working Arrangement Data' , 'class' => 'red-link'));
                                         }
                                 ?>

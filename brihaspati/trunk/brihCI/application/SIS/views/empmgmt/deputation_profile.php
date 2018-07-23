@@ -15,7 +15,7 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
-<?php $current="disciplin"; ?>
+<?php $current="deputation"; ?>
 
         <script>
       
@@ -72,32 +72,22 @@
 <tr>
 <td valign="top" width=170>
 
-		<?php include 'profiletab.php'; ?>
+		<?php include 'empprofiletab.php'; ?>
 	   
 </td>
 <?php     
-//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-//	$roleid=$this->session->userdata('id_role');
+	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
 	$roleid=$this->session->userdata('id_role');
-        if($roleid == 5){
-                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-                $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-                $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-        }
-	$uname=$this->session->userdata('username');
-
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                         <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
-                            <td align=left colspan=4><b>Disciplinary Action Details</b></td>
+                            <td align=left colspan=4><b>Deputation Particulars</b></td>
                             <td align="right">
                                 <?php
-  //                              if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-                                        echo anchor("empmgmt/add_disciplindata/{$emp_id}"," Add ",array('title' => ' Add Disciplinary Action Data' , 'class' => 'red-link'));
-                                }
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                                 //       echo anchor("empmgmt/add_deputatdata/{$emp_id}"," Add ",array('title' => ' Add Deputation  Data' , 'class' => 'red-link'));
+                               // }
                                 ?>
 
                             </td>
@@ -106,52 +96,42 @@
                 <table class="TFtable" align="center">
                     <thead>
                         <tr>
-                            <th>Nature of Punishment</th>
-                            <th>Reason</th>
-                            <th>Date of Issuing order</th>
-                            <th>Date of Revoking the order</th>
-                            <th>Remarks</th>
+                            <th>Deputation</th>
+                            <th>Specification</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th ></th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        <?php if( !empty($disciplinactdata) ):  ?>
-                            <?php foreach($disciplinactdata as $record){;
+                        <?php if( !empty($deputdata) ):  ?>
+                            <?php foreach($deputdata as $record){;
 ?>
                             <tr>
                                 <td>
-                        <?php
-                                echo $record->sdap_punishnature;
+                                <?php
+                                 echo $record->sdp_deputation;
                                 ?>
                                 </td>
                                 <td>
-                                    <?php
-                                    echo $record->sdap_punishreason;
+                                <?php
+                                        echo $record->sdp_specification;
                                     ?>
                                </td>
-				<td>
+                                <td>
                                     <?php
-                                echo $record->sdap_fromdate;
-?>
-                                </td>
-				<td>
-                                    <?php
-                                echo $record->sdap_todate;
-?>
-                                </td>
-				<td>
-                                    <?php
-                                echo $record->sdap_punishstatus;
-?>
+                                echo $record->sdp_fromdate;
+                                ?>
                                 </td>
                                 <td>
+                                    <?php echo $record->sdp_todate; ?>
+                                </td>
+				<td>
                                 <?php
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-
-                                //              echo anchor("empmgmt/edit_disciplindata/{$record->empsd_id}","Edit",array('title' => ' Edit Disciplinary Action Data' , 'class' => 'red-link'));
-                                        }
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                                //              echo anchor("empmgmt/edit_deputatdata/{$record->empsd_id}","Edit",array('title' => ' Edit Deputation Data' , 'class' => 'red-link'));
+                                 //       }
                                 ?>
                                 </td>
                             </tr>

@@ -7,7 +7,6 @@
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-       <!-- <link rel="stylesheet" type="text/css" href="<?php// echo base_url(); ?>assets/css/profile.css">-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
 	<style type="text/css" media="print">
@@ -57,8 +56,6 @@
                 <?php
                 };
                 ?>
-<!--                </div>-->
-<!--            </td>-->
 </tr>
         </table>
 <?php $print=false;  $current="basic"; ?>
@@ -66,36 +63,36 @@
 	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
         <table width="100%" border=0>
-                <!--<tr><td colspan="10">
-                    <HR COLOR="#6699FF" SIZE="3">
-                </td></tr>-->
-                <tr style=" background-color:grey;width:100%;"> <td colspan="10"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" ></td></tr>
-               <tr><td valign="top"><table>
-		<tr>
-		<td align="center" colspan="10">
-                    <?php if(!empty($record->emp_photoname)):;?>
-                        <img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="85" height="100">
-                    <?php else:?>
-                        <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>
-                    <?php endif?>
-                      
-                </td></tr>
-		<tr>
-		<td valign="top" width=170>
-
-                <?php 
-		//	$emp_id=$record->emp_id;
-		//	include 'empprofiletab.php'; 
-		?>
-
-		</td>
-
+                <tr style=" background-color:grey;width:100%;"> 
+			<td colspan="10"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >
+			</td>
 		</tr>
-</table>
-		</td><td><table>
-                <!--<tr></tr>-->
-                <tr style=" background-color:grey;width:100%;"><td colspan="10">
-                    <p><b>Personal Information :</b></p>
+               	<tr> 
+			<td valign="top">
+			<table>
+		<!--		<tr>
+				<td align="center" colspan="10">
+                		    <?php //if(!empty($record->emp_photoname)):;?>
+		                        <img src="<?php //echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="85" height="100">
+                		    <?php //else:?>
+		                        <img src="<?php //echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>
+                		    <?php //endif?>
+                      
+                		</td></tr>-->
+				<tr>
+					<td valign="top" width=170>
+			                <?php 	
+						include 'empprofiletab.php'; 
+					?>
+					</td>
+
+				</tr>
+			</table>
+			</td>
+			<td valign="top">
+			<table  border=0>
+                		<tr style=" background-color:grey;width:100%;"><td colspan="10">
+		                    <p><b>Personal Information :</b></p>
                 </td></tr>
                 <tr></tr>
                 <tr> 
@@ -178,9 +175,6 @@
    
                 </tr>
                 <tr></tr>
-                <tr><td colspan="11">    
-                    <HR COLOR="#6699FF" SIZE="3">
-                </td></tr>
                 <tr></tr>
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Communication Information:</b></p>
@@ -196,9 +190,7 @@
                
                 </tr>
                 
-                <tr><td colspan="11">    
-                    <HR COLOR="#6699FF" SIZE="3">
-                </td></tr>
+                <tr></tr>
                 <tr></tr>
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Educational Information:</b></p>
@@ -215,9 +207,7 @@
                     <td><?php echo $record->emp_post; ?></td>-->
                
                 </tr>
-                <tr><td colspan="11">    
-                    <HR COLOR="#6699FF" SIZE="3">
-                </td></tr>
+                <tr></tr>
                 <tr></tr>
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">   
                     <p><b>Work Information:</b></p>
@@ -343,9 +333,6 @@
                     <td colspan="4"><?php echo $record->emp_seniortyid; ?></td>
                 </tr> 
                 <tr></tr>
-                <tr><td colspan="11">
-                    <HR COLOR="#6699FF" SIZE="3">
-                </td></tr>
                 <tr></tr> 
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Other Information :</b></p>
@@ -361,9 +348,7 @@
 		       
 			</tr>
                 <tr></tr>
-		 <tr><td colspan="11">
-                    <HR  COLOR="#6699FF" SIZE="3">
-                </td></tr>
+                <tr></tr>
 		 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>PhD Details:</b></p>
                 </td></tr>
@@ -398,9 +383,7 @@
 		<?php } ?>
                 </tr>
 		<tr></tr>
-		 <tr><td colspan="11">
-                    <HR  COLOR="#6699FF" SIZE="3">
-                </td></tr>
+                <tr></tr>
                  <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>NET Details:</b></p>
                 </td></tr>
@@ -423,9 +406,7 @@
 		<td><?php   echo $record->emp_netdiscipline;}?></td>
 		</tr>
 		<tr></tr>
-		<tr><td colspan="11">
-                    <HR  COLOR="#6699FF" SIZE="3">
-                </td></tr>
+                <tr></tr>
                  <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Veterinary Council (VC) Registration:</b></p>
                 </td></tr>
@@ -437,9 +418,6 @@
 		<td><?php echo date('d-m-Y',strtotime($record->emp_vciregdate));?></td>
 		</tr>
 		<tr></tr>
-		<tr><td colspan="11">
-                    <HR  COLOR="#6699FF" SIZE="3">
-		 </td></tr>
                 <tr></tr>
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Additional Assignments:</b></p>
@@ -486,10 +464,8 @@
                 </tbody>
 		</tr>
 
-	<tr><td colspan="11">
-                    <HR  COLOR="#6699FF" SIZE="3">
-                </td></tr>
                 <tr></tr>
+<?php if($print){  ?>
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Service Data :</b></p>
                     </td>
@@ -738,8 +714,9 @@
                     <HR  COLOR="#6699FF" SIZE="2">
                 </td></tr> 
 		</table>
+<?php } ?>
 		</td></tr>
-        
+		</table>        
          </div>   
  </div>   
         <p> &nbsp; </p>   

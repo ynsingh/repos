@@ -72,20 +72,12 @@
 <tr>
 <td valign="top" width=170>
 
-		<?php include 'profiletab.php'; ?>
+		<?php include 'empprofiletab.php'; ?>
 	   
 </td>
 <?php     
-//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-//	$roleid=$this->session->userdata('id_role');
+	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
 	$roleid=$this->session->userdata('id_role');
-        if($roleid == 5){
-                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-                $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-                $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-        }
-	$uname=$this->session->userdata('username');
-
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -93,11 +85,9 @@
                             <td align=left colspan=4><b>Disciplinary Action Details</b></td>
                             <td align="right">
                                 <?php
-  //                              if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-                                        echo anchor("empmgmt/add_disciplindata/{$emp_id}"," Add ",array('title' => ' Add Disciplinary Action Data' , 'class' => 'red-link'));
-                                }
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                                 //       echo anchor("empmgmt/add_disciplindata/{$emp_id}"," Add ",array('title' => ' Add Disciplinary Action Data' , 'class' => 'red-link'));
+                               // }
                                 ?>
 
                             </td>
@@ -146,12 +136,9 @@
                                 </td>
                                 <td>
                                 <?php
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
                                 //              echo anchor("empmgmt/edit_disciplindata/{$record->empsd_id}","Edit",array('title' => ' Edit Disciplinary Action Data' , 'class' => 'red-link'));
-                                        }
+                                 //       }
                                 ?>
                                 </td>
                             </tr>

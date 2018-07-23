@@ -15,7 +15,7 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
-<?php $current="disciplin"; ?>
+<?php $current="recruit"; ?>
 
         <script>
       
@@ -72,32 +72,22 @@
 <tr>
 <td valign="top" width=170>
 
-		<?php include 'profiletab.php'; ?>
+		<?php include 'empprofiletab.php'; ?>
 	   
 </td>
 <?php     
-//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-//	$roleid=$this->session->userdata('id_role');
+	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
 	$roleid=$this->session->userdata('id_role');
-        if($roleid == 5){
-                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-                $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-                $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-        }
-	$uname=$this->session->userdata('username');
-
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                         <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
-                            <td align=left colspan=4><b>Disciplinary Action Details</b></td>
+                            <td align=left colspan=4><b>Recruitment Particulars</b></td>
                             <td align="right">
                                 <?php
-  //                              if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-                                        echo anchor("empmgmt/add_disciplindata/{$emp_id}"," Add ",array('title' => ' Add Disciplinary Action Data' , 'class' => 'red-link'));
-                                }
+                               // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                                 //     echo anchor("empmgmt/add_recmethddata/{$emp_id}"," Add ",array('title' => ' Add Recruitment Method Data' , 'class' => 'red-link'));
+                               // }
                                 ?>
 
                             </td>
@@ -106,52 +96,48 @@
                 <table class="TFtable" align="center">
                     <thead>
                         <tr>
-                            <th>Nature of Punishment</th>
-                            <th>Reason</th>
-                            <th>Date of Issuing order</th>
-                            <th>Date of Revoking the order</th>
-                            <th>Remarks</th>
+                            <th>Method Of Recruitment</th>
+                            <th>Direct Category</th>
+                            <th>Direct Details</th>
+                            <th>Compassionate Deatils</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        <?php if( !empty($disciplinactdata) ):  ?>
-                            <?php foreach($disciplinactdata as $record){;
+                        <?php if( !empty($recruitdata) ):  ?>
+                            <?php foreach($recruitdata as $record){;
 ?>
                             <tr>
                                 <td>
-                        <?php
-                                echo $record->sdap_punishnature;
+
+                                <?php
+                                echo $record->srp_methodrecrtmnt;
                                 ?>
                                 </td>
                                 <td>
                                     <?php
-                                    echo $record->sdap_punishreason;
+                                echo $record->srp_subcategory;
                                     ?>
                                </td>
-				<td>
-                                    <?php
-                                echo $record->sdap_fromdate;
-?>
+<td>
+                                <?php
+                                echo $record->srp_detail;
+                                    ?>
                                 </td>
-				<td>
+				 <td>
                                     <?php
-                                echo $record->sdap_todate;
-?>
-                                </td>
-				<td>
-                                    <?php
-                                echo $record->sdap_punishstatus;
-?>
+                                if ($record->srp_compassionname != 0) $cempname=$this->commodel->get_listspfic1('employee_master','emp_name','emp_code',$record->srp_compassionname)->emp_name;
+                                if ($record->srp_compassiondesig != 0) $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->srp_compassiondesig)->desig_name;
+                                 if ($record->srp_compassiondept != 0) $dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->srp_compassiondept)->dept_name;
+                                echo "<b>Compassion Name-: </b>".$cempname."<br>"."<b>Designation-: </b>".$desig."<br>"."<b>Department-: </b>". $dept;
+                                ?>
                                 </td>
                                 <td>
                                 <?php
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-
-                                //              echo anchor("empmgmt/edit_disciplindata/{$record->empsd_id}","Edit",array('title' => ' Edit Disciplinary Action Data' , 'class' => 'red-link'));
-                                        }
+                              //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                        //                        echo anchor("empmgmt/edit_recmethddata/{$record->empsd_id}","Edit",array('title' => ' Edit Recruitment Method Data' , 'class' => 'red-link'));
+                                //        }
                                 ?>
                                 </td>
                             </tr>

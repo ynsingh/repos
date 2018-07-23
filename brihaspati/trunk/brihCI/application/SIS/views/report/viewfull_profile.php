@@ -440,7 +440,8 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                             <td align=left colspan=4><b></b></td>
                             <td align="right">
                                 <?php
-                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
+                              //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
+				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
                                         echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
                                 }
                                 ?>

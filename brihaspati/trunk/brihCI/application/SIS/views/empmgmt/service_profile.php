@@ -71,11 +71,7 @@
 <tr>
 <td valign="top" width=170>
 <?php	
-//	if($roleid == 4){
-//		include 'empprofiletab.php';
-//	}else{
-		include 'profiletab.php'; 
-//	}
+		include 'empprofiletab.php';
 ?>
 	   
 </td>
@@ -93,11 +89,9 @@
                             <td align=left colspan=4><b>Service Particulars</b></td>
                             <td align="right">
                                 <?php 
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-					   if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-
-					echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
-				}
+          //                      if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+	//				echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
+	//			}
 				?>
 				
                             </td>  
@@ -171,11 +165,9 @@
                                 </td>
                                 <td>
                                 <?php 
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				   if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-
-						echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));
-					}
+          //                      if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+	//					echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));
+	//				}
 				?>
                                 </td> 
                             </tr>

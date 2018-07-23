@@ -15,8 +15,7 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
-<?php $current="disciplin"; ?>
-
+<?php $current="leave"; ?>
         <script>
       
             function printDiv(printme) {
@@ -72,32 +71,22 @@
 <tr>
 <td valign="top" width=170>
 
-		<?php include 'profiletab.php'; ?>
+		<?php include 'empprofiletab.php'; ?>
 	   
 </td>
 <?php     
-//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-//	$roleid=$this->session->userdata('id_role');
+	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
 	$roleid=$this->session->userdata('id_role');
-        if($roleid == 5){
-                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-                $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-                $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-        }
-	$uname=$this->session->userdata('username');
-
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                         <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
-                            <td align=left colspan=4><b>Disciplinary Action Details</b></td>
+                            <td align=left colspan=4><b>Leave Particulars</b></td>
                             <td align="right">
                                 <?php
-  //                              if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-                                        echo anchor("empmgmt/add_disciplindata/{$emp_id}"," Add ",array('title' => ' Add Disciplinary Action Data' , 'class' => 'red-link'));
-                                }
+                              //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                        //              echo anchor("empmgmt/add_leavepertdata/{$emp_id}"," Add ",array('title' => ' Add Leave Data' , 'class' => 'red-link'));
+                               // }
                                 ?>
 
                             </td>
@@ -106,52 +95,58 @@
                 <table class="TFtable" align="center">
                     <thead>
                         <tr>
-                            <th>Nature of Punishment</th>
-                            <th>Reason</th>
-                            <th>Date of Issuing order</th>
-                            <th>Date of Revoking the order</th>
-                            <th>Remarks</th>
+                            <th>Nature of Leave</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>No. of Days</th>
+                                <th> </th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        <?php if( !empty($disciplinactdata) ):  ?>
-                            <?php foreach($disciplinactdata as $record){;
+                        <?php if( !empty($leavedata) ):  ?>
+                            <?php foreach($leavedata as $record){;
 ?>
                             <tr>
                                 <td>
-                        <?php
-                                echo $record->sdap_punishnature;
+
+                                <?php $sc=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name;
+                                "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->empsd_campuscode)->sc_code.")";
+                                 if ($record->empsd_ucoid != 0) $uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name;
+                                 if ($record->empsd_deptid != 0)$dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name;
+                                 $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
+                                 $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name;
+                                echo "<b>Campus-: </b>".$sc."<br/> "."<b>UO-: </b>".$uo."<br/> "."<b>Dept-: </b>".$dept."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
                                 ?>
                                 </td>
                                 <td>
                                     <?php
-                                    echo $record->sdap_punishreason;
+                                    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name;
+                                    $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
+                                    $group=$record->empsd_group;
+                                    $worktype=$record->empsd_worktype;
+                                    echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
                                     ?>
                                </td>
 				<td>
                                     <?php
-                                echo $record->sdap_fromdate;
-?>
+                                    $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name;
+                                    $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
+                                    $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
+                                    $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
+                                    $dateofagp=implode('-', array_reverse(explode('-', $record->empsd_pbdate)));
+                                    $gradepay=$record->empsd_gradepay;
+                                    $level=$record->empsd_level;
+                                    echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; ?>
                                 </td>
-				<td>
-                                    <?php
-                                echo $record->sdap_todate;
-?>
-                                </td>
-				<td>
-                                    <?php
-                                echo $record->sdap_punishstatus;
-?>
+                                <td>
+                                    <?php echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;?>
                                 </td>
                                 <td>
                                 <?php
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))||($uname == "ro@tanuvas.org.in")){
-
-
-                                //              echo anchor("empmgmt/edit_disciplindata/{$record->empsd_id}","Edit",array('title' => ' Edit Disciplinary Action Data' , 'class' => 'red-link'));
-                                        }
+                              //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
+                        //                      echo anchor("empmgmt/edit_leavepertdata/{$record->empsd_id}","Edit",array('title' => ' Edit Leave Data' , 'class' => 'red-link'));
+                                //        }
                                 ?>
                                 </td>
                             </tr>
