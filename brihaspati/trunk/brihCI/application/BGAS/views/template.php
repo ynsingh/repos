@@ -412,13 +412,21 @@ $(document).ready(function() {
                                         echo"</li>";
 					echo"<li>";
                                                 echo anchor('report2/tdsdep_report','TDS Deposit Report', array('title'=>'TDS Deposit Report'));
-                                        echo"</li>";
-					echo"<li>";
-                                                echo anchor('report2/feependlist_report','Fees Pending Report', array('title'=>'Fees Pending Report'));
-                                        echo"</li>";
-					echo"<li>";
-                                                echo anchor('report2/feepend_report','Fees  Report', array('title'=>'Fees  Report'));
-                                        echo"</li>";
+					echo"</li>";
+					echo "<li>";
+                                                echo anchor('','Fees Report');
+                                                echo "<ul>";
+							echo"<li>";
+		                                                echo anchor('report2/feepend_report','Fees  Report', array('title'=>'Fees  Report'));
+                		                        echo"</li>";
+							echo"<li>";
+                                                		echo anchor('report2/feependlist_report','Fees Pending Report', array('title'=>'Fees Pending Report'));
+		                                        echo"</li>";
+							echo"<li>";
+                                		                echo anchor('report2/mailsenddefaulter','Mail to Fees  Defaulter', array('title'=>'Fees  Report'));
+							echo"</li>";
+                                                echo "</ul>";
+                                        echo "</li>";
 					echo"<li>";
                                                 echo anchor('report2/sundry_credit_report','Sundry Creditors Report', array('title'=>'Sundry Creditors Report'));
                                         echo"</li>";
@@ -430,6 +438,20 @@ $(document).ready(function() {
                                                 echo anchor('report2/negative_trans_report','Negative Transaction Report', array('title'=>'Negative Transaction Report'));
                                         echo"</li>";
 
+					echo "<li>";
+                                                echo anchor('','No Dues');
+                                                echo "<ul>";
+							echo"<li>";
+		                                           //     echo anchor('report2/nodueslist_report','No Dues Issued List', array('title'=>'No Dues Issued List'));
+                		                        echo"</li>";
+							echo"<li>";
+                                                		echo anchor('report2/feependlist_report','Student Dues List', array('title'=>'Dues List Report'));
+		                                        echo"</li>";
+							echo"<li>";
+                                		             //   echo anchor('report2/noduescertificate','No Dues Certificate', array('title'=>'No Dues Certificate'));
+		                                        echo"</li>";
+						echo"</ul>";
+		                       echo"</li>";
 
 				echo"</ul>";
 

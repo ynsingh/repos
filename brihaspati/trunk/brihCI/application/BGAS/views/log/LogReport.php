@@ -12,7 +12,7 @@
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         echo form_input($text);
 	echo "</span>";
-	echo "<span id=\"tooltip-content-1\"> Please enter date in dd mm yyyy format.</span>";echo "</span>";
+	echo "<span id=\"tooltip-content-1\"> Please enter date in dd mm yyyy format and ip in xxx.xxx.xxx.xxx format and other are test string</span>";echo "</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         echo form_submit('submit', 'Search');

@@ -458,12 +458,12 @@ class paymentreceipt
                 $CI->email->message($message);
                 if(!($CI->email->send()))
 		{
-			$CI->messages->add('Your entry is created -' . $mail_messages);
-			//$CI->messages->add('Please Set the correct Email Configuration Settings---' . 'error');
+			//$CI->messages->add('Your entry is created -' . $mail_messages);
+			$CI->messages->add('Please Set the correct Email Configuration Settings---' . 'error');
                         return FALSE;
 			}
   		else{
-			 $CI->messages->add('Your Mail Sucessfully send!---'. ' success');
+			 $CI->messages->add('Your Mail Sucessfully sent.'. ' success');
 			// redirect('admin/user/');
 			 return TRUE;
   		}

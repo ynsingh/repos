@@ -5411,7 +5411,7 @@ d Investments')
 		$total_intrest = 0;
 		$total_saving = 0;
 		$net_total = 0;
-		
+		$fund_addition=0;	
 	
 		$CI =& get_instance();
         	$current_active_account = $CI->session->userdata('active_account');
@@ -5494,9 +5494,9 @@ d Investments')
 //	print_r(" In i name 1 for ".$value);
 //			print_r($value);
 			$fund_addition = $value[1];
-			$fund_total = $fund_total + $fund_addition;
+			$fund_total = (int)$fund_total + (int)$fund_addition;
 			if($type == 'view')
-                        echo "<td align=\"right\">" . convert_amount_dc(+$fund_addition) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(+(int)$fund_addition) . "</td>";
                 }
 		if($type == 'view'){
 		//echo "fund_add======>$fund_addition=======fund_total=========>$fund_total";
@@ -5667,7 +5667,7 @@ d Investments')
 			$other_fund = $value[5];
 
 			//$other_addition = 0;
-			$total = ($fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest+$other_fund); 
+			$total = ((int)$fund_addition + (int)$fund_investment_income + (int)$accru_intrest + (int)$earned_intrest + (int)$other_fund); 
 			if($type == 'view'){
 			echo "<td align=\"right\">";
 		        echo "<strong>" . convert_amount_dc($total) . "</strong>";
@@ -5690,6 +5690,7 @@ d Investments')
 		$total_revenue_exp = 0;
 		$net_total1 = 0;
 		$net_total3 = 0;
+		$fund_addition = 0;
 
 		$CI =& get_instance();
                 $current_active_account = $CI->session->userdata('active_account');
@@ -5839,7 +5840,7 @@ d Investments')
                         $revenue_exp = $value[7];
 
                         //$other_addition = 0;
-                        $totalA = ( $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest+$other_fund);
+                        $totalA = ( (int)$fund_addition + (int)$fund_investment_income + (int)$accru_intrest + (int)$earned_intrest + (int)$other_fund);
 			$totalB = ($capital_exp + $revenue_exp);
 			
 			$net_closing = $totalA - $totalB;

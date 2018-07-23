@@ -1425,6 +1425,35 @@ function __construct() {
 	
         return;
 	}
+	function mailsenddefaulter(){
+		$flag=false;
+		$this->load->library('paymentreceipt');
+		$this->load->library('logger');
+		$dsfailterlist= $this->getpendinglist();
+		if(!empty($dsfailterlist)){
+			foreach($dsfailterlist as $dflist){
+				$secid=$dflist['secunit'];
+				$dbamount=$dflist['dbamt'];
+				$cramount=$dflist['cramt'];
+				$balamt=$dbamount - $cramount;
+				$secname=$this->BGAS_model->get_listspfic1('addsecondparty','partyname','sacunit',$secid)->partyname;
+				$secemail=$this->BGAS_model->get_listspfic1('addsecondparty','email','sacunit',$secid)->email;
+
+
+				$message = 'Dear '.$secname .',<br>Please paid your dues as soon as possible.The details of your fees dues are given below-<br><br>Balance Fees Amount = '.$balamt.'  <br><br> This is system generated mail.';
+                        	$subject = 'Please paid the balance fees amount';
+                        	// send mail to user
+				$flag=$this->paymentreceipt->send_mail($secemail,$subject,$message);
+				$this->logger->write_message("success", "Mail send to defaulter user. The amount is Rs. ".$balamt." and email is " . $secemail. " and  name is ".$secname);
+				
+
+			}
+		}
+		if($flag)
+			$this->messages->add('The mail has been sent to all defaulter student' ,'');
+		$data['result']=$dsfailterlist;
+		$this->template->load('template', 'report2/feependlist_report', $data);
+	}
 
 	function getpendinglist(){
 		$ldata= array();
@@ -1443,11 +1472,11 @@ function __construct() {
 				foreach($sumdb as $row2){
 					$dbamt = $row2->totdb;
 				}
-				$whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'C');
-                    $sumcr=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totcr',$whdata,'');
-                    foreach($sumcr as $row3){
-                        $cramt = $row3->totcr;
-                    }
+			        $whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'C');
+        	            	$sumcr=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totcr',$whdata,'');
+                	    	foreach($sumcr as $row3){
+                        		$cramt = $row3->totcr;
+                    		}
 				if($dbamt >$cramt){
 					$sdata['secunit']=$secid;
 					$sdata['dbamt']=$dbamt;

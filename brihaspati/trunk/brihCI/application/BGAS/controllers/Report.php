@@ -3969,7 +3969,8 @@ function __construct() {
 		{
 			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
 			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);	
-			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			//$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			$data['search_by_active'] = $this->input->post('search_by', TRUE);
 	
 		} 
 
