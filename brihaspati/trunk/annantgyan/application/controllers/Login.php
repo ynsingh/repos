@@ -69,14 +69,16 @@ class Login extends CI_Controller {
 		if($crsexist){
 			$count = $this->commodel->getnoofrows("user_course_type",$whdata);
 			if($count == 1){
-				redirect('login/usr_login');
+				//redirect('login/usr_login');
 			}else{
-				redirect('login/course_login');
+				//redirect('login/course_login');
 			}	
 		}
 		else{
-			redirect('Course-Registration');
+			//redirect('Course-Registration');
 		}
+	    //redirect('http://www.annantgyan.com');
+	    redirect('welcome');
     }
 
 	public function signup()
@@ -144,14 +146,14 @@ class Login extends CI_Controller {
                     {*/
                        
                       //  $this->load->model("Mailsend_model","mailmodel");
-                $subject = "Registered Successfully.";
+                $subject = "Registered Successfully";
 			//$verifylink = base_url("login/verify/".$email.'/'.$rstring);
 				$erstring= $email.'---'.$rstring;
 				$verifylink = base_url("login/verify/".$erstring);
 				//<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
-				$message  = "<table width='50%'; style='border:1px solid #3A5896;color:white;font-size:18px;' align=center border=0>
+				$message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
 					<tr><td></td></tr>
-					<tr><td colspan=2><b>Your are registered successfully, Your details are given below. </td></tr>
+					<tr><td colspan=2><b>Your are registered successfully, Your details are given below</td></tr>
 					<tr height=15><td colspan=2></td></tr>
 					<tr><td width=370><b>Email: </b></td><td align=left>".$email."</td></tr> 
 					<tr><td><b>Password : </b> </td><td align=left>".$pawd. "</td><tr>
@@ -219,7 +221,9 @@ class Login extends CI_Controller {
 				//	$insert = $this->commodel->insertrec('user_course_type', $array1);
 				//	$confmes = "You are  course select successfully.";
                 //    $this->session->set_flashdata('success',$confmes);
-                    redirect('login/usr_login');
+                    //redirect('login/usr_login');
+                     //redirect('http://www.annantgyan.com');
+	    redirect('welcome');
 				//}	
 			}
 			
@@ -278,12 +282,20 @@ class Login extends CI_Controller {
 		//$this->name = $this->session->userdata['su_name'];
 			 //print_r($id);die;
 		//echo get_cookie('su_name'); 
+		//$suid = $this->session->userdata['su_id'];
 		if(isset($this->session->userdata['su_name'])){
-			$this->load->view('loginpage/usr_login');
+			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			//$this->load->view('loginpage/usr_login',$data);
+			 //redirect('http://www.annantgyan.com');
+	    redirect('welcome');
+			
 		}
 		elseif(isset(($this->session->userdata['first_name']))){
 			//echo "hello";
-			$this->load->view('loginpage/usr_login');
+			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			//$this->load->view('loginpage/usr_login',$data);
+			 //redirect('http://www.annantgyan.com');
+	    redirect('welcome');
 		}
 		else{
 			redirect('login/signin');
@@ -397,6 +409,69 @@ class Login extends CI_Controller {
         $this->session->set_flashdata('success',$confmes);
 
 		redirect('login/signin');
+	}
+	
+	public function usr_enquiry(){
+		 if(isset($_POST['submit'])) {
+        
+            $this->form_validation->set_rules('usr_name','Name Field','trim|xss_clean|required|alpha');
+            $this->form_validation->set_rules('usr_email','Email Field','trim|xss_clean|required');
+            $this->form_validation->set_rules('usr_mobile','Mobile Field','trim|xss_clean|required');
+            $this->form_validation->set_rules('usr_interest','Interest-In Field','trim|xss_clean|required');
+            $this->form_validation->set_rules('usr_othqu','Other Query','trim|xss_clean');
+           
+            //if form validation true
+            if($this->form_validation->run()==TRUE){
+            
+                $data = array(
+                    'en_name'		=>$_POST['usr_name'],
+                    'en_mobile'		=>$_POST['usr_mobile'],
+                    'en_email'		=>$_POST['usr_email'],
+                    'en_interestin'	=>$_POST['usr_interest'],
+                    'en_otherquery'	=>$_POST['usr_othqu'],
+                    'enquiry_date'	=>date('y-m-d h:i:s')
+                   
+                );
+                $enqusr=$this->commodel->insertrec('enquiry', $data) ;
+                
+                 $subject = "Enquiry Details";
+			//$verifylink = base_url("login/verify/".$email.'/'.$rstring);
+				//$email = 'sumitsesaxena@gmail.com';
+			    $email = 'annantgyan@gmail.com';
+				//<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+				$message  = "<table width='50%'; style='border:1px solid #3A5896;color: #79522f;font-size:18px;border-radius:15px;padding:10px 10px 20px 20px;' align=center border=0>
+					<tr><td></td></tr>
+					<tr><td colspan=2><b>User Enquiry Details</td></tr>
+					<tr height=15><td colspan=2></td></tr>
+					<tr><td width=370><b>Name: </b></td><td align=left>".$_POST['usr_name']."</td></tr> 
+					<tr><td><b>Email-Id : </b> </td><td align=left>".$_POST['usr_email']. "</td><tr>
+					<tr><td><b>Mobile no. : </b> </td><td align=left>".$_POST['usr_mobile']. "</td><tr>
+					<tr><td><b>Interest-In : </b> </td><td align=left>".$_POST['usr_interest']. "</td><tr>
+					<tr><td><b>Other Query : </b> </td><td align=left>".$_POST['usr_othqu']. "</td><tr>
+					
+					</table> " ;
+				$mails=$this->mailmodel->mailsnd($email,$subject,$message,'');
+                if (!$enqusr)
+                {
+                    $this->logger->write_logmessage("insert", "Enquiry Detail Not Submitted." );
+                    $this->logger->write_dblogmessage("insert", "Enquiry Detail Not Submitted. " );
+                    $this->session->set_flashdata("err_message",'Error in Enquiry Detail Submit. ' );
+                    redirect('login/usr_enquiry');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Enquiry Detail Send Successfully!!");
+                    $this->logger->write_dblogmessage("insert", "Enquiry Detail Submitted");
+                    $this->session->set_flashdata("success", "Enquiry Detail Submit Successfully...");
+                     redirect('login/usr_enquiry');
+                }
+
+
+                     
+            }
+        }
+
+		$this->load->view('inno_ruralurban');
 	}
 }
 

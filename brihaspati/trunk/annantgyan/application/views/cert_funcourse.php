@@ -42,9 +42,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-12"  id="card" >
 	 	<!--<p style="color: #79522f;font-size: 24px;font-weight: bold;text-decoration:underline;">Director Message</p>-->
 	 	<p  style="color: black;font-size: 18px;">
-	 		The certified fun learning courses are designed for students of standard 4th to 8th at minimum cost. All students can get benefited and gain knowledge by our courses/workshops.
+	 		<!--The certified fun learning courses are designed for students of standard 4th to 8th at minimum cost. All students can get benefited and gain knowledge by our courses/workshops.-->
+	 		We are conducting certified fun learning courses/workshops for students of standard 4<sup>th</sup> to 7<sup>th</sup> at minimum cost. All students can get benefited and gain knowledge in fun learning way.
 	 	</p>
 	 	
+    </div>
+
+    <div class="row">
+    	<div class="col-md-12">
+    		<img src="<?php echo base_url('images/Learn-With-Fun.png');?>" style="width: 100%;" id="card">
+    	</div>
+    	
     </div>
 
 </div>

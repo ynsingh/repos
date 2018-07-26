@@ -92,12 +92,18 @@ now override the 3.3 new styles for modern browsers & apply opacity
          <li data-target="#carousel" data-slide-to="3"></li>
           <li data-target="#carousel" data-slide-to="4"></li>
           <li data-target="#carousel" data-slide-to="5"></li>
+          <li data-target="#carousel" data-slide-to="6"></li>
     </ol>
     <!-- Carousel items -->
     <div class="carousel-inner carousel-zoom" >
         <div class="active item"><img class="img-responsive" src="images/bann1.jpg" style="height:550px;width:100%;">
           <div class="carousel-caption">
            <h4>Play, Explore & <span>Learn</span></h4>
+           
+          </div>
+        </div>
+         <div class="item"><img class="img-responsive" src="images/bann11.png" style="height:550px;width:100%;">
+          <div class="carousel-caption">
            
           </div>
         </div>

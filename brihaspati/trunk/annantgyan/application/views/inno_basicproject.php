@@ -50,7 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	 	</ul>
 	 	
     </div>
-
+<div class="row">
+    	<div class="col-md-12">
+    		<img src="<?php echo base_url('images/scie_fun.png');?>" style="width: 100%;" id="card">
+    	</div>
+    	
+    </div>
 </div>
 </br></br></br></br></br>
 

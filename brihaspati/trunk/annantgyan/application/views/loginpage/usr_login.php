@@ -121,7 +121,7 @@ $('.panel-group').on('shown.bs.collapse', toggleIcon);
             <div class="row tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="intro">
                 <?php 
-                    $intro = 'uploads/course/1/content/CH.18.pdf';
+                    $intro = 'uploads/course/'.$couid.'/content/CH.18.pdf';
                     if(file_exists($intro)) {
                 ?>    
                    <embed src="<?php echo base_url($intro);?>" type="application/pdf"   height="450px" width="100%">
@@ -139,7 +139,7 @@ $('.panel-group').on('shown.bs.collapse', toggleIcon);
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="feedback">
                    <?php 
-                    $feedback = 'uploads/course/1/content/JVC Vol 1.pdf';
+                    $feedback = 'uploads/course/'.$couid.'/content/JVC Vol 1.pdf';
                     if(file_exists($feedback)) {
                 ?>    
                    <embed src="<?php echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
@@ -149,7 +149,7 @@ $('.panel-group').on('shown.bs.collapse', toggleIcon);
                 </div>
                  <div role="tabpanel" class="tab-pane fade" id="ocg">
                   <?php 
-                    $feedback = 'uploads/course/1/content/p1.pdf';
+                    $feedback = 'uploads/course/'.$couid.'/content/p1.pdf';
                     if(file_exists($feedback)) {
                 ?>    
                    <embed src="<?php echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">

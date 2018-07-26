@@ -30,6 +30,130 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       }
   }
  </script>
+ <script type="text/javascript">
+window.fbAsyncInit = function() {
+    // FB JavaScript SDK configuration and setup
+    FB.init({
+      appId      : '864860603901989', // FB App ID
+      cookie     : true,  // enable cookies to allow the server to access the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.10' // use graph api version 2.10
+    });
+    
+    // Check whether the user already logged in
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            //display user data
+          
+            getFbUserData();
+        }
+    });
+};
+
+// Load the JavaScript SDK asynchronously
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+// Facebook login with JavaScript SDK
+function fbLogin() {
+
+    FB.login(function (response) {
+        if (response.authResponse) {
+            // Get and display the user profile data
+            getFbUserData();
+        } else {
+            document.getElementById('status').innerHTML = 'User cancelled login or did not fully authorize.';
+        }
+    }, {scope: 'email'});
+}
+
+// Fetch the user profile data from facebook
+function getFbUserData(){
+    FB.api('/me', {fields: 'id,first_name,last_name,email,link,gender,locale,picture,cover'},
+    function (response) {
+       document.getElementById('fbLink').setAttribute("onclick","fbLogout()");
+       // document.getElementById('fbLink').innerHTML = 'Logout from Facebook';
+        //document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.first_name + '!';
+      
+         //document.getElementById('userData').innerHTML = '<img src="'+response.cover.source+'" /><img src="'+response.picture.data.url+'"/>';
+         //document.getElementById('userData').innerHTML = '<div>Name : ' +response.first_name+' '+response.last_name+'</div> <div>Email-Id :' +response.email+'</div><div>Gender :' +response.gender+ '</div><div> Locale:'+response.locale+'</div><div> Profile Link :<a target="_blank" href="'+response.link+'">click to view profile</a></div><div>Profile Pic: <img src="'+response.picture.data.url+'"/></div>';
+
+         
+       // document.getElementById('userData').innerHTML = '<div style="position: relative;"><img src="'+response.cover.source+'" /><img style="position: absolute; top: 90%; left: 25%;" src="'+response.picture.data.url+'"/></div><p><b>FB ID:</b> '+response.id+'</p><p><b>Name:</b> '+response.first_name+' '+response.last_name+'</p><p><b>Email:</b> '+response.email+'</p><p><b>Gender:</b> '+response.gender+'</p><p><b>Locale:</b> '+response.locale+'</p><p><b>Profile Link:</b> <a target="_blank" href="'+response.link+'">click to view profile</a></p>';
+        //var1 = response.first_name+' '+response.last_name ;
+       // var2 = response.email;
+       // var3 = var1+' '+var2;
+          // Save user data
+         //  alert(var3);
+        //saveUserData(response);
+       // saveUserData(var3);
+                var fname = response.first_name;
+                var lname = response.last_name;
+                var email = response.email;
+                var uid = response.id;
+                var gen = response.gender;
+                var profilepic = response.picture.data.url;
+               // var loca = response.locale;
+               // var ucover = response.cover.source;
+              //  var ulink = response.link;
+               // var comb  = fname+","+lname+","+email+","+uid+","+gen+","+profilepic+","+loca+","+ucover;
+               var comb  = fname+","+lname+","+email+","+uid+","+gen+","+profilepic;
+              // alert(comb);
+                  $.ajax({
+                    
+                      type : "POST",
+                      url : "<?php echo base_url();?>login/udata", //enter the login controller URL here
+                      cache: false,
+                      dataType : "html",
+
+                      data : {
+                          "datacomb" : comb
+                          },
+
+                      success : function(data) {
+                          // do something, e.g. hide the login form or whatever
+                          window.location.assign('<?php echo base_url();?>login/usr_login');
+                       //   alert('success');
+                          
+                      },
+
+                      error : function(data) {
+                          // do something
+                          alert('There is some problem to sign in.'); //window.location = '<?php //echo base_url();?>login/usr_login';
+                      }
+                  });
+    });
+}
+
+// Save user data to the database
+//function saveUserData(var3){
+//alert(var3);
+//$jsonCont = file_get_contents(userData);alert($jsonCont);
+    //$.post("<?php //echo base_url('login/saveData'); ?>",{userData: JSON.stringify(var3)}, function(data){ return true; },"json");
+    //alert(var3);
+   // document.getElementById('status').innerHTML = 'Yor fb data insert in table.';
+   // }
+
+// Logout from facebook
+function fbLogout() {
+    FB.logout(function() {
+        document.getElementById('fbLink').setAttribute("onclick","fbLogout()");
+        document.getElementById('fbLink').innerHTML = 'Logout from Facebook';
+        document.getElementById('fbLink').innerHTML = '<img src="<?php echo base_url('assets/img/flogin.png'); ?>"  style="height:40px;"/>';
+        document.getElementById('userData').innerHTML = '';
+        document.getElementById('status').innerHTML = 'You have successfully logout from Facebook.';
+    });
+}
+
+function Logout() {
+  FB.logout(function () { window.location.assign("<?php echo base_url();?>welcome"); });
+}
+</script>
 </head>
 <body>
 
@@ -139,10 +263,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div id="signupbox" style=" margin-top:50px" class="mainbox loginbox">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <div class="panel-title" style="font-size: 25px;">Sign Up</div>
+                            <div class="panel-title" style="font-size: 25px;">New Registration</div>
                             <div style="float:right; font-size: 85%; position: relative; top:-10px">
                                 <!--<a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()"  style="font-size: -->
-                            <a id="signinlink" href="<?php echo site_url('Sign-In');?>" style="font-size:18px;">Sign In</a>
+                            <a id="signinlink" href="<?php echo site_url('Sign-In');?>" style="font-size:18px;">Log-In</a>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -201,9 +325,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="form-group">
                                     <!-- Button -->
                                     <div class="signup-btn">
-                                        <input type="submit" name="signup" class="btn btn-info btn-lg" value="Register">
+                                        <input type="submit" name="signup" class="btn btn-info" value="Register">
                                         <!--<button id="btn-signup btn-lg" type="button" class="btn btn-info">
                                             <i class="icon-hand-right"></i> &nbsp; Sign Up</button>-->
+                                            <a href="javascript:void(0);" onclick="fbLogin();" id="fbLink"><img src="<?php echo base_url('assets/img/register.png'); ?>" style="height:40px;"/></a>
                                     </div>
                                 </div>
                                 <!--<div style="border-top: 1px solid #999; padding-top:20px" class="form-group">

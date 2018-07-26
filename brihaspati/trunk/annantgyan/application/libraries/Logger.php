@@ -115,6 +115,40 @@ class Logger
                 return;
         }
 
+         /*
+         * Write message to database log  Levels defined are :
+         * 0 - Disables logging
+         * 1 - insert 
+         * 2 - update
+         * 3 - view 
+         */
+
+	function write_sitevisit($level = "view", $title = "", $desc = "")
+        {
+                $CI =& get_instance();
+
+                /* Check if logging is enabled. Skip if it is not enabled */
+                if ($CI->config->item('log') == "0")
+                        return;
+
+                $data['date'] = date("Y-m-d H:i:s");
+                switch ($level)
+                {
+                        case "insert": $data['level'] = 1; break;
+                        case "update": $data['level'] = 2; break;
+                        case "view": $data['level'] = 3; break;
+                        default: $data['level'] = 3; break;
+                }
+                $data['host_ip'] = $CI->input->ip_address();
+                $data['user'] = $CI->session->userdata('username');
+                $data['url'] = uri_string();
+                $data['user_agent'] = $CI->input->user_agent();
+                $data['message_title'] = $title;
+                $data['message_desc'] = $desc;
+                $CI->db->insert('visitors', $data);
+                return;
+        }
+
         function read_recent_messages()
         {
                // $CI =& get_instance();

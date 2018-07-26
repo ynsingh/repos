@@ -11,7 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
 	  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+   	<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+   	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 		<script type="text/javascript">
 	
@@ -19,6 +21,70 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</script>
 	
 </head>
+
+<style type="text/css">
+	/*Contact sectiom*/
+.content-header{
+  font-family: 'Oleo Script', cursive;
+  color:#fcc500;
+  font-size: 45px;
+}
+
+.section-content{
+  text-align: center; 
+ 
+}
+#contact{
+    -webkit-box-shadow: 5px 5px 15px 5px #000000; 
+	box-shadow: 5px 5px 15px 5px #000000;
+    font-family: 'Teko', sans-serif;
+  padding-top: 0px;
+  width: 100%;
+  
+ 
+  background: green; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left,  #1e8449  , #28b463); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left,  #28b463  ,  #1e8449  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color : #fff;    
+}
+.contact-section{
+  padding-top: 40px;
+}
+.contact-section .col-md-6{
+  width: 49%;
+}
+
+.form-line{
+  border-right: 1px solid #B29999;
+}
+
+.form-group{
+  margin-top: 10px;
+}
+label{
+  font-size: 1.3em;
+  line-height: 1em;
+  font-weight: normal;
+}
+.form-control{
+  font-size: 1.3em;
+  color: #080808;
+}
+textarea.form-control {
+    height: 135px;
+   /* margin-top: px;*/
+}
+
+.submit{
+  font-size: 1.1em;
+  float: right;
+  width: 150px;
+  background-color: transparent;
+  color: #fff;
+
+}
+
+</style>
 <body>
 
 <div class="fluid-container">
@@ -34,7 +100,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>	
 
 </div>	
-
+<div class="container">  
+<?php echo validation_errors('<div class="alert-warning"  style="font-size: 18px;" align=left>','</div>');?>
+        <?php echo form_error('<div class="alert-warning">','</div>');?>
+        <?php 
+        if(!empty($_SESSION['success'])){   
+        if(isset($_SESSION['success'])){?>
+         <div class="alert alert-success" style="font-size: 18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+    
+        <?php 
+        if(!empty($_SESSION['error'])){
+        if(isset($_SESSION['error'])){?>
+             <div class="alert alert-danger" style="font-size: 18px;"><?php echo $_SESSION['error'];?></div>
+        <?php
+        };
+    }   
+    ?>  
+</div>  
 
 <div class="container ">
 	<h2 style="text-align: center;text-decoration:underline;">Innovative ideas for rural / urban area people</h2>
@@ -55,6 +140,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	 	
 	 		
 	 	</p>
+    </div>
+    <div class="row">
+    	<div class="col-md-12 col-sm-12">
+    		<section id="contact">
+			<div class="section-content">
+				<h1 class="section-header"> <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Enquiry Form</span></h1>
+				
+			</div>
+			<div class="contact-section">
+			<div class="container">
+				<form action="<?php echo site_url('login/usr_enquiry');?>" method="POST">
+					<div class="col-md-6 form-line">
+			  			<div class="form-group">
+			  				<label for="exampleInputUsername">Your name</label>
+					    	<input type="text" class="form-control" id="" placeholder=" Enter Name" name="usr_name">
+				  		</div>
+				  		<div class="form-group">
+					    	<label for="exampleInputEmail">Email-Id</label>
+					    	<input type="email" class="form-control" id="exampleInputEmail" placeholder=" Enter Email id" name="usr_email">
+					  	</div>	
+					  	<div class="form-group">
+					    	<label for="telephone">Mobile No.</label>
+					    	<input type="tel" class="form-control" id="telephone" placeholder=" Enter 10-digit mobile no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" name="usr_mobile">
+			  			</div>
+			  		</div>
+			  		<div class="col-md-6">
+			  			<div class="form-group">
+			  				<label for ="description">Interested In</label>
+			  			 	<select class="form-control" name="usr_interest">
+			  			 		<option value="" selected="" disabled="">Select Any</option>
+			  			 		<option value="To Open School">To Open School</option>
+			  			 		<option value="To Open Skill Development Center">To Open Skill Development Center</option>
+			  			 		<option value="To Open Training Center">To Open Training Center</option>
+			  			 		<!--<option></option>-->
+			  			 	</select>
+			  			</div>
+
+			  			<div class="form-group">
+			  				<label for ="description">Other Query</label>
+			  			 	<textarea  class="form-control" id="description" placeholder="Enter Your Message" name="usr_othqu"></textarea>
+			  			</div>
+			  			<div>
+			  				<input type="submit" name="submit" class="btn btn-default submit" value="Send Enquiry">
+			  			</div>
+			  			
+					</div>
+				</form>
+			</div>
+		</section>
+    	</div>
+    	
     </div>
 
 </div>

@@ -37,19 +37,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>	
 
 <?php include 'slider.php';?>
-<!--<div class="container ">
+
+</br></br>
+<div class="container ">
 	<div class="col-md-12">
 	 	<div class="panel panel-primary" id="bgstyle">
      	 	<div class="panel-heading" style="font-size: 18px; border-radius: 15px 10px; ">
-     	 		<a href="<?php //echo site_url('Course-Registration');?>" style="color: white;">Ongoing Courses / Workshop Registration Link</a></div>
+     	 		<a href="<?php echo site_url('Course-Registration');?>" style="color: white;">Ongoing Courses / Workshop Registration Link</a></div>
      
     	</div>
-    </div>-->
+    </div>
 
-    
+    <div class="col-md-12">
+	 	<div class="panel panel-primary" id="bgstyle">
+     	 	<div class="panel-heading" style="font-size: 18px; border-radius: 15px 10px; ">
+     	 		<a href="<?php echo site_url('General-Subject-Related-Links');?>" style="color: white;" target=_blank>Online Lectures For IIT Preparation</a></div>
+     
+    	</div>
+    </div>
 
 </div>
-
+</br></br>
 
 <?php include 'template/footer.php';?>
 </body>

@@ -49,7 +49,7 @@ function myFunction1() {
 window.fbAsyncInit = function() {
     // FB JavaScript SDK configuration and setup
     FB.init({
-      appId      : '1913600798938732', // FB App ID
+       appId      : '553303651751091', // FB App ID
       cookie     : true,  // enable cookies to allow the server to access the session
       xfbml      : true,  // parse social plugins on this page
       version    : 'v2.10' // use graph api version 2.10
@@ -70,7 +70,7 @@ window.fbAsyncInit = function() {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
@@ -132,7 +132,7 @@ function getFbUserData(){
 
                       success : function(data) {
                           // do something, e.g. hide the login form or whatever
-                          window.location.assign('<?php echo base_url();?>login/usr_login');
+                          window.location.assign('<?php echo base_url();?>welcome');
                        //   alert('success');
                           
                       },
@@ -223,7 +223,7 @@ function Logout() {
                 <div id="loginbox" style="margin-top:30px;" class="mainbox  loginbox">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <div class="panel-title" style="font-size: 25px;">Sign In</div>
+                            <div class="panel-title" style="font-size: 25px;">Log-In</div>
                             <div class="fpassword" style="text-align: right;"> 
                                 <a href="<?php echo site_url('forgotpassword/forgotpass');?>">Forgot password?</a>
                             </div>
@@ -286,7 +286,7 @@ function Logout() {
                                             Don't have an account!
                                            <!-- <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()" style="font-size: 16px;">-->
                                             <a href="<?php echo site_url('Sign-Up');?>" style="font-size: 16px;">
-                                                Sign Up Here
+                                                New Registration Here
                                             </a>
                                         </div>
                                         <!--<div class='btn-primary' style="font-size: 20px;cursor: pointer;"  onclick="myFunction1()" >

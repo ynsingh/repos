@@ -49,9 +49,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route['Annantgyan-Admin'] = 'Admin';
 
 $route['default_controller'] = 'welcome';
 $route['Sign-In'] = 'Header/signin';
+$route['New-Registration'] = 'Header/signup';
 $route['Contact-Us'] = 'Header/contactus';
 $route['About-Us'] = 'Header/about';
 $route['Vission'] = 'Header/vission';

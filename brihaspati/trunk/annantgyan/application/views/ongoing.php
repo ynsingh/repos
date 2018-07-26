@@ -90,8 +90,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="container">
 	<h2 style="text-align: center;text-decoration:underline;">Ongoing Workshop & Courses</h2>
-	<div class="col-md-12" style="/*background: white;
-    padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >
+	<div class="col-md-12" style="/*background: white;padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >
 
 <div class="col-md-1"></div>
     <div class="col-md-9" id="card">
@@ -101,9 +100,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     		
     			<td>
     				
-    		<b><?php echo $i++;?> .</b> <?php echo $row->cou_name; ?> (For School Teachers)
-    	</br>
-                                ( <?php echo $row->cou_discipline; ?> )</br>
+    		<b><?php echo $i++;?> .</b> <?php echo $row->cou_name; echo " <br> "; echo $row->cou_eligible; ?>     
+    	   </br>
+           ( <?php echo $row->cou_discipline; ?> )</br>
     			</td>
 
     			<td valign="top">
@@ -185,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 
-
+<br><br><br><br>    
 <?php include 'template/footer.php';?>
 </body>
 </html>

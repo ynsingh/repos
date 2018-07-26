@@ -70,7 +70,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="cols-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+								<?php if(isset($this->session->userdata['su_name'])){?>
 									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"  value="<?php echo $this->session->userdata['su_name']; ?>" readonly/>
+								<?php }else{?>
+									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required/>
+								<?php }?>	
 								</div>
 							</div>
 						</div>
@@ -80,7 +84,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i></span>
+									<?php if(isset($this->session->userdata['su_name'])){?>
 									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email" value="<?php echo $this->session->userdata['su_emailid']; ?>" readonly />
+									<?php }else{?>
+									<input type="text" class="form-control" name="email" id="name"  placeholder="Enter your Email"  required/>
+									<?php }?>		
 								</div>
 							</div>
 						</div>
@@ -152,7 +160,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="cols-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-credit-card" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="amount" id="name"  placeholder="Enter your amount" value="<?php echo isset($_POST["amount"]) ? $_POST["amount"] : ''; ?>" required/>
+									<input type="text" class="form-control" name="amount" id="name"  placeholder="Enter your amount"  required/>
+									<!--<input type="text" class="form-control" name="amount" id="name"  placeholder="Enter your amount" value="<?php //echo $courfees; ?>" required readonly/>-->
 								</div>
 							</div>
 						</div>		
@@ -163,7 +172,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<div class="form-group ">
 						<input type="hidden" name="courseid" value="<?php echo $cid;?>">
-						<input type="submit" name="pay"  class="btn btn-success btn-lg btn-block login-button" value="Submit">
+						<input type="submit" name="submit"  class="btn btn-success btn-lg btn-block login-button" value="Submit">
 						<!--<button type="button" class="btn btn-primary btn-lg btn-block login-button" name="pay">Payment</button>-->
 				</div>			
 

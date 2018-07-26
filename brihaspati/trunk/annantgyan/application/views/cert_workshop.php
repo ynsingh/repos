@@ -42,8 +42,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-12"  id="card">
 	 	<!--<p style="color: #79522f;font-size: 24px;font-weight: bold;text-decoration:underline;">Director Message</p>-->
 	 	<p  style="color: black;font-size: 18px;">
-	 		Our online certified workshops are designed for 9th to 12th, diploma, undergraduate and competitive exam students at minimum cost.  </br>
-				Also we shall offer training program in form of workshops for school teachers. 
+	 		<!--Our online certified workshops are designed for 9th to 12th, diploma, undergraduate and competitive exam students at minimum cost.  </br>
+				Also we shall offer training program in form of workshops for school teachers. -->
+				We are conducting different online certified workshops for standard 8<sup>th</sup> to 12<sup>th</sup>, diploma, undergraduate and competitive exam students at minimum cost. Also we shall offer training program in form of workshops for school teachers.
 	 	</p>
 	 	
     </div>

@@ -1,13 +1,18 @@
 <?php
+if(isset($this->session->userdata['su_name'])){
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Annant Gyan</title>
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE, NO-STORE, must-revalidate">
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<META HTTP-EQUIV="EXPIRES" CONTENT=0>
 	
 		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
-			<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
 	  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
@@ -30,35 +35,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 	
 	<div class="row">
-			<?php include 'template/header.php';?>
+			<?php $this->load->view('template/admin_header.php');
+			?>
 
 	</div>	
 
 </div>	
 
 
-<div class="container ">
-	<h2 style="text-align: center;text-decoration:underline;">Innovative Projects For Undergraduate Students</h2>
-	<div class="col-md-12"  id="card">
-	 	<!--<p style="color: #79522f;font-size: 24px;font-weight: bold;text-decoration:underline;">Director Message</p>-->
-	 	<p  style="color: black;font-size: 18px;">
-	 	We shall offer different innovative project ideas for Diploma, BE and BBA students for their minor and major projects. Also we shall provide professional online support to rectify their problems during their project work. 
-	 	</p>
-	 	
-	 	
-	 	
-	 		
-	 	</p>
-    </div>
-<div class="row">
-    	<div class="col-md-12">
-    		<img src="<?php echo base_url('images/inno_ideasUG.png');?>" style="width: 100%;" id="card">
-    	</div>
-    	
-    </div>
-</div>
-</br></br></br></br></br>
 
-<?php include 'template/footer.php';?>
+
+<?php $this->load->view('template/footer.php');?>
 </body>
 </html>
+<?php }else{
+$this->load->view('signin');
+}
+?>

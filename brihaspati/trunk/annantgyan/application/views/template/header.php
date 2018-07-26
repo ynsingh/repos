@@ -139,7 +139,7 @@ function Logout() {
           </ul>
         </li>
 
-        <li><a href="<?php echo site_url('');?>">Career</a></li>
+        <li><a href="#">Career</a></li>
         <!--<li><a href="<?php //echo site_url('');?>">Future Plan</a></li>-->
         
 
@@ -150,16 +150,17 @@ function Logout() {
         <!--<li><a href="#"><span class="glyphicon glyphicon glyphicon-paperclip"></span> Broucher</a></li>-->
 
         <?php if(isset($this->session->userdata['su_name'])){?>
-        	 <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        	<!-- <li><a href="<?php //echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>-->
           <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span> Name : <?php echo $this->session->userdata['su_name'];?></a></li> 
 
           <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
          <?php }else{?> 
-         <li><a href="<?php echo site_url('Sign-In');?>"><span class="glyphicon glyphicon-user"> </span> Sign In / Sign Up</a> 
+         <li><a href="<?php echo site_url('Sign-In');?>"><span class="glyphicon glyphicon-log-in"> </span> Login </a> </li>
+         <li><a href="<?php echo site_url('New-Registration');?>"><span class="glyphicon glyphicon-log-in"> </span> New Registration </a> </li>
          <?php }?>
             
           <li><a href="<?php echo site_url('Contact-Us');?>"><span class="glyphicon  glyphicon-earphone"></span> Contact Us</a></li>
-         </li>
+        
         
        <!-- <li class="dropdown">
           <a href="<?php //echo site_url('');?> " class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">
