@@ -40,6 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </br></br>
 <div class="container ">
+<!--
 	<div class="col-md-12">
 	 	<div class="panel panel-primary" id="bgstyle">
      	 	<div class="panel-heading" style="font-size: 18px; border-radius: 15px 10px; ">
@@ -47,11 +48,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      
     	</div>
     </div>
-
+-->
     <div class="col-md-12">
 	 	<div class="panel panel-primary" id="bgstyle">
      	 	<div class="panel-heading" style="font-size: 18px; border-radius: 15px 10px; ">
-     	 		<a href="<?php echo site_url('General-Subject-Related-Links');?>" style="color: white;" target=_blank>Online Lectures For IIT Preparation</a></div>
+     	 		<a href="<?php echo site_url('General-Subject-Related-Links');?>" style="color: white;" target=_blank>Online Video Lectures for IIT-JEE & Medical Entrance Exam</a></div>
      
     	</div>
     </div>

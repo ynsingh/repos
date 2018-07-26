@@ -39,21 +39,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="container ">
 	<h2 style="text-align: center;text-decoration:underline;"> General Useful Links </h2>
 
-	<div class="col-md-12"  id="card" style="height: 10px;">
-	 	<p style="color: black;font-size: 18px;color: #79522f">  Biology Lectures For IIT Preparation  <a href="https://www.youtube.com/channel/UCqiFTyCxFFMAN_lhAzIkdpA/videos" target=_blank style=";">Biology: Channel 19 </a>  	 </p></br>
-    </div>
 
     <div class="col-md-12"  id="card" style="height: 10px;">
-	 	<p style="color: black;font-size: 18px;color: #79522f">  Chemistry Lectures For IIT Preparation  <a href="https://www.youtube.com/channel/UC3Zv0XxBjYlWMjbMv8ODE8Q/videos" target=_blank style=";">Chemistry: Channel 20 </a>  	 </p></br>
+	 	<p style="color: black;font-size: 18px;color: #79522f">  Physics Lectures For IIT-JEE & Medical Preparation  <a href="https://www.youtube.com/channel/UCwNr8peMxn8-Nc2V_RZsRvg/videos" target=_blank style=";">Physics: Channel 22 </a>  	 </p></br>
     </div>
-
      <div class="col-md-12"  id="card" style="height: 10px;">
-	 	<p style="color: black;font-size: 18px;color: #79522f">  Mathematics Lectures For IIT Preparation  <a href="https://www.youtube.com/channel/UCfz4W0rG8HoyyrrK6qNc1rA/videos" target=_blank style=";">Mathematics: Channel 21 </a>  	 </p></br>
+	 	<p style="color: black;font-size: 18px;color: #79522f">  Mathematics Lectures For IIT-JEE Preparation  <a href="https://www.youtube.com/channel/UCfz4W0rG8HoyyrrK6qNc1rA/videos" target=_blank style=";">Mathematics: Channel 21 </a>  	 </p></br>
+    </div>
+    <div class="col-md-12"  id="card" style="height: 10px;">
+	 	<p style="color: black;font-size: 18px;color: #79522f">  Chemistry Lectures For IIT-JEE & Medical Preparation  <a href="https://www.youtube.com/channel/UC3Zv0XxBjYlWMjbMv8ODE8Q/videos" target=_blank style=";">Chemistry: Channel 20 </a>  	 </p></br>
+    </div>
+	<div class="col-md-12"  id="card" style="height: 10px;">
+	 	<p style="color: black;font-size: 18px;color: #79522f">  Biology Lectures For Medical  Preparation  <a href="https://www.youtube.com/channel/UCqiFTyCxFFMAN_lhAzIkdpA/videos" target=_blank style=";">Biology: Channel 19 </a>  	 </p></br>
     </div>
 
-    <div class="col-md-12"  id="card" style="height: 10px;">
-	 	<p style="color: black;font-size: 18px;color: #79522f">  Physics Lectures For IIT Preparation  <a href="https://www.youtube.com/channel/UCwNr8peMxn8-Nc2V_RZsRvg/videos" target=_blank style=";">Physics: Channel 22 </a>  	 </p></br>
-    </div>
+
 
 	<div class="col-md-12"  id="card" style="height: 10px;">
 	 	<p style="color: black;font-size: 18px;color: #79522f"> Learning Management System  <a href="http://brihaspati.nmeict.in/brihaspati/servlet/brihaspati/action/myLogin/username/guest/password/guest/lang/english" target=_blank style=";">    Brihaspati </a>  	 </p></br>
