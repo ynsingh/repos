@@ -91,8 +91,11 @@
                             <td align=left colspan=4><b>Departmental Exam Passed Details</b></td>
                             <td align="right">
                                 <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
+//				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
+				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
                                         echo anchor("empmgmt/add_deptexamdata/{$emp_id}"," Add ",array('title' => ' Add Departmental Exam Data' , 'class' => 'red-link'));
                                 }
                                 ?>
@@ -127,7 +130,8 @@
                                 <td>
                                 <?php
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-					if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
+				//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
+				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
                                 //              echo anchor("empmgmt/edit_deptexamdata/{$record->empsd_id}","Edit",array('title' => ' Edit Departmental Exam Data' , 'class' => 'red-link'));
                                         }
                                 ?>

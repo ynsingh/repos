@@ -41,7 +41,33 @@
                         $('#vtem').val(positiondata[7].replace(/^"|"$/g, ''));
                 }
              });
-           }
+        }
+	function getptypevalue(val){
+                var ss = $('#ss').val();
+                var type = $('#type').val();
+                var p=val;
+                var combid = p+","+type+","+ss;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>sisindex.php/staffmgmt/getsstype",
+                data: {"sstype" : combid},
+                dataType:"html",
+                success: function(data){
+        //      alert(data);
+                var ssdata=data;
+                var positiondata=ssdata.split(',');
+                        $('#p').val(positiondata[0].replace(/\"|"/g,''));
+                        $('#v').val(positiondata[1].replace(/^"|"$/g, ''));
+                        $('#ssper').val(positiondata[2].replace(/^"|"$/g, ''));
+                        $('#pper').val(positiondata[3].replace(/^"|"$/g, ''));
+                        $('#vper').val(positiondata[4].replace(/^"|"$/g, ''));
+                        $('#sstem').val(positiondata[5].replace(/^"|"$/g, ''));
+                        $('#ptem').val(positiondata[6].replace(/^"|"$/g, ''));
+                        $('#vtem').val(positiondata[7].replace(/^"|"$/g, ''));
+                }
+             });
+        }
+
    </script>
    <table width="100%">
    <!--<table style="padding: 8px 8px 8px 20px;">-->
@@ -148,13 +174,14 @@
 	<tr>	
           <td><label for="ss" style="font-size:15px;"> Position Sanction Strength </label>
              <div>
-                <!-- <?php echo form_input($ss); ?>-->
-		<input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength..." required="required" oninput="getsstypevalue(this.value)" /><br>
+                <!-- <?php //echo form_input($ss); ?>-->
+		<input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength" required="required" oninput="getsstypevalue(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="p" style="font-size:15px;"> Position Present </label>
              <div>
-                 <?php echo form_input($p); ?>
+               <!--  <?php //echo form_input($p); ?> -->
+		<input type="text" name="p" id="p" class="keyup-numeric" size="30" value="<?php echo $p['value']; ?>" placeholder="Position" required="required" oninput="getptypevalue(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="v" style="font-size:15px;"> Position Vacant </label>

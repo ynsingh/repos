@@ -154,7 +154,8 @@ $(document).ready(function(){
             </thead>
             <tbody>
                 <?php $serial_no = 1;?>
-              <?php if( count($records) ):  ?>
+              <?php if( count($records) ): 
+		 ?>
                     <?php foreach($records as $record){ ?>
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
@@ -203,13 +204,67 @@ $(document).ready(function(){
 				}
 				?></td>
                         </tr>
-                    <?php }; ?>
+                    <?php };
+			if(!empty($records1)){
+			?>
+
+			<?php foreach($records1 as $record){ ?>
+                        <tr>
+                            <td><?php echo $serial_no++; ?></td>
+                            <?php //$img=$record->emp_code;?>
+                            <?php if(!empty($record->emp_photoname)):?>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php else :?>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php endif;?>
+                            <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));?></td>
+                           <!-- <td><?php //echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td> -->
+                            <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
+                            <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>
+                            <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>
+                            <?php if(!empty($record->emp_schemeid)):?>
+                            <td><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name; ?></td>
+                            <?php else : ?>
+                            <td></td>
+                            <?php endif;?>
+                            <?php if(!empty($record->emp_specialisationid)) :?>
+                            <td><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name; ?></td>
+                            <?php else : ?>
+                            <td></td>
+                            <?php endif;?>
+                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
+                                $cdate = date('Y-m-d');
+                                $headflag="false";
+                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
+                                $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+                                if($headflag){
+                                        echo " & Head";
+                                }
+                                ?></td>
+                           <!-- <td><?php //echo $record->emp_post; ?></td>-->
+                           <!-- <td></td>-->
+                            <td><?php echo $record->emp_email; ?></td>
+                            <td><?php echo $record->emp_phone; ?></td>
+                            <td><?php echo $record->emp_aadhaar_no; ?></td>
+                            <td> <?php
+                //              $roleid=$this->session->userdata('id_role');
+                        //        if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
+                                        echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
+                          //      }
+                                ?></td>
+                        </tr>
+			<?php
+			}
+			} 
+			?>
                 <?php else : ?>
                     <td colspan= "13" align="center"> No Records found...!</td>
                 <?php endif;?>
 		</tbody>
         </table>
         </div><!------scroller div------>
+		<br><br>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
         
     </body>    

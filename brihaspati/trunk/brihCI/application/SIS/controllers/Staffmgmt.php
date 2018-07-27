@@ -26,10 +26,23 @@ class Staffmgmt extends CI_Controller
     }
  
     public function index(){
-        
-    //$this->load->view('staffmgmt/staffprofile');    
+    	//$this->load->view('staffmgmt/staffprofile');    
     }
     
+    public function getuohodempid(){
+		$data['loguname']=$this->session->userdata('username');
+		$rlid=$this->session->userdata('id_role');
+
+		$selectfield='emp_id';
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+
+                $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
+                $data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+
+		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
+                $data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+    }
+
     /* Display Employee record */
 
     public function employeelist(){
@@ -75,6 +88,19 @@ class Staffmgmt extends CI_Controller
          else{
          	$data['records']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
          }
+	$uname=$this->session->userdata('username');
+	if($uname == 'ro@tanuvas.org.in'){
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+		$joincond = 'employee_master.emp_code = uo_list.ul_empcode';
+		$data['records1']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+	}
+	$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
+	$rest = substr($uname, -21);
+	if($rest == 'office@tanuvas.org.in'){
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'hl_uopid' =>$uopid);
+                $joincond = 'employee_master.emp_code = hod_list.hl_empcode';
+                $data['records1']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+	}
 	//$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
 //	$data['records'] = $this->sismodel->get_list('employee_master');
         $this->logger->write_logmessage("view"," view employee list" );
@@ -1504,7 +1530,8 @@ class Staffmgmt extends CI_Controller
 
         $data['ss'] = array('name' => 'ss', 'id' => 'ss', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sancstrenght, );
 
-        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position, 'readonly' => 'readonly' );
+        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position, );
+        //$data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position  );
 
         $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vacant, 'readonly' => 'readonly' );
 

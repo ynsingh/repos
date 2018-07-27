@@ -5,8 +5,8 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
- * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars,Reports(Designation wise,position-summary
- *  vacancy position,professorlist,hodlist.) 
+ * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars,Reports
+ * (Designation wise,position-summary vacancy position,professorlist,hodlist.) 
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[view employee profile]
  * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List, List Staff Position 
  */
@@ -25,6 +25,35 @@ class Report  extends CI_Controller
             redirect('welcome');
          }
     }
+//get all uo empid
+	public function getempuoid(){
+		$selectfield='emp_id';
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+
+                $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
+                //$emp_data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $empuoempid=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $empuoid = array();
+                foreach($empuoempid as $row){
+                        $empuoid[]=$row->emp_id;
+                }
+                return $empuoid;
+	}
+
+//get all hod empid
+	public function getemphodid(){
+		$selectfield='emp_id';
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+
+		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
+                //$emp_data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $emphodempid = $this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+		$emphodid = array();
+		foreach($emphodempid as $row){
+                        $emphodid[]=$row->emp_id;
+                }
+                return $emphodid;
+	}
 
 // View faculty list
     public function listfac() {
@@ -308,6 +337,10 @@ class Report  extends CI_Controller
 //	$whdata = array ('empsd_empid' => $empcode);
 //	$emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
 	$emp_data['leavedata'] = '';
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/viewfull_profile',$emp_data);
   }
 
@@ -331,6 +364,9 @@ class Report  extends CI_Controller
         $whorder = 'empsd_dojoin desc';
         $emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
 
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/service_profile',$emp_data);
   }
 
@@ -352,6 +388,10 @@ class Report  extends CI_Controller
         $selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
+
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
 
         $this->load->view('report/performance_profile',$emp_data);
   }
@@ -384,6 +424,10 @@ class Report  extends CI_Controller
         //for leave perticular
      //   $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,'');
         $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         
         $this->load->view('report/leave_profile',$emp_data);
   }
@@ -407,6 +451,10 @@ class Report  extends CI_Controller
         $whdata = array ('sdp_empcode' => $empcode);
         $emp_data['deputdata'] = $this->sismodel->get_orderlistspficemore('staff_deputation_perticulars',$selectfield,$whdata,'');
 
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/deputation_profile',$emp_data);
   }
 
@@ -429,6 +477,10 @@ public function deptexam_profile() {
         $whdata = array ('sdep_empcode' => $empcode);
         $emp_data['deptexamdata'] = $this->sismodel->get_orderlistspficemore('staff_department_exam_perticulars',$selectfield,$whdata,'');
 
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/deptexam_profile',$emp_data);
   }
 
@@ -450,6 +502,10 @@ public function workorder_profile() {
         $selectfield="*";
         $whdata = array ('swap_empcode' => $empcode);
         $emp_data['workarrangdata'] = $this->sismodel->get_orderlistspficemore('staff_working_arrangements_perticulars',$selectfield,$whdata,'');
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/workorder_profile',$emp_data);
   }
 
@@ -471,6 +527,10 @@ public function recruit_profile() {
         $selectfield="*";
         $whdata = array ('srp_empcode' => $empcode);
         $emp_data['recruitdata'] = $this->sismodel->get_orderlistspficemore('staff_recruitment_perticulars',$selectfield,$whdata,'');
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/recruit_profile',$emp_data);
   }
 public function disciplin_profile() {
@@ -491,6 +551,10 @@ public function disciplin_profile() {
         $selectfield="*";
         $whdata = array ('sdap_empcode' => $empcode);
         $emp_data['disciplinactdata'] = $this->sismodel->get_orderlistspficemore('staff_disciplinary_actions_perticulars',$selectfield,$whdata,'');
+
+	$emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
         $this->load->view('report/disciplin_profile',$emp_data);
   }
 #############################f Discipline Wise List ##########################################
