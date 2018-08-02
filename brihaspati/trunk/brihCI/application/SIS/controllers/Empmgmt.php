@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name Empffmgmt.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com) 
- * @author Manorama Pal (palseema30@gmail.com) Employee Profile, Service and Performance data.
+ * @author Manorama Pal (palseema30@gmail.com) Employee Profile, Service and Performance data, Academic qualification, technical qualification .
  */
 
 class Empmgmt extends CI_Controller
@@ -1277,7 +1277,7 @@ public function disciplin_profile() {
         $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
         $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
         $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
-        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',2)->org_code;
 	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
  
 
@@ -1339,7 +1339,696 @@ public function disciplin_profile() {
         }//ifpost button
         $this->load->view('empmgmt/add_workarrangdata');
     }//function close
-                                                
+    /***********************************Start Add academic qualification******************************************/
+    
+    public function add_academicqualification($empid){
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        if(isset($_POST['addacadrofile'])){
+            //form validation
+            $this->form_validation->set_rules('stdclass','stdclass','trim|xss_clean');
+	    $this->form_validation->set_rules('board','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
+            /*******************************sec2*******************************************/
+            $this->form_validation->set_rules('degree1','Degree1','trim|xss_clean');
+	    $this->form_validation->set_rules('board1','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result1','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass1','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline1','Discipline1','trim|xss_clean');
+            
+            /*******************************sec3*******************************************/
+            $this->form_validation->set_rules('degree1','Degree1','trim|xss_clean');
+	    $this->form_validation->set_rules('board1','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result1','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass1','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline1','Discipline1','trim|xss_clean');
+            /*******************************sec4*******************************************/
+            $this->form_validation->set_rules('pgdiploma','PGDiploma','trim|xss_clean');
+	    $this->form_validation->set_rules('board2','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result2','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass2','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline2','Discipline1','trim|xss_clean');
+            /*******************************sec5*******************************************/
+            $this->form_validation->set_rules('pgdegree','PGDegree','trim|xss_clean');
+	    $this->form_validation->set_rules('board3','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result3','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass3','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline3','Discipline1','trim|xss_clean');
+            /*****************************sec6************************************************/
+            $this->form_validation->set_rules('MPhil','MPhil','trim|xss_clean');
+	    $this->form_validation->set_rules('board4','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result4','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass4','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline4','Discipline1','trim|xss_clean');
+            /*****************************sec7************************************************/
+            $this->form_validation->set_rules('PhD','PhD','trim|xss_clean');
+	    $this->form_validation->set_rules('board5','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result5','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass5','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline5','Discipline1','trim|xss_clean');
+            /*****************************sec8************************************************/
+            $this->form_validation->set_rules('PDF','PDF','trim|xss_clean');
+	    $this->form_validation->set_rules('board6','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result6','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass6','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline6','Discipline1','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+            
+                $this->load->view('empmgmt/add_academicprofile',$this->emp_id);
+                return;
+            }//formvalidation
+            else{
+                $academicflag=false;
+                /************************************************/
+                $stdc = $this->input->post('stdclass', TRUE);
+                $buni = $this->input->post('board', TRUE);
+                $result = $this->input->post('result', TRUE);
+                $ypass = $this->input->post('yopass', TRUE);
+                $dpln = $this->input->post('discipline', TRUE);
+                
+                foreach($stdc as $a => $b){
+                // echo $stdc[$a].$buni[$a].$result[$a] . $ypass[$a]  . $dpln[$a] ;                     
+                
+                    $data = array(
+                        'saq_empid'         =>$this->emp_id,
+                        'saq_dgree'         =>$stdc[$a],
+                        'saq_board_univ'    =>$buni[$a],
+                        'saq_result'        =>$result[$a],
+                        'saq_yopass'        =>$ypass[$a],
+                        'saq_discipline'    =>$dpln[$a],
+                        'saq_creatorid'     =>$this->session->userdata('username'),
+                        'saq_creatordate'   =>date('Y-m-d'),
+                        'saq_modifierid'    =>$this->session->userdata('username'),
+                        'saq_modifydate'    =>date('Y-m-d'),
+                    );
+                    
+                    if(!empty($stdc[$a])){
+                        $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$stdc[$a],
+                
+                        ); 
+                        $stddup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                        if(!$stddup){
+                    
+                            $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data);
+                        }    
+                    }
+                }//coserforeach
+                /*********************************************************/
+                /************************************************/
+                $degree = $this->input->post('degree', TRUE);
+                $buni1 = $this->input->post('board1', TRUE);
+                $result1 = $this->input->post('result1', TRUE);
+                $ypass1 = $this->input->post('yopass1', TRUE);
+                $dpln1 = $this->input->post('discipline1', TRUE);
+                
+                foreach($degree as $c => $b1){
+                
+                    $data1 = array(
+                        'saq_empid'         =>$this->emp_id,
+                        'saq_dgree'         =>$degree[$c],
+                        'saq_board_univ'    =>$buni1[$c],
+                        'saq_result'        =>$result1[$c],
+                        'saq_yopass'        =>$ypass1[$c],
+                        'saq_discipline'    =>$dpln1[$c],
+                        'saq_creatorid'     =>$this->session->userdata('username'),
+                        'saq_creatordate'   =>date('Y-m-d'),
+                        'saq_modifierid'    =>$this->session->userdata('username'),
+                        'saq_modifydate'    =>date('Y-m-d'),
+                    );   
+                    
+                    if(!empty($degree[$c])){
+                        $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$degree[$c],
+                
+                        ); 
+                        $degreedup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                        if(!$degreedup){
+                            $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data1);
+                        }    
+                    }
+                }//closer foreach
+                /**********************pgdiploma****************************************/
+                $data2 = array(
+                    'saq_empid'         =>$this->emp_id,
+                    'saq_dgree'         =>$_POST['pgdiploma'],
+                    'saq_board_univ'    =>$_POST['board2'],
+                    'saq_result'        =>$_POST['result2'],
+                    'saq_yopass'        =>$_POST['yopass2'],
+                    'saq_discipline'    =>$_POST['discipline2'],
+		    'saq_creatorid'     =>$this->session->userdata('username'),
+                    'saq_creatordate'   =>date('Y-m-d'),
+		    'saq_modifierid'    =>$this->session->userdata('username'),
+                    'saq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board2'])){
+                    $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$_POST['pgdiploma'],
+                
+                    ); 
+                    $diplomadup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                    if(!$diplomadup){
+                        $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data2);
+                    }    
+                }
+                /**********************pg degree****************************************/
+                $pgdegree = $this->input->post('pgdegree', TRUE);
+                $buni3 = $this->input->post('board3', TRUE);
+                $result3 = $this->input->post('result3', TRUE);
+                $ypass3 = $this->input->post('yopass3', TRUE);
+                $dpln3 = $this->input->post('discipline3', TRUE);
+                
+                foreach($pgdegree as $a3 => $b3){
+                        
+                    $data3 = array(
+                        'saq_empid'         =>$this->emp_id,
+                        'saq_dgree'         =>$pgdegree[$a3],
+                        'saq_board_univ'    =>$buni3[$a3],
+                        'saq_result'        =>$result3[$a3],
+                        'saq_yopass'        =>$ypass3[$a3],
+                        'saq_discipline'    =>$dpln3[$a3],
+                        'saq_creatorid'     =>$this->session->userdata('username'),
+                        'saq_creatordate'   =>date('Y-m-d'),
+                        'saq_modifierid'    =>$this->session->userdata('username'),
+                        'saq_modifydate'    =>date('Y-m-d'),
+                    );    
+                
+                    if(!empty($pgdegree[$a3])){
+                        $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$pgdegree[$a3],
+                
+                        ); 
+                        $pgdup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                        if(!$pgdup){
+                            $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data3);
+                        }    
+                    }
+                }//closerforeach
+                /*********************mphil*****************************************/
+                $data4 = array(
+                    'saq_empid'         =>$this->emp_id,
+                    'saq_dgree'         =>$_POST['MPhil'],
+                    'saq_board_univ'    =>$_POST['board4'],
+                    'saq_result'        =>$_POST['result4'],
+                    'saq_yopass'        =>$_POST['yopass4'],
+                    'saq_discipline'    =>$_POST['discipline4'],
+		    'saq_creatorid'     =>$this->session->userdata('username'),
+                    'saq_creatordate'   =>date('Y-m-d'),
+		    'saq_modifierid'    =>$this->session->userdata('username'),
+                    'saq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board4'])){
+                   // $mphilflag=$this->sismodel->insertrec('staff_academic_qualification', $data4);
+                    $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$_POST['MPhil'],
+                
+                    ); 
+                    $mphildup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                    if(!$mphildup){
+                        $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data4);
+                    }    
+                }    
+                /************************phd**************************************/
+                $data5 = array(
+                    'saq_empid'         =>$this->emp_id,
+                    'saq_dgree'         =>$_POST['PhD'],
+                    'saq_board_univ'    =>$_POST['board5'],
+                    'saq_result'        =>$_POST['result5'],
+                    'saq_yopass'        =>$_POST['yopass5'],
+                    'saq_discipline'    =>$_POST['discipline5'],
+		    'saq_creatorid'     =>$this->session->userdata('username'),
+                    'saq_creatordate'   =>date('Y-m-d'),
+		    'saq_modifierid'    =>$this->session->userdata('username'),
+                    'saq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board5'])){
+                    //$phdflag=$this->sismodel->insertrec('staff_academic_qualification', $data5);
+                    $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$_POST['PhD'],
+                
+                    ); 
+                    $phddup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                    if(!$phddup){
+                        $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data5);
+                    }    
+                    
+                }
+                /*************************pdf*************************************/
+                $data6 = array(
+                    'saq_empid'         =>$this->emp_id,
+                    'saq_dgree'         =>$_POST['PDF'],
+                    'saq_board_univ'    =>$_POST['board6'],
+                    'saq_result'        =>$_POST['result6'],
+                    'saq_yopass'        =>$_POST['yopass6'],
+                    'saq_discipline'    =>$_POST['discipline6'],
+		    'saq_creatorid'     =>$this->session->userdata('username'),
+                    'saq_creatordate'   =>date('Y-m-d'),
+		    'saq_modifierid'    =>$this->session->userdata('username'),
+                    'saq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board6'])){
+                    //$pdfflag
+                    $dupcheck = array(
+                        'saq_empid'  =>$this->emp_id,
+                        'saq_dgree'  =>$_POST['PDF'],
+                
+                    ); 
+                    $pdfdup = $this->sismodel->isduplicatemore('staff_academic_qualification', $dupcheck);
+                    if(!$pdfdup){
+                        $academicflag=$this->sismodel->insertrec('staff_academic_qualification', $data6);
+                    }    
+                }
+                if(!$academicflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff academic qualification  record", "Error in insert staff academic qualification  record." );
+                    $this->logger->write_dblogmessage("error","Error in insert   staff academic qualification  record ", "Error in insert staff academic qualification  record " );
+                    $this->session->set_flashdata('err_message','Error in insert  staff academic qualification  record or record is already exists');
+                    redirect('empmgmt/add_academicqualification/'.$empid);
+                }
+                else{
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("insert","Add  staff academic qualification  Data", "Staff academic qualification  records insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add  staff academic qualification  Data", "Staff academic qualification  record insert successfully ." );
+                    $this->session->set_flashdata('success',' Staff academic qualification record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+                
+            }//else
+            
+	    
+        }//submitbutton
+        
+        $this->load->view('empmgmt/add_academicprofile');
+    }
+    /***********************************closer Add academic qualification******************************************/
+    
+    /*********************************** Add Technical qualification******************************************/
+    public function add_technicalprofile($empid){
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        if(isset($_POST['addtechprofile'])){
+            
+            //form validation
+            /*******************************sec1*******************************************/
+            $this->form_validation->set_rules('diploma','Diploma','trim|xss_clean');
+	    $this->form_validation->set_rules('board','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
+            
+            /*******************************sec2*******************************************/
+            $this->form_validation->set_rules('iti','ITI','trim|xss_clean');
+	    $this->form_validation->set_rules('board1','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result1','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass1','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline1','Discipline1','trim|xss_clean');
+                              
+            /**********************************sec3*****************************************/
+            $this->form_validation->set_rules('ccourse','Certified Course','trim|xss_clean');
+	    $this->form_validation->set_rules('board2','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result2','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass2','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline2','Discipline1','trim|xss_clean');
+            
+            
+            /*******************************sec4*******************************************/
+            $this->form_validation->set_rules('shorthand','Shorthand','trim|xss_clean');
+	    $this->form_validation->set_rules('board3','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result3','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass3','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline3','Discipline1','trim|xss_clean');
+            
+            /*****************************sec5************************************************/
+            $this->form_validation->set_rules('typing','typing','trim|xss_clean');
+	    $this->form_validation->set_rules('board4','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result4','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass4','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline4','Discipline1','trim|xss_clean');
+            
+            /*****************************sec************************************************/
+            if($this->form_validation->run() == FALSE){
+            
+                $this->load->view('empmgmt/add_technicalprofile',$this->emp_id);
+                return;
+            }// if form 
+            else{
+                $techflag=false;
+                
+                $data = array(
+                    'stq_empid'         =>$this->emp_id,
+                    'stq_dgree'         =>$_POST['diploma'],
+                    'stq_board_univ'    =>$_POST['board'],
+                    'stq_result'        =>$_POST['result'],
+                    'stq_dopass'        =>$_POST['yopass'],
+                    'stq_discipline'    =>$_POST['discipline'],
+                    'stq_creatorid'     =>$this->session->userdata('username'),
+                    'stq_creatordate'   =>date('Y-m-d'),
+                    'stq_modifierid'    =>$this->session->userdata('username'),
+                    'stq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board'])){
+                    $dupcheck = array(
+                        'stq_empid'  =>$this->emp_id,
+                        'stq_dgree'  =>$_POST['diploma'],
+                
+                    ); 
+                    $dipdup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                    if(!$dipdup){
+                        $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data);
+                    }    
+                }
+                /*******************************************************************************/
+                 
+                $data2 = array(
+                    'stq_empid'         =>$this->emp_id,
+                    'stq_dgree'         =>$_POST['iti'],
+                    'stq_board_univ'    =>$_POST['board1'],
+                    'stq_result'        =>$_POST['result1'],
+                    'stq_dopass'        =>$_POST['yopass1'],
+                    'stq_discipline'    =>$_POST['discipline1'],
+                    'stq_creatorid'     =>$this->session->userdata('username'),
+                    'stq_creatordate'   =>date('Y-m-d'),
+                    'stq_modifierid'    =>$this->session->userdata('username'),
+                    'stq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board1'])){
+                    $dupcheck = array(
+                        'stq_empid'  =>$this->emp_id,
+                        'stq_dgree'  =>$_POST['iti'],
+                
+                    ); 
+                    $itidup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                    if(!$itidup){
+                        $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data2);
+                    }    
+                }
+                /****************************************************************************************/
+                
+                $data3 = array(
+                    'stq_empid'         =>$this->emp_id,
+                    'stq_dgree'         =>$_POST['ccourse'],
+                    'stq_board_univ'    =>$_POST['board2'],
+                    'stq_result'        =>$_POST['result2'],
+                    'stq_dopass'        =>$_POST['yopass2'],
+                    'stq_discipline'    =>$_POST['discipline2'],
+                    'stq_creatorid'     =>$this->session->userdata('username'),
+                    'stq_creatordate'   =>date('Y-m-d'),
+                    'stq_modifierid'    =>$this->session->userdata('username'),
+                    'stq_modifydate'    =>date('Y-m-d'),
+                );
+                if(!empty($_POST['board2'])){
+                    $dupcheck = array(
+                        'stq_empid'  =>$this->emp_id,
+                        'stq_dgree'  =>$_POST['ccourse'],
+                
+                    ); 
+                    $ccoursedup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                    if(!$ccoursedup){
+                        $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data3);
+                    }    
+                }
+                
+                /***************************shorthand*********************************************************/
+                $shorthand = $this->input->post('shorthand', TRUE);
+                $buni3 = $this->input->post('board3', TRUE);
+                $result3 = $this->input->post('result3', TRUE);
+                $ypass3 = $this->input->post('yopass3', TRUE);
+                $dpln3 = $this->input->post('discipline3', TRUE);
+                
+                foreach($shorthand as $a3 => $b3){
+                    $data4 = array(
+                        'stq_empid'         =>$this->emp_id,
+                        'stq_dgree'         =>$shorthand[$a3],
+                        'stq_board_univ'    =>$buni3[$a3],
+                        'stq_result'        =>$result3[$a3],
+                        'stq_dopass'        =>$ypass3[$a3],
+                        'stq_discipline'    =>$dpln3[$a3],
+                        'stq_creatorid'     =>$this->session->userdata('username'),
+                        'stq_creatordate'   =>date('Y-m-d'),
+                        'stq_modifierid'    =>$this->session->userdata('username'),
+                        'stq_modifydate'    =>date('Y-m-d'),
+                    );
+                    if(!empty($shorthand[$a3])){
+                        $dupcheck = array(
+                        'stq_empid'  =>$this->emp_id,
+                        'stq_dgree'  =>$shorthand[$a3],
+                
+                        ); 
+                        $shorthdup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                        if(!$shorthdup){
+                            $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data4);
+                        }    
+                    }
+                }//foreach    
+                
+                /**************************Typing**********************************************************/
+                
+                $typing = $this->input->post('typing', TRUE);
+                $buni4 = $this->input->post('board4', TRUE);
+                $result4 = $this->input->post('result4', TRUE);
+                $ypass4 = $this->input->post('yopass4', TRUE);
+                $dpln4 = $this->input->post('discipline4', TRUE);
+                
+                foreach($shorthand as $a4 => $b4){
+                    $data5 = array(
+                        'stq_empid'         =>$this->emp_id,
+                        'stq_dgree'         =>$typing[$a4],
+                        'stq_board_univ'    =>$buni4[$a4],
+                        'stq_result'        =>$result4[$a4],
+                        'stq_dopass'        =>$ypass4[$a4],
+                        'stq_discipline'    =>$dpln4[$a4],
+                        'stq_creatorid'     =>$this->session->userdata('username'),
+                        'stq_creatordate'   =>date('Y-m-d'),
+                        'stq_modifierid'    =>$this->session->userdata('username'),
+                        'stq_modifydate'    =>date('Y-m-d'),
+                    );
+                    if(!empty($typing[$a4])){
+                        $dupcheck = array(
+                        'stq_empid'  =>$this->emp_id,
+                        'stq_dgree'  =>$typing[$a4],
+                
+                        ); 
+                        $typingdup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                        if(!$typingdup){
+                            $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data5);
+                        }    
+                    }
+                }//foreach  
+                if(!$techflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff technical qualification  record", "Error in insert staff technical qualification  record." );
+                    $this->logger->write_dblogmessage("error","Error in insert   staff technical qualification  record ", "Error in insert staff technical qualification  record " );
+                    $this->session->set_flashdata('err_message','Error in insert  staff technical qualification  record or record is already exists');
+                    redirect('empmgmt/add_technicalprofile/'.$empid);
+                }
+                else{
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    
+                    $this->logger->write_logmessage("insert","Add  staff technical qualification  Data", "Staff technical qualification  records insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add  staff technical qualification  Data", "Staff technical qualification  record insert successfully ." );
+                    $this->session->set_flashdata('success',' Staff technical qualification record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/viewfull_profile/'.$empid);
+                    }
+                                       
+                }
+                
+            }//closer else
+            
+        }
+        $this->load->view('empmgmt/add_technicalprofile');
+    }  
+    
+    /*****************edit staff academic profile ********************************************************/
+    public function edit_academicprofile($empid){
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+       // echo"seema1".$empid;
+        $selectfield="*";
+        $whdata = array ('saq_empid' => $this->emp_id);
+        $data['academicdata'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        if(isset($_POST['updateacadrofile'])) {
+            
+            $this->form_validation->set_rules('stdclass','stdclass','trim|xss_clean');
+	    $this->form_validation->set_rules('board','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
+            
+            $tsize = $this->input->post('totalsize', TRUE);
+            for ($i=0; $i<$tsize ;$i++){    
+                $entryid = $this->input->post('entryid'.$i, TRUE);
+                $stdclass = $this->input->post('stdclass'.$i, TRUE);
+                $board = $this->input->post('board'.$i, TRUE);
+                $result = $this->input->post('result'.$i, TRUE);
+                $yopass = $this->input->post('yopass'.$i, TRUE);
+                $dspln = $this->input->post('discipline'.$i, TRUE);
+                echo "entryid===".$entryid."class===".$stdclass."board==".$board."tsize==".$tsize;
+               // die;
+                $updata=array(
+                    'saq_empid'         =>$this->emp_id,
+                   // 'saq_dgree'         =>$_POST['stdclass'],
+                    'saq_board_univ'    =>$board,
+                    'saq_result'        =>$result,
+                    'saq_yopass'        =>$yopass,
+                    'saq_discipline'    =>$dspln,
+		   // 'saq_creatorid'     =>$this->session->userdata('username'),
+                    //'saq_creatordate'   =>date('Y-m-d'),
+		    'saq_modifierid'    =>$this->session->userdata('username'),
+                    'saq_modifydate'    =>date('Y-m-d'),
+                    
+                );
+                $updateflag = $this->sismodel->updaterec('staff_academic_qualification',$updata,'saq_id',$entryid);
+            }//tsize
+           // die;
+            if (!$updateflag)
+            {
+                $this->logger->write_logmessage("update","Trying to update staff academic qualification  record ", " staff academic qualification  record is not updated ".$etname);
+                $this->logger->write_dblogmessage("update","Trying to update staff academic qualification  record", " staff academic qualification  record is not added ".$etname);
+                $this->session->set_flashdata('err_message','Error in  update staff academic qualification  record - '  , 'error');
+                redirect('empmgmt/edit_academicprofile',$data);
+            }
+            else{
+                $this->logger->write_logmessage("update"," staff academic qualification record updated ", "staff academic qualification record updated successfully...");
+                $this->logger->write_dblogmessage("update"," staff academic qualification record updated ", "staff academic qualification record updated  successfully...");
+                $this->session->set_flashdata("success", "   academic qualification record updated successfully...");
+                redirect("empmgmt/edit_academicprofile/".$this->emp_id);
+            }
+        }
+        $this->load->view('empmgmt/edit_academicprofile',$data);
+        
+    }
+    /*********************This function Delete records ****************************************************/
+    
+    public function delete_academicprofile($id) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id=$this->sismodel->get_listspfic1('staff_academic_qualification', 'saq_empid', 'saq_id',$id)->saq_empid;
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('staff_academic_qualification','saq_id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in deleting staff academic qualification record" . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting staff academic qualification record" . " [id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting deleting staff academic qualification record - ');
+            redirect('empmgmt/edit_academicprofile');
+        }
+        else{
+         
+            $this->logger->write_logmessage("delete", " Deleted staff academic qualification Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted staff academic qualification Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('empmgmt/edit_academicprofile/'.$this->emp_id);
+        }
+        $this->load->view('empmgmt/edit_academicprofile');
+        
+    }
+    
+    /*************************************************************************************************************/
+    
+    /*****************edit staff technical profile ********************************************************/
+    public function edit_technicalprofile($empid){
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+       // echo"seema1".$empid;
+        $selectfield="*";
+        $whdata = array ('stq_empid' => $this->emp_id);
+        $data['technicaldata'] = $this->sismodel->get_orderlistspficemore('staff_technical_qualification',$selectfield,$whdata,'');
+        if(isset($_POST['updateacadrofile'])) {
+            
+            $this->form_validation->set_rules('stdclass','stdclass','trim|xss_clean');
+	    $this->form_validation->set_rules('board','Board University','trim|xss_clean');
+	    $this->form_validation->set_rules('result','result','trim|xss_clean');
+            $this->form_validation->set_rules('yopass','Year of Passing','trim|xss_clean');
+	    $this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
+            
+            $tsize = $this->input->post('totalsize', TRUE);
+            for ($i=0; $i<$tsize ;$i++){    
+                $entryid = $this->input->post('entryid'.$i, TRUE);
+                $stdclass = $this->input->post('stdclass'.$i, TRUE);
+                $board = $this->input->post('board'.$i, TRUE);
+                $result = $this->input->post('result'.$i, TRUE);
+                $yopass = $this->input->post('yopass'.$i, TRUE);
+                $dspln = $this->input->post('discipline'.$i, TRUE);
+              //  echo "entryid===".$entryid."class===".$stdclass."board==".$board."tsize==".$tsize;
+               // die;
+                             
+                $updata=array(
+                    'stq_empid'         =>$this->emp_id,
+                    'stq_board_univ'    =>$board,
+                    'stq_result'        =>$result,
+                    'stq_dopass'        =>$yopass,
+                    'stq_discipline'    =>$dspln,
+		    'stq_modifierid'    =>$this->session->userdata('username'),
+                    'stq_modifydate'    =>date('Y-m-d'),
+                    
+                );
+                $updateflag = $this->sismodel->updaterec('staff_technical_qualification',$updata,'stq_id',$entryid);
+            }//tsize
+            if (!$updateflag)
+            {
+                $this->logger->write_logmessage("update","Trying to update staff technical qualification  record ", " staff technical qualification  record is not updated ".$etname);
+                $this->logger->write_dblogmessage("update","Trying to update staff technical qualification  record", " staff technical qualification  record is not added ".$etname);
+                $this->session->set_flashdata('err_message','Error in  update staff technical qualification  record - '  , 'error');
+                redirect('empmgmt/edit_technicalprofile',$data);
+            }
+            else{
+                $this->logger->write_logmessage("update"," staff technical qualification record updated ", "staff technical qualification record updated successfully...");
+                $this->logger->write_dblogmessage("update"," staff technical qualification record updated ", "staff technical qualification record updated  successfully...");
+                $this->session->set_flashdata("success", "   technical qualification record updated successfully...");
+                redirect("empmgmt/edit_technicalprofile/".$this->emp_id);
+            }
+        }
+        $this->load->view('empmgmt/edit_technicalprofile',$data);
+        
+    }
+    /**This function Delete records */
+    public function delete_techprofile($id) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id=$this->sismodel->get_listspfic1('staff_technical_qualification', 'stq_empid', 'stq_id',$id)->stq_empid;
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('staff_technical_qualification','stq_id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in deleting staff technical qualification record" . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting staff technical qualification record" . " [id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting deleting staff technical qualification record - ');
+            redirect('empmgmt/edit_technicalprofile');
+        }
+        else{
+         
+            $this->logger->write_logmessage("delete", " Deleted staff technical qualification Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted staff technical qualification Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('empmgmt/edit_technicalprofile/'.$this->emp_id);
+        }
+        $this->load->view('empmgmt/edit_technicalprofile');
+        
+    }//closer
+    
+    
+    
+    
 }//classcloser    
     
     

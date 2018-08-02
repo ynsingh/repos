@@ -5,7 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
- * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars,Reports
+ * @author Manorama Pal (palseema30@gmail.com)// staff profile and service particulars,Reports,Academic qualification, technical qualification .
  * (Designation wise,position-summary vacancy position,professorlist,hodlist.) 
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[view employee profile]
  * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List, List Staff Position 
@@ -1317,5 +1317,65 @@ public function disciplinewiselist(){
         echo json_encode($post_select_box);
     }
     
+    public function academic_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+        
+        $emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('saq_empid' => $emp_id, 'saq_dgree LIKE'=> 'B%') ;
+        $emp_data['ugraduate'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        
+        $whdata = array ('saq_empid' => $emp_id, 'saq_dgree LIKE'=> 'M%') ;
+        $emp_data['masters'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        //$str='B%,M%';
+        $whdata = array ('saq_empid' => $emp_id,'saq_dgree NOT LIKE ' => 'B%','saq_dgree NOT LIKE ' => 'M%');
+        $emp_data['schooledu'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        
+        $whdata = array ('saq_empid' => $emp_id,'saq_dgree LIKE ' => 'P%','saq_dgree NOT LIKE ' => '%Diploma');
+        $emp_data['doctrate'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        
+        $whdata = array ('saq_empid' => $emp_id,'saq_dgree LIKE ' => '%Diploma');
+        $emp_data['diploma'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        
+        $this->load->view('report/academicprofile',$emp_data);
+    }
+    public function technical_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        
+        $emp_data['uoempid']=$this->getempuoid();
+	$emp_data['hodempid']=$this->getemphodid();
+        
+        $selectfield="*";
+        $whdata = array ('stq_empid' => $emp_id) ;
+        $emp_data['technical'] = $this->sismodel->get_orderlistspficemore('staff_technical_qualification',$selectfield,$whdata,'');
+        $this->load->view('report/technicalprofile',$emp_data);
+    }
 }
 

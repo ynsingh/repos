@@ -63,6 +63,22 @@
 			<b>  <a href='<?php echo site_url()."/report/viewfull_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Basic Profile</a> </b></td>
 		</tr>
                 <tr>
+			<?php if($current == 'academic') { ?>
+				<td class=btn active>
+			<?php }else{ ?>
+				<td class=btn1>
+			<?php } ?>
+			<b>  <a href='<?php echo site_url()."/report/academic_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Academic Qualification</a> </b></td>
+		</tr>
+                <tr>
+			<?php if($current == 'technical') { ?>
+				<td class=btn active>
+			<?php }else{ ?>
+				<td class=btn1>
+			<?php } ?>
+			<b>  <a href='<?php echo site_url()."/report/technical_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Technical Qualification</a> </b></td>
+		</tr>
+                <tr>
 			<?php if($current == 'service') { ?>
 				<td class=btn active>
 			<?php }else{ ?>

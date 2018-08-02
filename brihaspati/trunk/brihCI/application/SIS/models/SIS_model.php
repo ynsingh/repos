@@ -543,6 +543,20 @@ class SIS_model extends CI_Model
             print_r(" I am in else loop of generate multipleorders for the staff transfer");
         }
     }
+    
+    // delete the specific record form specific table
+    public function deleterow($tbname,$fieldname,$fieldvalue){
+	$this->db2->trans_start();
+        if ( ! $this->db2->delete($tbname, array($fieldname => $fieldvalue)))
+        {
+            $this->db2->trans_rollback();
+            return false;
+	}
+        else {
+            $this->db2->trans_complete();
+            return true;
+        }
+    }
     function __destruct() {
         $this->db2->close();
     }
