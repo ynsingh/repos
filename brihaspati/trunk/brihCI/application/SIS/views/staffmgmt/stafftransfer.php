@@ -448,7 +448,7 @@
                 var dept_id = $('#scidto').val();
                 var schm_id = $('#schmidto').val();
                 var campdeptschm = sc_code+","+dept_id+","+schm_id;
-                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
+            //    alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
                 if(schm_id == ''){
                     $('#ddoid').prop('disabled',true);
                 }
@@ -658,7 +658,7 @@
                             <div><input type="text" name="rcno" value="<?php echo isset($_POST["rcno"]) ? $_POST["rcno"] : ''; ?>" size="40"   required="required"></div>
                         </td> 
                         <td><label for="referenceno" style="font-size:15px;">Reference No</font></label>
-                            <div><input type="text" name="referenceno" value="<?php echo isset($_POST["referenceno"]) ? $_POST["referenceno"] : ''; ?>" size="38" ></div>
+                            <div><input type="text" name="referenceno" value="<?php echo isset($_POST["referenceno"]) ? $_POST["referenceno"] : ''; ?>" size="40" ></div>
                         </td> 
                         <td></td>
                     </tr>
@@ -697,7 +697,7 @@
                         </td>
                         <td><label for="uocfrom" style="font-size:15px;">University Officer Control From<font color='Red'>*</font></label>
                             
-                            <div><select name="uocfrom" id="uocid" required> 
+                            <div><select name="uocfrom" id="uocid"  style="width:350px;" required> 
                                 <option value="">------- Select University Officer Control --------</option>
                                 
                                 <?php foreach($this->uoc as $ucodata): ?>	
@@ -706,21 +706,21 @@
                             </select></div>
                         </td>
                         <td><label for="department" style="font-size:15px;">Department From<font color='Red'>*</font></label>
-                            <div><select required name="deptfrom"  id="scid"> 
+                            <div><select required name="deptfrom"  id="scid" style="width:350px;"> 
                                 <option selected="selected" disabled selected >----------------- Select Department --------------</option>
                             </select></div>
                         </td>
                     </tr> 
                     <tr>
                         <td><label for="schemecode" style="font-size:15px;">Scheme Name From<font color='Red'>*</font></label>
-                            <div><select required name="schemfrom" id="schmid"> 
+                            <div><select required name="schemfrom" id="schmid" style="width:350px;"> 
                             <option selected="selected" disabled selected>-------------- Select Scheme ------------------</option>
                         
                             </select><div>
                         </td>
                         
                         <td><label for="employeetype" style="font-size:15px;">Working Type From<font color='Red'>*</font></label>
-                            <div><select name="employeetype" id="emptype" required="required"> 
+                            <div><select name="employeetype" id="emptype"  style="width:350px;" required="required"> 
                                 <option value="">------------ Select Employee Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
                                 <option value="Non Teaching">Non Teaching</option>                     
@@ -729,7 +729,7 @@
                                                
                   
                         <td><label for="designation" style="font-size:15px;">Designation From<font color='Red'>*</font></label>
-                            <div><select name="desigfrom" id="desigid" required> 
+                            <div><select name="desigfrom" id="desigid" style="width:350px;" required> 
                                 <option selected="selected" disabled selected>-------------- Select Designation -----------------</option>
                                 
                                 </select></div>
@@ -738,7 +738,7 @@
                     <tr>
                         
                         <td><label for="empname" style="font-size:15px;">Employee Name<font color='Red'>*</font></label>
-                            <div><select name="empname" id="empnameid"> 
+                            <div><select name="empname" id="empnameid" style="width:350px;"> 
                                 <option value="">--------- Select Employee Name --------------</option>
                               
                                                    
@@ -785,7 +785,7 @@
                             </select></div>
                         </td> 
                         <td><label for="uocontrol" style="font-size:15px;">University Officer Control To<font color='Red'>*</font></label>
-                            <div><select name="uocontrolto" id="uocidto" required> 
+                            <div><select name="uocontrolto" id="uocidto" style="width:350px;" required> 
                                 <option value="">------- Select University Officer Control ---------</option>
                                 
                                 <?php foreach($this->uoc as $ucodata): ?>	
@@ -794,7 +794,7 @@
                             </select></div>
                         </td>
                         <td><label for="dept" style="font-size:15px;">Department To<font color='Red'>*</font></label>
-                            <div><select required name="deptto" id="scidto"> 
+                            <div><select required name="deptto" id="scidto" style="width:350px;"> 
                                <option value="">----------------- Select Department ------------</option>
                             </select></div>
                         </td>
@@ -802,7 +802,7 @@
                     </tr>
                     <tr>
                         <td><label for="schemecode" style="font-size:15px;">Scheme Name To<font color='Red'>*</font></label>
-                            <div><select required name="schemto" id="schmidto"> 
+                            <div><select required name="schemto" id="schmidto" style="width:350px;"> 
                             <option selected="selected" disabled selected>----------------- Select Scheme ------------------</option>
                         
                             </select><div>
@@ -813,7 +813,7 @@
                             </select></div>
                         </td>
                         <td><label for="payband" style="font-size:15px;">Pay Band To<font color='Red'>*</font></label>
-                        <div><select name="payband" required style="width:300px;"> 
+                        <div><select name="payband" required style="width:350px;"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
@@ -827,14 +827,14 @@
                     <tr>
                         
                         <td><label for="employeetype" style="font-size:15px;">Working Type To<font color='Red'>*</font></label>
-                            <div><select name="emptypeto" id="emptypeto" required="required"> 
+                            <div><select name="emptypeto" id="emptypeto" style="width:350px;" required="required"> 
                                 <option value="">------------ Select Employee Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
                                 <option value="Non Teaching">Non Teaching</option>                     
                             </select></div>
                         </td>
                         <td><label for="group" style="font-size:15px;">Group To<font color='Red'>*</font></label>
-                        <div><select name="group" id="grpid" required style="width:300px;"> 
+                        <div><select name="group" id="grpid" required style="width:350px;"> 
                         <option selected="selected" disabled selected>------------ Select Group ---------</option>
                         <option value="A">A</option>
                         <option value="B">B</option>
@@ -844,7 +844,7 @@
                         </td>
                         <?php //echo $ttype ;?>
                         <td><label for="desigto" style="font-size:15px;">Designation To<font color='Red'>*</font></label>
-                            <div><select required name="desigto" id="desigidto"> 
+                            <div><select required name="desigto" id="desigidto" style="width:350px;"> 
                                <option value="">--------------- Select Designation ---------------</option>
                             </select>
                             </div>
@@ -854,21 +854,21 @@
                     <tr>
                         <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
                         <div>    
-                            <select required name="postto" id="postto"> 
+                            <select required name="postto" id="postto" style="width:350px;"> 
                                <option value="">--------------- Select Post ------------------------</option>
                             </select>   
                          
                         </div>       
                         </td>
                         <td><label for="emptype" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
-                            <div><select id="vtypeid" name="vacanttype" required style="width:300px;"> 
+                            <div><select id="vtypeid" name="vacanttype" required style="width:350px;"> 
                             <option selected="selected" disabled selected>-------- Select Employee Type ------</option>
                             
                             </select><div>
                         </td> 
                         <?php if($ttype =='mutual'): ?>
                         <td><label for="empname" style="font-size:15px;">Employee Name for Mutual Tranfer<font color='Red'>*</font></label>
-                            <div><select name="empmutual" id="empnto"> 
+                            <div><select name="empmutual" id="empnto" style="width:350px;"> 
                                 <option value="">--------- Select Employee Name --------------</option>
                               
                                                    

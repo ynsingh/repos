@@ -60,22 +60,47 @@ class Staffmgmt extends CI_Controller
                         $deptid=$rw->deptid;
                 }
                 $whdata['emp_dept_code'] = $deptid;
+		$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
         }
 	 $selectfield ="emp_id,emp_code,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
-            $wtype = $this->input->post('wtype');
-	    $post  = $this->input->post('post');
-	    $strin = $this->input->post('strin');
-	    if((!empty($wtype)) && ($wtype != 'null') && ($wtype != ' ')){
+         	$wtype = $this->input->post('wtype');
+	    	$post  = $this->input->post('post');
+	    	$strin = $this->input->post('strin');
+            	$uoid = $this->input->post('uoff');
+            	$deptid = $this->input->post('dept');
+
+	    	if((!empty($wtype)) && ($wtype != 'null') && ($wtype != ' ')){
                        $whdata['emp_worktype'] = $wtype;
-            }
-            if((!empty($post)) && ($post != 'null') && ($post != ' ') && ($post != "All")){
-                        $whdata['emp_desig_code'] = $post;
-            }else{
+            	}
+	    	if((!empty($uoid)) && ($uoid != 'null') && ($uoid != ' ')){
+                        if($uoid != 'All'){
+                               $whdata['emp_uocid']=$uoid;
+                        }
+            	}
+	    	if((!empty($deptid)) && ($deptid != 'null') && ($deptid != ' ')){
+                         if($deptid != 'All'){
+                                $whdata['emp_dept_code'] = $deptid;
+                        }
+            	}
+
+	    	if((!empty($post)) && ($post != 'null') && ($post != ' ')){
+                        if($post != 'All'){
+                                 $whdata['emp_desig_code'] =$post;
+                        }
+            	}
+	    	else{
                         $post="All";
-            }
+	    	}
+
+
+         //   if((!empty($post)) && ($post != 'null') && ($post != ' ') && ($post != "All")){
+           //             $whdata['emp_desig_code'] = $post;
+          //  }else{
+            //            $post="All";
+          //  }
 	    // for string search
             if(!empty($strin)) {
                         $whdata['emp_name LIKE ' ] ='%'.$strin.'%';
@@ -94,7 +119,6 @@ class Staffmgmt extends CI_Controller
 		$joincond = 'employee_master.emp_code = uo_list.ul_empcode';
 		$data['records1']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
 	}
-	$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
 	$rest = substr($uname, -21);
 	if($rest == 'office@tanuvas.org.in'){
 		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'hl_uopid' =>$uopid);
@@ -1295,23 +1319,52 @@ class Staffmgmt extends CI_Controller
                 }
         }
         //print_r($whdata); die;
-	 $selectfield ="sp_emppost,sp_campusid,sp_uo,sp_dept,sp_schemecode,sp_tnt,sp_type,sp_emppost,sp_scale,sp_methodRect,sp_sancstrenght,sp_position,sp_vacant,sp_id";
-         $whorder = "sp_dept asc,sp_emppost asc";
+	$selectfield ="sp_emppost,sp_campusid,sp_uo,sp_dept,sp_schemecode,sp_tnt,sp_type,sp_emppost,sp_scale,sp_methodRect,sp_sancstrenght,sp_position,sp_vacant,sp_id";
+        $whorder = "sp_dept asc,sp_emppost asc";
         //$whdata = array('sp_uo'=> $uo);
-         if(isset($_POST['filter'])) {
+        if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
-            $wtype = $this->input->post('wtype');
-            $post  = $this->input->post('post');
-            if(!empty($post) && (!empty($deptid))){
+            	$wtype = $this->input->post('wtype');
+            	$uoid = $this->input->post('uoff');
+            	$deptid = $this->input->post('dept');
+            	$post  = $this->input->post('post');
+
+	    	if((!empty($wtype)) && ($wtype != 'null') && ($wtype != ' ')){
+            		$whdata['sp_tnt']= $wtype;
+		}
+
+	    	if((!empty($uoid)) && ($uoid != 'null') && ($uoid != ' ')){
+		   	if($uoid != 'All'){
+				if($rlid != 10){
+					$whdata['sp_uo']=$uoid;
+				}
+			}
+	   	}
+
+	    	if((!empty($deptid)) && ($deptid != 'null') && ($deptid != ' ')){
+			 if($deptid != 'All'){
+				if ($rlid != 5){
+					 $whdata['sp_dept'] = $deptid;
+				}
+			}
+		}
+	
+	    	if((!empty($post)) && ($post != 'null') && ($post != ' ')){
+			if($post != 'All'){
+				 $whdata['sp_emppost'] =$post;
+			}
+		}
+           /* 
+	if($uoff != "null" && $uoff != "All" && $uoff != "")
+
+	if(!empty($post) && (!empty($deptid))){
 		if($post != 'All'){
-                	$whdata['sp_tnt']= $wtype;
                 	$whdata['sp_emppost'] =$post;
 		        if ($rlid != 5){
                 		$whdata['sp_dept'] = $deptid;
 			}
 		}
 		else{
-                	$whdata['sp_tnt']= $wtype;
 		        if ($rlid != 5){
                 		$whdata['sp_dept'] = $deptid;
 			}
@@ -1320,13 +1373,9 @@ class Staffmgmt extends CI_Controller
             }
 	    elseif (!empty($post)){
 		if($post != 'All'){
-			$whdata['sp_tnt']= $wtype;
 			$whdata['sp_emppost'] =$post;
 		}
-		else{
-			$whdata['sp_tnt']= $wtype;
-		}
-	    }
+	    }*/
 		$this->wtyp = $wtype;
                 $this->desigm = $post;	
  	 	$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield, $whdata,$whorder);
@@ -1694,7 +1743,7 @@ class Staffmgmt extends CI_Controller
                 'sp_campusid'=> $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_name', $campusid)->sc_id,
                 'sp_per_temporary'=>'Null',
                 'sp_plan_nonplan'=>$plannonplan,
-                'sp_schemecode'=> $this->sismodel->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $schemecode)->sd_id, 
+                'sp_schemecode'=> $editsp_data->sp_schemecode, 
                 'sp_sancstrenght'=>$sancstrenght,
                 'sp_position'=>$position,
                 'sp_vacant'=>$vacant,

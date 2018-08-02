@@ -41,12 +41,15 @@
 		<tr>
 			<td> <?php echo $data->emp_name;?></td>
 		</tr>
+		<tr>	
+			<td>Designation </br> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name;?></td>
+		</tr>
 		<tr>
 			<td>Phone No. </br><?php echo $data->emp_phone;?></td>
 		</tr>
-		<tr>	
+	<!--	<tr>	
 			<td>E-mail Id </br> <?php echo $data->emp_secndemail;?></td>
-		</tr>
+		</tr>-->
     	</table>
 	<br>
 <div id="myDIV">

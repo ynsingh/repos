@@ -12,8 +12,102 @@
 <script>
 
 $(document).ready(function(){
-                /****************************************** start post********************************/
+		/****************************************** start of uofficer********************************/
                 $('#wtype').on('change',function(){
+                    var workt = $(this).val();
+                    //alert(sc_code);
+                    if(workt == ''){
+                        $('#uoff').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#uoff').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getuolist",
+                            type: "POST",
+                            data: {"worktype" : workt},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#uoff').html(data.replace(/^"|"$/g, ''));
+                                                 
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of uofficer********************************/
+
+		/****************************************** start of deptarment********************************/
+                $('#uoff').on('change',function(){
+                    var wtcode = $('#wtype').val();
+                    var uoid = $('#uoff').val();
+                    //alert(sc_code);
+                    var wrktypeuo = wtcode+","+uoid;
+                    if(wtcode == ''){
+                        $('#dept').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#dept').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/report/getdeptlist",
+                            type: "POST",
+                            data: {"worktypeuo" : wrktypeuo},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#dept').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of department********************************/
+	/****************************************** start of designation*******************************/
+                $('#dept').on('change',function(){
+                    var wtcode = $('#wtype').val();
+                    var uoid = $('#uoff').val();
+                    var dept = $('#dept').val();
+                    //alert(sc_code);
+                    var wtuodept = wtcode+","+uoid+","+dept;
+                    // alert(wtuodept);
+                    if(dept == ''){
+                        $('#post').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#post').prop('disabled',false);
+                        $.ajax({
+                           // url: "<?php echo base_url();?>sisindex.php/staffmgmt/getcombdesiglist",
+                            url: "<?php echo base_url();?>sisindex.php/report/getuodeptpostlist_sp",
+                            type: "POST",
+                            data: {"wtuodept" : wtuodept},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#post').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+
+
+                /****************************************** start post********************************/
+/*                $('#wtype').on('change',function(){
                     var workt = $(this).val();
                    //alert("post====="+workt);
                     if(workt == ''){
@@ -39,12 +133,12 @@ $(document).ready(function(){
                             }
                         });
                     }
-                });
+                });*/
             });
 
             function verify(){
                 var x=document.getElementById("wtype").value;
-		var y=document.getElementById("post").value;
+		var y=document.getElementById("uoff").value;
 		var z=document.getElementById("strin").value;
 		if(((x == 'null') && (y == 'null') && (z == 'null')) || ((x == '') && (y == '') && (z == ''))){
                 //if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
@@ -95,22 +189,35 @@ $(document).ready(function(){
 <form action="<?php echo site_url('staffmgmt/employeelist');?>" id="myForm" method="POST" class="form-inline">
           <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
-                <td>  Select Working Type
+                <td>  Select Working Type<br>
                     <select name="wtype" id="wtype">
 				<?php if  (!empty($this->wtyp)){ ?>
                         <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>------- Select Working Type -------</option>
+                      <option value="" disabled selected>-- Select Working Type --</option>
                           <?php  } ?>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
                     </select>
+		 </td>
+               <td>  Select UO<br>
+                    <select name="uoff" id="uoff" style="width:250px;">
+                      <option value="" disabled selected>-- Select University officer--</option>
+                    </select>
+                </td>
+                <td>  Select Department<br>
+                    <select name="dept" id="dept" style="width:250px;">
+                      <option value="" disabled selected>-- Select Department --</option>
+                    </select>
+
+                </td>
+
 		<?php
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp";
+//		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp";
 		?>
-                <!--</td>
-                <td> --> Select Post
-                    <select name="post" id="post">
+                <!--</td>-->
+                <td>  Select Post<br>
+                    <select name="post" id="post" style="width:250px;">
 			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
                         <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>
@@ -118,10 +225,10 @@ $(document).ready(function(){
 			 <?php  } ?>
                      <!-- <option value="All" >All</option> -->
                     </select>
-               <!-- </td>
-		<td>-->
-		 Search String
-                                                         <input type="text" name="strin" id="strin" style="width:100" placeholder="Enter String" value="<?php echo isset($_POST["emp_name"]) ? $_POST["dept_name"] :  ''; ?>">
+                </td>
+		<td>
+		 Search String<br>
+                          <input type="text" name="strin" id="strin" style="width:100" placeholder="Enter String" value="<?php echo isset($_POST["emp_name"]) ? $_POST["dept_name"] :  ''; ?>">
 
                     <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
                 </td>

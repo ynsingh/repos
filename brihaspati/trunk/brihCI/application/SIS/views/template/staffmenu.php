@@ -113,9 +113,9 @@ echo "<ul class=\"sf-menu\">";
 				echo "</ul>";
 				echo "</li>";
  */
-			echo "<li>";
-				echo "<a href=" . ">Reports</a>";
-				echo "<ul>";
+//			echo "<li>";
+//				echo "<a href=" . ">Reports</a>";
+//				echo "<ul>";
 	/*				echo "<li>";
 						echo anchor('report/liststu', 'Student List', array('title' => 'Student List'));
 					echo "</li>";
@@ -125,26 +125,26 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('report/liststaff', 'Staff List', array('title' => 'Staff List'));
 					echo "</li>";					*/
-					echo "<li>";
+//					echo "<li>";
                   //echo anchor('leavemgmt/earnedleave', 'Earned Leave Details', array('title' => 'Details'));
-						echo anchor('leavemgmt/viewels', 'Earned Leave Details', array('title' => 'View Earned Leave Details'));
-               echo "</li>"; 					
-					echo "<li>";
-                  echo anchor('leavemgmt/staffleavedetails', 'Leave Details', array('title' => 'Leave Details'));
-               echo "</li>"; 
+//						echo anchor('leavemgmt/viewels', 'Earned Leave Details', array('title' => 'View Earned Leave Details'));
+  //             echo "</li>"; 					
+//					echo "<li>";
+  //                echo anchor('leavemgmt/staffleavedetails', 'Leave Details', array('title' => 'Leave Details'));
+    //           echo "</li>"; 
 					
 					
-				echo "</ul>";
-			echo "</li>";
-			echo "<li>";
-				echo "<a href=" . ">Requests</a>";
-				echo "<ul>";
-					echo "<li>";
-                  echo anchor('leavemgmt/leaveapply', 'Apply for Leave', array('title' => 'Apply for Leave'));
-               echo "</li>"; 
-
-				echo "</ul>";
-			echo "</li>";
+//				echo "</ul>";
+//			echo "</li>";
+//			echo "<li>";
+//				echo "<a href=" . ">Requests</a>";
+//				echo "<ul>";
+//					echo "<li>";
+  //                echo anchor('leavemgmt/leaveapply', 'Apply for Leave', array('title' => 'Apply for Leave'));
+    //           echo "</li>"; 
+//
+//				echo "</ul>";
+//			echo "</li>";
 		/*	echo "<li>";
 				echo "<a href=" . ">Reconcile</a>";
 				echo "<ul>";

@@ -55,7 +55,7 @@
 
                  <td><div> Select Subject
 			
-                    <select name="subj[]" id="subj" style="width:400px;"  multiple>
+                    <select name="subj[]" id="subj" style="width:400px;" title="You have to choose multiple subject by pressing Ctrl "  multiple>
 			<? if  (!empty($this->subj)){ ?>
 			<option value="<?php echo $this->subj; ?>" > <?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name ." ( ".$this->commodel->get_listspfic1('subject','sub_code','sub_id' ,$this->subj)->sub_code ." )"; ?></option>
 			<?  }else{ ?>

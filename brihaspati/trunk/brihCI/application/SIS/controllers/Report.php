@@ -1281,6 +1281,41 @@ public function disciplinewiselist(){
         }
         echo json_encode($post_select_box);
     } 
+/********************select post list according to selection type**********************/
+    public function getuodeptpostlist_sp(){
+        $combid= $this->input->post('wtuodept');
+        $parts = explode(',',$combid);
+
+        $whdata = '';
+        $whdata = $this->getwhdata();
+        $whdata['sp_tnt']= $parts[0];
+
+        if($parts[1]!="All"){
+                $whdata['sp_uo'] = $parts[1];
+        }
+        if($parts[2] !="All"){
+                $whdata['sp_dept']=$parts[2];
+        }
+        $whorder = 'sp_emppost asc';
+
+        $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$whdata,$whorder);
+        $post_select_box =' ';
+        $post_select_box.='<option value=null>----------- Select Post ---------------';
+        $usrname=$this->session->userdata('username');
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+                $post_select_box.='<option value='.All.'>'.All. ' ';
+        }
+        //$post_select_box.='<option value='.All.'>'.All. ' ';
+        if(count($comb_data)>0){
+            foreach($comb_data as $detail){
+                $postname=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->sp_emppost)->desig_name;
+                $postcode=$this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$detail->sp_emppost)->desig_code;
+
+               $post_select_box.='<option value='.$detail->sp_emppost.'>'.$postname. '(' .$postcode. ')'.' ';
+            }
+        }
+        echo json_encode($post_select_box);
+    }
     
 }
 

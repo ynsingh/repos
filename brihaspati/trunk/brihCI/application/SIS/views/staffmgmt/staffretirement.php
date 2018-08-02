@@ -298,6 +298,7 @@
                         <option value="Expired" >Expire</option>  
                         <option value="Resigned">Resign</option>
                         <option value="VRS">VRS</option>
+                        <option value="superannuation">superannuation</option>
                         </select> 
 			</td><td>
 	
