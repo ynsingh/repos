@@ -101,12 +101,16 @@ class Ckeditor extends CI_Controller {
 		);
 		$this->load->library('session');
                 $unspent_type = $this->session->userdata('unspent_type');
-                if($unspent_type == 'non-plan'){
-		$var = getcwd().'/docs/BGAS/'.Date("F d, Y").'nonplan_report'.'.txt';
+                if($unspent_type == 'nonplan'){
+			//$var = getcwd().'/docs/BGAS/'.Date("F d, Y").'nonplan_report'.'.txt';
+			$var = getcwd().'/docs/BGAS/'.'nonplan_report'.Date("Ymd").'.txt';
 		}elseif($unspent_type == 'plan'){
-			 $var = getcwd().'/docs/BGAS/'.Date("F d, Y").'plan_report'.'.txt';
+//			 $var = getcwd().'/docs/BGAS/'.Date("F d, Y").'plan_report'.'.txt';
+			 $var = getcwd().'/docs/BGAS/'.'plan_report'.Date("Ymd").'.txt';
+		}elseif($unspent_type == 'summary'){
+			 $var = getcwd().'/docs/BGAS/'.'summary_report'.Date("Ymd").'.txt';
 		}else{
-		$var = getcwd().'/docs/BGAS/notesToAccount.txt';
+			$var = getcwd().'/docs/BGAS/notesToAccount.txt';
 		}
 		$file_content = file_get_contents($var);
 		$this->data['textarea'] = array(
@@ -140,7 +144,7 @@ class Ckeditor extends CI_Controller {
 
 		}else{
 
-			$this->messages->add('Please give write permission to "BGAS/docs/notesToAccount.txt" file', 'error');
+			$this->messages->add('Please give write permission to "docs/BGAS/notesToAccount.txt" file', 'error');
 
 		}	
 

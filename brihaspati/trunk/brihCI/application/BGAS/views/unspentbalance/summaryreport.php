@@ -15,7 +15,7 @@
 	$this->load->library('session');
 	$this->load->model('Ledger_model');
 	$newdata = array(
-        	'unspent_type'  => 'smrry_report',
+        	'unspent_type'  => 'summary',
 	);
 	$this->session->set_userdata($newdata);
 	if($save_report)
@@ -25,7 +25,8 @@
 	$docs_path_url = realpath(BASEPATH.'../docs/BGAS');
         $file_list = get_filenames($docs_path_url);
         $arr_len = count($file_list);
-        $file_name = Date("F d, Y").'summary_report'.'.txt';
+       // $file_name = Date("F d, Y").'summary_report'.'.txt';
+        $file_name = 'summary_report'.Date("Ymd").'.txt';
         $i=0;
 	$count=0;
 	$fund_length = count($fund);
@@ -117,15 +118,19 @@
         		for($i=0; $i<$arr_len; $i++)
 			{
 				//echo $file_list[$i];
-                		$exp_date = explode(",",$file_list[$i]);
+                	//	$exp_date = explode(",",$file_list[$i]);
                 		if($file_list[$i] != 'notesToAccount.txt')
 				{
-                        		if(@$exp_date[1] == ' '.Date("Y").'summary_report.txt')
+					if(substr($file_list[$i],0,14) == 'summary_report')
+                        		//if(@$exp_date[1] == ' '.Date("Y").'summary_report.txt')
 					{
                         			echo "<tr>";
                                 		echo "<p>";
-                                		echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/summary_report', $file_list[$i]) . "</td>";
-                                		echo "<td>" . anchor('unspentbalance/delete/'. $exp_date[0].'/summary_report', 'Delete') . "</td>";
+                                		echo "<td>" . anchor('unspentbalance/view_file/'.substr($file_list[$i],0,14).'/'.substr($file_list[$i],14,26), $file_list[$i]) . "</td>";
+                                		//echo "<td>" . anchor('unspentbalance/view_file/'.$file_list[$i], $file_list[$i]) . "</td>";
+                                		//echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/summary_report', $file_list[$i]) . "</td>";
+                                		echo "<td>" . anchor('unspentbalance/delete/'.$file_list[$i], 'Delete') . "</td>";
+                                		//echo "<td>" . anchor('unspentbalance/delete/'. $exp_date[0].'/summary_report', 'Delete') . "</td>";
                                 		echo "</p>";
                         			echo "</tr>";
                         		}
@@ -332,7 +337,8 @@ echo "<tr>";
 	if(!$make_txt)
 	{
 		// Get the content that is in the buffer and put it in your file //
-		file_put_contents('docs/BGAS/'.Date("F d, Y").'summary_report'.'.txt', ob_get_contents());
+		//file_put_contents('docs/BGAS/'.Date("F d, Y").'summary_report'.'.txt', ob_get_contents());
+		file_put_contents('docs/BGAS/'.'summary_report'.Date("Ymd").'.txt', ob_get_contents());
 	}
 	if(!$print_preview)
 	{

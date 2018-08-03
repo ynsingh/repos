@@ -442,13 +442,13 @@ $(document).ready(function() {
                                                 echo anchor('','No Dues');
                                                 echo "<ul>";
 							echo"<li>";
-		                                           //     echo anchor('report2/nodueslist_report','No Dues Issued List', array('title'=>'No Dues Issued List'));
+		                                                echo anchor('report2/nodueslist_report','No Dues Issued List', array('title'=>'No Dues Issued List'));
                 		                        echo"</li>";
 							echo"<li>";
                                                 		echo anchor('report2/feependlist_report','Student Dues List', array('title'=>'Dues List Report'));
 		                                        echo"</li>";
 							echo"<li>";
-                                		             //   echo anchor('report2/noduescertificate','No Dues Certificate', array('title'=>'No Dues Certificate'));
+                                		                echo anchor('report2/noduescertificatelist','No Dues Certificate', array('title'=>'No Dues Certificate'));
 		                                        echo"</li>";
 						echo"</ul>";
 		                       echo"</li>";

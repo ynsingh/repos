@@ -3,7 +3,7 @@
 	echo form_open('ckeditor');
 	$this->load->library('session');
 	$newdata = array(
-		'unspent_type'  => 'non-plan',
+		'unspent_type'  => 'nonplan',
 	);
 	$this->session->set_userdata($newdata);
 	//Get current and previous year...
@@ -21,15 +21,12 @@
 	{
 		ob_start();
 	}
-	$docs_path_url = realpath(BASEPATH.'/docs/BGAS');
-	
-      //  print_r($docs_path_url);
-       // die;
-	$file_list = get_filenames($docs_path_url);
-	//print_r($file_list);
+	$docs_path_url = realpath(BASEPATH.'../docs/BGAS');
+        $file_list = get_filenames($docs_path_url);
 	$arr_len = is_array($file_list) ? count($file_list) : 1;
         //$arr_len = count($file_list);
-        $file_name = Date("F d, Y").'nonplan_report'.'.txt';
+        $file_name = 'nonplan_report'.Date("Ymd").'.txt';
+       // $file_name = Date("F d, Y").'nonplan_report'.'.txt';
 	$plan_total = 0;
         $nonplan_total = 0;
         $plan_op_balance = 0;
@@ -142,16 +139,17 @@
 			echo "<tbody>";
         		for($i=0; $i<$arr_len; $i++)
 			{
-				//echo $file_list[$i];
-				$exp_date=explode(",",$file_list[$i]);
+	//			echo $file_list[$i];
+			//	$exp_date=explode(",",$file_list[$i]);
 				if($file_list[$i] != 'notesToAccount.txt')
 				{
-					if(@$exp_date[1] ==' '.Date("Y").'nonplan_report.txt')
+					if(substr($file_list[$i],0,14) == 'nonplan_report')
+				//	if(@$exp_date[1] ==' '.Date("Y").'nonplan_report.txt')
 					{
         					echo "<tr>";
                 				echo "<p>";
-						echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/nonplan_report', $file_list[$i]) . "</td>";
-                				echo "<td>" . anchor('unspentbalance/delete/'. $exp_date[0].'/nonplan_report', 'Delete') . "</td>";
+						echo "<td>" . anchor('unspentbalance/view_file/'.substr($file_list[$i],0,14).'/'.substr($file_list[$i],-12), $file_list[$i]) . "</td>";
+                				echo "<td>" . anchor('unspentbalance/delete/'.$file_list[$i], 'Delete') . "</td>";
                                 		echo "</p>";
                 				echo "</p>";
         					echo "</tr>";
@@ -429,7 +427,8 @@
 	if(!$make_txt)
 	{
 		// Get the content that is in the buffer and put it in your file //
-		file_put_contents('docs/BGAS/'.Date("F d, Y").'nonplan_report'.'.txt', ob_get_contents());
+		//file_put_contents('docs/BGAS/'.Date("F d, Y").'nonplan_report'.'.txt', ob_get_contents());
+		file_put_contents('docs/BGAS/'.'nonplan_report'.Date("Ymd").'.txt', ob_get_contents());
 	}
 	if(!$save_report)
 	{

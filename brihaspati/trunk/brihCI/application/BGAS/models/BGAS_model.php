@@ -91,8 +91,12 @@ class BGAS_model extends CI_Model
         }
         if($whorder != ''){
                 $this->db->order_by($whorder);
-        }
-        return $this->db->get()->result();
+	}
+	$getd= $this->db->get();
+	if(!empty($getd))
+        	return $getd->result();
+	else
+		return;
     }
 
     public function get_orderlistspficemoreorwh($tbname,$selectfield,$whdata,$orfield,$orwhin,$whorder){

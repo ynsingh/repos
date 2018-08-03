@@ -471,3 +471,23 @@ CREATE TABLE IF NOT EXISTS old_sponsored_asset_register(
                         project_name VARCHAR (255) NOT NULL,
                         PRIMARY KEY(id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `nodues` (
+  `id` int(11) NOT NULL,
+  `sacunitno` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `creatorid` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `nodues`
+--
+ALTER TABLE `nodues`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for table `nodues`
+--
+ALTER TABLE `nodues`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+

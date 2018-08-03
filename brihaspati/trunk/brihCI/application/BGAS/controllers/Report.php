@@ -395,8 +395,10 @@ function __construct() {
 		);
 		if ($_POST)
 		{
-			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
-			$data['asset_type_active']['value'] = $this->input->post('asset_type', TRUE);
+			$data['search_by_active'] = $this->input->post('search_by', TRUE);
+			//$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			//$data['asset_type_active']['value'] = $this->input->post('asset_type', TRUE);
+			$data['asset_type_active'] = $this->input->post('asset_type', TRUE);
 			$data['text']['value'] = $this->input->post('text', TRUE);
 		}
 		/* Form validation */

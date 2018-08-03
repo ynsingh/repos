@@ -30,7 +30,8 @@
 	$docs_path_url = realpath(BASEPATH.'../docs/BGAS');
 	$file_list = get_filenames($docs_path_url);
 	$arr_len = count($file_list);
-	$file_name = Date("F d, Y").'plan_report'.'.txt';
+	//$file_name = Date("F d, Y").'plan_report'.'.txt';
+	$file_name = 'plan_report'.Date("Ymd").'.txt';
 	$i = 0;
 
 	$count=0;
@@ -134,15 +135,18 @@
 			echo "<tbody>";
  			for($i=0; $i<$arr_len; $i++)
 			{
-                		$exp_date = explode(",",$file_list[$i]);
+                		//$exp_date = explode(",",$file_list[$i]);
                 		if($file_list[$i] != 'notesToAccount.txt' || $file_list[$i] != 'BGASInstallationdoc.pdf')
 				{
-                        		if(@$exp_date[1] == ' '.Date("Y").'plan_report.txt')
+					if(substr($file_list[$i],0,11) == 'plan_report')
+                        	//	if(@$exp_date[1] == ' '.Date("Y").'plan_report.txt')
 					{
                         			echo "<tr>";
                                 		echo "<p>";
-						echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/plan_report', $file_list[$i]) . "</td>";
-                                		echo "<td>" . anchor('unspentbalance/delete/'. $exp_date[0].'/plan_report', 'Delete') . "</td>";
+						//echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/plan_report', $file_list[$i]) . "</td>";
+						echo "<td>" . anchor('unspentbalance/view_file/'.substr($file_list[$i],0,11).'/'.substr($file_list[$i],-12), $file_list[$i]) . "</td>";
+                                		echo "<td>" . anchor('unspentbalance/delete/'. $file_list[$i], 'Delete') . "</td>";
+                                		//echo "<td>" . anchor('unspentbalance/delete/'. $exp_date[0].'/plan_report', 'Delete') . "</td>";
                                 		echo "</p>";
                         			echo "</tr>";
                         		}
@@ -574,7 +578,8 @@
 	if(!$make_txt)
 	{
 		// Get the content that is in the buffer and put it in your file //
-		file_put_contents('docs/BGAS/'.Date("F d, Y").'plan_report'.'.txt', ob_get_contents());
+		//file_put_contents('docs/BGAS/'.Date("F d, Y").'plan_report'.'.txt', ob_get_contents());
+		file_put_contents('docs/BGAS/plan_report'.Date("Ymd").'.txt', ob_get_contents());
 	}
 	if(!$save_report)
 	{

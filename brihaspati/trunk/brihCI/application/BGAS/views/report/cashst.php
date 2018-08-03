@@ -69,7 +69,7 @@
 
 	}
 		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
-		echo "<tr><td><h3>Receipt</td></tr>";
+		echo "<tr><td colspan=13><h3>Receipt</td></tr>";
 		echo "</table>";
 		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 		$odd_even = "odd";
@@ -133,7 +133,7 @@
 					//Opening Balance Of bank........................
 //. money_format('%!i', convert_cur($amount)) .
 					echo "<thead>";
-						echo "<tr><td><b>Opening Balance</td><td></td><td></td><td></td>";
+						echo "<tr><td><b>Opening Balance</td><td></td><td></td><td></td><td></td>";
 						$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
                                         	$led_name = $this->db->get();
                                         	foreach ($led_name->result() as $row1)
@@ -149,7 +149,7 @@
                                                 echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .money_format('%!i', convert_cur($opbalance))."</td>";
 
 						}
-					echo "<td></td>";
+					//echo "<td></td>";
 					echo"</tr></thead>";
 				}else{
 					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"10%\"><b>Voucher No.</th><th width=\"10%\"><b>Cheque No.</th><th width=\"20%\"><b>Head Of A/C</th>";

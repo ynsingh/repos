@@ -1425,6 +1425,66 @@ function __construct() {
 	
         return;
 	}
+
+	function nodueslist_report(){
+		$data['print_preview'] = 'FALSE';
+                $this->template->set('page_title', 'Issued No Dues List Report');
+	//	$this->template->set('nav_links', array('report2/printpreview/nodueslist_report' => 'Print Preview'));
+
+		$selectfield='sacunitno,date,type,creatorid';
+	        $whorder="sacunitno asc";
+		$data['result']=$this->BGAS_model->get_orderlistspficemore('nodues',$selectfield,'',$whorder);
+//		print_r($data); die();
+
+		$this->template->load('template', 'report2/nodueslist_report', $data);
+		return;
+	}
+
+	 function getliststufees(){
+                $ldata= array();
+                $rec=$this->BGAS_model->get_listspfic1('ledgers','id','name','Fees Receivable');
+                if(!empty($rec)){
+                        $legid=$rec->id;
+
+                        $whdata=array('ledger_id' => $legid);
+                        $secunitlist=$this->BGAS_model->get_distinctrecord('entry_items','secunitid',$whdata);
+                        $i=0;
+
+                        foreach( $secunitlist as $row1){
+                                $secid=$row1->secunitid;
+                                $whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'D');
+                                $sumdb=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totdb',$whdata,'');
+                                foreach($sumdb as $row2){
+                                        $dbamt = $row2->totdb;
+                                }
+                                $whdata=array('ledger_id' => $legid,'secunitid' =>$secid, 'dc' =>'C');
+                                $sumcr=$this->BGAS_model->get_orderlistspficemore('entry_items','sum(amount) as totcr',$whdata,'');
+                                foreach($sumcr as $row3){
+                                        $cramt = $row3->totcr;
+                                }
+                               // if($dbamt >$cramt){
+                                        $sdata['secunit']=$secid;
+                                        $sdata['dbamt']=$dbamt;
+                                        $sdata['cramt']=$cramt;
+                                        $ldata[$i]=$sdata;
+                               // }
+                                $i++;
+                        }
+                }
+                return $ldata;
+        }
+
+        function noduescertificatelist(){
+                $data['print_preview'] = 'FALSE';
+                $this->template->set('page_title', 'No Dues Student List');
+                //$this->template->set('nav_links', array('report2/printpreview/noduescertificatelist' => 'Print Preview'));
+                $data['result']=$this->getliststufees();
+
+                $this->template->load('template', 'report2/noduescertificatelist', $data);
+                return;
+        }
+
+
 	function mailsenddefaulter(){
 		$flag=false;
 		$this->load->library('paymentreceipt');
@@ -1505,10 +1565,10 @@ function __construct() {
 		if(!empty($res)){
 			$legid=$res->id;
 		
-            $selectfield='amount,dc,secunitid,ledger_code,update_date ';
-            $whdata=array('ledger_id' => $legid);
-            $whorder="secunitid asc,dc asc";
-            return $this->BGAS_model->get_orderlistspficemore('entry_items',$selectfield,$whdata,$whorder);
+       			$selectfield='amount,dc,secunitid,ledger_code,update_date ';
+	            	$whdata=array('ledger_id' => $legid);
+        	    	$whorder="secunitid asc,dc asc";
+            		return $this->BGAS_model->get_orderlistspficemore('entry_items',$selectfield,$whdata,$whorder);
 		}
 		return '';
 	}
