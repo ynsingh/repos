@@ -1,7 +1,13 @@
+
+--
+-- Table structure for table `nodues`
+--
+
 CREATE TABLE `nodues` (
   `id` int(11) NOT NULL,
   `sacunitno` varchar(255) NOT NULL,
   `date` datetime NOT NULL,
+  `type` varchar(255) DEFAULT NULL,
   `creatorid` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
