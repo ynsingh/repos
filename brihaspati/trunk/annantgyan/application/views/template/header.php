@@ -6,7 +6,7 @@
 window.fbAsyncInit = function() {
     // FB JavaScript SDK configuration and setup
     FB.init({
-      appId      : '1913600798938732', // FB App ID
+      appId      : '553303651751091', // FB App ID
       cookie     : true,  // enable cookies to allow the server to access the session
       xfbml      : true,  // parse social plugins on this page
       version    : 'v2.10' // use graph api version 2.10
@@ -148,10 +148,11 @@ function Logout() {
      
       <ul class="nav navbar-nav navbar-right">
         <!--<li><a href="#"><span class="glyphicon glyphicon glyphicon-paperclip"></span> Broucher</a></li>-->
+        <li><a href="<?php echo site_url('welcome/referalenroll');?>"><span class="glyphicon  glyphicon-log-in"></span> Recommender Registration</a></li>
 
-        <?php if(isset($this->session->userdata['su_name'])){?>
+        <?php if(isset($this->session->userdata['su_id'])){?>
         	<!-- <li><a href="<?php //echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>-->
-          <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span> Name : <?php echo $this->session->userdata['su_name'];?></a></li> 
+          <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span> <?php echo $this->session->userdata['su_name'];?></a></li> 
 
           <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
          <?php }else{?> 

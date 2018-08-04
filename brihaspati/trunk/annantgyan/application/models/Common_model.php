@@ -13,12 +13,20 @@ class Common_model extends CI_Model
         parent::__construct();
         $this->load->database();
     }
-//check login detail
+//check admin_login detail
+ public function validate_adminuser($data) {
+        $this->db->where('userEmail', $data['ad_email']);
+        $this->db->where('password', $data['ad_pwd']);
+        return $this->db->get('admin')->row();
+    }    
+
+//check user login detail
  public function validate_user($data) {
         $this->db->where('su_emailid', $data['username']);
         $this->db->where('su_password', $data['password']);
         return $this->db->get('sign_up')->row();
     }    
+
 
 // check the record is already exist
     public function isduplicate($tbname,$fieldname,$fieldvalue) {
@@ -215,12 +223,6 @@ class Common_model extends CI_Model
 
     }
     
-    //get the list of one/specific  records with  one specific fields for specific values
-    public function get_depid($tbname,$userid,$roleid){
-        $this->db->select('deptid')->from('user_role_type')->where('userid',$userid)->where('roleid',$roleid);
-	return $this->db->get()->row();
-    }
-
     //$data = array('name' => $name, 'title' => $title, 'status' => $status);
     //    getting different field from table - $selectfield ('a,b,c');
     public function get_listspficemore($tbname,$selectfield,$data){

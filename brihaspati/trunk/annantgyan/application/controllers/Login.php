@@ -69,16 +69,17 @@ class Login extends CI_Controller {
 		if($crsexist){
 			$count = $this->commodel->getnoofrows("user_course_type",$whdata);
 			if($count == 1){
-				//redirect('login/usr_login');
+				redirect('login/usr_login');
 			}else{
-				//redirect('login/course_login');
+				redirect('login/course_login');
 			}	
 		}
 		else{
-			//redirect('Course-Registration');
+			redirect('Course-Registration');
+
 		}
 	    //redirect('http://www.annantgyan.com');
-	    redirect('welcome');
+	   // redirect('welcome');
     }
 
 	public function signup()
@@ -282,21 +283,55 @@ class Login extends CI_Controller {
 		//$this->name = $this->session->userdata['su_name'];
 			 //print_r($id);die;
 		//echo get_cookie('su_name'); 
-		//$suid = $this->session->userdata['su_id'];
+		$suid = $this->session->userdata['su_id'];
+		
 		if(isset($this->session->userdata['su_name'])){
-			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
-			//$this->load->view('loginpage/usr_login',$data);
+			$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			$data['couid'] = $couid;
+
+			$whdata = array('acu_courseid' => $couid);
+			$sdata = 'acu_weekname,acu_weekcontname,acu_contpath,acu_filetype,acu_filename';
+			$getuploadata = $this->commodel->get_listspficemore('admin_conteupload',$sdata,$whdata);
+			$data['getuploadata'] = $getuploadata;
+
+			foreach($getuploadata as $row){
+				if($row->acu_weekname == 'week 1'){
+					$whdata1 = array('acu_weekname' => $row->acu_weekname,'acu_courseid' => $couid);
+					$sdata1 = 'acu_weekcontname,acu_contpath,acu_filename';
+					$getweekdata = $this->commodel->get_listspficemore('admin_conteupload',$sdata1,$whdata1);
+					$data['getweekdata'] = $getweekdata;
+					//print_r($data['getweekdata']);die;
+					foreach($getweekdata as $row2){
+						$whdata2 = array('acu_courseid' => $couid ,'acu_weekcontname'=> $row2->acu_weekcontname);
+						$sdata2 = 'acu_contpath';
+						$getpathdata = $this->commodel->get_listspficemore('admin_conteupload',$sdata2,$whdata2);
+					 	$data['getpathdata'] = $getpathdata;
+					 	//$getpathdata = $this->commodel->get_listspfic1('admin_conteupload','acu_contpath','acu_weekcontname',$row2->acu_weekcontname)->acu_contpath;
+						//print_r($getpathdata);die;
+					}
+				}	
+
+			}	
+			//print_r($getuploadata );
+			$this->load->view('loginpage/usr_login',$data);
 			 //redirect('http://www.annantgyan.com');
-	    redirect('welcome');
+	    //redirect('welcome');
 			
 		}
 		elseif(isset(($this->session->userdata['first_name']))){
 			//echo "hello";
 			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
-			//$this->load->view('loginpage/usr_login',$data);
+			$this->load->view('loginpage/usr_login',$data);
 			 //redirect('http://www.annantgyan.com');
-	    redirect('welcome');
+	    //redirect('welcome');
 		}
+		//elseif(isset(($this->session->userdata['su_id']))){
+			//echo "hello";
+			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+		//	$this->load->view('loginpage/usr_login',$data);
+			 //redirect('http://www.annantgyan.com');
+	    //redirect('welcome');
+		//}
 		else{
 			redirect('login/signin');
 		}
@@ -341,6 +376,7 @@ class Login extends CI_Controller {
                 }
                 //set seesion when FB login second time and after login
                 $fbdata = array('oauth_provider' => 'facebook','first_name' => $fbparts[0],'last_name' => $fbparts[1],'email' => $fbparts[2],'oauth_uid' => $fbparts[3],'gender' => $fbparts[4],'created' => $cdate,'modified' => $cdate);
+                
                 	$this->session->set_userdata($fbdata);	
                 	$confmes = "You are successfully sign-in.";
                     $this->session->set_flashdata('success',$confmes);
@@ -437,7 +473,7 @@ class Login extends CI_Controller {
                  $subject = "Enquiry Details";
 			//$verifylink = base_url("login/verify/".$email.'/'.$rstring);
 				//$email = 'sumitsesaxena@gmail.com';
-			    $email = 'annantgyan@gmail.com';
+			    $email = 'annantgyan@gmail.com,admin@annantgyan.com';
 				//<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
 				$message  = "<table width='50%'; style='border:1px solid #3A5896;color: #79522f;font-size:18px;border-radius:15px;padding:10px 10px 20px 20px;' align=center border=0>
 					<tr><td></td></tr>

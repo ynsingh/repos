@@ -64,6 +64,22 @@ function toggleIcon(e) {
 }
 $('.panel-group').on('hidden.bs.collapse', toggleIcon);
 $('.panel-group').on('shown.bs.collapse', toggleIcon);
+
+
+jQuery(function ($) {
+    var $active = $('#accordion .panel-collapse.in').prev().addClass('active');
+    $active.find('a').append('<span class="glyphicon glyphicon-minus pull-right"></span>');
+    $('#accordion .panel-heading').not($active).find('a').prepend('<span class="glyphicon glyphicon-plus pull-right"></span>');
+    $('#accordion').on('show.bs.collapse', function (e)
+    {
+        $('#accordion .panel-heading.active').removeClass('active').find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+        $(e.target).prev().addClass('active').find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+    });
+    $('#accordion').on('hide.bs.collapse', function (e)
+    {
+        $(e.target).prev().removeClass('active').find('.glyphicon').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+    });
+});
     </script>
 </head>
 <body>
@@ -104,34 +120,151 @@ $('.panel-group').on('shown.bs.collapse', toggleIcon);
     ?>  
 </div>
 
+<?php if('10-oct-2018'){ //echo $this->session->userdata['su_id'];?>
+<div class="container">
+    <div class="col-md-12" id="card">
+        <p style="font-size: 20px;" class="text-center">Your Course Will be start at 10<sup>th</sup>-oct-2018.</p>
+    </div>
+    
+</div>
+
+<?php }else{?>
+ <center><h3>Course :- <?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$couid)->cou_name;?></h3></center>
 <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 	<div class="row">
 		<div class="col col-sm-4">
-    	    <ul class="nav nav-tabs nav-stacked text-center" role="tablist">
-                <li role="presentation" class="active"><a href="#intro" aria-controls="home" role="tab" data-toggle="tab">Education in India</a> </li>
-                <li role="presentation"><a href="#wcc" aria-controls="profile" role="tab" data-toggle="tab">Dr. APJ Human Values Video </a></li>
-                <li role="presentation"><a href="#feedback" aria-controls="messages" role="tab" data-toggle="tab">Vision of Teacher</a></li>
-                <li role="presentation"><a href="#ocg" aria-controls="messages" role="tab" data-toggle="tab">Indian School Education System </a></li>
-                
-            </ul>
 
+    	   <!-- <ul class="nav nav-tabs nav-stacked text-center" role="tablist">
+                <li role="presentation" class="active"><a href="#intro" aria-controls="home" role="tab" data-toggle="tab">Week 1 Content</a></li>
+                <li role="presentation"><a href="#wcc" aria-controls="profile" role="tab" data-toggle="tab">Week 2 Content</a></li>
+                <li role="presentation"><a href="#feedback" aria-controls="messages" role="tab" data-toggle="tab">Week 3 Content</a></li>
+                <li role="presentation"><a href="#ocg" aria-controls="messages" role="tab" data-toggle="tab">Progress </a></li>
+                
+            </ul>-->
+            <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel1">Week 1</a>
+                            </h4>
+                         </div>
+                        <div id="panel1" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <ul class="nav nav-tabs nav-stacked text-center" role="tablist">
+                                    <li role="presentation" class="active">
+                                <?php 
+                                     //if(!empty($getuploadata)){ 
+                                    // foreach($getuploadata as $row){  
+                                       // $week1 = $row->acu_weekname;
+                                        
+                                     //}}  
+                                     //if($week1 == 'week 1'){ 
+                                if(!empty($getweekdata)){
+                                foreach($getweekdata as $row1){
+                                    $fpath1 = $row1->acu_contpath;
+                                    $fname1 = $row1->acu_filename;
+                                    $fpathname1 = $fpath1.'/'.$fname1;
+                                    //print_r($fpathname1);
+                                ?>
+                                    
+                                    <!--    <a href="<?php //echo base_url().'/'.$fpathname1;?>" aria-controls="home" role="tab" data-toggle="tab">-->
+                                        <a href="<?php echo base_url().'/'.$fpathname1;?>">
+                                            <?php echo $row1->acu_weekcontname;?>
+                                        </a>
+                                  
+                                <?php }}//}?>
+                                  </li>
+                                   <!-- <li role="presentation"><a href="#wcc" aria-controls="profile" role="tab" data-toggle="tab"></a></li>
+                                    <li role="presentation"><a href="#feedback" aria-controls="messages" role="tab" data-toggle="tab"></a></li>
+                                    <li role="presentation"><a href="#ocg" aria-controls="messages" role="tab" data-toggle="tab">Progress </a></li>-->
+                
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel2">Week 2</a>
+                            </h4>
+                        </div>
+                        <div id="panel2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                 Contents panel 2
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Week 3</a>
+                                </h4>
+                         </div>
+                         <div id="panel3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                 Contents panel 3
+                            </div>
+                         </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Week 4</a>
+                                </h4>
+                         </div>
+                         <div id="panel3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                 Contents panel 3
+                            </div>
+                         </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Week 5</a>
+                                </h4>
+                         </div>
+                         <div id="panel3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                 Contents panel 3
+                            </div>
+                         </div>
+                    </div>
+            </div>
            
 		</div>
+
         <div class="col col-sm-8" style="font-size: 18px;">
             <div class="row tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="intro">
                 <?php 
-                    $intro = 'uploads/course/'.$couid.'/content/CH.18.pdf';
-                    if(file_exists($intro)) {
+                if(!empty($getweekdata)){
+                     foreach($getweekdata as $row){
+                        $fpath = $row->acu_contpath;
+                        $fname = $row->acu_filename;
+                        $fpathname = $fpath.'/'.$fname;
+                   // $intro = 'uploads/course/'.$couid.'/content/CH.18.pdf';
+                    if(file_exists($fpathname)) {
                 ?>    
-                   <embed src="<?php echo base_url($intro);?>" type="application/pdf"   height="450px" width="100%">
+                   <embed src="<?php echo base_url($fpathname);?>" type="application/pdf"   height="450px" width="100%">
                 <?php 
-                    }
+                    }}}
                 ?>    
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="wcc">
+                <!--<div role="tabpanel" class="tab-pane fade" id="wcc">
                     
                         <div class="video">
+                          <!-- <video width="320" height="240" controls>
+                                <?php //$intro = 'uploads/course/'.$couid.'/video/sample.mp4';
+                           // if(file_exists($intro)) {
+                                ?>
+                                     <source src="<?php //echo $intro;?>" type="video/mp4">
+                             <?php //}?>
+                                Your browser does not support the video tag.
+                            </video>--
+
                            <iframe src="https://www.youtube.com/embed/VVsrsOaEcFQ?wmode=opaque" frameborder="0"  allowfullscreen  height="450px" width="100%"></iframe>
                         </div>
                     
@@ -139,24 +272,27 @@ $('.panel-group').on('shown.bs.collapse', toggleIcon);
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="feedback">
                    <?php 
-                    $feedback = 'uploads/course/'.$couid.'/content/JVC Vol 1.pdf';
-                    if(file_exists($feedback)) {
+                     //if(!empty($couid)){
+                  //  $feedback = 'uploads/course/'.$couid.'/content/JVC Vol 1.pdf';
+                   // if(file_exists($feedback)) {
                 ?>    
-                   <embed src="<?php echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
+                   <embed src="<?php //echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
                 <?php 
-                    }
+                    //}}
                 ?>   
-                </div>
+                </div>-->
+                <!--
                  <div role="tabpanel" class="tab-pane fade" id="ocg">
                   <?php 
-                    $feedback = 'uploads/course/'.$couid.'/content/p1.pdf';
-                    if(file_exists($feedback)) {
+                  //  if(!empty($couid)){
+                   // $feedback = 'uploads/course/'.$couid.'/content/p1.pdf';
+                    //if(file_exists($feedback)) {
                 ?>    
-                   <embed src="<?php echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
+                   <embed src="<?php //echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
                 <?php 
-                    }
+                    //}}
                 ?>   
-                </div>
+                </div>-->
             </div>
 		</div>
 	</div>
@@ -168,7 +304,7 @@ $('.panel-group').on('shown.bs.collapse', toggleIcon);
         </ul>                
     </div>
 </div>
-      
+<?php }?>      
 </br></br></br></br></br>
 <?php $this->load->view('template/footer.php');?>
 </body>

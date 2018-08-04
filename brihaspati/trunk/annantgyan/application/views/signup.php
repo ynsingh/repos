@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 window.fbAsyncInit = function() {
     // FB JavaScript SDK configuration and setup
     FB.init({
-      appId      : '864860603901989', // FB App ID
+      appId      : '553303651751091', // FB App ID
       cookie     : true,  // enable cookies to allow the server to access the session
       xfbml      : true,  // parse social plugins on this page
       version    : 'v2.10' // use graph api version 2.10

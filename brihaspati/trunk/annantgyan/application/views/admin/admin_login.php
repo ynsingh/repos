@@ -52,13 +52,13 @@
 		
 <div class="col-md-6 col-md-offset-3" id="login">  
 
-<form>
+<form action="<?php echo site_url('admin/admin_login');?>" method="POST">
 	
 <div class="form-group">
 <label class="user"> UserName  </label>
 <div class="input-group">
 	<span class="input-group-addon" id="iconn"> <i class="glyphicon glyphicon-user"></i></span>
-<input type="text" class="form-control" id="text1" name="tl" placeholder="username">
+<input type="text" class="form-control" id="text1" name="ad_email" placeholder="username">
 </div>
 	
 </div>
@@ -67,13 +67,13 @@
 <label class="user"> Password </label>
 <div class="input-group">
 	<span class="input-group-addon" id="iconn1"> <i class="glyphicon glyphicon-lock"></i></span>
-<input type="password" class="form-control" id="text2" name="tl" placeholder=" Enter Password">
+<input type="password" class="form-control" id="text2" name="ad_pwd" placeholder=" Enter Password">
 </div>
 </div>
 
 <div class="form-group">
 
-<input type="submit" class="btn btn-success" value="login" style="border-radius:0px;">
+<input type="submit" class="btn btn-success" name="submit" value="login" style="border-radius:0px;">
 <input type="reset" class="btn btn-danger" value="reset" style="border-radius:0px;">
 
     </div>

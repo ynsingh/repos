@@ -5,9 +5,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<title>Annant Gyan</title>
-	
-	<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
-			<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<!--<meta http-equiv="refresh" content="50;url=<?php //echo site_url('login/usr_login');?>">-->
+
+		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
+				<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
 	  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
@@ -36,24 +37,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </div>	
 
-
-<div class="container ">
-	<h2 style="text-align: center;text-decoration:underline;">Online Certified Crash Course</h2>
-	<div class="col-md-12"  id="card" >
-	 	<!--<p style="color: #79522f;font-size: 24px;font-weight: bold;text-decoration:underline;">Director Message</p>-->
-	 	<p  style="color: black;font-size: 18px;">
-	 		We shall offer different online certified crash course for competitive exam students at minimum cost. All students can get benefited by online interaction with best educators in related field.
-	 	</p>
-	 	
-    </div>
-<div class="row">
-    	<div class="col-md-12">
-    		<img src="<?php echo base_url('images/crash_course.png');?>" style="width: 100%;" id="card">
-    	</div>
-    	
-    </div>
+<div class="container">  
+<?php echo validation_errors('<div class="alert-warning"  style="font-size: 18px;" align=left>','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
+        if(!empty($_SESSION['success'])){   
+        if(isset($_SESSION['success'])){?>
+         <div class="alert alert-success" style="font-size: 18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+    
+        <?php 
+        if(!empty($_SESSION['error'])){
+        if(isset($_SESSION['error'])){?>
+             <div class="alert alert-danger" style="font-size: 18px;"><?php echo $_SESSION['error'];?></div>
+        <?php
+        };
+    }   
+    ?>  
 </div>
-</br></br></br></br></br>
+
+<?php //echo $this->session->userdata['su_name'];?>
+<div class="container">
+	<div class="col-md-12" id="card">
+		<div class="col-md-4">
+			<img src="<?php echo site_url('images/UPI.png');?>" style="width:90%;">
+		</div>
+		<div class="col-md-8">
+			<p style="font-size: 22px;">You can deposit fees via UPI - @icici or in any ICICI bank.</br></br>The account details are given below </br>A/c No. : 046505001694 </br> IFSC Code : ICIC0000465.</p></br>
+
+			<p style="font-size: 20px;">Please send the details of fees deposit at admin@annantgyan.com</p>
+		</div>
+	</div>
+</div>
 
 <?php include 'template/footer.php';?>
 </body>

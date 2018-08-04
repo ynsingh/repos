@@ -37,6 +37,50 @@ INSERT INTO `admin` (`id`, `userEmail`, `password`, `firstName`, `lastName`, `de
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admin_conteupload`
+--
+
+CREATE TABLE `admin_conteupload` (
+  `acu_id` int(11) NOT NULL,
+  `acu_courseid` int(11) DEFAULT NULL,
+  `acu_weekname` varchar(255) DEFAULT NULL,
+  `acu_weekcontname` varchar(255) DEFAULT NULL,
+  `acu_contpath` varchar(255) DEFAULT NULL,
+  `acu_filetype` varchar(255) DEFAULT NULL,
+  `acu_filename` varchar(255) DEFAULT NULL,
+  `acu_createdate` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `admin_conteupload`
+  ADD PRIMARY KEY (`acu_id`);
+ALTER TABLE `admin_conteupload`
+  MODIFY `acu_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `coursesannouncement`
+--
+
+CREATE TABLE `courseannouncement` (
+        `crsann_id` INT(11) NOT NULL AUTO_INCREMENT ,
+        `crsann_crsid` INT(11) NOT NULL ,
+        `crsann_duration` VARCHAR(255) NOT NULL ,
+        `crsann_regstart` DATE NULL ,
+        `crsann_regend` DATE NULL ,
+        `crsann_crsstart` DATE NULL ,
+        `crsann_crsend` DATE NULL ,
+        `crsann_feedbkdate` DATE NULL ,
+        `crsann_certdate` DATE NULL ,
+        `crsann_creatorid` VARCHAR(255) NOT NULL ,
+        `crsann_createdate` DATE NOT NULL ,
+        PRIMARY KEY (`crsann_id`)
+) ENGINE = InnoDB;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `courses`
 --
 
@@ -160,6 +204,27 @@ ALTER TABLE `logs`
 
 ALTER TABLE `logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mapcontentmaterial`
+--
+
+CREATE TABLE `mapcontentmaterial` (
+        `mcm_id` INT(11) NOT NULL AUTO_INCREMENT ,
+        `mcm_crsid` INT(11) NOT NULL ,
+        `mcm_crsannid` INT(11) NOT NULL ,
+        `mcm_weekno` VARCHAR(50) NOT NULL ,
+        `mcm_seqno` INT(11) NULL ,
+        `mcm_contentloc` VARCHAR(255) NULL ,
+        `mcm_alias` VARCHAR(255) NULL ,
+        `mcm_creatorid` VARCHAR(255) NOT NULL ,
+        `mcm_createdate` DATE NOT NULL ,
+        PRIMARY KEY (`mcm_id`),
+        UNIQUE (`mcm_crsid`, `mcm_weekno`, `mcm_crsannid`, `mcm_seqno`)
+) ENGINE = InnoDB;
+
 -- --------------------------------------------------------
 
 --
@@ -213,6 +278,27 @@ ALTER TABLE `ongoingworkshop_pg`
   ADD PRIMARY KEY (`owpg_id`);
 ALTER TABLE `ongoingworkshop_pg`
   MODIFY `owpg_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `referrel`
+--
+
+CREATE TABLE `referrel` (
+  `ref_id` int(11) NOT NULL,
+  `ref_name` varchar(255) DEFAULT NULL,
+  `ref_email` varchar(255) DEFAULT NULL,
+  `ref_mobile` varchar(255) DEFAULT NULL,
+  `ref_orgname` varchar(255) DEFAULT NULL,
+  `ref_bank_acno` varchar(255) DEFAULT NULL,
+  `ref_bank_ifsc` varchar(255) DEFAULT NULL,
+  `ref_place` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `referrel`
+  ADD PRIMARY KEY (`ref_id`);
+ALTER TABLE `referrel`
+  MODIFY `ref_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
