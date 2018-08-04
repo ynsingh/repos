@@ -87,85 +87,50 @@ class Workshop extends CI_Controller {
 		if(isset($_POST['pay'])){
 
 			$this->form_validation->set_rules('firstname','Name','trim|required');
-       		$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
-            $this->form_validation->set_rules('place','Place','trim|required|xss_clean');
-            $this->form_validation->set_rules('nationality','Nationality','trim|required|xss_clean');
-            $this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric|required');
+       			$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
+            		$this->form_validation->set_rules('place','Place','trim|required|xss_clean');
+            		$this->form_validation->set_rules('nationality','Nationality','trim|required|xss_clean');
+            		$this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric|required');
 			$this->form_validation->set_rules('amount','Amount','trim|required|xss_clean');
             
-            if($this->form_validation->run() == FALSE){
+            		if($this->form_validation->run() == FALSE){
                			// $this->load->view('enterence/step_zero',$data);
-            	redirect('workshop/ongoing_workshop');
-            }else{
+            			redirect('workshop/ongoing_workshop');
+            		}else{
             			$firstname 		= $this->input->post('firstname');
-						$mailid 	    = $this->input->post('email');
-						$place 		    = $this->input->post('place');
-						$nationality    = $this->input->post('nationality');
-						$phoneno 	    = $this->input->post('contact');
-						$product_info   = $this->input->post('product_info');//this is school name post
-						$rperson        = $this->input->post('reperson');
-						$amount         = $this->input->post('amount');
-						$cid         	= $this->input->post('courseid');
+				$mailid 	    = $this->input->post('email');
+				$place 		    = $this->input->post('place');
+				$nationality    = $this->input->post('nationality');
+				$phoneno 	    = $this->input->post('contact');
+				$product_info   = $this->input->post('product_info');//this is school name post
+				$rperson        = $this->input->post('reperson');
+				$amount         = $this->input->post('amount');
+				$cid         	= $this->input->post('courseid');
 						//$crscode        = $this->input->post('coursecode');
-            	    	$courname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$cid)->cou_name;
-						$crscode = $this->commodel->get_listspfic1('courses','cou_code','cou_id',$cid)->cou_code;
+            	    		$courname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$cid)->cou_name;
+				$crscode = $this->commodel->get_listspfic1('courses','cou_code','cou_id',$cid)->cou_code;
 
-					//insert record in ongoing table
-							$owdata = array(
-								'ow_name' 			=> $firstname,	
-								'ow_email' 			=> $mailid,
-								'ow_courseid' 		=> $cid,
-								'ow_place' 			=> $place,
-								'ow_nationality' 	=> $nationality,	
-								'ow_contact' 		=> $phoneno,	
-								'ow_school'			=> $product_info,	//variable name change school to pinfo for payU
-								'ow_rperson' 		=> $rperson,	
-								
-								'ow_amount'			=> $amount,	
-								
-							);	
-
-							//when user record exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type
-					if(isset($this->session->userdata['su_id'])){
+				//insert record in ongoing table
+				$owdata = array(
+					'ow_name' 			=> $firstname,	
+					'ow_email' 			=> $mailid,
+					'ow_courseid' 		=> $cid,
+					'ow_place' 			=> $place,
+					'ow_nationality' 	=> $nationality,	
+					'ow_contact' 		=> $phoneno,	
+					'ow_school'			=> $product_info,	//variable name change school to pinfo for payU
+					'ow_rperson' 		=> $rperson,	
+					'ow_amount'			=> $amount,	
+				);	
+				//when user record exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type
+				if(isset($this->session->userdata['su_id'])){
+					$owinsert = $this->db->insert('ongoingworkshop', $owdata);
+					$owid = $this->db->insert_id();
 							
-							$owinsert = $this->db->insert('ongoingworkshop', $owdata);
-							$owid = $this->db->insert_id();
-							
-							$usid  = $this->session->userdata['su_id'];
-							$coudata  = array('uct_userid'  => $usid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
-							//print_r($coudata);die;
-							$pginsert = $this->db->insert('user_course_type', $coudata);
-
-						/*	if($cid == 1){
-                            	redirect("https://imjo.in/fBVw9u");
-                            }
-                            if($cid == 2){
-                            	redirect("https://imjo.in/HGPDer");
-                            }
-                            if($cid == 3){
-                            	redirect("https://imjo.in/gBvKXY");
-                            }
-                            if($cid == 4){
-                            	redirect("https://imjo.in/kuFj4a");
-                            }
-                            if($cid == 5){
-                            	redirect("https://imjo.in/kuFj4a");
-                            }
-                            if($cid == 6){
-                            	redirect("https://imjo.in/WyRmED");
-                            }*/
-							$purpose=$crscode."-Workshop";
-                       		$resp=$this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
-                       		//$response['payment_request']
-                       		$data = json_decode($resp,true);
-						//var_dump($data);
-				$site=$data["payment_request"]["longurl"];
-				//print_r($site); die();
-				header('HTTP/1.1 301 Moved Permanently');
-				header('Location:'.$site);
-							//$purpose="Workshop";
-                       		//$resp=$this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
-
+					$usid  = $this->session->userdata['su_id'];
+					$coudata  = array('uct_userid'  => $usid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
+					//print_r($coudata);die;
+					$pginsert = $this->db->insert('user_course_type', $coudata);
 						/*	if($pginsert){
                         		 $confmes = "You are registered successfully in " .$courname. " .";
                        			 $this->session->set_flashdata('success',$confmes);
@@ -179,58 +144,56 @@ class Workshop extends CI_Controller {
                        			$this->session->set_flashdata('error', $message);
                        			redirect('workshop/enroll_workshop');
                         	} */
-					}
+				}
 
-					//when user record not exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type or sign_up
-					else{
+				//when user record not exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type or sign_up
+				else{
 							
-							$owdupdata = array(
-								'ow_email' 			=> $mailid,
-								'ow_courseid' 		=> $cid,
-							);
+					$owdupdata = array(
+						'ow_email' 			=> $mailid,
+						'ow_courseid' 		=> $cid,
+					);
         			
-        					$result = $this->commodel->isduplicatemore('ongoingworkshop', $owdupdata);
-        					if($result == 1)
-        					{
+        				$result = $this->commodel->isduplicatemore('ongoingworkshop', $owdupdata);
+        				if($result == 1)
+        				{
             					$this->session->set_flashdata('error', 'Mail-id :- ' .$mailid.'  '. 'is already enrolled for this course - '.'" ' .$courname. '"');
             					redirect('workshop/courseenroll');
-							}
+					}
 
-							$owinsert = $this->db->insert('ongoingworkshop', $owdata);
-							$owid = $this->db->insert_id();
+					$owinsert = $this->db->insert('ongoingworkshop', $owdata);
+					$owid = $this->db->insert_id();
 							
+					//insert record in sign up table
+					$rstring = random_string('alnum',8);
+					$signupdata = array (
+						'su_userid'			=> $owid,
+                                		'su_name' 			=> $firstname,
+		                                'su_emailid' 		=> $mailid,
+                		                'su_password' 		=> $password,
+                                		//'su_confpassword' 	=> $cpawd,
+		                                //'su_howtoknow' 		=> $hknow,
+                		                'su_string'			=> $rstring 
+                            		);
+                            		$signinsert = $this->db->insert('sign_up',$signupdata);
+					$signupid = $this->db->insert_id();
 
-							//insert record in sign up table
-							$rstring = random_string('alnum',8);
-							$signupdata = array (
-								'su_userid'			=> $owid,
-                                'su_name' 			=> $firstname,
-                                'su_emailid' 		=> $mailid,
-                                //'su_password' 		=> $password,
-                                //'su_confpassword' 	=> $cpawd,
-                                //'su_howtoknow' 		=> $hknow,
-                                'su_string'			=> $rstring 
-                            );
-                            $signinsert = $this->db->insert('sign_up',$signupdata);
-							$signupid = $this->db->insert_id();
+					$suid = $this->commodel->get_listspfic1('sign_up','su_id','su_id',$signupid)->su_id;
+					$suname = $this->commodel->get_listspfic1('sign_up','su_name','su_id',$signupid)->su_name;
+					//print_r($suname);die;
+					$userdata = ['su_id' => $signupid ,'su_name' => $suname];
+					//print_r($userdata);die;
+					$this->session->set_userdata($userdata);
 
-							$suid = $this->commodel->get_listspfic1('sign_up','su_id','su_id',$signupid)->su_id;
-							$suname = $this->commodel->get_listspfic1('sign_up','su_name','su_id',$signupid)->su_name;
-							//print_r($suname);die;
-							$userdata = ['su_id' => $signupid ,'su_name' => $suname];
-							//print_r($userdata);die;
-							$this->session->set_userdata($userdata);
+					$coudata  = array('uct_userid'  => $signupid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
+					$pginsert = $this->db->insert('user_course_type', $coudata);
 
-							$coudata  = array('uct_userid'  => $signupid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
-							$pginsert = $this->db->insert('user_course_type', $coudata);
-
-							$subject = "Registered Successfully";
-			
-							$pawd = random_string('alnum',6);
-							$erstring= $mailid.'---'.$rstring;
-							$verifylink = base_url("login/verify/".$erstring);
+					$subject = "Registered Successfully";
+					$pawd = random_string('alnum',6);
+					$erstring= $mailid.'---'.$rstring;
+					$verifylink = base_url("login/verify/".$erstring);
 				
-							$message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+					$message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
 					<tr><td></td></tr>
 					<tr><td colspan=2><b>Your are registered successfully, Your details are given below</td></tr>
 					<tr height=15><td colspan=2></td></tr>
@@ -238,39 +201,11 @@ class Workshop extends CI_Controller {
 					<tr><td><b>Password : </b> </td><td align=left>".$pawd. "</td><tr>
 					<tr><td><b>Course Name : </b> </td><td align=left>".$courname. "</td><tr>
 
-					<tr><td><b>Verification link : </b></td><td align=left> <a href=".$verifylink." style='color:white;'>Verify your registration.</a></td></tr>
+					<tr><td><b>Verification link : </b></td><td align=left> <a href=".$verifylink.">Verify your registration.</a></td></tr>
 					
 					</table> " ;
 
-                            $mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
-                          /*  if($cid == 1){
-                            	redirect("https://imjo.in/fBVw9u");
-                            }
-                            if($cid == 2){
-                            	redirect("https://imjo.in/HGPDer");
-                            }
-                            if($cid == 3){
-                            	redirect("https://imjo.in/gBvKXY");
-                            }
-                            if($cid == 4){
-                            	redirect("https://imjo.in/kuFj4a");
-                            }
-                            if($cid == 5){
-                            	redirect("https://imjo.in/kuFj4a");
-                            }
-                            if($cid == 6){
-                            	redirect("https://imjo.in/WyRmED");
-                            }*/
-                            $purpose=$crscode."-Workshop";
-                       		$resp=$this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
-                       		//$response['payment_request']
-                       		$data = json_decode($resp,true);
-							//var_dump($data);
-							$site=$data["payment_request"]["longurl"];
-							//print_r($site); die();
-							header('HTTP/1.1 301 Moved Permanently');
-							header('Location:'.$site);
-							//redirect($site);
+                            		$mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
 
                         /*	if($mails){
                         		$confmes = "You are registered successfully in " .$courname. " & Verification link sent to your registered email-id.";
@@ -286,8 +221,36 @@ class Workshop extends CI_Controller {
                        			//echo $this->email->print_debugger();
                         		redirect('workshop/enroll_workshop');
                         	}*/							
-					}//else close						
-            }				
+				}//else close						
+
+				/*  if($cid == 1){
+	                                redirect("https://imjo.in/fBVw9u");
+        	                    }
+                	            if($cid == 2){
+                        	        redirect("https://imjo.in/HGPDer");
+                            		}
+                            if($cid == 3){
+                                redirect("https://imjo.in/gBvKXY");
+                            }
+                            if($cid == 4){
+                                redirect("https://imjo.in/kuFj4a");
+                            }
+                            if($cid == 5){
+                                redirect("https://imjo.in/kuFj4a");
+                            }
+                            if($cid == 6){
+                                redirect("https://imjo.in/WyRmED");
+                            }*/
+                            $purpose=$crscode."-Workshop-".$owid;
+                            $resp=$this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
+                            //$response['payment_request']
+                            $data = json_decode($resp,true);
+                            //var_dump($data);
+                            $site=$data["payment_request"]["longurl"];
+                            //print_r($site); die();
+                            header('HTTP/1.1 301 Moved Permanently');
+                            header('Location:'.$site);
+            		}				
 		}
 
 	//$this->load->view('courseenroll_confirm');

@@ -58,19 +58,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }	
 	?>  
 </div>	
-</br>
+<!--</br>-->
 <?php //echo $this->session->userdata['su_id'];?>
 <div class="container">
-	<div class="col-md-3"></div>
-<div align=justify id="card">
+<!--	<div class="col-md-3"></div>-->
+<div class="col-md-6" align=justify id="card">
 	<p> </p>
 	<p>
     	वैदिक गणित पारंपरिक गणना का एक प्राचीन भारतीय तरीका है। यह एक मजेदार जादुई और तार्किक उपकरण है। वैदिक गणित अपने संस्थापक द्वारा प्राचीन भारत द्वारा इस दुनिया को दिया गया उपहार है। लेकिन इस दावे के लिए कोई ऐतिहासिक साक्ष्य नहीं है। यह जादुई और तार्किक उपकरण 16 सूत्रों और 13 उप-सूत्रों पर आधारित है। इन सूत्रों का स्वाभाविक रूप से काम करने के तरीके द्वारा आप तेजी से संख्यात्मक और बहुपद गणना कर सकते हैं। यह आपके दिमाग को तेज करेगा और गणित में भी रुचि पैदा करेगा। यह विभिन्न प्रतिस्पर्धी परीक्षाओं की तैयारी में गणना की गति, मानसिक क्षमता को बढ़ता है। कठोर अंकगणितीय और बीजगणितीय समस्याओं की गणना मानसिक वैदिक तरीकों से हल की जा सकती है। लोग अपनी विधियों का आविष्कार कर सकते हैं। यह आपके रचनात्मक विचारों में अधिक रुचि पैदा करेगा।
 </p><p>
 इस मजेदार जादुई और तार्किक उपकरण की रुचि शिक्षा में बढ़ रही हैं। जहां शिक्षक कुछ बेहतर खोज कर इन सूत्रों के नए, शक्तिशाली, सरल अनुप्रयोगों को विकसित करके अपने कक्षा में कार्यान्वित कर छात्रों से बेहतर परिणाम प्राप्त कर सकते हैं।मैं स्वयं इन सभी ऑनलाइन प्रमाणित वैदिक गणित पाठ्यक्रम / कार्यशालाओं को न्यूनतम लागत पर बना रहा हू। अंतरराष्ट्रीय मूल्य लागत इन पाठ्यक्रमों का वास्तविक मूल्य हैं। मेरा काम इस प्राचीन जादुई और तार्किक विद्या के प्रति बच्चों में प्रेम जगाना है। मेरा मानना है कि शिक्षक को, बच्चों को सचमुच वैदिक गणित सीखना चाहिए। आप अपने बच्चों के लिए सबसे अच्छा काम यही कर सकते हैं कि उन्हें वैदिक गणित सिखाएँ। इस कौशल से रचनात्मक विचार, आत्मविश्वास, स्मरणशक्ति, और कल्पनाशक्ति बढ़ती है। आप सभी हमारे पाठ्यक्रम / कार्यशालाओं के माध्यम से बहुत सी नई तकनीक प्राप्त कर प्राचीन भारतीय तरीके द्वारा बेहतर परिणाम प्राप्त कर सकते हैं।
+</p><p>
+अमर नाथ दुबे
+</p><p>
+निदेशक, अन्नंत ज्ञान
+
 </p>
 </div>
-<br>
+<!-- <br>-->
 <div class="col-md-6" id="">
 
 	     <form action="<?php echo site_url('workshop/ongoing_workshop');?>" method="post"  id="card" > 
@@ -157,11 +162,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<div class="form-group">
     				
-							<label for="name" class="cols-sm-2 control-label">Referral Person (Optional)</label>
+							<label for="name" class="cols-sm-2 control-label">Recommender's Email-ID (Optional)</label>
 							<div class="cols-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="reperson" id="name"  placeholder="Enter your Referral Person" value="<?php echo isset($_POST["reperson"]) ? $_POST["reperson"] : ''; ?>" />
+									<input type="text" class="form-control" name="reperson" id="name"  placeholder="Enter your Recommender's Email-ID" value="<?php echo isset($_POST["reperson"]) ? $_POST["reperson"] : ''; ?>" />
 								</div>
 							</div>
 						</div>	

@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="col-md-12">
     <div class="panel panel-primary" id="bgstyle">
         <div class="panel-heading" style="font-size: 18px; border-radius: 15px 10px;">
-          <a href="<?php echo site_url('Course-Registration');?>" style="color: white;">Ongoing Courses / Workshop Registration Link</a></div>
+          <a href="<?php echo site_url('Course-Registration');?>" style="color: white;">Online Certified Courses / Workshops Enrollment Link</a></div>
      
       </div>
     </div>

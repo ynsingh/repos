@@ -58,11 +58,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }	
 	?>  
 </div>	
-</br>
 <?php //echo $this->session->userdata['su_id'];?>
 <div class="container">
-	<div class="col-md-3"></div>
-	<div align=justify id="card">
+	<div class="col-md-6" align=justify id="card">
 	<p> </p>
 <p>	Recommender can motivate/ instruct/ provide information about courses and helpful during enrollment & payment process to students for different ongoing online certified courses/ workshops of “Annant Gyan”. They must have to provide his/her mail id during enrollment process for facilitation amount. 
 </p>
@@ -74,7 +72,7 @@ All school teachers/college professors/ instructors/ person working in education
 
   Financially weak graduate*/ Financially weak students* (20% of enrollment fee)
 </li><li>
-      Any school/college/organization (If more than 200 students enrolled, we shall provide 25% or 20% of enrollment fee)
+      Any school/college/organization (If more than 200 students enrolled, we shall provide 25% of enrollment fee)
 </li><li>
        Annant Gyan Marketing head (Not open to all)
 </li></ol>
@@ -82,7 +80,6 @@ All school teachers/college professors/ instructors/ person working in education
  *Note: All financially weak graduate and students must have to submit one application regarding request to become recommender by taking signature with seal by gazetted officers or village Mukhiya or school/ college principal/director to admin@annantgyan.com. After verification, we shall send approval letter to them.
 </p>
 </div>
-<br>
 <div class="col-md-6" id="">
     	
 	     <form action="<?php echo site_url('welcome/referalenroll');?>" method="post"  id="card" > 
@@ -164,7 +161,7 @@ All school teachers/college professors/ instructors/ person working in education
 							<div class="cols-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-credit-card" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="ifsc_code" id="name"  placeholder="Enter your amount" value="<?php echo isset($_POST["amount"]) ? $_POST["amount"] : ''; ?>"/>
+									<input type="text" class="form-control" name="ifsc_code" id="name"  placeholder="Enter your IFSC Code" value="<?php echo isset($_POST["amount"]) ? $_POST["amount"] : ''; ?>"/>
 									<!--<input type="text" class="form-control" name="amount" id="name"  placeholder="Enter your amount" value="<?php //echo $courfees; ?>" required readonly/>-->
 								</div>
 							</div>

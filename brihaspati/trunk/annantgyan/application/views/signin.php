@@ -256,7 +256,7 @@ function Logout() {
                                     <div class="col-sm-12 controls">
                                         <input type="submit" name="signin" class="btn btn-info" value="Login">
                                         <!--<input type="submit" name="signin" class="btn btn-primary" value="facebook login" onclick="fbLogin();" id="fbLink">--->
-                                        <a href="javascript:void(0);" onclick="fbLogin();" id="fbLink"><img src="<?php echo base_url('assets/img/flogin.png'); ?>" style="height:40px;"/></a>
+<!--                                        <a href="javascript:void(0);" onclick="fbLogin();" id="fbLink"><img src="<?php echo base_url('assets/img/flogin.png'); ?>" style="height:40px;"/></a> -->
                                        <!-- <a id="btn-login" href="#" class="btn btn-success btn-lg">Login </a>-->
                                        <!-- <a id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</a> -->
                                        <!-- Display login status -->
@@ -285,7 +285,8 @@ function Logout() {
                                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
                                             Don't have an account!
                                            <!-- <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()" style="font-size: 16px;">-->
-                                            <a href="<?php echo site_url('Sign-Up');?>" style="font-size: 16px;">
+                                          <!--  <a href="<?php echo site_url('Sign-Up');?>" style="font-size: 16px;"> -->
+                                            <a href="<?php echo site_url('Course-Registration');?>" style="font-size: 16px;">
                                                 New Registration Here
                                             </a>
                                         </div>

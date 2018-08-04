@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     ?>  
 </div>
 <div class="container">
-	<h2 style="text-align: center;text-decoration:underline;">Ongoing Workshop & Courses</h2>
+	<h2 style="text-align: center;text-decoration:underline;">Online Certified Courses/Workshops </h2>
 	<div class="col-md-12" style="/*background: white;padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >
 
 <div class="col-md-1"></div>

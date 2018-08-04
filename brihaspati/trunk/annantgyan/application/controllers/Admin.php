@@ -36,8 +36,9 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {	
 					
 			}else{	
-            	$result = $this->commodel->validate_adminuser($_POST);
-            	if(!empty($result)){
+				$result = $this->commodel->validate_adminuser($_POST);
+				
+		            	if(!empty($result)){
   					$wharray=array('userEmail' => $result->userEmail,'verification' => $result->verification, 'id' => $result->id);
   				}
 				if(!empty($wharray)){

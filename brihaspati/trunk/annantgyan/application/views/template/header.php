@@ -157,7 +157,8 @@ function Logout() {
           <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
          <?php }else{?> 
          <li><a href="<?php echo site_url('Sign-In');?>"><span class="glyphicon glyphicon-log-in"> </span> Login </a> </li>
-         <li><a href="<?php echo site_url('New-Registration');?>"><span class="glyphicon glyphicon-log-in"> </span> New Registration </a> </li>
+        <!-- <li><a href="<?php //echo site_url('New-Registration');?>"><span class="glyphicon glyphicon-log-in"> </span> New Registration </a> </li> -->
+         <li><a href="<?php echo site_url('Course-Registration');?>"><span class="glyphicon glyphicon-log-in"> </span> New Registration </a> </li>
          <?php }?>
             
           <li><a href="<?php echo site_url('Contact-Us');?>"><span class="glyphicon  glyphicon-earphone"></span> Contact Us</a></li>
