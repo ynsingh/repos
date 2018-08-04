@@ -44,18 +44,19 @@ CREATE TABLE `admin_conteupload` (
   `acu_id` int(11) NOT NULL,
   `acu_courseid` int(11) DEFAULT NULL,
   `acu_weekname` varchar(255) DEFAULT NULL,
+  `acu_seqno` int(11) DEFAULT NULL,
   `acu_weekcontname` varchar(255) DEFAULT NULL,
   `acu_contpath` varchar(255) DEFAULT NULL,
   `acu_filetype` varchar(255) DEFAULT NULL,
   `acu_filename` varchar(255) DEFAULT NULL,
-  `acu_createdate` datetime DEFAULT NULL
+  `acu_createdate` datetime DEFAULT NULL,
+  `acu_creatorid` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-ALTER TABLE `admin_conteupload`
-  ADD PRIMARY KEY (`acu_id`);
-ALTER TABLE `admin_conteupload`
-  MODIFY `acu_id` int(11) NOT NULL AUTO_INCREMENT;
+    ALTER TABLE `admin_conteupload`
+      ADD PRIMARY KEY (`acu_id`);
+    ALTER TABLE `admin_conteupload`
+      MODIFY `acu_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
