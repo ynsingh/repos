@@ -59,7 +59,7 @@ if(isset($this->session->userdata['firstName'])){
 </div>  
 
 <div class="container">
-	<center><h2>Reference List</h2></center>
+	<center><h2>Recommender List</h2></center>
 	
 	<div class="col-md-12" id='card'>
 		

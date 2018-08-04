@@ -5,13 +5,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<title>Annant Gyan</title>
-	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
-		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
-		      <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
+		
+		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
+	       <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
       <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 
 
@@ -89,6 +93,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     ?>  
 </div>
 <div class="container">
+	<div align="justify" id="card">
+		If you face any problem in enrollment process. Kindly feel free to contact Mr. N K Singh (nksinghiitk@gmail.com )(9450136012).
+		<br>
+		If you got error page in enrollment process, please take screenshot and send to nksinghiitk@gmail.com
+	</div>
 	<h2 style="text-align: center;text-decoration:underline;">Online Certified Courses/Workshops </h2>
 	<div class="col-md-12" style="/*background: white;padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >
 

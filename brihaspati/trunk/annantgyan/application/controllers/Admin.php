@@ -107,6 +107,15 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	function couworkshoplist(){
+		if(isset($this->session->userdata['firstName'])){
+			$data['userdata'] = $this->commodel->get_orderlistspficemore('ongoingworkshop','*','','');
+			$this->load->view('admin/admin_couworkshoplist',$data);
+		}else{
+			$this->load->view('admin/admin_login');
+		}
+	}
+	
 	function courseannouncement(){
 		if(isset($this->session->userdata['firstName'])){
 			$data['userdata'] = $this->commodel->get_orderlistspficemore('courseannouncement','*','','');

@@ -1,15 +1,11 @@
 <?php
-if(isset($this->session->userdata['su_name'])){
-
 defined('BASEPATH') OR exit('No direct script access allowed');
+if(isset($this->session->userdata['firstName'])){
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Annant Gyan</title>
-	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE, NO-STORE, must-revalidate">
-	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-	<META HTTP-EQUIV="EXPIRES" CONTENT=0>
 	
 		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
 				<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -19,10 +15,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 
 
-		<script type="text/javascript">
+<script type="text/javascript">
 	
 !function($,n,e){var o=$();$.fn.dropdownHover=function(e){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function t(e){o.find(":focus").blur(),h.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(c),i.addClass("open"),r.trigger(a)}var r=$(this),i=r.parent(),d={delay:100,instantlyCloseOthers:!0},s={delay:$(this).data("delay"),instantlyCloseOthers:$(this).data("close-others")},a="show.bs.dropdown",u="hide.bs.dropdown",h=$.extend(!0,{},d,e,s),c;i.hover(function(n){return i.hasClass("open")||r.is(n.target)?void t(n):!0},function(){c=n.setTimeout(function(){i.removeClass("open"),r.trigger(u)},h.delay)}),r.hover(function(n){return i.hasClass("open")||i.is(n.target)?void t(n):!0}),i.find(".dropdown-submenu").each(function(){var e=$(this),o;e.hover(function(){n.clearTimeout(o),e.children(".dropdown-menu").show(),e.siblings().children(".dropdown-menu").hide()},function(){var t=e.children(".dropdown-menu");o=n.setTimeout(function(){t.hide()},h.delay)})})}))},$(document).ready(function(){$('[data-hover="dropdown"]').dropdownHover()})}(jQuery,this);
-		</script>
+</script>
 	
 </head>
 <body>
@@ -35,18 +31,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 	
 	<div class="row">
-			<?php //$this->load->view('template/login_header.php');
-			?>
+			<?php $this->load->view('template/admin_header.php'); ?>
 
 	</div>	
 
 </div>	
-<div id="menu">  
-	<table style="width: 100%;"><tr><td align=center><span><h3>Select Course</h3></span></td>
-		<td><a href="<?php echo site_url('login/usr_login');?>" style="color:white;font-size: 20px;"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></td>
-	</tr></table>
 
-</div>
 <div class="container">  
 <?php echo validation_errors('<div class="alert-warning"  style="font-size: 18px;" align=left>','</div>');?>
         <?php echo form_error('<div class="">','</div>');?>
@@ -66,55 +56,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         };
     }   
     ?>  
-</div>
-</br>
+</div>  
 
-<div class="container">
-	<div class="col-md-1">	</div>
-<form action="<?php echo site_url('login/course_login');?>" method="POST" >
-	<div class="col-md-7">
-		<label style="font-size: 20px;color: #79522f;">Select Your Course :</label>
-			<select name="cou_type" required="">
-				<option value="" selected="true" disabled="disabled">Select Your Course</option>
-				<?php
-					if($course_data){
-					foreach ($course_data as $row) {
+<div class="fluid-container">
+	<center><h2>Registered user details</h2></center>
+	<div class="col-md-12" style="overflow: scroll;height: 500px;overflow-x: hidden;">
+		
+		<table class="table table-bordered">
+			<thead style="font-size: 18px;">
+				<tr  class="info">
+					<th>Sr. No.</th><th>Name</th><th>Email-Id</th><th>Place</th><th>Nationality</th>
+					<th>Contact</th><th>School/College</th><th>Reference person</th><th>Course Name</th>
+					<!--<th>Fees Amount</th>--><th>Fees Amount</th><th>Payment Status</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+						$i=1;
+						if(!empty($userdata)){
+							foreach($userdata as $row){	
+							if(!empty($row->ow_courseid)){	
+								$couname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->ow_courseid)->cou_name;
+							}		
+						?>
+				<tr>
 					
+								<td><?php echo $i++;?></td>
+								<td><?php echo $row->ow_name;?></td>
+								<td><?php echo $row->ow_email;?></td>
+								<td><?php echo $row->ow_place;?></td>
+								<td><?php echo $row->ow_nationality;?></td>
 
-					foreach($coursedate as $coudata){	
-							$startdate = $coudata->crsann_crsstart;
-							$enddate = $coudata->crsann_crsend;
-							$cdate = date('Y-m-d');
-						if($enddate >= $cdate){
-							$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->uct_userid)->cou_name;
-							echo "<option value='$row->uct_courseid'>".$cname."</option>";
-					}}}}//else{
-						//foreach($course_data1 as $row1){
-							///echo "<option value='$row1->cou_id'>".$row1->cou_name."</option>";
-						//}
-						//echo "<option value=''>".'You are not registered in any course.'."</option>";
-					//}
-					//if($ustring == 'NULL'){
-						//foreach($course_data1 as $row1){
-							//$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->ow_courseid)->cou_name;
-							//echo "<option value='$row1->cou_id'>".$row1->cou_name."</option>";
-						//}	
-					//}
-				?>
-			</select>
-
+								<td><?php echo $row->ow_contact;?></td>
+								<td><?php echo $row->ow_school;?></td>
+								<td><?php echo $row->ow_rperson;?></td>
+								<td><?php if(!empty($couname)){echo $couname;}?></td>
+								<!--<td><?php //echo $row->ow_bankname;?></td>-->
+								<td><?php echo $row->ow_amount;?></td>
+								
+								<td><?php echo $row->ow_paymentstatus;?></td>
+								<?php //if($row->su_status == 'Verified'){?>
+									<!--<td><span style="color:green;"><?php //echo $row->su_status;?></span></td>-->
+								<?php //}else{?>
+									<!--<td><span style="color:red;"><?php //echo 'Not Verified';?></span></td>-->
+								<?php //}?>	
+					
+				</tr>
+				<?php }}?>
+			</tbody>
+		</table>
 	</div>
-	<div class="col-md-3">
-			<input type="submit" name="submit" value="Submit" class="btn btn-success">
-		</div>
-	</form>	
+	
 </div>
-
-
+</br></br></br></br>
 <?php $this->load->view('template/footer.php');?>
 </body>
 </html>
 <?php }else{
-$this->load->view('signin');
+$this->load->view('admin/admin_login');
 }
 ?>

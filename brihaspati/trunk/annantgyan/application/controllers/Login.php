@@ -188,9 +188,18 @@ class Login extends CI_Controller {
 			$usid  = $this->session->userdata['su_id'];
 			//$this->checkuct($usid);
 			//get a specific course list
-			$whdata=array('uct_userid'=>$usid);
-			$data['course_data']=$this->commodel->get_listspficemore('user_course_type','uct_courseid',$whdata);
+			$whdata=array('uct_userid' => $usid);
+			$course_data=$this->commodel->get_listspficemore('user_course_type','uct_courseid',$whdata);
+			$data['course_data'] = $course_data;
 
+			foreach ($course_data as $row) {
+				$cid = $row->uct_courseid;
+				$whdata1=array('crsann_crsid' => $cid);
+				$sdata1='crsann_crsstart,crsann_crsend';
+				$data['coursedate']=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
+
+				//print_r($coursedate);die;
+			}	
 			//$oguid = $this->commodel->get_listspfic1('sign_up','su_userid','su_id',$usid)->su_userid;
 			//$data['ustring'] = $this->commodel->get_listspfic1('sign_up','su_string','su_id',$usid)->su_string;
 			
@@ -290,28 +299,11 @@ class Login extends CI_Controller {
 			$data['couid'] = $couid;
 
 			$whdata = array('acu_courseid' => $couid);
-			$sdata = 'acu_weekname,acu_weekcontname,acu_contpath,acu_filetype,acu_filename';
-			$getuploadata = $this->commodel->get_listspficemore('admin_conteupload',$sdata,$whdata);
+			$sdata = 'acu_weekname';
+			$getuploadata = $this->commodel->get_distinctrecord('admin_conteupload',$sdata,$whdata);
 			$data['getuploadata'] = $getuploadata;
 
-			foreach($getuploadata as $row){
-				if($row->acu_weekname == 'week 1'){
-					$whdata1 = array('acu_weekname' => $row->acu_weekname,'acu_courseid' => $couid);
-					$sdata1 = 'acu_weekcontname,acu_contpath,acu_filename';
-					$getweekdata = $this->commodel->get_listspficemore('admin_conteupload',$sdata1,$whdata1);
-					$data['getweekdata'] = $getweekdata;
-					//print_r($data['getweekdata']);die;
-					foreach($getweekdata as $row2){
-						$whdata2 = array('acu_courseid' => $couid ,'acu_weekcontname'=> $row2->acu_weekcontname);
-						$sdata2 = 'acu_contpath';
-						$getpathdata = $this->commodel->get_listspficemore('admin_conteupload',$sdata2,$whdata2);
-					 	$data['getpathdata'] = $getpathdata;
-					 	//$getpathdata = $this->commodel->get_listspfic1('admin_conteupload','acu_contpath','acu_weekcontname',$row2->acu_weekcontname)->acu_contpath;
-						//print_r($getpathdata);die;
-					}
-				}	
-
-			}	
+			
 			//print_r($getuploadata );
 			$this->load->view('loginpage/usr_login',$data);
 			 //redirect('http://www.annantgyan.com');

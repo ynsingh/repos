@@ -26,7 +26,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<style type="text/css">
+    #open{ background: green; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left,  #1e8449  ,  #2ecc71 ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left,   #2ecc71   ,  #1e8449  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color : #fff;  
+  border-radius: 0px;
+  padding:20px 20px 0px 20px; 
 
+}
+</style>
 <script type="text/javascript">
   
 !function($,n,e){var o=$();$.fn.dropdownHover=function(e){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function t(e){o.find(":focus").blur(),h.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(c),i.addClass("open"),r.trigger(a)}var r=$(this),i=r.parent(),d={delay:100,instantlyCloseOthers:!0},s={delay:$(this).data("delay"),instantlyCloseOthers:$(this).data("close-others")},a="show.bs.dropdown",u="hide.bs.dropdown",h=$.extend(!0,{},d,e,s),c;i.hover(function(n){return i.hasClass("open")||r.is(n.target)?void t(n):!0},function(){c=n.setTimeout(function(){i.removeClass("open"),r.trigger(u)},h.delay)}),r.hover(function(n){return i.hasClass("open")||i.is(n.target)?void t(n):!0}),i.find(".dropdown-submenu").each(function(){var e=$(this),o;e.hover(function(){n.clearTimeout(o),e.children(".dropdown-menu").show(),e.siblings().children(".dropdown-menu").hide()},function(){var t=e.children(".dropdown-menu");o=n.setTimeout(function(){t.hide()},h.delay)})})}))},$(document).ready(function(){$('[data-hover="dropdown"]').dropdownHover()})}(jQuery,this);
@@ -120,7 +129,9 @@ jQuery(function ($) {
     ?>  
 </div>
 
-<?php if('10-oct-2018'){ //echo $this->session->userdata['su_id'];?>
+<?php 
+
+if('10-oct-2018'){ //echo $this->session->userdata['su_id'];?>
 <div class="container">
     <div class="col-md-12" id="card">
         <p style="font-size: 20px;" class="text-center">Your Course Will be start at 10<sup>th</sup>-oct-2018.</p>
@@ -128,183 +139,83 @@ jQuery(function ($) {
     
 </div>
 
-<?php }else{?>
+<?php }else{
+$whdata1=array('crsann_crsid' => $couid);
+$sdata1='crsann_crsstart,crsann_crsend';
+$coursedate=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
+$cdate = date('Y-m-d');
+foreach($coursedate as $coudata){
+    $startdate = $coudata->crsann_crsstart;
+    $enddate = $coudata->crsann_crsend;
+    $cdate = date('Y-m-d');
+if($enddate >= $cdate){
+    ?>
  <center><h3>Course :- <?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$couid)->cou_name;?></h3></center>
 <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 	<div class="row">
-		<div class="col col-sm-4">
+		<div class="col col-sm-12">
 
-    	   <!-- <ul class="nav nav-tabs nav-stacked text-center" role="tablist">
-                <li role="presentation" class="active"><a href="#intro" aria-controls="home" role="tab" data-toggle="tab">Week 1 Content</a></li>
-                <li role="presentation"><a href="#wcc" aria-controls="profile" role="tab" data-toggle="tab">Week 2 Content</a></li>
-                <li role="presentation"><a href="#feedback" aria-controls="messages" role="tab" data-toggle="tab">Week 3 Content</a></li>
-                <li role="presentation"><a href="#ocg" aria-controls="messages" role="tab" data-toggle="tab">Progress </a></li>
-                
-            </ul>-->
-            <div class="panel-group" id="accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel1">Week 1</a>
-                            </h4>
-                         </div>
-                        <div id="panel1" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <ul class="nav nav-tabs nav-stacked text-center" role="tablist">
+           
+               
+                            
+            <div class="col-md-4">
+                 <?php 
+                      
+            //    if(!empty($getuploadata)){
+                   // foreach($getuploadata as $row){
+                   // $weekname = $row->acu_weekname;
+                                   
+                ?>
+                    <?php //echo $weekname.'<br>';?>
+
+                                <ul class="nav nav-tabs nav-stacked" role="tablist">
                                     <li role="presentation" class="active">
-                                <?php 
-                                     //if(!empty($getuploadata)){ 
-                                    // foreach($getuploadata as $row){  
-                                       // $week1 = $row->acu_weekname;
-                                        
-                                     //}}  
-                                     //if($week1 == 'week 1'){ 
-                                if(!empty($getweekdata)){
-                                foreach($getweekdata as $row1){
-                                    $fpath1 = $row1->acu_contpath;
-                                    $fname1 = $row1->acu_filename;
-                                    $fpathname1 = $fpath1.'/'.$fname1;
-                                    //print_r($fpathname1);
-                                ?>
-                                    
-                                    <!--    <a href="<?php //echo base_url().'/'.$fpathname1;?>" aria-controls="home" role="tab" data-toggle="tab">-->
-                                        <a href="<?php echo base_url().'/'.$fpathname1;?>">
-                                            <?php echo $row1->acu_weekcontname;?>
-                                        </a>
-                                  
-                                <?php }}//}?>
-                                  </li>
-                                   <!-- <li role="presentation"><a href="#wcc" aria-controls="profile" role="tab" data-toggle="tab"></a></li>
-                                    <li role="presentation"><a href="#feedback" aria-controls="messages" role="tab" data-toggle="tab"></a></li>
-                                    <li role="presentation"><a href="#ocg" aria-controls="messages" role="tab" data-toggle="tab">Progress </a></li>-->
-                
+                               <?php 
+                               foreach($getuploadata as $data){
+                                 echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>';
+
+                                    $whdata1 = array('acu_courseid' => $couid,'acu_weekname' => $data->acu_weekname) ;
+                                    $sdata1 = 'acu_weekcontname,acu_seqno,acu_contpath,acu_filename';
+                                    $getcontname = $this->commodel->get_distinctrecord('admin_conteupload',$sdata1,$whdata1);
+
+                                    foreach($getcontname as $row1){
+                                        $fpath1 = $row1->acu_contpath;
+                                        $fname1 = $row1->acu_filename;
+                                        $fpathname1 = $fpath1.'/'.$fname1;
+                                 ?>
+                                 
+                                 <a href="<?php echo base_url().'/'.$fpathname1?>" target="content" id="close">
+                                        <?php echo $row1->acu_weekcontname;?>
+                                 </a>       
+                        <?php }}//}?>
+                                </li>
                                 </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel2">Week 2</a>
-                            </h4>
-                        </div>
-                        <div id="panel2" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                 Contents panel 2
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Week 3</a>
-                                </h4>
-                         </div>
-                         <div id="panel3" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                 Contents panel 3
-                            </div>
-                         </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Week 4</a>
-                                </h4>
-                         </div>
-                         <div id="panel3" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                 Contents panel 3
-                            </div>
-                         </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#panel3">Week 5</a>
-                                </h4>
-                         </div>
-                         <div id="panel3" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                 Contents panel 3
-                            </div>
-                         </div>
-                    </div>
+                <?php //}}//}?>
             </div>
+                          
+                        
+            
+                   <div class="col-md-8">  
+                        <?php  if(file_exists($fpathname1)) {?> 
+                            <div id="content"><iframe name="content" src="<?php echo base_url($fpathname1);?>" style="width:100%;height:500px;"></iframe></div>
+                        <?php }?>    
+                        </div>  
            
 		</div>
 
-        <div class="col col-sm-8" style="font-size: 18px;">
-            <div class="row tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="intro">
-                <?php 
-                if(!empty($getweekdata)){
-                     foreach($getweekdata as $row){
-                        $fpath = $row->acu_contpath;
-                        $fname = $row->acu_filename;
-                        $fpathname = $fpath.'/'.$fname;
-                   // $intro = 'uploads/course/'.$couid.'/content/CH.18.pdf';
-                    if(file_exists($fpathname)) {
-                ?>    
-                   <embed src="<?php echo base_url($fpathname);?>" type="application/pdf"   height="450px" width="100%">
-                <?php 
-                    }}}
-                ?>    
-                </div>
-                <!--<div role="tabpanel" class="tab-pane fade" id="wcc">
-                    
-                        <div class="video">
-                          <!-- <video width="320" height="240" controls>
-                                <?php //$intro = 'uploads/course/'.$couid.'/video/sample.mp4';
-                           // if(file_exists($intro)) {
-                                ?>
-                                     <source src="<?php //echo $intro;?>" type="video/mp4">
-                             <?php //}?>
-                                Your browser does not support the video tag.
-                            </video>--
-
-                           <iframe src="https://www.youtube.com/embed/VVsrsOaEcFQ?wmode=opaque" frameborder="0"  allowfullscreen  height="450px" width="100%"></iframe>
-                        </div>
-                    
-                     
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="feedback">
-                   <?php 
-                     //if(!empty($couid)){
-                  //  $feedback = 'uploads/course/'.$couid.'/content/JVC Vol 1.pdf';
-                   // if(file_exists($feedback)) {
-                ?>    
-                   <embed src="<?php //echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
-                <?php 
-                    //}}
-                ?>   
-                </div>-->
-                <!--
-                 <div role="tabpanel" class="tab-pane fade" id="ocg">
-                  <?php 
-                  //  if(!empty($couid)){
-                   // $feedback = 'uploads/course/'.$couid.'/content/p1.pdf';
-                    //if(file_exists($feedback)) {
-                ?>    
-                   <embed src="<?php //echo base_url($feedback);?>" type="application/pdf"   height="450px" width="100%">
-                <?php 
-                    //}}
-                ?>   
-                </div>-->
+        
             </div>
 		</div>
 	</div>
-    <div class="row" style="border:0px solid black;">
+    <!--<div class="row" style="border:0px solid black;">
         <ul class="list-inline pull-right">
             <li><button type="button" class="btn btn-default prev-step"><span class="glyphicon glyphicon-chevron-left"></span> Previous</button></li>
             <li><button type="button" class="btn btn-default next-step">Next <span class="glyphicon glyphicon-chevron-right"></span></button></li>
-           <!-- <li><button type="button" class="btn btn-primary ">Save</button></li>-->
+           <!-- <li><button type="button" class="btn btn-primary ">Save</button></li>--
         </ul>                
-    </div>
+    </div>-->
 </div>
-<?php }?>      
+<?php }}}//elseif and foreach close?>      
 </br></br></br></br></br>
 <?php $this->load->view('template/footer.php');?>
 </body>

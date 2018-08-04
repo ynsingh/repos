@@ -77,11 +77,12 @@ if(isset($this->session->userdata['firstName'])){
 						$i=1;
 						if(!empty($userdata)){
 							foreach($userdata as $row){	
+								$couname=$this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->crsann_crsid)->cou_name;
 						?>
 				<tr>
 					
 								<td><?php echo $i++;?></td>
-								<td><?php echo $row->crsann_crsid;?></td>
+								<td><?php echo $couname;?></td>
 								<td><?php echo $row->crsann_regstart;?></td>
 								<td><?php echo $row->crsann_regend;?></td>
 								<td><?php echo $row->crsann_crsstart;?></td>
