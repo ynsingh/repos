@@ -124,13 +124,14 @@ $!msg
 <table>
 <tr>
 <td>
-<b> <span style="font-size:19px;color:#00000;">Exam Instruction For Student</span> </b><br>
-<ul><li><b>Step-1:-</b> Enter username (Email-ID) and Password to Login in Brihaspati.</ul>
-<ul><li><b>Step-2:-</b> If you unable to login then click on <b>Forget Password</b> link by this you get new mail for new password.</ul>
-<ul><li><b>Step-3:-</b> After login as a student, click on <b>Student Course Area</b>.</ul>
-<ul><li><b>Step-4:-</b> In Course Home click to the exam module and go to the <b>Attempt Quiz</b> link. (Read the message for quiz start time).</ul>
-<ul><li><b>Step-5:-</b> After entering numeric eight digit number, the quiz will start.</ul>
-<ul><li><b>Step-6:-</b> Before one minute end the quiz, Please save and submit the quiz.</ul>
+##<b> <span style="font-size:19px;color:#00000;">Exam Instruction For Student</span> </b><br>
+##<ul><li><b>Step-1:-</b> Enter username (Email-ID) and Password to Login in Brihaspati.</ul>
+##<ul><li><b>Step-2:-</b> If you unable to login then click on <b>Forget Password</b> link by this you get new mail for new password.</ul>
+##<ul><li><b>Step-3:-</b> After login as a student, click on <b>Student Course Area</b>.</ul>
+##<ul><li><b>Step-4:-</b> In Course Home click to the exam module and go to the <b>Attempt Quiz</b> link. (Read the message for quiz start time).</ul>
+##<ul><li><b>Step-5:-</b> After entering numeric eight digit number, the quiz will start.</ul>
+##<ul><li><b>Step-6:-</b> Before one minute end the quiz, Please save and submit the quiz.</ul>
+
 </td>
 </tr>
 </table>
@@ -406,23 +407,23 @@ $!msg
 <br>$brih_signin:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 #if($!load_flag == 0)
-	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+##	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
 &nbsp;&nbsp;
-	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+##	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
 <br>
 #end
 
 #if($!load_flag == 1)
-	<a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")'} else {void('')};"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+##	<a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")'} else {void('')};"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
 &nbsp;&nbsp;
-        <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")'} else {void('')};"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+  ##      <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")'} else {void('')};"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
 <br>
 #end
 
 #if($!load_flag == 2)
-	 <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+##	 <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
 &nbsp;&nbsp;
-        <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+  ##      <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
 <br>
 #end
 </td></tr>
