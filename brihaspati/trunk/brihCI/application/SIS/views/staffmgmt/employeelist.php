@@ -293,7 +293,7 @@ $(document).ready(function(){
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
-                                if($headflag){
+                                if(($headflag)||($record->emp_head == "HEAD")){
                                         echo " & Head";
                                 }
 		
@@ -301,13 +301,24 @@ $(document).ready(function(){
 				?></td>
 			   <!-- <td><?php //echo $record->emp_post; ?></td>-->
                            <!-- <td></td>-->
-                            <td><?php echo $record->emp_email; ?></td>
-                            <td><?php echo $record->emp_phone; ?></td>
-                            <td><?php echo $record->emp_aadhaar_no; ?></td>
+                            <td colspan=3><?php echo $record->emp_email ."<br>"; ?>
+                            <?php echo $record->emp_phone ."<br>"; ?>
+                            <?php echo $record->emp_aadhaar_no; ?></td>
+                            <!--<td><?php //echo $record->emp_email; ?></td>
+                            <td><?php //echo $record->emp_phone; ?></td>
+                            <td><?php //echo $record->emp_aadhaar_no; ?></td>-->
                             <td> <?php 
 		//		$roleid=$this->session->userdata('id_role');
                                 if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
+					echo "<br>";
+					if($record->emp_head == "HEAD"){
+                                echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
+					}else{
+                                        echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
+					}
+//					echo "<br>";
+                              //          echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));
 				}
 				?></td>
                         </tr>
@@ -351,11 +362,11 @@ $(document).ready(function(){
                                 ?></td>
                            <!-- <td><?php //echo $record->emp_post; ?></td>-->
                            <!-- <td></td>-->
-                            <td><?php echo $record->emp_email; ?></td>
-                            <td><?php echo $record->emp_phone; ?></td>
-                            <td><?php echo $record->emp_aadhaar_no; ?></td>
+                            <td colspan=3><?php echo $record->emp_email ."<br>"; ?>
+                            <?php echo $record->emp_phone."<br>"; ?>
+                            <?php echo $record->emp_aadhaar_no; ?></td>
                             <td> <?php
-                //              $roleid=$this->session->userdata('id_role');
+                          //    $roleid=$this->session->userdata('id_role');
                         //        if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
                                         echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
                           //      }

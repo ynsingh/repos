@@ -98,12 +98,12 @@
       <form action="<?php echo site_url('staffmgmt/editstaffposition/' . $sp_id);?>" method="POST" class="form-inline">
               <tr><thead><th  style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="3">&nbsp;&nbsp;Staff Position Form</th></thead></tr>   
       <tr>
-             <td><label for="campus" style="font-size:15px;"> Campus Name </label>
+             <td><label for="campus" style="font-size:15px;"> <font color='Blue'>Campus Name </font></label>
              <div>
                  <?php echo form_input($campus); ?>
              </div>
              </td>
-             <td><label for="uo" style="font-size:15px;"> University Officers Control </label>
+             <td><label for="uo" style="font-size:15px;"> <font color='Blue'>University Officers Control</font> </label>
              <div>
                 <?php echo form_input($uo); ?>
 	<!--    <select name="uo" id="uo" class="my_dropdown" style="width:300px;">
@@ -114,128 +114,128 @@
 		</select>-->
              </div>
 	     </td>
-             <td><label for="dept" style="font-size:15px;"> Department Name</label>
+             <td><label for="dept" style="font-size:15px;"><font color='Blue'> Department Name</font></label>
              <div>
                  <?php echo form_input($dept); ?>
              </div>
 	     </td>	
         </tr>
         <tr>
-             <td><label for="schemecode" style="font-size:15px;"> Scheme Name </label>
+             <td><label for="schemecode" style="font-size:15px;"><font color='Blue'> Scheme Name</font> </label>
              <div>
                  <?php echo form_input($schemecode); ?>
              </div>
 	     </td>
-             <td><label for="group" style="font-size:15px;"> Group </label>
+             <td><label for="group" style="font-size:15px;"><font color='Blue'> Group</font> </label>
              <div>
                  <?php echo form_input($group); ?>
              </div>
 	     </td>
-             <td><label for="emppost" style="font-size:15px;"> Employee Post </label>
+             <td><label for="emppost" style="font-size:15px;"><font color='Blue'> Employee Post</font> </label>
              <div>
 		<?php echo form_input($emppost); ?>
              </div>
 	    </td>
         </tr>
         <tr>
-             <td><label for="tnt" style="font-size:15px;"> Working Type </label>
+             <td><label for="tnt" style="font-size:15px;"><font color='Blue'> Working Type</font> </label>
              <div>
                  <?php echo form_input($tnt); ?>
              </div>
 	    </td> 
-             <td><label for="ss" style="font-size:15px;"> Group Post </label>
+             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Group Post</font> </label>
              <div>
                  <?php echo form_input($grouppost); ?>
              </div>
 	     </td>
-             <td><label for="ss" style="font-size:15px;"> Employee Type </label>
+             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Employee Type</font> </label>
              <div>
                  <?php echo form_input($type); ?>
              </div>
 	    </td>	
         </tr>
         <tr>
-             <td><label for="ss" style="font-size:15px;"> Plan / Non Plan </label>
+             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Plan / Non Plan</font> </label>
              <div>
                  <?php echo form_input($pnp); ?>
              </div>
 	     </td>
-             <td><label for="ss" style="font-size:15px;"> Pay Band </label>
+             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Pay Band</font> </label>
              <div>
                  <?php echo form_input($scale); ?>
              </div>
 	     </td>
-             <td><label for="ss" style="font-size:15px;"> Method of Recruitment </label>
+             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Method of Recruitment</font> </label>
              <div>
                  <?php echo form_input($methodrect); ?>
             </div>
 	   </td>
         </tr>
 	<tr>	
-          <td><label for="ss" style="font-size:15px;"> Position Sanction Strength </label>
+          <td><label for="ss" style="font-size:15px;"><font color='Blue'> Position Sanction Strength</font> </label>
              <div>
                 <!-- <?php //echo form_input($ss); ?>-->
 		<input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength" required="required" oninput="getsstypevalue(this.value)" /><br>
              </div>
 	     </td>
-             <td><label for="p" style="font-size:15px;"> Position Present </label>
+             <td><label for="p" style="font-size:15px;"><font color='Blue'> Position Present</font> </label>
              <div>
                <!--  <?php //echo form_input($p); ?> -->
 		<input type="text" name="p" id="p" class="keyup-numeric" size="30" value="<?php echo $p['value']; ?>" placeholder="Position" required="required" oninput="getptypevalue(this.value)" /><br>
              </div>
 	     </td>
-             <td><label for="v" style="font-size:15px;"> Position Vacant </label>
+             <td><label for="v" style="font-size:15px;"><font color='Blue'> Position Vacant</font> </label>
              <div>
                  <?php echo form_input($v); ?>
              </div>
 	    </td>
 	</tr>
 	<tr>
-             <td><label for="ssper" style="font-size:15px;"> Sanction Strength Permanent </label>
+             <td><label for="ssper" style="font-size:15px;"><font color='Blue'> Sanction Strength Permanent</font> </label>
              <div>
                 <?php echo form_input($ssper); ?>
              </div>
 	     </td>
-             <td><label for="pper" style="font-size:15px;"> Position Permanent </label>
+             <td><label for="pper" style="font-size:15px;"><font color='Blue'> Position Permanent</font> </label>
              <div>
                  <?php echo form_input($pper); ?>
              </div>
 	     </td>
-             <td><label for="vper" style="font-size:15px;"> Vacancy Permanent </label>
+             <td><label for="vper" style="font-size:15px;"><font color='Blue'> Vacancy Permanent</font> </label>
              <div>
                  <?php echo form_input($vper); ?>
              </div>
 	    </td>	
 	</tr>
 	<tr>
-             <td><label for="sstem" style="font-size:15px;"> Sanction Strength Temporary </label>
+             <td><label for="sstem" style="font-size:15px;"><font color='Blue'> Sanction Strength Temporary</font> </label>
              <div>
                  <?php echo form_input($sstem); ?>
              </div>
 	     </td>
-             <td><label for="ptem" style="font-size:15px;"> Position Temporary </label>
+             <td><label for="ptem" style="font-size:15px;"><font color='Blue'> Position Temporary </font></label>
              <div>
                   <?php echo form_input($ptem); ?>
              </div>
 	     </td>
-             <td><label for="vtem" style="font-size:15px;"> Vacancy Temporary </label>
+             <td><label for="vtem" style="font-size:15px;"><font color='Blue'> Vacancy Temporary </font></label>
              <div>
                  <?php echo form_input($vtem); ?>
              </div>
 	    </td>
         </tr>
         <tr>
-             <td><label for="address1" style="font-size:15px;"> Address </label>
+             <td><label for="address1" style="font-size:15px;"><font color='Blue'> Address</font> </label>
              <div>
                  <?php echo form_input($address1); ?>
              </div>
 	     </td>
-             <td><label for="ssdetail" style="font-size:15px;"> Sanction Strength Detail </label>
+             <td><label for="ssdetail" style="font-size:15px;"> <font color='Blue'>Sanction Strength Detail</font> </label>
              <div>
                  <?php echo form_input($ssdetail); ?>
              </div>
 	     </td>
-             <td><label for="remarks" style="font-size:15px;"> Remarks </label>
+             <td><label for="remarks" style="font-size:15px;"><font color='Blue'> Remarks</font> </label>
              <div>
                 <?php echo form_input($remarks); ?>
              </div>

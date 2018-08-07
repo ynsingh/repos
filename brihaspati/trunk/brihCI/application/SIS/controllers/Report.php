@@ -72,7 +72,7 @@ class Report  extends CI_Controller
 	}
 
     public function deptemployeelist(){
-        $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name, emp_post,emp_desig_code,emp_schemeid";
+        $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code,emp_schemeid";
         $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
         // add doris geater than current date and reason is null  in whdata
@@ -286,7 +286,7 @@ class Report  extends CI_Controller
 	*/
                 $datawh['emp_worktype'] = $worktype;
                 $datawh['emp_name LIKE ']= $filter.'%';
-	    	$empdata['emprecord'] = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_photoname,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no',$datawh);
+	    	$empdata['emprecord'] = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_photoname,emp_name,emp_head,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no',$datawh);
 //		add this code as join query
 	/*	$selectfield="empsd_campuscode,empsd_ucoid,empsd_deptid,empsd_desigcode,empsd_schemeid";
 	        $whdata = array ('empsd_empid'=>$emp_id);
@@ -565,7 +565,7 @@ public function disciplinewiselist(){
 	$this->sub=$this->commodel->get_orderlistspficemore('subject','sub_id,sub_name,sub_code','','sub_name asc');
 
 	$cdate = date('Y-m-d');
-        $selectfield ="emp_dept_code, emp_id,emp_code,emp_name, emp_desig_code,emp_specialisationid";
+        $selectfield ="emp_dept_code, emp_id,emp_code,emp_name,emp_head, emp_desig_code,emp_specialisationid";
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
         $whorder = "emp_specialisationid asc, emp_desig_code asc ";
 	//$names='';
@@ -664,7 +664,7 @@ public function disciplinewiselist(){
 
 
     public function desigemployeelist(){
-        $selectfield ="emp_id,emp_code,emp_desig_code,emp_dept_code,emp_name";
+        $selectfield ="emp_id,emp_code,emp_desig_code,emp_dept_code,emp_head,emp_name";
         $whorder = "emp_desig_code  asc";
 	$cdate = date('Y-m-d');
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);

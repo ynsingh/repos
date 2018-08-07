@@ -168,7 +168,12 @@
 				echo anchor("report/viewfull_profile/{$row->emp_id}",$row->emp_name." ( "."PF No:".$row->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
 			//	echo $row->emp_name; 
 				?> </td>
-			 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$row->emp_desig_code)->desig_name; ?> </td>
+			 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$row->emp_desig_code)->desig_name; 
+				if ($row->emp_head == "HEAD"){
+					echo " & ";
+					echo $row->emp_head;
+				}
+			?> </td>
 			 <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->emp_dept_code)->dept_name; ?> 
 			( <?php echo $this->commodel->get_listspfic1('Department','dept_code','dept_id',$row->emp_dept_code)->dept_code; ?> ) </td>
 		     </tr>

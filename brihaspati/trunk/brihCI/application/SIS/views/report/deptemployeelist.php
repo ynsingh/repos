@@ -253,7 +253,12 @@
 		//	$record->emp_name.
 			echo "</td>";
 			echo "<td>"; 
-			echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;	
+			echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
+			 if ($record->emp_head == "HEAD"){
+                                        echo " & ";
+                                        echo $record->emp_head;
+                                }
+	
 			echo "</td>";
 			echo "<td>";
 			echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name ;	

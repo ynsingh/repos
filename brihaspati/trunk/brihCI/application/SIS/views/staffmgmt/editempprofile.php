@@ -918,14 +918,14 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo $bname[1]; ?>" placeholder="IFSC CODE..." size="33" >
                     </div>
                 </td>
-                <td><label for="bankacno" style="font-size:15px;"><font color='Blue'>Bank ACC No</font><font color='Red'>*</font></label>
+                <td><label for="bankacno" style="font-size:15px;"><font color='Blue'>Bank ACC No</font><font color='Red'></font></label>
                     <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo $editdata->emp_bank_accno; ?>" placeholder="Bank Acc No..." size="33" required="required">
                     </div>
                 </td>
             </tr>
             
             <tr>
-                <td><label for="Aadharrno" style="font-size:15px;"><font color='Blue'>Aadhaar No</font><font color='Red'>*</font></label>
+                <td><label for="Aadharrno" style="font-size:15px;"><font color='Blue'>Aadhaar No</font><font color='Red'></font></label>
                     <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo $editdata->emp_aadhaar_no; ?>" placeholder="Aadharr No..." size="33" required="required">
                     </div>    
                 </td>

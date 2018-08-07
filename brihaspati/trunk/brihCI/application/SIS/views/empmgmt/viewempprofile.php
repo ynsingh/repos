@@ -96,31 +96,31 @@
                 </td></tr>
                 <tr></tr>
                 <tr> 
-                    <td>Employee PF No : </td>
+                    <td><font color='Blue'>Employee PF No : </font></td>
                     <td><?php echo $record->emp_code;?></td> 
-                    <td>Employee Name :</td>
+                    <td><font color='Blue'>Employee Name :</font></td>
                     <td><?php echo $record->emp_name ;?></td> 
-                    <td>Fathers Name :</td>
+                    <td><font color='Blue'>Fathers Name :</font></td>
                     <td colspan="2"><?php echo $record->emp_father; ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Spouse Name : </td>
+                    <td><font color='Blue'>Spouse Name :</font> </td>
                     <td><?php echo $record->emp_spousename ;?></td> 
-                    <td>Gender : </td>
+                    <td><font color='Blue'>Gender :</font> </td>
                     <td><?php echo $record->emp_gender;?></td> 
-                    <td>Community :</td>
+                    <td><font color='Blue'>Community :</font></td>
                     <td  colspan="2"><?php echo $record->emp_community;?></td> 
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Religion :</td>
+                    <td><font color='Blue'>Religion :</font></td>
                     <td><?php echo $record->emp_religion;?></td>
-                    <td>Caste : </td>
+                    <td><font color='Blue'>Caste : </font></td>
                     <td><?php echo $record->emp_caste; ?></td> 
-                    <td>Whether Physically Handicapped :</td>
+                    <td><font color='Blue'>Whether Physically Handicapped :</font></td>
                     <td  colspan="2"><div>
 			<?php if($record->emp_phstatus == 'yes'){
 					echo "Yes";
@@ -136,19 +136,19 @@
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Details Of PH :</td>
-                    <td><?php echo $record->emp_phdetail; ?><td>
-                    <td>Blood Group : </td>
+                    <td><font color='Blue'>Details of PH :</font></td>
+                    <td><?php echo $record->emp_phdetail; ?></td>
+                    <td><font color='Blue'>Blood Group : </font></td>
                     <td><?php echo $record->emp_bloodgroup;?></td> 
-                    <td>Date Of Birth :</td>
+                    <td><font color='Blue'>Date Of Birth :</font></td>
                     <td  colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_dob))); ?></td> 
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Pan No :</td>
+                    <td><font color='Blue'>Pan No :</font></td>
                     <td><?php echo $record->emp_pan_no;?></td>
-                    <td>Bank Name : </td>
+                    <td><font color='Blue'>Bank Name :</font> </td>
                     <td>
                         <?php 
                         $fulldata=$record->emp_bank_ifsc_code;
@@ -156,21 +156,21 @@
                         echo $bname[0]; 
                         ;?>
                     </td> 
-                    <td>IFSC Code :</td>
+                    <td><font color='Blue'>IFSC Code :</font></td>
                     <td  colspan="2"><?php echo $bname[1]; ?></td> 
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Bank ACC No :</td>
+                    <td><font color='Blue'>Bank ACC No :</font></td>
                     <td><?php echo $record->emp_bank_accno; ?></td>
-                    <td>Aadhaar No : </td>
+                    <td><font color='Blue'>Aadhaar No :</font> </td>
                     <td><?php echo $record->emp_aadhaar_no; ?></td> 
                     <!--<td>IFSC Code :</td>
                     <td> <?php //echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
                     <td>Bank ACC No :</td>
                     <td><?php //echo $record->emp_post; ?></td>-->
-                    <td>Marital Status : </td>
+                    <td><font color='Blue'>Marital Status : </font></td>
                     <td colspan="2" ><?php echo $record->emp_maritalstatus; ?></td>
    
                 </tr>
@@ -181,11 +181,11 @@
                 <tr><td>
                 <tr></tr>
                 <tr>
-		<td>Email Id:</td>
+		<td><font color='Blue'>Email Id:</font></td>
                 <td><?php   echo $record->emp_secndemail; ?></td> 
-                    <td>Phone/Mobile No :</td>
+                    <td><font color='Blue'>Phone/Mobile No :</font></td>
                     <td><?php echo $record->emp_phone; ?></td> 
-                    <td>Residential Address:</td>
+                    <td><font color='Blue'>Residential Address:</font></td>
                     <td><?php echo $record->emp_address;?></td>
                
                 </tr>
@@ -197,11 +197,11 @@
                 </td></tr>    
                 <tr></tr>
                 <tr> 
-                    <td>Qualification:</td>
+                    <td><font color='Blue'>Qualification:</font></td>
                     <td><?php echo $record->emp_qual;?></td> 
-                    <td>ASSR Exam:</td>
+                    <td><font color='Blue'>ASSR Exam:</font></td>
                     <td><?php echo $record->emp_AssrExam_status;?></td> 
-                    <td>Date Of ASSR Exam:</td>
+                    <td><font color='Blue'>Date Of ASSR Exam:</font></td>
                     <td colspan="3"> <?php echo implode('-', array_reverse(explode('-', $record->emp_dateofAssrExam))) ;?></td> 
                    <!-- <td>Date Of Phd Completion :</td>
                     <td><?php echo $record->emp_post; ?></td>-->
@@ -214,13 +214,13 @@
                 </td></tr>
                 <tr></tr>
                 <tr>
-                    <td>Campus Name :</td>
+                    <td><font color='Blue'>Campus Name :</font></td>
                     <td>
 <?php 
 				echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
 ?>
                     </td>
-                    <td>University Officer Control:</td>
+                    <td><font color='Blue'>University Officer Control:</font></td>
 		    <td>
 		    <?php 
 			$authname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$record->emp_uocid)->name;
@@ -228,7 +228,7 @@
                         	echo  $authname." " . "( ".$authcode." )";    
 ?>
                     </td>
-                    <td>Department :</td>
+                    <td><font color='Blue'>Department :</font></td>
                     <td colspan="2"> 
 <?php 
 				echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
@@ -245,55 +245,55 @@
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Scheme Name : </td>
+                    <td><font color='Blue'>Scheme Name : </font></td>
                     <td>
 <?php 
 				echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
 ?>
 		</td> 
-                    <td>Drawing and Disbursing Officer :</td>
+                    <td><font color='Blue'>Drawing and Disbursing Officer :</font></td>
                     <td> <?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->emp_ddoid)->ddo_name;?></td> 
-                    <td>Working Type :</td>
+                    <td><font color='Blue'>Working Type :</font></td>
                     <td colspan="2"><?php echo $record->emp_worktype;?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Group : </td>
+                    <td><font color='Blue'>Group : </font></td>
                     <td><?php echo $record->emp_group;?></td> 
-                    <td>Designation :</td>
+                    <td><font color='Blue'>Designation :</font></td>
                     <td> 
 <?php
 				echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
-				if($this->headflag){
+				if(($this->headflag)||($record->emp_head == "HEAD")){
 				echo " & Head";
 				}
 ?>
 			</td> 
-                    <td>Shown Against The Post :</td>
+                    <td><font color='Blue'>Shown Against The Post :</font></td>
                     <td colspan="2"><?php echo $record->emp_post; ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Plan / Non : </td>
+                    <td><font color='Blue'>Plan / Non : </font></td>
                     <td><?php echo $record->emp_pnp;?></td> 
-                    <td>Employee Type :</td>
+                    <td><font color='Blue'>Employee Type :</font></td>
                     <td> <?php echo $record->emp_type_code;?></td> 
-                    <td>Application Order No:</td>
+                    <td><font color='Blue'>Application Order No:</font></td>
                     <td colspan="2"><?php echo $record->emp_apporderno ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Specialisation(Major Subject) : </td>
+                    <td><font color='Blue'>Specialisation(Major Subject) :</font> </td>
                     <td><?php 
                         if(!empty($record->emp_specialisationid)){
                             echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
                         }    
                         ?>
                     </td> 
-                    <td>Pay Band :</td>
+                    <td><font color='Blue'>Pay Band :</font></td>
                     <td>  <?php
                             $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->emp_salary_grade)->sgm_name;
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->emp_salary_grade)->sgm_max;
@@ -302,34 +302,34 @@
                         	echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
                         ?>    
                     </td> 
-                    <td>Basic Pay :</td>
+                    <td><font color='Blue'>Basic Pay :</font></td>
                     <td colspan="2"><?php echo $record->emp_basic; ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Emolution: </td>
+                    <td><font color='Blue'>Emolution: </font></td>
                     <td><?php echo $record->emp_emolution; ?></td> 
-                    <td>NHIS ID No :</td>
+                    <td><font color='Blue'>NHIS ID No :</font></td>
                     <td> <?php echo $record->emp_nhisidno; ?></td> 
-                    <td>Date Of Appointment :</td>
+                    <td><font color='Blue'>Date Of Appointment :</font></td>
                     <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_doj)))." ".$record->emp_jsession; ?></td>
                
                 </tr>
                 <tr></tr>
                 <tr> 
-                    <td>Date Of Retirement: </td>
+                    <td><font color='Blue'>Date Of Retirement: </font></td>
                     <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dor))); ?></td> 
-                    <td>Date of Probation :</td>
+                    <td><font color='Blue'>Date of Probation :</font></td>
                     <td><?php echo implode('-', array_reverse(explode('-', $record->emp_doprobation)));?></td> 
-                    <td>Date of Regularisation :</td>
+                    <td><font color='Blue'>Date of Regularisation :</font></td>
                     <td colspan="2"><?php echo implode('-', array_reverse(explode('-', $record->emp_doregular)));?></td>               
                 </tr>
                 <tr></tr>
                 <tr>
-                    <td>Date Of HGP: </td>
+                    <td><font color='Blue'>Date Of HGP: </font></td>
 		    <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofHGP))); ?></td> 
-	            <td>Seniority No: </td>
+	            <td><font color='Blue'>Seniority No: </font></td>
                     <td colspan="4"><?php echo $record->emp_seniortyid; ?></td>
                 </tr> 
                 <tr></tr>
@@ -339,11 +339,11 @@
                 </td></tr>
                 <tr></tr>
                 <tr> 
-                    <td>Mother Tongue : </td>
+                    <td><font color='Blue'>Mother Tongue : </font></td>
                     <td><?php echo $record->emp_mothertongue; ?></td> 
-                    <td>Nativity :</td>
+                    <td><font color='Blue'>Nativity :</font></td>
                     <td><?php echo $record->emp_citizen; ?></td> 
-                    <td>Remarks :</td>
+                    <td><font color='Blue'>Remarks :</font></td>
                     <td colspan="2"><?php echo $record->emp_remarks;?></td>
 		       
 			</tr>
@@ -354,31 +354,31 @@
                 </td></tr>
 		<tr></tr>
                 <tr>
-                  <td>Phd Status :</td>
+                  <td><font color='Blue'>Phd Status :</font></td>
                     <td><?php echo $record->emp_phd_status;?></td> 
-                    <td>Date Of Phd Completion:</td>
+                    <td><font color='Blue'>Date Of Phd Completion:</font></td>
                     <td><?php echo implode('-', array_reverse(explode('-', $record->emp_dateofphd))); ?></td>
-		<td>Discipline:</td>
+		<td><font color='Blue'>Discipline:</font></td>
 		<td><?php   echo $record->emp_phddiscipline;?></td>
                 </tr><tr>
-		<td>PhD Type:</td>
+		<td><font color='Blue'>PhD Type:</font></td>
 		<td><?php   echo $record->emp_phdtype;?></td>
-		<td>Institute Name:</td>
+		<td><font color='Blue'>Institute Name:</font></td>
 		<td><?php   echo $record->emp_phdinstname;?></td>
 		<?php
           	$udep=$record->emp_phdunivdeput;
                     $udepnew=explode(",",$udep);
 		?>
 		<?php if((!empty($udepnew[0])) && ($udepnew[0] == "No")){ ?>
-         	<td>Deputed by Unversity:</td>
+         	<td><font color='Blue'>Deputed by Unversity:</font></td>
 		<td><?php  echo $udepnew[0]; ?></td>
                 </tr>
                 <tr>
-		<td>If NO (Type of Leave availed for Ph.D):</td>
+		<td><font color='Blue'>If NO (Type of Leave availed for Ph.D):</font></td>
 		<td><?php echo $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$udepnew[1])->lt_name;?></td>
-		<td>Leave From:</td>
+		<td><font color='Blue'>Leave From:</font></td>
 		<td><?php   echo $udepnew[2]; ?></td>
-		<td>Leave To:</td>
+		<td><font color='Blue'>Leave To:</font></td>
 		<td><?php   echo $udepnew[3]; ?></td>
 		<?php } ?>
                 </tr>
@@ -394,15 +394,15 @@
                 if(!empty($ntq)){
                     $ntqnew=explode(",",$ntq);
 		?>
-		<td>NET qualified:</td>
+		<td><font color='Blue'>NET qualified:</font></td>
 		<td><?php   echo $ntqnew[0]; ?></td>
-		<td>Organisar:</td>
+		<td><font color='Blue'>Organizar:</font></td>
 		<td><?php echo $ntqnew[1]; ?></td>
-		<td>Year of Passing:</td>
+		<td><font color='Blue'>Year of Passing:</font></td>
 		<td><?php  echo implode('-', array_reverse(explode('-', $record->emp_netpassingyear)));?></td>
 		</tr>
 		<tr>
-		<td>Discipline:</td>
+		<td><font color='Blue'>Discipline:</font></td>
 		<td><?php   echo $record->emp_netdiscipline;}?></td>
 		</tr>
 		<tr></tr>
@@ -412,9 +412,9 @@
                 </td></tr>
                 <tr></tr>
                 <tr>
-		<td>Registration No</td>
+		<td><font color='Blue'>Registration No</font></td>
 		<td><?php   echo $record->emp_vciregno; ?></td>
-		<td>Date of Registration:</td>
+		<td><font color='Blue'>Date of Registration:</font></td>
 		<td><?php echo date('d-m-Y',strtotime($record->emp_vciregdate));?></td>
 		</tr>
 		<tr></tr>

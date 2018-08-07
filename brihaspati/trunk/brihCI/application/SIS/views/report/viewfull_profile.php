@@ -146,7 +146,7 @@
                                 <td>
 <?php   			echo    "<b>Designation</b> <br>";
 					echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name; 
-					if($this->headflag){
+					if(($this->headflag)||($data->emp_head == "HEAD")){
         		                        echo " & Head";
 	                                }
 ?>

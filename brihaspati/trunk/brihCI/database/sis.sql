@@ -215,6 +215,7 @@ CREATE TABLE `employee_master` (
   `emp_dept_code` int(11) NOT NULL,
   `emp_desig_code` int(11) NOT NULL,
   `emp_post` VARCHAR(255) default NULL,
+  `emp_head` VARCHAR(55)  DEFAULT NULL
   `emp_worktype` VARCHAR(255) default NULL,
   `emp_type_code` varchar(255) default NULL,
   `emp_phone` varchar(30) default NULL,

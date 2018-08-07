@@ -146,7 +146,7 @@
 			        $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
 			        $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 		
-				if($headflag){
+				if(($headflag)||($record->emp_head == "HEAD")){
 		                	echo " & Head";
                                 }
 		

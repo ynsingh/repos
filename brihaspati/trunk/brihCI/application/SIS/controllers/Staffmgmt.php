@@ -12,24 +12,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Staffmgmt extends CI_Controller
 {
  
-    function __construct() {
-        parent::__construct();
-        $this->load->model('Common_model',"commodel");
-        $this->load->model('Login_model',"lgnmodel"); 
-        $this->load->model('SIS_model',"sismodel");
-        $this->load->model('Dependrop_model',"depmodel");
-        $this->load->model("Mailsend_model","mailmodel");
-        if(empty($this->session->userdata('id_user'))) {
-            $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-            redirect('welcome');
-        }
-    }
+    	function __construct() {
+        	parent::__construct();
+        	$this->load->model('Common_model',"commodel");
+        	$this->load->model('Login_model',"lgnmodel"); 
+        	$this->load->model('SIS_model',"sismodel");
+        	$this->load->model('Dependrop_model',"depmodel");
+        	$this->load->model("Mailsend_model","mailmodel");
+        	if(empty($this->session->userdata('id_user'))) {
+            		$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+            		redirect('welcome');
+        	}
+    	}
  
-    public function index(){
-    	//$this->load->view('staffmgmt/staffprofile');    
-    }
+    	public function index(){
+    		//$this->load->view('staffmgmt/staffprofile');    
+    	}
     
-    public function getuohodempid(){
+    	public function getuohodempid(){
 		$data['loguname']=$this->session->userdata('username');
 		$rlid=$this->session->userdata('id_role');
 
@@ -41,7 +41,40 @@ class Staffmgmt extends CI_Controller
 
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 $data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
-    }
+    	}
+
+    	public function addhead($id){
+//		$empid = $id;
+		$whdata = array ('emp_id' => $id);
+		$idata = array('emp_head' => "HEAD");
+		$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
+		$this->logger->write_logmessage("insert", "HEAD data insert in employee_master table.".$id);
+                $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_master table.".$id );
+		$this->employeelist();
+	}
+
+	public function removehead($id){
+
+		$whdata = array ('emp_id' => $id);
+		$rdata = array('emp_head' => "");
+		$upflag=$this->sismodel->updaterec('employee_master', $rdata,'emp_id',$id);
+		$this->logger->write_logmessage("insert", "HEAD data remove in employee_master table.".$id);
+                $this->logger->write_dblogmessage("insert", "HEAD data remove in employee_master table.".$id );
+		$this->employeelist();
+
+	}
+	
+	public function changepf($id){
+		$empid = $id;
+		//	get new pf
+		// generate emalid as per new pf
+		//update edrpuser email
+		// update pf and email in employee master
+
+
+	}
+
+
 
     /* Display Employee record */
 
@@ -62,7 +95,7 @@ class Staffmgmt extends CI_Controller
                 $whdata['emp_dept_code'] = $deptid;
 		$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
         }
-	 $selectfield ="emp_id,emp_code,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
+	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
@@ -182,14 +215,14 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('dateofretirement','Date of Retirement','trim|xss_clean');
             $this->form_validation->set_rules('dateofhgp','Date of HGP','trim|xss_clean');
             $this->form_validation->set_rules('panno','Pan No','trim|xss_clean|alpha_numeric');
-            $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|xss_clean|numeric');
             
             $this->form_validation->set_rules('bankname','Bank Name','trim|xss_clean');
             $this->form_validation->set_rules('ifsccode','IFSC CODE','trim|xss_clean|alpha_numeric');
-            $this->form_validation->set_rules('bankacno','Bank ACC No','trim|required|xss_clean|alpha_numeric');
+            $this->form_validation->set_rules('bankacno','Bank ACC No','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
             $this->form_validation->set_rules('fathername','Father Name','trim|xss_clean');
-            $this->form_validation->set_rules('emailid','E-Mail ID','trim|xss_clean|required|valid_email');
+            $this->form_validation->set_rules('emailid','E-Mail ID','trim|xss_clean|valid_email');
             $this->form_validation->set_rules('Address','Address','trim|xss_clean');
             
             $this->form_validation->set_rules('mothertongue','MotherTongue','trim|xss_clean');
@@ -672,11 +705,11 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('dateofretirement','Date of Retirement','trim|xss_clean');
             $this->form_validation->set_rules('dateofhgp','Date of HGP','trim|xss_clean');
             $this->form_validation->set_rules('panno','Pan No','trim|alpha_numeric');
-            $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|xss_clean|numeric');
             
             $this->form_validation->set_rules('bankname','Bank Name','trim|xss_clean');
             $this->form_validation->set_rules('ifsccode','IFSC CODE','trim|xss_clean|alpha_numeric');
-            $this->form_validation->set_rules('bankacno','Bank ACC No','trim|required|xss_clean|alpha_numeric');
+            $this->form_validation->set_rules('bankacno','Bank ACC No','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
             $this->form_validation->set_rules('fathername','Father Name','trim|xss_clean');
             //$this->form_validation->set_rules('emailid','E-Mail ID','trim|required');
