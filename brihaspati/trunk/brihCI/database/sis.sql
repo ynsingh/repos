@@ -299,7 +299,16 @@ CREATE TABLE `employee_master` (
 
 CREATE TABLE employee_master_support (
  ems_id int(11) NOT NULL auto_increment,
+ ems_empid varchar(100) default null, 
  ems_code varchar (50) NOT NULL,
+ ems_vci_status varchar(100) default null,
+ ems_vci_statchapter varchar(100) default null,
+ ems_vci_statregno varchar(100) default null,
+ ems_vci_statregdate datetime default NULL,
+ ems_vci_statvaliddate datetime default NULL,
+ ems_vci_alliregno varchar(100) default null,
+ ems_vci_alliregdate datetime default NULL,
+ ems_vci_allivaliddate datetime default NULL,
  ems_entitled_cat varchar (50) default NULL,
  ems_status_emp varchar (50) default NULL,
  ems_working_type varchar (100) default NULL,

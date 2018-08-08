@@ -1,0 +1,10 @@
+ alter table employee_master_support add ems_empid varchar(100) default null after ems_id;
+ alter table employee_master_support add ems_vci_status varchar(100) default null after ems_code;
+ alter table employee_master_support add ems_vci_statchapter varchar(100) default null after ems_vci_status;
+ alter table employee_master_support add ems_vci_statregno varchar(100) default null after ems_vci_statchapter;
+ alter table employee_master_support add ems_vci_statregdate datetime default NULL after ems_vci_statregno;
+ alter table employee_master_support add ems_vci_statvaliddate datetime default NULL after ems_vci_statregdate;
+ alter table employee_master_support add ems_vci_alliregno varchar(100) default null after ems_vci_statvaliddate;
+ alter table employee_master_support add ems_vci_alliregdate datetime default NULL after ems_vci_alliregno;
+ alter table employee_master_support add ems_vci_allivaliddate datetime default NULL after ems_vci_alliregdate;
+UPDATE employee_master_support SET  ems_empid=(select emp_id from employee_master where employee_master_support.ems_code=employee_master.emp_code);

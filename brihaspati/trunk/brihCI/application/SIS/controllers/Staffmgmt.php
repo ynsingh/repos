@@ -95,7 +95,7 @@ class Staffmgmt extends CI_Controller
                 $whdata['emp_dept_code'] = $deptid;
 		$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
         }
-	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
+	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_post,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
@@ -178,6 +178,8 @@ class Staffmgmt extends CI_Controller
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
         $this->leavedata=$this->sismodel->get_list('leave_type_master');
+        //$datawh = array('country_id' => '101');
+        $this->states=$this->commodel->get_listspficarry('states','id,name','country_id',101);  
         /**********************here we check that vacancy is available or not in staff position******************************************/
                     
         if(isset($_POST['staffprofile'])) {
@@ -253,8 +255,20 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('netqualyes','NET Organiser','trim|xss_clean');
             $this->form_validation->set_rules('passyear','NET passyear','trim|xss_clean');
             $this->form_validation->set_rules('netdiscipline','NET Discipline','trim|xss_clean');
+            
+            /*********************modification in vcr registration*****************************/
+            $this->form_validation->set_rules('vcrapp','vcrapp','trim|xss_clean');
+            $this->form_validation->set_rules('chapter','chapter','trim|xss_clean');
+            
             $this->form_validation->set_rules('vciregno','VCIregno','trim|xss_clean');
             $this->form_validation->set_rules('vciregdate','VCIregdate','trim|xss_clean');
+            $this->form_validation->set_rules('vcrvaliddate','vcrvaliddate','trim|xss_clean');
+            
+            $this->form_validation->set_rules('allvciregno','allvciregno','trim|xss_clean');
+            $this->form_validation->set_rules('allvciregdate','allvciregdate','trim|xss_clean');
+            $this->form_validation->set_rules('allvcrvaliddate','allvcrvaliddate','trim|xss_clean');
+            
+            /********************************************************************************/
             $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
             $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
             $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
@@ -330,6 +344,30 @@ class Staffmgmt extends CI_Controller
                     $netpassyear=NULL;
                     $netdispln=NULL;
                 }
+                if(!empty($_POST['vcrapp'])){
+                    if($_POST['vcrapp'] =='Applicable'){
+                        $vcrstat="Applicable";
+                        $chapter=$_POST['chapter'];
+                        $vcrregno=$_POST['vciregno'];
+                        $vcrregdate=$_POST['vciregdate'];
+                        $vcrregvaliddate=$_POST['vcrvaliddate'];
+                        
+                    }
+                    else{
+                        $vcrstat="Not Applicable";
+                        $chapter=NULL;
+                        $vcrregno=NULL;
+                        $vcrregdate=NULL;
+                        $vcrregvaliddate=NULL;
+                    }
+                }
+                else{
+                    $vcrstat="Not Applicable";
+                    $chapter=NULL;
+                    $vcrregno=NULL;
+                    $vcrregdate=NULL;
+                    $vcrregvaliddate=NULL;
+                }
 
                 //-------------------------------------------------------------
                 $data = array(
@@ -403,8 +441,8 @@ class Staffmgmt extends CI_Controller
                     'emp_netqualified'          =>$netdetail,
                     'emp_netpassingyear'        =>$netpassyear,
                     'emp_netdiscipline'         =>$netdispln,
-                    'emp_vciregno'              =>$_POST['vciregno'],
-                    'emp_vciregdate'            =>$_POST['vciregdate'],
+                    //'emp_vciregno'              =>$_POST['vciregno'],
+                    //'emp_vciregdate'            =>$_POST['vciregdate'],
                     'emp_photoname'             =>$new_name, 
 		    'emp_maritalstatus'		=>$_POST['maritalstatus'],
 		    'emp_seniortyid'		=>$_POST['seniorityno'],	    
@@ -458,8 +496,8 @@ class Staffmgmt extends CI_Controller
                 $emdupl= $this->sismodel->isduplicate('employee_master','emp_email',$_POST['emailid']);
                 if(!$emdupl){
                         
-			/* insert record in  employeemaster */
-			$data['emp_userid']=$usrid;
+                    /* insert record in  employeemaster */
+		    $data['emp_userid']=$usrid;
                     $this->sismodel->insertrec('employee_master', $data);
                     $this->logger->write_logmessage("insert", "data insert in employee_master table.");
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
@@ -500,8 +538,18 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
                     
                     $dataems = array(
-                       'ems_code'              =>$_POST['empcode'],
-                      // 'ems_working_type'      =>$_POST['workingtype']
+                        'ems_empid'                 =>$empid,
+                        'ems_code'                  =>$_POST['empcode'],
+                        'ems_vci_status'            =>$vcrstat,
+                        'ems_vci_statchapter'       =>$chapter,
+                        'ems_vci_statregno'         =>$vcrregno,
+                        'ems_vci_statregdate'       =>$vcrregdate,
+                        'ems_vci_statvaliddate'     =>$vcrregvaliddate,
+                    
+                        'ems_vci_alliregno'         =>$_POST['allvciregno'],
+                        'ems_vci_alliregdate'       =>$_POST['allvciregdate'],
+                        'ems_vci_allivaliddate'     =>$_POST['allvcrvaliddate'],
+                      
 		    );
                     /* insert record in  employe_emaster_support */
                     $this->sismodel->insertrec('employee_master_support', $dataems);
@@ -573,7 +621,7 @@ class Staffmgmt extends CI_Controller
                                 }
 
                     $mailstoperson =$this->mailmodel->mailsnd($_POST['emailid'], $sub, $mess,'');
-                    //  mail flag check 	
+                    //  mail flag check 
                     if($mailstoperson){
                         //echo "in if part mail";
                         $mailmsg='Please check your mail for username and password....Mail send successfully';
@@ -646,12 +694,18 @@ class Staffmgmt extends CI_Controller
         $this->ddo=$this->sismodel->get_list('ddo');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        $this->states=$this->commodel->get_listspficarry('states','id,name','country_id',101); 
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
         $this->leavedata=$this->sismodel->get_list('leave_type_master');
         $editemp_data['id'] = $id;
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
         $editemp_data['editdata'] = $empmaster_data->row();
+        /******************************employee master support******************************************************/
+        $fieldems="ems_empid,ems_vci_status,ems_vci_statchapter,ems_vci_statregno,ems_vci_statregdate,ems_vci_statvaliddate,ems_vci_alliregno,ems_vci_alliregdate,ems_vci_allivaliddate";
+        $whdataems = array ('ems_empid' => $id);
+        $whorderems = '';
+        $editemp_data['editems'] = $this->sismodel->get_orderlistspficemore('employee_master_support',$fieldems,$whdataems,$whorderems);
         /*********************************select additional assignments***********************************/
 	$selectfield="*";
         $whdata = array ('aa_empid' => $id);
@@ -665,6 +719,7 @@ class Staffmgmt extends CI_Controller
     /****************************  START UPDATE DATA *************************/
     public function update_profile($id)
     {
+        
         $this->roleid=$this->session->userdata('id_role');
         $editemp_data['id'] = $id;
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
@@ -744,8 +799,23 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('netqualyes','NET Organiser','trim|xss_clean');
             $this->form_validation->set_rules('passyear','NET passyear','trim|xss_clean');
             $this->form_validation->set_rules('netdiscipline','NET Discipline','trim|xss_clean');
+            /*********************modification in vcr registration*****************************/
+            $this->form_validation->set_rules('vcrapp','vcrapp','trim|xss_clean');
+            $this->form_validation->set_rules('chapter','chapter','trim|xss_clean');
+            
             $this->form_validation->set_rules('vciregno','VCIregno','trim|xss_clean');
             $this->form_validation->set_rules('vciregdate','VCIregdate','trim|xss_clean');
+            $this->form_validation->set_rules('vcrvaliddate','vcrvaliddate','trim|xss_clean');
+            
+            $this->form_validation->set_rules('allvciregno','allvciregno','trim|xss_clean');
+            $this->form_validation->set_rules('allvciregdate','allvciregdate','trim|xss_clean');
+            $this->form_validation->set_rules('allvcrvaliddate','allvcrvaliddate','trim|xss_clean');
+            
+            /********************************************************************************/
+            
+            //$this->form_validation->set_rules('vciregno','VCIregno','trim|xss_clean');
+            //$this->form_validation->set_rules('vciregdate','VCIregdate','trim|xss_clean');
+            
             $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
             $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
             $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
@@ -902,8 +972,8 @@ class Staffmgmt extends CI_Controller
                 'emp_netqualified'               =>$netdetail,
                 'emp_netpassingyear'             =>$netpass,
                 'emp_netdiscipline'              =>$netdpln,
-                'emp_vciregno'                   =>$_POST['vciregno'],
-		'emp_vciregdate'                 =>$_POST['vciregdate'],   
+                //'emp_vciregno'                   =>$_POST['vciregno'],
+		//'emp_vciregdate'                 =>$_POST['vciregdate'],   
 		'emp_maritalstatus'         	 =>$_POST['maritalstatus'],
                 'emp_seniortyid'            	 =>$_POST['seniorityno'],
                 'emp_spousename'            	 =>$_POST['spousename'],
@@ -952,6 +1022,46 @@ class Staffmgmt extends CI_Controller
             }//check for empphoto
             
             $upempdata_flag=$this->sismodel->updaterec('employee_master', $data,'emp_id',$id);
+            if(!empty($_POST['vcrapp'])){
+                    if($_POST['vcrapp'] =='Applicable'){
+                        $vcrstat="Applicable";
+                        $chapter=$_POST['chapter'];
+                        $vcrregno=$_POST['vciregno'];
+                        $vcrregdate=$_POST['vciregdate'];
+                        $vcrregvaliddate=$_POST['vcrvaliddate'];
+                    }
+                    else{
+                        $vcrstat="Not Applicable";
+                        $chapter=NULL;
+                        $vcrregno=NULL;
+                        $vcrregdate=NULL;
+                        $vcrregvaliddate=NULL;
+                    }
+                }
+                else{
+                    $vcrstat="Not Applicable";
+                    $chapter=NULL;
+                    $vcrregno=NULL;
+                    $vcrregdate=NULL;
+                    $vcrregvaliddate=NULL;
+            }
+            $dataems = array(
+                //'ems_empid'                 =>$id,
+               // 'ems_code'                  =>$_POST['empcode'],
+                'ems_vci_status'            =>$vcrstat,
+                'ems_vci_statchapter'       =>$chapter,
+                   
+                'ems_vci_statregno'         =>$vcrregno,
+                'ems_vci_statregdate'       =>$vcrregdate,
+                'ems_vci_statvaliddate'     =>$vcrregvaliddate,
+                  
+                'ems_vci_alliregno'         =>$_POST['allvciregno'],
+                'ems_vci_alliregdate'       =>$_POST['allvciregdate'],
+                'ems_vci_allivaliddate'     =>$_POST['allvcrvaliddate'],
+                      
+            );
+            $upempdata_flag=$this->sismodel->updaterec('employee_master_support', $dataems,'ems_empid',$id);
+            
 	    if(!empty($_POST['asignname'])){
                 if($_POST['asignname'] == 'Others'){
                     $asignname=$_POST['asignname'].",".$_POST['asignother'];

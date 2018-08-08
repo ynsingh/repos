@@ -15,7 +15,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             $(document).ready(function(){
             var today = new Date();
             
-            $('#StartDate,#Dateofassrexam,#Dateofhgp1,#Dateofphd,#Dateofbirth').datepicker({
+            $('#StartDate,#Dateofassrexam,#Dateofhgp1,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -26,7 +26,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-	    $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#passyear,#leavedatefrom,#leavedateto').datepicker({
+	    $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#passyear,#leavedatefrom,#leavedateto,#allvcrvaliddate,#vcrvaliddate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -493,6 +493,23 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }); 
             /************************ closer Employee Grade******************************************************************/
         
+            /*****************************************vet council registration************************************************************ */
+            
+            $('#vcrapp,#vcrnoapp').on('change',function(){
+                var vcrradioval = $(this).val();
+               // alert("vcrradioval====="+vcrradioval);
+                if(vcrradioval == 'Applicable'){
+                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',false);
+                                      
+                }
+                else{
+                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',true);
+                             
+                }
+            }); 
+            
+           /****************VCR closer*************************************************************************/
+           
         
         });
          /*********************************************image preview***************************************************************/
@@ -563,18 +580,6 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><select name="uocontrol" style="width:300px;"id="uocid" required> 
                         <option selected="selected" disabled selected>--------University Officer Control -----</option>
                        
-                       <!-- <//?php foreach($this->uoc as $ucodata): ?>	-->
-                            <!--option value="<//?php echo $ucodata->user_id; ?>"-->
-                            <!--<option value="<//?php echo $ucodata->id; ?>"><//?php-
-                            //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
-                //                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
-                  //              $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
-                    //            $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
-                      //          echo $auofname." ".$auolname."( ".$authiame." )";
-				echo $ucodata->name;
-                            ?>
-                            </option> -->
- 			 <?php // endforeach; ?> 
                     </select></div>
                 </td>
                 <td><label for="department" style="font-size:15px;"><font color='blue'>Department</font><font color='Red'>*</font></label>
@@ -590,8 +595,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select><div>
                 </td>
             </tr>
-            <!--
-            <tr style="height:10px;"></tr>-->
+            
             <tr>
             <td><label for="ddo" style="font-size:15px;"><font color='blue'>Drawing and Disbursing Officer</font><font color='Red'>*</font></label>
                     <div><select name="ddo" id="ddoid" required style="width:300px;"> 
@@ -617,14 +621,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="designation" style="font-size:15px;"><font color='blue'>Designation</font><font color='Red'>*</font></label>
                     <div><select name="designation" id="desigid" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------- Select Designation ---------</option>
-                        <!--    <//?php foreach($this->desig as $desigdata): ?>	
-                            <option value="<//?php echo $desigdata->desig_id; ?>"><//?php echo $desigdata->desig_name; ?></option> 
- 			<//?php endforeach; ?>-->
+                        
                     </select></div>
                 </td>
               
             </tr>
-           <!--<tr style="height:10px;"></tr>-->
+          
             <tr>
                 <td><label for="emppost" style="font-size:15px;"><font color='blue'>Shown Against The Post</font><font></font></label>
                    <div><select name="emppost" id="emppostid" required style="width:300px;"> <!--<input type="text" id="emppostid" name="emppost" value="<//?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="35">-->
@@ -871,10 +873,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="seniorityno" style="font-size:15px;"><font color='blue'>Seniority No</font></label>
                     <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo isset($_POST["seniorityno"]) ? $_POST["seniorityno"] : ''; ?>" placeholder="Seniority No...." size="33" >
                 </div></td>
-		<td> </td>
-		<td> </td>
-		<td> </td>
-                          
+                <td><label for="secondary emailid" style="font-size:15px;"><font color='blue'>Secondary Email Id</font></label>
+                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
+                </div></td>
+		                         
             </tr>
             <tr>
 		<td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
@@ -962,14 +964,44 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <td><label for="vci " style="font-size:15px;"><b>Veterinary Council (VC) Registration: </b></label></td>   
             </tr>
             <tr>
-                <td><label for="vciregno" style="font-size:15px;"><font color='blue'>Registration No</font></label>
-                <div><input type="text" name="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="VCI Registration No........" size="33" >
+                <td><label for="VCI" style="font-size:15px;"></label>
+                <div><input type="radio" name="vcrapp" id="vcrapp"  checked value="Applicable">Applicable &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="vcrapp" id="vcrnoapp"  value="Not Applicable">Not Applicable
                 </div></td>
-                <td colspan="2"><label for="vciregdate" style="font-size:15px;"><font color='blue'>Date of Registration</font></label>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><label for="chapter" style="font-size:15px;"><font color='blue'>Chapter</font></label>
+                <div>
+                    <select name="chapter" id="chapter" style="width:300px;"> 
+                        <option value="">--------- Select State--------</option>
+                        <?php foreach($this->states as $statesdata): ?>
+                        <option value="<?php echo $statesdata->id; ?>"><?php echo $statesdata->name; ?></option>
+                        <?php endforeach;?>
+                    </select>   
+                </div></td>
+                <td><label for="vciregno" style="font-size:15px;"><font color='blue'>Registration No</font></label>
+                <div><input type="text" name="vciregno" id="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="VCI Registration No........" size="33" >
+                </div></td>
+                <td><label for="vciregdate" style="font-size:15px;"><font color='blue'>Date of Registration</font></label>
                 <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo isset($_POST["vciregdate"]) ? $_POST["vciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="33" >
                 </div></td>
-                <td><label for="secondary emailid" style="font-size:15px;"><font color='blue'>Secondary Email Id</font></label>
-                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
+                <td><label for="vcrvaliddate" style="font-size:15px;"><font color='blue'>Validity Date</font></label>
+                <div><input type="text" name="vcrvaliddate" id="vcrvaliddate" value="<?php echo isset($_POST["vcrvaliddate"]) ? $_POST["vcrvaliddate"] : ''; ?>" placeholder="VCI Validity Date........" size="33" >
+                
+            </tr>
+            <tr>
+            <td><label for="allindiavci " style="font-size:15px;"><b>All India Veterinary Council (VC) Registration: </b></label></td>   
+            </tr>
+            <tr>
+                <td><label for="allvciregno" style="font-size:15px;"><font color='blue'>Registration No</font></label>
+                <div><input type="text" name="allvciregno" id="allvciregno" class="keyup-characters" value="<?php echo isset($_POST["allvciregno"]) ? $_POST["allvciregno"] : ''; ?>" placeholder="VCI Registration No........" size="33" >
+                </div></td>
+                <td><label for="allvciregdate" style="font-size:15px;"><font color='blue'>Date of Registration</font></label>
+                <div><input type="text" name="allvciregdate" id="allvciregdate" value="<?php echo isset($_POST["allvciregdate"]) ? $_POST["allvciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="33" >
+                </div></td>
+                <td colspan="2"><label for="allvcrvaliddate" style="font-size:15px;"><font color='blue'>Validity Date</font></label>
+                <div><input type="text" name="allvcrvaliddate" id="allvcrvaliddate" value="<?php echo isset($_POST["allvcrvaliddate"]) ? $_POST["allvcrvaliddate"] : ''; ?>" placeholder="VCI Validity Date........" size="33" >
                 </div></td>
             </tr>
             <tr>

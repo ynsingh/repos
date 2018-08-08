@@ -216,12 +216,12 @@ $(document).ready(function(){
 //		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp";
 		?>
                 <!--</td>-->
-                <td>  Select Post<br>
+                <td>  Select Designation<br>
                     <select name="post" id="post" style="width:250px;">
 			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
                         <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>---------- Select Post -----------------</option>
+                      <option value="" disabled selected>---------- Select Designation -----------------</option>
 			 <?php  } ?>
                      <!-- <option value="All" >All</option> -->
                     </select>
@@ -244,17 +244,9 @@ $(document).ready(function(){
                     <th>Sr.No</th>
                     <th></th>
                     <th>Employee Name</th>
-                    <th>Campus Name</th>
-                    <th>University Officer Control</th>
-                    <th>Department Name</th>
-                    <th>Scheme Name</th>
-                    <th>Specialisation(Major Subject)</th>
-                    <th>Designation</th>
-                    <!--<th>Employee Post</th>-->
-                   <!-- <th>Pay Band</th>-->
-                    <th>E-Mail ID</th>
-                    <th>Contact No</th>
-                    <th>Aadhaar No</th>
+                    <th>Campus Detail</th>
+                    <th>Designation Detail</th>
+                    <th>Contact No<br/>Aadhaar No</th>
                     <th>Action</th>
                     
                 </tr>
@@ -272,41 +264,53 @@ $(document).ready(function(){
                             <?php else :?>
                             <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
                             <?php endif;?>
-			    <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));?></td>
-                           <!-- <td><?php //echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td> -->
-                            <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
-                            <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>
-                            <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>
-                            <?php if(!empty($record->emp_schemeid)):?>
-                            <td><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name; ?></td>
-                            <?php else : ?>
-                            <td></td>
-                            <?php endif;?>
-                            <?php if(!empty($record->emp_specialisationid)) :?>
-                            <td><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name; ?></td>
-                            <?php else : ?>
-                            <td></td>
-                            <?php endif;?>
-                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
+			    <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
+                                    echo "<br/> ( "."PF No:".$record->emp_code." )";
+                                    echo "<br/>".$record->emp_email;
+                            ?>
+                            </td>
+                            <td><?php
+                                    $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
+                                    $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name;
+                                    $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
+                                    if(!empty($record->emp_schemeid)){
+                                    $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+                                    }
+                                   /* else{
+                                     $schm='';   
+                                    }*/
+                                    if(!empty($record->emp_specialisationid)){
+                                        $sub=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
+                                    }
+                                   /* else{
+                                        $sub="";
+                                    } */
+                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "
+                                            ."<b>scheme-: </b>".$schm."<br/>"."<b>subject-: </b>".$sub;
+                            ?></td>
+                            <td>
+                                <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
 				$cdate = date('Y-m-d');
                                 $headflag="false";
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
                                 if(($headflag)||($record->emp_head == "HEAD")){
-                                        echo " & Head";
+                                        echo " ( <font color=Red> Head </font>)";
                                 }
+                                      echo "<br/><b>Shown Against Post-:</b>".$record->emp_post;
 		
 			
-				?></td>
-			   <!-- <td><?php //echo $record->emp_post; ?></td>-->
-                           <!-- <td></td>-->
-                            <td colspan=3><?php echo $record->emp_email ."<br>"; ?>
-                            <?php echo $record->emp_phone ."<br>"; ?>
-                            <?php echo $record->emp_aadhaar_no; ?></td>
-                            <!--<td><?php //echo $record->emp_email; ?></td>
-                            <td><?php //echo $record->emp_phone; ?></td>
-                            <td><?php //echo $record->emp_aadhaar_no; ?></td>-->
+				?>
+                            </td>
+                            <td>
+                                <?php $phone=$record->emp_phone;
+                                      $adhaar=$record->emp_aadhaar_no;
+                                      //echo "<b> Contact no-:</b>".$phone."<br/>"."<b> Aadhaar No-: </b>".$adhaar;
+                                      echo $phone."<br/>".$adhaar;
+                                      ?>  
+                            </td>
+                            <!-- <td><?php //echo $record->emp_post; ?></td>-->
                             <td> <?php 
 		//		$roleid=$this->session->userdata('id_role');
                                 if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
@@ -335,22 +339,31 @@ $(document).ready(function(){
                             <?php else :?>
                             <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
                             <?php endif;?>
-                            <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name." ( "."PF No:".$record->emp_code." )" ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));?></td>
-                           <!-- <td><?php //echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td> -->
-                            <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
-                            <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>
-                            <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>
-                            <?php if(!empty($record->emp_schemeid)):?>
-                            <td><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name; ?></td>
-                            <?php else : ?>
-                            <td></td>
-                            <?php endif;?>
-                            <?php if(!empty($record->emp_specialisationid)) :?>
-                            <td><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name; ?></td>
-                            <?php else : ?>
-                            <td></td>
-                            <?php endif;?>
+                            <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
+                                echo "<br/> ( "."PF No:".$record->emp_code." )"; 
+                                echo "<br/>".$record->emp_email;
+                            ?></td>
+                             <td><?php
+                                    $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
+                                    $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name;
+                                    $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
+                                    if(!empty($record->emp_schemeid)){
+                                    $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+                                    }
+                                   /* else{
+                                     $schm='';   
+                                    }*/
+                                    if(!empty($record->emp_specialisationid)){
+                                        $sub=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
+                                    }
+                                   /* else{
+                                        $sub="";
+                                    } */
+                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "
+                                            ."<b>scheme-: </b>".$schm."<br/>"."<b>subject-: </b>".$sub;
+                            ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
+                                       echo "<br/><b>Shown Against Post-:</b>".$record->emp_post; 
                                 $cdate = date('Y-m-d');
                                 $headflag="false";
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
@@ -362,9 +375,13 @@ $(document).ready(function(){
                                 ?></td>
                            <!-- <td><?php //echo $record->emp_post; ?></td>-->
                            <!-- <td></td>-->
-                            <td colspan=3><?php echo $record->emp_email ."<br>"; ?>
-                            <?php echo $record->emp_phone."<br>"; ?>
-                            <?php echo $record->emp_aadhaar_no; ?></td>
+                            <td>
+                                <?php $phone=$record->emp_phone;
+                                      $adhaar=$record->emp_aadhaar_no;
+                                      //echo "<b> Contact no-:</b>".$phone."<br/>"."<b> Aadhaar No-: </b>".$adhaar;
+                                      echo $phone."<br/>".$adhaar;
+                                ?>  
+                            </td>
                             <td> <?php
                           //    $roleid=$this->session->userdata('id_role');
                         //        if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){

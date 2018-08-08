@@ -17,7 +17,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             $(document).ready(function(){
             var today = new Date(); 
                   
-            $('#StartDate,#Dateofassrexam,#Dateofhgp,#Dateofphd,#Dateofbirth').datepicker({
+            $('#StartDate,#Dateofassrexam,#Dateofhgp,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -28,7 +28,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-            $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#passyear,#leavedatefrom,#leavedateto').datepicker({
+            $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#passyear,#leavedatefrom,#leavedateto,#allvcrvaliddate,#vcrvaliddate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -485,6 +485,22 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             }); 
             /************************ closer Employee Grade******************************************************************/
         
+         /*****************************************vet council registration************************************************************ */
+            
+            $('#vcrapp,#vcrnoapp').on('change',function(){
+                var vcrradioval = $(this).val();
+               // alert("vcrradioval====="+vcrradioval);
+                if(vcrradioval == 'Applicable'){
+                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',false);
+                                      
+                }
+                else{
+                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',true);
+                             
+                }
+            }); 
+            
+           /****************VCR closer*************************************************************************/
          
         });
         /*function myFunction() {
@@ -565,20 +581,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             </option>
                         <option  disabled >--------University Officer Control -----</option>
                        
-                        <!--<//?php foreach($this->uoc as $ucodata): ?>	
-                            <option value="<//?php echo $ucodata->id; ?>"><//?php echo $ucodata->name; ?></option> 
- 			<//?php endforeach; ?>-->
-                        <!--<//?php foreach($this->uoc as $ucodata): ?>	
-                            <option value="<//?php echo $ucodata->user_id; ?>"><?php
-                                //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
-                               /* $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
-                                $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
-                                $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
-                                echo $auofname." ".$auolname."( ".$authiame." )";*/
-                          //      echo $authname."(".$authcode.")";
-                            ?>
-                            </option> 
- 			<//?php endforeach; ?>-->
                     </select></div>
                 </td>
                 <td><label for="department" style="font-size:15px;"><font color='Blue'>Department</font><font color='Red'>*</font></label>
@@ -601,9 +603,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
 			 <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
 			 <?php endif;?>
-                        <!--<//?php foreach($this->ddo as $ddodata): ?>	
-                            <option value="<//?php echo $ddodata->ddo_id; ?>"><//?php echo $ddodata->ddo_name . '(' . $ddodata->ddo_code .')'; ?></option> 
- 			<//?php endforeach; ?>-->
+                       
                     </select></div>
                 </td>
                 <td><label for="workingtype" style="font-size:15px;"><font color='Blue'>Working Type</font><font color='Red'>*</font></label>
@@ -638,9 +638,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                          <?php endif;?>
-                            <!--  <//?php foreach($this->desig as $desigdata): ?>	
-                            <option value="<//?php echo $desigdata->desig_id; ?>"><//?php echo $desigdata->desig_name; ?></option> 
- 			<//?php endforeach; ?>-->
+                           
                     </select></div>
                 </td>
             </tr>    
@@ -1032,7 +1030,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><select name="univdeput" id="univdeput" style="width:300px;"> 
                         <?php $udep=$editdata->emp_phdunivdeput;
                             $udepnew=explode(",",$udep);
-                           // echo  "seema==jfkhsdfhjsdhf==".$udepnew[0];
                         if(!empty($editdata->emp_phdunivdeput)):;?>
                         <option value="<?php echo $udepnew[0] ;?>"><?php echo $udepnew[0];?></option>        
                         <?php else:?>    
@@ -1106,17 +1103,74 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             <tr>
             <td colspan="4"><label for="vci " style="font-size:15px;"><b>Veterinary Council (VC) Registration: </b></label></td>   
             </tr>
+            <?php  
+                    if(!empty($editems)){
+                	foreach($editems as $vcrdata){
+                            $empid=$vcrdata->ems_empid;
+                            $vcrstat = $vcrdata->ems_vci_status;
+                            if($vcrdata->ems_vci_status =="Applicable"){
+                                $vcrchapter = $vcrdata->ems_vci_statchapter;
+                                $vcrregno = $vcrdata->ems_vci_statregno;
+                                $vcrregdate = $vcrdata->ems_vci_statregdate;
+                                $vcrvaliddate = $vcrdata->ems_vci_statvaliddate;
+                           }
+                           $alliregno = $vcrdata->ems_vci_alliregno;
+                           $alliregdate= $vcrdata->ems_vci_alliregdate;
+                           $allivaliddate= $vcrdata->ems_vci_allivaliddate;
+                     
+                   break; }}
+                    
+                ?>
             <tr>
-                <td><label for="vciregno" style="font-size:15px;"><font color='Blue'>Registration No</font></label>
-                <div><input type="text" name="vciregno" class="keyup-characters" value="<?php echo $editdata->emp_vciregno; ?>" placeholder="VCI Registration No........" size="33" >
+                              
+                <td colspan="4"><label for="VCI" style="font-size:15px;"></label>
+                <div><input type="radio" name="vcrapp" id="vcrapp"  value="Applicable" <?php if(!empty($vcrstat)){ echo ($vcrstat == 'Applicable'?'checked="checked"':'');} ?>>Applicable &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="vcrapp" id="vcrnoapp"  value="Not Applicable" <?php if(!empty($vcrstat)){ echo ($vcrstat == 'Not Applicable'?'checked="checked"':'');} ?>>Not Applicable
                 </div></td>
-                <td colspan="3"><label for="vciregdate" style="font-size:15px;"><font color='Blue'>Date of Registration</font></label>
-                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo $editdata->emp_vciregdate; ?>" placeholder="VCI Registration Date........" size="33" >
-                </div></td>
-         <!--       <td><label for="secondary emailid" style="font-size:15px;">Secondary Email Id</label>
+            <!--       <td><label for="secondary emailid" style="font-size:15px;">Secondary Email Id</label>
                 <div><input type="text" name="secndemailid" class="keyup-email" value="<?php //echo $editdata->emp_secndemail; ?>" placeholder="Secondary Email Id........" size="28" >
                 </div></td>
--->
+            -->
+            </tr>
+            
+            <tr>
+                        
+                <td><label for="chapter" style="font-size:15px;"><font color='Blue'>Chapter</font></label>
+                <div>
+                    <select name="chapter" id="chapter" style="width:300px;"> 
+                        <?php if(!empty($vcrchapter)):;?>
+                            <option value="<?php echo $vcrchapter;?>"><?php echo $lname=$this->commodel->get_listspfic1('states','name','id',$vcrchapter)->name;?></option>
+                        <?php else:?>
+                            <option value="">--------- Select State--------</option>
+                        <?php endif?>
+                        <?php foreach($this->states as $statesdata): ?>
+                        <option value="<?php echo $statesdata->id; ?>"><?php echo $statesdata->name; ?></option>
+                        <?php endforeach;?>
+                    </select>   
+                </div></td>
+                <td><label for="vciregno" style="font-size:15px;"><font color='Blue'>Registration No</font></label>
+                <div><input type="text" name="vciregno" id="vciregno" class="keyup-characters" value="<?php if(!empty($vcrregno)){ echo $vcrregno; }; ?>" placeholder="VCI Registration No........" size="33" >
+                </div></td>
+                <td><label for="vciregdate" style="font-size:15px;"><font color='Blue'>Date of Registration</font></label>
+                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php if(!empty($vcrregdate)){ echo $vcrregdate;} ?>" placeholder="VCI Registration Date........" size="33" >
+                </div></td>
+                <td><label for="vcrvaliddate" style="font-size:15px;"><font color='Blue'>Validity Date </font></label>
+                <div><input type="text" name="vcrvaliddate" id="vcrvaliddate" value="<?php if(!empty($vcrvaliddate)){echo $vcrvaliddate; }?>" placeholder="VCI Validity Date........" size="33" >
+                </div></td>
+            </tr>
+            <tr>
+            <td colspan="4"><label for="allindiavci " style="font-size:15px;"><b>All India Veterinary Council (VC) Registration: </b></label></td>   
+            </tr>
+            <tr>
+                <td><label for="allvciregno" style="font-size:15px;"><font color='Blue'>Registration No</font></label>
+                <div><input type="text" name="allvciregno" id="allvciregno" class="keyup-characters" value="<?php echo $alliregno ;?>" placeholder="VCI Registration No........" size="33" >
+                </div></td>
+                <td><label for="allvciregdate" style="font-size:15px;"><font color='Blue'>Date of Registration</font></label>
+                <div><input type="text" name="allvciregdate" id="allvciregdate" value="<?php if(!empty($alliregdate)){ echo $alliregdate;} ?>" placeholder="VCI Registration Date........" size="33" >
+                </div></td>
+                <td colspan="2"><label for="allvcrvaliddate" style="font-size:15px;"><font color='Blue'><b>Validity Date </font></b></label>
+                <div><input type="text" name="allvcrvaliddate" id="allvcrvaliddate" value="<?php if(!empty($allivaliddate)){ echo $allivaliddate;} ?>" placeholder="VCI Validity Date........" size="33" >
+                </div></td>
             </tr>
             <tr>
                 <td colspan="4"><label for="addasign" style="font-size:15px;"><b>Additional Assignments:</b></label></td>
