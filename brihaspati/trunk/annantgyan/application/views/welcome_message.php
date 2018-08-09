@@ -76,18 +76,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     	<table style="font-size: 18px;width:100%;">
         <tr>
-          <td>
+	  <td>
+
             <li>
-              We have started enrollment process of different online certified courses/workshops through our website. It is open till 10 October 2018.
+              We have started enrollment process of various online certified courses/workshops (https://annantgyan.com/Course-Registration). It is open till 10 October 2018.
             </li>
 <li>
-We shall start the online certified courses/workshops on 11th October and end at 16 November 2018.
+Our specialized online certified courses/workshops are commencing from 11th October and continue till 16 November 2018.
+<!--We shall start the online certified courses/workshops on 11th October and end at 16 November 2018.-->
 </li>
 <li>
-“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on recommender link on our website.
+<!--“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on recommender link on our website.-->
+“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on “recommender link” on our website.
 </li>
 
-            </li>
           </td>
         </tr>
 
@@ -116,8 +118,8 @@ We shall start the online certified courses/workshops on 11th October and end at
     				
     		</tr>	
     	</table>
-    	</br>	
-    	<p style="font-size: 18px;">For any query write to admin@annantgyan.com or annantgyan@gmail.com</p>
+	</br>	
+    	<p style="font-size: 18px;">For any query kindly write to admin@annantgyan.com or annantgyan@gmail.com</p>
     </div>
 
 </div>

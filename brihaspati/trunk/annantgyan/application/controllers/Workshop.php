@@ -38,40 +38,38 @@ class Workshop extends CI_Controller {
 			//$cid = $this->uri->segment(3); 
 		if(isset($_POST['submit'])){
 			$this->form_validation->set_rules('name','Name','trim|required');
-       		$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
-            $this->form_validation->set_rules('place','Place','trim|required|xss_clean');
-            $this->form_validation->set_rules('nationality','Nationality','trim|required|xss_clean');
-            $this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric');
+       			$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
+            		$this->form_validation->set_rules('place','Place','trim|required|xss_clean');
+            		$this->form_validation->set_rules('nationality','Nationality','trim|required|xss_clean');
+            		$this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric');
 			$this->form_validation->set_rules('amount','Amount','trim|required|xss_clean');
             
-            if($this->form_validation->run() == FALSE){
-               	$this->load->view('courseenroll',$data);
-               	return;		
+            		if($this->form_validation->run() == FALSE){
+               			$this->load->view('courseenroll',$data);
+               			return;		
             	//redirect('workshop/courseenroll');
-            }else{
+            		}else{
 
-				$name 		    = $this->input->post('name');
-				$mailid 	    = $this->input->post('email');
-				$place 		    = $this->input->post('place');
+				$name 		= $this->input->post('name');
+				$mailid 	= $this->input->post('email');
+				$place 		= $this->input->post('place');
 				$nationality    = $this->input->post('nationality');
-				$phoneno 	    = $this->input->post('contact');
+				$phoneno 	= $this->input->post('contact');
 				$product_info   = $this->input->post('product_info');//this is school name post
 				$rperson        = $this->input->post('reperson');
 				$amount         = $this->input->post('amount');
 				$cid         	= $this->input->post('courseid');
 
 				$data = array(
-						    'course_id'		=> $cid,
-            				'amount' 		=> $amount,  
-							'productinfo' 	=> $product_info,         
+					'course_id'	=> $cid,
+            				'amount' 	=> $amount,  
+					'productinfo' 	=> $product_info,         
             				'firstname' 	=> $name,
-            				'mailid' 		=> $mailid,
-           					'phoneno' 		=> $phoneno,
-           					'refperson'		=> $rperson,
-           					'place'			=> $place,
-           					'nationality'   => $nationality,
-           					
-            		   
+            				'mailid' 	=> $mailid,
+           				'phoneno' 	=> $phoneno,
+           				'refperson'	=> $rperson,
+           				'place'		=> $place,
+           				'nationality'   => $nationality,
         			);
         			
 			}//else close
@@ -94,14 +92,13 @@ class Workshop extends CI_Controller {
 			$this->form_validation->set_rules('amount','Amount','trim|required|xss_clean');
             
             		if($this->form_validation->run() == FALSE){
-               			// $this->load->view('enterence/step_zero',$data);
             			redirect('workshop/ongoing_workshop');
             		}else{
-            			$firstname 		= $this->input->post('firstname');
-				$mailid 	    = $this->input->post('email');
-				$place 		    = $this->input->post('place');
+            			$firstname 	= $this->input->post('firstname');
+				$mailid 	= $this->input->post('email');
+				$place 		= $this->input->post('place');
 				$nationality    = $this->input->post('nationality');
-				$phoneno 	    = $this->input->post('contact');
+				$phoneno 	= $this->input->post('contact');
 				$product_info   = $this->input->post('product_info');//this is school name post
 				$rperson        = $this->input->post('reperson');
 				$amount         = $this->input->post('amount');
@@ -112,15 +109,15 @@ class Workshop extends CI_Controller {
 
 				//insert record in ongoing table
 				$owdata = array(
-					'ow_name' 			=> $firstname,	
-					'ow_email' 			=> $mailid,
+					'ow_name' 		=> $firstname,	
+					'ow_email' 		=> $mailid,
 					'ow_courseid' 		=> $cid,
-					'ow_place' 			=> $place,
+					'ow_place' 		=> $place,
 					'ow_nationality' 	=> $nationality,	
 					'ow_contact' 		=> $phoneno,	
-					'ow_school'			=> $product_info,	//variable name change school to pinfo for payU
+					'ow_school'		=> $product_info,	//variable name change school to pinfo for payU
 					'ow_rperson' 		=> $rperson,	
-					'ow_amount'			=> $amount,	
+					'ow_amount'		=> $amount,	
 				);	
 				//when user record exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type
 				if(isset($this->session->userdata['su_id'])){
@@ -150,7 +147,7 @@ class Workshop extends CI_Controller {
 				else{
 							
 					$owdupdata = array(
-						'ow_email' 			=> $mailid,
+						'ow_email' 		=> $mailid,
 						'ow_courseid' 		=> $cid,
 					);
         			
@@ -167,18 +164,19 @@ class Workshop extends CI_Controller {
 					//insert record in sign up table
 					$rstring = random_string('alnum',8);
 					$signupdata = array (
-						'su_userid'			=> $owid,
-                                		'su_name' 			=> $firstname,
+						'su_userid'		=> $owid,
+                                		'su_name' 		=> $firstname,
 		                                'su_emailid' 		=> $mailid,
                 		                'su_password' 		=> $password,
                                 		//'su_confpassword' 	=> $cpawd,
-		                                //'su_howtoknow' 		=> $hknow,
-                		                'su_string'			=> $rstring 
+		                                'su_status' 		=> 'Verified',
+						'su_string'		=> $rstring 
+
                             		);
                             		$signinsert = $this->db->insert('sign_up',$signupdata);
 					$signupid = $this->db->insert_id();
 
-					$suid = $this->commodel->get_listspfic1('sign_up','su_id','su_id',$signupid)->su_id;
+//					$suid = $this->commodel->get_listspfic1('sign_up','su_id','su_id',$signupid)->su_id;
 					$suname = $this->commodel->get_listspfic1('sign_up','su_name','su_id',$signupid)->su_name;
 					//print_r($suname);die;
 					$userdata = ['su_id' => $signupid ,'su_name' => $suname];
@@ -188,7 +186,7 @@ class Workshop extends CI_Controller {
 					$coudata  = array('uct_userid'  => $signupid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
 					$pginsert = $this->db->insert('user_course_type', $coudata);
 
-					$subject = "Registered Successfully";
+			/*		$subject = "Registered Successfully";
 					$pawd = random_string('alnum',6);
 					$erstring= $mailid.'---'.$rstring;
 					$verifylink = base_url("login/verify/".$erstring);
@@ -205,7 +203,8 @@ class Workshop extends CI_Controller {
 					
 					</table> " ;
 
-                            		$mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
+					$mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
+			 */
 
                         /*	if($mails){
                         		$confmes = "You are registered successfully in " .$courname. " & Verification link sent to your registered email-id.";

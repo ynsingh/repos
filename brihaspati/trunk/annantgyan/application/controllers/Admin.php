@@ -79,6 +79,14 @@ class Admin extends CI_Controller {
 	    }//close post
 		$this->load->view('admin/admin_login');
 	}
+	function enquirylist(){
+                if(isset($this->session->userdata['firstName'])){
+                        $data['enquirydata'] = $this->commodel->get_orderlistspficemore('enquiry','*','','');
+                        $this->load->view('admin/enquirylist',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+        }
 
 	function adminhome(){
 		if(isset($this->session->userdata['firstName'])){
@@ -135,6 +143,7 @@ class Admin extends CI_Controller {
 	}
 
 	function  admin_addcourse(){
+		if(isset($this->session->userdata['firstName'])){
 		if(isset($_POST['submit'])){
 			$this->form_validation->set_rules('cname','Course Name','trim|required|xss_clean');
        		$this->form_validation->set_rules('ccode','Course Code','trim|required|xss_clean');
@@ -168,10 +177,14 @@ class Admin extends CI_Controller {
 			}//else close
 		}					
 		$this->load->view('admin/admin_addcourse');
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+
 	}
 
 	function  admin_addannouncecourse(){
-		
+		if(isset($this->session->userdata['firstName'])){		
 		if(isset($_POST['submit'])){
 			$this->form_validation->set_rules('cname','Course Name','trim|required|xss_clean');
        		$this->form_validation->set_rules('cdur_week','Course Duration','trim|required|xss_clean');
@@ -217,14 +230,24 @@ class Admin extends CI_Controller {
 		}				
 		$data['couname'] = $this->commodel->get_list('courses');
 		$this->load->view('admin/admin_addannouncecourse',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+
 	}
 
 	function admin_coucontent(){
-		$data['couname'] = $this->commodel->get_list('courses');
-		$this->load->view('admin/admin_couupload',$data);
+		if(isset($this->session->userdata['firstName'])){
+			$data['couname'] = $this->commodel->get_list('courses');
+			$this->load->view('admin/admin_couupload',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+
 	}
 
 	public function upload_file(){
+//		if(isset($this->session->userdata['firstName'])){
 	//echo "hello";die;	
 		$data['couname'] = $this->commodel->get_list('courses');
 		if(isset($_POST['cou_upload'])) {
@@ -367,9 +390,13 @@ class Admin extends CI_Controller {
 
 
 	public function upload_fileview(){
-			
-		$data['cou_data'] = $this->commodel->get_list('admin_conteupload');
-		$this->load->view('admin/admin_couuploadview',$data);
+		if(isset($this->session->userdata['firstName'])){			
+			$data['cou_data'] = $this->commodel->get_list('admin_conteupload');
+			$this->load->view('admin/admin_couuploadview',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+
 	}
 
 	public function logout(){
@@ -377,7 +404,7 @@ class Admin extends CI_Controller {
 		$this->session->sess_destroy();
 		//$this->load->view('signin');
 		$confmes = "Logout Successfully !!";
-        $this->session->set_flashdata('success',$confmes);
+        	$this->session->set_flashdata('success',$confmes);
 
 		redirect('admin');
 	}
