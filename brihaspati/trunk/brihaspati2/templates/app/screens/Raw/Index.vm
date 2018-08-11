@@ -40,11 +40,12 @@ $!data.getMessage()
 <body>
 #macro(UNAME)
         <font color="blue">
+## flname indicates user's first and last name together.
                 <b>$flname</b>
         </font>
 #end
 ## if message have any value then show 
-#if(($Role1!="AdminRole") || ($guest_login!="true"))  
+#if(($Role1!="AdminRole") && ($guest_login!="true"))  
         #if($message!="")
         <table width=100% CellPadding=0 align=center>
         <tr>
@@ -172,7 +173,7 @@ $!data.getMessage()
 </tr>
 <tr>
 
-<table width=100% CellPadding=0 align="left">
+<table width="100%" CellPadding=0 align="left">
       <tr>
                #if($uList.size()!=0)
                 #if($au==0)
@@ -182,12 +183,24 @@ $!data.getMessage()
               <td colspan="5" height="50" valign="top" align="center" bgcolor="$ui.menuColor"><b>Active User #if($lang== "hindi") of #end List &nbsp;&nbsp;($au)</b>
               <br><br>
 		<div style="background:$ui.menuColor;" align="left"</div>
-                        #foreach($element in $uList)
+			<table width="100%" align="left"> 
+			#foreach($element in $uList)
                         #if($velocityCount%2==0)
+                                <tr bgcolor="$ui.menuColor">
                         #else
+                                <tr bgcolor="$ui.tableColor">
                         #end
-                        $element<br>
-                 #end
+
+                                <td>$element</td>
+                                  </tr>
+                        #end
+                        </table>
+##                        #foreach($element in $uList)
+##                        #if($velocityCount%2==0)
+##                       #else
+##                        #end
+##                        &nbsp;$element<br>
+##                 #end
                 </td>
                 <td colspan="5" height="200" valign="top" align="center" bgcolor="$ui.menuColor">
 ##iframe is use to show brihaspati Twitter
