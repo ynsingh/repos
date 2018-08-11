@@ -10,13 +10,14 @@
 	<a href="https://www.linkedin.com/company/annant-gyan-knowledge-and-skills-private-limited/"> <img src="<?php echo base_url(); ?>images/linkedin.png" width="40px" height="40px" ></a>
  </p>
 </div>
+<!--
 <div class="col-md-5" align=right	>
  <p style="padding-top:10px; ">
  	Visitor no. :
  	<?php 
- 		echo '<span class="count">';
- 			echo $this->commodel->getnoofrows('visitors','');
- 		echo '</span>';	
+ //		echo '<span class="count">';
+ 	//		echo $this->commodel->getnoofrows('visitors','');
+ //		echo '</span>';	
  	 ?>
 <script type="text/javascript">
 	$('.count').each(function () {
@@ -34,5 +35,6 @@
 
  </p>
 </div>
+-->
 </div>
 </div>	

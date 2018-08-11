@@ -96,7 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div align="justify" id="card">
 		If you face any problem in enrollment process. Kindly feel free to contact Mr. N K Singh (nksinghiitk@gmail.com )(9450136012).
 		<br>
-		If you got error page in enrollment process, please take screenshot and send to nksinghiitk@gmail.com
+<!--		If you got error page in enrollment process, please take screenshot and send to nksinghiitk@gmail.com -->
 	</div>
 	<h2 style="text-align: center;text-decoration:underline;">Online Certified Courses/Workshops </h2>
 	<div class="col-md-12" style="/*background: white;padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >
