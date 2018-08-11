@@ -67,7 +67,7 @@ if(isset($this->session->userdata['firstName'])){
 		
 	<form action="<?php echo site_url('admin/upload_file')?>" method="POST" enctype="multipart/form-data">
 		<div class="col-md-12">
-			<select name="cou_name"  required="">
+			<select name="cou_name" >
 				<option value="" selected="" disabled="">Select Course Name</option>
 				<?php if(!empty($couname)){
 					foreach($couname as $row){	
@@ -76,13 +76,13 @@ if(isset($this->session->userdata['firstName'])){
 				<?php }}?>	
 			</select>
 
-			<select name="cou_type"  required="">
+			<select name="cou_type" >
 				<option value="" selected="" disabled="">Select Content Type</option>
 				<option value="document">Document</option>
 				<option value="video">Video</option>
 			</select>
 
-			<select name="cou_week"  required="">
+			<select name="cou_week">
 				<option value="" selected="" disabled="">Select Weeks</option>
 				<option value="week 1">Week 1</option>
 				<option value="week 2">Week 2</option>
@@ -92,7 +92,7 @@ if(isset($this->session->userdata['firstName'])){
 				<option value="week 6">Week 6</option>
 			</select>	
 
-			<input type="text" name="cou_contname" placeholder="Enter Content Name" required="">
+			<input type="text" name="cou_contname" placeholder="Enter Content Name" >
 
 
 		</div>
@@ -100,7 +100,7 @@ if(isset($this->session->userdata['firstName'])){
 		<div class="col-md-12">
 			<table style="">
 				<tr>
-					<td><input type="text" name="cou_seqno" placeholder="Enter Content Show Sequence Number" required=""></td>
+					<td><input type="text" name="cou_seqno" placeholder="Enter Content Show Sequence Number" ></td>
 					<td width=10></td>
 					<td><input type='file' name='userfile' size='20' style=""/></td>
 					<td><input type="submit" name="cou_upload" class="btn btn-success submit" value="Submit"></td>

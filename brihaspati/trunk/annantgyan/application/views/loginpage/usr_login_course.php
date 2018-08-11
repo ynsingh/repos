@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							$startdate = $coudata->crsann_crsstart;
 							$enddate = $coudata->crsann_crsend;
 							$cdate = date('Y-m-d');
-						if($enddate >= $cdate){
+						if(($enddate > $cdate) && ($startdate < $cdate)){
 							$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->uct_userid)->cou_name;
 							echo "<option value='$row->uct_courseid'>".$cname."</option>";
 					}}}}//else{

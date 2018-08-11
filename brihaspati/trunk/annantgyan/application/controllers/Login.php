@@ -303,9 +303,9 @@ class Login extends CI_Controller {
 			$getuploadata = $this->commodel->get_distinctrecord('admin_conteupload',$sdata,$whdata);
 			$data['getuploadata'] = $getuploadata;
 
-			
-			//print_r($getuploadata );
-			$this->load->view('loginpage/usr_login',$data);
+
+						$this->load->view('loginpage/usr_login',$data);
+							
 			 //redirect('http://www.annantgyan.com');
 	    //redirect('welcome');
 			
@@ -313,7 +313,10 @@ class Login extends CI_Controller {
 		elseif(isset(($this->session->userdata['first_name']))){
 			//echo "hello";
 			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
-			$this->load->view('loginpage/usr_login',$data);
+			
+
+						$this->load->view('loginpage/usr_login',$data);
+							
 			 //redirect('http://www.annantgyan.com');
 	    //redirect('welcome');
 		}
@@ -483,7 +486,7 @@ class Login extends CI_Controller {
                 {
                     $this->logger->write_logmessage("insert", "Enquiry Detail Not Submitted." );
                     $this->logger->write_dblogmessage("insert", "Enquiry Detail Not Submitted. " );
-                    $this->session->set_flashdata("err_message",'Error in Enquiry Detail Submit. ' );
+                    $this->session->set_flashdata("error",'Error in Enquiry Detail Submit. ' );
                     redirect('login/usr_enquiry');
 
                 }
@@ -500,6 +503,74 @@ class Login extends CI_Controller {
         }
 
 		$this->load->view('inno_ruralurban');
+	}
+
+	function usrfeedback(){
+		$sid = $this->session->userdata['su_id'];
+		$cid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$sid)->uct_courseid;
+
+		if(isset($_POST['submit'])) {
+        
+            $this->form_validation->set_rules('experience','Question First','trim|xss_clean|required');
+            $this->form_validation->set_rules('su_sugge','Suggestion','trim|xss_clean|required');
+                      
+            //if form validation true
+            if($this->form_validation->run()==TRUE){
+            
+                $data = array(
+                    'stf_studentid'		=>	$sid,
+                    'stf_courseid'		=>	$cid,
+                    'stf_ans1'			=>	$_POST['experience'],
+                   /* 'stf_ans2'					=>  ,
+                    'stf_ans3'					=>  ,
+                    'stf_ans4'					=>  ,
+                    'stf_ans5'					=>  ,
+                    'stf_ans6'					=>  ,
+                    'stf_ans7'					=>  ,
+                    'stf_ans8'					=>  ,
+                    'stf_ans9'					=>  ,
+                    'stf_ans10'					=>  ,
+                    'stf_ans11'					=>  ,*/
+                    'stf_suggestion'	=>	$_POST['su_sugge'],
+                   // ''		=>	$_POST[''],
+                    'stf_date'			=>	date('y-m-d h:i:s')
+                   
+                );
+                $insert = $this->commodel->insertrec('stu_feedback', $data) ;
+                               
+                if (!$insert)
+                {
+                    $this->logger->write_logmessage("insert", "Feedback detail not submitted.");
+                    $this->logger->write_dblogmessage("insert", "Feedback detail not submitted.");
+                    $this->session->set_flashdata("error",'Feedback detail not submitted.' );
+                    redirect('login/usrfeedback');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Feedback Detail Send Successfully!!");
+                    $this->logger->write_dblogmessage("insert", "Feedback Detail Submitted");
+                    $this->session->set_flashdata("success", "Feedback Detail Submit Successfully...");
+                     redirect('login/usrfeedback');
+                }
+
+
+                     
+            }
+        }
+		$this->load->view('loginpage/usr_feedback');
+	}
+
+	function usrfaq(){
+		$this->load->view('loginpage/usr_faq');
+	}
+	function usrcoucalender(){
+
+		$this->load->view('loginpage/usr_coursecalender');
+	}
+
+	function usrcoustructure(){
+		
+		$this->load->view('loginpage/usr_cou_strucutre');
 	}
 }
 

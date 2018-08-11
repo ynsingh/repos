@@ -322,6 +322,38 @@ ALTER TABLE `sign_up`
 
 ALTER TABLE `sign_up`
   MODIFY `su_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stu_feedback`
+--
+
+CREATE TABLE `stu_feedback` (
+  `stf_id` int(11) NOT NULL,
+  `stf_studentid` int(11) DEFAULT NULL,
+  `stf_courseid` int(11) DEFAULT NULL,
+  `stf_ans1` varchar(255) DEFAULT NULL,
+  `stf_ans2` varchar(255) DEFAULT NULL,
+  `stf_ans3` varchar(255) DEFAULT NULL,
+  `stf_ans4` varchar(255) DEFAULT NULL,
+  `stf_ans5` varchar(255) DEFAULT NULL,
+  `stf_ans6` varchar(255) DEFAULT NULL,
+  `stf_ans7` varchar(255) DEFAULT NULL,
+  `stf_ans8` varchar(255) DEFAULT NULL,
+  `stf_ans9` varchar(255) DEFAULT NULL,
+  `stf_ans10` varchar(255) DEFAULT NULL,
+  `stf_ans11` varchar(255) DEFAULT NULL,
+  `stf_suggestion` blob DEFAULT NULL,
+  `stf_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `stu_feedback`
+  ADD PRIMARY KEY (`stf_id`);
+ALTER TABLE `stu_feedback`
+  MODIFY `stf_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --

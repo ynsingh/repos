@@ -38,7 +38,7 @@ class Header extends CI_Controller {
 
 	public function ongoingworkshop()
 	{
-		$data['course_data'] = $this->commodel->get_list('courses');
+		$data['course_data'] = $this->commodel->get_list('courseannouncement');
 		$this->load->view('ongoing',$data);
 	}
 

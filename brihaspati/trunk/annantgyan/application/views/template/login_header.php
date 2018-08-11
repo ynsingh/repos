@@ -22,7 +22,7 @@
 #menu ul li a:hover{
     background-color:white;
     color: black;
-    font-size: 18px;
+   
 }
 </style>
 <!--<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>-->
@@ -84,6 +84,7 @@ function Logout() {
       
 </script>
 
+
  <div class="fluid-container">
   
   <!----navbar----------------->
@@ -102,6 +103,7 @@ function Logout() {
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
       <ul class="nav navbar-nav">
         <li><a href="<?php echo site_url('');?>"><span class="glyphicon glyphicon-home"></span> Home </a></li>
 
@@ -111,7 +113,7 @@ function Logout() {
          if($hwnow == ''){?> 
             <li><a href="<?php echo site_url('Course-Registration');?>"><span ></span> Courses Enrollment</a></li>
        <?php }else{?>
-         <li><a href="<?php echo site_url('login/course_login');?>"><span ></span> Courses</a></li>
+         <li><a href="<?php echo site_url('Course-Home');?>"><span ></span> Course Home</a></li>
 
        <?php }?>
 
@@ -129,86 +131,32 @@ function Logout() {
            
           </ul>
         </li>-->
-        
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Discussion</a></li>
-        
         <li><a href="<?php //echo site_url('');?>"><span ></span> Progress</a></li>
+
+        <li><a href="<?php //echo site_url('');?>"><span ></span> Discussion</a></li>
+          
 
         <li><a href="<?php //echo site_url('');?>"><span ></span> Certificates</a></li>
 
         <li><a href="<?php //echo site_url('');?>"><span ></span> Practice Exams</a></li>
 
-        <li><a href="<?php //echo site_url('');?>"><span ></span> FAQ</a></li>
-        <!--
+         <li><a href="<?php //echo site_url('');?>"><span ></span>Quiz / Assignment</a></li>
 
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-        <!--  <span class="glyphicon glyphicon glyphicon-user"></span> --
-          About Company
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="<?php //echo site_url('Header/about');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Overview & Objective</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Message from Founder & Director </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Company Board Members</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Technical Advisors </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Team Members </a></li>
-          </ul>
-        </li>
+          <li><a href="<?php echo site_url('login/usrcoucalender');?>"><span ></span> Courses Calender</a></li>
 
+          <li><a href="<?php echo site_url('login/usrcoustructure');?>"><span ></span> Courses Structure</a></li>
 
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-         <!-- <span class="glyphicon glyphicon glyphicon-user"></span> --
-          Knowledge <sup>+</sup>
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Online certified crash courses</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Online certified workshop</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Certified fun learning courses</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> General subject related material seminars</a></li>
-            
-          </ul>
-        </li>
+           <li><a href="<?php echo site_url('Feedback');?>"><span ></span> Feedback</a></li>
 
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-         <!-- <span class="glyphicon glyphicon glyphicon-user"></span> --
-         Skill <sup>+</sup>
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Time/Stress Mgmt.</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Effective Communication</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Interview Preparaton</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Public Speaking</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Report/Paper/Project/Thesis Writing</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-          <!--<span class="glyphicon glyphicon glyphicon-user"></span> 0--
-         Innovative Ideas or Projects <sup>+</sup>
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Fun Learning Scientific Projects</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Advance Scientific Projects</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Projects for undergraduate Students</a></li>
-            
-          </ul>
-        </li>
-
-        <li><a href="<?php //echo site_url('');?>">Career</a></li>-->
-        <!--<li><a href="<?php //echo site_url('');?>">Future Plan</a></li>-->
+        <li><a href="<?php echo site_url('FAQ');?>"><span ></span> FAQ</a></li>
         
-
-       <!-- <li><a href="#"> <span class="glyphicon glyphicon glyphicon-pencil"></span> Testimonial</a></li>-->
       </ul>
      
       <ul class="nav navbar-nav navbar-right">
         <!--<li><a href="#"><span class="glyphicon glyphicon glyphicon-paperclip"></span> Broucher</a></li>-->
         <?php if(isset($this->session->userdata['su_name'])){?>
          <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span>  <?php echo $this->session->userdata['su_name'];?></a></li> 
-
+        <li><a href="<?php echo site_url('Courses');?>"><span ></span>Course Enroll</a></li>
        <?php }
            ?>
 
@@ -250,3 +198,5 @@ function Logout() {
   </div><!-- /.container-fluid -->
 </nav>
 </div>
+
+

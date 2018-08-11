@@ -54,6 +54,11 @@ function Logout() {
   
       
 </script>
+<style type="text/css">
+  .active {
+    color:black;background-color:white;
+}
+</style>
  <div class="fluid-container">
   
   <!----navbar-----------------
@@ -152,11 +157,14 @@ function Logout() {
 
         <?php if(isset($this->session->userdata['su_id'])){?>
         	<!-- <li><a href="<?php //echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>-->
+          <li><a href="<?php echo site_url('Course-Home');?>"><span ></span> Course Home</a></li>
           <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span> <?php echo $this->session->userdata['su_name'];?></a></li> 
 
           <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
          <?php }else{?> 
+          
          <li><a href="<?php echo site_url('Sign-In');?>"><span class="glyphicon glyphicon-log-in"> </span> Login </a> </li>
+        
         <!-- <li><a href="<?php //echo site_url('New-Registration');?>"><span class="glyphicon glyphicon-log-in"> </span> New Registration </a> </li> -->
          <li><a href="<?php echo site_url('Course-Registration');?>"><span class="glyphicon glyphicon-log-in"> </span> New Registration </a> </li>
          <?php }?>

@@ -32,7 +32,8 @@ class Workshop extends CI_Controller {
 	}	
 	
 	public function ongoing_workshop()
-	{$cid = $this->uri->segment(3); 
+	{
+		$cid = $this->uri->segment(3); 
 		$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
 		$data['cid'] = $cid;
 			//$cid = $this->uri->segment(3); 
