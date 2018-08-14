@@ -132,6 +132,7 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                             echo anchor('staffmgmt/retiredstafflist', 'Retired Staff Proile', array('title' => 'Retired Staff Proile'));
                                         echo "</li>";
+                                        
                                 echo "</ul>";
 			echo "</li>";
                         /*echo "<li>";
@@ -257,7 +258,11 @@ echo "<ul class=\"sf-menu\" >";
 						echo anchor('staffmgmt/employeelist', 'Staff List', array('title' => 'Staff List'));
 					echo "</li>";	*/
                                         echo "<li>";
-						echo anchor('report/viewprofile', 'View Employee List', array('title' => 'View Employee List'));
+						echo anchor('report/viewprofile', 'Employee List', array('title' => 'View Employee List'));
+					echo "</li>";
+                                        
+                                        echo "<li>";
+						echo anchor('report/retiredemplist', 'Retired Employee List', array('title' => 'View Retired Employee List'));
 					echo "</li>";
                                         
                                         echo "<li>";

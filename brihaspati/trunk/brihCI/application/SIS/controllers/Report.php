@@ -973,16 +973,18 @@ public function disciplinewiselist(){
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
         $dept_select_box =' ';
         $dept_select_box.='<option value=null>-------Select Department--------';
-  //      $dept_select_box.='<option value='.All.'>'.All. ' ';
+        $dept_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
                 $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
-              
-               $dept_select_box.='<option value='.$detail->emp_dept_code.'>'.$deptname. '(' .$deptcode. ')'.' ';
+               
+                $dept_select_box.='<option value='.$detail->emp_dept_code.'>'.$deptname. '(' .$deptcode. ')'.' ';
+                               
             }
         }
         echo json_encode($dept_select_box);
+        
     } 
     
     /********************slect designation list according to selection type**********************/
@@ -1105,7 +1107,7 @@ public function disciplinewiselist(){
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>-------Select University Officer--------';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -1149,10 +1151,10 @@ public function disciplinewiselist(){
         $pt_select_box =' ';
         $pt_select_box.='<option value=null>-------Select Post--------';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname ==='admin')){
         	$pt_select_box.='<option value='.All.'>'.All. ' ';
         }
-//        $pt_select_box.='<option value='.All.'>'.All. ' ';
+        //$pt_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
                 
@@ -1187,7 +1189,7 @@ public function disciplinewiselist(){
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>----Select University Officer-----';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -1228,7 +1230,7 @@ public function disciplinewiselist(){
         $dept_select_box =' ';
         $dept_select_box.='<option value=null>----Select Department-------';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$dept_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$dept_select_box.='<option value='.All.'>'.All. ' ';
@@ -1267,7 +1269,7 @@ public function disciplinewiselist(){
         $post_select_box =' ';
         $post_select_box.='<option value=null>----------- Select Post ---------------';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$post_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$post_select_box.='<option value='.All.'>'.All. ' ';
@@ -1377,5 +1379,85 @@ public function disciplinewiselist(){
         $emp_data['technical'] = $this->sismodel->get_orderlistspficemore('staff_technical_qualification',$selectfield,$whdata,'');
         $this->load->view('report/technicalprofile',$emp_data);
     }
+    
+    public function retiredemplist() {
+        
+        $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code,emp_schemeid,emp_email,emp_doj,emp_dor,emp_dob";
+        $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
+	$cdate = date('Y-m-d');
+        
+        if(isset($_POST['filter'])) {
+            //echo "ifcase post of filter";
+            $wtype  = $this->input->post('wtype');
+            $uoff   = $this->input->post('uoff');
+            $dept[] = $this->input->post('dept');
+            $year   = $this->input->post('year');
+           
+		 
+	    $this->wtyp = $wtype;
+            $this->uolt = $uoff;
+            $this->year=$year;
+	    $whdata['emp_worktype']=$wtype;
+                       
+            if($uoff !="All"){
+	    	$whdata['emp_uocid']=$uoff;
+	    }
+	    $i=0;
+	    if((!empty($dept))&&($dept != "null")){
+                foreach($dept as $row){
+                    $this->deptmt = $row[$i];
+                    $names = $row;
+                    $i++;
+                  //  print_r(array_values($names));
+                }
+            }
+            if(!empty($year)&&($year != "null")){
+               
+                $whdata['SUBSTRING(emp_dor,1,4)  LIKE']=$year.'%';
+            }       
+	    if(!empty($names)){
+			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
+	
+            }else{
+			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
+            }
+        }
+        else{
+            $whdata = array ('emp_dor <='=>$cdate);
+            $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+        }
+        $this->logger->write_logmessage("view"," view departmentt employee list" );
+        $this->logger->write_dblogmessage("view"," view department employee list");
+        $this->load->view('report/retiredemplist',$data);
+        
+    }
+    public function getdeptlist_multisel(){
+        $combid= $this->input->post('worktypeuo');
+        $parts = explode(',',$combid); 
+       
+        if($parts[1]!="All"){
+            $datawh=array('emp_worktype' => $parts[0],'emp_uocid' => $parts[1]);
+        }
+        else{
+            $datawh=array('emp_worktype' => $parts[0]);
+        }
+	$whorder = 'emp_dept_code asc';
+        $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
+        $dept_select_box=array();
+        $dept_select_box =' ';
+       // $dept_select_box.='<option value=null>-------Select Department--------';
+       // $dept_select_box.='<option value='.All.'>'.All. ' ';
+        if(count($comb_data)>0){
+            foreach($comb_data as $detail){
+                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+                $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
+              
+               $dept_select_box.='<option value='.$detail->emp_dept_code.'>'.$deptname. '(' .$deptcode. ')'.'</option> ';
+               // $conbval=$deptname."-".$deptcode;
+               // array_push($dept_select_box, $conbval);
+            }
+        }
+        echo ($dept_select_box);
+    } 
 }
 
