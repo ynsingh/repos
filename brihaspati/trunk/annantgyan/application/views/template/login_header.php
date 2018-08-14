@@ -105,50 +105,38 @@ function Logout() {
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
       <ul class="nav navbar-nav">
-        <li><a href="<?php echo site_url('');?>"><span class="glyphicon glyphicon-home"></span> Home </a></li>
+        <li><a href="<?php echo site_url('');?>"><span class="glyphicon glyphicon-home"></span>Home </a></li>
 
          <?php 
          $suid = $this->session->userdata['su_id'];
         @$hwnow = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
          if($hwnow == ''){?> 
-            <li><a href="<?php echo site_url('Course-Registration');?>"><span ></span> Courses Enrollment</a></li>
+            <li><a href="<?php echo site_url('Course-Registration');?>"><span ></span>Courses Enrollment</a></li>
        <?php }else{?>
-         <li><a href="<?php echo site_url('Course-Home');?>"><span ></span> Course Home</a></li>
+         <li><a href="<?php echo site_url('Course-Home');?>"><span ></span>Course Home</a></li>
 
        <?php }?>
 
+          <li><a href="<?php echo site_url('login/usrcoustructure');?>"><span ></span>Courses Structure</a></li>
+          <li><a href="<?php echo site_url('login/usrcoucalender');?>"><span ></span>Courses Calender</a></li>
 
-        <!--<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-         <span class=""></span>
-          Courses
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="<?php //echo site_url('Header/about');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Introduction </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Weekly Course Content </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Feedback </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Online Certification Generation</a></li>
-           
-          </ul>
-        </li>-->
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Progress</a></li>
 
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Discussion</a></li>
-          
+        <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>
 
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Certificates</a></li>
+	<li><a href="<?php //echo site_url('');?>"><span ></span>Discussion</a></li>
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Exam<span class="caret"></span></a>
 
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Practice Exams</a></li>
+		<ul class="dropdown-menu">
+		<li><a href="<?php //echo site_url('');?>"><span ></span>Practice Exams</a></li>
+		<li><a href="<?php //echo site_url('');?>"><span ></span>Quiz / Assignment</a></li>
+		</ul>
+	</li>
+        <li><a href="<?php echo site_url('Feedback');?>"><span ></span>Feedback</a></li>
 
-         <li><a href="<?php //echo site_url('');?>"><span ></span>Quiz / Assignment</a></li>
+        <li><a href="<?php //echo site_url('');?>"><span ></span>Certificates</a></li>
 
-          <li><a href="<?php echo site_url('login/usrcoucalender');?>"><span ></span> Courses Calender</a></li>
-
-          <li><a href="<?php echo site_url('login/usrcoustructure');?>"><span ></span> Courses Structure</a></li>
-
-           <li><a href="<?php echo site_url('Feedback');?>"><span ></span> Feedback</a></li>
-
-        <li><a href="<?php echo site_url('FAQ');?>"><span ></span> FAQ</a></li>
+        <li><a href="<?php echo site_url('FAQ');?>"><span ></span>FAQ</a></li>
         
       </ul>
      
@@ -183,16 +171,6 @@ function Logout() {
           
          </li>
         
-       <!-- <li class="dropdown">
-          <a href="<?php //echo site_url('');?> " class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">
-          <span class="glyphicon glyphicon glyphicon-earphone"></span> 
-          Contact</a>
-         -- <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-screenshot"></span> Sitemap</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-user"></span> Career</a></li>
-            
-          </ul>--
-        </li>-->
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

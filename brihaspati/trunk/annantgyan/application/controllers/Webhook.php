@@ -43,30 +43,30 @@ class Webhook extends CI_Controller {
 
 			 $paymentreq_id = $data['payment_request_id'];
 				//get the workshop code form purpose
-				$parts = explode("-",$purpose);
+			$parts = explode("-",$purpose);
 
-					//update the data in ongoingworkshop and ongoingworkshop_pg
-				$udata=array('ow_bankname' =>'InstaMojo', 'ow_referenceno' =>$payment_id, 'ow_paymentgateway' => 'InstaMojo','ow_paymentstatus'=>$status);
-				$uflag=$this->commodel->updaterec('ongoingworkshop',$udata, 'ow_id', $parts[2]);
+				//update the data in ongoingworkshop and ongoingworkshop_pg
+			$udata=array('ow_bankname' =>'InstaMojo', 'ow_referenceno' =>$payment_id, 'ow_paymentgateway' => 'InstaMojo','ow_paymentstatus'=>$status);
+			$uflag=$this->commodel->updaterec('ongoingworkshop',$udata, 'ow_id', $parts[2]);
 
-				$upgdata=array('ow_id'=>$parts[2], 'owpg_txnid'=>$payment_id,'owpg_pinfo'=>$purpose,'owpg_amount'=>$amount,'owpg_ftype'=>'Workshop','owpg_date'=>Date('Y-m-d'),'owpg_gw'=>'InstaMojo','owpg_status'=>$status,'owpg_txncode'=> $paymentreq_id,	'owpg_reason'=>' ');
-				$upgflag=$this->commodel->insertrec('ongoingworkshop_pg',$upgdata);
+			$upgdata=array('ow_id'=>$parts[2], 'owpg_txnid'=>$payment_id,'owpg_pinfo'=>$purpose,'owpg_amount'=>$amount,'owpg_ftype'=>'Workshop','owpg_date'=>Date('Y-m-d'),'owpg_gw'=>'InstaMojo','owpg_status'=>$status,'owpg_txncode'=> $paymentreq_id,	'owpg_reason'=>' ');
+			$upgflag=$this->commodel->insertrec('ongoingworkshop_pg',$upgdata);
 
 
 				//getting email and password
 			//	$mailid=$this->commodel->get_listspfic1('ongoingworkshop','ow_email','ow_id',$parts[2]);
-				$pawd=$this->commodel->get_listspfic1('sign_up','su_password','su_emailid',$mailid);
-				$crsname = $this->commodel->get_listspfic1('courses','cou_name','cou_code',$parts[0]);
+			$pawd=$this->commodel->get_listspfic1('sign_up','su_password','su_emailid',$mailid);
+			$crsname = $this->commodel->get_listspfic1('courses','cou_name','cou_code',$parts[0]);
 
 			 if($data['status'] == "Credit"){
 				//code for sending mail to user
 				
-					$subject = "Registered Successfully";
+				$subject = "Registered Successfully";
                                      //   $pawd = random_string('alnum',6);
                                        // $erstring= $mailid.'---'.$rstring;
                                        // $verifylink = base_url("login/verify/".$erstring);
 
-                                        $message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+                                $message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
                                         <tr><td></td></tr>
                                         <tr><td colspan=2><b>Your are registered successfully, Your details are given below</td></tr>
                                         <tr height=15><td colspan=2></td></tr>
@@ -76,7 +76,7 @@ class Webhook extends CI_Controller {
                                         <tr><td><b>Payment Status : </b></td><td align=left> .$status.</a></td></tr>
                                         </table> " ;
 
-                                        $mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
+                                $mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
 
 
 				//code for sending mail to admin
@@ -99,7 +99,7 @@ class Webhook extends CI_Controller {
                                 // send email
                                 $mails=$this->mailmodel->mailsnd($to,$subject,$message,'');
 
-				$confmes = "You are registered successfully in " .$courname. " & Verification link sent to your registered email-id and Payment was successful.".$message;
+				$confmes = "You are registered successfully in " .$courname. " & mail sent to your registered email-id and Payment was successful.".$message;
 			        $this->session->set_flashdata('success',$confmes);
 				redirect('workshop/courseenroll_home');
 

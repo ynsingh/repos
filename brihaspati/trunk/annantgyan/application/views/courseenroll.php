@@ -67,11 +67,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--</br>-->
 <?php //echo $this->session->userdata['su_id'];?>
 <div class="container">
-<!--	<div class="col-md-3"></div>-->
+	<div class="col-md-3"></div>
 
-
+<!--
 <div class="col-md-6" align=justify id="card" style="overflow: scroll;height:750px;overflow-x: hidden;">
-	<h3 class="text-center">Courses / Workshop Schedule</h3>
+	<h3 class="text-center">Courses / Workshop Schedule</h3> -->
 	<!--<p>
     	वैदिक गणित पारंपरिक गणना का एक प्राचीन भारतीय तरीका है। यह एक मजेदार जादुई और तार्किक उपकरण है। वैदिक गणित अपने संस्थापक द्वारा प्राचीन भारत द्वारा इस दुनिया को दिया गया उपहार है। लेकिन इस दावे के लिए कोई ऐतिहासिक साक्ष्य नहीं है। यह जादुई और तार्किक उपकरण 16 सूत्रों और 13 उप-सूत्रों पर आधारित है। इन सूत्रों का स्वाभाविक रूप से काम करने के तरीके द्वारा आप तेजी से संख्यात्मक और बहुपद गणना कर सकते हैं। यह आपके दिमाग को तेज करेगा और गणित में भी रुचि पैदा करेगा। यह विभिन्न प्रतिस्पर्धी परीक्षाओं की तैयारी में गणना की गति, मानसिक क्षमता को बढ़ता है। कठोर अंकगणितीय और बीजगणितीय समस्याओं की गणना मानसिक वैदिक तरीकों से हल की जा सकती है। लोग अपनी विधियों का आविष्कार कर सकते हैं। यह आपके रचनात्मक विचारों में अधिक रुचि पैदा करेगा।
 </p><p>
@@ -81,18 +81,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </p><p>
 निदेशक, अन्नंत ज्ञान
 
-</p>-->
+</p>--> 
+<!--
 <div class='row'>
-<?php $this->load->view('loginpage/calender_content1.php');?>
+<?php //$this->load->view('loginpage/calender_content1.php');?>
 </div>
 <div class='row'>
-<img src="<?php echo site_url('images/calender.png');?>" style="width:100%;">
+<img src="<?php //echo site_url('images/calender.png');?>" style="width:100%;">
 </div>	
 
 <div class='row'>
-<img src="<?php echo site_url('images/calender2.png');?>" style="width:100%;">
+<img src="<?php //echo site_url('images/calender2.png');?>" style="width:100%;">
 </div>	
 </div>
+-->
 <!-- <br>-->
 <div class="col-md-6" id="">
 

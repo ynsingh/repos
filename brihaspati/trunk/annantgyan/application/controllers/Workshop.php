@@ -168,7 +168,7 @@ class Workshop extends CI_Controller {
 						'su_userid'		=> $owid,
                                 		'su_name' 		=> $firstname,
 		                                'su_emailid' 		=> $mailid,
-                		                'su_password' 		=> $password,
+                		                'su_password' 		=> $rstring,
                                 		//'su_confpassword' 	=> $cpawd,
 		                                'su_status' 		=> 'Verified',
 						'su_string'		=> $rstring 
@@ -273,9 +273,9 @@ class Workshop extends CI_Controller {
     		'phone' => $phone,
     		'buyer_name' => $name,
     		'redirect_url' => 'http://annantgyan.com/webhook',
-    		'send_email' => true,
+    		'send_email' => false,
     		'webhook' => 'http://annantgyan.com/webhook',
-    		'send_sms' => true,
+    		'send_sms' => false,
     		'email' => $email,
     		'allow_repeated_payments' => false
 		);

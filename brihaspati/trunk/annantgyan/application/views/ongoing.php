@@ -93,13 +93,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     ?>  
 </div>
 <div class="container">
-	<div align="justify" id="card">
-		If you face any problem in enrollment process. Kindly feel free to contact Mr. N K Singh (nksinghiitk@gmail.com )(9450136012).
-		<br>
-<!--		If you got error page in enrollment process, please take screenshot and send to nksinghiitk@gmail.com -->
-	</div>
+	<table align="center"><tr><td>
 	<h2 style="text-align: center;text-decoration:underline;">Online Certified Courses/Workshops </h2>
+	</td>
+	<td>&nbsp;</td>
+	<td style="margin-left:60px;"> &nbsp;
+	<a href="<?php echo base_url('docs'); ?>/Course&workshopcalender.pdf" target="_blank">
+        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Calendar." style="width:100%;">Course Calendar</button>
+       </a>
+	</td>
+	<td>&nbsp;</td>
+	<td style="margin-left:60px;"> &nbsp;
+	<a href="<?php echo base_url('docs'); ?>/Structureofonlinecoursesworkshops.pdf" target="_blank">
+        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Structure</button>
+       </a>
+</td></tr></table>
+<div class="col-md-3"></div>
 	<!--<div class="col-md-12" style="/*background: white;padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >-->
+<!--
   <div class="row">
       <div class="col-md-6">
          <h3 style="text-align: center;">Course Structure</h3>
@@ -108,6 +119,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <h3 style="text-align: center;">Open Course List</h3>
       </div>  
   </div>
+-->
+<!--
 <div   style="overflow: scroll;height:400px;overflow-x: hidden;">
 <div class="col-md-6">
    
@@ -148,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                                          
      </p>
     </div> 
-    </div>    <!----first row close----->
+    </div>    <!----first row close-----
 
     <div class="row">
                     <div class="col-md-12" id="card">
@@ -186,7 +199,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                                          
      </p>
     </div>
-    </div><!----second row close----->
+    </div><!----second row close-----
 
     <div class="row">
         <div class="col-md-12" id="card">
@@ -224,7 +237,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                                          
      </p>
     </div>
-    </div><!----third row close----->
+    </div><!----third row close-----
 
     <div class="row">
         <div class="col-md-12" id="card">
@@ -262,7 +275,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                                          
      </p>
     </div>
-    </div><!----fourth row close----->
+    </div><!----fourth row close-----
 
     <div class="row">
         <div class="col-md-12" id="card">
@@ -300,7 +313,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                                          
      </p>
     </div>
-    </div><!----fifth row close----->
+    </div><!----fifth row close-----
 
     <div class="row">
         <div class="col-md-12" id="card">
@@ -338,10 +351,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                                          
      </p>
     </div>
-    </div><!----sixth row close----->
+    </div><!----sixth row close-----
 </div>
-
-    <div class="col-md-6" id="card">
+-->
+    <div class="col-md-6"  id="card">
 
     	<table style="font-size: 16px;width:100%;">
         <?php $i=1;
@@ -366,7 +379,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 foreach($cdata as $row2){
 
             ?>		
-    		<b><?php echo $i++;?> .</b> <?php echo $row2->cou_name; echo " <br> "; echo $row2->cou_eligible; ?>     
+		    <b><?php echo $i++;?> .</b> 
+		<?php 
+			echo "<b><font color=blue>";
+			echo $row2->cou_name; 
+			
+	    		echo "</font></b> <br> "; 
+			echo $row2->cou_eligible; 
+		?>     
     	   </br>
            ( <?php echo $row2->cou_discipline; ?> )</br>
 
@@ -385,72 +405,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
     		<tr height=20></tr>
            <?php }}}?> 
-           <!-- <tr>
-            
-                <td>
-                    
-            <b>2.</b> Magical and Logical Power of Vedic Mathematics </br>(For diploma, BE, BBA, ME & MBA and Competitive Exam Students)
-        </br>
-(Fees for candidate -300/- resident in India & 100$ outside India)
-                </td>
+	<tr><td colspan=2>
+	<br>
+                If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).
 
-                <td valign="top">
-                    <a href="<?php //echo site_url('Registration');?>">
-                        <button type="button" class="btn btn-primary" align="left" id="signup5" title="Click to open enroll form.">Enroll</button>
-                    </a>
-                </td>
-              
-            </tr>   
-            <tr height=20></tr>
-    		<tr>
-    		
-    			<td>
-    				<b>3.</b> Logical Power of Vedic Mathematics</br>
-(For class 7 th to 12 th Standard Students)</br>
-(Fees for candidate -250/- resident in India & 80$ outside India)
-    			</td>
-
-    			<td valign="top"><a href="<?php //echo site_url('Registration');?>">
-    				<button type="button" class="btn btn-primary" align="left" id="signup2" title="Click to open enroll form.">Enroll</button>
-    				</a>
-    			</td>
-    		  
-    		</tr>	
-<tr height=20></tr>
-    		<tr>
-    		
-    			<td>
-    			<b>4.</b> Applicaton of Vedic Mathematics for Kids</br>
-(for Class 4 rd to 6 th Standard Students)</br>
-(Fees for candidate -200/- resident in India & 60$ outside India)
-    			</td>
-
-    			<td valign="top"><a href="<?php //echo site_url('Registration');?>">
-    				<button type="button" class="btn btn-primary" align="left" id="signup3" title="Click to open enroll form.">Enroll</button>
-    				</a>
-    			</td>
-    		  
-    		</tr>	
-<tr height=20></tr>
-    <!--		<tr>
-    		
-    			<td>
-    		<b>5.</b> Mathematical Magic and Fun </br>(Open to all Fees for candidate -150/- resident in India & 50$ outside Indial)
-    			</td>
-
-    			<td valign="top"><a href="<?php //echo site_url('Registration');?>">
-    				<button type="button" class="btn btn-primary" align="left" id="signup4" title="Click to open enroll form.">Enroll</button>
-    				</a>
-    			</td>
-    		  
-    		</tr>	-->
-
-    		
+	</td></tr>	
     	</table>	
     </div>	
-   </div>
+<!--   </div>-->
     		
 
+<!--	<div align="justify" id="card">
+		<br>
+		<br>
+		If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).
+		If you got error page in enrollment process, please take screenshot and send to nksinghiitk@gmail.com 	</div>-->
 <!--	</div>-->
 </div>
 
