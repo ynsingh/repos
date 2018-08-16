@@ -43,7 +43,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </div>	
 
-<?php $this->load->view('loginpage/structure.php');?>
+<h3 class="text-center">Course / Workshop Schedule</h3>
+<div class="container">
+	<div class="col-md-12" id="card">
+		<?php //$this->load->view('loginpage/structure.php');
+$cid = $couid;
+
+/*$whdata1=array('crsann_crsid' => $couid);
+$sdata1='crsann_crsstart,crsann_crsend';
+$coursedate=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
+$cdate = date('Y-m-d');
+foreach($coursedate as $coudata){
+    $startdate = $coudata->crsann_crsstart;
+    $enddate = $coudata->crsann_crsend;
+    $cdate = date('Y-m-d');
+if(($enddate >= $cdate) && ($startdate <= $cdate)){
+*/
+$path = 'assets/course_pdf/course'.$cid.'.pdf';
+if(file_exists($path)){
+?>
+	<iframe src="<?php echo site_url($path);?>" width="100%" style="height:550px;"></iframe>
+<?php }//}else{?>
+	<!--<p style="font-size: 18px;">Your course structure not declare.</p>-->
+<?php //}}?>
+	</div>
+</div>
 
  </br> </br> </br> </br>
 <?php $this->load->view('template/footer.php');?>

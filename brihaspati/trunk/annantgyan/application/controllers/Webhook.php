@@ -59,8 +59,18 @@ class Webhook extends CI_Controller {
 			$crsname = $this->commodel->get_listspfic1('courses','cou_name','cou_code',$parts[0]);
 
 			 if($data['status'] == "Credit"){
-				//code for sending mail to user
-				
+				//get start and end dates
+				$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$parts[3])->uct_courseid;
+
+				$whdata1=array('crsann_crsid' => $couid);
+				$sdata1='crsann_crsstart,crsann_crsend,crsann_feedbkdate';
+				$coursedate=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
+				//$cdate = date('Y-m-d');
+				foreach($coursedate as $coudata){
+    				$startdate = $coudata->crsann_crsstart;
+    				$enddate   = $coudata->crsann_crsend;
+    				$feedbackdate   = $coudata->crsann_feedbkdate;
+    			//code for sending mail to user	
 				$subject = "Registered Successfully";
                                      //   $pawd = random_string('alnum',6);
                                        // $erstring= $mailid.'---'.$rstring;
@@ -68,14 +78,31 @@ class Webhook extends CI_Controller {
 
                                 $message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
                                         <tr><td></td></tr>
-                                        <tr><td colspan=2><b>Your are registered successfully, Your details are given below</td></tr>
-                                        <tr height=15><td colspan=2></td></tr>
-                                        <tr><td width=370><b>Email: </b></td><td align=left>".$mailid."</td></tr>
+                                        <tr><td colspan=2><b>Welcome to “Annant Gyan”</td></tr>
+                                        <tr><td colspan=2>You have successfully enrolled on online courses/ workshops of “Annant Gyan”. </td></tr>
+                                        </table>
+
+                                        <table  width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+                                        <tr><td><b>Course start date: </b></td><td align=left>".$startdate."</td></tr>
+                                        <tr><td><b>Course end date : </b> </td><td align=left>".$enddate. "</td><tr>
+                                        <tr><td><b>Feedback date: </b> </td><td align=left>".$feedbackdate. "</td><tr>
+
+                                        <tr><td><b>Email: </b></td><td align=left>".$mailid."</td></tr>
                                         <tr><td><b>Password : </b> </td><td align=left>".$pawd. "</td><tr>
                                         <tr><td><b>Course Name : </b> </td><td align=left>".$crsname." ( ".$purpose. " )</td><tr>
                                         <tr><td><b>Payment Status : </b></td><td align=left> .$status.</a></td></tr>
-                                        </table> " ;
+                                        </table> 
 
+                                        <table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+                                        	<tr><td align=left>".'Thanking you.'."</td></tr>
+                                        	<tr><td align=left>".'Admin, Annant Gyan'. "</td><tr>
+                                        	<tr><td align=left>".'www.annantgyan.com'."</td></tr>
+                                        	<tr><td align=left>".'Mail id: annantgyan@gmail.com<br>
+            										admin@annantgyan.com'. "</td><tr>
+                                        </table>
+
+                                        " ;
+                            }//foreach close get start and end dates            	
                                 $mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
 
 

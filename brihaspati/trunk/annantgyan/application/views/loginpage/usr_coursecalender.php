@@ -42,9 +42,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>	
 
 </div>	
+<h3 class="text-center">Courses / Workshop Dates</h3>
 <div class="container">
 <div class="col-md-12" align=justify id="card">
-	<?php $this->load->view('loginpage/calender.php');?>
+	<iframe src="<?php echo site_url('assets/course_pdf/calender.pdf')?>" width="100%" style="height:550px;"></iframe>
+	<?php //$this->load->view('loginpage/calender.php');?>
 </div>
 </div>
 </br></br></br></br>

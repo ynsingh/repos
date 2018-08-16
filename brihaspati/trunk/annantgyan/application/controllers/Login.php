@@ -561,7 +561,10 @@ class Login extends CI_Controller {
 	}
 
 	function usrfaq(){
-		$this->load->view('loginpage/usr_faq');
+		$suid = $this->session->userdata['su_id'];
+		if($suid){
+			$this->load->view('loginpage/usr_faq');
+		}
 	}
 	function usrcoucalender(){
 
@@ -569,8 +572,12 @@ class Login extends CI_Controller {
 	}
 
 	function usrcoustructure(){
+		$suid = $this->session->userdata['su_id'];
 		
-		$this->load->view('loginpage/usr_cou_strucutre');
+		$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+		$data['couid'] = $couid;
+
+		$this->load->view('loginpage/usr_cou_strucutre',$data);
 	}
 }
 

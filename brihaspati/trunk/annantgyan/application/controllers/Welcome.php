@@ -90,14 +90,39 @@ class Welcome extends CI_Controller {
 					<tr><td></td></tr>
 					<tr><td colspan=2><b>Your are registered successfully, Your details are given below</td></tr>
 					<tr height=15><td colspan=2></td></tr>
-					<tr><td width=370><b>Name: </b></td><td align=left>".$name."</td></tr> 
-					<tr><td width=370><b>Email: </b></td><td align=left>".$email."</td></tr> 
-					<tr><td width=370><b>Contact No.: </b></td><td align=left>".$contact."</td></tr> 
-					<tr><td width=370><b>Organisation Name: </b></td><td align=left>".$orgname."</td></tr> 
-					<tr><td width=370><b>Account Number: </b></td><td align=left>".$bankac."</td></tr> 
-					<tr><td width=370><b>IFSC Code: </b></td><td align=left>".$ifsc."</td></tr> 
-					</table> " ;
+					<tr><td align=left>"
+					.'<span>
+					Dear Sir/ Mam<br>
+					Greetings from Annant Gyan<br>
+					</span>
+					<p>
+						You have successfully done recommender registration on our company website. <br>
+						You can get 20% of enrollment fee, when you are writing your mail id as recommender during students and teachers enrollment process on our ongoing vedic mathematics online courses/ workshops. <br>
+						We shall deposit your earned facilitation amount directly (in your account) after 1st Nov 2018. <br>
 
+					</p>
+					'.
+					"</td></tr></table><table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+					<tr height=15><td colspan=2></td></tr>
+
+					<tr><td ><b>Name: </b></td><td align=left>".$name."</td></tr> 
+					<tr><td ><b>Email: </b></td><td align=left>".$email."</td></tr> 
+					<tr><td ><b>Contact No.: </b></td><td align=left>".$contact."</td></tr> 
+					<tr><td ><b>Organisation Name: </b></td><td align=left>".$orgname."</td></tr> 
+					<tr><td ><b>Account Number: </b></td><td align=left>".$bankac."</td></tr> 
+					<tr><td ><b>IFSC Code: </b></td><td align=left>".$ifsc."</td></tr> 
+					</table><table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+					<tr height=15><td colspan=2></td></tr>
+					<tr><td align=left>".'<span>
+					Thanking you.<br><br>
+					With Regards<br>
+					Admin, Annant Gyan<br>
+					www.annantgyan.com<br>
+					Mail id: annantgyan@gmail.com<br>
+            				admin@annantgyan.com
+					</span>'."</td></tr> 
+					</table> " ;
+					//print_r($message);die;
                              	$mails=$this->mailmodel->mailsnd($email,$subject,$message,'');
         		if($insflag){
         			redirect("welcome");
