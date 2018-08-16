@@ -53,8 +53,10 @@ class Webhook extends CI_Controller {
 			$upgflag=$this->commodel->insertrec('ongoingworkshop_pg',$upgdata);
 
 
-				//getting email and password
-			//	$mailid=$this->commodel->get_listspfic1('ongoingworkshop','ow_email','ow_id',$parts[2]);
+			//getting email and password
+			if (empty($mailid ) ||($mailid == "")){
+				$mailid=$this->commodel->get_listspfic1('ongoingworkshop','ow_email','ow_id',$parts[2]);
+			}
 			$pawd=$this->commodel->get_listspfic1('sign_up','su_password','su_emailid',$mailid);
 			$crsname = $this->commodel->get_listspfic1('courses','cou_name','cou_code',$parts[0]);
 

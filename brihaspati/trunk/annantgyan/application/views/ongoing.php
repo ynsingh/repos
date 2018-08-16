@@ -96,7 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<table align="center"><tr><td>
 	<h2 style="text-align: center;text-decoration:underline;">Online Certified Courses/Workshops </h2>
 	</td>
-	<td>&nbsp;</td>
+<!--	<td>&nbsp;</td>
 	<td style="margin-left:60px;"> &nbsp;
 	<a href="<?php echo base_url('docs'); ?>/Course&workshopcalender.pdf" target="_blank">
         <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Calendar." style="width:100%;">Course Calendar</button>
@@ -107,8 +107,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<a href="<?php echo base_url('docs'); ?>/Structureofonlinecoursesworkshops.pdf" target="_blank">
         <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Structure</button>
        </a>
-</td></tr></table>
-<div class="col-md-3"></div>
+</td>
+ --></tr></table>
+<div class="col-md-12"></div>
 	<!--<div class="col-md-12" style="/*background: white;padding: 4em; box-shadow: 5px 10px 18px #888888;*/" >-->
 <!--
   <div class="row">
@@ -354,6 +355,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div><!----sixth row close-----
 </div>
 -->
+	<div class="row">
     <div class="col-md-6"  id="card">
 
     	<table style="font-size: 16px;width:100%;">
@@ -411,7 +413,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	</td></tr>	
     	</table>	
-    </div>	
+	</div>
+
+	<div class="col-md-4">
+	  <table>
+	    <tr><td>
+		  <a href="<?php echo base_url('docs'); ?>/Course&workshopcalender.pdf" target="_blank">
+		  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Calendar." style="width:100%;">Course Calendar</button>
+       		</a>
+  	  </td></tr>
+	  <tr height=10><td></td></tr>
+	   <tr><td>
+		  <a href="<?php echo base_url('docs'); ?>/Structureofonlinecoursesworkshops.pdf" target="_blank">
+		  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Structure</button>
+	       </a>
+	</td></tr>
+
+	<tr height=10><td></td></tr>
+	   <tr><td>
+		  <a href="<?php echo base_url('docs'); ?>/UtilityMessageonvedicmathematics.pdf" target="_blank">
+	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Utility Message</button>
+	       </a>
+	</td></tr> 
+
+	<tr height=10><td></td></tr>
+	   <tr><td>
+		  <a href="<?php echo base_url('docs'); ?>/forigner_cont.pdf" target="_blank">
+	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">International Candidate Enrollment Process</button>
+	       </a>
+	</td></tr>
+	</table>
+	</div>
+</div>
 <!--   </div>-->
     		
 
