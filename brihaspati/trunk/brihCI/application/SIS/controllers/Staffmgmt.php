@@ -44,7 +44,6 @@ class Staffmgmt extends CI_Controller
     	}
 
     	public function addhead($id){
-//		$empid = $id;
 		$whdata = array ('emp_id' => $id);
 		$idata = array('emp_head' => "HEAD");
 		$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
@@ -54,7 +53,6 @@ class Staffmgmt extends CI_Controller
 	}
 
 	public function removehead($id){
-
 		$whdata = array ('emp_id' => $id);
 		$rdata = array('emp_head' => "");
 		$upflag=$this->sismodel->updaterec('employee_master', $rdata,'emp_id',$id);
@@ -63,17 +61,69 @@ class Staffmgmt extends CI_Controller
 		$this->employeelist();
 
 	}
-	
-	public function changepf($id){
-		$empid = $id;
-		//	get new pf
-		// generate emalid as per new pf
-		//update edrpuser email
-		// update pf and email in employee master
+/*	
+	public function changepf($empid){
+		$this->empid = $empid;
+		if(isset($_POST['changepf'])) {
+            		// Form Validation
+            		$this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
+			if($this->form_validation->run() == FALSE){
+                		$this->load->view('staffmgmt/changepf');
+                		return;
+            		}
+            		else{
+				//	get new pf
+				$empcode=$_POST['empcode'];
+				$empid=$_POST['empid'];
+				// get the old pf number
+				$oldpfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+				$oldeduinme= $oldpfno.'@tanuvas.org.in';
+				$edrpuid=$this->lgnmodel->get_listspfic1('edrpuser','id','username',$oldeduinme)->id;
+				
+				// generate emalid as per new pf
+				$nemail = $empcode .'@tanuvas.org.in';
+				
+				$upms="The Old PF no is ".$oldpfno." The new PF no is ".$empcode ;
 
+				//update edrpuser email
+				$dataedrpusr = array(
+		                        'username'=> $nemail,
+                    		);
+				// insert record in edrpuser 
+		                $this->lgnmodel->updaterec('edrpuser',$dataedrpusr,'id',$edrpuid);
+                    		$this->logger->write_logmessage("update", "pf data updated in edrpuser table.".$upms);
+                    		$this->logger->write_dblogmessage("update", "pf data updated in edrpuser table.".$upms );
 
+				// update pf and email in employee master and employee master support
+				$dataem = array(
+                                        'emp_code'=> $empcode,
+                                        'emp_email'=> $nemail,
+                                );
+
+				$this->sismodel->updaterec('employee_master', $dataem,'emp_id',$empid);
+                    		$this->logger->write_logmessage("update", "pf data updated in  employee master  table.".$upms);
+                    		$this->logger->write_dblogmessage("update", "pf data updated in  employee master  table.".$upms );
+
+				$dataems = array(
+                                        'ems_code'=> $empcode,
+                                );
+
+				$this->sismodel->updaterec('employee_master_support', $dataems,'ems_empid',$empid);
+                    		$this->logger->write_logmessage("update", "pf data updated in employee master support  table.".$upms);
+                    		$this->logger->write_dblogmessage("update", "pf data updated in  employee master support table.".$upms );
+
+				$mess = 'Your PF updated Successfully.';
+            			$sub = 'Employee PF Updated';
+            			$secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_id',$empid)->emp_secndemail;
+                  		if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
+                         		$mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
+                  		}
+				$this->employeelist();
+			}
+		}
+		$this->load->view('staffmgmt/changepf');
 	}
-
+*/
 
 
     /* Display Employee record */
@@ -101,6 +151,7 @@ class Staffmgmt extends CI_Controller
             //echo "ifcase post of filter";
          	$wtype = $this->input->post('wtype');
 	    	$post  = $this->input->post('post');
+	    	$desigid  = $this->input->post('desig');
 	    	$strin = $this->input->post('strin');
             	$uoid = $this->input->post('uoff');
             	$deptid = $this->input->post('dept');
@@ -118,10 +169,16 @@ class Staffmgmt extends CI_Controller
                                 $whdata['emp_dept_code'] = $deptid;
                         }
             	}
+		if((!empty($desigid)) && ($desigid != 'null') && ($desigid != ' ')){
+                         if($desigid != 'All'){
+                                $whdata['emp_desig_code'] = $desigid;
+                        }
+                }
 
 	    	if((!empty($post)) && ($post != 'null') && ($post != ' ')){
                         if($post != 'All'){
-                                 $whdata['emp_desig_code'] =$post;
+				$emppostname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$post)->desig_name;
+                                $whdata['emp_post'] =$emppostname;
                         }
             	}
 	    	else{

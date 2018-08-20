@@ -107,15 +107,15 @@ $(document).ready(function(){
 
 
                 /****************************************** start post********************************/
-/*                $('#wtype').on('change',function(){
+                $('#wtype').on('change',function(){
                     var workt = $(this).val();
                    //alert("post====="+workt);
                     if(workt == ''){
-                        $('#post').prop('disabled',true);
+                        $('#desig').prop('disabled',true);
 
                     }
                     else{
-                        $('#post').prop('disabled',false);
+                        $('#desig').prop('disabled',false);
                         $.ajax({
                             url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
                             type: "POST",
@@ -123,7 +123,7 @@ $(document).ready(function(){
                             dataType:"html",
                             success:function(data){
                             //alert("data==1="+data);
-                                $('#post').html(data.replace(/^"|"$/g, ''));
+                                $('#desig').html(data.replace(/^"|"$/g, ''));
 
                             },
                             error:function(data){
@@ -133,7 +133,7 @@ $(document).ready(function(){
                             }
                         });
                     }
-                });*/
+                });
             });
 
             function verify(){
@@ -190,7 +190,7 @@ $(document).ready(function(){
           <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Working Type<br>
-                    <select name="wtype" id="wtype">
+                    <select name="wtype" id="wtype" style="width:200px;">
 				<?php if  (!empty($this->wtyp)){ ?>
                         <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                         <?php  }else{ ?>
@@ -201,27 +201,31 @@ $(document).ready(function(){
                     </select>
 		 </td>
                <td>  Select UO<br>
-                    <select name="uoff" id="uoff" style="width:250px;">
+                    <select name="uoff" id="uoff" style="width:200px;">
                       <option value="" disabled selected>-- Select University officer--</option>
                     </select>
                 </td>
                 <td>  Select Department<br>
-                    <select name="dept" id="dept" style="width:250px;">
+                    <select name="dept" id="dept" style="width:200px;">
                       <option value="" disabled selected>-- Select Department --</option>
                     </select>
-
+                </td>
+                <td>  Select Designation<br>
+                    <select name="desig" id="desig" style="width:200px;">
+                      <option value="" disabled selected>-- Select Designation --</option>
+                    </select>
                 </td>
 
 		<?php
 //		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp";
 		?>
                 <!--</td>-->
-                <td>  Select Designation<br>
-                    <select name="post" id="post" style="width:250px;">
+                <td>  Select Shown Against Post<br>
+                    <select name="post" id="post" style="width:200px;">
 			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
                         <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>---------- Select Designation -----------------</option>
+                      <option value="" disabled selected>-- Select Post --</option>
 			 <?php  } ?>
                      <!-- <option value="All" >All</option> -->
                     </select>
@@ -276,15 +280,15 @@ $(document).ready(function(){
                                     if(!empty($record->emp_schemeid)){
                                     $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
                                     }
-                                   /* else{
+                                    else{
                                      $schm='';   
-                                    }*/
+                                    }
                                     if(!empty($record->emp_specialisationid)){
                                         $sub=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
                                     }
-                                   /* else{
+                                    else{
                                         $sub="";
-                                    } */
+                                    } 
                                     echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "
                                             ."<b>scheme-: </b>".$schm."<br/>"."<b>subject-: </b>".$sub;
                             ?></td>
@@ -316,10 +320,12 @@ $(document).ready(function(){
                                 if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 					echo "<br>";
-					if($record->emp_head == "HEAD"){
-                                echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
-					}else{
-                                        echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
+					if(!($headflag)){
+						if($record->emp_head == "HEAD"){
+        	                        		echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
+						}else{
+                                        		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
+						}
 					}
 //					echo "<br>";
                               //          echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));
@@ -369,9 +375,13 @@ $(document).ready(function(){
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
-                                if($headflag){
-                                        echo " & Head";
+				if(($headflag)||($record->emp_head == "HEAD")){
+                                        echo " ( <font color=Red> Head </font>)";
                                 }
+
+        //                        if($headflag){
+          //                              echo " & Head";
+            //                    }
                                 ?></td>
                            <!-- <td><?php //echo $record->emp_post; ?></td>-->
                            <!-- <td></td>-->

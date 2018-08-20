@@ -114,12 +114,12 @@
             <table width="100%" border="0">
                 <tr style="font-weight:bold;">
                     <td>  Select Type <br/>
-                        <select name="wtype" id="wtype" > 
+                        <select name="wtype" id="wtype" style="width:200px;" > 
                             <?php if(!empty($this->wtyp)){ ?>
                                 <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                             <?php  }else{ ?>
 
-                                <option value="" disabled selected>--------Select Working Type-------</option>
+                                <option value="" disabled selected>Select Working Type</option>
                             <?php  } ?> 
                             <option value="Teaching">Teaching</option>
                             <option value="Non Teaching"> Non Teaching</option>
@@ -127,7 +127,7 @@
                                     
                     </td> 
                     <td>  Select UO<br/>
-                        <select name="uoff" id="uoff" > 
+                        <select name="uoff" id="uoff" style="width:300px;"> 
                             <?php if((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
                                 <option value="<?php echo $this->uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$this->uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$this->uolt)->code ." )"; ?></option>
                             <?php  }else{ ?>
@@ -136,7 +136,7 @@
                         </select> 
                     </td> 
                     <td> Select Department<br/>
-                        <select name="dept[]" id="dept" multiple> 
+                        <select name="dept[]" id="dept" multiple style="width:200px;"> 
                         </select>
                   
                     </td>
@@ -144,8 +144,8 @@
                         $yearArray = range(1948,  $cyear);
                     ?>
                     <?php //echo "year===".$this->year;?>
-                    <td>Select Year  
-                        <select name="year" id="year" > 
+                    <td>Select Year </br> 
+                        <select name="year" id="year" style="width:200px;"> 
                             <?php if((!empty($this->year))&&($this->year != 'All')){ ?>
                                 <option value="<?php echo $this->year; ?>" > <?php echo $this->year; ?></option>
                             <?php  }else{ ?>
@@ -160,7 +160,7 @@
                             ?>          
                         </select> 
                     </td>     
-                    <td><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
+                    <td><br><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
                 </tr>    
             </table>
             <table width="100%"><tr style=" background-color: graytext;">   

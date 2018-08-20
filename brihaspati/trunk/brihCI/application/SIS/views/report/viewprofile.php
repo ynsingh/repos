@@ -43,33 +43,401 @@
             <!--<form action="<//?php echo site_url('report/viewprofile'.$id);?>" method="POST">-->
             <?php $id=0;?>
             <?php echo form_open_multipart('report/viewprofile/' .$id);?>    
-            <tr bgcolor="grey"><td width="50%">
-                <b><?php echo anchor('report/viewprofile/A', "A",array('title' => 'A' , 'id'=>'letterid','class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/B","B",array('title' => 'B' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/C","C",array('title' => 'C' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/D","D",array('title' => 'D' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/E","E",array('title' => 'E' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/F","F",array('title' => 'F' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/G","G",array('title' => 'G' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/H","H",array('title' => 'H' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/I","I",array('title' => 'I' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/J","J",array('title' => 'J' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/K","K",array('title' => 'K' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/L","L",array('title' => 'L' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/M","M",array('title' => 'M' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/N","N",array('title' => 'N' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/O","O",array('title' => 'O' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/P","P",array('title' => 'P' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/Q","Q",array('title' => 'Q' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/R","R",array('title' => 'R' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/S","S",array('title' => 'S' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/T","T",array('title' => 'T' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/U","U",array('title' => 'U' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/V","V",array('title' => 'U' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/W","W",array('title' => 'V' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/X","X",array('title' => 'W' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/Y","Y",array('title' => 'X' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
-                <?php echo anchor("report/viewprofile/Z","Z",array('title' => 'Y' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+            <tr bgcolor="grey"><td width="50%"><b>
+		<?php
+		if(!empty($words)){
+			if($words == "A"){
+				echo anchor("report/viewprofile/A","<font color=red>A</font>",array('title' => 'A' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/A","A",array('title' => 'A' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/A","A",array('title' => 'A' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+			
+		if(!empty($words)){
+			if($words == "B"){
+				echo anchor("report/viewprofile/B","<font color=red>B</font>",array('title' => 'B' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/B","B",array('title' => 'B' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/B","B",array('title' => 'B' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		
+		if(!empty($words)){
+			if($words == "C"){
+				echo anchor("report/viewprofile/C","<font color=red>C</font>",array('title' => 'C' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/C","C",array('title' => 'C' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/C","C",array('title' => 'C' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "D"){
+				echo anchor("report/viewprofile/D","<font color=red>D</font>",array('title' => 'D' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/D","D",array('title' => 'D' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/D","D",array('title' => 'D' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "E"){
+				echo anchor("report/viewprofile/E","<font color=red>E</font>",array('title' => 'E' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/E","E",array('title' => 'E' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/E","E",array('title' => 'E' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "F"){
+				echo anchor("report/viewprofile/F","<font color=red>F</font>",array('title' => 'F' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/F","F",array('title' => 'F' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/F","F",array('title' => 'F' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "G"){
+				echo anchor("report/viewprofile/G","<font color=red>G</font>",array('title' => 'G' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/G","G",array('title' => 'G' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/G","G",array('title' => 'G' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "H"){
+				echo anchor("report/viewprofile/H","<font color=red>H</font>",array('title' => 'H' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/H","H",array('title' => 'H' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/H","H",array('title' => 'H' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "I"){
+				echo anchor("report/viewprofile/I","<font color=red>I</font>",array('title' => 'I' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/I","I",array('title' => 'I' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/I","I",array('title' => 'I' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "J"){
+				echo anchor("report/viewprofile/J","<font color=red>J</font>",array('title' => 'J' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/J","J",array('title' => 'J' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/J","J",array('title' => 'J' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "K"){
+				echo anchor("report/viewprofile/K","<font color=red>K</font>",array('title' => 'K' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/K","K",array('title' => 'K' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/K","K",array('title' => 'K' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "L"){
+				echo anchor("report/viewprofile/L","<font color=red>L</font>",array('title' => 'L' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/L","L",array('title' => 'L' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/L","L",array('title' => 'L' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "M"){
+				echo anchor("report/viewprofile/M","<font color=red>M</font>",array('title' => 'M' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/M","M",array('title' => 'M' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/M","M",array('title' => 'M' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "N"){
+				echo anchor("report/viewprofile/N","<font color=red>N</font>",array('title' => 'N' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/N","N",array('title' => 'N' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/N","N",array('title' => 'N' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "O"){
+				echo anchor("report/viewprofile/O","<font color=red>O</font>",array('title' => 'O' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/O","O",array('title' => 'O' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/O","O",array('title' => 'O' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "P"){
+				echo anchor("report/viewprofile/P","<font color=red>P</font>",array('title' => 'P' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/P","P",array('title' => 'P' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/P","P",array('title' => 'P' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "Q"){
+				echo anchor("report/viewprofile/Q","<font color=red>Q</font>",array('title' => 'Q' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/Q","Q",array('title' => 'Q' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/Q","Q",array('title' => 'Q' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "R"){
+				echo anchor("report/viewprofile/R","<font color=red>R</font>",array('title' => 'R' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/R","R",array('title' => 'R' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/R","R",array('title' => 'R' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "S"){
+				echo anchor("report/viewprofile/S","<font color=red>S</font>",array('title' => 'S' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/S","S",array('title' => 'S' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/S","S",array('title' => 'S' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "T"){
+				echo anchor("report/viewprofile/T","<font color=red>T</font>",array('title' => 'T' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/T","T",array('title' => 'T' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/T","T",array('title' => 'T' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "U"){
+				echo anchor("report/viewprofile/U","<font color=red>U</font>",array('title' => 'U' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/U","U",array('title' => 'U' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/U","U",array('title' => 'U' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "V"){
+				echo anchor("report/viewprofile/V","<font color=red>V</font>",array('title' => 'V' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/V","V",array('title' => 'V' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/V","V",array('title' => 'V' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "W"){
+				echo anchor("report/viewprofile/W","<font color=red>W</font>",array('title' => 'W' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/W","W",array('title' => 'W' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/W","W",array('title' => 'W' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "X"){
+				echo anchor("report/viewprofile/X","<font color=red>X</font>",array('title' => 'X' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/X","X",array('title' => 'X' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/X","X",array('title' => 'X' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "Y"){
+				echo anchor("report/viewprofile/Y","<font color=red>Y</font>",array('title' => 'Y' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/Y","Y",array('title' => 'Y' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/Y","Y",array('title' => 'Y' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		if(!empty($words)){
+			if($words == "Z"){
+				echo anchor("report/viewprofile/Z","<font color=red>Z</font>",array('title' => 'Z' , 'class' => 'red-link'));
+				echo "&nbsp;&nbsp;";
+			}
+			else{
+				echo anchor("report/viewprofile/Z","Z",array('title' => 'Z' , 'class' => 'red-link'));		
+				echo "&nbsp;&nbsp;";
+			}
+		}
+		else{
+			echo anchor("report/viewprofile/Z","Z",array('title' => 'Z' , 'class' => 'red-link'));		
+			echo "&nbsp;&nbsp;";
+		}
+		?>
+               <!-- <b><?php //echo anchor('report/viewprofile/A', "A",array('title' => 'A' , 'id'=>'letterid','class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/B","B",array('title' => 'B' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/C","C",array('title' => 'C' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/D","D",array('title' => 'D' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/E","E",array('title' => 'E' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/F","F",array('title' => 'F' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/G","G",array('title' => 'G' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/H","H",array('title' => 'H' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/I","I",array('title' => 'I' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/J","J",array('title' => 'J' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/K","K",array('title' => 'K' , 'class' => 'red-link')); ?>&nbsp;&nbsp; 
+                <?php //echo anchor("report/viewprofile/L","L",array('title' => 'L' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/M","M",array('title' => 'M' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/N","N",array('title' => 'N' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/O","O",array('title' => 'O' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/P","P",array('title' => 'P' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/Q","Q",array('title' => 'Q' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php // echo anchor("report/viewprofile/R","R",array('title' => 'R' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/S","S",array('title' => 'S' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/T","T",array('title' => 'T' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php ///echo anchor("report/viewprofile/U","U",array('title' => 'U' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/V","V",array('title' => 'U' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/W","W",array('title' => 'V' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/X","X",array('title' => 'W' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/Y","Y",array('title' => 'X' , 'class' => 'red-link')); ?>&nbsp;&nbsp;
+                <?php //echo anchor("report/viewprofile/Z","<font color=red>Z</font>",array('title' => 'Y' , 'class' => 'red-link')); ?>&nbsp;&nbsp;-->
                 </b>
                  
                 </td> 

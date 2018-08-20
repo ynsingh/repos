@@ -42,10 +42,10 @@
 			<td> <?php echo $data->emp_name;?></td>
 		</tr>
 		<tr>	
-			<td>Designation </br> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name;?></td>
+			<td><font color="blue">Designation</font> </br> <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name;?></td>
 		</tr>
 		<tr>
-			<td>Phone No. </br><?php echo $data->emp_phone;?></td>
+			<td><font color="blue">Phone No. </font></br><?php echo $data->emp_phone;?></td>
 		</tr>
 	<!--	<tr>	
 			<td>E-mail Id </br> <?php echo $data->emp_secndemail;?></td>

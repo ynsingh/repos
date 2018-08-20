@@ -251,7 +251,7 @@ class Report  extends CI_Controller
     public function viewprofile($id=0) {
 	$cdate = date('Y-m-d');
         // add doris geater than current date and reason is null  in whdata
-        $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+        $datawh = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
         //  get role id and user id
         $rlid=$this->session->userdata('id_role');
         if ($rlid == 5){
@@ -262,7 +262,7 @@ class Report  extends CI_Controller
                 foreach($resu as $rw){
                         $deptid=$rw->deptid;
                 }
-                $whdata['emp_dept_code'] = $deptid;
+                $datawh['emp_dept_code'] = $deptid;
         }
 /*	$roleid=$this->session->userdata('id_role');
         $userid=$this->session->userdata('id_user');
@@ -279,6 +279,7 @@ class Report  extends CI_Controller
         if(!empty($worktype) && ($id!== 0)){
             $filter=$this->input->post('filter',TRUE);
             $empdata['wtype']=$worktype; 
+            $empdata['words']=$filter; 
 	   /* if (!empty($deptid))
                 $datawh = array('emp_dept_code' => $deptid,'emp_worktype' => $worktype,'emp_name LIKE '=> $filter.'%');
 	    else
@@ -317,6 +318,12 @@ class Report  extends CI_Controller
 
 	//get all profile and service data
 	$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+
+	$fieldems="ems_empid,ems_vci_status,ems_vci_statchapter,ems_vci_statregno,ems_vci_statregdate,ems_vci_statvaliddate,ems_vci_alliregno,ems_vci_alliregdate,ems_vci_allivaliddate";
+        $whdataems = array ('ems_empid' => $emp_id);
+        $whorderems = '';
+        $emp_data['emsdata'] = $this->sismodel->get_orderlistspficemore('employee_master_support',$fieldems,$whdataems,$whorderems);
+
 	$selectfield="*";
 	$whdata = array ('empsd_empid' => $emp_id);
 	$whorder = 'empsd_dojoin desc';
@@ -940,7 +947,7 @@ public function disciplinewiselist(){
         $datawh=array('emp_worktype' => $combid);
         $comb_data = $this->sismodel->get_distinctrecord('employee_master','emp_uocid',$datawh);
         $uo_select_box =' ';
-        $uo_select_box.='<option value=null>-------Select University Officer--------';
+        $uo_select_box.='<option value=null>--Select University Officer--';
 //	$usrname=$this->session->userdata('username');
   //      if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -972,7 +979,7 @@ public function disciplinewiselist(){
 	$whorder = 'emp_dept_code asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
         $dept_select_box =' ';
-        $dept_select_box.='<option value=null>-------Select Department--------';
+        $dept_select_box.='<option value=null>--Select Department--';
         $dept_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
@@ -1007,7 +1014,7 @@ public function disciplinewiselist(){
 	$whorder = 'emp_desig_code asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_desig_code',$datawh,$whorder);
         $desig_select_box =' ';
-        $desig_select_box.='<option value=null>--------- Select Designation ---------';
+        $desig_select_box.='<option value=null>-- Select Designation --';
         $desig_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
@@ -1034,7 +1041,7 @@ public function disciplinewiselist(){
 	$whorder = 'emp_uocid asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_uocid',$datawh,$whorder);
         $uo_select_box =' ';
-        $uo_select_box.='<option value=null>------- Select University Officer ------';
+        $uo_select_box.='<option value=null>-- Select University Officer --';
         $uo_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
@@ -1069,7 +1076,7 @@ public function disciplinewiselist(){
 	$whorder ='emp_dept_code asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
         $dept_select_box =' ';
-        $dept_select_box.='<option value=null>------- Select Department ------';
+        $dept_select_box.='<option value=null>-- Select Department --';
    //     $dept_select_box.='<option value='.All.'>'.All. ' ';
         if(count($comb_data)>0){
             foreach($comb_data as $detail){
@@ -1105,7 +1112,7 @@ public function disciplinewiselist(){
 	$whorder = 'sp_uo asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$whdata,$whorder);
         $uo_select_box =' ';
-        $uo_select_box.='<option value=null>-------Select University Officer--------';
+        $uo_select_box.='<option value=null>--Select University Officer--';
 	$usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -1149,7 +1156,7 @@ public function disciplinewiselist(){
 	$whorder = 'sp_emppost asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$datawh,$whorder);
         $pt_select_box =' ';
-        $pt_select_box.='<option value=null>-------Select Post--------';
+        $pt_select_box.='<option value=null>--Select Post--';
 	$usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname ==='admin')){
         	$pt_select_box.='<option value='.All.'>'.All. ' ';
@@ -1187,7 +1194,7 @@ public function disciplinewiselist(){
 	$whorder = 'sp_uo asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$whdata,$whorder);
         $uo_select_box =' ';
-        $uo_select_box.='<option value=null>----Select University Officer-----';
+        $uo_select_box.='<option value=null>--Select University Officer--';
 	$usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -1228,7 +1235,7 @@ public function disciplinewiselist(){
 	$whorder = 'sp_dept asc ';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_dept',$datawh,$whorder);
         $dept_select_box =' ';
-        $dept_select_box.='<option value=null>----Select Department-------';
+        $dept_select_box.='<option value=null>--Select Department--';
 	$usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$dept_select_box.='<option value='.All.'>'.All. ' ';
@@ -1267,7 +1274,7 @@ public function disciplinewiselist(){
 	$whorder = 'sp_emppost asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$whdata,$whorder);
         $post_select_box =' ';
-        $post_select_box.='<option value=null>----------- Select Post ---------------';
+        $post_select_box.='<option value=null>-- Select Post --';
 	$usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
         	$post_select_box.='<option value='.All.'>'.All. ' ';
@@ -1302,7 +1309,7 @@ public function disciplinewiselist(){
 
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$whdata,$whorder);
         $post_select_box =' ';
-        $post_select_box.='<option value=null>----------- Select Post ---------------';
+        $post_select_box.='<option value=null>-- Select Post --';
         $usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
                 $post_select_box.='<option value='.All.'>'.All. ' ';

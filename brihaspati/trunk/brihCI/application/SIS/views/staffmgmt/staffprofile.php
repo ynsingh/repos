@@ -500,11 +500,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                // alert("vcrradioval====="+vcrradioval);
                 if(vcrradioval == 'Applicable'){
                     $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',false);
+                    $('#allvciregno,#allvciregdate,#allvcrvaliddate').prop('disabled',false);
                                       
                 }
                 else{
                     $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',true);
-                             
+                    $('#allvciregno,#allvciregdate,#allvcrvaliddate').prop('disabled',true);
+                       
                 }
             }); 
             

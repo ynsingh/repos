@@ -281,6 +281,9 @@
                 }); */
                 $('#grpid').on('change',function(){
                     var grp_id = $(this).val();
+		    var wrktype_id = $('#emptypeto').val();
+		    var combid = grp_id+","+wrktype_id;
+	//		alert(combid);
                     if(grp_id == ''){
                         $('#desigidto').prop('disabled',true);
                     }
@@ -288,9 +291,9 @@
              
                         $('#desigidto').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesiglist",
                             type: "POST",
-                            data: {"group" : grp_id},
+                            data: {"gwt" : combid},
                             dataType:"html",
                             success:function(data){
                                 $('#desigidto').html(data.replace(/^"|"$/g, ''));
@@ -812,20 +815,6 @@
                             <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
                             </select></div>
                         </td>
-                        <td><label for="payband" style="font-size:15px;">Pay Band To<font color='Red'>*</font></label>
-                        <div><select name="payband" required style="width:350px;"> 
-                        <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
-                        <?php foreach($this->salgrd as $salgrddata): ?>	
-                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
-                            </option> 
- 			<?php endforeach; ?>
-                       
-                        </select></div>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        
                         <td><label for="employeetype" style="font-size:15px;">Working Type To<font color='Red'>*</font></label>
                             <div><select name="emptypeto" id="emptypeto" style="width:350px;" required="required"> 
                                 <option value="">------------ Select Employee Type ---------------</option>
@@ -833,6 +822,10 @@
                                 <option value="Non Teaching">Non Teaching</option>                     
                             </select></div>
                         </td>
+                        
+                    </tr>
+                    <tr>
+                        
                         <td><label for="group" style="font-size:15px;">Group To<font color='Red'>*</font></label>
                         <div><select name="group" id="grpid" required style="width:350px;"> 
                         <option selected="selected" disabled selected>------------ Select Group ---------</option>
@@ -848,6 +841,16 @@
                                <option value="">--------------- Select Designation ---------------</option>
                             </select>
                             </div>
+                        </td>
+                        <td><label for="payband" style="font-size:15px;">Pay Band To<font color='Red'>*</font></label>
+                        <div><select name="payband" required style="width:350px;"> 
+                        <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
+                        <?php foreach($this->salgrd as $salgrddata): ?>	
+                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
+                            </option> 
+ 			<?php endforeach; ?>
+                       
+                        </select></div>
                         </td>
                       
                     </tr>

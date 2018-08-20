@@ -217,7 +217,7 @@
                     <td><font color='Blue'>Campus Name :</font></td>
                     <td>
 <?php 
-				echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
+				echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name. "( ". $this->commodel->get_listspfic1('study_center','sc_code','sc_id',$record->emp_scid)->sc_code ." )";
 ?>
                     </td>
                     <td><font color='Blue'>University Officer Control:</font></td>
@@ -231,7 +231,7 @@
                     <td><font color='Blue'>Department :</font></td>
                     <td colspan="2"> 
 <?php 
-				echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
+				echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name . "( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->emp_dept_code)->dept_code ." )";
 ?>
                     </td>
                     <!--<td>
@@ -248,11 +248,11 @@
                     <td><font color='Blue'>Scheme Name : </font></td>
                     <td>
 <?php 
-				echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+				echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name . "( ". $this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->emp_schemeid)->sd_code ." )";
 ?>
 		</td> 
                     <td><font color='Blue'>Drawing and Disbursing Officer :</font></td>
-                    <td> <?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->emp_ddoid)->ddo_name;?></td> 
+                    <td> <?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->emp_ddoid)->ddo_name . "( ". $this->sismodel->get_listspfic1('ddo','ddo_code','ddo_id',$record->emp_ddoid)->ddo_code ." )";?></td> 
                     <td><font color='Blue'>Working Type :</font></td>
                     <td colspan="2"><?php echo $record->emp_worktype;?></td>
                
@@ -411,13 +411,41 @@
                     <p><b>Veterinary Council (VC) Registration:</b></p>
                 </td></tr>
                 <tr></tr>
+		<?php
+
+        if(count($emsdata)){
+                if(!empty($emsdata->ems_vci_status)){
+                        if($emsdata->ems_vci_status == "Not Applicable"){
+                                echo "<tr><td colspan=8> Not Applicable </td></tr>";
+                        }else{  
+                                echo "<tr>";
+                                echo "<td> <font color='Blue'>Chapter</font></td> <td>".$emsdata->ems_vci_statchapter."</td>";
+                                echo "<td> <font color='Blue'>Registration No</font></td> <td>".$emsdata->ems_vci_statregno."</td>";
+                                echo "<td> <font color='Blue'>Date of Registration</font></td> <td>".date('d-m-Y',strtotime($emsdata->ems_vci_statregdate))."</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                echo "<td> <font color='Blue'>Validity Date</font></td> <td colspan=5>".date('d-m-Y',strtotime($emsdata->ems_vci_statvaliddate))."</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                echo "<td> <font color='Blue'>All India Registration No</font></td> <td>".$emsdata->ems_vci_alliregno."</td>";
+                                echo "<td> <font color='Blue'>All India Date of Registration</font></td> <td>".date('d-m-Y',strtotime($emsdata->ems_vci_alliregdate))."</td>";
+                                echo "<td> <font color='Blue'>All India Validity Date</font></td> <td>".date('d-m-Y',strtotime($emsdata->ems_vci_allivaliddate))."</td>";
+                                echo "</tr>";
+                
+                        }
+                }
+        }
+
+?>
+<!--
                 <tr>
 		<td><font color='Blue'>Registration No</font></td>
-		<td><?php   echo $record->emp_vciregno; ?></td>
+		<td><?php   //echo $record->emp_vciregno; ?></td>
 		<td><font color='Blue'>Date of Registration:</font></td>
-		<td><?php echo date('d-m-Y',strtotime($record->emp_vciregdate));?></td>
+		<td><?php //echo date('d-m-Y',strtotime($record->emp_vciregdate));?></td>
 		</tr>
 		<tr></tr>
+-->
                 <tr></tr>
                 <tr style=" background-color:grey;width:100%;"><td colspan="10">
                     <p><b>Additional Assignments:</b></p>

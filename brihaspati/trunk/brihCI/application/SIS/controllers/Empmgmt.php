@@ -44,6 +44,12 @@ class Empmgmt extends CI_Controller
 	$hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
 	$this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
+	$fieldems="ems_empid,ems_vci_status,ems_vci_statchapter,ems_vci_statregno,ems_vci_statregdate,ems_vci_statvaliddate,ems_vci_alliregno,ems_vci_alliregdate,ems_vci_allivaliddate";
+        $whdataems = array ('ems_empid' => $emp_id);
+        $whorderems = '';
+        $data['emsdata'] = $this->sismodel->get_orderlistspficemore('employee_master_support',$fieldems,$whdataems,$whorderems);
+
+
 	$selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
         $whorder = 'empsd_dojoin desc';

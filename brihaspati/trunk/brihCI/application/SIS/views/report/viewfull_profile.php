@@ -112,7 +112,7 @@
 			/*	if(!empty($currscnme)) 
 					echo $currscnme;
 				else*/
-					echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$data->emp_scid)->sc_name; 
+					echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$data->emp_scid)->sc_name ."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$data->emp_scid)->sc_code.")"; 
 ?>
 				</td>
 				<td>
@@ -123,18 +123,18 @@
 				</td>
 				<td>
 <?php 				echo "<b>Department </b><br>";
-					echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$data->emp_dept_code)->dept_name; 
+					echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$data->emp_dept_code)->dept_name."(".$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$data->emp_dept_code)->dept_code.")"; 
 ?>
 				</td>
 				<td>
 <?php 				echo "<b>Scheme Name</b><br>";
-					echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$data->emp_schemeid)->sd_name;
+					echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$data->emp_schemeid)->sd_name."(".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id',$data->emp_schemeid)->sd_code.")";
 ?>
 				</td>
 			</tr>
   			<tr>
                                 <td>
-<?php   echo    "<b>Drawing and Disbursing Officer</b> <br>".$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddoid)->ddo_name; ?>
+<?php   echo    "<b>Drawing and Disbursing Officer</b> <br>".$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddoid)->ddo_name."(".$this->sismodel->get_listspfic1('ddo', 'ddo_code', 'ddo_id',$data->emp_ddoid)->ddo_code.")"; ?>
                                 </td>
                                 <td>
 
@@ -292,7 +292,7 @@
                                 </td>
                         </tr>
 <tr>
-                                <td>
+                                <td colspan=4>
 <?php   echo    "<b>Aadhaar No</b> <br>".$data->emp_aadhaar_no;?>
                                 </td>
 </tr>
@@ -374,7 +374,12 @@ echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$u
 <td>
 </td>
 </tr>
-<?php } ?>
+<?php } else {
+
+echo "<td colspan=2>";
+
+
+}?>
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>NET Details:</b></label></td> </tr>
                                 </td>
         <?php
@@ -383,20 +388,47 @@ echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$u
                     $ntqnew=explode(",",$ntq);
 echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
 </td><td><b>Organiser</b><br><?php   echo    $ntqnew[1];?></td><td><b>Year of Passing</b><br><?php   echo    implode('-', array_reverse(explode('-', $data->emp_netpassingyear)));?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
+
+
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Veterinary Council (VC) Registration:</b></label></td> </tr>
-<tr>
+
+<?php 
+
+	if(count($emsdata)){
+		if(!empty($emsdata->ems_vci_status)){
+			if($emsdata->ems_vci_status == "Not Applicable"){
+				echo "<tr><td colspan=4> Not Applicable </td></tr>";
+			}else{
+				echo "<tr>";
+				echo "<td> <b>Chapter</b> <br>".$emsdata->ems_vci_statchapter."</td>";
+				echo "<td> <b>Registration No</b> <br>".$emsdata->ems_vci_statregno."</td>";
+				echo "<td> <b>Date of Registration</b> <br>".$emsdata->ems_vci_statregdate."</td>";
+				echo "<td> <b>Validity Date</b> <br>".$emsdata->ems_vci_statvaliddate."</td>";
+				echo "</tr>";
+				echo "<tr>";
+				echo "<td> <b>All India Registration No</b> <br>".$emsdata->ems_vci_alliregno."</td>";
+				echo "<td> <b>All India Date of Registration</b> <br>".$emsdata->ems_vci_alliregdate."</td>";
+				echo "<td colspan=2> <b>All India Validity Date</b> <br>".$emsdata->ems_vci_allivaliddate."</td>";
+				echo "</tr>";
+		
+			}	
+		}
+	}
+
+?>
+<!--<tr>
 <td>
-<?php   echo    "<b>Registration No</b> <br>".$data->emp_vciregno;?>
+<?php   //echo    "<b>Registration No</b> <br>".$data->emp_vciregno;?>
 </td>
 <td>
-<?php   echo    "<b>Date of Registration</b> <br>".date('d-m-Y',strtotime($data->emp_vciregdate));?>
+<?php //  echo    "<b>Date of Registration</b> <br>".date('d-m-Y',strtotime($data->emp_vciregdate));?>
 </td>
 <td>
 </td>
 <td>
 </td>
-</tr>
                         </tr>
+-->
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Additional Assignments:</b></label></td> </tr>
                         <tr style="background:none repeat scroll 0 0 #9D9D9D";>
                             <td><b>Name of the Assignment</b></td>
