@@ -785,4 +785,212 @@ class Setup3 extends CI_Controller
     }
     /********************* closer  Salary Slip  form *********************************************************/
     
+    /*********************   HRA Places Grade *********************************************************/
+    public function hra_placesgrade(){
+        $data['hrarecord'] =$this->sismodel->get_list('hra_grade_city');
+        $this->logger->write_logmessage("view"," view hra place grade list" );
+        $this->logger->write_dblogmessage("view"," view hra place grade list");
+        $this->load->view('setup3/hra_placegradelist',$data);
+        
+    }
+    /*********************  closer HRA Places Grade *********************************************************/ 
+    
+    /*********************   HRA Grade List*********************************************************/
+    public function hra_grade(){
+        $data['hragrade'] =$this->sismodel->get_list('hra_grade');
+        $this->logger->write_logmessage("view"," view hra grade list" );
+        $this->logger->write_dblogmessage("view"," view hra grade list");
+        $this->load->view('setup3/hragradelist',$data);
+        
+    }
+    /*********************  closer HRA  Grade *********************************************************/ 
+    /*********************  ADD HRA Grade *********************************************************/
+    public function add_hragrade(){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        if(isset($_POST['add_hragrade'])) {
+            //form validation
+            
+            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','HRA Grade','trim|required|xss_clean');
+            $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/add_hragrade');
+                return;
+            }//formvalidation
+            else{
+                $data = array(
+                    'hg_workingtype'    =>$_POST['worktype'],
+                    'hg_payscaleid'     =>$_POST['payscale'],
+                    'hg_gradeid'        =>$_POST['hragrade'],
+                    'hg_amount'         =>$_POST['amount'],
+                    'hg_creatorid'      =>$this->session->userdata('username'),
+                    'hg_creatordate'    =>date('Y-m-d'),
+                    'hg_modifierid'     =>$this->session->userdata('username'),
+                    'hg_modifydate'     =>date('Y-m-d'),
+                );
+                
+                $dupcheck = array(
+                    'hg_workingtype'    =>$_POST['worktype'],
+                    'hg_payscaleid'     =>$_POST['payscale'],
+                    'hg_gradeid'        =>$_POST['hragrade'],
+                    'hg_amount'         =>$_POST['amount'],
+                ); 
+                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
+                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
+                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
+                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
+                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                
+                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+                
+                $hragradedup = $this->sismodel->isduplicatemore('hra_grade', $dupcheck);
+                if($hragradedup == 1 ){
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type =".$_POST['worktype']
+                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$_POST['amount'].' ]');
+                    $this->load->view('setup3/add_hragrade');
+                    return;
+                }
+                else{
+                    $hragradeflag=$this->sismodel->insertrec('hra_grade', $data);
+                    if(!$hragradeflag)
+                    {
+                        $this->logger->write_logmessage("insert","Trying to add HRA Grade ", " HRA Grade is not added  HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->logger->write_dblogmessage("insert","Trying to add HRA Grade ", " HRA Grade is not added HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->session->set_flashdata('err_message','Error in adding HRA Grade - '  , 'error');
+                        redirect('setup3/add_hragrade');
+                    }
+                    else{
+                        $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+                        $this->logger->write_logmessage("insert","Add HRA Grade ", " HRA Grade = ".$hragradename." added  successfully...");
+                        $this->logger->write_dblogmessage("insert","Add  HRA Grade ", " HRA Grade = ".$hragradename."added  successfully...");
+                        $this->session->set_flashdata("success", "[ Working Type =".$_POST['worktype'] ." HRA Grade = ".$hragradename
+                                ." Payscale = ".$fullstr ." Amount = ".$_POST['amount'].']'." record insert successfully...");
+                        redirect("setup3/hra_grade");
+                    }
+                    
+                }//else dupcheck
+                
+            }//else
+        }//isset button    
+        $this->load->view('setup3/add_hragrade');
+        
+    }
+    /*********************  closer Add HRA  Grade *********************************************************/ 
+    /********************* Add Employee type form  *******************************************/
+    public function edit_hragrade($id){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $data['id'] = $id;
+        $data['hragradedata'] = $this->sismodel->get_listrow('hra_grade','hg_id',$id)->row();
+        if(isset($_POST['edithragrade'])) {
+            
+            //form validation
+            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','HRA GRADE','trim|required|xss_clean');
+            $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/edit_hragrade',$data);
+                return;
+            }//formvalidation
+            else{
+                $wtype = $this->input->post('worktype', TRUE);
+                $payscale = $this->input->post('payscale', TRUE);
+                $grade = $this->input->post('hragrade', TRUE);
+                $amount = $this->input->post('amount', TRUE);
+                
+                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
+                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
+                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
+                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
+                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                
+                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id', $grade)->hgc_gradename;
+                
+                $logmessage = "";
+                if($data['hragradedata']->hg_workingtype != $wtype)
+                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_workingtype. " changed by " .$wtype;
+                if($data['hragradedata']->hg_payscaleid != $payscale)
+                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_payscaleid. " changed by " .$payscale;
+                if($data['hragradedata']->hg_gradeid != $grade)
+                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_gradeid . " changed by " .$grade;
+                if($data['hragradedata']->hg_amount != $amount)
+                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_amount . " changed by " .$amount;
+                
+                $updata = array(
+                    'hg_workingtype'    =>$wtype,
+                    'hg_payscaleid'     =>$payscale,
+                    'hg_gradeid'        =>$grade,
+                    'hg_amount'         =>$amount,
+                    //'hg_creatorid'      =>$this->session->userdata('username'),
+                    //'hg_creatordate'    =>date('Y-m-d'),
+                    'hg_modifierid'     =>$this->session->userdata('username'),
+                    'hg_modifydate'     =>date('Y-m-d'),
+                );
+                $dupcheck = array(
+                    'hg_workingtype'    =>$wtype,
+                    'hg_payscaleid'     =>$payscale,
+                    'hg_gradeid'        =>$grade,
+                    'hg_amount'         =>$amount,
+                ); 
+                $hragradedup = $this->sismodel->isduplicatemore('hra_grade', $dupcheck);
+                if($hragradedup == 1 ){
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type = ".$wtype 
+                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$amount.' ]');
+                    redirect('setup3/hra_grade');
+                    return;
+                }
+                else{
+                    $editetflag=$this->sismodel->updaterec('hra_grade', $updata, 'hg_id', $id);
+                    if(!$editetflag){
+                        $this->logger->write_logmessage("error","error in Edit HRA Grade ", "Edit HRA Grade details. $logmessage ");
+                        $this->logger->write_dblogmessage("error","error in Edit HRA Grade", "Edit HRA Grade . $logmessage ");
+                        $this->session->set_flashdata('err_message','Error in updating HRA Grade - ' . $logmessage . '.', 'error');
+                        $this->load->view('setup3/edit_hragrade', $data);
+                    
+                    }
+                    else{
+                        $this->logger->write_logmessage("update","Edit  HRA Grade by  ".$this->session->userdata('username') , "Edit  HRA Grade details. $logmessage ");
+                        $this->logger->write_dblogmessage("update","Edit HRA Grade by  ".$this->session->userdata('username') , "Edit HRA Grade details. $logmessage ");
+                        $this->session->set_flashdata('success','Record updated successfully.'.'[ HRA Grade = '.$hragradename." Working Type =".$wtype. 
+                            " Payscale = ".$fullstr."  Amount = ".$amount.']');
+                        redirect('setup3/hra_grade');
+                    
+                    }
+                } //else dupcheck              
+            }//else formvalidation
+            
+        }//if issetbutton press
+        $this->load->view('setup3/edit_hragrade',$data);
+    }//function
+    
+    /**This function Delete records */
+    public function delete_hragrade($id) {
+        $this->roleid=$this->session->userdata('id_role');
+       // $this->hgid=$id;
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('hra_grade','hg_id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in deleting HRA Grade record" . " [Entry id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting HRA Grade record" . " [Entry id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting deleting HRA Grade record - ');
+            redirect('setup3/hra_grade');
+        }
+        else{
+         
+            $this->logger->write_logmessage("delete", " Deleted HRA Grade Record  ". " [Entry id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted HRA Grade Record  " . " [Entry id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('setup3/hra_grade');
+        }
+        $this->load->view('setup3/hragradelist');
+        
+    }//closer
 }//class    
