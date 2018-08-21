@@ -223,10 +223,11 @@ if(($enddate >= $cdate) && ($startdate <= $cdate)){
 </div>
 <?php }else{//}//elseif and foreach close?>  
 <div class="container">    
-<div id='card' class="col-md-12" style="background-color: black;">
+<div id='card' class="col-md-12" style="background-color: lightgreen;">
   <!--<h3 style="text-align: center;">Course will be start soon.</h3>-->
   <center>
-  <img src="https://fontmeme.com/permalink/180811/d24ce98ea802e52478ab0ffa512d09c8.png" style="width: 50%;">
+<!--  <img src="https://fontmeme.com/permalink/180811/d24ce98ea802e52478ab0ffa512d09c8.png" style="width: 50%;"> -->
+	<h2> Course content will be available after 10<sup>th</sup> October 2018. Kindly visit the course structure and course calander links</h2>
   </center>
 </div>
 </div>

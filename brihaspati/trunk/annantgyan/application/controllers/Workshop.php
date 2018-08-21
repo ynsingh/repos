@@ -21,12 +21,10 @@ class Workshop extends CI_Controller {
 		
 	}
 
-	//https://test.payu.in/_payment
-/******************************************************************************/
 	public function courseenroll(){
 		$cid = $this->uri->segment(3); 
 		$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
-		$data['cid'] = $cid;
+		$data['courseid'] = $cid;
 		$data['crscode'] = $this->commodel->get_listspfic1('courses','cou_code','cou_id',$cid)->cou_code;
 		$this->load->view('courseenroll',$data);
 	}	
@@ -45,10 +43,11 @@ class Workshop extends CI_Controller {
             		$this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric');
 			$this->form_validation->set_rules('amount','Amount','trim|required|xss_clean');
             
-            		if($this->form_validation->run() == FALSE){
+			$cid = $this->input->post('courseid');
+			$data['courseid']=$cid;
+			if($this->form_validation->run() == FALSE){
                			$this->load->view('courseenroll',$data);
                			return;		
-            	//redirect('workshop/courseenroll');
             		}else{
 
 				$name 		= $this->input->post('name');
@@ -62,7 +61,7 @@ class Workshop extends CI_Controller {
 				$cid         	= $this->input->post('courseid');
 
 				$data = array(
-					'course_id'	=> $cid,
+					'courseid'	=> $cid,
             				'amount' 	=> $amount,  
 					'productinfo' 	=> $product_info,         
             				'firstname' 	=> $name,
@@ -71,14 +70,24 @@ class Workshop extends CI_Controller {
            				'refperson'	=> $rperson,
            				'place'		=> $place,
            				'nationality'   => $nationality,
-        			);
-        			
+				);
+				$datadup = array('su_emailid' => $mailid);
+				$isexist=$this->commodel->isduplicatemore('sign_up',$datadup);
+				if($isexist)	
+				{
+					$this->session->set_flashdata('error', 'Email id - '.$mailid .' already exist ');
+               				$this->load->view('courseenroll',$data);
+		//			$this->load->view('workshop/courseenroll',$data);
+	                                return;
+				}
+				else{
+					$this->session->set_flashdata('error', '');
+					$this->load->view('courseenroll_confirm',$data);
+					return;
+				}
 			}//else close
-					
-								
-		$this->load->view('courseenroll_confirm',$data);
-		}
-		//$this->load->view('courseenroll_confirm',$data);
+		}//close submit
+		redirect('Course-Registration');
 	}
 	
 	function enroll_workshop(){
@@ -180,7 +189,7 @@ class Workshop extends CI_Controller {
 //					$suid = $this->commodel->get_listspfic1('sign_up','su_id','su_id',$signupid)->su_id;
 					$suname = $this->commodel->get_listspfic1('sign_up','su_name','su_id',$signupid)->su_name;
 					//print_r($suname);die;
-					$userdata = ['su_id' => $signupid ,'su_name' => $suname];
+					$userdata = ['su_id' => $signupid ,'su_emailid' => $mailid,'su_name' => $suname];
 					//print_r($userdata);die;
 					$this->session->set_userdata($userdata);
 

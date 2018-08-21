@@ -103,7 +103,7 @@ class Login extends CI_Controller {
 				$whdata=array('su_emailid'=>$email);
 				$emailexist=$this->commodel->isduplicatemore("sign_up",$whdata);
 				if($emailexist){
-		    		$confmes = "Your Account is already exist.";
+		    			$confmes = "Your Account is already exist.";
 					$this->session->set_flashdata('error',$confmes);
 					redirect('login/signup');
 				}
@@ -120,22 +120,21 @@ class Login extends CI_Controller {
             				redirect('login/signup');
 						}*/
 
-            		$rstring = random_string('alnum',8);
+		            		$rstring = random_string('alnum',8);
 					$data = array (
-						//'su_oguserid'		=> 'NULL',
-                       	'su_name' 			=> $name,
-	                    'su_emailid' 		=> $email,
-        	            'su_password' 		=> $pawd,
-                	               // 'su_confpassword' 	=> $cpawd,
-                        'su_howtoknow' 		=> $hknow,
-                        'su_string'			=> $rstring 
-                    );
+                			       	'su_name' 		=> $name,
+			                    	'su_emailid' 		=> $email,
+        			            	'su_password' 		=> $pawd,
+                        			'su_howtoknow' 		=> $hknow,
+                        			'su_string'		=> $rstring 
+                    			);
 					$insert = $this->db->insert('sign_up',$data);
 					$suid = $this->db->insert_id();
-					$session_id = array(
-						'su_id'=> $suid,
-					);
-					$this->session->set_userdata($session_id);
+				//	$session_id = array(
+				//		'su_id'=> $suid,
+				//	);
+					$sdata = ['su_id' => $suid,'su_emailid' => $email,'su_name' => $name ];
+					$this->session->set_userdata($sdata);
                    /* if(!$insert)
                     {
                         $message = "Your registration not successfully done.";
@@ -310,7 +309,7 @@ class Login extends CI_Controller {
 	    //redirect('welcome');
 			
 		}
-		elseif(isset(($this->session->userdata['first_name']))){
+		elseif(isset($this->session->userdata['first_name'])){
 			//echo "hello";
 			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
 			

@@ -74,10 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<input type="hidden" name="txnid" value="<?//= $tid ?>" />
 				<input name="surl" value="<?//= $surl ?>" size="64" type="hidden" />
 				<input name="furl" value="<?//= $furl ?>" size="64" type="hidden" /> 
-				
 				<input type="hidden" class="form-control"  name="address1" value="<?php //echo $owid;?>"/>-->
-
-				<input type="hidden" class="form-control"  name="courseid" value="<?php echo $course_id;?>"/>
     			<div class="form-group">
     				<label for="name" class="cols-sm-2 control-label" style="font-size: 20px;text-decoration: underline;">Enrollment on course / workshop</label></br>
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>
@@ -170,6 +167,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          
 				
 				<div class="form-group ">
+						<input type="hidden" class="form-control"  name="courseid" value="<?php echo $courseid;?>"/>
 						<!--<input type="submit" name="pay"  class="btn btn-primary btn-lg btn-block login-button" value="Pay Now">-->
 						<input type="submit" name="pay"  class="btn btn-primary btn-lg btn-block login-button" value="Register">
 						<!--<button type="button" class="btn btn-primary btn-lg btn-block login-button" name="pay">Payment</button>-->

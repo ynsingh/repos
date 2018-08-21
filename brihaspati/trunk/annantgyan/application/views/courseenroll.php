@@ -205,10 +205,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php if(!empty($owid)){?>			
 				<input type="text" name="og_id" value="<?php echo $owid;?>">
 			<?php }?>	
-         
 				<div class="form-group ">
-						<input type="hidden" name="courseid" value="<?php echo $cid;?>">
-						<input type="hidden" name="coursecode" value="<?php echo $crscode;?>">
+						<input type="hidden" name="courseid" value="<?php echo isset($_POST["courseid"]) ? $_POST["courseid"] : $courseid;?>">
+<!--						<input type="hidden" name="coursecode" value="<?php //echo isset($_POST["amount"]) ? $_POST["amount"] : $crscode;?>">-->
 						<input type="submit" name="submit"  class="btn btn-success btn-lg btn-block login-button" value="Submit">
 						<!--<button type="button" class="btn btn-primary btn-lg btn-block login-button" name="pay">Payment</button>-->
 				</div>			

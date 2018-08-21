@@ -42,10 +42,11 @@ class Webhook extends CI_Controller {
 			 $mailid = $data['buyer'];
 
 			 $paymentreq_id = $data['payment_request_id'];
-				//get the workshop code form purpose
-			$parts = explode("-",$purpose);
+			 //get the workshop code form purpose
+			 $purpose=trim($purpose);
+			 $parts = explode("-",$purpose);
 
-				//update the data in ongoingworkshop and ongoingworkshop_pg
+			//update the data in ongoingworkshop and ongoingworkshop_pg
 			$udata=array('ow_bankname' =>'InstaMojo', 'ow_referenceno' =>$payment_id, 'ow_paymentgateway' => 'InstaMojo','ow_paymentstatus'=>$status);
 			$uflag=$this->commodel->updaterec('ongoingworkshop',$udata, 'ow_id', $parts[2]);
 
@@ -54,11 +55,12 @@ class Webhook extends CI_Controller {
 
 
 			//getting email and password
-			if (empty($mailid ) ||($mailid == "")){
-				$mailid=$this->commodel->get_listspfic1('ongoingworkshop','ow_email','ow_id',$parts[2]);
+			if (empty($mailid)||($mailid == "")){
+				$mailid=$this->commodel->get_listspfic1('ongoingworkshop','ow_email','ow_id',$parts[2])->ow_email;
 			}
-			$pawd=$this->commodel->get_listspfic1('sign_up','su_password','su_emailid',$mailid);
-			$crsname = $this->commodel->get_listspfic1('courses','cou_name','cou_code',$parts[0]);
+
+			$pawd=$this->commodel->get_listspfic1('sign_up','su_password','su_emailid',$mailid)->su_password;
+			$crsname = $this->commodel->get_listspfic1('courses','cou_name','cou_code',$parts[0])->cou_name;
 
 			 if($data['status'] == "Credit"){
 				//get start and end dates
@@ -72,7 +74,7 @@ class Webhook extends CI_Controller {
     				$startdate = $coudata->crsann_crsstart;
     				$enddate   = $coudata->crsann_crsend;
     				$feedbackdate   = $coudata->crsann_feedbkdate;
-    			//code for sending mail to user	
+    				//code for sending mail to user	
 				$subject = "Registered Successfully";
                                      //   $pawd = random_string('alnum',6);
                                        // $erstring= $mailid.'---'.$rstring;
@@ -92,7 +94,7 @@ class Webhook extends CI_Controller {
                                         <tr><td><b>Email: </b></td><td align=left>".$mailid."</td></tr>
                                         <tr><td><b>Password : </b> </td><td align=left>".$pawd. "</td><tr>
                                         <tr><td><b>Course Name : </b> </td><td align=left>".$crsname." ( ".$purpose. " )</td><tr>
-                                        <tr><td><b>Payment Status : </b></td><td align=left> .$status.</a></td></tr>
+                                        <tr><td><b>Payment Status : </b></td><td align=left>" .$status."</a></td></tr>
                                         </table> 
 
                                         <table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
