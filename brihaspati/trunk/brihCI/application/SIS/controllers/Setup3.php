@@ -914,13 +914,13 @@ class Setup3 extends CI_Controller
                 
                 $logmessage = "";
                 if($data['hragradedata']->hg_workingtype != $wtype)
-                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_workingtype. " changed by " .$wtype;
+                    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_workingtype. " changed by " .$wtype;
                 if($data['hragradedata']->hg_payscaleid != $payscale)
-                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_payscaleid. " changed by " .$payscale;
+                    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_payscaleid. " changed by " .$payscale;
                 if($data['hragradedata']->hg_gradeid != $grade)
-                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_gradeid . " changed by " .$grade;
+                    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_gradeid . " changed by " .$grade;
                 if($data['hragradedata']->hg_amount != $amount)
-                    $logmessage = "Edit Employee Type Data " .$data['hragradedata']->hg_amount . " changed by " .$amount;
+                    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_amount . " changed by " .$amount;
                 
                 $updata = array(
                     'hg_workingtype'    =>$wtype,
@@ -993,4 +993,424 @@ class Setup3 extends CI_Controller
         $this->load->view('setup3/hragradelist');
         
     }//closer
+    /*********************   Rent Recovery for government quarters List*********************************************************/
+    public function rentrecovery(){
+        $data['rentrecovery'] =$this->sismodel->get_list('rent_recovery');
+        $this->logger->write_logmessage("view"," view Rent Recovery for government quarter  list" );
+        $this->logger->write_dblogmessage("view"," view  Rent Recovery for government quarter list");
+        $this->load->view('setup3/rentrecoverylist',$data);
+        
+    }
+    /*********************  closer Rent Recovery for government quarters List *********************************************************/ 
+    
+    /*********************  ADD Rent Recovery for government quarters *********************************************************/
+    public function add_rentrecovery(){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        if(isset($_POST['add_rentrecovery'])) {
+            //form validation
+            
+            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','HRA Grade','trim|required|xss_clean');
+            $this->form_validation->set_rules('percentage','Rent Recovery Percentage','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/add_rentrecovery');
+                return;
+            }//formvalidation
+            else{
+                $data = array(
+                    'rr_payscaleid'     =>$_POST['payscale'],
+                    'rr_gradeid'        =>$_POST['hragrade'],
+                    'rr_workingtype'    =>$_POST['worktype'],
+                    'rr_percentage'     =>$_POST['percentage'],
+                    'rr_description'     =>$_POST['Description'],
+                    'rr_creatorid'      =>$this->session->userdata('username'),
+                    'rr_creatordate'    =>date('Y-m-d'),
+                    'rr_modifierid'     =>$this->session->userdata('username'),
+                    'rr_modifydate'     =>date('Y-m-d'),
+                );
+                
+                $dupcheck = array(
+                    'rr_payscaleid'     =>$_POST['payscale'],
+                    'rr_gradeid'        =>$_POST['hragrade'],
+                    'rr_workingtype'    =>$_POST['worktype'],
+                    'rr_percentage'     =>$_POST['percentage'],
+                ); 
+                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
+                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
+                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
+                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
+                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                
+                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+                
+                $hragradedup = $this->sismodel->isduplicatemore('rent_recovery', $dupcheck);
+                if($hragradedup == 1 ){
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type =".$_POST['worktype']
+                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Percentage = ".$_POST['percentage'].' ]');
+                    $this->load->view('setup3/add_rentrecovery');
+                    return;
+                }
+                else{
+                    $hragradeflag=$this->sismodel->insertrec('rent_recovery', $data);
+                    if(!$hragradeflag)
+                    {
+                        $this->logger->write_logmessage("insert","Trying to add Rent Recovery Percentage ", " Rent Recovery Percentage is not added  HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->logger->write_dblogmessage("insert","Trying to add Rent Recovery Percentage ", " Rent Recovery Percentage is not added HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->session->set_flashdata('err_message','Error in adding Rent Recovery Percentage - '  , 'error');
+                        redirect('setup3/add_rentrecovery');
+                    }
+                    else{
+                        $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+                        $this->logger->write_logmessage("insert","Add Rent Recovery Percentage ", " Rent Recovery Percentage for HRA Grade = ".$hragradename." added  successfully...");
+                        $this->logger->write_dblogmessage("insert","Add  Rent Recovery Percentage ", " Rent Recovery Percentage for HRA Grade = ".$hragradename."added  successfully...");
+                        $this->session->set_flashdata("success", "[ Working Type =".$_POST['worktype'] ." HRA Grade = ".$hragradename
+                                ." Payscale = ".$fullstr ." Percentage = ".$_POST['percentage'].']'." record insert successfully...");
+                        redirect("setup3/rentrecovery");
+                    }
+                    
+                }//else dupcheck
+                
+            }//else
+        }//isset button    
+        $this->load->view('setup3/add_rentrecovery');
+        
+    }
+    /*********************  closer Rent Recovery for government quarters *********************************************************/ 
+    
+    /********************* Edit Rent Recovery for government quarters form  *******************************************/
+    public function edit_rentrecovery($id){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $data['id'] = $id;
+        $data['rrdata'] = $this->sismodel->get_listrow('rent_recovery','rr_id',$id)->row();
+        if(isset($_POST['edit_rentrecovery'])) {
+            
+            //form validation
+            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','HRA GRADE','trim|required|xss_clean');
+            $this->form_validation->set_rules('percentage','Rent Recovery Percentage','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
+            
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/edit_rentrecovery',$data);
+                return;
+            }//formvalidation
+            else{
+                $wtype = $this->input->post('worktype', TRUE);
+                $payscale = $this->input->post('payscale', TRUE);
+                $grade = $this->input->post('hragrade', TRUE);
+                $pert = $this->input->post('percentage', TRUE);
+                $description = $this->input->post('Description', TRUE);
+                
+                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
+                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
+                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
+                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
+                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                
+                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id', $grade)->hgc_gradename;
+                
+                $logmessage = "";
+                if($data['rrdata']->rr_workingtype != $wtype)
+                    $logmessage = "Edit Rent Recovery Data " .$data['rrdata']->hg_workingtype. " changed by " .$wtype;
+                if($data['rrdata']->rr_payscaleid != $payscale)
+                    $logmessage = "Edit Rent Recovery Data " .$data['rrdata']->hg_payscaleid. " changed by " .$payscale;
+                if($data['rrdata']->rr_gradeid != $grade)
+                    $logmessage = "Edit Rent Recovery Data " .$data['rrdata']->hg_gradeid . " changed by " .$grade;
+                if($data['rrdata']->rr_percentage != $percentage)
+                    $logmessage = "Edit Rent Recovery Data " .$data['rrdata']->hg_percentage . " changed by " .$pert;
+                
+                if($data['rrdata']->rr_description != $description)
+                    $logmessage = "Edit Rent Recovery Data " .$data['rrdata']->rr_description . " changed by " .$description;
+                
+                $updata = array(
+                    'rr_payscaleid'     =>$payscale,
+                    'rr_gradeid'        =>$grade,
+                    'rr_workingtype'    =>$wtype,
+                    'rr_percentage'     =>$pert,
+                    'rr_description'    =>$description,
+                    'rr_modifierid'     =>$this->session->userdata('username'),
+                    'rr_modifydate'     =>date('Y-m-d'),
+                );
+                $dupcheck = array(
+                    'rr_payscaleid'     =>$payscale,
+                    'rr_gradeid'        =>$grade,
+                    'rr_workingtype'    =>$wtype,
+                    'rr_percentage'     =>$pert,
+                ); 
+                $hragradedup = $this->sismodel->isduplicatemore('rent_recovery', $dupcheck);
+                if($hragradedup == 1 ){
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type = ".$wtype 
+                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Percentage = ".$pert.' ]');
+                    redirect('setup3/rentrecovery');
+                    return;
+                }
+                else{
+                    $editetflag=$this->sismodel->updaterec('rent_recovery', $updata, 'rr_id', $id);
+                    if(!$editetflag){
+                        $this->logger->write_logmessage("error","error in Edit Rent Recovery Percentage ", "Edit Rent Recovery Percentage details. $logmessage ");
+                        $this->logger->write_dblogmessage("error","error in Edit Rent Recovery Percentage", "Edit Rent Recovery Percentage . $logmessage ");
+                        $this->session->set_flashdata('err_message','Error in updating Rent Recovery Percentage - ' . $logmessage . '.', 'error');
+                        $this->load->view('setup3/edit_rentrecovery', $data);
+                    
+                    }
+                    else{
+                        $this->logger->write_logmessage("update","Edit Rent Recovery Percentage by  ".$this->session->userdata('username') , "Edit  Rent Recovery Percentage details. $logmessage ");
+                        $this->logger->write_dblogmessage("update","Edit Rent Recovery Percentage by  ".$this->session->userdata('username') , "Edit Rent Recovery Percentage details. $logmessage ");
+                        $this->session->set_flashdata('success','Record updated successfully.'.'[ HRA Grade = '.$hragradename." Working Type =".$wtype. 
+                            " Payscale = ".$fullstr."  Percentage = ".$pert.']');
+                        redirect('setup3/rentrecovery');
+                    
+                    }
+                } //else dupcheck              
+            }//else formvalidation
+            
+        }//if issetbutton press
+        $this->load->view('setup3/edit_rentrecovery',$data);
+    }//function
+    /*******************************************Edit Rent Recovery for government quarters form ***********************/
+    
+    /**This function Delete  Rent Recovery records */
+    public function delete_rentrecovery($id) {
+        $this->roleid=$this->session->userdata('id_role');
+       // $this->hgid=$id;
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('rent_recovery','rr_id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in deleting Rent Recovery Percentage record" . " [Entry id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting Rent Recovery Percentage record" . " [Entry id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting deleting Rent Recovery Percentage record - ');
+            redirect('setup3/rentrecovery');
+        }
+        else{
+         
+            $this->logger->write_logmessage("delete", " Deleted Rent Recovery Percentage  ". " [Entry id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted Rent Recovery Percentage Record  " . " [Entry id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('setup3/rentrecovery');
+        }
+        $this->load->view('setup3/rentrecovery');
+        
+    }//closer
+    /********************* CLOSER  Rent Recovery for government quarters List*********************************************************/
+        
+    /*********************   Rent City Compensatory Allowance(CCA) List*********************************************************/
+    public function cca_allowance(){
+        $data['ccadata'] =$this->sismodel->get_list('ccaallowance_calculation');
+        $this->logger->write_logmessage("view"," view CCA allowance data  list" );
+        $this->logger->write_dblogmessage("view"," view view CCA allowance data list");
+        $this->load->view('setup3/cca_allowancelist',$data);
+        
+    }
+    /*********************  closer City Compensatory Allowance(CCA) List *********************************************************/ 
+    
+    /*********************  ADD City Compensatory Allowance(CCA) *********************************************************/
+    public function add_ccaallowance(){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        if(isset($_POST['add_ccaalowance'])) {
+            //form validation
+            
+            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','HRA Grade','trim|required|xss_clean');
+            $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/add_ccaallowance');
+                return;
+            }//formvalidation
+            else{
+                $data = array(
+                    'cca_payscaleid'     =>$_POST['payscale'],
+                    'cca_gradeid'        =>$_POST['hragrade'],
+                    'cca_workingtype'    =>$_POST['worktype'],
+                    'cca_amount'         =>$_POST['amount'],
+                    'cca_description'     =>$_POST['Description'],
+                    'cca_creatorid'      =>$this->session->userdata('username'),
+                    'cca_creatordate'    =>date('Y-m-d'),
+                    'cca_modifierid'     =>$this->session->userdata('username'),
+                    'cca_modifydate'     =>date('Y-m-d'),
+                );
+                
+                $dupcheck = array(
+                    'cca_payscaleid'     =>$_POST['payscale'],
+                    'cca_gradeid'        =>$_POST['hragrade'],
+                    'cca_workingtype'    =>$_POST['worktype'],
+                    'cca_amount'         =>$_POST['amount'],
+                ); 
+                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
+                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
+                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
+                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
+                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                
+                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+                
+                $hragradedup = $this->sismodel->isduplicatemore('ccaallowance_calculation', $dupcheck);
+                if($hragradedup == 1 ){
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type =".$_POST['worktype']
+                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$_POST['amount'].' ]');
+                    $this->load->view('setup3/add_ccaallowance');
+                    return;
+                }
+                else{
+                    $hragradeflag=$this->sismodel->insertrec('ccaallowance_calculation', $data);
+                    if(!$hragradeflag)
+                    {
+                        $this->logger->write_logmessage("insert","Trying to add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount is not added  HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->logger->write_dblogmessage("insert","Trying to add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount is not added HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->session->set_flashdata('err_message','Error in adding City Compensatory Allowance(CCA) amount - '  , 'error');
+                        redirect('setup3/add_ccaallowance');
+                    }
+                    else{
+                        $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+                        $this->logger->write_logmessage("insert","Add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount for HRA Grade = ".$hragradename." added  successfully...");
+                        $this->logger->write_dblogmessage("insert","Add  City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount for HRA Grade = ".$hragradename."added  successfully...");
+                        $this->session->set_flashdata("success", "[ Working Type =".$_POST['worktype'] ." HRA Grade = ".$hragradename
+                                ." Payscale = ".$fullstr ." Amount = ".$_POST['amount'].']'." record insert successfully...");
+                        redirect("setup3/cca_allowance");
+                    }
+                    
+                }//else dupcheck
+                
+            }//else
+        }//isset button    
+        $this->load->view('setup3/add_ccaallowance');
+        
+    }
+    /*********************  closer Add City Compensatory Allowance(CCA) *********************************************************/ 
+    
+    /********************* Edit City Compensatory Allowance(CCA) form  *******************************************/
+    public function edit_ccaallowance($id){
+        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $data['id'] = $id;
+        $data['ccadata'] = $this->sismodel->get_listrow('ccaallowance_calculation','cca_id',$id)->row();
+        if(isset($_POST['edit_cca'])) {
+            
+            //form validation
+            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','HRA GRADE','trim|required|xss_clean');
+            $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
+            
+            if($this->form_validation->run() == FALSE){
+             
+                $this->load->view('setup3/edit_ccaallowance',$data);
+                return;
+            }//formvalidation
+            else{
+                $wtype = $this->input->post('worktype', TRUE);
+                $payscale = $this->input->post('payscale', TRUE);
+                $grade = $this->input->post('hragrade', TRUE);
+                $amount = $this->input->post('amount', TRUE);
+                $description = $this->input->post('Description', TRUE);
+                
+                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
+                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
+                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
+                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
+                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                
+                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id', $grade)->hgc_gradename;
+                
+                $logmessage = "";
+                if($data['ccadata']->cca_workingtype != $wtype)
+                    $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_workingtype. " changed by " .$wtype;
+                if($data['ccadata']->cca_payscaleid != $payscale)
+                    $logmessage = "Edit City Compensatory Allowance(CCA) " .$data['ccadata']->cca_payscaleid. " changed by " .$payscale;
+                if($data['ccadata']->cca_gradeid != $grade)
+                    $logmessage = " Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_gradeid . " changed by " .$grade;
+                if($data['ccadata']->cca_amount != $amount)
+                    $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_amount . " changed by " .$pert;
+                
+                if($data['ccadata']->cca_description != $description)
+                    $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_description . " changed by " .$description;
+                
+                $updata = array(
+                    'cca_payscaleid'     =>$payscale,
+                    'cca_gradeid'        =>$grade,
+                    'cca_workingtype'    =>$wtype,
+                    'cca_amount'         =>$amount,
+                    'cca_description'    =>$description,
+                    'cca_modifierid'     =>$this->session->userdata('username'),
+                    'cca_modifydate'     =>date('Y-m-d'),
+                );
+                $dupcheck = array(
+                    'cca_payscaleid'     =>$payscale,
+                    'cca_gradeid'        =>$grade,
+                    'cca_workingtype'    =>$wtype,
+                    'cca_amount'         =>$amount,
+                ); 
+                $hragradedup = $this->sismodel->isduplicatemore('ccaallowance_calculation', $dupcheck);
+                if($hragradedup == 1 ){
+                    
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type = ".$wtype 
+                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$amount.' ]');
+                    redirect('setup3/cca_allowance');
+                    return;
+                }
+                else{
+                    $editetflag=$this->sismodel->updaterec('ccaallowance_calculation', $updata, 'cca_id', $id);
+                    if(!$editetflag){
+                        $this->logger->write_logmessage("error","error in Edit City Compensatory Allowance(CCA) ", "Edit City Compensatory Allowance(CCA) details. $logmessage ");
+                        $this->logger->write_dblogmessage("error","error in Edit City Compensatory Allowance(CCA)", "Edit City Compensatory Allowance(CCA) . $logmessage ");
+                        $this->session->set_flashdata('err_message','Error in updating City Compensatory Allowance(CCA) - ' . $logmessage . '.', 'error');
+                        $this->load->view('setup3/edit_ccaallowance', $data);
+                    
+                    }
+                    else{
+                        $this->logger->write_logmessage("update","Edit City Compensatory Allowance(CCA) by  ".$this->session->userdata('username') , "Edit  City Compensatory Allowance(CCA) details. $logmessage ");
+                        $this->logger->write_dblogmessage("update","Edit City Compensatory Allowance(CCA) by  ".$this->session->userdata('username') , "Edit City Compensatory Allowance(CCA) details. $logmessage ");
+                        $this->session->set_flashdata('success','Record updated successfully.'.'[ HRA Grade = '.$hragradename." Working Type =".$wtype. 
+                            " Payscale = ".$fullstr."  Amount = ".$amount.']');
+                        redirect('setup3/cca_allowance');
+                    
+                    }
+                } //else dupcheck              
+            }//else formvalidation
+            
+        }//if issetbutton press
+        $this->load->view('setup3/edit_ccaallowance',$data);
+    }//function
+    /*********************** closer Edit City Compensatory Allowance(CCA) form ***********************/
+    
+    /**This function Delete  City Compensatory Allowance(CCA) records */
+    public function delete_ccaallowance($id) {
+        $this->roleid=$this->session->userdata('id_role');
+       // $this->hgid=$id;
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('ccaallowance_calculation','cca_id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in deleting City Compensatory Allowance(CCA) record" . " [Entry id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting City Compensatory Allowance(CCA) record" . " [Entry id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting deleting City Compensatory Allowance(CCA) record - ');
+            redirect('setup3/cca_allowance');
+        }
+        else{
+         
+            $this->logger->write_logmessage("delete", " Deleted City Compensatory Allowance(CCA) record ". " [Entry id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted City Compensatory Allowance(CCA) Record  " . " [Entry id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('setup3/cca_allowance');
+        }
+        $this->load->view('setup3/cca_allowance');
+        
+    }//closer
+    /********************* closer Delete City Compensatory Allowance(CCA)*********************************************************/
+    
 }//class    

@@ -1245,3 +1245,41 @@ CREATE TABLE user_input_transfer (
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
 
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table rent_recovery`
+--
+
+CREATE TABLE `rent_recovery` (
+  `rr_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `rr_payscaleid` int(11)  Default NULL,
+  `rr_gradeid` int(11)  DEFAULT NULL,
+  `rr_workingtype` varchar(255)  DEFAULT NULL,
+  `rr_percentage` double  DEFAULT NULL,
+  `rr_description` varchar(255)  DEFAULT NULL,
+  `rr_creatorid` varchar(255) DEFAULT NULL,
+  `rr_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `rr_modifierid` varchar(255) NOT NULL,
+  `rr_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table ccaallowance_calculation`
+--
+
+CREATE TABLE `ccaallowance_calculation` (
+  `cca_id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `cca_payscaleid` int(11)  DEFAULT NULL,
+  `cca_gradeid` int(11)  DEFAULT NULL,
+  `cca_workingtype` varchar(255)  Default NULL,
+  `cca_amount` double  DEFAULT NULL,
+  `cca_description` varchar(255) DEFAULT NULL,
+  `cca_creatorid` varchar(255) DEFAULT NULL,
+  `cca_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `cca_modifierid` varchar(255) NOT NULL,
+  `cca_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
