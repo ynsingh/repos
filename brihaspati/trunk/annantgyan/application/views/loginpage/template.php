@@ -1,21 +1,22 @@
 <?php
-if(isset($this->session->userdata['su_name'])){
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Annant Gyan</title>
-	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE, NO-STORE, must-revalidate">
-	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-	<META HTTP-EQUIV="EXPIRES" CONTENT=0>
 	
 		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
-				<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		
 		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
-	  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	       <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
+      <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 
 
@@ -35,8 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 	
 	<div class="row">
-			<?php $this->load->view('template/login_header.php');
-			?>
+			<?php include 'template/header.php';?>
 
 	</div>	
 
@@ -45,10 +45,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-<?php $this->load->view('template/footer.php');?>
+<?php include 'template/footer.php';?>
 </body>
 </html>
-<?php }else{
-$this->load->view('signin');
-}
-?>

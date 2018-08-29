@@ -80,13 +80,15 @@ function Logout() {
  window.location.assign("<?php echo base_url();?>login/logout"); 
   });
 }
-  
+ 
       
 </script>
 
-
+<style type="text/css">
+  .active{background-color: white;color: :black;}
+</style>
  <div class="fluid-container">
-  
+  <?php  $request_uri= $_SERVER['REQUEST_URI'];?>
   <!----navbar----------------->
   <nav class="navbar navbar-default" role="navigation" data-spy="" data-offset-top="" id="menu">
   <div class="container-fluid">
@@ -111,14 +113,14 @@ function Logout() {
          $suid = $this->session->userdata['su_id'];
         @$hwnow = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
          if($hwnow == ''){?> 
-            <li><a href="<?php echo site_url('Course-Registration');?>"><span ></span>Courses Enrollment</a></li>
+            <li><a href="<?php echo site_url('Course-Registration');?>" class="<?php if((strpos($request_uri,"Course-Home")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Courses Enrollment</a></li>
        <?php }else{?>
-         <li><a href="<?php echo site_url('Course-Home');?>"><span ></span>Course Home</a></li>
+         <li><a href="<?php echo site_url('login/usr_login');?>" class="<?php if((strpos($request_uri,"login/usr_login")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Course Home</a></li>
 
        <?php }?>
 
-          <li><a href="<?php echo site_url('login/usrcoustructure');?>"><span ></span>Courses Structure</a></li>
-          <li><a href="<?php echo site_url('login/usrcoucalender');?>"><span ></span>Courses Calender</a></li>
+          <li><a href="<?php echo site_url('login/usrcoustructure');?>"  class="<?php if((strpos($request_uri,"login/usrcoustructure")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Courses Structure</a></li>
+          <li><a href="<?php echo site_url('login/usrcoucalender');?>" class="<?php if((strpos($request_uri,"login/usrcoucalender")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Courses Calender</a></li>
 
 
         <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>
@@ -132,19 +134,20 @@ function Logout() {
 		<li><a href="<?php //echo site_url('');?>"><span ></span>Quiz / Assignment</a></li>
 		</ul>
 	</li>
-        <li><a href="<?php echo site_url('Feedback');?>"><span ></span>Feedback</a></li>
+        <li><a href="<?php echo site_url('Feedback');?>" class="<?php if((strpos($request_uri,"Feedback")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Feedback</a></li>
 
         <li><a href="<?php //echo site_url('');?>"><span ></span>Certificates</a></li>
 
-        <li><a href="<?php echo site_url('FAQ');?>"><span ></span>FAQ</a></li>
+        <li><a href="<?php echo site_url('FAQ');?>" class="<?php if((strpos($request_uri,"FAQ")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>FAQ</a></li>
         
       </ul>
      
       <ul class="nav navbar-nav navbar-right">
         <!--<li><a href="#"><span class="glyphicon glyphicon glyphicon-paperclip"></span> Broucher</a></li>-->
         <?php if(isset($this->session->userdata['su_name'])){?>
-         <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span>  <?php echo $this->session->userdata['su_name'];?></a></li> 
-        <li><a href="<?php echo site_url('Courses');?>"><span ></span>Course Enroll</a></li>
+         <li><a href="<?php echo site_url('login/usr_login');?>" class="<?php if((strpos($request_uri,"login/usr_login")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>">
+          <span class="glyphicon glyphicon-user"></span>  <?php echo $this->session->userdata['su_name'];?></a></li> 
+        <li><a href="<?php echo site_url('Courses');?>" class="<?php if((strpos($request_uri,"Courses")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Course Enroll</a></li>
        <?php }
            ?>
 
@@ -155,14 +158,14 @@ function Logout() {
          if($hwnow == 'facebook'){?> 
            <li></li>
        <?php }else{?>
-          <li><a href="<?php echo site_url('forgotpassword/gennewpass');?>"><span class="glyphicon glyphicon-th"></span>Change Password</a></li>
+          <li><a href="<?php echo site_url('forgotpassword/gennewpass');?>" class="<?php if((strpos($request_uri,"forgotpassword/gennewpass")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span class="glyphicon glyphicon-th"></span>Change Password</a></li>
 
        <?php }?>
           <?php if(isset($this->session->userdata['su_name'])){ ?>
-             <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+             <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>" class="<?php if((strpos($request_uri,"login/logout")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
              
           <?php }elseif(isset($this->session->userdata['su_id'])){//elseif(isset($this->session->userdata['first_name'])){?>
-            <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>" class="<?php if((strpos($request_uri,"login/logout")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                   <!-- <li  onclick="Logout();"><a href="javascript:void(0);" ><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>-->
                  <!--<li>
                   <input type="button" value="Logout" class="btn-success btn btn-lg" onclick="Logout();" id="fbsubmit" name="fblogout" />

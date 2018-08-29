@@ -1,6 +1,7 @@
 <?php
 /******************************************************
-* @name Admin.php(controller)    		      	  *
+* @name Admin.php(controller)    		      *
+* @author Nagendra Kumar Singh(nksinghiitk@gmail.com) *
 * @author Sumit Saxena(sumitsesaxena@gmail.com)       *
 *******************************************************/
 
@@ -254,16 +255,16 @@ class Admin extends CI_Controller {
 			//echo "hello";die;	
 
 			//$this->form_validation->set_rules('userfile', 'Upload Photo', 'trim|required|xss_clean');
-			//$this->form_validation->set_rules('cou_name', 'Upload Photo', 'trim|required|xss_clean');
-		///	$this->form_validation->set_rules('cou_type', 'Upload Photo', 'trim|required|xss_clean');
-			//$this->form_validation->set_rules('cou_week', 'Upload Photo', 'trim|required|xss_clean');
-			///$this->form_validation->set_rules('cou_contname', 'Upload Photo', 'trim|required|xss_clean');
-			///$this->form_validation->set_rules('cou_seqno', 'Upload Photo', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cou_name', 'Upload Photo', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('cou_type', 'Upload Photo', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('cou_week', 'Upload Photo', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('cou_contname', 'Upload Photo', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('cou_seqno', 'Upload Photo', 'trim|required|xss_clean|numeric');
 			
-            if((isset($_FILES['userfile']))){
+			if((isset($_FILES['userfile']))){
             	//echo "hello";die;	
 
-            	$courseid = $this->input->post('cou_name');
+            			$courseid = $this->input->post('cou_name');
 				$type 	= $this->input->post('cou_type');
 				$week 	= $this->input->post('cou_week');
 				$content 	= $this->input->post('cou_contname');
@@ -271,16 +272,14 @@ class Admin extends CI_Controller {
 
                   //print_r($desired_dir);	die;	
 	 	 		//upload photo in dir which is not accessble directly with size limit photo 200kb 
-						$_FILES['userFile']['name'] = $_FILES['userfile']['name'];
+				$_FILES['userFile']['name'] = $_FILES['userfile']['name'];
                	 		$_FILES['userFile']['type'] = $_FILES['userfile']['type'];
                 		$_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
                 		//$_FILES['userFile']['error'] = $_FILES['userfile']['error'];
                 		$_FILES['userFile']['size'] = $_FILES['userfile']['size'];
-
 				
-				if($_FILES['userfile']['size'] > 4000) {
+				if($_FILES['userfile']['size'] > 10000) {
          				$errors[]='Photo size must be excately 4 MB';
-					
       				}
 				
 				$name = $_FILES['userfile']['name'];
@@ -290,33 +289,31 @@ class Admin extends CI_Controller {
                         	if(is_dir($desired_dir)==false){
                               		mkdir("$desired_dir", 0700);
                         	}
-                 $desired_dir1 = 'uploads/courses/'.$courseid;
+                 		$desired_dir1 = 'uploads/courses/'.$courseid;
                         	// Create directory if it does not exist
                         	if(is_dir($desired_dir1)==false){
                               		mkdir("$desired_dir1", 0700);
                         	} 
-                 $desired_dir2 = 'uploads/courses/'.$courseid.'/'.$type;
+                 		$desired_dir2 = 'uploads/courses/'.$courseid.'/'.$type;
                         	// Create directory if it does not exist
                         	if(is_dir($desired_dir2)==false){
                               		mkdir("$desired_dir2", 0700);
                         	}  	
-                       
 
-               	$config['upload_path'] = $desired_dir2 ;
+               			$config['upload_path'] = $desired_dir2 ;
 				
 				if($type == 'document'){
-					$config['max_size'] = '100';
-              		$config['allowed_types'] = 'pdf|doc|docx|DOCX|DOC|xls|xlsx';
-              	}
-              	elseif($type == 'video'){
-              		$config['remove_spaces'] = TRUE;
+					$config['max_size'] = '1100';
+              				$config['allowed_types'] = 'pdf|doc|docx|DOCX|DOC|xls|xlsx';
+              			}
+              			elseif($type == 'video'){
+              				$config['remove_spaces'] = TRUE;
 					$config['max_size'] = '15000';
-              		$config['allowed_types'] = 'mp4|3gp|mpeg|mpg|avi';
-              	}
+              				$config['allowed_types'] = 'mp4|3gp|mpeg|mpg|avi';
+              			}
               		
 				$config['file_name'] = $name;
 				$config['overwrite'] = TRUE;
-						
         	    					
                	 		$this->load->library('upload',$config);
                		 	$this->upload->initialize($config);
@@ -326,64 +323,64 @@ class Admin extends CI_Controller {
                    	 		$file = $uploadData['file_name'];
 					
                 		}else{
-								if($type == 'document'){
+					if($type == 'document'){
                     				$file = '';
-									$error =  array('err_message' => $this->upload->display_errors());
-									//print_r($error);die;
-									foreach ($error as $item => $value):
-										$ferror = $ferror.$value;
-									endforeach;
-									$ferror=str_replace("\r\n","",$ferror);
-									$simsg = "The permitted size of Document is 100kb .";
-									$ferror = $simsg.$ferror;
-									$this->session->set_flashdata('error', $ferror);
-									redirect('admin/admin_coucontent');
-								}
-								elseif($type == 'video'){
+						$error =  array('err_message' => $this->upload->display_errors());
+						//print_r($error);die;
+						foreach ($error as $item => $value):
+							$ferror = $ferror.$value;
+						endforeach;
+						$ferror=str_replace("\r\n","",$ferror);
+						$simsg = "The permitted size of Document is 1mb .";
+						$ferror = $simsg.$ferror;
+						$this->session->set_flashdata('error', $ferror);
+						redirect('admin/admin_coucontent');
+					}
+					elseif($type == 'video'){
                     				$file = '';
-									$error =  array('err_message' => $this->upload->display_errors());
-									//print_r($error);die;
-									foreach ($error as $item => $value):
-										$ferror = $ferror.$value;
-									endforeach;
-									$ferror=str_replace("\r\n","",$ferror);
-									$simsg = "The permitted size of Video File is 5 mb.";;
-									$ferror = $simsg.$ferror;
-									$this->session->set_flashdata('error', $ferror);
-									redirect('admin/admin_coucontent');
-								}
+						$error =  array('err_message' => $this->upload->display_errors());
+						//print_r($error);die;
+						foreach ($error as $item => $value):
+							$ferror = $ferror.$value;
+						endforeach;
+						$ferror=str_replace("\r\n","",$ferror);
+						$simsg = "The permitted size of Video File is 5 mb.";;
+						$ferror = $simsg.$ferror;
+						$this->session->set_flashdata('error', $ferror);
+						redirect('admin/admin_coucontent');
+					}
 								
                 		}
             		
 				//Prepare array of user data
-					$cdate = date('Y-m-d H:i:s');
+				$cdate = date('Y-m-d H:i:s');		
      	       			$userData = array(
         	        		 'acu_courseid'         =>		$courseid,
-							 'acu_weekname'         =>		$week,
-							 'acu_seqno'			=>  	$seq_no,
-							 'acu_weekcontname' 	=>		$content,
-							 'acu_contpath' 		=>  	$desired_dir2,
-							 'acu_filetype'			=>		$type,
-							 'acu_filename'			=>		$name,
-							 'acu_createdate'		=>		$cdate,
-							 'acu_creatorid'		=>		$this->session->userdata('userEmail'),
+					 'acu_weekname'         =>		$week,
+					 'acu_seqno'			=>  	$seq_no,
+					 'acu_weekcontname' 	=>		$content,
+					 'acu_contpath' 		=>  	$desired_dir2,
+					 'acu_filetype'			=>		$type,
+					 'acu_filename'			=>		$name,
+					 'acu_createdate'		=>		$cdate,
+					 'acu_creatorid'		=>		$this->session->userdata('userEmail'),
            	     		);
 				
-           		$insert = $this->db->insert('admin_conteupload',$userData);
+           			$insert = $this->db->insert('admin_conteupload',$userData);
 				   	
 				if($insert)
                 	        {
                     			$this->session->set_flashdata('success', 'Your file successfully uploaded and data updated in databse.');
-								redirect('admin/admin_coucontent');
+					redirect('admin/admin_coucontent');
                         	}
-                    else{
-                        	 $this->session->set_flashdata('error', 'Data is not updated in databse.');
-							 redirect('admin/admin_coucontent');
-                        }
+                    		else{
+                        	 	$this->session->set_flashdata('error', 'Data is not updated in databse.');
+					redirect('admin/admin_coucontent');
+                        	}
             	
        			 	
-	   }
-     	  }
+	   		}
+     	  	}
      		    $this->load->view('admin/admin_couupload',$data);
 	}
 

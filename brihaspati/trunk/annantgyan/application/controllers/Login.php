@@ -1,6 +1,7 @@
 <?php
 /******************************************************
-* @name Login.php(controller)    		      	  	  *
+* @name Login.php(controller)    		      *
+* @author Nagendra Kumar Singh(nksinghiitk@gmail.com) *
 * @author Sumit Saxena(sumitsesaxena@gmail.com)       *
 *******************************************************/
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -495,12 +496,8 @@ class Login extends CI_Controller {
                     $this->session->set_flashdata("success", "Enquiry Detail Submit Successfully...");
                      redirect('login/usr_enquiry');
                 }
-
-
-                     
             }
         }
-
 		$this->load->view('inno_ruralurban');
 	}
 
@@ -561,22 +558,34 @@ class Login extends CI_Controller {
 
 	function usrfaq(){
 		$suid = $this->session->userdata['su_id'];
-		if($suid){
+		if(!empty($suid)){
 			$this->load->view('loginpage/usr_faq');
+		}
+		else{
+			redirect('login/signin');
 		}
 	}
 	function usrcoucalender(){
-
-		$this->load->view('loginpage/usr_coursecalender');
+		$suid = $this->session->userdata['su_id'];
+		if(!empty($suid)){	
+			$this->load->view('loginpage/usr_coursecalender');
+		}
+		else{
+			redirect('login/signin');
+		}
 	}
 
 	function usrcoustructure(){
 		$suid = $this->session->userdata['su_id'];
-		
-		$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
-		$data['couid'] = $couid;
+		if(!empty($suid)){	
+			$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			$data['couid'] = $couid;
 
-		$this->load->view('loginpage/usr_cou_strucutre',$data);
+			$this->load->view('loginpage/usr_cou_strucutre',$data);
+		}
+		else{
+			redirect('login/signin');
+		}
 	}
 }
 

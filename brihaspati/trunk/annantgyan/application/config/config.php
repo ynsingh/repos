@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$config['base_url'] = 'https://172.26.82.18/~ynsingh/annantgyan/';
 
 /*
 |--------------------------------------------------------------------------

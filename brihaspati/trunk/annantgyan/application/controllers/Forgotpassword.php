@@ -1,9 +1,9 @@
 <?php
 
-/* 
- * @name Forgotpassword.php
- * @author Nagendra Kumar Singh  (nksinghiitk@gmail.com)
- */
+/*********************************************************** 
+ * @name Forgotpassword.php                                *
+ * @author Nagendra Kumar Singh  (nksinghiitk@gmail.com)   *
+ ***********************************************************/
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Forgotpassword extends CI_Controller

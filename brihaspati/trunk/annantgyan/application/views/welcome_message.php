@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </style>	
 </head>
 <body>
-
+<?php $current = 'home'; ?>
 <div class="fluid-container">
 	<div class="row">
 		<div class="col-md-12">

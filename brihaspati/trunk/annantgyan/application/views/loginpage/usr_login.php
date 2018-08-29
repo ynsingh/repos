@@ -130,108 +130,85 @@ jQuery(function ($) {
 </div>
 
 <?php 
-
-//if('10-oct-2018'){ //echo $this->session->userdata['su_id'];?>
-<!--<div class="container">
-    <div class="col-md-12" id="card">
-        <p style="font-size: 20px;" class="text-center">Your Course Will be start at 10<sup>th</sup>-oct-2018.</p>
-    </div>
-    
-</div>-->
-
-<?php //}else{
-
-$whdata1=array('crsann_crsid' => $couid);
-$sdata1='crsann_crsstart,crsann_crsend';
-$coursedate=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
-$cdate = date('Y-m-d');
-foreach($coursedate as $coudata){
-    $startdate = $coudata->crsann_crsstart;
-    $enddate = $coudata->crsann_crsend;
-    $cdate = date('Y-m-d');
-if(($enddate >= $cdate) && ($startdate <= $cdate)){
+	$current = 'usr_login';
+	$whdata1=array('crsann_crsid' => $couid);
+	$sdata1='crsann_crsstart,crsann_crsend';
+	$coursedate=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
+	$cdate = date('Y-m-d');
+	foreach($coursedate as $coudata){
+		$startdate = $coudata->crsann_crsstart;
+    		$enddate = $coudata->crsann_crsend;
+    		$cdate = date('Y-m-d');
+		if(($enddate >= $cdate) && ($startdate <= $cdate)){
     ?>
- <center><h3><?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$couid)->cou_name;?></h3></center>
-<div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
-	<div class="row">
-		<div class="col col-sm-12">
-
-           
-               
-                            
-            <div class="col-md-4">
-<h3 style='margin-bottom:-20px;'>Course Syllabus</h3>
-                 <?php 
-                      
-            //    if(!empty($getuploadata)){
-                   // foreach($getuploadata as $row){
-                   // $weekname = $row->acu_weekname;
-                                   
-                ?>
-                    <?php //echo $weekname.'<br>';?>
-
-                                <ul class="nav nav-tabs nav-stacked" role="tablist">
-                                    <li role="presentation" class="active">
+ 			<center><h3><?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$couid)->cou_name;?></h3></center>
+			<div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
+				<div class="row">
+					<div class="col col-sm-20">
+					       <div class="col-md-4">
+					                <h2 style='margin-bottom:0px;margin-top:0px;'>Course Content</h2>
+                                    			<ul class="nav nav-tabs nav-stacked" role="tablist">
+                                    			<li role="presentation" class="active">
                                <?php 
-                               foreach($getuploadata as $data){
-
-                                 echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>';
-
-                                    $whdata1 = array('acu_courseid' => $couid,'acu_weekname' => $data->acu_weekname) ;
-                                    $sdata1 = 'acu_weekcontname,acu_seqno,acu_contpath,acu_filename';
-                                    $getcontname = $this->commodel->get_distinctrecord('admin_conteupload',$sdata1,$whdata1);
-
-                                    foreach($getcontname as $row1){
-                                        $fpath1 = $row1->acu_contpath;
-                                        $fname1 = $row1->acu_filename;
-                                        $fpathname1 = $fpath1.'/'.$fname1;
-                                        if(!empty($fpathname1)){
+                               				foreach($getuploadata as $data){
+				                                echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>';
+                                				$whdata1 = array('acu_courseid' => $couid,'acu_weekname' => $data->acu_weekname) ;
+                                    				$sdata1 = 'acu_weekcontname,acu_seqno,acu_contpath,acu_filename';
+                                    				$getcontname = $this->commodel->get_distinctrecord('admin_conteupload',$sdata1,$whdata1);
+                                    				foreach($getcontname as $row1){
+                                        				$fpath1 = $row1->acu_contpath;
+                                        				$fname1 = $row1->acu_filename;
+                                        				$fpathname1 = $fpath1.'/'.$fname1;
+                                        				if(!empty($fpathname1)){
                                  ?>
-                                 
-                                 <a href="<?php echo base_url().'/'.$fpathname1?>" target="content" id="close">
-                                        <?php echo $row1->acu_weekcontname;?>
-                                 </a>       
-                        <?php }}}//}?>
-                                </li>
-                                </ul>
-                <?php //}}//}?>
-            </div>
-                          
-                        
-            
-                   <div class="col-md-8">  
+					                                        <a href="<?php echo base_url().'/'.$fpathname1?>" target="content" id="close">
+                                          					<?php echo $row1->acu_weekcontname;?>
+                                          					</a>       
+                                  <?php 				}
+                                				}
+                            				}
+				?>
+                                			</li>
+                                			</ul>
+            					</div>
+                 				<div class="col-md-8">  
                         <?php  
-                        if(!empty($fpathname1)){
-                        if(file_exists($fpathname1)) {?> 
-                            <div id="content"><iframe name="content" src="<?php echo base_url($fpathname1);?>" style="width:100%;height:500px;"></iframe></div>
-                        <?php }}?>    
-                        </div>  
-           
-		</div>
-
-        
-            </div>
-		</div>
-	</div>
+                        				if(!empty($fpathname1)){
+                        					if(file_exists($fpathname1)) {?> 
+                            						<div id="content">
+						                              <!-- <iframe name="content" src="<?php //echo base_url($fpathname1);?>" style="width:100%;height:500px;"></iframe>-->
+									      <iframe name="content" src="<?php echo site_url('assets/course_pdf/calender.pdf');?>" style="width:100%;height:500px;border:none;"></iframe>
+                            						</div>
+			<?php 
+								}
+							}
+			?>    
+                      				</div>  
+		      			</div>
+      				</div>
+			</div>
     <!--<div class="row" style="border:0px solid black;">
         <ul class="list-inline pull-right">
             <li><button type="button" class="btn btn-default prev-step"><span class="glyphicon glyphicon-chevron-left"></span> Previous</button></li>
-            <li><button type="button" class="btn btn-default next-step">Next <span class="glyphicon glyphicon-chevron-right"></span></button></li>
-           <!-- <li><button type="button" class="btn btn-primary ">Save</button></li>--
+	    <li><button type="button" class="btn btn-default next-step">Next <span class="glyphicon glyphicon-chevron-right"></span></button></li>
+            <li><button type="button" class="btn btn-primary ">Save</button></li>
         </ul>                
     </div>-->
-</div>
-<?php }else{//}//elseif and foreach close?>  
-<div class="container">    
-<div id='card' class="col-md-12" style="background-color: lightgreen;">
-  <!--<h3 style="text-align: center;">Course will be start soon.</h3>-->
-  <center>
-<!--  <img src="https://fontmeme.com/permalink/180811/d24ce98ea802e52478ab0ffa512d09c8.png" style="width: 50%;"> -->
-	<h2> Course content will be available after 10<sup>th</sup> October 2018. Kindly visit the course structure and course calander links</h2>
-  </center>
-</div>
-</div>
-<?php }}?>
+<?php 
+		}// close if line 142
+		else{  //}//elseif and foreach close
+?>  
+			<div class="container">    
+				<div id='card' class="col-md-12" style="background-color: lightgreen;">
+				<center>
+				<h2> Course content will be available after 10<sup>th</sup> October 2018. Kindly visit the course structure and course calander links</h2>
+  				</center>
+				</div>
+			</div>
+<?php 
+		}
+	}
+?>
 </br></br></br></br></br>
 <?php $this->load->view('template/footer.php');?>
 </body>

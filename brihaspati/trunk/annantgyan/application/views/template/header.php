@@ -55,10 +55,9 @@ function Logout() {
       
 </script>
 <style type="text/css">
-  .active {
-    color:black;background-color:white;
-}
+  .active{background-color: white;color: :black;}
 </style>
+<?php  $request_uri= $_SERVER['REQUEST_URI'];?>
  <div class="fluid-container">
   
   <!----navbar-----------------
@@ -82,12 +81,12 @@ function Logout() {
         <li><a href="<?php echo site_url('Welcome');?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
         
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
+          <a href="#" class="<?php if((strpos($request_uri,"About-Us")!==false) || $request_uri=="" || $request_uri=="/"){echo "active dropdown-toggle";}?>" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
         <!--  <span class="glyphicon glyphicon glyphicon-user"></span> -->
           About Company
           <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="<?php echo site_url('About-Us');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Overview & Objective</a></li>
+            <li><a href="<?php echo site_url('About-Us');?>" ><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Overview & Objective</a></li>
             <li><a href="<?php echo site_url('Mission');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Vision</a></li>
             <li><a href="<?php echo site_url('Vission');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Mission</a></li>
             <li><a href="<?php echo site_url('Director/Founder-Message');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Message from Founder & Director </a></li>
@@ -157,7 +156,7 @@ function Logout() {
 
         <?php if(isset($this->session->userdata['su_id'])){?>
         	<!-- <li><a href="<?php //echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>-->
-          <li><a href="<?php echo site_url('Course-Home');?>"><span ></span> Course Home</a></li>
+          <li><a href="<?php echo site_url('login/usr_login');?>"><span ></span> Course Home</a></li>
           <li><a href="<?php echo site_url('login/usr_login');?>"><span class="glyphicon glyphicon-user"></span> <?php echo $this->session->userdata['su_name'];?></a></li> 
 
           <li onclick="Logout();"><a href="<?php echo site_url('login/logout');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>

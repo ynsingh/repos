@@ -85,6 +85,6 @@ $route['Courses'] = 'login/course_login';
 $route['Feedback'] = 'login/usrfeedback';
 $route['FAQ'] = 'login/usrfaq';
 $route['Course-Detail'] = 'login/usrcoucalender';
-$route['Course-Home'] = 'login/usr_login';
+//$route['Course-Home'] = 'login/usr_login';
 //$route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

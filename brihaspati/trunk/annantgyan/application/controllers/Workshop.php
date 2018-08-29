@@ -1,6 +1,7 @@
 <?php
 /******************************************************
-* @name Workshop.php(controller)    		      	  *
+* @name Workshop.php(controller)    		      *
+* @author Nagendra Kumar Singh(nksinghiitk@gmail.com) *
 * @author Sumit Saxena(sumitsesaxena@gmail.com)       *
 *******************************************************/
 
@@ -250,6 +251,7 @@ class Workshop extends CI_Controller {
                             if($cid == 6){
                                 redirect("https://imjo.in/WyRmED");
                             }*/
+                            //$purpose=$crscode."-Workshop-".$owid.$signupid;
                             $purpose=$crscode."-Workshop-".$owid;
                             $resp=$this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
                             //$response['payment_request']

@@ -22,10 +22,10 @@ body{margin: 0;padding: 0;}
 }
 
 #menu ul li a{
-    padding-left:5%;
+    /*padding-left:5%;*/
     color: black;
     font-size: 18px;
-    width:100%;
+    /*width:100%;*/
 }
 
 
