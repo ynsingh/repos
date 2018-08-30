@@ -194,7 +194,9 @@
                                 <?php endif;?>
                                 <td><?php
                                     $empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$record->emp_id)->emp_name;
-                                    echo $empname."<br/>" ."("."PF No:".$record->emp_code.")"."<br/>".$record->emp_email;;
+				    echo anchor("report/viewfull_profile/{$record->emp_id}",$empname ,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
+                                //    echo $empname."<br/>" ."("."PF No:".$record->emp_code.")"."<br/>".$record->emp_email;;
+                                    echo "<br/>" ."("."PF No:".$record->emp_code.")"."<br/>".$record->emp_email;;
                                 ?></td>
                                 <td><?php
                             
@@ -206,6 +208,7 @@
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$empdept)->dept_name;
                                     $empschm=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$record->emp_id)->emp_schemeid;
                                     $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$empschm)->sd_name;
+                                    $schmcode=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$empschm)->sd_code;
                                     $subid=$this->sismodel->get_listspfic1('employee_master','emp_specialisationid','emp_id',$record->emp_id)->emp_specialisationid;
                                     if($subid >0){
                                         $subname=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$subid)->sub_name;
@@ -216,7 +219,7 @@
                                         $subcode='';
                                     }
                                     echo "<b>Campus : </b>".$campus."<br/> "."<b>Uo : </b>".$authority."<br/> "."<b>Dept : </b>".$dept."<br/> "."<b>Scheme : </b>".$schm
-                                        ."<br/>"."<b>Subject:</b>".$subname."(". $subcode .")";
+                                        ."(". $schmcode .")"."<br/>"."<b>Subject:</b>".$subname."(". $subcode .")";
                                 ?></td>
                                 <td><?php
                                     $empdesig=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$record->emp_id)->emp_desig_code;

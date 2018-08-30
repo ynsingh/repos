@@ -880,7 +880,7 @@ class Setup2 extends CI_Controller
                  $this->form_validation->set_rules('tnt','Designation Type','trim|xss_clean|required');
                  $this->form_validation->set_rules('grouppost','Designation Subtype','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_payscale','Designation Payscale','trim|xss_clean|required');
-                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_group','Designation Group','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');

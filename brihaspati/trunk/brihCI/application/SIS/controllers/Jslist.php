@@ -30,7 +30,9 @@ class Jslist extends CI_Controller
         public function getwdesiglist(){
                 $groups = $this->input->post('wtype');
                 $datawh=array('desig_type' => $groups);
-                $grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+		$whorder = ("desig_name asc");
+        	$grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
+                //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
                 $desig_select_box ='';
                 $desig_select_box.='<option value="">--Select Designation--';
                 foreach($grp_data as $grprecord){
@@ -43,7 +45,9 @@ class Jslist extends CI_Controller
     	public function getgdesiglist(){
         	$groups = $this->input->post('group');
         	$datawh=array('desig_group' => $groups);
-	        $grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+		$whorder = ("desig_name asc");
+                $grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
+//	        $grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
         	$desig_select_box ='';
 	        $desig_select_box.='<option value="">--Select Designation--';
         	foreach($grp_data as $grprecord){
@@ -57,7 +61,9 @@ class Jslist extends CI_Controller
 		$combid= $this->input->post('gwt');
 		$parts = explode(',',$combid);
 	        $datawh=array('desig_group' => $parts[0],'desig_type' => $parts[1]);
-        	$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+		$whorder = ("desig_name asc");
+                $grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
+//        	$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
 	        $desig_select_box ='';
         	$desig_select_box.='<option value="">--Select Designation--';
 	        foreach($grp_data as $grprecord){
@@ -79,7 +85,22 @@ class Jslist extends CI_Controller
                 }
                 echo json_encode($desig_select_box);
         }
-
+	
+    /* This function has been created for get the plan, non plan, ugc, ICAR, GOI shown against position */
+    public function getemppnp(){
+        $combval = $this->input->post('combfive');
+        $parts = explode(',',$combval);
+        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
+        $emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_plan_nonplan',$datawh);
+        $emptype_select_box ='';
+        $emptype_select_box.='<option value="">------ Select Plan  Non Plan -----------';
+        if(!empty($emptype_data)){
+            foreach($emptype_data as $empdata){
+                $emptype_select_box.='<option value='.$empdata->sp_plan_nonplan.'>'.$empdata->sp_plan_nonplan.' ';
+            }//foreach
+        } //if close   
+        echo json_encode($emptype_select_box);
+    }
 
 }    
 

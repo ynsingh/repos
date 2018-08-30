@@ -276,6 +276,7 @@ class Report  extends CI_Controller
 */
         $worktype=$this->input->post('workingtype',TRUE);
         $empdata['filter']=$id;
+        $empdata['words']=$id; 
         if(!empty($worktype) && ($id!== 0)){
             $filter=$this->input->post('filter',TRUE);
             $empdata['wtype']=$worktype; 

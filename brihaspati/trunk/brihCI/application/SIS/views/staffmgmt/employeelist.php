@@ -279,9 +279,11 @@ $(document).ready(function(){
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
                                     if(!empty($record->emp_schemeid)){
                                     $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+					$schmcode=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->emp_schemeid)->sd_code;
                                     }
                                     else{
                                      $schm='';   
+					$schmcode='';
                                     }
                                     if(!empty($record->emp_specialisationid)){
                                         $sub=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
@@ -290,7 +292,7 @@ $(document).ready(function(){
                                         $sub="";
                                     } 
                                     echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "
-                                            ."<b>scheme-: </b>".$schm."<br/>"."<b>subject-: </b>".$sub;
+                                            ."<b>scheme-: </b>".$schm . "( " .$schmcode." )"."<br/>"."<b>subject-: </b>".$sub;
                             ?></td>
                             <td>
                                 <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
@@ -355,18 +357,20 @@ $(document).ready(function(){
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
                                     if(!empty($record->emp_schemeid)){
                                     $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+					$schmcode=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->emp_schemeid)->sd_code;
                                     }
-                                   /* else{
+                                    else{
                                      $schm='';   
-                                    }*/
+					$schmcode='';
+                                    }
                                     if(!empty($record->emp_specialisationid)){
                                         $sub=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
                                     }
-                                   /* else{
+                                    else{
                                         $sub="";
-                                    } */
+                                    } 
                                     echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "
-                                            ."<b>scheme-: </b>".$schm."<br/>"."<b>subject-: </b>".$sub;
+                                            ."<b>scheme-: </b>".$schm . "( " .$schmcode." )"."<br/>"."<b>subject-: </b>".$sub;
                             ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
                                        echo "<br/><b>Shown Against Post-:</b>".$record->emp_post; 

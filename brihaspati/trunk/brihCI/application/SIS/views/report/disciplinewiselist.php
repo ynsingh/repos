@@ -38,7 +38,7 @@
 	<form action="<?php echo site_url('report/disciplinewiselist');?>" id="myForm" method="POST" class="form-inline">
  	<table width="100%" border="0">
             <tr style="font-weight:bold;">
-               <td>  Select Campus
+               <td>  Select Campus<br>
                     <select name="camp" id="camp" style="width:400px;">
 			<? if  (!empty($this->camp)){ ?>
 			<option value="<?php echo $this->camp; ?>" > <?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name ." ( ". $this->commodel->get_listspfic1('study_center','sc_code','sc_id' ,$this->camp)->sc_code ." )"; ?></option>
@@ -53,7 +53,7 @@
                     </select>
                 </td>
 
-                 <td><div> Select Subject
+                 <td><div> Select Subject<br>
 			
                     <select name="subj[]" id="subj" style="width:400px;" title="You have to choose multiple subject by pressing Ctrl "  multiple>
 			<? if  (!empty($this->subj)){ ?>
@@ -68,11 +68,12 @@
 <?php }?>
 
                     </select>
-		</td><td>
+		</td>
+	<!-- 	<td>
 		   You have to<br> choose multiple <br>subject by<br> pressing Ctrl
 
                 </td>
-
+-->
 
                 <td><input type="submit" name="filter" id="crits" value="Search" /></td>
 		<td>

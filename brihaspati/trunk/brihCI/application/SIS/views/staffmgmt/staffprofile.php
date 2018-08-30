@@ -231,6 +231,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     });
                 }
             }); 
+				//asort(data);
             /*********************closer of Designation****************************************************************/
             
             /*****************************************validation for date of appiontment**************************************/
@@ -314,6 +315,38 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }); 
              
             /************************closer for shown against the post*****************************************/
+	 /************************Plan NO PLan GOI ICAR******************************************************************/
+            
+            $('#emppostid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                var empost_id = $('#emppostid').val();
+                var wrktype_id = $('#worktypeid').val();
+                var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+empost_id+","+wrktype_id;
+                if(empost_id == ''){
+                   $('#pnptypeid').prop('disabled',true);
+                }
+                else{
+                    $('#pnptypeid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/jslist/getemppnp",
+                        type: "POST",
+                        data: {"combfive" : cudshmpostwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#pnptypeid').html(data.replace(/^"|"$/g, ''));
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                        }
+                    });
+                }
+            }); 
+            /************************ close Plan NON PLAN ICAR GOI******************************************************************/
+
+
             
             /************************Employee type******************************************************************/
             
@@ -637,12 +670,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                  <td><label for="pnp" style="font-size:15px;"><font color='blue'>Plan / Non Plan</font></label>
-                    <div><select name="pnp" style="width:300px;"> 
-                        <option value="">-------------- Plan/Non Plan ------------</option>
-                        <option value="Plan">Plan</option>
+                    <div><select name="pnp" id="pnptypeid" style="width:300px;"> 
+                         <option value="">-------------- Plan/Non Plan ------------</option>
+            <!--            <option value="Plan">Plan</option>
                         <option value="Non-Paln">Non Plan</option>
                         <option value="GOI">GOI</option>
-                        <option value="ICAR">ICAR</option>
+                        <option value="ICAR">ICAR</option>  -->
                     </select></div>
                 </td>
                 <td><label for="emptype" style="font-size:15px;"><font color='blue'>Employee Type</font><font color='Red'>*</font></label>

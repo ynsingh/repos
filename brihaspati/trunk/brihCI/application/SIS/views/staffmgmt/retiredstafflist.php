@@ -54,6 +54,7 @@
                                 $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$empdept)->dept_name;
                                 $empschm=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$record->sre_empid)->emp_schemeid;
                                 $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$empschm)->sd_name;
+				$schmcode=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$empschm)->sd_code;
                                 $subid=$this->sismodel->get_listspfic1('employee_master','emp_specialisationid','emp_id',$record->sre_empid)->emp_specialisationid;
                                 if($subid >0){
                                     $subname=$this->commodel->get_listspfic1('subject','sub_name','sub_id',$subid)->sub_name;
@@ -64,7 +65,7 @@
                                     $subcode='';
                                 }
                                 echo "<b>Campus : </b>".$campus."<br/> "."<b>Uo : </b>".$authority."<br/> "."<b>Dept : </b>".$dept."<br/> "."<b>Scheme : </b>".$schm
-                                        ."<br/>"."<b>Subject:</b>".$subname."(". $subcode .")";
+                                        ."(". $schmcode .")"."<br/>"."<b>Subject:</b>".$subname."(". $subcode .")";
                             ?></td>
                             <td><?php
                                 $empdesig=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$record->sre_empid)->emp_desig_code;

@@ -2091,7 +2091,9 @@ class Staffmgmt extends CI_Controller
 	$group = $this->input->post('group');
 	//echo "Om Prakash======>".$group;
         $datawh=array('desig_group' => $group);
-        $desig = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_payscale,desig_code',$datawh);
+	$whorder = ("desig_name asc");
+        $desig = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_payscale,desig_code',$datawh,$whorder);
+//        $desig = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_payscale,desig_code',$datawh);
         $desig_select_box ='';
         $desig_select_box.='<option value="">----------Select Designation-----------';
         foreach($desig as $drecord){
@@ -2204,7 +2206,10 @@ class Staffmgmt extends CI_Controller
         $groups = $this->input->post('group');
         //echo json_encode("group=incontroller=".$groups);
         $datawh=array('desig_group' => $groups);
-        $grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+	
+	$whorder = ("desig_name asc");
+        //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+        $grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
         //echo json_encode("grouplist==".$grp_data);
         $desig_select_box ='';
         $desig_select_box.='<option value="">----------Select Designation-----------';
@@ -2223,8 +2228,9 @@ class Staffmgmt extends CI_Controller
         /******************Query for filteraion the post************************************/
         /*$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
                        'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_group' => $parts[5],'sp_tnt' => $parts[6]);*/
-        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                       'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
+        //$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+          //             'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
+        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2], 'sp_tnt' => $parts[4]);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_vacant',$datawh);
         //echo json_encode("post====".$emppost_data);
         $emppost_select_box ='';
@@ -2315,7 +2321,9 @@ class Staffmgmt extends CI_Controller
     public function gettypedesiglist(){
         $etpye = $this->input->post('emptypeid');
         $datawh=array('desig_type' => $etpye);
-        $comb_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+	$whorder = ("desig_name asc");
+        $comb_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
+   //     $comb_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
         $desig_select_box ='';
         $desig_select_box.='<option value="">------------- Select Designation -----------------';
         foreach($comb_data as $combdataid){

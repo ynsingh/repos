@@ -272,9 +272,10 @@
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
                                     if(!empty($record->emp_schemeid)){
                                         $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+					$schmcode=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->emp_schemeid)->sd_code;
                                         
                                     }
-                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme . "( " .$schmcode." )";
                                 ?>
                             </td>
                             <td>
@@ -372,7 +373,8 @@
                                 $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$empdept)->dept_name;
                                 $empschm=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$record->sre_empid)->emp_schemeid;
                                 $schm=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$empschm)->sd_name;
-                                echo "<b>campus : </b>".$campus."<br/> "."<b>uo : </b>".$authority."<br/> "."<b>dept : </b>".$dept."<br/> "."<b>scheme : </b>".$schm;
+				 $schmcode=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$empschm)->sd_code;
+                                echo "<b>campus : </b>".$campus."<br/> "."<b>uo : </b>".$authority."<br/> "."<b>dept : </b>".$dept."<br/> "."<b>scheme : </b>".$schm . "( " .$schmcode." )";
                             ?></td>
                             <td><?php
                                 $empdesig=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$record->sre_empid)->emp_desig_code;

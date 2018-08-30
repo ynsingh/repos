@@ -119,7 +119,7 @@
         <form action="<?php echo site_url('report/deptemployeelist');?>" id="myForm" method="POST" class="form-inline">
          <table width="100%" border="0">
             <tr style="font-weight:bold;">
-                <td>  Select Type
+                <td>  Select Type<br>
                     <select name="wtype" id="wtype" style="width:250px;"> 
 			<?php if(!empty($this->wtyp)){ ?>
                         <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
@@ -132,7 +132,7 @@
                     </select> 
                                     
                 </td> 
-               <td>  Select UO
+               <td>  Select UO<br>
                     <select name="uoff" id="uoff" style="width:270px;"> 
 			 <?php if((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
                         <option value="<?php echo $this->uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$this->uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$this->uolt)->code ." )"; ?></option>
@@ -142,8 +142,8 @@
 		 <?php  } ?>
                     </select> 
                 </td> 
-                <td><div>  Select Department
-                    <select name="dept[]" id="dept" style="width:250px;"  title="You have to choose multiple subject by pressing Ctrl" multiple> 
+                <td><div>  Select Department<br>
+                    <select name="dept[]" id="dept" style="width:550px;"  title="You have to choose multiple subject by pressing Ctrl" multiple> 
 			 <?php if((!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
                         <option value="<?php echo $this->deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$this->deptmt)->dept_code ." )"; ?></option>
                         <?php  }else{ ?>
@@ -154,11 +154,11 @@
                     </select> 
                     
                 </td>
-		<td>
+	<!--	<td>
                    You have to<br> choose multiple <br>subject by<br> pressing Ctrl
 
                 </td>
-
+-->
                 <td><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
             </tr>    
         </table>    
