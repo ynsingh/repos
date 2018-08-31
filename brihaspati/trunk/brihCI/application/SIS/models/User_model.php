@@ -41,6 +41,22 @@ class User_model extends CI_Model
 		return $current;
     }
 
+public function getcurrentFyYear(){
+            // get the current year
+                $cyear = date("Y");
+           //  get the current month
+                $cmonth = date('m');
+                //  generate academic yaer
+                if($cmonth>3){
+                        $current= $cyear.'-'.($cyear+1);
+                }
+                if($cmonth<4){
+                        $current= ($cyear-1).'-'.$cyear;
+                }
+                return $current;
+    }
+
+
 //this function is used for returning the next acdamic session for interence session
 	public function getcurrentAcadYearfadm(){
 	    // get the current year

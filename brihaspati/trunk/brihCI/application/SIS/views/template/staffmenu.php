@@ -136,15 +136,17 @@ echo "<ul class=\"sf-menu\">";
 					
 //				echo "</ul>";
 //			echo "</li>";
-//			echo "<li>";
-//				echo "<a href=" . ">Requests</a>";
-//				echo "<ul>";
+			echo "<li>";
+				echo "<a href=" . ">Requests</a>";
+				echo "<ul>";
 //					echo "<li>";
-  //                echo anchor('leavemgmt/leaveapply', 'Apply for Leave', array('title' => 'Apply for Leave'));
-    //           echo "</li>"; 
-//
-//				echo "</ul>";
-//			echo "</li>";
+  //                				echo anchor('leavemgmt/leaveapply', 'Apply for Leave', array('title' => 'Apply for Leave'));
+    //           			echo "</li>";
+					echo "<li>";
+                                        	echo anchor('incometax/incometax', 'Apply for Income Tax', array('title' => 'Apply for Income Tax'));
+                                        echo "</li>"; 
+				echo "</ul>";
+			echo "</li>";
 		/*	echo "<li>";
 				echo "<a href=" . ">Reconcile</a>";
 				echo "<ul>";
