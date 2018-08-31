@@ -557,6 +557,161 @@ class SIS_model extends CI_Model
             return true;
         }
     }
+    
+    /******************************* vacancy available check from staff position *************************************/
+    public function checkvacancy($campusid,$uoid,$deptid,$shmeid,$desigid,$worktype,$group,$emptype,$payscaleid){
+	$datawh=array('sp_campusid' => $campusid,'sp_uo' => $uoid, 'sp_dept' => $deptid,'sp_schemecode' => $shmeid,
+            'sp_emppost' => $desigid, 'sp_tnt' => $worktype,'sp_group' => $group,'sp_type' => $emptype);
+	$emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_id,sp_sancstrenght,sp_position,'
+                . 'sp_sspermanent,sp_pospermanent,sp_sstemporary,sp_postemporary',$datawh);
+       // $vcyflag=false;
+        if(!empty($emptype_data)){ 
+            foreach($emptype_data as $empdata){
+                  //  echo"first====" .$empdata->sp_sancstrenght.$empdata->sp_position;
+                   
+                    if($emptype == 'Permanent'){
+                       // echo"<br/>first2====" .$empdata->sp_sspermanent.$empdata->sp_pospermanent;
+                        $update_data = array(
+                        'sp_sancstrenght'=>$empdata->sp_sancstrenght+1,
+                        'sp_position'=>$empdata->sp_position+1,    
+                        'sp_sspermanent'=>$empdata->sp_sspermanent+1,
+                        'sp_pospermanent'=>$empdata->sp_pospermanent+1,
+                        //'sp_vpermanenet'=>$empdata->sp_vpermanenet+1,
+                        );
+                    }
+                    else{
+                       // echo"<br/>first3====" .$empdata->sp_sstemporary.$empdata->sp_postemporary;
+                        $update_data = array(
+                        'sp_sancstrenght'=>$empdata->sp_sancstrenght+1,
+                        'sp_position'=>$empdata->sp_position+1,   
+                        'sp_sstemporary'=>$empdata->sp_sstemporary+1,
+                        'sp_postemporary'=>$empdata->sp_postemporary+1, 
+                        //'sp_vtemporary'=>$empdata->sp_vtemporary+1,     
+                        );
+                    }    
+                    $spflag=$this->sismodel->updaterec('staff_position', $update_data, 'sp_id', $empdata->sp_id);
+                  
+            }//foreach
+        }
+        else{
+            if($emptype == 'Permanent'){
+                $dataposition = array(
+                    'sp_tnt'=>$worktype,
+                    'sp_type'=>$emptype,
+                    'sp_emppost'=>$desigid,
+                    'sp_grppost'=>'Null',
+                    'sp_scale'=>$payscaleid,
+                    'sp_methodRect'=>'direct',
+                    'sp_group'=>$group,
+                    'sp_uo'=>$uoid,
+                    'sp_dept'=>$deptid,
+                    'sp_address1'=>'Null',
+                    'sp_address2'=>'Null',
+                    'sp_address3'=>'Null',
+                    'sp_campusid'=>$campusid,
+                    'sp_per_temporary'=>'Null',
+                    'sp_plan_nonplan'=>'Null',
+                    'sp_schemecode'=>$shmeid,
+                    'sp_sancstrenght'=>1,
+                    'sp_position'=>1,
+                    'sp_vacant'=>0,
+                    'sp_remarks'=>'Null',
+                    'sp_ssdetail'=>'Null',
+                    'sp_sspermanent'=>1,
+                    'sp_sstemporary'=>0,
+                    'sp_pospermanent'=>1,
+                    'sp_postemporary'=>0,
+                    'sp_vpermanenet'=>0,
+                    'sp_vtemporary'=>0,
+                    'sp_org_id'=> '1'
+                );
+            }    
+            else{
+                
+                $dataposition = array(
+                    'sp_tnt'=>$worktype,
+                    'sp_type'=>$emptype,
+                    'sp_emppost'=>$desigid,
+                    'sp_grppost'=>'Null',
+                    'sp_scale'=>$payscaleid,
+                    'sp_methodRect'=>'direct',
+                    'sp_group'=>$group,
+                    'sp_uo'=>$uoid,
+                    'sp_dept'=>$deptid,
+                    'sp_address1'=>'Null',
+                    'sp_address2'=>'Null',
+                    'sp_address3'=>'Null',
+                    'sp_campusid'=>$campusid,
+                    'sp_per_temporary'=>'Null',
+                    'sp_plan_nonplan'=>'Null',
+                    'sp_schemecode'=>$shmeid,
+                    'sp_sancstrenght'=>1,
+                    'sp_position'=>1,
+                    'sp_vacant'=>0,
+                    'sp_remarks'=>'Null',
+                    'sp_ssdetail'=>'Null',
+                    'sp_sspermanent'=>0,
+                    'sp_sstemporary'=>1,
+                    'sp_pospermanent'=>0,
+                    'sp_postemporary'=>1,
+                    'sp_vpermanenet'=>0,
+                    'sp_vtemporary'=>0,
+                    'sp_org_id'=> '1'
+                );
+            }    
+            $positionflag = $this->sismodel->insertrec('staff_position', $dataposition);
+          
+        }
+    }
+    /******************************* closer vacancycheck and create in  staff position ******************************/
+     /*============== update staff position table at the time of employee transfer in budgetpost case ====================================*/
+    public function updatespbudgetpost($campusid,$uoid,$deptid,$shmeid,$desigid,$worktype,$emptype){
+        $datawh=array('sp_campusid' => $campusid,'sp_uo' => $uoid, 'sp_dept' => $deptid,'sp_schemecode' => $shmeid,
+        'sp_emppost' => $desigid, 'sp_tnt' => $worktype,'sp_type' => $emptype);
+        $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_sancstrenght,sp_position,sp_sspermanent,'
+                . 'sp_pospermanent,sp_sstemporary,sp_postemporary',$datawh);
+        if(!empty($emppost_data)){
+            foreach($emppost_data as $empdata){
+                   
+                    if($emptype == 'Permanent'){
+                        $update_data = array(
+                        'sp_sancstrenght'=>$empdata->sp_sancstrenght-1,
+                        'sp_position'=>$empdata->sp_position-1,  
+                        'sp_sspermanent'=>$empdata->sp_sspermanent-1,
+                        'sp_pospermanent'=>$empdata->sp_pospermanent-1,
+                        //'sp_vpermanenet'=>$empdata->sp_vpermanenet+1,
+                        );
+                    }
+                    else{
+                        $update_data = array(
+                        'sp_sancstrenght'=>$empdata->sp_sancstrenght-1,
+                        'sp_position'=>$empdata->sp_position-1,    
+                        'sp_sstemporary'=>$empdata->sp_sstemporary-1,
+                        'sp_postemporary'=>$empdata->sp_postemporary-1, 
+                        //'sp_vtemporary'=>$empdata->sp_vtemporary+1,     
+                        );
+                    }    
+                    // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
+                    $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                    if(!upempdata_flag){
+                        $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
+                        $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
+            
+                    }
+                    else{
+                    $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ");
+                    $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully");
+            
+                    }
+                             
+            } //foreach   
+           
+           
+        }  //ifempty  
+        
+    }//function close
+    /***********************************close of staff position  transfer in budgetpost case d*********************************************/  
+    
     function __destruct() {
         $this->db2->close();
     }

@@ -352,6 +352,7 @@
                 
                 $("#empnameid").on('change',function(){
                     var empid = $(this).val();
+                    var transtype= "<?php echo $ttype;?>";
                     //alert(empid);
                     if(empid == ''){
                        // $('#uocfrom').prop('disabled',true);
@@ -372,14 +373,16 @@
                             success:function(data){
                                	var empdata=data;
 				var empinput=empdata.split(',');
-                                //var val1 = empinput[0].replace(/\"/g,"");
-                               //$('#uocfrom').val(val1.replace(/^"|"$/g, ''));
-                               //$('#deptfrom').val(empinput[1].replace(/^"|"$/g, ''));
-                               //$('#desigfrom').val(empinput[2].replace(/^"|"$/g, ''));
-                              // $('#postfrom').val(empinput[3].replace(/^"|"$/g, ''));
-                               //$('#dep').html(empinput[4].replace(/^"|"$/g, ''));
-                                $('#postfrom').val(empinput[0].replace(/\"/g,""));
-                                $('#emppt').val(empinput[1].replace(/\"/g,""));
+                                if(transtype === 'budgetpost'){
+                                    $('#postfrom').val(empinput[0].replace(/\"/g,""));
+                                    $('#emppt').val(empinput[1].replace(/\"/g,""));
+                                    $('#postto').val(empinput[0].replace(/\"/g,""));
+                                    $('#vtypeid').val(empinput[1].replace(/\"/g,""));
+                                }
+                                else{
+                                    $('#postfrom').val(empinput[0].replace(/\"/g,""));
+                                    $('#emppt').val(empinput[1].replace(/\"/g,""));
+                                }
                                
                                 
                             },
@@ -855,6 +858,16 @@
                       
                     </tr>
                     <tr>
+                        <?php if($ttype =='budgetpost') : ?> 
+                        <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
+                            <div><input type="text" name="postto" id="postto"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
+                        </td>
+                         <td><label for="emppt" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
+                             <div><input type="text" name="vacanttype" id="vtypeid"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
+                           
+                        </td>
+                        <?php else : ?>
+                        
                         <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
                         <div>    
                             <select required name="postto" id="postto" style="width:350px;"> 
@@ -869,6 +882,8 @@
                             
                             </select><div>
                         </td> 
+                        <?php endif; ?>
+                        
                         <?php if($ttype =='mutual'): ?>
                         <td><label for="empname" style="font-size:15px;">Employee Name for Mutual Tranfer<font color='Red'>*</font></label>
                             <div><select name="empmutual" id="empnto" style="width:350px;"> 

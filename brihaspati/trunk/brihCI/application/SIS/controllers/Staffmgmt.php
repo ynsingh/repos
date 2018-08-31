@@ -1265,8 +1265,15 @@ class Staffmgmt extends CI_Controller
             else{
                // $ttype=$this->input->post('ttype');
                 $usrinputtfr_flag=false;
-                $upempdata_flag==false;
+                $upempdata_flag=false;
                 $lastentryid='';
+                if($transtype == 'budgetpost'){
+                    $sapostnew=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postto'])->desig_id; 
+                
+                }
+                else{
+                    $sapostnew=$_POST['postto'];
+                }
                 if($transtype !='mutual'){
                     $data = array(
                     'uit_registrarname'                => $this->input->post('registrarname'),
@@ -1290,7 +1297,8 @@ class Staffmgmt extends CI_Controller
                     'uit_uoc_to'                       => $this->input->post('uocontrolto'),
                     'uit_dept_to'                      => $this->input->post('deptto'),
                     'uit_desig_to'                     => $this->input->post('desigto'),
-                    'uit_post_to'                      => $this->input->post('postto'),
+                   // 'uit_post_to'                      => $this->input->post('postto'),
+                    'uit_post_to'                      => $sapostnew,
                     'uit_tta_detail'                   => $this->input->post('ttadetail'),
                 
                     'uit_dateofrelief'                 => $this->input->post('dateofrelief'),
@@ -1306,9 +1314,14 @@ class Staffmgmt extends CI_Controller
                     'uit_transfertype'                 => $transtype,
                 
                 ); 
-              //  echo "type===".$transtype;    
-                //die;
+             
                 if($transtype == 'budgetpost'){
+                   /********************check vacancy available or not if not then create vacancy**********/ 
+                    $this->sismodel->checkvacancy($_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],
+                    $_POST['schemto'],$sapostnew,$_POST['emptypeto'],$_POST['group'],$_POST['vacanttype'],$_POST['payband']);
+                
+                   /***********************************************************************************/
+                 
                    $usrinputtfr_flag=$this->sismodel->insertdata('user_input_transfer', $data); 
                    $lastentryid = $usrinputtfr_flag;
                 }
@@ -1326,7 +1339,12 @@ class Staffmgmt extends CI_Controller
                 else{
                     /* insert record in service details with check duplicate and  update in empprofile table table */
                     $id=$_POST['empname'];
-                    $postto=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['postto'])->desig_name;
+                    if($transtype == 'budgetpost'){
+                        $postto=$_POST['postto'];
+                    }
+                    else{
+                        $postto=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['postto'])->desig_name;
+                    }    
                     $empdata = array(
                         'emp_dept_code'    => $_POST['deptto'],
                         'emp_desig_code'   => $_POST['desigto'],
@@ -1345,6 +1363,11 @@ class Staffmgmt extends CI_Controller
                     $upempdata_flag=$this->sismodel->updaterec('employee_master', $empdata,'emp_id',$id);
                     if($transtype == 'budgetpost'){
                         $this->transferpostbudget($_POST['empname'],$lastentryid);
+                        /******************update in from data(staff position ) of budgetpost************/
+                        $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;
+                        $this->sismodel->updatespbudgetpost($_POST['campusfrom'],$_POST['uocfrom'],$_POST['deptfrom'],
+                        $_POST['schemfrom'],$postfrom,$_POST['employeetype'],$_POST['empptfrom']);
+                        /******************update in from data(staff position ) of budgetpost************/          
                     }
                     if($transtype == 'workorder'){
                         $this->workorder($_POST['empname']);
@@ -1357,7 +1380,8 @@ class Staffmgmt extends CI_Controller
                     }  
                     /*************************************updating the staff position table******************************************************************/
                     if($transtype =='singletransfer' ||$transtype =='singlepromtion'){
-                    $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;
+                    
+                    $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;    
                     //descrease position and increase vacancy from old data(means from )
                     $this->sismodel->updatestaffposition2($_POST['campusfrom'],$_POST['uocfrom'],$_POST['deptfrom'],$postfrom,$_POST['employeetype'],$_POST['empptfrom'],$_POST['schemfrom']);
                     //increase in position and decrease vacancy from new data(means to)
