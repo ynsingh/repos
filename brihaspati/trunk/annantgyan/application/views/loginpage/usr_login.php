@@ -173,15 +173,15 @@ jQuery(function ($) {
             					</div>
                  				<div class="col-md-8">  
                         <?php  
-                        				if(!empty($fpathname1)){
-                        					if(file_exists($fpathname1)) {?> 
+                        			//	if(!empty($fpathname1)){
+                        			//		if(file_exists($fpathname1)) {?> 
                             						<div id="content">
 						                              <!-- <iframe name="content" src="<?php //echo base_url($fpathname1);?>" style="width:100%;height:500px;"></iframe>-->
 									      <iframe name="content" src="<?php echo site_url('assets/course_pdf/calender.pdf');?>" style="width:100%;height:500px;border:none;"></iframe>
                             						</div>
 			<?php 
-								}
-							}
+							//	}
+						//	}
 			?>    
                       				</div>  
 		      			</div>
@@ -201,7 +201,7 @@ jQuery(function ($) {
 			<div class="container">    
 				<div id='card' class="col-md-12" style="background-color: lightgreen;">
 				<center>
-				<h2> Course content will be available after 10<sup>th</sup> October 2018. Kindly visit the course structure and course calander links</h2>
+				<h2> Course content will be available after 10<sup>th</sup> October 2018. Kindly visit the course structure and course calendar links</h2>
   				</center>
 				</div>
 			</div>

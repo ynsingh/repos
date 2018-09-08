@@ -10,8 +10,6 @@ class Webhook extends CI_Controller {
                 parent::__construct();
                 $this->load->model("Mailsend_model","mailmodel");
                 $this->load->model('Common_model',"commodel");
-//                $this->load->library('form_validation');
-  //              $this->load->library('session');
                 $this->load->library('curl');
                 $this->load->helper(array('url','form'));
                 $this->load->helper('string');
@@ -24,6 +22,7 @@ class Webhook extends CI_Controller {
 		*/
 
 		$data = $_POST;
+		$postdata = json_encode($_POST);
 		$mac_provided = $data['mac']; // Get the MAC from the POST data
 		unset($data['mac']); // Remove the MAC key from the data.
 		$ver = explode('.', phpversion());
@@ -75,16 +74,16 @@ class Webhook extends CI_Controller {
 				$coursedate=$this->commodel->get_listspficemore('courseannouncement',$sdata1,$whdata1);
 				//$cdate = date('Y-m-d');
 				foreach($coursedate as $coudata){
-    				$startdate = $coudata->crsann_crsstart;
-    				$enddate   = $coudata->crsann_crsend;
-    				$feedbackdate   = $coudata->crsann_feedbkdate;
-    				//code for sending mail to user	
-				$subject = "Registered Successfully";
+    					$startdate = $coudata->crsann_crsstart;
+	    				$enddate   = $coudata->crsann_crsend;
+    					$feedbackdate   = $coudata->crsann_feedbkdate;
+    					//code for sending mail to user	
+					$subject = "Registered Successfully";
                                      //   $pawd = random_string('alnum',6);
                                        // $erstring= $mailid.'---'.$rstring;
                                        // $verifylink = base_url("login/verify/".$erstring);
 
-                                $message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
+                                	$message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
                                         <tr><td></td></tr>
                                         <tr><td colspan=2><b>Welcome to “Annant Gyan”</td></tr>
                                         <tr><td colspan=2>You have successfully enrolled on online courses/ workshops of “Annant Gyan”. </td></tr>
@@ -110,7 +109,7 @@ class Webhook extends CI_Controller {
                                         </table>
 
                                         " ;
-                            }//foreach close get start and end dates            	
+                            	}//foreach close get start and end dates            	
                                 $mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
 
 
@@ -136,7 +135,8 @@ class Webhook extends CI_Controller {
 
 				$confmes = "You are registered successfully in " .$courname. " & mail sent to your registered email-id and Payment was successful.".$message;
 			        $this->session->set_flashdata('success',$confmes);
-				redirect('workshop/courseenroll_home');
+				//redirect('workshop/courseenroll_home');
+				redirect('login/usr_login');
 
  				// Payment was successful, mark it as successful in your database.
 				 // You can acess payment_request_id, purpose etc here. 
@@ -147,13 +147,19 @@ class Webhook extends CI_Controller {
 				$message = "Payment was unsuccessful";
                        		$this->session->set_flashdata('error', $message);
                        		//echo $this->email->print_debugger();
-                        	redirect('workshop/enroll_workshop');
+				//redirect('workshop/enroll_workshop');
+				$this->session->sess_destroy();
+                        	redirect('Course-Registration');
 				 // Payment was unsuccessful, mark it as failed in your database.
 				 // You can acess payment_request_id, purpose etc here.
  			}
 		}
 		else{
-			 echo "MAC mismatch";
+			echo "MAC mismatch";
+			$paymentid=$_GET['payment_id'];
+			$paymetrequestid=$_GET['payment_request_id'];
+			$this->session->set_flashdata('error','MAC mismatched. Please write mail to administrator (nksinghiitk@gmail.com or annantgyan@gmail.com) with Payment id = '.$paymentid.' and transaction id = '.$paymetrequestid);
+                        redirect('Course-Registration');
 		}
 	}
 }

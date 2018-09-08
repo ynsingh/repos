@@ -302,35 +302,17 @@ class Login extends CI_Controller {
 			$sdata = 'acu_weekname';
 			$getuploadata = $this->commodel->get_distinctrecord('admin_conteupload',$sdata,$whdata);
 			$data['getuploadata'] = $getuploadata;
-
-
-						$this->load->view('loginpage/usr_login',$data);
+			$sdata = ['crs_id' => $couid];
+                        $this->session->set_userdata($sdata);
+			$this->load->view('loginpage/usr_login',$data);
 							
-			 //redirect('http://www.annantgyan.com');
-	    //redirect('welcome');
-			
 		}
 		elseif(isset($this->session->userdata['first_name'])){
-			//echo "hello";
-			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
-			
-
-						$this->load->view('loginpage/usr_login',$data);
-							
-			 //redirect('http://www.annantgyan.com');
-	    //redirect('welcome');
+			$this->load->view('loginpage/usr_login',$data);
 		}
-		//elseif(isset(($this->session->userdata['su_id']))){
-			//echo "hello";
-			//$data['couid'] = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
-		//	$this->load->view('loginpage/usr_login',$data);
-			 //redirect('http://www.annantgyan.com');
-	    //redirect('welcome');
-		//}
 		else{
 			redirect('login/signin');
 		}
-		
 		
 	}
 

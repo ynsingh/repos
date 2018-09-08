@@ -14,7 +14,7 @@ class Workshop extends CI_Controller {
 		parent::__construct();
 		$this->load->model("Mailsend_model","mailmodel");
 		$this->load->model('Common_model',"commodel");
-		$this->load->library('form_validation');
+//		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('curl');
 		$this->load->helper(array('url','form'));
@@ -72,6 +72,8 @@ class Workshop extends CI_Controller {
            				'place'		=> $place,
            				'nationality'   => $nationality,
 				);
+				/*
+				 This is commented on 8 september 2018 for stop duplicate signup
 				$datadup = array('su_emailid' => $mailid);
 				$isexist=$this->commodel->isduplicatemore('sign_up',$datadup);
 				if($isexist)	
@@ -86,6 +88,9 @@ class Workshop extends CI_Controller {
 					$this->load->view('courseenroll_confirm',$data);
 					return;
 				}
+				 */
+				$this->load->view('courseenroll_confirm',$data);
+				return;
 			}//else close
 		}//close submit
 		redirect('Course-Registration');
@@ -117,7 +122,7 @@ class Workshop extends CI_Controller {
 						//$crscode        = $this->input->post('coursecode');
             	    		$courname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$cid)->cou_name;
 				$crscode = $this->commodel->get_listspfic1('courses','cou_code','cou_id',$cid)->cou_code;
-
+				$cdate = date('Y-m-d');
 				//insert record in ongoing table
 				$owdata = array(
 					'ow_name' 		=> $firstname,	
@@ -129,6 +134,7 @@ class Workshop extends CI_Controller {
 					'ow_school'		=> $product_info,	//variable name change school to pinfo for payU
 					'ow_rperson' 		=> $rperson,	
 					'ow_amount'		=> $amount,	
+					'ow_date'		=> $cdate,
 				);	
 				//when user record exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type
 				if(isset($this->session->userdata['su_id'])){
@@ -139,25 +145,12 @@ class Workshop extends CI_Controller {
 					$coudata  = array('uct_userid'  => $usid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
 					//print_r($coudata);die;
 					$pginsert = $this->db->insert('user_course_type', $coudata);
-						/*	if($pginsert){
-                        		 $confmes = "You are registered successfully in " .$courname. " .";
-                       			 $this->session->set_flashdata('success',$confmes);
-                 //      			 $purpose="Workshop";
-                   //    			 $this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
-
-                        		 redirect('workshop/courseenroll_home');
-                        	}
-                        	else{
-                        		$message = "Some detail is incorrect.";
-                       			$this->session->set_flashdata('error', $message);
-                       			redirect('workshop/enroll_workshop');
-                        	} */
 				}
 
 				//when user record not exsist in signup table then data insert in  ongoingworkshop ,ongoingworkshop_pg,user_course_typeuser_course_type or sign_up
 				else{
 							
-					$owdupdata = array(
+				/*	$owdupdata = array(
 						'ow_email' 		=> $mailid,
 						'ow_courseid' 		=> $cid,
 					);
@@ -168,7 +161,7 @@ class Workshop extends CI_Controller {
             					$this->session->set_flashdata('error', 'Mail-id :- ' .$mailid.'  '. 'is already enrolled for this course - '.'" ' .$courname. '"');
             					redirect('workshop/courseenroll');
 					}
-
+				 */
 					$owinsert = $this->db->insert('ongoingworkshop', $owdata);
 					$owid = $this->db->insert_id();
 							
@@ -179,58 +172,26 @@ class Workshop extends CI_Controller {
                                 		'su_name' 		=> $firstname,
 		                                'su_emailid' 		=> $mailid,
                 		                'su_password' 		=> $rstring,
-                                		//'su_confpassword' 	=> $cpawd,
 		                                'su_status' 		=> 'Verified',
 						'su_string'		=> $rstring 
 
-                            		);
-                            		$signinsert = $this->db->insert('sign_up',$signupdata);
-					$signupid = $this->db->insert_id();
-
-//					$suid = $this->commodel->get_listspfic1('sign_up','su_id','su_id',$signupid)->su_id;
+					);
+					$datadup = array('su_emailid' => $mailid);
+	                                $isexist=$this->commodel->isduplicatemore('sign_up',$datadup);
+					if($isexist){
+						$signupid = $this->commodel->get_listspfic1('sign_up','su_id','su_emailid',$mailid)->su_id;
+					
+					}else{
+                            			$signinsert = $this->db->insert('sign_up',$signupdata);
+						$signupid = $this->db->insert_id();
+					}
 					$suname = $this->commodel->get_listspfic1('sign_up','su_name','su_id',$signupid)->su_name;
-					//print_r($suname);die;
 					$userdata = ['su_id' => $signupid ,'su_emailid' => $mailid,'su_name' => $suname];
-					//print_r($userdata);die;
 					$this->session->set_userdata($userdata);
 
 					$coudata  = array('uct_userid'  => $signupid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
-					$pginsert = $this->db->insert('user_course_type', $coudata);
+					$uctinsert = $this->db->insert('user_course_type', $coudata);
 
-			/*		$subject = "Registered Successfully";
-					$pawd = random_string('alnum',6);
-					$erstring= $mailid.'---'.$rstring;
-					$verifylink = base_url("login/verify/".$erstring);
-				
-					$message  = "<table width='50%'; style='border:1px solid #3A5896;color:black;font-size:18px;' align=center border=0>
-					<tr><td></td></tr>
-					<tr><td colspan=2><b>Your are registered successfully, Your details are given below</td></tr>
-					<tr height=15><td colspan=2></td></tr>
-					<tr><td width=370><b>Email: </b></td><td align=left>".$mailid."</td></tr> 
-					<tr><td><b>Password : </b> </td><td align=left>".$pawd. "</td><tr>
-					<tr><td><b>Course Name : </b> </td><td align=left>".$courname. "</td><tr>
-
-					<tr><td><b>Verification link : </b></td><td align=left> <a href=".$verifylink.">Verify your registration.</a></td></tr>
-					
-					</table> " ;
-
-					$mails=$this->mailmodel->mailsnd($mailid,$subject,$message,'');
-			 */
-
-                        /*	if($mails){
-                        		$confmes = "You are registered successfully in " .$courname. " & Verification link sent to your registered email-id.";
-                       			$this->session->set_flashdata('success',$confmes);
-                       			
-
-								redirect('workshop/courseenroll_home');
-                        		
-                        	}
-                        	else{
-                        		$message = "Verification link not sent successfully.".$mails;
-                       			$this->session->set_flashdata('error', $message);
-                       			//echo $this->email->print_debugger();
-                        		redirect('workshop/enroll_workshop');
-                        	}*/							
 				}//else close						
 
 				/*  if($cid == 1){
@@ -256,7 +217,10 @@ class Workshop extends CI_Controller {
                             $resp=$this->payment_req($purpose,$amount,$phoneno,$firstname,$mailid);
                             //$response['payment_request']
                             $data = json_decode($resp,true);
-                            //var_dump($data);
+			    //var_dump($data);
+			   // $ida = $data["payment_request"]["id"];
+			   // $owupd=array('ow_remark' => $ida);
+			   // $owupdflag=$this->db->update('ongoingworkshop',$owupd,'ow_id',$owid);
                             $site=$data["payment_request"]["longurl"];
                             //print_r($site); die();
                             header('HTTP/1.1 301 Moved Permanently');
@@ -284,9 +248,9 @@ class Workshop extends CI_Controller {
     		'phone' => $phone,
     		'buyer_name' => $name,
     		'redirect_url' => 'http://annantgyan.com/webhook',
-    		'send_email' => false,
+    		'send_email' => true,
     		'webhook' => 'http://annantgyan.com/webhook',
-    		'send_sms' => false,
+    		'send_sms' => true,
     		'email' => $email,
     		'allow_repeated_payments' => false
 		);
@@ -298,6 +262,35 @@ class Workshop extends CI_Controller {
 		//echo $response;
 		return $response;
 	}
+	function payment_detail($paymentreq,$paymentid)
+	{
+		$ch = curl_init();
+	    
+		curl_setopt($ch, CURLOPT_URL, 'https://www.instamojo.com/api/1.1/payment-requests/'.$paymentreq.'/'.$paymentid.'/');
+		curl_setopt($ch, CURLOPT_HEADER, FALSE);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    		curl_setopt($ch, CURLOPT_HTTPHEADER,
+			array("X-Api-Key:888b4d6c3ca3889e9362c2f74f62e002", "X-Auth-Token:eafb959fd37284f0f3962175cd4ec1e1"));
+/*    		$payload = Array(
+		        'purpose' => 'XXXX',
+        		'amount' => 'XXXX',
+        		'phone' => 'XXXX',
+        		'buyer_name' => 'XXXX',
+        		'redirect_url' => 'http://XXXX/Success',
+        		'send_email' => true,
+        		'webhook' => 'http://XXXX/webhook',
+        		'send_sms' => true,
+        		'email' => 'XXXX@XXXX.XXXX',
+        		'allow_repeated_payments' => false
+		);
+ */
+    		$response = curl_exec($ch);
+    		curl_close($ch); 
+
+    		return $response;
+
+	}
 
 	function payment($id){
 
@@ -308,13 +301,12 @@ class Workshop extends CI_Controller {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
-			array("X-Api-Key:888b4d6c3ca3889e9362c2f74f62e002",
-                  "X-Auth-Token:eafb959fd37284f0f3962175cd4ec1e1"));
+			array("X-Api-Key:888b4d6c3ca3889e9362c2f74f62e002", "X-Auth-Token:eafb959fd37284f0f3962175cd4ec1e1"));
         
 		$response = curl_exec($ch);
 		curl_close($ch); 
 
-		echo $response;
+		return $response;
 	}
 
 
@@ -322,7 +314,7 @@ class Workshop extends CI_Controller {
 	function updatepg($prid,$pid){
 		//print_r("expression"); die();
 		$confmes = "You are registered successfully in " .$courname. " & Verification link sent to your registered email-id.";
-        $this->session->set_flashdata('success',$confmes);
+        	$this->session->set_flashdata('success',$confmes);
 		redirect('workshop/courseenroll_home');
 	}
 	function courseenroll_home(){
