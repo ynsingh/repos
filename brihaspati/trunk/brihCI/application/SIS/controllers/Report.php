@@ -961,6 +961,7 @@ public function disciplinewiselist(){
                $uo_select_box.='<option value='.$detail->emp_uocid.'>'.$auoname. '(' .$auocode. ')'.' ';
             }
         }
+//	arsort($uo_select_box);
         echo json_encode($uo_select_box);
     } 
     
@@ -1391,7 +1392,7 @@ public function disciplinewiselist(){
     public function retiredemplist() {
         
         $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code,emp_schemeid,emp_email,emp_doj,emp_dor,emp_dob";
-        $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
+        $whorder = "emp_dor desc,emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
         
         if(isset($_POST['filter'])) {
@@ -1400,11 +1401,13 @@ public function disciplinewiselist(){
             $uoff   = $this->input->post('uoff');
             $dept[] = $this->input->post('dept');
             $year   = $this->input->post('year');
+            $month   = $this->input->post('month');
            
 		 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
             $this->year=$year;
+            $this->month=$month;
 	    $whdata['emp_worktype']=$wtype;
                        
             if($uoff !="All"){
@@ -1420,9 +1423,15 @@ public function disciplinewiselist(){
                 }
             }
             if(!empty($year)&&($year != "null")){
-               
-                $whdata['SUBSTRING(emp_dor,1,4)  LIKE']=$year.'%';
+            	if(!empty($month)&&($month != "null")){
+                	$whdata['SUBSTRING(emp_dor,1,7)  LIKE']=$year.'-'.$month.'%';
+            	}
+		else{       
+                	$whdata['SUBSTRING(emp_dor,1,4)  LIKE']=$year.'%';
+		}
+            
             }       
+//		print_r($whdata); die();
 	    if(!empty($names)){
 			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
 	
@@ -1431,8 +1440,12 @@ public function disciplinewiselist(){
             }
         }
         else{
-            $whdata = array ('emp_dor <='=>$cdate);
+	    //$names = array('Dismissed','Expired','Resigned','VRS');	
+	    $names = array('superannuation');	
+            $whdata = array ('emp_dor <='=>$cdate, 'emp_leaving IS NULL'=> null);
             $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+//            $data['records'] = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_leaving',$names,$whorder);
+						
         }
         $this->logger->write_logmessage("view"," view departmentt employee list" );
         $this->logger->write_dblogmessage("view"," view department employee list");

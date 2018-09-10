@@ -89,6 +89,7 @@ class SIS_model extends CI_Model
         $this->db2->where($data);
         return $this->db2->get()->result();
     }
+
     //    getting different field from table - $selectfield ('a,b,c');
     //    $whdata = array('name' => $name, 'title' => $title, 'status' => $status);
     //    $whorder = ("column1 asc,column2 desc");
@@ -104,6 +105,28 @@ class SIS_model extends CI_Model
         }
         return $this->db2->get()->result();
     }
+
+    //    getting different field from table - $selectfield ('a,b,c');
+    //    $whdata = array('name' => $name, 'title' => $title, 'status' => $status);
+    //    $whorder = ("column1 asc,column2 desc");
+    public function get_orderlistspficemoreorwhnotin($tbname,$selectfield,$whdata,$orfield,$orwhin,$whorder){
+        $this->db2->flush_cache();
+        $this->db2->from($tbname);
+        $this->db2->select($selectfield);
+        if($whdata != ''){
+                $this->db2->where($whdata);
+        }
+	if($orwhin != ''){
+                $this->db2->where_not_in($orfield, $orwhin);
+        }
+        if($whorder != ''){
+                $this->db2->order_by($whorder);
+        }
+//	print_r($this->db2); die();
+        return $this->db2->get()->result();
+    }
+
+
 
     public function get_orderlistspficemoreorwh($tbname,$selectfield,$whdata,$orfield,$orwhin,$whorder){
         $this->db2->flush_cache();
@@ -122,7 +145,6 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
-	
 
     // get the join  table result value
     public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$jtype,$whdata){
@@ -174,7 +196,7 @@ class SIS_model extends CI_Model
          return $this->db2->get();
     }
 
-// check the record is already exist with as many field you want
+	// check the record is already exist with as many field you want
     public function isduplicatemore($tbname,$data) {
                 $this->db2->flush_cache();
                 $this->db2->from($tbname);

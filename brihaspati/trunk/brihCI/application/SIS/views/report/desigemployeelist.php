@@ -9,6 +9,13 @@
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+	
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap-multiselect.css">
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap-multiselect.js" ></script>
+-->
         <style type="text/css" media="print">
             @page {
                 size: auto;   /* auto is the initial value */
@@ -27,7 +34,7 @@
             
             $(document).ready(function(){
                 
-                /****************************************** start of uofficer********************************/
+                /****************************************** start of designation********************************/
                 $('#wtype').on('change',function(){
                     var workt = $(this).val();
                     if(workt == ''){
@@ -36,15 +43,17 @@
                     }
                     else{
                         $('#desig').prop('disabled',false);
+			 $('#desig').html('');
+                 //       $('#desig').multiselect('rebuild');
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist",
                             type: "POST",
-                            data: {"worktype" : workt},
+                            data: {"wtype" : workt},
                             dataType:"html",
                             success:function(data){
                            // alert("data==1="+data);
                                 $('#desig').html(data.replace(/^"|"$/g, ''));
-                                                 
+                   //               $('#desig').multiselect('rebuild')                
                             },
                             error:function(data){
                                 //alert("data in error==="+data);
@@ -54,9 +63,9 @@
                         });
                     }
                 }); 
-                /******************************************end of uofficer********************************/
+                /******************************************end of designation********************************/
                 
-                /****************************************** start of deptarment********************************/
+                /****************************************** start of uo list********************************/
                 $('#desig').on('change',function(){
                     var wtcode = $('#wtype').val();
                     var desigid = $('#desig').val();
@@ -84,7 +93,7 @@
                         });
                     }
                 }); 
-                /******************************************end of department********************************/
+                /******************************************end of uo list********************************/
                 
                 /******************************************start Department********************************/
                  $('#uoff').on('change',function(){
@@ -156,7 +165,7 @@
                 </td> 
 
                 <td> Designation
-                    <select name="desig" id="desig" style="width:250px;"> 
+                    <select name="desig" id="desig"  style="width:250px;"> 
 			 <?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
                         <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>

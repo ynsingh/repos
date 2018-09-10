@@ -160,6 +160,28 @@
                             ?>          
                         </select> 
                     </td>     
+		<?php
+			$monthArray = range(1, 12);
+		?>
+		<td>Select Month </br>
+			<select name="month" id="month" style="width:150px;">
+			<?php if((!empty($this->month))&&($this->month != 'All')){ ?>
+                                <option value="<?php echo $this->month; ?>" > <?php echo $this->month; ?></option>
+                        <?php  }else{ ?>
+				<option value="" disabled selected>--Select Month --</option>
+			<?php
+			}
+				foreach ($monthArray as $month) {
+				        // padding the month with extra zero
+				        $monthPadding = str_pad($month, 2, "0", STR_PAD_LEFT);
+				        // you can use whatever year you want
+				        // you can use 'M' or 'F' as per your month formatting preference
+				        $fdate = date("F", strtotime("2015-$monthPadding-01"));
+				        echo '<option value="'.$monthPadding.'">'.$fdate.'</option>';
+				}
+    			?>
+			</select>
+			</td>
                     <td><br><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
                 </tr>    
             </table>

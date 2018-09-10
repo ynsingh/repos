@@ -1054,7 +1054,7 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
                 $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required|callback_value_existsDept');
                 $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required|alpha_numeric');
+                $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean');
                        
                 if($this->form_validation->run()==TRUE){

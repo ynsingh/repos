@@ -49,12 +49,18 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 var dob= $(this).val();
                 var birthDate = new Date(dob);
                 //alert(birthDate);
-                var retDate = new Date(birthDate.getFullYear() + 60, birthDate.getMonth(), birthDate.getDate()-1);
+		var grp_id =  $('#grpid').val();
+		var wrktype_id = $('#worktypeid').val();
+		if(((grp_id =='B') && (wrktype_id == "Non Teaching"))||((grp_id =='C') && (wrktype_id == "Non Teaching"))){
+	                var retDate = new Date(birthDate.getFullYear() + 58, birthDate.getMonth(), birthDate.getDate()-1);
+		}else{
+			var retDate = new Date(birthDate.getFullYear() + 60, birthDate.getMonth(), birthDate.getDate()-1);
+		}
                 //alert(retDate);
                 // var lastDayWithSlashes = (retDate.getFullYear()+ '/' + (retDate.getMonth() + 1)+'/' +retDate.getDate());
                 var lastDayWithSlashes = new Date(retDate.getFullYear(), retDate.getMonth() + 1, 0);
                 //var lastDay = (lastDayWithSlashes.getFullYear()+ '/' + (lastDayWithSlashes.getMonth() +1)+ '/' + lastDayWithSlashes.getDate());
-                var lastDay = (lastDayWithSlashes.getFullYear()+ '-' + (lastDayWithSlashes.getMonth() +1)+ '-' + lastDayWithSlashes.getDate());
+                var lastDay = (lastDayWithSlashes.getFullYear()+ '-' + ((lastDayWithSlashes.getMonth() +1) < 10 ? '0' : '')+(lastDayWithSlashes.getMonth() +1)+ '-' + lastDayWithSlashes.getDate());
                 //alert(lastDayWithSlashes);
                 return $('#Dateofretir').val(lastDay);
                
@@ -858,13 +864,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo isset($_POST["ifsccode"]) ? $_POST["ifsccode"] : ''; ?>" placeholder="IFSC CODE..." size="33" >
                 </div></td>
                 <td><label for="bankacno" style="font-size:15px;"><font color='blue'>Bank ACC No</font><font color='Red'></font></label>
-                   <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo isset($_POST["bankacno"]) ? $_POST["bankacno"] : ''; ?>" placeholder="Bank Acc No..." size="33" required="required">
+                   <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo isset($_POST["bankacno"]) ? $_POST["bankacno"] : ''; ?>" placeholder="Bank Acc No..." size="33" >
                 </div></td>
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="Aadharrno" style="font-size:15px;"><font color='blue'>Aadhaar No</font><font color='Red'></font></label>
-                    <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="33" required="required">
+                    <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="33" >
                 </div></td>
                             
                 

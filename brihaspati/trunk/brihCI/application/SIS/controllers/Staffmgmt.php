@@ -2171,8 +2171,10 @@ class Staffmgmt extends CI_Controller
         $sccode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$parts[0])->sc_code;
         //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1]);
         $datawh=array('dept_uoid' => $parts[1],'dept_sccode' => $sccode);
+	$whorder="dept_name asc";
         //$comb_data = $this->sismodel->get_listspficemore('cudsdmap','cudsd_deptid',$datawh);
-        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
+        //$comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
+        $comb_data = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
         //$comblist = $comb_data->result();
         $dept_select_box ='';
         $dept_select_box.='<option value="">-------Select Department--------';
@@ -2330,7 +2332,9 @@ class Staffmgmt extends CI_Controller
         $parts = explode(',',$combid);
         $sccode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$parts[0])->sc_code;
         $datawh=array('dept_sccode'=> $sccode,'dept_uoid' => $parts[1]);
-        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
+	$whorder="dept_name asc";
+       // $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
+        $comb_data = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
         $dept_select_box ='';
         $dept_select_box.='<option value="">------- Select Department ----------------------';
         foreach($comb_data as $combdataid){

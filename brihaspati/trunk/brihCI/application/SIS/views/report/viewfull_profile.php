@@ -91,13 +91,16 @@
                             <td align=left colspan=4><b>Basic Profile Details</b></td>
                             <td align="right">
                                 <?php
+				$cdate= date('Y-m-d');
 				 $uname=$this->session->userdata('username');
                                 $rest = substr($uname, -21);
 		//		$roleid=$this->session->userdata('id_role');
        //                         if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
 				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
                                // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
-                                        echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
+					if ($data->emp_dor > $cdate ){
+                                        	echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
+					}
                                 }
                                 ?>
 
@@ -478,7 +481,9 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                               //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
 			//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
 				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
-                                        echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
+					 if ($data->emp_dor > $cdate ){
+	                                        echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
+					}
                                 }
                                 ?>
 

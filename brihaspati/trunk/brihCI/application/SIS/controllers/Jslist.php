@@ -25,19 +25,35 @@ class Jslist extends CI_Controller
  
     	public function index(){
     	}
-    
+
 	/* This function has been created for get list of Designation on the basis of  selected Working type */
         public function getwdesiglist(){
                 $groups = $this->input->post('wtype');
+
                 $datawh=array('desig_type' => $groups);
-		$whorder = ("desig_name asc");
+		$rlid=$this->session->userdata('id_role');
+	        if ($rlid == 5){
+        	        $usrid=$this->session->userdata('id_user');
+	                $deptid = '';
+                	$whdatad = array('userid' => $usrid,'roleid' => $rlid);
+        	        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+	                foreach($resu as $rw){
+                        	$deptid=$rw->deptid;
+                	}
+        	        $datawh['emp_dept_code'] = $deptid;
+	        }
+
+		$whorder = "desig_name asc";
         	$grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
                 //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
                 $desig_select_box ='';
                 $desig_select_box.='<option value="">--Select Designation--';
-                foreach($grp_data as $grprecord){
-                        $desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_name.'('. $grprecord->desig_code .')'.' ';
-                }
+		$desig_select_box.='<option value='.All.'>'.All. ' ';
+	        if(count($grp_data)>0){
+	                foreach($grp_data as $grprecord){
+                        	$desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_name.'('. $grprecord->desig_code .')'.' ';
+                	}
+        	}
                 echo json_encode($desig_select_box);
         }
 

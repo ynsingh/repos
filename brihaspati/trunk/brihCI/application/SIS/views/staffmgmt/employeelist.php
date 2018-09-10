@@ -322,11 +322,14 @@ $(document).ready(function(){
                                 if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 					echo "<br>";
-					if(!($headflag)){
-						if($record->emp_head == "HEAD"){
-        	                        		echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
-						}else{
-                                        		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
+//					print_r($record);
+					if($record->emp_worktype === "Teaching"){
+						if(!($headflag)){
+							if($record->emp_head == "HEAD"){
+        	                        			echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
+							}else{
+        	                                		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
+							}
 						}
 					}
 //					echo "<br>";
