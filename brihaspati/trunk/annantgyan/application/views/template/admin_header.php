@@ -64,93 +64,11 @@
               <li><a href="<?php echo site_url('admin/enquirylist');?>"><span ></span> Enquiry List </a></li>
          <!-- <li><a href="<?php //echo site_url('admin/mapcoursecontent');?>"><span ></span> Map Courses Content</a>-->
           
-
-
-        <!--<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-         <span class=""></span>
-          Courses
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="<?php //echo site_url('Header/about');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Introduction </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Weekly Course Content </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Feedback </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Online Certification Generation</a></li>
-           
-          </ul>
-        </li>
-        
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Discussion</a></li>
-        
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Progress</a></li>
-
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Certificates</a></li>
-
-        <li><a href="<?php //echo site_url('');?>"><span ></span> Practice Exams</a></li>
-
-        <li><a href="<?php //echo site_url('');?>"><span ></span> FAQ</a></li>-->
         <!--
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-        <!--  <span class="glyphicon glyphicon glyphicon-user"></span> --
-          About Company
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="<?php //echo site_url('Header/about');?>"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Overview & Objective</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Message from Founder & Director </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Company Board Members</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Technical Advisors </a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Team Members </a></li>
-          </ul>
-        </li>
-
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-         <!-- <span class="glyphicon glyphicon glyphicon-user"></span> --
-          Knowledge <sup>+</sup>
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Online certified crash courses</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Online certified workshop</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Certified fun learning courses</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> General subject related material seminars</a></li>
-            
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-         <!-- <span class="glyphicon glyphicon glyphicon-user"></span> --
-         Skill <sup>+</sup>
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Time/Stress Mgmt.</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Effective Communication</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Interview Preparaton</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Public Speaking</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Report/Paper/Project/Thesis Writing</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">
-          <!--<span class="glyphicon glyphicon glyphicon-user"></span> 0--
-         Innovative Ideas or Projects <sup>+</sup>
-          <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Fun Learning Scientific Projects</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Advance Scientific Projects</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span> Projects for undergraduate Students</a></li>
-            
-          </ul>
-        </li>
 
         <li><a href="<?php //echo site_url('');?>">Career</a></li>-->
         <!--<li><a href="<?php //echo site_url('');?>">Future Plan</a></li>-->
         
-
        <!-- <li><a href="#"> <span class="glyphicon glyphicon glyphicon-pencil"></span> Testimonial</a></li>-->
       </ul>
      
@@ -165,9 +83,6 @@
               --<img src="<?php //echo $this->session->userdata['picture']?>">-- Name : <?php //echo $this->session->userdata['first_name'].' '.$this->session->userdata['last_name'];?></a></li> -->
            <?php //}?>
 
-        
-        
-        
        <!-- <li class="dropdown">
           <a href="<?php //echo site_url('');?> " class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">
           <span class="glyphicon glyphicon glyphicon-earphone"></span> 

@@ -76,8 +76,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<label style="font-size: 20px;color: #79522f;">Select Your Course :</label>
 			<select name="cou_type" required="">
 				<option value="" selected="true" disabled="disabled">Select Your Course</option>
-				<?php
-					if($course_data){
+<?php
+					if(!empty($course_data)){
+						foreach ($course_data as $row) {
+							 $cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->uct_courseid)->cou_name;
+							 echo "<option value='$row->uct_courseid'>".$cname."</option>";
+						}
+					}
+				/*	if($course_data){
 					foreach ($course_data as $row) {
 					
 
@@ -88,7 +94,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						if(($enddate > $cdate) && ($startdate < $cdate)){
 							$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->uct_userid)->cou_name;
 							echo "<option value='$row->uct_courseid'>".$cname."</option>";
-					}}}}//else{
+							}}}}
+				 */				//else{
 						//foreach($course_data1 as $row1){
 							///echo "<option value='$row1->cou_id'>".$row1->cou_name."</option>";
 						//}

@@ -57,7 +57,7 @@ class Admin extends CI_Controller {
 							$crsexist = $this->commodel->isduplicatemore("admin",$whdata);
 							if($crsexist == 1){
 								
-								$sdata = ['id' => $row->id,'userEmail' => $row->userEmail,'firstName' => $row->firstName,'lastName' => $row->lastName];
+								$sdata = ['id' => $row->id,'su_id'=>$row->id,'userEmail' => $row->userEmail,'firstName' => $row->firstName,'su_name'=>$row->firstName, 'lastName' => $row->lastName];
 								$this->session->set_userdata($sdata);
 
 								redirect('admin/adminhome');

@@ -120,12 +120,18 @@ function Logout() {
        <?php }?>
 
           <li><a href="<?php echo site_url('login/usrcoustructure');?>"  class="<?php if((strpos($request_uri,"login/usrcoustructure")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Courses Structure</a></li>
-          <li><a href="<?php echo site_url('login/usrcoucalender');?>" class="<?php if((strpos($request_uri,"login/usrcoucalender")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Courses Calender</a></li>
+          <li><a href="<?php echo site_url('login/usrcoucalender');?>" class="<?php if((strpos($request_uri,"login/usrcoucalender")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Courses Calendar</a></li>
 
 
-        <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>
-
-	<li><a href="<?php //echo site_url('');?>"><span ></span>Discussion</a></li>
+	 <li class="dropdown">
+		<a href="#" class="<?php if((strpos($request_uri,"discussion/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Discussion<span class="caret"></span></a>
+		<ul class="dropdown-menu">
+	<!--		<li><a href="<?php //echo site_url('discussion/index');?>"><span ></span>Discussion List</a></li>--> 
+			<li><a href="<?php echo site_url('discussion/viewDiscussion');?>"><span ></span>View Discussion</a></li>
+			<li><a href="<?php echo site_url('discussion/newDiscussion');?>"><span ></span>New Discussion</a></li>
+		</ul>
+	</li>
+			<!-- <li><a href="<?php echo site_url('discussion/index');?>" class="<?php if((strpos($request_uri,"discussion/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Discussion List</a></li> -->
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Exam<span class="caret"></span></a>
 
@@ -134,6 +140,7 @@ function Logout() {
 		<li><a href="<?php //echo site_url('');?>"><span ></span>Quiz / Assignment</a></li>
 		</ul>
 	</li>
+        <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>
         <li><a href="<?php echo site_url('Feedback');?>" class="<?php if((strpos($request_uri,"Feedback")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Feedback</a></li>
 
         <li><a href="<?php //echo site_url('');?>"><span ></span>Certificates</a></li>

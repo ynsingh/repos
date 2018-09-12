@@ -87,20 +87,20 @@ class Login extends CI_Controller {
 	{
 		if(isset($_POST['signup'])){
 			$this->form_validation->set_rules('name','Name','trim|required');
-       		$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
-            $this->form_validation->set_rules('passwd','Password','trim|required|xss_clean');
-            $this->form_validation->set_rules('conf_passwd','Confirm Password','trim|required|xss_clean');
+	       		$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
+        		$this->form_validation->set_rules('passwd','Password','trim|required|xss_clean');
+		        $this->form_validation->set_rules('conf_passwd','Confirm Password','trim|required|xss_clean');
             		//$this->form_validation->set_rules('how_known','How To Know','trim|xss_clean|numeric');
 
-            if($this->form_validation->run() == FALSE){
+            		if($this->form_validation->run() == FALSE){
                			// $this->load->view('enterence/step_zero',$data);
-            	redirect('login/signup');
-            }else{
-            	$name = $this->input->post('name');
-            	$email = $this->input->post('email');
-            	$pawd = $this->input->post('passwd');
+            			redirect('login/signup');
+            		}else{
+            			$name = $this->input->post('name');
+            			$email = $this->input->post('email');
+            			$pawd = $this->input->post('passwd');
 				$hknow = $this->input->post('how_known');
-		//check for email exist
+				//check for email exist
 				$whdata=array('su_emailid'=>$email);
 				$emailexist=$this->commodel->isduplicatemore("sign_up",$whdata);
 				if($emailexist){
@@ -147,7 +147,7 @@ class Login extends CI_Controller {
                     {*/
                        
                       //  $this->load->model("Mailsend_model","mailmodel");
-                $subject = "Registered Successfully";
+                			$subject = "Registered Successfully";
 			//$verifylink = base_url("login/verify/".$email.'/'.$rstring);
 				$erstring= $email.'---'.$rstring;
 				$verifylink = base_url("login/verify/".$erstring);
@@ -188,10 +188,11 @@ class Login extends CI_Controller {
 			$usid  = $this->session->userdata['su_id'];
 			//$this->checkuct($usid);
 			//get a specific course list
-			$whdata=array('uct_userid' => $usid);
-			$course_data=$this->commodel->get_listspficemore('user_course_type','uct_courseid',$whdata);
+			$whdata=array('uct_userid' => $usid,'uct_type'=>"Student");
+			//$course_data=$this->commodel->get_listspficemore('user_course_type','uct_courseid',$whdata);
+			$course_data=$this->commodel->get_distinctrecord('user_course_type','uct_courseid',$whdata);
 			$data['course_data'] = $course_data;
-
+/*
 			foreach ($course_data as $row) {
 				$cid = $row->uct_courseid;
 				$whdata1=array('crsann_crsid' => $cid);
@@ -200,10 +201,11 @@ class Login extends CI_Controller {
 
 				//print_r($coursedate);die;
 			}	
+ */
 			//$oguid = $this->commodel->get_listspfic1('sign_up','su_userid','su_id',$usid)->su_userid;
 			//$data['ustring'] = $this->commodel->get_listspfic1('sign_up','su_string','su_id',$usid)->su_string;
 			
-			$data['course_data1'] = $this->commodel->get_list('courses');
+//			$data['course_data1'] = $this->commodel->get_list('courses');
 			
 
 			//$wharray = array('ow_id'    => $oguid);
@@ -214,9 +216,11 @@ class Login extends CI_Controller {
 				
 
 			if(isset($_POST['submit'])){
-				$courseid = $this->input->post('cou_type');
+				$couid = $this->input->post('cou_type');
 					// set course id in session
-
+				$sdata = ['crs_id' => $couid];
+	                        $this->session->set_userdata($sdata);
+				redirect('login/usr_login');
 				//if($courseid == 1){	
 				//	$usid  = $this->session->userdata['su_id'];
 				//	$array = array('uct_userid' => $usid, 'uct_courseid' => $courseid , 'uct_type' => 'Teacher');
@@ -233,7 +237,7 @@ class Login extends CI_Controller {
                 //    $this->session->set_flashdata('success',$confmes);
                     //redirect('login/usr_login');
                      //redirect('http://www.annantgyan.com');
-	    redirect('welcome');
+//	    			redirect('welcome');
 				//}	
 			}
 			
@@ -295,7 +299,11 @@ class Login extends CI_Controller {
 		$suid = $this->session->userdata['su_id'];
 		
 		if(isset($this->session->userdata['su_name'])){
-			$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			if(isset($this->session->userdata['crs_id'])){
+				$couid=$this->session->userdata['crs_id'];
+			}else{
+				$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			}
 			$data['couid'] = $couid;
 
 			$whdata = array('acu_courseid' => $couid);

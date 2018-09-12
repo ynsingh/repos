@@ -58,7 +58,8 @@ class Common_model extends CI_Model
 //$data = array('name' => $name, 'title' => $title, 'status' => $status);
     public function getnoofrows($tbname,$data='') {
         $this->db->flush_cache();
-        $this->db->from($tbname);
+	$this->db->from($tbname);
+	$this->db->distinct();
         if($data != ''){
             $this->db->where($data);
         }

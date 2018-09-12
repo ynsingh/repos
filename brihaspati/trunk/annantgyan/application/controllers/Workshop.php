@@ -190,7 +190,12 @@ class Workshop extends CI_Controller {
 					$this->session->set_userdata($userdata);
 
 					$coudata  = array('uct_userid'  => $signupid ,'uct_courseid' => $cid, 'uct_type' => 'Student');
-					$uctinsert = $this->db->insert('user_course_type', $coudata);
+					$couexist=$this->commodel->isduplicatemore('user_course_type',$coudata);
+					if($couexist){
+					
+					}else{
+						$uctinsert = $this->db->insert('user_course_type', $coudata);
+					}
 
 				}//else close						
 
