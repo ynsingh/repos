@@ -266,7 +266,11 @@ public class CourseContent extends VelocitySecureScreen{
 					context.put("fileList",list);
 					}
 					catch(Exception e)
-					{ErrorDumpUtil.ErrorLog("error inside reading files--------"+e);}	
+					{
+						ErrorDumpUtil.ErrorLog("error inside reading files--------"+e);
+						Path.delete();
+					
+					}	
 				}
 			}
                         /**
