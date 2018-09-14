@@ -372,6 +372,7 @@
                             dataType:"html",
                             success:function(data){
                                	var empdata=data;
+                               // alert("empdata=="+empdata);
 				var empinput=empdata.split(',');
                                 if(transtype === 'budgetpost'){
                                     $('#postfrom').val(empinput[0].replace(/\"/g,""));
@@ -571,6 +572,58 @@
             
                 /*********************closer of employee name**********************************************************************/
             
+             /**********************************Start of empdetail by  PF NOscript*********************************/
+                
+                $("#emppfno").on('change',function(){
+                    var pfno = $(this).val();
+                    var transtype= "<?php echo $ttype;?>";
+                    if(pfno === ''){
+               //       $('#my_id').[0]reset(); 
+                       // $('#campfrom,#uocid,#scid,#schmid,#emptype,#desigid,#empnameid,#postfrom,#emppt').prop('disabled',true);
+                        
+                    }
+                    else{
+                       // $('#campfrom,#uocid,#scid,#schmid,#emptype,#desigid,#empnameid,#postfrom,#emppt').prop('disabled',false);
+                       
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getempdata",
+                            type: "POST",
+                            data: {"emplypfno" : pfno},
+                            dataType:"html",
+                            success:function(data){
+                                var empdata = data;
+                               // alert("seee=in objecvtdata1="+empdata);
+                                var empinput=empdata.split('^');
+                                $('#campfrom').html(empinput[0].replace(/"|"/g,""));
+                                $('#uocid').html(empinput[1]);
+                                $('#scid').html(empinput[2]);
+                                $('#schmid').html(empinput[3].replace(/"|"/g,""));
+                                $('#emptype').val(empinput[4]);
+                                $('#desigid').html(empinput[5].replace(/"|"/g,""));
+                                $('#empnameid').html(empinput[6].replace(/"|"/g,""));
+                                if(transtype === 'budgetpost'){
+                                    $('#postfrom').val(empinput[7].replace(/\"/g,""));
+                                    $('#emppt').val(empinput[8].replace(/\"/g,""));
+                                    $('#postto').val(empinput[7].replace(/\"/g,""));
+                                    $('#vtypeid').val(empinput[8].replace(/\"/g,""));
+                                }
+                                else{
+                                    $('#postfrom').val(empinput[7].replace(/\"/g,""));
+                                    $('#emppt').val(empinput[8].replace(/\"/g,""));
+                                }
+                               
+                            },
+                            error:function(data){
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                                               
+                    }//else
+               
+                });  //method empname
+                /**********************************End of empdetail PF NO  script*********************************/
+            
             });
     </script>
     </head>
@@ -641,7 +694,6 @@
                 <?php if($ttype !='multipletransfer' ) : ?>
                
                     <?php echo form_open_multipart('staffmgmt/stafftransfer/'.$ttype,'id="my_id"');?>   
-                                     
                     <tr>
                         <td><label for="registrarname" style="font-size:15px;">Registrar Name<font color='Red'>*</font></label>
                            <div><input type="text" name="registrarname" class="keyup-characters" value="<?php echo isset($_POST["registrarname"]) ? $_POST["registrarname"] : ''; ?>" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required">
@@ -691,71 +743,96 @@
                         ?>
                         </font></td>
                     </tr>
+                    <tr><td colspan="5"><label for="" style="font-size:15px;">Employee PF No. <font color='Red'>*</font></label>
+                        <div><input type="text" name="emppfno" id="emppfno" value="<?php echo isset($_POST["emppfno"]) ? $_POST["emppfno"] : ''; ?>" size="35"></div>       
+                    </td></tr>
+                    
                     <tr>
+                        <!----------------------------------------------------employee pf no empty--------------------------------------------->
                         <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
-                        <div> <select id="campfrom" style="width:350px;" name="campusfrom" required> 
-                            <option selected="selected" disabled selected>--------Campus Name-----</option>
+                        <div>
+                            <select  name="campusfrom" id="campfrom" required="required" style="width:350px;" > 
+                                
+                            <option value="">--------Campus Name-----</option>
                             <?php foreach($this->campus as $camdata): ?>	
-   				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
-                            <?php endforeach; ?>
-                      
-                            </select></div>
+   				<option  value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
+                            <?php endforeach; ?> 
+                            </select> 
+                           
+                        </div>
                         </td>
+                        
                         <td><label for="uocfrom" style="font-size:15px;">University Officer Control From<font color='Red'>*</font></label>
                             
-                            <div><select name="uocfrom" id="uocid"  style="width:350px;" required> 
+                            <div>
+                                <select name="uocfrom" id="uocid"  style="width:350px;" required> 
                                 <option value="">------- Select University Officer Control --------</option>
                                 
                                 <?php foreach($this->uoc as $ucodata): ?>	
                                     <option value="<?php echo $ucodata->id; ?>"><?php echo $ucodata->name; ?></option> 
                                 <?php endforeach; ?>
-                            </select></div>
+                                </select>
+                               
+                            </div>
                         </td>
+                        
                         <td><label for="department" style="font-size:15px;">Department From<font color='Red'>*</font></label>
-                            <div><select required name="deptfrom"  id="scid" style="width:350px;"> 
-                                <option selected="selected" disabled selected >----------------- Select Department --------------</option>
-                            </select></div>
+                            <div>
+                                <select required name="deptfrom"  id="scid" style="width:350px;"> 
+                                <option value="">----------------- Select Department --------------</option>
+                                </select>
+                               
+                            </div>
                         </td>
                     </tr> 
                     <tr>
                         <td><label for="schemecode" style="font-size:15px;">Scheme Name From<font color='Red'>*</font></label>
-                            <div><select required name="schemfrom" id="schmid" style="width:350px;"> 
-                            <option selected="selected" disabled selected>-------------- Select Scheme ------------------</option>
-                        
-                            </select><div>
+                            <div>
+                                <select required name="schemfrom" id="schmid" style="width:350px;"> 
+                                    <option value="">-------------- Select Scheme ------------------</option>
+                                </select>
+                                
+                            </div>
                         </td>
                         
                         <td><label for="employeetype" style="font-size:15px;">Working Type From<font color='Red'>*</font></label>
-                            <div><select name="employeetype" id="emptype"  style="width:350px;" required="required"> 
+                            <div>
+                                <select name="employeetype" id="emptype"  style="width:350px;" required="required"> 
                                 <option value="">------------ Select Employee Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
-                                <option value="Non Teaching">Non Teaching</option>                     
-                            </select></div>
-                        </td>
-                                               
-                  
-                        <td><label for="designation" style="font-size:15px;">Designation From<font color='Red'>*</font></label>
-                            <div><select name="desigfrom" id="desigid" style="width:350px;" required> 
-                                <option selected="selected" disabled selected>-------------- Select Designation -----------------</option>
+                                <option value="Non Teaching">Non Teaching</option>
+                                </select>
                                 
-                                </select></div>
+                            </div>
+                        </td>
+                                         
+                        <td><label for="designation" style="font-size:15px;">Designation From<font color='Red'>*</font></label>
+                            <div>
+                                <select name="desigfrom" id="desigid" style="width:350px;" required> 
+                                <option value="">-------------- Select Designation -----------------</option>
+                                </select>
+                               
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         
                         <td><label for="empname" style="font-size:15px;">Employee Name<font color='Red'>*</font></label>
-                            <div><select name="empname" id="empnameid" style="width:350px;"> 
+                            <div>
+                                <select name="empname" id="empnameid" style="width:350px;"> 
                                 <option value="">--------- Select Employee Name --------------</option>
+                                </select>
                               
-                                                   
-                            </select></div>
+                            </div>
                         </td>
+                        <!---------------------------------------------------- closer employee pf no empty--------------------------------------------->
+                    
+                    
                          <td><label for="postfrom" style="font-size:15px;">Post From<font color='Red'>*</font></label>
                             <div><input type="text" name="postfrom" id="postfrom"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                         </td>
                          <td><label for="emppt" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
                              <div><input type="text" name="empptfrom" id="emppt"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
-                           
                         </td>
                     </tr>
                     <tr></tr>
@@ -1006,6 +1083,7 @@
                     </table>  
                         
              <?php endif;?>
+                       
                                        
             </table>
                 

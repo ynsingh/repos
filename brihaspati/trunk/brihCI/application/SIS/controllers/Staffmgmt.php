@@ -1214,7 +1214,7 @@ class Staffmgmt extends CI_Controller
     
     /****************************  START stafftransfer ****************************/
     function stafftransfer(){ 
-    
+                
         //$this->usrlist=$this->sismodel->get_list('employee_master');;
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
@@ -1258,12 +1258,16 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('schemto','Scheme Name To','trim|xss_clean');
             $this->form_validation->set_rules('emptypeto','Employee Type To','trim|xss_clean');
             $this->form_validation->set_rules('empmutual','Employee Name for Mutual Transfer','trim|xss_clean');
+            
+            $this->form_validation->set_rules('emppfno','PF No','trim|xss_clean');
+            
            
             if($this->form_validation->run() == FALSE){
                 redirect('staffmgmt/stafftransfer');
             }
             else{
                // $ttype=$this->input->post('ttype');
+               
                 $usrinputtfr_flag=false;
                 $upempdata_flag=false;
                 $lastentryid='';
@@ -1290,7 +1294,7 @@ class Staffmgmt extends CI_Controller
                     'uit_workdept_from'                => $this->input->post('deptfrom'),
                     'uit_desig_from'                   => $this->input->post('desigfrom'),
                 
-                    'uit_staffname'                    => $this->input->post('empname'),
+                    'uit_staffname'                  => $this->input->post('empname'),
                     'uit_workingpost_from'             => $this->input->post('postfrom'),
                     'uit_scid_from'                    => $this->input->post('campusfrom'),
                     'uit_scid_to'                      => $this->input->post('campus'),

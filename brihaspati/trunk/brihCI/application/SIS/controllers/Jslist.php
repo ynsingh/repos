@@ -117,6 +117,57 @@ class Jslist extends CI_Controller
         } //if close   
         echo json_encode($emptype_select_box);
     }
-
+    
+    /***** This function has been created for get the employee detail by pf no ********************************/
+    public function getempdata(){
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+        $this->uoc=$this->lgnmodel->get_list('authorities');
+        $pfno= $this->input->post('emplypfno');
+        $emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
+        $empdetail = $emp_data->result();
+        if(count($empdetail)>0){
+            foreach($empdetail as $detail){
+                $campus=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$detail->emp_scid)->sc_name;
+                $campusbox='<option value='.$detail->emp_scid.'>'.$campus.' ';
+                foreach($this->campus as $camdata){	
+                 $campusbox.='<option  value='.$camdata->sc_id.'>'.$camdata->sc_name.''; 
+                }            
+                $uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
+                $uocbox='<option value='.$detail->emp_uocid.'>'.$uocname.' ';
+                foreach($this->uoc as $ucodata){	
+                    $uocbox.='<option  value='.$ucodata->id.'>'.$ucodata->name.''; 
+                }            
+                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+                $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
+                $deptbox='<option value='.$detail->emp_dept_code.'>'.$deptname."(".$deptcode.")".' ';
+                
+                $schme=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id',$detail->emp_schemeid)->sd_name;
+                $schmecd=$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id',$detail->emp_schemeid)->sd_code;
+                $schmbox='<option value='.$detail->emp_schemeid.'>'.$schme."(".$schmecd.")".' ';
+                
+                /*$workbox='<option value='.$detail->emp_worktype.'>'.$detail->emp_worktype.' ';
+                $workbox.='<option value='.'Teaching'.'>'.'Teaching'.' ';
+                $workbox.='<option value='."Non Teaching".'>'."Non Teaching".' ';*/
+                
+                $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
+                $desigcd=$this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$detail->emp_desig_code)->desig_code;
+                $desigbox='<option value='.$detail->emp_desig_code.'>'.$designame."(".$desigcd.")".' ';
+                
+                $empname=$detail->emp_name;
+                $empbox='<option value='.$detail->emp_id.'>'.$detail->emp_name.' ';
+                
+               // array_push($values,$campusbox,$uocbox,$deptbox,$schmbox,$detail->emp_worktype,$desigbox,
+                $values=$campusbox."^".$uocbox."^".$deptbox."^".$schmbox."^".$detail->emp_worktype."^".$desigbox.
+                "^".$empbox."^".$detail->emp_post."^".$detail->emp_type_code;
+               
+                                
+            }
+            echo json_encode($values);
+                       
+        }            
+              
+    }
+    /****************************************closer employee detail by pf no *********************************/
 }    
 
