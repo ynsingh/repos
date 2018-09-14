@@ -141,11 +141,11 @@ function Logout() {
 		</ul>
 	</li>
         <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>
-        <li><a href="<?php echo site_url('Feedback');?>" class="<?php if((strpos($request_uri,"Feedback")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Feedback</a></li>
+        <li><a href="<?php echo site_url('login/usrfeedback');?>" class="<?php if((strpos($request_uri,"login/usrfeedback")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Feedback</a></li>
 
         <li><a href="<?php //echo site_url('');?>"><span ></span>Certificates</a></li>
 
-        <li><a href="<?php echo site_url('FAQ');?>" class="<?php if((strpos($request_uri,"FAQ")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>FAQ</a></li>
+        <li><a href="<?php echo site_url('login/usrfaq');?>" class="<?php if((strpos($request_uri,"login/usrfaq")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>FAQ</a></li>
         
       </ul>
      
@@ -154,7 +154,7 @@ function Logout() {
         <?php if(isset($this->session->userdata['su_name'])){?>
          <li><a href="<?php echo site_url('login/usr_login');?>" class="<?php if((strpos($request_uri,"login/usr_login")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>">
           <span class="glyphicon glyphicon-user"></span>  <?php echo $this->session->userdata['su_name'];?></a></li> 
-        <li><a href="<?php echo site_url('Courses');?>" class="<?php if((strpos($request_uri,"Courses")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Course Enroll</a></li>
+        <li><a href="<?php echo site_url('login/user_login_courseenroll');?>" class="<?php if((strpos($request_uri,"login/user_login_courseenroll")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Course Enroll</a></li>
        <?php }
            ?>
 

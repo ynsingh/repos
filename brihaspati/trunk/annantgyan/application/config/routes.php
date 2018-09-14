@@ -81,10 +81,10 @@ $route['Effective-Communication-Skills'] = 'Header/skilleffectivecomm';
 $route['Interview-Preparation-Skill'] = 'Header/skillinterview';
 $route['Report-Papers-Thesis-Writing-Skills'] = 'Header/skillreport';
 
-$route['Courses'] = 'login/course_login';
-$route['Feedback'] = 'login/usrfeedback';
-$route['FAQ'] = 'login/usrfaq';
-$route['Course-Detail'] = 'login/usrcoucalender';
+//$route['Courses'] = 'login/course_login';
+//$route['Feedback'] = 'login/usrfeedback';
+//$route['FAQ'] = 'login/usrfaq';
+//$route['Course-Detail'] = 'login/usrcoucalender';
 //$route['Course-Home'] = 'login/usr_login';
 //$route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

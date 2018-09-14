@@ -33,6 +33,7 @@ class Header extends CI_Controller {
 
 	public function contactus()
 	{
+
 		$this->load->view('contactus');
 	}
 

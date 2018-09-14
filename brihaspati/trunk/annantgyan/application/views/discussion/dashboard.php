@@ -13,7 +13,14 @@ $this->load->view('template/topstyle.php');
         </div>
 
         <div class="row">
-                        <?php $this->load->view('template/login_header.php');
+<?php
+		echo $this->session->userdata('su_name');
+		if($this->session->userdata('su_name') === 'admin'){
+			$this->load->view('template/admin_header.php');
+		}else{
+			$this->load->view('template/login_header.php');
+
+		}
                         ?>
 
         </div>

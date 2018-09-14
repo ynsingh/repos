@@ -189,6 +189,22 @@ ALTER TABLE `email_setting`
 INSERT INTO `email_setting` (`id`, `emailprotocol`, `emailhost`, `emailport`, `username`, `password`, `sendername`, `senderemail`, `modulename`, `creatorid`, `createdate`, `modifierid`, `modifidate`) VALUES
 (1, 'smtp', 'smtp.gmail.com', 465, 'annantgyan@gmail.com', 'adubey321', 'Annantgyan', 'annantgyan@gmail.com', 'All', 'admin', '2018-01-30 00:00:00', 'admin', '2018-06-29 17:34:06');
 
+
+CREATE TABLE `enquiry` (
+  `en_id` int(11) NOT NULL,
+  `en_name` varchar(255) DEFAULT NULL,
+  `en_mobile` varchar(50) DEFAULT NULL,
+  `en_email` varchar(255) DEFAULT NULL,
+  `en_interestin` varchar(255) DEFAULT NULL,
+  `en_otherquery` varchar(255) DEFAULT NULL,
+  `enquiry_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `enquiry`
+  ADD PRIMARY KEY (`en_id`);
+
+ALTER TABLE `enquiry`
+  MODIFY `en_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --

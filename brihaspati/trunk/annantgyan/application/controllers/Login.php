@@ -243,6 +243,25 @@ class Login extends CI_Controller {
 			
 			$this->load->view('loginpage/usr_login_course',$data);
 	}
+
+	public function user_login_courseenroll(){
+		$usid  = $this->session->userdata['su_id'];
+		$whdata=array('uct_userid' => $usid,'uct_type'=>"Student");
+		$course_data=$this->commodel->get_distinctrecord('user_course_type','uct_courseid',$whdata);
+		$data['course_data'] = $course_data;
+		$cdate = date('Y-m-d');
+		$whdata1 = array("crsann_regstart <=" => $cdate,"crsann_regend >=" =>$cdate);
+		$sdata = "crsann_crsid ";
+		$data['coursedate']=$this->commodel->get_listspficemore('courseannouncement',$sdata,$whdata1);
+		if(isset($_POST['submit'])){
+                	$couid = $this->input->post('cou_type');
+                          // set course id in session
+  //                      $sdata = ['crs_id' => $couid];
+//                        $this->session->set_userdata($sdata);
+			redirect('workshop/courseenroll/'.$couid);
+		}
+		$this->load->view('loginpage/user_login_courseenroll',$data);
+	}
 // function for verify
 	// get the values of email and rstring from url
 	// match with database is duplicate more

@@ -63,7 +63,16 @@
               <li><a href="<?php echo site_url('admin/couworkshoplist');?>"><span ></span> Course/Workshop Registration List </a></li>
               <li><a href="<?php echo site_url('admin/enquirylist');?>"><span ></span> Enquiry List </a></li>
          <!-- <li><a href="<?php //echo site_url('admin/mapcoursecontent');?>"><span ></span> Map Courses Content</a>-->
-          
+       	<li class="dropdown">
+               <!-- <a href="#" class="<?php //if((strpos($request_uri,"discussion/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Discussion<span class="caret"></span></a> -->
+                <a href="#" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Discussion<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="<?php echo site_url('discussion/dashboard');?>"><span ></span>Discussion List</a></li>
+                        <li><a href="<?php echo site_url('discussion/viewDiscussion');?>"><span ></span>View Discussion</a></li>
+                        <li><a href="<?php echo site_url('discussion/newDiscussion');?>"><span ></span>New Discussion</a></li> 
+                </ul>
+        </li>
+   
         <!--
 
         <li><a href="<?php //echo site_url('');?>">Career</a></li>-->
