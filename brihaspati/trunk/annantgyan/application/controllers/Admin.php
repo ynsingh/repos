@@ -246,6 +246,34 @@ class Admin extends CI_Controller {
                 }
 
 	}
+	function delete_cont($id){
+		$cpath = $this->commodel->get_listspfic1('admin_conteupload','acu_contpath','acu_id',$id)->acu_contpath;
+		$fname = $this->commodel->get_listspfic1('admin_conteupload','acu_filename','acu_id',$id)->acu_filename;
+		//$file = "uploads/my_test_file.txt";
+		$file = APPPATH .'../'. $cpath."/".$fname;
+//			echo $file; die();
+		if (is_readable($file) && unlink($file)) {
+		    	$smsg= "The file has been deleted.";
+		} else {
+    			$fmsg= "The file was not found or not readable and could not be deleted.";
+		}
+		$contflag=$this->commodel->deleterow('admin_conteupload','acu_id', $id);
+		if(!$contflag)
+          	{
+            		$this->logger->write_message("error", $fmsg." Error  in deleting content " ."[cont_id:" . $id . "]");
+            		$this->logger->write_dbmessage("error", $fmsg." Error  in deleting content "." [cont_id:" . $id . "]");
+            		$this->session->set_flashdata('err_message', $fmsg.' Error in Deleting content - ', 'error');
+            		redirect('admin/upload_fileview');
+           		return;
+          	}
+		else{
+            		$this->logger->write_logmessage("delete", $smsg." Deleted   content " . "[cont_id:" . $id . "] deleted successfully.. " );
+            		$this->logger->write_dblogmessage("delete",$smg. " Deleted content" ." [cont_id:" . $id . "] deleted successfully.. " );
+            		$this->session->set_flashdata("success", $smsg.' Content Deleted successfully...' );
+            		redirect('admin/upload_fileview');
+        	}
+        	$this->load->view('admin/upload_fileview',$data);
+	}
 
 	public function upload_file(){
 //		if(isset($this->session->userdata['firstName'])){
@@ -281,8 +309,8 @@ class Admin extends CI_Controller {
 				if($_FILES['userfile']['size'] > 10000) {
          				$errors[]='Photo size must be excately 4 MB';
       				}
-				
-				$name = $_FILES['userfile']['name'];
+				$name = str_replace(" ", "_", $_FILES['userfile']['name']);	
+				//$name = $_FILES['userfile']['name'];
 				
 				$desired_dir = 'uploads/courses/';
                         	// Create directory if it does not exist
@@ -303,12 +331,12 @@ class Admin extends CI_Controller {
                			$config['upload_path'] = $desired_dir2 ;
 				
 				if($type == 'document'){
-					$config['max_size'] = '1100';
+					$config['max_size'] = '2100';
               				$config['allowed_types'] = 'pdf|doc|docx|DOCX|DOC|xls|xlsx';
               			}
               			elseif($type == 'video'){
               				$config['remove_spaces'] = TRUE;
-					$config['max_size'] = '15000';
+					$config['max_size'] = '30000';
               				$config['allowed_types'] = 'mp4|3gp|mpeg|mpg|avi';
               			}
               		
@@ -331,7 +359,7 @@ class Admin extends CI_Controller {
 							$ferror = $ferror.$value;
 						endforeach;
 						$ferror=str_replace("\r\n","",$ferror);
-						$simsg = "The permitted size of Document is 1mb .";
+						$simsg = "The permitted size of Document is 1 MB .";
 						$ferror = $simsg.$ferror;
 						$this->session->set_flashdata('error', $ferror);
 						redirect('admin/admin_coucontent');
@@ -344,7 +372,7 @@ class Admin extends CI_Controller {
 							$ferror = $ferror.$value;
 						endforeach;
 						$ferror=str_replace("\r\n","",$ferror);
-						$simsg = "The permitted size of Video File is 5 mb.";;
+						$simsg = "The permitted size of Video File is 5 MB.";;
 						$ferror = $simsg.$ferror;
 						$this->session->set_flashdata('error', $ferror);
 						redirect('admin/admin_coucontent');

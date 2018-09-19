@@ -69,7 +69,7 @@ if(isset($this->session->userdata['firstName'])){
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Course Week</th><th>Content Name</th><th>Content Sequence</th><th>File Upload Path</th><th>File Type</th><th>File Name</th> <th>Upload Date</th>
+					<th>Sr. No.</th><th>Course Name</th><th>Course Week</th><th>Content Name</th><th>Content Sequence</th><th>File Upload Path</th><th>File Type</th><th>File Name</th> <th>Upload Date</th><th> Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,6 +90,12 @@ if(isset($this->session->userdata['firstName'])){
 								<td><?php echo $row->acu_filetype ;?></td>
 								<td><?php echo $row->acu_filename  ;?></td>
 								<td><?php echo $row->acu_createdate ;?></td>
+								<td><?php 
+									echo anchor('admin/delete_cont/' . $row->acu_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+								echo "&nbsp; ";
+								echo anchor(base_url().'/'. $row->acu_contpath.'/'.$row->acu_filename , "View", array('title' => 'View Details' , 'class' => 'red-link', 'target'=>'blank')) . " ";
+								?> 
+								</td>
 								
 				</tr>
 				<?php 		}
