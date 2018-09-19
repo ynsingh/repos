@@ -55,6 +55,38 @@
 	     });
 	   }
 */
+	function getdesig(val){
+		var val=val;
+		var wt = $('#tnt').val();
+		var combid = val+","+wt;
+		$.ajax({
+			type:"POST",
+			url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesiglist",
+			data: {"gwt" : combid},
+			dataType:"html",
+			success:function(data){
+				$('#emppost').html(data.replace(/^"|"$/g, ''));
+			}
+		});
+	}
+	function getpayband(val){
+		var desig=val;	
+		var wt = $('#tnt').val();
+		var group_id = $('#group').val();
+		var combid =group_id+","+wt+","+desig;
+		$.ajax({
+                        type:"POST",
+			url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesigpaylist",
+                        data: {"gwtdesig" : combid},
+                        dataType:"html",
+                        success:function(data){
+                                $('#scale').html(data.replace(/^"|"$/g, ''));
+                        }
+                });
+        }
+
+		
+/*	
 	function getdesignpayband(val){
 		var val=val;
 	   	$.ajax({
@@ -71,7 +103,7 @@
 		}
 	     });
 	   }
-
+*/
 	function workingtype(val){
 		var val=val;
 	   	$.ajax({
@@ -247,8 +279,16 @@
 		     </div>
 		</td>
 		
+		<td><label for="tnt" style="font-size:15px;"><font color='blue'> Working Type </font><font color='Red'> *</font> </label>
+          	   <div><select name="tnt" id="tnt" class="my_dropdown" style="width:338px;" onchange="workingtype(this.value)">
+               		<option value="" disabled selected >------Select----------------</option>
+                	<option value="Teaching"<?php echo set_select('tnt', 'Teaching'); ?> class="dropdown-item"> Teaching </option>
+                	<option value="Non Teaching"<?php echo set_select('tnt','Non Teaching'); ?> class="dropdown-item"> Non Teaching </option>
+	           </div>
+		</td>
 		<td><label for="group" style="font-size:15px;"><font color='blue'> Group</font><font color='Red'> *</font> </label>
-		    <div><select name="group" id="group" class="my_dropdown" style="width:338px;" onchange="getdesignpayband(this.value)" >
+		    <!-- <div><select name="group" id="group" class="my_dropdown" style="width:338px;" onchange="getdesignpayband(this.value)" > -->
+		    <div><select name="group" id="group" class="my_dropdown" style="width:338px;" onchange="getdesig(this.value)" >
                          <option value="" disabled selected >------Select----------------</option>
                          <option value="A" <?php echo set_select('group', 'A'); ?>class="dropdown-item"> A </option>
                          <option value="B" <?php echo set_select('group', 'B'); ?>class="dropdown-item"> B </option>
@@ -257,19 +297,12 @@
 		    </div>
 		</td>
 		
-		<td><label for="emppost" style="font-size:15px;"><font color='blue'>Employee Post</font> <font color='Red'> *</font> </label>
-          	    <div><select name="emppost" id="emppost" class="my_dropdown" style="width:338px;">
-                         <option value="" disabled selected >------Select----------------</option>
-		    <div>
-		</td>
 	</tr>	
 	<tr>
-		<td><label for="tnt" style="font-size:15px;"><font color='blue'> Working Type </font><font color='Red'> *</font> </label>
-          	   <div><select name="tnt" id="tnt" class="my_dropdown" style="width:338px;" onchange="workingtype(this.value)">
-               		<option value="" disabled selected >------Select----------------</option>
-                	<option value="Teaching"<?php echo set_select('tnt', 'Teaching'); ?> class="dropdown-item"> Teaching </option>
-                	<option value="Non Teaching"<?php echo set_select('tnt','Non Teaching'); ?> class="dropdown-item"> Non Teaching </option>
-	           </div>
+		<td><label for="emppost" style="font-size:15px;"><font color='blue'>Employee Post</font> <font color='Red'> *</font> </label>
+          	    <div><select name="emppost" id="emppost" class="my_dropdown" style="width:338px;" onchange="getpayband(this.value)">
+                         <option value="" disabled selected >------Select----------------</option>
+		    <div>
 		</td>
 			
 		<td><label for="grouppost" style="font-size:15px;"><font color='blue'> Group Post</font> <font color='Red'> *</font> </label>

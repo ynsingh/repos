@@ -131,18 +131,18 @@
                  <?php echo form_input($group); ?>
              </div>
 	     </td>
-             <td><label for="emppost" style="font-size:15px;"><font color='Blue'> Employee Post</font> </label>
-             <div>
-		<?php echo form_input($emppost); ?>
-             </div>
-	    </td>
-        </tr>
-        <tr>
              <td><label for="tnt" style="font-size:15px;"><font color='Blue'> Working Type</font> </label>
              <div>
                  <?php echo form_input($tnt); ?>
              </div>
 	    </td> 
+        </tr>
+        <tr>
+             <td><label for="emppost" style="font-size:15px;"><font color='Blue'> Employee Post</font> </label>
+             <div>
+		<?php echo form_input($emppost); ?>
+             </div>
+	    </td>
              <td><label for="ss" style="font-size:15px;"><font color='Blue'> Group Post</font> </label>
              <div>
                  <?php echo form_input($grouppost); ?>
