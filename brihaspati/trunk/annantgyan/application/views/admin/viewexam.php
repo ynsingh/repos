@@ -8,10 +8,10 @@ if(isset($this->session->userdata['firstName'])){
 	<title>Annant Gyan</title>
 	
 		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
-				<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
-	  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	  	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+      		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	
 
 
@@ -59,43 +59,45 @@ if(isset($this->session->userdata['firstName'])){
 </div>  
 
 <div class="container">
-	<center><h2>Uploaded Content List</h2></center>
+	<center><h2>View Exam List</h2></center>
 	<div class="col-md-12" id='card'>
 		
 		
 		<table style="font-size:18px;"><tr>
-			<td><a href="<?php echo site_url('admin/admin_coucontent');?>">Upload Content</a></td>
+			<td><a href="<?php echo site_url('admin/upload_fileview');?>">View Upload Content</a></td>
 			<td> &nbsp;&nbsp;&nbsp;&nbsp;</td>
-			<td><a href="<?php echo site_url('admin/viewexam');?>">View Exam List</a></td>
+			<td><a href="<?php echo site_url('admin/createexam');?>">Create Exam</a></td>
 		</tr></table>
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Course Week</th><th>Content Name</th><th>Content Sequence</th><th>File Upload Path</th><th>File Type</th><th>File Name</th> <th>Upload Date</th><th> Actions</th>
+					<th>Sr. No.</th><th>Course Name</th><th>Course Week</th><th>Test Name(Test Code)</th><th>Test Description</th><th>Test Date</th><th>Test Time</th><th>Total Questions</th> <th>Total Students</th><th> Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
 						$i=1;
-						if(!empty($cou_data)){
-							foreach($cou_data as $row){	
-								$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->acu_courseid)->cou_name;
+						if(!empty($test_data)){
+							foreach($test_data as $row){	
+								$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->subid)->cou_name;
 						?>
 				<tr>
 					
 								<td><?php echo $i++;?></td>
 								<td><?php echo $cname;?></td>
-								<td><?php echo $row->acu_weekname;?></td>
-								<td><?php echo $row->acu_weekcontname;?></td>
-								<td><?php echo $row->acu_seqno;?></td>
-								<td><?php echo $row->acu_contpath;?></td>
-								<td><?php echo $row->acu_filetype ;?></td>
-								<td><?php echo $row->acu_filename  ;?></td>
-								<td><?php echo $row->acu_createdate ;?></td>
+								<td><?php //echo $row->acu_weekname;?></td>
+								<td><?php echo $row->testname." ( ". $row->testcode." )";?></td>
+								<td><?php echo $row->testdesc;?></td>
+								<td><?php echo $row->testdate;?></td>
+								<td><?php echo $row->testfrom." - ".$row->testto   ;?></td>
+								<td><?php echo $row->totalquestions  ;?></td>
+								<td><?php echo $row->attemptedstudents ;?></td>
 								<td><?php 
-									echo anchor('admin/delete_cont/' . $row->acu_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+									echo anchor('admin/addquestion/' . $row->testid , "Add Question") ;
+								echo "&nbsp;| ";
+									echo anchor('admin/delete_test/' . $row->testid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 								echo "&nbsp; ";
-								echo anchor(base_url().'/'. $row->acu_contpath.'/'.$row->acu_filename , "View", array('title' => 'View Details' , 'class' => 'red-link', 'target'=>'blank')) . " ";
+						//		echo anchor(base_url().'/'. $row->acu_contpath.'/'.$row->acu_filename , "View", array('title' => 'View Details' , 'class' => 'red-link', 'target'=>'blank')) . " ";
 								?> 
 								</td>
 								

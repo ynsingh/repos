@@ -431,11 +431,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<tr height=10><td></td></tr>
 	   <tr><td>
-		  <a href="<?php echo base_url('docs'); ?>/UtilityMessageonvedicmathematics.pdf" target="_blank">
+		  <a href="<?php echo base_url('docs'); ?>/Greetings.pdf" target="_blank">
 	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Utility Message</button>
 	       </a>
 	</td></tr> 
 
+<!--	<tr height=10><td></td></tr>
+	   <tr><td>
+		  <a href="<?php //echo base_url('docs'); ?>/UtilityMessageonvedicmathematics.pdf" target="_blank">
+	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Utility Message</button>
+	       </a>
+	</td></tr> 
+-->
 	<tr height=10><td></td></tr>
 	   <tr><td>
 		  <a href="<?php echo base_url('docs'); ?>/forigner_cont.pdf" target="_blank">

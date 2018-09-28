@@ -383,15 +383,15 @@ class Admin extends CI_Controller {
 				//Prepare array of user data
 				$cdate = date('Y-m-d H:i:s');		
      	       			$userData = array(
-        	        		 'acu_courseid'         =>		$courseid,
-					 'acu_weekname'         =>		$week,
+        	        		 'acu_courseid'         	=>	$courseid,
+					 'acu_weekname'         	=>	$week,
 					 'acu_seqno'			=>  	$seq_no,
-					 'acu_weekcontname' 	=>		$content,
+					 'acu_weekcontname' 		=>	$content,
 					 'acu_contpath' 		=>  	$desired_dir2,
-					 'acu_filetype'			=>		$type,
-					 'acu_filename'			=>		$name,
-					 'acu_createdate'		=>		$cdate,
-					 'acu_creatorid'		=>		$this->session->userdata('userEmail'),
+					 'acu_filetype'			=>	$type,
+					 'acu_filename'			=>	$name,
+					 'acu_createdate'		=>	$cdate,
+					 'acu_creatorid'		=>	$this->session->userdata('userEmail'),
            	     		);
 				
            			$insert = $this->db->insert('admin_conteupload',$userData);
@@ -423,6 +423,136 @@ class Admin extends CI_Controller {
                 }
 
 	}
+
+	function createexam(){
+                if(isset($this->session->userdata['firstName'])){
+			$data['couname'] = $this->commodel->get_list('courses');
+			if(isset($_POST['cou_exam'])){
+				$this->form_validation->set_rules('cou_name', 'course name', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('cou_week', 'course week', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('test_name', 'test name', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('test_code', 'test code', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('test_desc', 'test description', 'trim|xss_clean');
+				$this->form_validation->set_rules('test_date', 'test date', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('fmin', 'test from time', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('tmin', 'test time to', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('test_totalq', 'test total question', 'trim|required|xss_clean');
+				if($this->form_validation->run() == FALSE){
+					$this->load->view('admin/createexam',$data);
+					return;
+//                			redirect('admin/createexam');
+				}else{
+					$courseid          = $this->input->post('cou_name');
+					$couweek           = $this->input->post('cou_week');
+					$testname          = $this->input->post('test_name');
+					$testcode          = $this->input->post('test_code');
+					$testdesc          = $this->input->post('test_desc');
+					$testdate          = $this->input->post('test_date');
+					$testfromhrs          = $this->input->post('fmin');
+					if($testfromhrs <= 9){
+						$testfromhrs = "0".$testfromhrs;
+					}
+					$testfrommin          = $this->input->post('fsec');
+					if($testfrommin <= 9){
+                                                $testfrommin = "0".$testfrommin;
+                                        }
+					$testfrom          = $testfromhrs.":".$testfrommin.":00";
+					$testtohrs            = $this->input->post('tmin');
+					if($testtohrs <= 9){
+                                                $testtohrs = "0".$testtohrs;
+                                        }
+					$testtomin            = $this->input->post('tsec');
+					if($testtomin <= 9){
+                                                $testtomin = "0".$testtomin;
+                                        }
+					$testto            = $testtohrs.":".$testtomin.":00";
+					$testtotalq        = $this->input->post('test_totalq');
+
+					$tdiff=$testto - $testfrom;
+					$cdate = date('Y-m-d H:i:s');
+					$userData = array(
+						'testname' 		=>$testname,
+						'testdesc' 		=>$testdesc,
+						'testdate' 		=>$testdate,
+						'testtime'		=>$tdiff,
+						'subid' 		=>$courseid,
+						'testfrom'		=>$testfrom,
+						'testto' 		=>$testto,
+						'duration' 		=>$tdiff,
+						'totalquestions' 	=>$testtotalq,
+						'testcode' 		=>$testcode,
+					);
+					$insert = $this->db->insert('test',$userData);
+					//add the details of quiz in to admin_conteupload
+/*					$userData = array(
+                                         	'acu_courseid'                 =>      $courseid,
+                                         	'acu_weekname'                 =>      $couweek,
+                                         	'acu_seqno'                    =>      '',
+                                         	'acu_weekcontname'             =>      "Exam",
+                                         	'acu_contpath'                 =>      "exam",
+                                         	'acu_filetype'                 =>      "file",
+                                         	'acu_filename'                 =>      "squiz.php",
+                                         	'acu_createdate'               =>      $cdate,
+                                         	'acu_creatorid'                =>      $this->session->userdata('userEmail'),
+                                	);
+
+					$insert = $this->db->insert('admin_conteupload',$userData);
+
+ */	                                if($insert)
+        	                        {
+                	                        $this->session->set_flashdata('success', 'Your test successfully updated in databse.');
+                        	                redirect('admin/viewexam');
+                                	}
+                                	else{
+                                        	$this->session->set_flashdata('error', 'Your test Data is not updated in databse.');
+						$this->load->view('admin/createexam',$data);
+						return;
+                                        	//redirect('admin/createexam');
+                                	}
+				}
+
+
+			}
+                        $this->load->view('admin/createexam',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+        }
+
+
+	public function viewexam(){
+                if(isset($this->session->userdata['firstName'])){
+                        $data['test_data'] = $this->commodel->get_list('test');
+                        $this->load->view('admin/viewexam',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+
+        }
+
+
+	function delete_test($id){
+		$contflag=$this->commodel->deleterow('test','testid', $id);
+		$smsg= "The test has been deleted.";
+                $fmsg= "The test was not found  and could not be deleted.";
+
+                if(!$contflag)
+                {
+                        $this->logger->write_message("error", $fmsg." Error  in deleting content " ."[test_id:" . $id . "]");
+                        $this->logger->write_dbmessage("error", $fmsg." Error  in deleting content "." [test_id:" . $id . "]");
+                        $this->session->set_flashdata('err_message', $fmsg.' Error in Deleting content - ', 'error');
+                        redirect('admin/viewexam');
+                        return;
+                }
+                else{
+                        $this->logger->write_logmessage("delete", $smsg." Deleted   content " . "[test_id:" . $id . "] deleted successfully.. " );
+                        $this->logger->write_dblogmessage("delete",$smg. " Deleted content" ." [test_id:" . $id . "] deleted successfully.. " );
+                        $this->session->set_flashdata("success", $smsg.' Content Deleted successfully...' );
+                        redirect('admin/viewexam');
+                }
+                $this->load->view('admin/viewexam',$data);
+        }
+
 
 	public function logout(){
 		
