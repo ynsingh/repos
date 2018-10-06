@@ -140,7 +140,13 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('staffmgmt/employeelist', 'Basic Staff Profile', array('title' => 'Staff List'));
                                         echo "</li>"; */
                                         echo "<li>";
-                                                echo anchor('report/viewprofile', 'Staff Profile', array('title' => 'View Employee List'));
+						$uo2list=array("vc@tanuvas.org.in", "registrar@tanuvas.org.in", "asection@tanuvas.org.in", "rsection@tanuvas.org.in");
+						if(in_array(strtolower($this->session->userdata('username')), $uo2list, TRUE)) {
+							echo anchor('staffmgmt/employeelist', 'Staff Profile', array('title' => 'Staff Profile'));
+						}else{
+                                                	echo anchor('report/viewprofile', 'Staff Profile', array('title' => 'View Employee List'));
+						}
+						
                                         echo "</li>";
 
 				echo "</ul>";
@@ -176,9 +182,9 @@ echo "<ul class=\"sf-menu\">";
                                         echo "<li>";
                                                 echo anchor('report/positionvacancy', 'Staff Position with Name Post Wise', array('title' => 'Staff Position with Name Post Wise'));
                                         echo "</li>";
-                                        echo "<li>";
-                                                echo anchor('report/professorlist', 'Staff Seniority List', array('title' => 'Staff Seniority List'));
-                                        echo "</li>";
+                                      //  echo "<li>";
+                                        //        echo anchor('report/professorlist', 'Staff Seniority List', array('title' => 'Staff Seniority List'));
+                                       // echo "</li>";
                                         echo "<li>";
                                                 echo anchor('report/hodlist', 'List of HOD', array('title' => 'List of HOD'));
                                         echo "</li>";

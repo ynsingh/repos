@@ -111,9 +111,8 @@
                         <td>
                             <select name="salh_cat" id="tnt" class="my_dropdown" style="width:100%;">
                 		<option value="" disabled selected >------Select Category----------------</option>
-                		<option value="TDS">TDS</option>
-                		<option value="PF">PF</option>
                                 <option value="GS">General Salary</option>
+                                <option value="GD">General Deduction</option>
 			    </select> 
                         </td>
 	     	</tr>

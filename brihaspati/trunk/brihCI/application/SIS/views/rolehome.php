@@ -79,6 +79,7 @@
                     <table align="center">  
                 
 			<?php  
+
 			foreach($this->roles as $row){ 
                              
                             if($row->roleid == 1){ 
@@ -107,7 +108,8 @@
               
                             if($row->roleid == 5){
                                 echo "<tr><td><p>";
-                                echo anchor("hodhome", "Login As HoD" ,array('title' => ' Login As HoD ' , 'class' => 'top_parent'));
+                                echo anchor("hodhome?deptid=".$row->deptid, "Login As HoD" ,array('title' => ' Login As HoD ' , 'class' => 'top_parent'));
+				echo "( ". $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$row->deptid)->dept_name ." )";
                                 echo"</p></td></tr>";
                             }
               

@@ -213,15 +213,13 @@
                 <?php $count = 0; 
 		$ouoid = 0;
 		$odid = 0;
+		$oschid = 0;
 		$nop = 0;	
                 $type_tnt=$tnttype;
                 $ddropdept=$seldept;
-         //       $type_tnt=$this->wtyp;
-           //     $ddropdept=$this->deptmt;
-//                echo "type_tnt==".$type_tnt."seldept==".$ddropdept;
                if( count($records) ):  ?>
                     <?php foreach($records as $record){
-//                     
+      		 if($ouoid !=$record->sp_uo){               
 			echo "<tr>";
 			echo "<td colspan=10 style=\"text-align:center;\">";
 			echo " <b> UO CONTROL : ";
@@ -230,31 +228,47 @@
                         echo "&nbsp;&nbsp;"."( ".$this->lgnmodel->get_listspfic1('authorities','code','id' ,$record->sp_uo)->code." )";
 			echo "</b></td>";
 			echo "</tr>";
-                       	$this->deptlist = $this->sismodel->deptlist_sp($record->sp_uo,$type_tnt,$ddropdept);
-                        foreach($this->deptlist as $dept){
+			$ouoid =$record->sp_uo;
+		}
+              //         	$this->deptlist = $this->sismodel->deptlist_sp($record->sp_uo,$type_tnt,$ddropdept);
+                //        foreach($this->deptlist as $dept){
+		if($odid !=$record->sp_dept){
                             echo "<tr><td colspan=10 align=left><b> Department : ";
                             echo "&nbsp;&nbsp;";
-                            echo $this->commodel->get_listspfic1('Department','dept_code','dept_id',$dept->sp_dept)->dept_code;
+                            echo $this->commodel->get_listspfic1('Department','dept_code','dept_id',$record->sp_dept)->dept_code;
                             echo "<div style=\"text-align:center;\">";
-                            echo "DEPT. OF ".strtoupper($this->commodel->get_listspfic1('Department','dept_name','dept_id',$dept->sp_dept)->dept_name);
-                            $orgcode=$this->commodel->get_listspfic1('Department','dept_orgcode','dept_id',$dept->sp_dept)->dept_orgcode;
+                            echo "DEPT. OF ".strtoupper($this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->sp_dept)->dept_name);
+                            $orgcode=$this->commodel->get_listspfic1('Department','dept_orgcode','dept_id',$record->sp_dept)->dept_orgcode;
                             echo "<br>".strtoupper($this->commodel->get_listspfic1('study_center','sc_name','org_code',$orgcode)->sc_name)."</br>"; 
                             echo "</div>";
                             echo "</b></td></tr>";
-                            $this->postlist = $this->sismodel->postlist_sp($record->sp_uo,$dept->sp_dept,$type_tnt);
+				$odid =$record->sp_dept;
+		}
+      		 if($oschid !=$record->sp_schemecode){               
+			echo "<tr>";
+			echo "<td colspan=10 style=\"text-align:center;\">";
+			echo " <b> Scheme : ";
+			echo "&nbsp;&nbsp;";
+			echo strtoupper($this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->sp_schemecode)->sd_name);
+                        echo " ( ".$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$record->sp_schemecode)->sd_code ." )";
+			echo "</b></td>";
+			echo "</tr>";
+			$oschid =$record->sp_schemecode;
+		}
+                            	//$this->postlist = $this->sismodel->postlist_sp($record->sp_uo,$record->sp_dept,$type_tnt,$record->sp_schemecode);
                            // echo "testing dept===".$record->sp_uo."dept====".$dept->sp_dept;
-                            foreach($this->postlist as $post){
+                    //        foreach($this->postlist as $post){
                                 
                                 echo "<tr><td colspan=10 align=left><b> Name of The Post : ";
-                                echo  $this->commodel->get_listspfic1('designation','desig_name','desig_id', $post->sp_emppost)->desig_name; 
+                                echo  $this->commodel->get_listspfic1('designation','desig_name','desig_id', $record->sp_emppost)->desig_name; 
                                 echo "</b></td></tr>";
                                 echo "<tr>";
-                                echo "<td> $post->sp_sancstrenght</td>";
-                                echo "<td> $post->sp_position</td>";
-                                echo "<td colspan=10> $post->sp_vacant</td>";
+                                echo "<td> $record->sp_sancstrenght</td>";
+                                echo "<td> $record->sp_position</td>";
+                                echo "<td colspan=10> $record->sp_vacant</td>";
                                 echo "</tr>";
                        
-                                $this->emprec=$this->sismodel->emplist($record->sp_uo,$dept->sp_dept,$post->sp_emppost);      
+                                $this->emprec=$this->sismodel->emplist($record->sp_uo,$record->sp_dept,$record->sp_emppost,$record->sp_schemecode);      
                                 foreach($this->emprec as $emp){
                                     echo "<tr>";
                                     echo "<td></td><td></td><td></td>";
@@ -266,8 +280,8 @@
                                    echo  $this->commodel->get_listspfic1('designation','desig_name','desig_id', $emp->emp_desig_code)->desig_name ;
                                     echo "</td>";
                                     echo "</tr>";
-                                }
-                            }
+                          //      }
+//                            }
                         }
                     ?>
                        

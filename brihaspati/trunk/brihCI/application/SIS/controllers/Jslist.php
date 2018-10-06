@@ -32,18 +32,19 @@ class Jslist extends CI_Controller
 
                 $datawh=array('desig_type' => $groups);
 		$rlid=$this->session->userdata('id_role');
-	        if ($rlid == 5){
-        	        $usrid=$this->session->userdata('id_user');
-	                $deptid = '';
-                	$whdatad = array('userid' => $usrid,'roleid' => $rlid);
-        	        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
-	                foreach($resu as $rw){
-                        	$deptid=$rw->deptid;
-                	}
-        	        $datawh['emp_dept_code'] = $deptid;
-	        }
+       	        $usrid=$this->session->userdata('id_user');
+//	        if ($rlid == 5){
+//	                $deptid = '';
+  //              	$whdatad = array('userid' => $usrid,'roleid' => $rlid);
+    //    	        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+//	                foreach($resu as $rw){
+  //                      	$deptid=$rw->deptid;
+    //            	}
+        	//        $datawh['emp_dept_code'] = $deptid;
+//	        }
 
 		$whorder = "desig_name asc";
+//		echo $deptid; die();
         	$grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
                 //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
                 $desig_select_box ='';

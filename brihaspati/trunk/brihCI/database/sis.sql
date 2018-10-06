@@ -339,8 +339,8 @@ CREATE TABLE `employee_master` (
   `emp_netqualified` VARCHAR(50) default NULL,
   `emp_netpassingyear` date  default NULL,
   `emp_netdiscipline`  VARCHAR(255) default NULL,
-  `emp_vciregno` VARCHAR(255) default NULL,
-  `emp_vciregdate` datetime default NULL ,
+  `emp_dojvc` date default NULL,
+  `emp_salary_gradenew` int(11) default NULL ,
   `emp_maritalstatus` varchar(100) default NULL,
   `emp_seniortyid` int(10) default NULL,
    PRIMARY KEY  (`emp_id`)

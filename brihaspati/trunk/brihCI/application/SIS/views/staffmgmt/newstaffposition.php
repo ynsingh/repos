@@ -177,6 +177,35 @@
 	     });
 	   }
 
+	function getsstypevalueper(val){
+                var p = $('#p').val();
+                var type = $('#type').val();
+               // var ss=val;
+                var ss = $('#ss').val();
+                var ssper = $('#ssper').val();
+                var pper = $('#pper').val();
+                var combid = p+","+type+","+ss+","+ssper+","+pper;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>sisindex.php/staffmgmt/getsstypeper",
+                data: {"sstype" : combid},
+                dataType:"html",
+                success: function(data){
+        //      alert(data);
+                var ssdata=data;
+                var positiondata=ssdata.split(',');
+                        $('#p').val(positiondata[0].replace(/\"|"/g,''));
+                        $('#v').val(positiondata[1].replace(/^"|"$/g, ''));
+                        $('#ssper').val(positiondata[2].replace(/^"|"$/g, ''));
+                        $('#pper').val(positiondata[3].replace(/^"|"$/g, ''));
+                        $('#vper').val(positiondata[4].replace(/^"|"$/g, ''));
+                        $('#sstem').val(positiondata[5].replace(/^"|"$/g, ''));
+                        $('#ptem').val(positiondata[6].replace(/^"|"$/g, ''));
+                        $('#vtem').val(positiondata[7].replace(/^"|"$/g, ''));
+                }
+             });
+           }	
+
 	$(document).ready(function(){
                        
                 $('#uo').on('change',function(){
@@ -330,6 +359,7 @@
                		 <option value="" disabled selected >------Select----------------</option>
                		 <option value="Permanent"<?php echo set_select('type', 'Permanent'); ?> class="dropdown-item"> Permanent </option>
                		 <option value="Temporary"<?php echo set_select('type', 'Temporary'); ?> class="dropdown-item"> Temporary </option>
+               		 <option value="PT"<?php echo set_select('type', 'PT'); ?> class="dropdown-item"> Both PT </option> 
                     </div>
                </td>
 	</tr>	
@@ -380,7 +410,7 @@
            
          <tr>
 		<td><label for="ssper" style="font-size:15px;"><font color='blue'>Sanction Strength Permanent</font> <font color='Red'>*</font> </label>
-		<div><input type="text" name="ssper" id="ssper" readonly size="30" value="<?php echo isset($_POST["ssper"]) ? $_POST["ssper"] : ''; ?>" placeholder="Sanction Strength Permanent..." required="required" /><br>
+		<div><input type="text" name="ssper" id="ssper" class="keyup-numeric" size="30" value="<?php echo isset($_POST["ssper"]) ? $_POST["ssper"] : ''; ?>" placeholder="Sanction Strength Permanent..." required="required" oninput="getsstypevalueper(this.value)"/><br>
 		</div></td>
 		
 		<td><label for="pper" style="font-size:15px;"><font color='blue'> Position Permanent</font> <font color='Red'>*</font> </label>

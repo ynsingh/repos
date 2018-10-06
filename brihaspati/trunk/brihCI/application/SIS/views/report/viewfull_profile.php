@@ -92,16 +92,16 @@
                             <td align="right">
                                 <?php
 				$cdate= date('Y-m-d');
-				 $uname=$this->session->userdata('username');
+				$uname=$this->session->userdata('username');
                                 $rest = substr($uname, -21);
 		//		$roleid=$this->session->userdata('id_role');
-       //                         if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
                                // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
+       //                         if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
+			/*	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 					if ($data->emp_dor > $cdate ){
                                         	echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
 					}
-                                }
+                                }*/
                                 ?>
 
                             </td>
@@ -137,7 +137,10 @@
 			</tr>
   			<tr>
                                 <td>
-<?php   echo    "<b>Drawing and Disbursing Officer</b> <br>".$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddoid)->ddo_name."(".$this->sismodel->get_listspfic1('ddo', 'ddo_code', 'ddo_id',$data->emp_ddoid)->ddo_code.")"; ?>
+<?php   				echo    "<b>Drawing and Disbursing Officer</b> <br>";
+						 if (!empty($data->emp_ddoid)){
+							echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$data->emp_ddoid)->ddo_name."(".$this->sismodel->get_listspfic1('ddo', 'ddo_code', 'ddo_id',$data->emp_ddoid)->ddo_code.")";
+							} ?>
                                 </td>
                                 <td>
 
@@ -186,9 +189,18 @@
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_grade)->sgm_max;
                             $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$data->emp_salary_grade)->sgm_min;
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$data->emp_salary_grade)->sgm_gradepay;
-
 				echo    "<b>Pay Band</b> <br>";
-					echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
+					echo $payband."(".$pay_min."-".$pay_max.")".$gardepay; 
+					echo "<br>";
+
+			if(!empty($data->emp_salary_gradenew)){
+
+	 		    $paybandn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_gradenew)->sgm_name;
+                            $pay_maxn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_gradenew)->sgm_max;
+                            $pay_minn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$data->emp_salary_gradenew)->sgm_min;
+                            $gardepayn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$data->emp_salary_gradenew)->sgm_level;
+					echo $paybandn."(".$pay_minn."-".$pay_maxn.")".$gardepayn; 
+		}
 ?>
                                 </td>
 <td>
@@ -311,10 +323,10 @@
 <?php   echo    "<b>Qualification</b> <br>".$data->emp_qual;?>
                                 </td>
                                 <td>
-<?php   echo    "<b>ASSR Exam Status</b> <br>".$data->emp_AssrExam_status?>
+<?php   echo    "<b>ASRR Exam Status</b> <br>".$data->emp_AssrExam_status?>
                                 </td>
                                 <td>
-<?php   echo    "<b>Date of ASSR Exam</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam))) ;?>
+<?php   echo    "<b>Date of ASRR Exam</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam))) ;?>
                                 </td>
 <td>
 <?php   echo    "<b>Grade</b> <br>".$data->emp_grade;?>
@@ -480,11 +492,11 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                                 <?php
                               //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))){
 			//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
+/*				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 					 if ($data->emp_dor > $cdate ){
 	                                        echo anchor("staffmgmt/editempprofile/{$emp_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
 					}
-                                }
+                                }*/
                                 ?>
 
                             </td>

@@ -95,10 +95,11 @@
 				echo " ) ";
 			echo "</td>";
 			echo "<td>";
-
+				if(!empty($record->hl_empcode)){
 				$name=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode);
 				if(!empty($name)){
 					echo $name->emp_name;
+				}
 				}
 				//echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->hl_empcode)->emp_name;
 				echo " ( ";

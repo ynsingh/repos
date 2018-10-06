@@ -13,7 +13,44 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
 /************************select department on basis of uo and campus*******************/
-              $(document).ready(function() {         
+              $(document).ready(function() {        
+ 
+	 /*******uoc on the basis of campus*****************************************************************************/
+            
+            /*  In future this code may be replace when either campusid added in the 
+            autority or authority added in campus.*/
+            
+            $('#camp').on('change',function(){
+                var sc_code = $(this).val();
+                //alert(sc_code);
+                if(sc_code == ''){
+                    $('#uo').prop('disabled',true);
+                   
+                }
+                else{
+                    $('#uo').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getuoclist",
+                        type: "POST",
+                        data: {"campusname" : sc_code},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#uo').html(data.replace(/^"|"$/g, ''));
+                                                 
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                    });
+                }
+            }); 
+            
+            /*****end of uoc***************************************************************************/
+
+
              $('#uo').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uo').val();
@@ -154,10 +191,10 @@
                             <!--select name="uo" id="uo" style="width:100%;" required="required"-->
                         <!--option value="">Select UO</option-->
                    <option selected="selected" disabled selected>------ Select UO------</option> 
-                         <?php foreach($this->authresult as $udatas): ?>
-                        <option value="<?php echo $udatas->id; ?>"><?php echo $udatas->name ." (Priority: ". $udatas->priority ." ,Code: ". $udatas->code .")"; ?></option>
+                         <?php //foreach($this->authresult as $udatas): ?>
+                     <!--   <option value="<?php //echo $udatas->id; ?>"><?php //echo $udatas->name ." (Priority: ". $udatas->priority ." ,Code: ". $udatas->code .")"; ?></option> -->
                           <!--option value="<?php echo $datas->ul_uocode; ?>"><?php echo $datas->ul_uoname ." ( ". $udatas->ul_uocode." )"; ?></option-->
-                        <?php endforeach; ?>
+                        <?php //endforeach; ?>
                         </select>
                     </td>
                 </tr>

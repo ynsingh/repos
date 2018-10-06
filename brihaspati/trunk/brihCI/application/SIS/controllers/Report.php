@@ -25,11 +25,42 @@ class Report  extends CI_Controller
             redirect('welcome');
          }
     }
+
+   /**
+    * Get Download PDF File
+    *
+    * @return Response
+    */
+  // function convertpdf($hdata,$filename){
+   function convertpdf(){
+	$filename = $this->input->post('fname');
+	$hdata =$this->input->post('rdata') ; 
+//	print_r($filename);die();
+//	$html=$this->load->view('report/disciplinewiselist',$hdata);        
+	$html=$this->load->view($filename,$hdata);        
+        // Load pdf library
+//	print_r($html);die();
+        $this->load->library('pdf');
+        
+        // Load HTML content
+        $this->pdf->load_html($html);
+        
+        // (Optional) Setup the paper size and orientation
+        $this->pdf->set_paper('A4', 'landscape');
+        
+        // Render the HTML as PDF
+        $this->pdf->render();
+        
+        // Output the generated PDF (1 = download and 0 = preview)
+        //$this->pdf->stream("welcome.pdf", array("Attachment"=>0));
+        $this->pdf->stream("disciplinewiselist.pdf", array("Attachment"=>0));
+   }
+
 //get all uo empid
 	public function getempuoid(){
 		$selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
-
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+		
                 $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
                 //$emp_data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
                 $empuoempid=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -43,7 +74,7 @@ class Report  extends CI_Controller
 //get all hod empid
 	public function getemphodid(){
 		$selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
 
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 //$emp_data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -576,13 +607,10 @@ public function disciplinewiselist(){
         $selectfield ="emp_dept_code, emp_id,emp_code,emp_name,emp_head, emp_desig_code,emp_specialisationid";
 	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
         $whorder = "emp_specialisationid asc, emp_desig_code asc ";
-	//$names='';
 	if(isset($_POST['filter'])) {
 		$camp = $this->input->post('camp');
             	$subj[] = $this->input->post('subj');	
 		$this->camp = $camp;
-	//	$this->subj = $subj[];
-		
 		if(!empty($camp))
 			$whdata['emp_scid']=$camp;
 		$i=0;
@@ -590,19 +618,12 @@ public function disciplinewiselist(){
 			foreach($subj as $row){
 			$this->subj = $row[$i];	
 			$names = $row;
-			
-		//	$this->db->or_where_in('username', $names);
-		//	$whdata['emp_specialisationid']=$row[$i];
 			$i++;
 			}
 		}
-	//	print_r($names);die;
 		if(empty($names))
 			$whdata['emp_specialisationid >'] = 0;
-
-//		$orwhin=array('emp_specialisationid' => $names);
 		$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_specialisationid',$names,$whorder);
-
 	}else{
 		$whdata['emp_specialisationid >'] = 0;
         	$this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
@@ -613,10 +634,13 @@ public function disciplinewiselist(){
 }
 
     public function listofstaffposition(){
-	$whorder = "sp_uo asc, sp_dept asc, sp_schemecode  asc";
-   //     $whdata = '';
+	$whorder = "sp_uo asc, sp_dept asc, sp_schemecode  asc,sp_emppost asc";
+//	$whorder = "sp_uo asc, sp_dept asc";
+        $whdata = '';
 	$whdata = $this->getwhdata();       
-        $selectfield ="sp_uo,sp_schemecode";
+//print_r($whdata); die();
+        $selectfield ="sp_uo,sp_dept,sp_schemecode,sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
+        //$selectfield ="sp_uo,sp_dept";
         $data['tnttype']='';
         $data['seldept']='';
         if(isset($_POST['filter'])) {
@@ -640,29 +664,12 @@ public function disciplinewiselist(){
            if(($uoff != "null") && ($uoff != "All")){
                 $whdata['sp_uo'] = $uoff;
            }
-
-
-            //echo "dept===".$dept."\nwt==".$wtype."\nuo===".$uoff;
-      //      $data['tnttype'] =  $wtype;  
-        //    $data['seldept']= $dept;
- /*           if($wtype!= " "){
-                if($uoff !="All"){
-                 	$whdata['sp_tnt'] = $wtype;
-			if($this->session->userdata('id_role') != 10){
-		 		$whdata['sp_uo'] = $uoff;
-			}
-                }
-                else{
-                    	$whdata['sp_tnt'] = $wtype;
-                }
-            }
-*/	//	print_r($whdata);
                 $data['records'] = $this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
 //		$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
-            
         }
         else{
             $data['records'] = $this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
+//		print_r($data['records']); die();
 //		$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
         }
         $this->logger->write_logmessage("view"," view list staff position list" );
@@ -920,7 +927,8 @@ public function disciplinewiselist(){
 //        $whdata=array('hl_dateto >='=> $today);
         $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid,hl_uopid";
 	$whorder = "hl_uopid asc";
-        $data['allsc']=$this->sismodel->get_orderlistspficemore('hod_list',$selectfield,'',$whorder);
+	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+        $data['allsc']=$this->sismodel->get_orderlistspficemore('hod_list',$selectfield,$whdata,$whorder);
         $this->logger->write_logmessage("view"," view list of HOD in report " );
         $this->logger->write_dblogmessage("view"," view list of HOD in report");
         $this->load->view('report/hodlist',$data);
@@ -930,11 +938,15 @@ public function disciplinewiselist(){
         $today= date("Y-m-d H:i:s");
 //        $whdata=array('hl_dateto >='=> $today);
         //$selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
-	$selectfield ="ul_userid,ul_empcode, ul_authuoid,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
-	$whorder="ul_id ASC,  ul_modifydate DESC";
+	$selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
+	$whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
+	$whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+//	$grpby="ul_authuoid";
 //	get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
         //$data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
-        $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,'',$whorder);
+        $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,$whdata,$whorder);
+  //      $data['allsc']=$this->sismodel->get_orderdistinctrecordgrpby('uo_list',$selectfield,$whdata,$whorder,$grpby);
+        //$data['allsc']=$this->sismodel->get_orderlistspficemore('uo_list',$selectfield,$whdata,$whorder);
         $this->logger->write_logmessage("view"," view list of UO in report " );
         $this->logger->write_dblogmessage("view"," view list of UO in report");
         $this->load->view('report/uolist',$data);

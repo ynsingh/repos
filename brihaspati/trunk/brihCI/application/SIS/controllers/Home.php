@@ -35,7 +35,7 @@ class Home extends CI_Controller
     }
  
     public function logout() {
-	$data = ['id_user'=> '', 'id'=> '','id_role'=> '','username'=> ''];
+	$data = ['id_user'=> '', 'id'=> '','id_role'=> '','username'=> '','id_dept' =>''];
         $this->session->unset_userdata($data);
         $this->session->sess_destroy();
         redirect('welcome');

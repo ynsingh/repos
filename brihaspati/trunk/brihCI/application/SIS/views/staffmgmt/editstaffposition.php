@@ -17,7 +17,36 @@
         }
 	</script>
 	<script>
-        function getsstypevalue(val){
+	function getsstypevalueper(val){
+                var p = $('#p').val();
+                var type = $('#type').val();
+               // var ss=val;
+                var ss = $('#ss').val();
+                var ssper = $('#ssper').val();
+                var pper = $('#pper').val();
+                var combid = p+","+type+","+ss+","+ssper+","+pper;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>sisindex.php/staffmgmt/getsstypeper",
+                data: {"sstype" : combid},
+                dataType:"html",
+                success: function(data){
+        //      alert(data);
+                var ssdata=data;
+                var positiondata=ssdata.split(',');
+                        $('#p').val(positiondata[0].replace(/\"|"/g,''));
+                        $('#v').val(positiondata[1].replace(/^"|"$/g, ''));
+                        $('#ssper').val(positiondata[2].replace(/^"|"$/g, ''));
+                        $('#pper').val(positiondata[3].replace(/^"|"$/g, ''));
+                        $('#vper').val(positiondata[4].replace(/^"|"$/g, ''));
+                        $('#sstem').val(positiondata[5].replace(/^"|"$/g, ''));
+                        $('#ptem').val(positiondata[6].replace(/^"|"$/g, ''));
+                        $('#vtem').val(positiondata[7].replace(/^"|"$/g, ''));
+                }
+             });
+           }
+
+/*        function getsstypevalue(val){
                 var p = $('#p').val();
                 var type = $('#type').val();
                 var ss=val;
@@ -67,7 +96,7 @@
                 }
              });
         }
-
+*/
    </script>
    <table width="100%">
    <!--<table style="padding: 8px 8px 8px 20px;">-->
@@ -175,13 +204,13 @@
           <td><label for="ss" style="font-size:15px;"><font color='Blue'> Position Sanction Strength</font> </label>
              <div>
                 <!-- <?php //echo form_input($ss); ?>-->
-		<input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength" required="required" oninput="getsstypevalue(this.value)" /><br>
+		<input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength" required="required" oninput="getsstypevalueper(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="p" style="font-size:15px;"><font color='Blue'> Position Present</font> </label>
              <div>
                <!--  <?php //echo form_input($p); ?> -->
-		<input type="text" name="p" id="p" class="keyup-numeric" size="30" value="<?php echo $p['value']; ?>" placeholder="Position" required="required" oninput="getptypevalue(this.value)" /><br>
+		<input type="text" name="p" id="p" class="keyup-numeric" size="30" value="<?php echo $p['value']; ?>" placeholder="Position" required="required" oninput="getptypevalueper(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="v" style="font-size:15px;"><font color='Blue'> Position Vacant</font> </label>
@@ -193,12 +222,14 @@
 	<tr>
              <td><label for="ssper" style="font-size:15px;"><font color='Blue'> Sanction Strength Permanent</font> </label>
              <div>
-                <?php echo form_input($ssper); ?>
+                <?php //echo form_input($ssper); ?>
+		<input type="text" name="ssper" id="ssper" class="keyup-numeric" size="30" value="<?php echo $ssper['value']; ?>" placeholder="Permanent Sanction Strength" required="required" oninput="getsstypevalueper(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="pper" style="font-size:15px;"><font color='Blue'> Position Permanent</font> </label>
              <div>
-                 <?php echo form_input($pper); ?>
+                 <?php //echo form_input($pper); ?>
+		<input type="text" name="pper" id="pper" class="keyup-numeric" size="30" value="<?php echo $pper['value']; ?>" placeholder="Permanent Position" required="required" oninput="getsstypevalueper(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="vper" style="font-size:15px;"><font color='Blue'> Vacancy Permanent</font> </label>

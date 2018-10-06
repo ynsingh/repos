@@ -17,7 +17,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             $(document).ready(function(){
             var today = new Date(); 
                   
-            $('#StartDate,#Dateofassrexam,#Dateofhgp,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
+            $('#StartDate,#StartDatevc,#Dateofassrexam,#Dateofhgp,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -592,13 +592,17 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                   
         </div>
         <div>
+		<?php $current="basic"; 
+			$emp_id=$id;
+		  include 'eprofiletab.php';
+		 ?>
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
         <!--<table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">-->
         <table width="100%" style="margin-left:0%;border:1px solid gray;" class="TFtable">
             
+            <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Edit Basic Staff Profile</th></thead></tr>
             <?php echo form_open_multipart('staffmgmt/update_profile/' .$id);?>
             <input type="hidden" name="id" value="<?php echo $id ; ?>">
-            <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Edit Staff Profile</th></thead></tr>
            <!--form method="post" action="<?php //echo base_url('staffmgmt/update_profile/',$editdata->emp_id);?>" -->           
             <tr>
                 <td><label for="campus" style="font-size:15px;"><font color='Blue'>Campus Name</font> <font color='Red'>*</font></label>
@@ -836,16 +840,38 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                        
                     </select></div>
                 </td>
+		<td><label for="newpayband" style="font-size:15px;"><font color='blue'>New Pay Band</font><font color='Red'>*</font></label>
+                    <div><select name="newpayband" required style="width:300px;">
+		<?php	
+			if(!empty($editdata->emp_salary_gradenew)){ ?>
+			<option value="<?php echo $editdata->emp_salary_gradenew;?>">
+			<?php
+                            $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$editdata->emp_salary_gradenew)->sgm_name;
+                            $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$editdata->emp_salary_gradenew)->sgm_max;
+                            $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$editdata->emp_salary_gradenew)->sgm_min;
+                            $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$editdata->emp_salary_gradenew)->sgm_level;
+                            ;?>
+                            <?php echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;?></option>
+		<?php } ?>
+                   <!--     <option selected="selected" disabled selected>--- Select New Pay Band ---</option>-->
+                        <?php foreach($this->salgrdn as $salgrddatan): ?>
+                            <option value="<?php echo $salgrddatan->sgm_id; ?>"><?php echo $salgrddatan->sgm_name."(". $salgrddatan->sgm_min."-".$salgrddatan->sgm_max.")".$salgrddatan->sgm_level; ?>
+                            </option>
+                        <?php endforeach; ?>
+
+                    </select></div>
+                </td>
+
                 <td><label for="basicpay" style="font-size:15px;"><font color='Blue'>Basic Pay</font></label>
                     <div><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo $editdata->emp_basic; ?>" placeholder="Basic pay..." size="33" >
                     </div>    
                 </td> 
+            </tr>
+            <tr>
                 <td><label for="emolution" style="font-size:15px;"><font color='Blue'>Emolution</font></label>
                     <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo $editdata->emp_emolution; ?>" placeholder="Emolution..." size="33" >
                     </div>    
                 </td> 
-            </tr>
-            <tr>
                 <td><label for="empnhisidno" style="font-size:15px;"><font color='Blue'>NHIS ID No</font></label>
                     <div><input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo $editdata->emp_nhisidno; ?>" placeholder="NHIS ID NO..." size="33">
                     </div>    
@@ -857,6 +883,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="phdetail" style="font-size:15px;"><font color='Blue'>Details of PH</font></label>
                 <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo $editdata->emp_phdetail; ?>" placeholder="Details of PH..." size="33">
                 </div></td>
+            </tr>
+            <tr>
                 <td><label for="Sabgroup" style="font-size:15px;"><font color='Blue'>Blood Group</font></label>
                    <div><select name="Sabgroup" style="width:300px;">
                             <?php if(!empty($editdata->emp_bloodgroup)):;?>
@@ -876,12 +904,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 				
 	 		</select></div>		
                 </td>
-            </tr>
-            <tr>
-                <td><label for="DateofBirth" style="font-size:15px;"><font color='Blue'>Date of Birth</font><font color='Red'>*</font></label>
-                    <div><input type="text" name="DateofBirth" value="<?php echo $editdata->emp_dob; ?>" id="Dateofbirth" size="33" required="required">
-                    </div>    
-                </td>
                 <td><label for="dateofjoining" style="font-size:15px;"><font color='Blue'>Date of Appointment</font><font color='Red'>*</font></label>
                     <div><input type="text" name="dateofjoining" value="<?php echo $editdata->emp_doj; ?>" id="StartDate"  size="15" required="required">
 			<select name="jsession" style="width:140px;" id="jsession" required>
@@ -891,6 +913,22 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         </select>
                     </div>
                 </td>       
+		<td><label for="dateofjoiningvc" style="font-size:15px;"><font color='blue'>Date Of Appointment as VC</font><font color='Red'></font></label>
+                    <div><input type="text" name="dateofjoiningvc" value="<?php echo $editdata->emp_dojvc; ?>" id="StartDatevc"  size="33" >
+                  <!--      <select name="jsession" style="width:140px;" id="jsession" required>
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>-->
+                     </div>
+                </td>
+                <td><label for="DateofBirth" style="font-size:15px;"><font color='Blue'>Date of Birth</font><font color='Red'>*</font></label>
+                    <div><input type="text" name="DateofBirth" value="<?php echo $editdata->emp_dob; ?>" id="Dateofbirth" size="33" required="required">
+                    </div>    
+                </td>
+            </tr>
+            <tr>
+
                 <td ><label for="dateofretirement" style="font-size:15px;"><font color='Blue'>Date of Retirement</font></label>
                     <div><input type="text" name="dateofretirement" value="<?php echo $editdata->emp_dor; ?>" id="Dateofretir" class="form-control" size="33" />
                     </div>    
@@ -898,9 +936,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="dateofprob" style="font-size:15px;"><font color='Blue'>Date of Probation</font></label>
                     <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo $editdata->emp_doprobation;?>" size="33" />
                 <div></td>
-            </tr>
-            
-            <tr>
                  <td><label for="dateofregular" style="font-size:15px;"><font color='Blue'>Date of Regularisation</font></label>
                     <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo $editdata->emp_doregular;?>"   size="33" />
                 <div></td> 
@@ -919,12 +954,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo $editdata->emp_dateofphd; ?>" size="27" />
                     </div>    
                 </td>        -->
-                <td><label for="assrexam" style="font-size:15px;"><font color='Blue'>ASSR Exam Status</font></label>
+                <td><label for="assrexam" style="font-size:15px;"><font color='Blue'>ASRR Exam Status</font></label>
                     <div><select name="assrexam" style="width:300px;">
                           <?php if(!empty($editdata->emp_AssrExam_status)):;?>  
                         <option value="<?php echo $editdata->emp_AssrExam_status;?>"><?php echo $editdata->emp_AssrExam_status;?></option>
                         <?php else:?>
-                            <option selected="true" disabled="disabled">----------- Select ASSR Exam Status ---------</option>
+                            <option selected="true" disabled="disabled">----------- Select ASRR Exam Status ---------</option>
                         <?php endif?>
                         <option value="Passed">Passed</option>
                         <option value="Not Qualified">Not Qualified</option>
@@ -933,7 +968,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="Not Applicable">Not Applicable</option>
                     </select></div>
                 </td>
-                <td><label for="assrexamdate" style="font-size:15px;"><font color='Blue'>Date of ASSR Exam</font></label>
+            </tr>
+            <tr>
+                <td><label for="assrexamdate" style="font-size:15px;"><font color='Blue'>Date of ASRR Exam</font></label>
                     <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo $editdata->emp_dateofAssrExam ;?>"class="form-control" size="33" />
                     </div>
                 </td>    
@@ -941,9 +978,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="dateofhgp" id="Dateofhgp" value="<?php echo $editdata->emp_dateofHGP ; ?>" class="form-control" size="33" /></td>
                     </div>
                 </td>
-            </tr>
-            
-            <tr>
                 <td><label for="panno" style="font-size:15px;"><font color='Blue'>Pan No</font></label>
                     <div><input type="text" name="panno" id="txtPANNumber" MaxLength="10" value="<?php echo $editdata->emp_pan_no;?>" placeholder="Pan No..." size="33" >
                     </div>    
@@ -958,6 +992,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo $bname[0]; ?>" placeholder="Bank Name..." size="33" >
                     </div>
                 </td>
+            </tr>
+            <tr>
                 <td><label for="ifsccode" style="font-size:15px;"><font color='Blue'>IFSC Code</font></label>
                     <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo $bname[1]; ?>" placeholder="IFSC CODE..." size="33" >
                     </div>
@@ -966,9 +1002,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo $editdata->emp_bank_accno; ?>" placeholder="Bank Acc No..." size="33" required="required">
                     </div>
                 </td>
-            </tr>
-            
-            <tr>
                 <td><label for="Aadharrno" style="font-size:15px;"><font color='Blue'>Aadhaar No</font><font color='Red'></font></label>
                     <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo $editdata->emp_aadhaar_no; ?>" placeholder="Aadharr No..." size="33" required="required">
                     </div>    
@@ -977,6 +1010,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 		<td><label for="secondary emailid" style="font-size:15px;"><font color='Blue'>Email Id</font></label>
                 <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo $editdata->emp_secndemail; ?>" placeholder=" Email Id........" size="33" >
                 </div></td>         
+            </tr>
+            <tr>
          <!--       <td><label for="emailid" style="font-size:15px;">E-Mail ID<font color='Red'>*</font></label>
                     <div><input type="text" name="emailid" class="keyup-email" value="<?php //echo $editdata->emp_email; ?>" placeholder="E-Mail ID..." size="35" required="required" readonly>
                     </div>
@@ -989,8 +1024,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="mothertongue"  class="keyup-characters" value="<?php echo $editdata->emp_mothertongue; ?>" placeholder="Mother Tongue..." size="33" >
                     </div>    
                 </td>
-            </tr>
-            <tr>
                 <td><label for="nativity" style="font-size:15px;"><font color='Blue'>Nativity</font></label>
                     <div><input type="text" name="nativity" class="keyup-characters" value="<?php echo $editdata->emp_citizen; ?>" placeholder="Nativity..." size="33" >
                     </div>    
@@ -998,6 +1031,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="Qualification" style="font-size:15px;"><font color='Blue'>Qualification</font></label>
                     <div><input type="text" name="qual" class="keyup-characters" value="<?php echo $editdata->emp_qual;?>" placeholder="Qualification........" size="33" >
                 </div></td>
+            </tr>
+            <tr>
 
 		<td ><label for="empgrade" style="font-size:15px;"><font color='Blue'> Grade </font> </label>
                         <div><select name="empgrade" id="empgrade"  style="width:300px;">
@@ -1028,12 +1063,10 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="Widowed">Widowed</option>
                         </select>
                 </div></td>
-            </tr>
-            <tr>
                 <td><label for="seniorityno" style="font-size:15px;"><font color='Blue'>Seniority No</font></label>
                     <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo $editdata->emp_seniortyid; ?>" placeholder="Seniority No...." size="33" >
                 </div></td>
-		<td></td><td></td><td></td>
+		<td></td>
             </tr>
             <tr><td colspan="4"><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
             <tr>

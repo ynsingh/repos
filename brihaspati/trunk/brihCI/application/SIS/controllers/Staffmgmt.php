@@ -34,11 +34,12 @@ class Staffmgmt extends CI_Controller
 		$rlid=$this->session->userdata('id_role');
 
 		$selectfield='emp_id';
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
 
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
                 $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
                 $data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
 
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 $data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
     	}
@@ -47,6 +48,7 @@ class Staffmgmt extends CI_Controller
 		$whdata = array ('emp_id' => $id);
 		$idata = array('emp_head' => "HEAD");
 		$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
+//insert record in hod list
 		$this->logger->write_logmessage("insert", "HEAD data insert in employee_master table.".$id);
                 $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_master table.".$id );
 		$this->employeelist();
@@ -147,6 +149,7 @@ class Staffmgmt extends CI_Controller
         }
 	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_post,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
+	 $this->wtyp='';
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
          	$wtype = $this->input->post('wtype');
@@ -184,13 +187,6 @@ class Staffmgmt extends CI_Controller
 	    	else{
                         $post="All";
 	    	}
-
-
-         //   if((!empty($post)) && ($post != 'null') && ($post != ' ') && ($post != "All")){
-           //             $whdata['emp_desig_code'] = $post;
-          //  }else{
-            //            $post="All";
-          //  }
 	    // for string search
             if(!empty($strin)) {
                         $whdata['emp_name LIKE ' ] ='%'.$strin.'%';
@@ -205,7 +201,7 @@ class Staffmgmt extends CI_Controller
          }
 	$uname=$this->session->userdata('username');
 	if($uname == 'ro@tanuvas.org.in'){
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
 		$joincond = 'employee_master.emp_code = uo_list.ul_empcode';
 		$data['records1']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
 	}
@@ -231,7 +227,10 @@ class Staffmgmt extends CI_Controller
          authority or authority added in campus.*/
         //$this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
-        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+	$whdata=array('sgm_level'=> "");
+        $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
+	$whdata=array('sgm_gradepay'=> "");
+        $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
         $this->leavedata=$this->sismodel->get_list('leave_type_master');
@@ -261,10 +260,12 @@ class Staffmgmt extends CI_Controller
             
             $this->form_validation->set_rules('emptype','Employee Type','trim|required|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','trim|required|xss_clean');
+            $this->form_validation->set_rules('newpayband','New PayBand','trim|xss_clean');
             $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
             $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
             $this->form_validation->set_rules('empnhisidno','NHisIDno','trim|xss_clean');
             $this->form_validation->set_rules('dateofjoining','Date of Joining','trim|required|xss_clean');
+            $this->form_validation->set_rules('dateofjoiningvc','Date of Joining as VC','trim|xss_clean');
             $this->form_validation->set_rules('pnp','Plan / Non Plan','trim|xss_clean');
             $this->form_validation->set_rules('phdstatus','Phd Status','trim|xss_clean');
             
@@ -450,10 +451,12 @@ class Staffmgmt extends CI_Controller
                     
                     'emp_type_code'             =>$_POST['emptype'],
                     'emp_salary_grade'          =>$_POST['payband'],
+                    'emp_salary_gradenew'       =>$_POST['newpayband'],
                     'emp_basic'                 =>$_POST['basicpay'],
                     'emp_emolution'             =>$_POST['emolution'],
                     'emp_nhisidno'              =>$_POST['empnhisidno'],
                     'emp_doj'                   =>$_POST['dateofjoining'],
+                    'emp_dojvc'                 =>$_POST['dateofjoiningvc'],
                     'emp_pnp'                   =>$_POST['pnp'],
                     'emp_phd_status'            =>$_POST['phdstatus'],
                         
@@ -750,7 +753,12 @@ class Staffmgmt extends CI_Controller
         $this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->ddo=$this->sismodel->get_list('ddo');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
-        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+//        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+	$whdata=array('sgm_level'=> "");
+        $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
+        $whdata=array('sgm_gradepay'=> "");
+        $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
+
         $this->states=$this->commodel->get_listspficarry('states','id,name','country_id',101); 
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
@@ -803,6 +811,9 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');            
             $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+	    $this->form_validation->set_rules('newpayband','New PayBand','trim|xss_clean');
+            $this->form_validation->set_rules('dateofjoiningvc','Date of Joining as VC','trim|xss_clean');
+
 // enabled by nks
             $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
             $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
@@ -979,6 +990,8 @@ class Staffmgmt extends CI_Controller
                 'emp_worktype'                   => $this->input->post('workingtype'),
                 'emp_type_code'                  => $this->input->post('emptype'),
                 'emp_salary_grade'               => $this->input->post('payband'),
+		'emp_salary_gradenew'       =>$_POST['newpayband'],
+                'emp_dojvc'                 =>$_POST['dateofjoiningvc'],
 // enabled by nks     close           
                 'emp_basic'                      => $this->input->post('basicpay'),
                 'emp_emolution'                  => $this->input->post('emolution'),
@@ -2101,6 +2114,16 @@ class Staffmgmt extends CI_Controller
         	$p5=$parts[0];
         	$p6=$parts[2]-$parts[0];
 	    }
+	elseif($parts[1]=='PT'){
+		$p=$parts[0];
+                $v=$parts[2]-$parts[0];
+                $p1=$parts[2];
+                $p2=$parts[0];
+                $p3=$parts[2]-$parts[0];
+                $p4=$parts[2];
+                $p5=$parts[0];
+                $p6=$parts[2]-$parts[0];
+            }
         else{	
 	 	$p=0;
 		$v='';	
@@ -2113,6 +2136,54 @@ class Staffmgmt extends CI_Controller
 	   }
 	  echo json_encode($p.','.$v.','.$p1.','.$p2.','.$p3.','.$p4.','.$p5.','.$p6);
     }
+
+	/* This function has been created for calculate position of Employee Type */
+    public function getsstypeper(){
+       $emptype = $this->input->post('sstype');
+       $parts = explode(',',$emptype);
+       if($parts[1]=='Permanent'){
+                $p=$parts[0];
+                $v=$parts[2]-$parts[0];
+                $p1=$parts[2];
+                $p2=$parts[0];
+                $p3=$parts[2]-$parts[0];
+                $p4=0;
+                $p5=0;
+                $p6=0;
+            }
+         elseif($parts[1]=='Temporary'){
+                $p=$parts[0];
+                $v=$parts[2]-$parts[0];
+                $p1=0;
+                $p2=0;
+                $p3=0;
+                $p4=$parts[2];
+                $p5=$parts[0];
+                $p6=$parts[2]-$parts[0];
+            }
+        elseif($parts[1]=='PT'){
+                $p=$parts[0];
+                $v=$parts[2]-$parts[0];
+                $p1=$parts[3];
+                $p2=$parts[4];
+                $p3=$parts[3]-$parts[4];
+                $p4=$parts[2]-$parts[3];
+                $p5=$parts[0]-$parts[4];
+                $p6=$p4-$p5;
+            }
+        else{
+                $p=0;
+                $v='';
+                $p1='';
+                $p2='';
+                $p3='';
+                $p4='';
+                $p5='';
+                $p6='';
+           }
+          echo json_encode($p.','.$v.','.$p1.','.$p2.','.$p3.','.$p4.','.$p5.','.$p6);
+    }
+
 
   /*This function has been created for display Designation and PayBand on the Basis of Group */
   public function getdesigpaybandlist(){
@@ -2146,6 +2217,7 @@ class Staffmgmt extends CI_Controller
     
     public function getuoclist(){
         $scid = $this->input->post('campusname');
+
         $auco_data = $this->sismodel->get_listrow('map_sc_uo','scuo_scid',$scid);
         $aucolist = $auco_data->result();
         $uco_select_box ='';

@@ -338,10 +338,16 @@ $(document).ready(function(){
 				?></td>
                         </tr>
                     <?php };
+			if(($this->wtyp == '') ||( $this->wtyp == 'Teaching')){
 			if(!empty($records1)){
 			?>
-
-			<?php foreach($records1 as $record){ ?>
+			
+			<?php 
+				$opdfcde='';
+				foreach($records1 as $record){ 
+					$pfcde=$record->emp_code;
+				if($opdfcde != $pfcde){
+			?>
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
                             <?php //$img=$record->emp_code;?>
@@ -353,6 +359,7 @@ $(document).ready(function(){
                             <td><?php echo anchor("report/viewfull_profile/{$record->emp_id}",$record->emp_name,array('title' => 'View Employee Profile' , 'class' => 'red-link'));
                                 echo "<br/> ( "."PF No:".$record->emp_code." )"; 
                                 echo "<br/>".$record->emp_email;
+				$opdfcde = $pfcde;
                             ?></td>
                              <td><?php
                                     $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
@@ -386,12 +393,7 @@ $(document).ready(function(){
                                         echo " ( <font color=Red> Head </font>)";
                                 }
 
-        //                        if($headflag){
-          //                              echo " & Head";
-            //                    }
                                 ?></td>
-                           <!-- <td><?php //echo $record->emp_post; ?></td>-->
-                           <!-- <td></td>-->
                             <td>
                                 <?php $phone=$record->emp_phone;
                                       $adhaar=$record->emp_aadhaar_no;
@@ -407,8 +409,10 @@ $(document).ready(function(){
                                 ?></td>
                         </tr>
 			<?php
-			}
-			} 
+			}//record dup end
+			 }//end of foreach
+		}//empty end
+	} //wtype null or teaching end
 			?>
                 <?php else : ?>
                     <td colspan= "13" align="center"> No Records found...!</td>

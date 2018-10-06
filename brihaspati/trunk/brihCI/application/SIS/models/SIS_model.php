@@ -182,6 +182,22 @@ class SIS_model extends CI_Model
             }
         return $this->db2->get()->result();
     }
+	public function get_orderdistinctrecordgrpby($tbname,$selectfield,$whdata,$whorder,$grpby){
+            $this->db2->flush_cache();
+            $this->db2->distinct();
+            $this->db2->select($selectfield);
+            $this->db2->from($tbname);
+	    $this->db2->group_by($grpby);
+            if($whdata != ''){
+                $this->db2->where($whdata);
+            }
+            if($whorder != ''){
+                $this->db2->order_by($whorder);
+            }
+        return $this->db2->get()->result();
+    }
+	
+
     /** this function for get hod user list according to study center************************/
     //get the complete record from specific table
     public function get_list($tbname){
@@ -330,16 +346,17 @@ class SIS_model extends CI_Model
         $data = $this->get_orderlistspficemore('hod_list',$selectfield,$whdata,$whorder);
         return $data;
     }
-    public function emplist($uo,$dept,$post){
+    public function emplist($uo,$dept,$post,$scheme){
 	$post1 = $this->commodel->get_listspfic1('designation','desig_name','desig_id', $post)->desig_name;
         $selectfield ="emp_id,emp_code,emp_name,emp_desig_code,emp_post,emp_email";
         //$whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_desig_code' => $post );
-        $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_post' => $post1 );
+        $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_post' => $post1,'emp_schemeid'=>$scheme );
         $whorder = "emp_post asc";
         $data = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         return $data;
              
     }
+/*
     public function postlist_sp($uo,$dept,$tnt){
         $selectfield ="sp_emppost,sp_sancstrenght,sp_position , sp_vacant";
         $whorder = "sp_emppost asc";
@@ -353,6 +370,7 @@ class SIS_model extends CI_Model
         return $data;
              
     }
+*/
     public function deptlist_sp($uo,$tnt,$seldept){
         $selectfield ="sp_dept";
 	//$whdata = array('sp_uo'=> $uo);

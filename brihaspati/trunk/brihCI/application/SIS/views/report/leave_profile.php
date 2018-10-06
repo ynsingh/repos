@@ -69,14 +69,17 @@
         </div>
  
 <tr>
-<td valign="top" width=170>
+<?php
+        include  'ptab.php';
+?>
+<!--<td valign="top" width=170>
 
-		<?php include 'profiletab.php'; ?>
+		<?php //include 'profiletab.php'; ?>
 	   
-</td>
+</td >-->
 <?php     
-	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-	$roleid=$this->session->userdata('id_role');
+//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
+//	$roleid=$this->session->userdata('id_role');
 ?>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">

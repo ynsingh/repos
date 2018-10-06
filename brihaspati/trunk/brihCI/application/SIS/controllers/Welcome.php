@@ -44,7 +44,7 @@ class Welcome extends CI_Controller {
                 /*get role by using model class and set templates according to role*/
                 //$roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
                 $wharray=array('userid'=>$result->id);
-		$roles=$this->sismodel->get_listspficemore('user_role_type','roleid',$wharray);
+		$roles=$this->sismodel->get_listspficemore('user_role_type','roleid,deptid',$wharray);
                 if(!empty($result)) {
              		if(!empty($roles)){   
                     		if(count($roles) == 1){
@@ -89,7 +89,8 @@ class Welcome extends CI_Controller {
 			                                $data = [
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
-                        			        'id_role' => $row->roleid
+                        			        'id_role' => $row->roleid,
+                        			        'id_dept' => $row->deptid
 			                                ];
                         			        $this->session->set_userdata($data);
 			                                redirect('hodhome'); 

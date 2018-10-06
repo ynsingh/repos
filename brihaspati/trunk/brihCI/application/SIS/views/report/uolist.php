@@ -69,12 +69,12 @@
                 <?php 
 		$cid = 0;
                 $did=0;
-                               
+                $uoid=0;   
 		$i=1;
                 if( count($allsc) ):  ?>
                     <?php foreach($allsc as $record){
 
-
+			if ($uoid != ($record->ul_authuoid)){
 		
 			echo "<tr>";
 			echo "<td>";
@@ -105,6 +105,8 @@
                         echo "</td>";
 			$i++;
                         echo "</tr>";
+			$uoid = $record->ul_authuoid;
+			}
                     ?>
                 <?php }; ?>
             <?php else : ?>

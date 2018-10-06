@@ -13,7 +13,7 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
-<?php $current="academic"; ?>
+<?php $current="technical"; ?>
 
         <script>
       
@@ -68,19 +68,22 @@
             </div>
  
             <tr>
-                <td valign="top" width=170>
+		<?php
+        include  'ptab.php';
+?>
+  <!--              <td valign="top" width=170>
 
-                    <?php include 'profiletab.php'; ?>
+                    <?php //include 'profiletab.php'; ?>
 	   
-                </td>
+                </td> -->
                 <?php
                 
-                $roleid=$this->session->userdata('id_role');
-                if($roleid == 5){
-		$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-		$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode; 
-		$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id; 
-                }
+              //  $roleid=$this->session->userdata('id_role');
+               // if($roleid == 5){
+	//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
+//		$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode; 
+//		$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id; 
+  //              }
                // $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
                 //$roleid=$this->session->userdata('id_role');
                 ?>
