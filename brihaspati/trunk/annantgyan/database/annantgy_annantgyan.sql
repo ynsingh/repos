@@ -351,7 +351,7 @@ DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `qid` int(11) NOT NULL AUTO_INCREMENT,
   `testid` bigint(20) NOT NULL DEFAULT '0',
-  `qnid` int(11) NOT NULL DEFAULT '0',
+  `subid` int(11) NOT NULL DEFAULT '0',
   `question` varchar(500) DEFAULT NULL,
   `optiona` varchar(100) DEFAULT NULL,
   `optionb` varchar(100) DEFAULT NULL,
@@ -360,7 +360,7 @@ CREATE TABLE `question` (
   `correctanswer` enum('optiona','optionb','optionc','optiond') DEFAULT NULL,
   `marks` int(11) DEFAULT NULL,
   PRIMARY KEY (`qid`),
-  UNIQUE KEY (`testid`,`qnid`),
+  UNIQUE KEY (`testid`,`subid`),
   CONSTRAINT `question_ibfk_1` FOREIGN KEY (`testid`) REFERENCES `test` (`testid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -414,14 +414,14 @@ CREATE TABLE `studentquestion` (
   `sqid` int(11) NOT NULL AUTO_INCREMENT,
   `su_id` int(11) NOT NULL DEFAULT '0',
   `testid` bigint(20) NOT NULL DEFAULT '0',
-  `qnid` int(11) NOT NULL DEFAULT '0',
+  `subid` int(11) NOT NULL DEFAULT '0',
   `answered` enum('answered','unanswered','review') DEFAULT NULL,
   `stdanswer` enum('optiona','optionb','optionc','optiond') DEFAULT NULL,
    PRIMARY KEY (`sqid`),
-  UNIQUE KEY (`su_id`,`testid`,`qnid`),
-  KEY `testid` (`testid`,`qnid`),
+  UNIQUE KEY (`su_id`,`testid`,`subid`),
+  KEY `testid` (`testid`,`subid`),
   CONSTRAINT `studentquestion_ibfk_1` FOREIGN KEY (`su_id`) REFERENCES `sign_up` (`su_id`),
-  CONSTRAINT `studentquestion_ibfk_2` FOREIGN KEY (`testid`, `qnid`) REFERENCES `question` (`testid`, `qnid`)
+  CONSTRAINT `studentquestion_ibfk_2` FOREIGN KEY (`testid`, `subid`) REFERENCES `question` (`testid`, `subid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

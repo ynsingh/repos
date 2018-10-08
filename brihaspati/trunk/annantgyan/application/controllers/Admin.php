@@ -306,7 +306,7 @@ class Admin extends CI_Controller {
                 		//$_FILES['userFile']['error'] = $_FILES['userfile']['error'];
                 		$_FILES['userFile']['size'] = $_FILES['userfile']['size'];
 				
-				if($_FILES['userfile']['size'] > 10000) {
+				if($_FILES['userfile']['size'] > 800000000) {
          				$errors[]='Photo size must be excately 4 MB';
       				}
 				$name = str_replace(" ", "_", $_FILES['userfile']['name']);	
@@ -331,12 +331,12 @@ class Admin extends CI_Controller {
                			$config['upload_path'] = $desired_dir2 ;
 				
 				if($type == 'document'){
-					$config['max_size'] = '2100';
+					$config['max_size'] = '11000000';
               				$config['allowed_types'] = 'pdf|doc|docx|DOCX|DOC|xls|xlsx';
               			}
               			elseif($type == 'video'){
               				$config['remove_spaces'] = TRUE;
-					$config['max_size'] = '30000';
+					$config['max_size'] = '800000000';
               				$config['allowed_types'] = 'mp4|3gp|mpeg|mpg|avi';
               			}
               		
@@ -359,7 +359,7 @@ class Admin extends CI_Controller {
 							$ferror = $ferror.$value;
 						endforeach;
 						$ferror=str_replace("\r\n","",$ferror);
-						$simsg = "The permitted size of Document is 1 MB .";
+						$simsg = "The permitted size of Document is 10 MB .";
 						$ferror = $simsg.$ferror;
 						$this->session->set_flashdata('error', $ferror);
 						redirect('admin/admin_coucontent');
@@ -372,7 +372,7 @@ class Admin extends CI_Controller {
 							$ferror = $ferror.$value;
 						endforeach;
 						$ferror=str_replace("\r\n","",$ferror);
-						$simsg = "The permitted size of Video File is 5 MB.";;
+						$simsg = "The permitted size of Video File is 750 MB.";;
 						$ferror = $simsg.$ferror;
 						$this->session->set_flashdata('error', $ferror);
 						redirect('admin/admin_coucontent');
@@ -547,6 +547,125 @@ class Admin extends CI_Controller {
                 else{
                         $this->logger->write_logmessage("delete", $smsg." Deleted   content " . "[test_id:" . $id . "] deleted successfully.. " );
                         $this->logger->write_dblogmessage("delete",$smg. " Deleted content" ." [test_id:" . $id . "] deleted successfully.. " );
+                        $this->session->set_flashdata("success", $smsg.' Content Deleted successfully...' );
+                        redirect('admin/viewexam');
+                }
+                $this->load->view('admin/viewexam',$data);
+        }
+	
+	public function addquestion($tid,$sid){
+		if(isset($this->session->userdata['firstName'])){
+			//get the total no of question in test
+			$whdata = array('testid'=>$tid,'subid'=>$sid); 
+			$totqres = $this->commodel->get_orderlistspficemore('test','totalquestions',$whdata,'');
+			foreach ($totqres as $row){
+				$totq = $row->totalquestions;
+			}
+			//get the total no of question available for test
+			$totalqa= $this->commodel->getnoofrows('question',$whdata);
+			// get the no of question needed
+			$noq = $totq - $totalqa;
+
+			$data['tid']=$tid;
+			$data['sid']=$sid;
+			$data['qreq']=$noq;
+			$message[]='';	
+
+			if(isset($_POST['cou_quest'])){
+				$i=1;
+			//	$this->form_validation->set_rules('cou_name', 'course name', 'trim|required|xss_clean');
+				//      $this->form_validation->set_rules('cou_week', 'course week', 'trim|required|xss_clean');
+				for($i;$i<=$noq;$i++){
+	                                $this->form_validation->set_rules('question'.$i, 'question', 'trim|xss_clean');
+        	                        $this->form_validation->set_rules('optiona'.$i, 'optiona', 'trim|xss_clean');
+                	                $this->form_validation->set_rules('optionb'.$i, 'optionb', 'trim|xss_clean');
+                        	        $this->form_validation->set_rules('optionc'.$i, 'optionc', 'trim|xss_clean');
+                                	$this->form_validation->set_rules('optiond'.$i, 'optiond', 'trim|xss_clean');
+	                                $this->form_validation->set_rules('correctans'.$i, 'correctans', 'trimxss_clean');
+					$this->form_validation->set_rules('marks'.$i, 'marks', 'trim|xss_clean');
+				}
+                                if($this->form_validation->run() == FALSE){
+                                        $this->load->view('admin/addquestion',$data);
+                                        return;
+//                                      redirect('admin/createexam');
+                                }else{
+                                        $testid          	= $tid;
+					$subid            	= $sid;
+					$i=1;
+					for($i;$i<=$noq;$i++){
+						$question          	= $this->input->post('question'.$i);
+						if(!empty($question)){
+                        		                $optiona          	= $this->input->post('optiona'.$i);
+                	                	        $optionb          	= $this->input->post('optionb'.$i);
+		                                        $optionc          	= $this->input->post('optionc'.$i);
+                		                        $optiond          	= $this->input->post('optiond'.$i);
+                                		        $correctanswer          = $this->input->post('correctans'.$i);
+		                                        $marks         		= $this->input->post('marks'.$i);
+
+							$cdate = date('Y-m-d H:i:s');
+                                		        $userData = array(
+                                                		'testid'              	=>$testid,
+		                                                'subid'              	=>$subid,
+                		                                'question'              =>$question,
+                                		                'optiona'              	=>$optiona,
+                                                		'optionb'               =>$optionb,
+		                                                'optionc'              	=>$optionc,
+                		                                'optiond'               =>$optiond,
+                                		                'correctanswer'         =>$correctanswer,
+                                                		'marks'        		=>$marks,
+		                                        );
+							$insert = $this->db->insert('question',$userData);
+							
+							if($insert)
+		                                        {
+                		                                $message[$i]='Your question '.$i.' successfully updated in databse.';
+                                		        }
+		                                        else{
+                		                                $message[$i]='Your question '.$i.' Data is not updated in databse.';
+                                		        }
+						}//end of empty
+					}//end of for internal
+					$data['message']=$message;
+                                        $this->session->set_flashdata('success', 'Your question successfully updated in databse.');
+                                        redirect('admin/viewquestion/'.$testid."/".$subid,$data);
+                                               // return;
+                                }//else of validation
+			}//end of submit
+			$this->load->view('admin/addquestion',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+	}
+	
+	public function viewquestion($tid,$sid){
+		if(isset($this->session->userdata['firstName'])){
+			$data['tid']=$tid;
+			$data['sid']=$sid;
+			$whdata = array('testid'=>$tid,'subid'=>$sid);
+                        $data['quest_data'] = $this->commodel->get_orderlistspficemore('question','*',$whdata,'');
+                        $this->load->view('admin/viewquestion',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+
+        }
+	
+	function delete_quest($id){
+                $contflag=$this->commodel->deleterow('question','qid', $id);
+                $smsg= "The question has been deleted.";
+                $fmsg= "The question was not found  and could not be deleted.";
+
+                if(!$contflag)
+                {
+                        $this->logger->write_message("error", $fmsg." Error  in deleting content " ."[qid:" . $id . "]");
+                        $this->logger->write_dbmessage("error", $fmsg." Error  in deleting content "." [qid:" . $id . "]");
+                        $this->session->set_flashdata('err_message', $fmsg.' Error in Deleting content - ', 'error');
+                        redirect('admin/viewexam');
+                        return;
+                }
+                else{
+                        $this->logger->write_logmessage("delete", $smsg." Deleted   content " . "[qid:" . $id . "] deleted successfully.. " );
+                        $this->logger->write_dblogmessage("delete",$smg. " Deleted content" ." [qid:" . $id . "] deleted successfully.. " );
                         $this->session->set_flashdata("success", $smsg.' Content Deleted successfully...' );
                         redirect('admin/viewexam');
                 }

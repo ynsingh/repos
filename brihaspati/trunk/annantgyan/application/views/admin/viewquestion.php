@@ -59,47 +59,44 @@ if(isset($this->session->userdata['firstName'])){
 </div>  
 
 <div class="container">
-	<center><h2>View Exam List</h2></center>
+	<center><h2>View Question List</h2></center>
 	<div class="col-md-12" id='card'>
 		
 		
 		<table style="font-size:18px;"><tr>
-			<td><a href="<?php echo site_url('admin/upload_fileview');?>">View Upload Content</a></td>
-			<td> &nbsp;&nbsp;&nbsp;&nbsp;</td>
-			<td><a href="<?php echo site_url('admin/createexam');?>">Create Exam</a></td>
+			<td><a href="<?php echo site_url('admin/viewexam');?>">View Exam</a></td><td> &nbsp;&nbsp;&nbsp;</td> 
+			<?php
+				echo "<td>".$this->commodel->get_listspfic1('courses','cou_name','cou_id',$sid)->cou_name." </td>";
+				echo "<td>&nbsp;&nbsp;&nbsp; </td>";
+				echo "<td>".$this->commodel->get_listspfic1('test','testname','testid',$tid)->testname;
+				echo "  (  ".$this->commodel->get_listspfic1('test','testcode','testid',$tid)->testcode." ) </td>";
+				
+			?>
 		</tr></table>
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Course Week</th><th>Test Name(Test Code)</th><th>Test Description</th><th>Test Date</th><th>Test Time</th><th>Total Questions</th> <th>Total Students</th><th> Actions</th>
+					<th>Sr. No.</th><th>Question</th><th>Option 1</th><th>Option 2</th><th>Option 3</th><th>Option 4</th><th>Correction Answer</th><th>Marks</th> <th> Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
 						$i=1;
-						if(!empty($test_data)){
-							foreach($test_data as $row){	
-								$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->subid)->cou_name;
+						if(!empty($quest_data)){
+							foreach($quest_data as $row){	
 						?>
 				<tr>
 					
 								<td><?php echo $i++;?></td>
-								<td><?php echo $cname;?></td>
-								<td><?php //echo $row->acu_weekname;?></td>
-								<td><?php echo $row->testname." ( ". $row->testcode." )";?></td>
-								<td><?php echo $row->testdesc;?></td>
-								<td><?php echo $row->testdate;?></td>
-								<td><?php echo $row->testfrom." - ".$row->testto   ;?></td>
-								<td><?php echo $row->totalquestions  ;?></td>
-								<td><?php echo $row->attemptedstudents ;?></td>
+								<td><?php echo $row->question;?></td>
+								<td><?php echo $row->optiona;?></td>
+								<td><?php echo $row->optionb;?></td>
+								<td><?php echo $row->optionc;?></td>
+								<td><?php echo $row->optiond;?></td>
+								<td><?php echo $row->correctanswer   ;?></td>
+								<td><?php echo $row->marks  ;?></td>
 								<td><?php 
-									echo anchor('admin/addquestion/' . $row->testid."/".$row->subid , "Add Question") ;
-								echo "&nbsp;| ";
-									echo anchor('admin/viewquestion/' . $row->testid."/".$row->subid , "View Question") ;
-								echo "&nbsp;| ";
-									echo anchor('admin/delete_test/' . $row->testid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
-								echo "&nbsp; ";
-						//		echo anchor(base_url().'/'. $row->acu_contpath.'/'.$row->acu_filename , "View", array('title' => 'View Details' , 'class' => 'red-link', 'target'=>'blank')) . " ";
+									echo anchor('admin/delete_quest/' . $row->qid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 								?> 
 								</td>
 								
