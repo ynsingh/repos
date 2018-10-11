@@ -133,11 +133,12 @@ function Logout() {
 	</li>
 			<!-- <li><a href="<?php echo site_url('discussion/index');?>" class="<?php if((strpos($request_uri,"discussion/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Discussion List</a></li> -->
 	<li class="dropdown">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Exam<span class="caret"></span></a>
+<!--		<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Exam<span class="caret"></span></a> -->
+		<a href="#" class="<?php if((strpos($request_uri,"exam/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Exam<span class="caret"></span></a>
 
 		<ul class="dropdown-menu">
 		<li><a href="<?php //echo site_url('');?>"><span ></span>Practice Exams</a></li>
-		<li><a href="<?php //echo site_url('');?>"><span ></span>Quiz / Assignment</a></li>
+		<li><a href="<?php echo site_url('exam/listexam');?>"><span ></span>Quiz / Assignment</a></li>
 		</ul>
 	</li>
         <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>

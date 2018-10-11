@@ -54,8 +54,17 @@ if(isset($this->session->userdata['firstName'])){
              <div class="alert alert-danger" style="font-size: 18px;"><?php echo $_SESSION['error'];?></div>
         <?php
         };
-    }   
-    ?>  
+    	}   
+	?>  
+	 <?php
+        if(!empty($_SESSION['ferror'])){
+        if(isset($_SESSION['ferror'])){?>
+             <div class="alert alert-danger" style="font-size: 18px;"><?php echo $_SESSION['ferror'];?></div>
+        <?php
+        };
+    }
+    ?>
+
 </div> 
 
 <h2 class="text-center">Upload Course Content</h2>

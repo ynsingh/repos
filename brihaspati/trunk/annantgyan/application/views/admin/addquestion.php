@@ -97,6 +97,7 @@ $('.clockpicker').clockpicker();
 			<label for="crsname" class="cols-sm-2 control-label">Course Name</label>
 			<br>
 			<select name="cou_name"  style="width:400px;" >
+				<option value="<php echo $sid;?>" > <?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$sid)->cou_name;?></option>
 				<option value="" selected="" disabled="">Select Course Name</option>
 				<?php if(!empty($couname)){
 					foreach($couname as $row){	
@@ -109,6 +110,7 @@ $('.clockpicker').clockpicker();
 			<label for="crstst" class="cols-sm-2 control-label">Test No</label>
 			<br>
 			<select name="cou_test" style="width:150px;">
+				<option value="<php echo $tid;?>" > <?php echo $this->commodel->get_listspfic1('test','testname','testid',$tid)->testname." ( ".$this->commodel->get_listspfic1('test','testcode','testid',$tid)->testcode . " ) ";?></option>
 				<option value="" selected="" disabled="">Select Tests</option>
 				<option value="1">Test 1</option>
 				<option value="2">Test 2</option>
@@ -148,7 +150,7 @@ $('.clockpicker').clockpicker();
 			<label for="tstdesc" class="cols-md-2 control-label">Correct Answer</label>
 			<br>
 			 <select name="<?php echo "correctans".$i;?>" style="width:150px;">
-                                <option value="" selected="" disabled="">Select Tests</option>
+                                <option value="" selected="" disabled="">Select Option</option>
                                 <option value="optiona">Option A</option>
                                 <option value="optionb">Option B</option>
                                 <option value="optionc">Option C</option>

@@ -39,7 +39,7 @@ CREATE TABLE `question` (
   `correctanswer` enum('optiona','optionb','optionc','optiond') DEFAULT NULL,
   `marks` int(11) DEFAULT NULL,
   PRIMARY KEY (`qid`),
-  UNIQUE KEY (`testid`,`subid`),
+  UNIQUE KEY `qid` (`qid`,`testid`,`subid`),
   CONSTRAINT `question_ibfk_1` FOREIGN KEY (`testid`) REFERENCES `test` (`testid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -53,13 +53,11 @@ CREATE TABLE `studentquestion` (
   `su_id` int(11) NOT NULL DEFAULT '0',
   `testid` bigint(20) NOT NULL DEFAULT '0',
   `subid` int(11) NOT NULL DEFAULT '0',
+  `quid` int(11) NOT NULL DEFAULT '0',
   `answered` enum('answered','unanswered','review') DEFAULT NULL,
   `stdanswer` enum('optiona','optionb','optionc','optiond') DEFAULT NULL,
    PRIMARY KEY (`sqid`),
-  UNIQUE KEY (`su_id`,`testid`,`subid`),
-  KEY `testid` (`testid`,`subid`),
-  CONSTRAINT `studentquestion_ibfk_1` FOREIGN KEY (`su_id`) REFERENCES `sign_up` (`su_id`),
-  CONSTRAINT `studentquestion_ibfk_2` FOREIGN KEY (`testid`, `subid`) REFERENCES `question` (`testid`, `subid`)
+  UNIQUE KEY (`quid`,`su_id`,`testid`,`subid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

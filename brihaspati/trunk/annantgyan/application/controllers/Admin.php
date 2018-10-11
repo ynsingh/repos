@@ -306,7 +306,7 @@ class Admin extends CI_Controller {
                 		//$_FILES['userFile']['error'] = $_FILES['userfile']['error'];
                 		$_FILES['userFile']['size'] = $_FILES['userfile']['size'];
 				
-				if($_FILES['userfile']['size'] > 800000000) {
+				if($_FILES['userfile']['size'] > 800000000000) {
          				$errors[]='Photo size must be excately 4 MB';
       				}
 				$name = str_replace(" ", "_", $_FILES['userfile']['name']);	
@@ -336,7 +336,7 @@ class Admin extends CI_Controller {
               			}
               			elseif($type == 'video'){
               				$config['remove_spaces'] = TRUE;
-					$config['max_size'] = '800000000';
+					$config['max_size'] = '800000000000';
               				$config['allowed_types'] = 'mp4|3gp|mpeg|mpg|avi';
               			}
               		
@@ -581,7 +581,7 @@ class Admin extends CI_Controller {
                 	                $this->form_validation->set_rules('optionb'.$i, 'optionb', 'trim|xss_clean');
                         	        $this->form_validation->set_rules('optionc'.$i, 'optionc', 'trim|xss_clean');
                                 	$this->form_validation->set_rules('optiond'.$i, 'optiond', 'trim|xss_clean');
-	                                $this->form_validation->set_rules('correctans'.$i, 'correctans', 'trimxss_clean');
+	                                $this->form_validation->set_rules('correctans'.$i, 'correctans', 'trim|xss_clean');
 					$this->form_validation->set_rules('marks'.$i, 'marks', 'trim|xss_clean');
 				}
                                 if($this->form_validation->run() == FALSE){
