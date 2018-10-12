@@ -4157,9 +4157,12 @@ public function displaysalarygrademaster(){
 public function addsociety(){
 
         if(isset($_POST['addsociety'])) {
-            $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required|alpha_dash');
             $this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required|alpha_dash');
-            $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean');
+            $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('soc_address','Society Address','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_purpose','Society Purpose','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean');
+            $this->form_validation->set_rules('soc_regdate','Society Registration','trim|xss_clean');
             
 
 
@@ -4167,7 +4170,11 @@ public function addsociety(){
             $data = array(
                 'soc_code'=>($_POST['soc_code']),    
                 'soc_name'=>ucfirst(strtolower($_POST['soc_name'])),
-                'soc_remark'=>ucwords($_POST['soc_remark']),
+		'soc_code'=>($_POST['soc_code']),
+                'soc_address'=>ucwords($_POST['soc_address']), 
+		'soc_purpose'=>ucwords($_POST['soc_purpose']),
+		'soc_remark'=>ucwords($_POST['soc_remark']),
+                'soc_regdate'=>ucwords($_POST['soc_regdate']),
                 'soc_creatorid'=>$this->session->userdata('id_user'),
                 'soc_creatordate'=>date('y-m-d'),
                 'soc_modifierid'=>$this->session->userdata('id_user'),
@@ -4175,12 +4182,15 @@ public function addsociety(){
                                     
             );
              
-            $soc_code = $_POST['soc_code'];
             $soc_name = $_POST['soc_name'];
-            $soc_remark = $_POST['soc_remark'];
+	    $soc_code = $_POST['soc_code'];
+            $soc_address =$_POST['soc_address'];
+	    $soc_purpose = $_POST['soc_purpose'];
+	    $soc_remark = $_POST['soc_remark'];
+            $soc_regdate =$_POST['soc_regdate'];
                $data1 = array(
-                'soc_code'=>$_POST['soc_code'],    
                 'soc_name'=>$_POST['soc_name'],
+		'soc_code'=>$_POST['soc_code'],
             );
 
 
@@ -4244,15 +4254,14 @@ public function displaysociety(){
         $society_data = $soc_data_q->row();
         /* Form fields */
 
-
-          /*$data['soc_userid'] = array(
-            'name' => 'soc_userid',
-            'id' => 'soc_userid',
+	$data['soc_name'] = array(
+            'name' => 'soc_name',
+            'id' => 'soc_name',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $Society_data->soc_userid,
-            'readonly' => 'readonly'
-        );*/
+            'value' => $society_data->soc_name,
+	    'readonly' => 'readonly' 
+        );
 
          $data['soc_code'] = array(
             'name' => 'soc_code',
@@ -4260,85 +4269,63 @@ public function displaysociety(){
             'maxlength' => '50',
             'size' => '40',
             'value' => $society_data->soc_code,
-           // 'readonly' => 'readonly'
         );
 
-         $data['soc_name'] = array(
-            'name' => 'soc_name',
-            'id' => 'soc_name',
-            'maxlength' => '50',
-            'size' => '40',
-            'value' => $society_data->soc_name,
+
+
+        $data['soc_address'] = array(
+           'name' => 'soc_address',
+           'id' => 'soc_address',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_address,
+
         );
 
-        $data['soc_remark'] = array(
+	$data['soc_purpose'] = array(
+           'name' => 'soc_purpose',
+           'id' => 'soc_purpose',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $society_data->soc_purpose,
+
+        );
+
+	 $data['soc_remark'] = array(
            'name' => 'soc_remark',
            'id' => 'soc_remark',
            'maxlength' => '50',
            'size' => '40',
            'value' => $society_data->soc_remark,
+	);
 
-        );
-       
-        $data['soc_creatorid'] = array(
-           'name' => 'soc_creatorid',
-           'id' => 'soc_creatorid',
+         $data['soc_regdate'] = array(
+           'name' => 'soc_regdate',
+           'id' => 'soc_regdate',
            'maxlength' => '50',
            'size' => '40',
-           'value' => $society_data->soc_creatorid,
-
-        );
-
-       $data['soc_creatordate'] = array(
-           'name' => 'soc_creatordate',
-           'id' => 'soc_creatordate',
-           'maxlength' => '50',
-           'size' => '40',
-           'value' => $society_data->soc_creatordate,
-
-        );
+           'value' => $society_data->soc_regdate,
+	        );
    
-        $data['soc_modifierid'] = array(
-           'name' => 'soc_modifierid',
-           'id' => 'soc_modifierid',
-           'maxlength' => '50',
-           'size' => '40',
-           'value' => $society_data->soc_modifierid,
-
-        );
-
-        $data['soc_modifydate'] = array(
-           'name' => 'soc_modifydate',
-           'id' => 'soc_modifydate',
-           'maxlength' => '50',
-           'size' => '40',
-           'value' => $society_data->soc_modifydate,
-
-        );
-
 
   $data['soc_id'] = $soc_id;
 
-        //$this->form_validation->set_rules('soc_userid','Society UserId','trim|xss_clean|required|alpha_numeric_spaces');
+	$this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required|alpha_dash');
         $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required|alpha_dash');
-        $this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required|alpha_dash');
-        $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean|required');
-       // $this->form_validation->set_rules('soc_creatorid','Society CreatorId','trim|xss_clean|required|numeric');
-       // $this->form_validation->set_rules('soc_creatordate','Society CreatorDate','trim|xss_clean');
-        $this->form_validation->set_rules('soc_modifierid','Society ModifierId','trim|xss_clean');
-        $this->form_validation->set_rules('soc_modifydate','Society ModifyDate','trim|xss_clean');
+	$this->form_validation->set_rules('soc_address','Society Address','trim|xss_clean|required');
+	$this->form_validation->set_rules('soc_purpose','Society Purpose','trim|xss_clean');
+	$this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean');
 
 
         if ($_POST)
         {
            // $data['soc_userid']['value'] = $this->input->post('soc_userid', TRUE);
-            $data['soc_code']['value'] = $this->input->post('soc_code', TRUE);
             $data['soc_name']['value'] = $this->input->post('soc_name', TRUE);
-            $data['soc_remark']['value'] = $this->input->post('soc_remark', TRUE);
-            $data['soc_creatorid']['value'] = $this->input->post('soc_creatorid', TRUE);
-            $data['soc_creatordate']['value'] = $this->input->post('soc_creatordate', TRUE);
-            $data['soc_modifierid']['value'] = $this->input->post('soc_modifierid', TRUE);
-            $data['soc_modifydate']['value'] = $this->input->post('soc_modifydate', TRUE);
+            $data['soc_code']['value'] = $this->input->post('soc_code', TRUE);
+            $data['soc_address']['value'] = $this->input->post('soc_address', TRUE);
+	    $data['soc_purpose']['value'] = $this->input->post('soc_purpose', TRUE);
+	    $data['soc_remark']['value'] = $this->input->post('soc_remark', TRUE);
+            $data['soc_regdate']['value'] = $this->input->post('soc_regdate', TRUE);
 
         }
         if ($this->form_validation->run() == FALSE)
@@ -4348,54 +4335,43 @@ public function displaysociety(){
         }
         else
         {
-            $soc_code = strtoupper($this->input->post('soc_code', TRUE));
             $soc_name = strtoupper($this->input->post('soc_name', TRUE));
-            $soc_remark = strtoupper($this->input->post('soc_remark', TRUE));
-            $soc_date = strtoupper($this->input->post('soc_date', TRUE));   
-            //$soc_id = $soc_id;
+            $soc_code = strtoupper($this->input->post('soc_code', TRUE));
+            $soc_address = strtoupper($this->input->post('soc_address', TRUE));
+	    $soc_purpose = strtoupper($this->input->post('soc_purpose', TRUE));
+	    $soc_remark = strtoupper($this->input->post('soc_remark', TRUE));
+            $soc_regdate = strtoupper($this->input->post('soc_regdate', TRUE));
             $logmessage = "";
 
           
-            // if($Society_data->soc_id != $soc_id)
-              //  $logmessage = "Add Society " .$society_data->soc_id. " changed by " .$soc_id;
-
-
-             if($society_data->soc_code != $soc_code)
-                $logmessage = "Add Society " .$society_data->soc_code. " changed by " .$soc_code;
-
 
              if($society_data->soc_name != $soc_name)
                 $logmessage = "Add Society " .$society_data->soc_name. " changed by " .$soc_name;
+		
+	    if($society_data->soc_code != $soc_code)
+                $logmessage = "Add Society " .$society_data->soc_code. " changed by " .$soc_code;
 
+             if($society_data->soc_address != $soc_address)
+                $logmessage = "Add Society " .$society_data->soc_address. " changed by " .$soc_address;
+		
+	     if($society_data->soc_remark != $soc_purpose)
+                $logmessage = "Add Society " .$society_data->soc_purpose. " changed by " .$soc_purpose;		
 
-             if($society_data->soc_remark != $soc_remark)
+		 if($society_data->soc_remark != $soc_remark)
                 $logmessage = "Add Society " .$society_data->soc_remark. " changed by " .$soc_remark;
-
-
-            // if($society_data->soc_creatorid != $soc_creatorid)
-              //  $logmessage = "Add Society " .$society_data->soc_creatorid. " changed by " .$soc_creatorid;
-
-
-            // if($society_data->soc_creatordate != $soc_creatordate)
-              //  $logmessage = "Add Society " .$society_data->soc_creatordate. " changed by " .$soc_creatordate;
-
-           
-            // if($society_data->soc_modifierid != $soc_modifierid)
-              //  $logmessage = "Add Society " .$society_data->soc_modifierid. " changed by " .$soc_modifierid;
-
-
-             if($society_data->soc_modifydate != $soc_modifydate)
-                $logmessage = "Add Society " .$society_data->soc_modifydate. " changed by " .$soc_modifydate;
-
-         
  
+             if($society_data->soc_regdate != $soc_regdate)
+                $logmessage = "Add Society " .$society_data->soc_regdate. " changed by " .$soc_regdate;
+
+
+
               $update_data = array(
-              // 'soc_code' =>$soc_code,
-               'soc_code'=>($_POST['soc_code']),
                'soc_name'=>ucfirst(strtolower($_POST['soc_name'])),
-               'soc_remark'=>ucwords($_POST['soc_remark']),
-               'soc_modifierid'=>$this->session->userdata('id_user'),             
-               'soc_modifydate' => $soc_modifydate,
+	       'soc_code'=>($_POST['soc_code']),
+               'soc_address'=>($_POST['soc_address']),
+	       'soc_purpose'=>($_POST['soc_purpose']),
+	       'soc_remark'=>ucwords($_POST['soc_remark']),
+               'soc_regdate'=>($_POST['soc_regdate']),
 
 
             );
@@ -4403,7 +4379,7 @@ public function displaysociety(){
 
                    if($socdatadupe == 1 ){
 
-                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Society Name' = $soc_name, 'Society Code' = $soc_code , 'Society Remark' =$soc_remark .");
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Society Name' = $soc_name, 'Society Code' = $soc_code , 'Society Address' = $soc_address,  'Society Purpose' =$soc_purpose, 'Society Remark' =$soc_remark, 'Society Registration Date' = $soc_regdate .");
                         redirect('setup/displaysociety/');
                         return;
                  }

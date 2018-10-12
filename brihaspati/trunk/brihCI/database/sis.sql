@@ -721,8 +721,11 @@ CREATE TABLE `scheme_department_archive` (
 
 CREATE TABLE `society_master_list` (
   `soc_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `soc_scode` varchar(100)  NOT NULL,
   `soc_sname` varchar(255) NOT NULL,
+  `soc_scode` varchar(100)  NOT NULL,
+  `soc_address` VARCHAR(255) NOT NULL,
+  `soc_regdate` DATETIME(6) NOT NULL,
+  `soc_purpose` VARCHAR(100) NOT NULL,
   `soc_sremark` varchar(100) NOT NULL,
   `soc_creatorid` varchar(255) NOT NULL,
   `soc_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -730,6 +733,24 @@ CREATE TABLE `society_master_list` (
   `soc_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
    UNIQUE (`soc_sname`,`soc_scode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -------------------------------------------------------
+--
+-- Table structure for societies
+--
+
+CREATE TABLE `socieies` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `society_id` varchar(100)  NOT NULL,
+  `society_head` varchar(255) NOT NULL,
+  `society_secretary` varchar(255) NOT NULL,
+  `society_treasure` varchar(255) NOT NULL,
+  `society_members` varchar(255) NOT NULL, 
+  `society_totalvalues` varchar(255) NOT NULL,
+   UNIQUE (`society_head`,`society_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 -- -------------------------------------------------------------------

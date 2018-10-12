@@ -52,10 +52,12 @@
         <thead>
         <tr>
         <th>Sr. No</th>
-        <th> Society Code </th>
         <th> Society Name </th>
+	<th> Society Code </th>
+        <th> Society Address </th>
+	<th> Society Purpose </th>
         <th> Society Remark </th>
-       <!-- <th> Creator Date </th> -->
+        <th> Society Registration Date</th>
         <th> Action </th> 
         </thead>
         <tbody>
@@ -66,12 +68,16 @@
               ?>
                 <tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $row->soc_code ?> </td>
                     <td><?php echo $row->soc_name ?></td>
-                    <td><?php echo $row->soc_remark ?> </td>
-		 <!-- // <td><?php echo $row->soc_creatordate ?> </td> -->
+		    <td><?php echo $row->soc_code ?> </td>
+                    <td><?php echo $row->soc_address ?> </td>
+                    <td><?php echo $row->soc_purpose ?> </td>
+		    <td><?php echo $row->soc_remark ?> </td>
+                    <td><?php  echo $row->soc_regdate ?> </td> 
+		   <!-- <td><?php //echo $row->soc_creatordate ?> </td> -->
                      <?php if($row->soc_id >1){ ?>
-                    <td><?php //echo anchor('setup/deletesociety/' . $row->soc_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this society record... ')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editsociety/' . $row->soc_id  , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+
+		 <td> <?php  //echo anchor("setup/delete_fees/{$row->fm_id}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editsociety/' . $row->soc_id  , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
                </td>
                 <?php } else {
                         echo "<td> </td>";

@@ -25,6 +25,7 @@
         echo "</tr>";
         echo "</table>";
         ?>-->
+
 <script>
 $(document).ready(function(){
 $("#StartDate").datepicker({
@@ -40,7 +41,7 @@ onSelect: function(value, ui) {
   changeMonth: true,
   changeYear: true,
   dateFormat: 'yy-mm-dd',
- // defaultDate: '1yr',
+  //defaultDate: '1yr',
   yearRange: 'c-47:c+50',
 });
 
@@ -62,7 +63,6 @@ yearRange: 'c-47:c+50',
 });
 });
 </script>
-
 <body>
      <table width="100%">
             <tr><td>
@@ -95,30 +95,61 @@ yearRange: 'c-47:c+50',
     <form action="<?php echo site_url('setup/addsociety');?>" method="POST" class="form-inline">
             <table>
               <tr>
-                <td><label for="soc_code" class="control-label">Society Code <font color='Red'>*</font></label></td>
+                <td><label for="soc_name" class="control-label">Society Name: <font color='Red'>*</font></label></td>
+                <td>
+                <input type="text" name="soc_name" class="form-control" size="30" value="<?php echo isset($_POST["soc_name"]) ? $_POST["soc_name"] : ''; ?>" /><br>
+		</td>
+		</tr>
+		
+		 <tr>
+                <td><label for="soc_code" class="control-label">Society Code: <font color='Red'>*</font></label></td>
                 <td>
                 <input type="text" name="soc_code"  class="form-control" size="30" value="<?php echo isset($_POST["soc_code"]) ? $_POST["soc_code"] : ''; ?>" /><br>
                 </td>
+                </tr>
+
 
               <tr>
-                <td><label for="soc_name" class="control-label">Society Name <font color='Red'>*</font></label></td>
                 <td>
-                <input type="text" name="soc_name" class="form-control" size="30" value="<?php echo isset($_POST["soc_name"]) ? $_POST["soc_name"] : ''; ?>" /><br>
- 
+                <label for="soc_address" class="control-label">Society Address:</label></td>
+                <td>
+                <input type="text" name="soc_address" size="30"  class="form-control" value="<?php echo isset($_POST["soc_address"]) ? $_POST["soc_address"] : ''; ?>" /><br>
                 </td>
-
-              <tr>
+		</tr>
+		
+		<tr>
+                <td><label for="soc_purpose" class="control-label">Society Purpose: </label></td>
+                <td>
+                <input type="text" name="soc_purpose" class="form-control" size="30" value="<?php echo isset($_POST["soc_purpose"]) ? $_POST["soc_purpose"] : ''; ?>" /><br>
+                </td>
+                </tr>
+                
+ 		<tr>
                 <td>
                 <label for="soc_remark" class="control-label">Society Remark:</label></td>
                 <td>
                 <input type="text" name="soc_remark" size="30"  class="form-control" value="<?php echo isset($_POST["soc_remark"]) ? $_POST["soc_remark"] : ''; ?>" /><br>
-
                 </td>
-      
-            </tr>
+		</tr>
+   
+            <!--  <tr>
+                <td><label for="Datefrom" >Society Registration Date:<font color='Red'></font></label></td>
+                <td><input type="text" name="Society Registration Date" id="Datefrom" value="<?php echo isset($_POST["DateFrom"]) ? $_POST["DateFrom"] : ''; ?>"  size="30" >
+                </td>
+
+              </tr>-->
+                     
+
+<tr>
+                                <td><label for="soc_regdate" class="control-label">Society Registration Date:</label></td>
+                                <td><input type="text" name="soc_regdate" id="StartDate" class="form-control" size="30" placeholder="Start Date..."  value="<?php echo isset($_POST["startdate"]) ? $_POST["startdate"] : ''; ?>"/><br>
+
+                                        </td>
+                                </tr>
+
 
             <tr>
-                <td></td><td>
+	<td></td><td>
                 <button name="addsociety" >Add Society</button>
                 <input type="reset" name="Reset" value="Clear"/>
                 </td>

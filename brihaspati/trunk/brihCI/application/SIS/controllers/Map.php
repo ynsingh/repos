@@ -1598,7 +1598,7 @@ public function schemedept(){
         );
  
 
-       $data['till_date'] = array(
+        $data['till_date'] = array(
            'name' => 'till_date',
            'id' => 'till_date',
            'maxlength' => '50',
@@ -1614,9 +1614,9 @@ public function schemedept(){
            'size' => '40',
            'value' => $editid_data->authority_type,
 
-        );
+        );      
 
-
+           
     $data['id'] = $id;
         
 
@@ -2378,9 +2378,279 @@ public function uolist(){
             }//else form validation true
         }//buton check
         $this->load->view('map/edit_uo',$data);
-     }//func closer    
+     }//func closer   
+
+/****************************************** Map User with Societies ********************************************/
+
+
+ public function societies() {
+        $this->result = $this->sismodel->get_list('societies');
+        $this->logger->write_logmessage("view"," View map societies with user setting", "societies map setting details...");
+        $this->logger->write_dblogmessage("view"," View map societies with user setting", "User setting details...");
+        $this->load->view('map/viewsocieties',$this->result);
+     }
+
+  /** This function is for map user with societies */
+
+        public function addsocieties()
+        {
+	$this->socresult = $this->sismodel->get_list('society_master_list');
+        if(isset($_POST['addsocieties'])) {
+
+        /*Form Validation*/
+
+        $this->form_validation->set_rules('society_id','Society Name','trim|xss_clean');
+        $this->form_validation->set_rules('society_head','Society Head','trim|xss_clean');
+        $this->form_validation->set_rules('society_secretary','Society Secretary','trim|xss_clean');
+        $this->form_validation->set_rules('society_treasurer','Society Treasurer','trim|xss_clean');
+        $this->form_validation->set_rules('society_members','Society Members','trim|xss_clean');
+        $this->form_validation->set_rules('society_totalvalues','Total Values','trim|xss_clean');
+
+         if($this->form_validation->run() == TRUE){
+                        $data = array(
+				'society_id'=>$_POST['society_name'],
+                                'society_head'=>$_POST['society_head'],
+                                'society_secretary'=>$_POST['society_secretary'],
+                                'society_treasurer'=>$_POST['society_treasurer'],
+                                'society_members'=>$_POST['society_members'],
+                                'society_totalvalues'=>$_POST['society_totalvalues'],
+                                );
+
+           $smapflag=$this->sismodel->insertrec('societies', $data) ;
+           if(!$smapflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding map user with societies ", " map user with societies data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding societies user ", " map user with societies data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding map with societies user - ' . $_POST['smapsocieties'] , 'error');
+                $this->load->view('map/addsocieties', "refresh");
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add map user with societies", "map user with societies record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add map user with societies ", "map user with societies record added successfully..." );
+                $this->session->set_flashdata("success", "Map User with Societies added successfully...");
+                redirect("map/societies");
+		return;
+              }
+           }
+
+        }
+       $this->load->view('map/addsocieties');
+
+    }
+
+
+/**This function is used for update Map User with Societies records
+     * @param type $id
+     * @return type
+     */
+
+
+       public function editsocieties($id) {
+       // $this->result = $this->loginmodel->get_list('societies','soc_id', 'user_id');
+        $id_data_q=$this->sismodel->get_listrow('societies','id', $id);
+
+        if ($id_data_q->num_rows() < 1)
+        {
+           redirect('map/editsocieties');
+        }
+      $editid_data = $id_data_q->row();
+
+        /* Form fields */
+
+         $data['society_name'] = array(
+            'name' => 'society_name',
+            'id' => 'society_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->sismodel->get_listspfic1('society_master_list','soc_name','soc_code',$editid_data->society_name)->soc_name,
+            'readonly' => 'readonly'
+        );
+
+
+        /*$data['society_id'] = array(
+           'name' => 'society_id',
+           'id' => 'society_id',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $this->loginmodel->get_listspfic1('edrpuser','username','id',$editid_data->user_id)->username,
+           'readonly' => 'readonly'
+        );*/
+
+
+       $data['society_head'] = array(
+           'name' => 'society_head',
+           'id' => 'society_head',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->society_head,
+
+        );
+
+
+       $data['society_secretary'] = array(
+           'name' => 'society_secretary',
+           'id' => 'society_secretary',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->society_secretary,
+
+        );
+
+ 
+       $data['society_treasurer'] = array(
+           'name' => 'society_treasurer',
+           'id' => 'society_treasurer',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->society_treasurer,
+
+        );
+
+
+      $data['society_members'] = array(
+           'name' => 'society_members',
+           'id' => 'society_members',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->society_members,
+
+        );
+
+
+      $data['society_totalvalues'] = array(
+           'name' => 'society_totalvalues',
+           'id' => 'society_totalvalues',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->society_totalvalues,
+
+         );
+
+ /* $data['soc_id'] = $soc_id;
+
+        $this->form_validation->set_rules('soc_userid','Society UserId','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('society_name','Society Name','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('society_head','Society Head','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('society_secretary','Society Secretary','trim|xss_clean|required');
+        $this->form_validation->set_rules('society_treasurer','Society Treasurer','trim|xss_clean|required');
+        $this->form_validation->set_rules('society_members','Society Members','trim|xss_clean|required');
+        $this->form_validation->set_rules('society_totalvalues','Society Total Values','trim|xss_clean|required');
+       // $this->form_validation->set_rules('soc_creatorid','Society CreatorId','trim|xss_clean|required|numeric');
+       // $this->form_validation->set_rules('soc_creatordate','Society CreatorDate','trim|xss_clean');
+       // $this->form_validation->set_rules('soc_modifierid','Society ModifierId','trim|xss_clean');
+       // $this->form_validation->set_rules('soc_modifydate','Society ModifyDate','trim|xss_clean');
+
+        if ($_POST)
+        {
+           // $data['soc_userid']['value'] = $this->input->post('soc_userid', TRUE);
+            $data['society_name']['value'] = $this->input->post('society_name', TRUE);
+            $data['society_head']['value'] = $this->input->post('society_head', TRUE);
+            $data['society_secretary']['value'] = $this->input->post('society_secretary', TRUE);
+            $data['society_treasurer']['value'] = $this->input->post('society_treasurer', TRUE);
+            $data['society_members']['value'] = $this->input->post('society_members', TRUE);
+            $data['society_totalvalues']['value'] = $this->input->post('society_totalvalues', TRUE);
+           // $data['soc_creatorid']['value'] = $this->input->post('soc_creatorid', TRUE);
+           // $data['soc_creatordate']['value'] = $this->input->post('soc_creatordate', TRUE);
+           // $data['soc_modifierid']['value'] = $this->input->post('soc_modifierid', TRUE);
+           // $data['soc_modifydate']['value'] = $this->input->post('soc_modifydate', TRUE);
+
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('map/editsocieties', $data);
+            return;
+        }
+         else
+        {
+            $society_id = strtoupper($this->input->post('society_id', TRUE));
+           // $soc_name = strtoupper($this->input->post('soc_name', TRUE));
+            $society_head = strtoupper($this->input->post('society_head', TRUE));
+            $society_secretary = strtoupper($this->input->post('society_secretary', TRUE));
+            $society_treasurer = strtoupper($this->input->post('society_treasurer', TRUE));
+            $society_members = strtoupper($this->input->post('society_members', TRUE));
+
+            //$soc_date = strtoupper($this->input->post('soc_date', TRUE));   
+            //$soc_id = $soc_id;
+            $logmessage = "";
+
+
+            // if($Society_data->soc_id != $soc_id)
+              //  $logmessage = "Add Society " .$society_data->soc_id. " changed by " .$soc_id;
+
+
+             if($societies_data->society_id != $society_id)
+                $logmessage = "Add Societies " .$socieies_data->society_id. " changed by " .$society_id;
+
+
+             if($societies_data->society_head != $society_head)
+                $logmessage = "Add Societies " .$societies_data->society_head. " changed by " .$society_head;
+
+
+             if($societies_data->society_secretary  != $society_secretary )
+                $logmessage = "Add Societies " .$societies_data->society_secretary . " changed by " .$society_secretary;
+
+
+             if($societies_data->society_treasurer != $society_treasurer)
+                $logmessage = "Add Societies " .$societies_data->society_treasurer. " changed by " .$society_treasurer;
+
+
+             if($societies_data->society_members != $society_members)
+                $logmessage = "Add Societies " .$societies_data->society_members. " changed by " .$society_members;
+
+
+             if($societies_data->society_totalvalues != $society_totalvalues)
+                $logmessage = "Add Societies " .$societies_data->society_totalvalues. " changed by " .$society_totalvalues;
+
+
+
+              $update_data = array(
+               'society_id' =>$society_id,
+               'society_head'=>($_POST['society_head']),
+               'society_secretary'=>ucfirst(strtolower($_POST['society_secretary'])),
+               'society_treasurer'=>ucwords($_POST['society_treasurer']),
+               'society_members'=>($_POST['society_members']),
+               'society_totalvalues'=>($_POST['society_totalvalues']),
+               'soc_modifierid'=>$this->session->userdata('id_user'),             
+               'soc_modifydate' => $soc_modifydate,
+                              
+          
+            );
+               $sdatadupe = $this->SIS_model->isduplicatemore('societies', $update_data);
+
+                   if($socdatadupe == 1 ){
+
+                        $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Society Id' = $society_id, 'Society Head' = $society_head , 'Society Secretary' = $society_secretary, 'Society Treasurer' = $society_treasurer, 'Society Members' =$society_members .");
+                        redirect('map/viewsocieties/');
+                        return;
+                 }
+         else{
+
+$smapflag=$this->sismodel->updaterec('societies', $update_data, 'id', $id);
+           if(!$smapflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Map User with Societies ", "Error in Map User with Societies record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Map User with Societies ", "Error in Map User with Societies record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Map User with Societies- ' . $logmessage . '.', 'error');
+                $this->load->view('map/editsocieties', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Map User with Societies", "Map User with Societies record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Map Authority and User", "Map User with Societies record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Map User with Societies record updated successfully...');
+                redirect('map/viewsocieties/');
+                }
+        }//else
+	
+        redirect('map/editsocieties');
+    }    */ 
+
+ }
+
+ 
+
 }//end class
 
 
 
-    
+   
+ 

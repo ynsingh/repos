@@ -103,6 +103,10 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                                 echo anchor('map/uolist', 'Set UO', array('title' => 'Set UO'));
                                         echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('map/societies', 'Map User with Societies', array('title' => 'Map User with Societies'));
+                                        echo "</li>";
+
  
 				/*	echo "<li>";
 						echo anchor('map/viewddoucodeptsh', 'Map Campus,UO,DDO with Dept', array('title' => 'Map DDO with UCO'));

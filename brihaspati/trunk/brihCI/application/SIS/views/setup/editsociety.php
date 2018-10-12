@@ -112,27 +112,6 @@ yearRange: 'c-47:c+50',
 
             echo form_open('setup/editsociety/' . $soc_id);
 
-
-           /* echo "<tr>";
-                echo "<td>";
-                    echo form_label('Society Userid', 'lt_name');
-                echo "</td>";
-                echo "<td>";
-                    echo form_input($lt_name);
-                echo "</td>";
-            echo "</tr>";*/
-
-
-             echo "<tr>";
-                echo "<td>";
-                    echo form_label('Society Code', 'soc_code');
-                echo "</td>";
-                echo "<td>";
-                    echo form_input($soc_code);
-                echo "</td>";
-            echo "</tr>";
-
-
           echo "<tr>";
                 echo "<td>";
                     echo form_label('Society Name', 'soc_name');
@@ -141,9 +120,35 @@ yearRange: 'c-47:c+50',
                     echo form_input($soc_name);
                 echo "</td>";
             echo "</tr>";
+		
+		echo "<td>";
+                    echo form_label('Society Code', 'soc_code');
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($soc_code);
+                echo "</td>";
+            echo "</tr>";
 
 
                 echo "<tr>";
+                echo "<td>";
+                    echo form_label('Society Address ', 'soc_address');
+                 echo "</td>";
+                echo "<td>";
+                    echo form_input($soc_address);
+                echo "</td>";
+            echo "</tr>";
+	
+	   echo "<td>";
+
+                    echo form_label('Society purpose', 'soc_purpose');
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($soc_purpose);
+                echo "</td>";
+            echo "</tr>";
+
+	 echo "<tr>";
                 echo "<td>";
                     echo form_label('Society Remark ', 'soc_remark');
                  echo "</td>";
@@ -151,6 +156,18 @@ yearRange: 'c-47:c+50',
                     echo form_input($soc_remark);
                 echo "</td>";
             echo "</tr>";
+
+
+
+
+
+ ?>
+ <tr>
+ <td><label for="soc_regdate" class="control-label">Society Registration Date</label></td>
+ <td><input type="text" name="soc_regdate" id="StartDate" class="form-control" size="40" placeholder="Start Date..." value=<?php echo $soc_regdate['value'];?> required="required"/><br>
+</td>
+</tr>
+<?php
 
 
             /* echo "<tr>";
