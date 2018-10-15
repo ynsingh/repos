@@ -7,7 +7,41 @@
         <?php $this->load->view('template/header'); ?>
         
         <script> 
+	 $(document).ready(function(){
+		
+                /****************************************** start of uo list********************************/
+                $('#paycomm').on('change',function(){
+                    var wtcode = $('#worktype').val();
+                    var paycomm = $('#paycomm').val();
+                    var wpc = wtcode+","+ paycomm;
+                    if(paycomm == ''){
+                        $('#payscale').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#payscale').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getwpcpaylist",
+                            type: "POST",
+                            data: {"wpc" : wpc},
+                            dataType:"html",
+                            success:function(data){
+                            //alert("data==1="+data);
+                                $('#uoff').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of uo list********************************/
+	});
+
         </script>
+
     </head>
     <body>
         <table width="100%">
@@ -57,6 +91,16 @@
 			    </select>
                         </td>
 	     	</tr>
+		<tr>
+                        <td><label for="paycomm" class="control-label">Pay Commission:</label></td>
+                        <td>
+                            <select name="paycomm" id="paycomm" class="my_dropdown" style="width:100%;">
+                                <option value="" disabled selected >------Select ---------------</option>
+                                <option value="6th">6th</option>
+                                <option value="7th">7th</option>
+                            </select>
+                        </td>
+                </tr>
                 <tr>
                 	<td><label for="payscale" class="control-label">Pay Scale:</label></td>
                         <td>
@@ -69,6 +113,11 @@
 			    </select>
                         </td>
 	     	</tr> 
+		 <tr>
+                    <td><label for="payrange" class="control-label">Pay Range:</label></td>
+                    <td><input type="text" name="payrange" value="<?php echo isset($_POST["payrange"]) ? $_POST["payrange"] : ''; ?>" placeholder="Pay Range ( min - max)" size="30" /></td>
+                </tr>
+
                 <tr>
                 	<td><label for="hragrade" class="control-label">HRA Grade:</label></td>
                         <td>

@@ -94,22 +94,22 @@
          <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td> Select Type
-                    <select name="wtype" id="wtype" style="width:250px;">
+                    <select name="wtype" id="wtype" style="width:150px;">
 			<?php if  (!empty($this->wtyp)){ ?>
                         <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>------- Select Working Type -------</option>
+                      <option value="" disabled selected>- Select Working Type --</option>
                           <?php  } ?>
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
                     </select>
                 </td>
                 <td> Designation
-                    <select name="desig" id="desig" style="width:250px;">
+                    <select name="desig" id="desig" style="width:150px;">
 			 <?php if  ((!empty($this->desig))&&($this->desig != 'All')){ ?>
                         <option value="<?php echo $this->desig; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desig)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desig)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>----------- Select Designation------</option>
+                      <option value="" disabled selected>- Select Designation-</option>
                          <?php  } ?>
 
                     </select>

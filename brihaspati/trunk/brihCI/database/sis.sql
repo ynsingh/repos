@@ -448,7 +448,9 @@ insert into hra_grade_city values (5,'Grade-IV','Unclassified Places','','','adm
 CREATE TABLE `hra_grade` (
   `hg_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `hg_workingtype` varchar(255)  Default NULL,
+  `hg_paycomm` VARCHAR(255) NULL,
   `hg_payscaleid` int(11)  DEFAULT NULL,
+  `hg_payrange` VARCHAR(255) NULL,
   `hg_gradeid` int(11)  DEFAULT NULL,
   `hg_amount` double  DEFAULT NULL,
   `hg_creatorid` varchar(255) DEFAULT NULL,
@@ -1322,7 +1324,6 @@ CREATE TABLE user_input_transfer (
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
 
-
 -- -------------------------------------------------------------------
 --
 -- Table structure for table rent_recovery`
@@ -1331,8 +1332,10 @@ CREATE TABLE user_input_transfer (
 CREATE TABLE `rent_recovery` (
   `rr_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `rr_payscaleid` int(11)  Default NULL,
+  `rr_payrange` VARCHAR(255) NULL,
   `rr_gradeid` int(11)  DEFAULT NULL,
   `rr_workingtype` varchar(255)  DEFAULT NULL,
+  `rr_paycomm` VARCHAR(255) NULL,
   `rr_percentage` double  DEFAULT NULL,
   `rr_description` varchar(255)  DEFAULT NULL,
   `rr_creatorid` varchar(255) DEFAULT NULL,
@@ -1350,8 +1353,10 @@ CREATE TABLE `rent_recovery` (
 CREATE TABLE `ccaallowance_calculation` (
   `cca_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `cca_payscaleid` int(11)  DEFAULT NULL,
+  `cca_payrange` VARCHAR(255) NULL,
   `cca_gradeid` int(11)  DEFAULT NULL,
   `cca_workingtype` varchar(255)  Default NULL,
+  `cca_paycomm` VARCHAR(255) NULL,
   `cca_amount` double  DEFAULT NULL,
   `cca_description` varchar(255) DEFAULT NULL,
   `cca_creatorid` varchar(255) DEFAULT NULL,

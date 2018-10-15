@@ -189,7 +189,7 @@
           <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
                 <td>  Select Working Type<br>
-                    <select name="wtype" id="wtype">
+                    <select name="wtype" id="wtype" style="width:200px;">
 			<?php if  (!empty($this->wtyp)){ ?>
                         <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                         <?php  }else{ ?>
@@ -200,12 +200,12 @@
                     </select>
  		</td>
                <td>  Select UO<br>
-                    <select name="uoff" id="uoff" style="width:300px;">
+                    <select name="uoff" id="uoff" style="width:200px;">
                       <option value="" disabled selected>-- Select University officer--</option>
                     </select>
                 </td>
                 <td>  Select Department<br>
-                    <select name="dept" id="dept" style="width:300px;">
+                    <select name="dept" id="dept" style="width:200px;">
                       <option value="" disabled selected>-- Select Department --</option>
                     </select>
 
@@ -213,7 +213,7 @@
            <!--     </tr>
                 <tr style="font-weight:bold;">-->
                 <td> Select Designation<br>
-                    <select name="post" id="post" style="width:300px;">
+                    <select name="post" id="post" style="width:200px;">
                       <option  value="" disabled selected>-- Select Designation --</option>
                     </select>
 

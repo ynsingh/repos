@@ -812,7 +812,9 @@ class Setup3 extends CI_Controller
             //form validation
             
             $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
             $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('payrange','Pay Range','trim|xss_clean');
             $this->form_validation->set_rules('hragrade','HRA Grade','trim|required|xss_clean');
             $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
             if($this->form_validation->run() == FALSE){
@@ -823,7 +825,9 @@ class Setup3 extends CI_Controller
             else{
                 $data = array(
                     'hg_workingtype'    =>$_POST['worktype'],
+                    'hg_paycomm'     =>$_POST['paycomm'],
                     'hg_payscaleid'     =>$_POST['payscale'],
+                    'hg_payrange'     =>$_POST['payrange'],
                     'hg_gradeid'        =>$_POST['hragrade'],
                     'hg_amount'         =>$_POST['amount'],
                     'hg_creatorid'      =>$this->session->userdata('username'),
@@ -890,7 +894,9 @@ class Setup3 extends CI_Controller
             
             //form validation
             $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
             $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+            $this->form_validation->set_rules('payrange','Pay Range','trim|xss_clean');
             $this->form_validation->set_rules('hragrade','HRA GRADE','trim|required|xss_clean');
             $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
             if($this->form_validation->run() == FALSE){
@@ -900,7 +906,9 @@ class Setup3 extends CI_Controller
             }//formvalidation
             else{
                 $wtype = $this->input->post('worktype', TRUE);
+                $paycomm = $this->input->post('paycomm', TRUE);
                 $payscale = $this->input->post('payscale', TRUE);
+                $payrange = $this->input->post('payrange', TRUE);
                 $grade = $this->input->post('hragrade', TRUE);
                 $amount = $this->input->post('amount', TRUE);
                 
@@ -924,7 +932,9 @@ class Setup3 extends CI_Controller
                 
                 $updata = array(
                     'hg_workingtype'    =>$wtype,
+                    'hg_paycomm'     =>$paycomm,
                     'hg_payscaleid'     =>$payscale,
+                    'hg_payrange'     =>$payrange,
                     'hg_gradeid'        =>$grade,
                     'hg_amount'         =>$amount,
                     //'hg_creatorid'      =>$this->session->userdata('username'),

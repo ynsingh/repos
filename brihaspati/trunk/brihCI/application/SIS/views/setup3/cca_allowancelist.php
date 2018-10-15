@@ -47,7 +47,9 @@
                 <tr>
                     <th>Sr.No</th>
                     <th>Working Type</th>
+			<th>Pay Commission</th>
                     <th>Pay Scale</th>
+			<th>Pay Range</th>
                     <th>Grade</th>
                     <th>Amount</th>
                     <th>Description</th>
@@ -62,6 +64,7 @@
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
                             <td><?php echo $record->cca_workingtype;?></td>
+				<td><?php echo $record->cca_paycomm;?></td>
                                 <?php  $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->cca_payscaleid)->sgm_name;
                                     $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->cca_payscaleid)->sgm_min;
                                     $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->cca_payscaleid)->sgm_max;
@@ -71,6 +74,7 @@
                                     $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->cca_gradeid)->hgc_gradename;
                                 ?>
                             <td><?php echo $fullstr;?></td>    
+				<td><?php echo $record->cca_payrange; ?></td>
                             <td><?php echo $hragradename; ?></td>
                             <td><?php echo $record->cca_amount; ?></td>
                             <td><?php echo $record->cca_description; ?></td>

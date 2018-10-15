@@ -112,6 +112,13 @@ echo "</center>"; ?>
                                 <a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="" title="Forgot Password">
                                 <input type="button" value="Forgot Password" style="font-size:17px;width:60%"></a></td>
                         </tr>
+			<tr>
+			<td align=left></br><label><b>For any clarifications, please contact</b></label></br>
+			<label>Phone : 044-25554557</label></br>
+			<label>E-mail : sammc@tanuvas.org.in</label>
+			</td>
+			</tr>
+			
 
                         </table>
                         </form>

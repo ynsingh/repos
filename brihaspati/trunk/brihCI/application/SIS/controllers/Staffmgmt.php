@@ -150,6 +150,7 @@ class Staffmgmt extends CI_Controller
 	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_post,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
 	 $this->wtyp='';
+	$uname=$this->session->userdata('username');
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
          	$wtype = $this->input->post('wtype');
@@ -194,12 +195,18 @@ class Staffmgmt extends CI_Controller
 		 $this->wtyp = $wtype;
 	         $this->desigm = $post;
 	    	 $this->strin = $strin;
+		if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
+			unset($whdata['emp_dept_code']);
+		}	
 	         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
          }
          else{
+		if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
+			unset($whdata['emp_dept_code']);
+			$whdata['emp_uocid']=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$deptid)->dept_uoid;
+		}	
          	$data['records']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
          }
-	$uname=$this->session->userdata('username');
 	if($uname == 'ro@tanuvas.org.in'){
 		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
 		$joincond = 'employee_master.emp_code = uo_list.ul_empcode';
@@ -207,9 +214,13 @@ class Staffmgmt extends CI_Controller
 	}
 	$rest = substr($uname, -21);
 	if($rest == 'office@tanuvas.org.in'){
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'hl_uopid' =>$uopid);
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'hl_uopid' =>$uopid,'hl_dateto'=> '0000-00-00 00:00:00');
                 $joincond = 'employee_master.emp_code = hod_list.hl_empcode';
-                $data['records1']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+		if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
+			$data['records1']='';
+		}else{	
+                	$data['records1']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+		}
 	}
 	//$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
 //	$data['records'] = $this->sismodel->get_list('employee_master');

@@ -10,7 +10,10 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-        <?php //$this->load->view('template/header'); ?>
+
+        <?php //$this->load->view('template/header');
+//		echo $this->roleid;
+ ?>
         <!--<h3>Welcome <//?= $this->session->userdata('username') ?></h3>-->
         <?php // $this->load->view('template/staffmenu');?>
        <!-- <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username')?>  </td></tr></table>-->

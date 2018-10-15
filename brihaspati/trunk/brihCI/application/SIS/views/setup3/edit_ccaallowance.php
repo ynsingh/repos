@@ -63,6 +63,21 @@
 			    </select>
                         </td>
 	     	</tr>
+		<tr>
+                        <td><label for="paycomm" class="control-label">Pay Commission:</label></td>
+                        <td>
+                            <select name="paycomm" id="paycomm" class="my_dropdown" style="width:100%;">
+                                <?php if(!empty($ccadata->cca_paycomm)):;?>
+                                <option value="<?php echo $ccadata->cca_comm;?>"><?php echo $ccadata->cca_paycomm;?></option>
+                                <?php else:?>
+                                <option value="" disabled selected >------ Select Working Type -----------</option>
+                                 <?php endif;?>
+                                <option value="6th">6th</option>
+                                <option value="7th">7th</option>
+                            </select>
+                        </td>
+                </tr>
+
                 <tr>
                 	<td><label for="payscale" class="control-label">Pay Scale:</label></td>
                         <td>
@@ -85,6 +100,10 @@
 			    </select>
                         </td>
 	     	</tr> 
+		<tr>
+                    <td><label for="payrange" class="control-label">Pay Range:</label></td>
+                    <td><input type="text" name="payrange" value="<?php echo $ccadata->cca_payrange; ?>" placeholder="Pay Range ( min - max)" size="30" /></td>
+                </tr>
                 <tr>
                 	<td><label for="hragrade" class="control-label">HRA Grade:</label></td>
                         <td>

@@ -12,6 +12,7 @@ class Jslist extends CI_Controller
  
     	function __construct() {
         	parent::__construct();
+
         	$this->load->model('Common_model',"commodel");
         	$this->load->model('Login_model',"lgnmodel"); 
         	$this->load->model('SIS_model',"sismodel");
@@ -102,6 +103,28 @@ class Jslist extends CI_Controller
                 }
                 echo json_encode($desig_select_box);
         }
+
+	 /* This function has been created for get list of Pay scales on the basis of  selected Group, working type and designation*/
+  /*      public function getwpcpaylist(){
+                $combid= $this->input->post('wpc');
+                $parts = explode(',',$combid);
+                $datawh=array();
+		if($parts[1] == '6th'){
+			$datawh['sgm_level'] = '';
+		}else{
+			$datawh['sgm_gradepay'] = '';
+		}
+	        $ps_data = $this->commodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_max,sgm_min,sgm_gradepay,sgm_level',$datawh);
+                $desig_select_box ='';
+                $desig_select_box.='<option value="">--Select Payscale--';
+		if(!empty($ps_data)){
+	                foreach($ps_data as $psrecord){
+        	                $ps_select_box.='<option value='.$psrecord->sgm_id.'>'.$psrecord->sgm_name.'('.$psrecord->sgm_min.' - '$psrecord->sgm_max.')'.$psrecord->sgm_gradepay.$psrecord->sgm_level.'' ;
+                	}
+		} //if close
+                echo json_encode($ps_select_box);
+        }
+*/
 	
     /* This function has been created for get the plan, non plan, ugc, ICAR, GOI shown against position */
     public function getemppnp(){

@@ -602,7 +602,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         <!--<table style="margin-left:2%; margin-right:2%; width:97%; border:1px solid gray;" border=1 class="TFtable">-->
         <table width="100%" style="margin-left:0%;border:1px solid gray;" class="TFtable">
             
-            <?php echo form_open_multipart('staffmgmt/staffprofile','id="my_id"');?>
+            <?php  echo form_open_multipart('staffmgmt/staffprofile','id="my_id"');?>
             <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Staff Profile Form</th></thead></tr>
             <div style="margin-left:10%;">
             <tr>
@@ -769,7 +769,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                        
                     </select></div>
                 </td>
-		 <td><label for="newpayband" style="font-size:15px;"><font color='blue'>New Pay Band</font><font color='Red'>*</font></label>
+		 <td><label for="newpayband" style="font-size:15px;"><font color='blue'>New Pay Band</font><font color='Red'></font></label>
                     <div><select name="newpayband" required style="width:300px;">
                         <option selected="selected" disabled selected>--- Select New Pay Band ---</option>
                         <?php foreach($this->salgrdn as $salgrddatan): ?>
@@ -942,7 +942,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <tr>
 		<td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
             <tr>
-                <td><label for="phdstatus" style="font-size:15px;"><font color='blue'>Phd Status</font></label>
+                <td><label for="phdstatus" style="font-size:15px;"><font color='blue'>Ph.D. Status</font></label>
                     <div><select name="phdstatus" style="width:300px;"> 
                         <option value="">-------------- Phd Status -------------</option>
                         <option value="Completed">Completed</option>
@@ -950,13 +950,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Not Registered">Not Registered</option>
                     </select></div>
                 </td>
-                <td><label for="dateofphd" style="font-size:15px;"><font color='blue'>Date Of Phd Completion</font></label>
+                <td><label for="dateofphd" style="font-size:15px;"><font color='blue'>Date Of Ph.D. Completion</font></label>
                     <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="33" />
                 </div></td>    
                 <td><label for="Discipline " style="font-size:15px;"><font color='blue'>Discipline</font></label>
-                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="phD Discipline........" size="33" >
+                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="PhD Discipline........" size="33" >
                 </div></td>
-                <td><label for="phdtype" style="font-size:15px;"><font color='blue'>PhD Type</font></label>
+                <td><label for="phdtype" style="font-size:15px;"><font color='blue'>Ph.D. Type</font></label>
                     <div><select name="phdtype" style="width:300px;"> 
                         <option value="">-------------PhD type ----------</option>
                         <option value="Full time">Full time</option>
@@ -965,12 +965,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td>
             </tr>
             <tr>
-                <td><label for="InstName" style="font-size:15px;"><font color='blue'>Institute Name</font></label>
-                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD Institute Name........" size="33" >
+                <td><label for="InstName" style="font-size:15px;"><font color='blue'>University/Institution Name</font></label>
+                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD University/Institution Name........" size="33" >
                 </div></td>
-                <td><label for="univdeput" style="font-size:15px;"><font color='blue'>Whether Deputed by Unversity</font></label>
+                <td><label for="univdeput" style="font-size:15px;"><font color='blue'>Whether Deputed by University</font></label>
                     <div><select name="univdeput" id="univdeput" style="width:300px;"> 
-                        <option value="">--------- Select Unversity deputed --------</option>
+                        <option value="">--------- Select University deputed --------</option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select></div>
@@ -979,7 +979,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <div><input type="radio" name="udeput" id="udeput" value="withsalary">with Salary &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="udeput" id="udeput2" value="withoutsalary">without Salary
                 </div></td>
-                <td><label for="udeput" style="font-size:15px;"><font color='blue'>If NO (Tyoe of Leave availed for Ph.D)</font>  </label>
+                <td><label for="udeput" style="font-size:15px;"><font color='blue'>If NO (Tyoe of Leave availed for Ph.D.)</font>  </label>
                 <div>
                     <select name="udt" id="udt" style="width:300px;"> 
                         <option value="">--------- Select Leave Type --------</option>
@@ -1042,13 +1042,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select>   
                 </div></td>
                 <td><label for="vciregno" style="font-size:15px;"><font color='blue'>Registration No</font></label>
-                <div><input type="text" name="vciregno" id="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="VCI Registration No........" size="33" >
+                <div><input type="text" name="vciregno" id="vciregno" class="keyup-characters" value="<?php echo isset($_POST["vciregno"]) ? $_POST["vciregno"] : ''; ?>" placeholder="Registration No........" size="33" >
                 </div></td>
                 <td><label for="vciregdate" style="font-size:15px;"><font color='blue'>Date of Registration</font></label>
-                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo isset($_POST["vciregdate"]) ? $_POST["vciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="33" >
+                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php echo isset($_POST["vciregdate"]) ? $_POST["vciregdate"] : ''; ?>" placeholder="Registration Date........" size="33" >
                 </div></td>
-                <td><label for="vcrvaliddate" style="font-size:15px;"><font color='blue'>Validity Date</font></label>
-                <div><input type="text" name="vcrvaliddate" id="vcrvaliddate" value="<?php echo isset($_POST["vcrvaliddate"]) ? $_POST["vcrvaliddate"] : ''; ?>" placeholder="VCI Validity Date........" size="33" >
+                <td><label for="vcrvaliddate" style="font-size:15px;"><font color='blue'>Valid Upto</font></label>
+                <div><input type="text" name="vcrvaliddate" id="vcrvaliddate" value="<?php echo isset($_POST["vcrvaliddate"]) ? $_POST["vcrvaliddate"] : ''; ?>" placeholder=" Validity Date........" size="33" >
                 
             </tr>
             <tr>
@@ -1061,7 +1061,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="allvciregdate" style="font-size:15px;"><font color='blue'>Date of Registration</font></label>
                 <div><input type="text" name="allvciregdate" id="allvciregdate" value="<?php echo isset($_POST["allvciregdate"]) ? $_POST["allvciregdate"] : ''; ?>" placeholder="VCI Registration Date........" size="33" >
                 </div></td>
-                <td colspan="2"><label for="allvcrvaliddate" style="font-size:15px;"><font color='blue'>Validity Date</font></label>
+                <td colspan="2"><label for="allvcrvaliddate" style="font-size:15px;"><font color='blue'>Valid Upto</font></label>
                 <div><input type="text" name="allvcrvaliddate" id="allvcrvaliddate" value="<?php echo isset($_POST["allvcrvaliddate"]) ? $_POST["allvcrvaliddate"] : ''; ?>" placeholder="VCI Validity Date........" size="33" >
                 </div></td>
             </tr>

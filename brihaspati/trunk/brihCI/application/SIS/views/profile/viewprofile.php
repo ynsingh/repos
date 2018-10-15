@@ -124,7 +124,10 @@
 		<tr>
                    <td> Name :</td> 
                    <td >
-                   <?php  echo $this->name->firstname ;?>&nbsp;&nbsp;<?php echo  $this->lastn->lastname ;?></td>
+                   <?php  echo $this->name->firstname ;?>&nbsp;&nbsp;<?php echo  $this->lastn->lastname ;
+//			echo $this->session->userdata('id_dept');
+//			 echo "( ". $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->session->userdata('id_dept'))->dept_name ." )";
+		?></td>
                 </tr>
 		<tr>
                    <td>Address :</td>

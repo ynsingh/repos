@@ -156,7 +156,8 @@ $(document).ready(function(){
         <?php 
         echo "<td align=\"left\" width=\"33%\">";
 	$roleid=$this->session->userdata('id_role');
-        if(($roleid == 1)||($roleid == 5)){
+	$uname=$this->session->userdata('username');
+        if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')){
 		echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
 	}
         echo "</td>";
@@ -319,7 +320,17 @@ $(document).ready(function(){
                             <!-- <td><?php //echo $record->emp_post; ?></td>-->
                             <td> <?php 
 		//		$roleid=$this->session->userdata('id_role');
-                                if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
+				$uname = $this->session->userdata('username');
+				$suocid='';
+				if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
+		                        $suocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
+				//	if($uocid == $record->emp_uocid){
+				//		//echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
+				//	}
+                		}
+                                if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))||($suocid == $record->emp_uocid)){
+                                //if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
+						
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 					echo "<br>";
 //					print_r($record);

@@ -48,7 +48,9 @@
                 <tr>
                     <th>Sr.No</th>
                     <th>Working Type</th>
+			<th>Pay Commission</th>
                     <th>Pay Scale</th>
+			<th>Pay Range</th>
                     <th>Grade</th>
                     <th>Recovery Percentage</th>
                     <th>Action</th>
@@ -62,6 +64,7 @@
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
                             <td><?php echo $record->rr_workingtype;?></td>
+				<td><?php echo $record->rr_paycomm;?></td>
                                 <?php  $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->rr_payscaleid)->sgm_name;
                                     $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->rr_payscaleid)->sgm_min;
                                     $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->rr_payscaleid)->sgm_max;
@@ -71,6 +74,7 @@
                                     $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->rr_gradeid)->hgc_gradename;
                                 ?>
                             <td><?php echo $fullstr;?></td>    
+				<td><?php echo $record->rr_payrange; ?></td>
                             <td><?php echo $hragradename; ?></td>
                             <td><?php echo $record->rr_percentage; ?></td>
                             <td> <?php // echo anchor("setup3/edit_hragrade/{$record->hg_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?>

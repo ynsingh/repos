@@ -840,7 +840,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                        
                     </select></div>
                 </td>
-		<td><label for="newpayband" style="font-size:15px;"><font color='blue'>New Pay Band</font><font color='Red'>*</font></label>
+		<td><label for="newpayband" style="font-size:15px;"><font color='blue'>New Pay Band</font><font color='Red'></font></label>
                     <div><select name="newpayband" required style="width:300px;">
 		<?php	
 			if(!empty($editdata->emp_salary_gradenew)){ ?>
@@ -1068,9 +1068,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </div></td>
 		<td></td>
             </tr>
-            <tr><td colspan="4"><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
+            <tr><td colspan="4"><label for="PhD Details " style="font-size:15px;"><b>Ph.D. Details:</b></label></td> </tr>
             <tr>
-		<td><label for="phdstatus" style="font-size:15px;"><font color='Blue'>Phd Status</font></label>
+		<td><label for="phdstatus" style="font-size:15px;"><font color='Blue'>Ph.D. Status</font></label>
                     <div><select name="phdstatus" style="width:300px;">
                         <?php if(!empty($editdata->emp_phd_status)):;?>   
                             <option value="<?php echo $editdata->emp_phd_status;?>"><?php echo $editdata->emp_phd_status;?></option>
@@ -1082,14 +1082,14 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="Not Registered">Not Registered</option>
                     </select><div>
                 </td>
-                <td><label for="dateofphd" style="font-size:15px;"><font color='Blue'>Date of Phd Completion</font></label>
+                <td><label for="dateofphd" style="font-size:15px;"><font color='Blue'>Date of Ph.D. Completion</font></label>
                     <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo $editdata->emp_dateofphd; ?>" size="33" />
                     </div>    
                 </td>
                 <td><label for="Discipline " style="font-size:15px;"><font color='Blue'>Discipline</font></label>
-                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo $editdata->emp_phddiscipline;?>" placeholder="phD Discipline........" size="33" >
+                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo $editdata->emp_phddiscipline;?>" placeholder="PhD Discipline........" size="33" >
                 </div></td>
-                <td><label for="phdtype" style="font-size:15px;"><font color='Blue'>PhD Type</font></label>
+                <td><label for="phdtype" style="font-size:15px;"><font color='Blue'>Ph.D. Type</font></label>
                     <div><select name="phdtype" style="width:300px;"> 
                         <?php if(!empty($editdata->emp_phdtype)):;?>
                         <option value="<?php echo $editdata->emp_phdtype;?>"><?php echo $editdata->emp_phdtype;?></option>    
@@ -1102,10 +1102,10 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>
             </tr>
              <tr>
-                <td><label for="InstName" style="font-size:15px;"><font color='Blue'>Institute Name</font></label>
+                <td><label for="InstName" style="font-size:15px;"><font color='Blue'>University/Institution Name</font></label>
                 <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo $editdata->emp_phdinstname; ?>" placeholder="PhD Institute Name........" size="33" >
                 </div></td>
-                <td><label for="univdeput" style="font-size:15px;"><font color='Blue'>Whether Deputed by Unversity</font></label>
+                <td><label for="univdeput" style="font-size:15px;"><font color='Blue'>Whether Deputed by University</font></label>
                     <div><select name="univdeput" id="univdeput" style="width:300px;"> 
                         <?php $udep=$editdata->emp_phdunivdeput;
                             $udepnew=explode(",",$udep);
@@ -1228,13 +1228,13 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select>   
                 </div></td>
                 <td><label for="vciregno" style="font-size:15px;"><font color='Blue'>Registration No</font></label>
-                <div><input type="text" name="vciregno" id="vciregno" class="keyup-characters" value="<?php if(!empty($vcrregno)){ echo $vcrregno; }; ?>" placeholder="VCI Registration No........" size="33" >
+                <div><input type="text" name="vciregno" id="vciregno" class="keyup-characters" value="<?php if(!empty($vcrregno)){ echo $vcrregno; }; ?>" placeholder=" Registration No........" size="33" >
                 </div></td>
                 <td><label for="vciregdate" style="font-size:15px;"><font color='Blue'>Date of Registration</font></label>
-                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php if(!empty($vcrregdate)){ echo $vcrregdate;} ?>" placeholder="VCI Registration Date........" size="33" >
+                <div><input type="text" name="vciregdate" id="vciregdate" value="<?php if(!empty($vcrregdate)){ echo $vcrregdate;} ?>" placeholder=" Registration Date........" size="33" >
                 </div></td>
-                <td><label for="vcrvaliddate" style="font-size:15px;"><font color='Blue'>Validity Date </font></label>
-                <div><input type="text" name="vcrvaliddate" id="vcrvaliddate" value="<?php if(!empty($vcrvaliddate)){echo $vcrvaliddate; }?>" placeholder="VCI Validity Date........" size="33" >
+                <td><label for="vcrvaliddate" style="font-size:15px;"><font color='Blue'>Valid Upto </font></label>
+                <div><input type="text" name="vcrvaliddate" id="vcrvaliddate" value="<?php if(!empty($vcrvaliddate)){echo $vcrvaliddate; }?>" placeholder=" Validity Date........" size="33" >
                 </div></td>
             </tr>
             <tr>
@@ -1242,12 +1242,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <tr>
                 <td><label for="allvciregno" style="font-size:15px;"><font color='Blue'>Registration No</font></label>
-                <div><input type="text" name="allvciregno" id="allvciregno" class="keyup-characters" value="<?php echo $alliregno ;?>" placeholder="VCI Registration No........" size="33" >
+                <div><input type="text" name="allvciregno" id="allvciregno" class="keyup-characters" value="<?php if(!empty($alliregno)){echo $alliregno; }?>" placeholder="VCI Registration No........" size="33" >
                 </div></td>
                 <td><label for="allvciregdate" style="font-size:15px;"><font color='Blue'>Date of Registration</font></label>
                 <div><input type="text" name="allvciregdate" id="allvciregdate" value="<?php if(!empty($alliregdate)){ echo $alliregdate;} ?>" placeholder="VCI Registration Date........" size="33" >
                 </div></td>
-                <td colspan="2"><label for="allvcrvaliddate" style="font-size:15px;"><font color='Blue'><b>Validity Date </font></b></label>
+                <td colspan="2"><label for="allvcrvaliddate" style="font-size:15px;"><font color='Blue'><b>Valid Upto </font></b></label>
                 <div><input type="text" name="allvcrvaliddate" id="allvcrvaliddate" value="<?php if(!empty($allivaliddate)){ echo $allivaliddate;} ?>" placeholder="VCI Validity Date........" size="33" >
                 </div></td>
             </tr>

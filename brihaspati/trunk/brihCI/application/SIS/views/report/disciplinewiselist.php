@@ -3,6 +3,10 @@
   @author Manorama Pal(palseema30@gmail.com)
  -->
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<?php
+$content = ob_get_clean();
+ob_start();
+?>
  <html>
     <head>
         <title>Welcome to TANUVAS</title>
@@ -10,6 +14,13 @@
 	<link href="<?php echo base_url(); ?>assets/css/jquery.multiselect.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>assets/js/jquery.multiselect.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/1.12.4jquery.min.js"></script>
+<!--	<script src="http://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+
+
+
         <style type="text/css" media="print">
         @page {
                 size: auto;   /* auto is the initial value */
@@ -31,15 +42,59 @@
                 document.body.innerHTML = originalContents;
             }
         </script>     
+	<script>
+    		function demoFromHTML() {
+
+		var pdf = new jsPDF('p','pt','a4');
+		pdf.addHTML(document.body,function() {
+			 var string = pdf.output('datauristring');
+		alert("ehelo");
+			 $('.preview-pane').attr('src', string);
+		});
+		//function(){
+                  //     pdf.save('displinwiselist.pdf');
+                    //    }
+
+	//	);
+		}
+ 	</script>     
+        <script>
+//		$(function () {
+//		var specialElementHandlers = {
+//		    	'#editor': function (element, renderer) {
+//		    		return true;
+  //  			}
+//		};
+
+//		$('#cmd').click(function () {
+//			var doc = new jsPDF('p', 'pt', 'a4');
+//			var printContents = document.getElementById('printme').innerHTML;
+//			var document1 = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' style='width:100%;height:100px;' >"+" <div style='width:100%;height:100px;'>  " + printContents + "</div>"+"</body>";
+		//			var printContents = document.getElementById(printme).innerHTML; 
+		    	//doc.fromHTML($('#printme').html(), 40, 20, {
+//		    	//doc.fromHTML(document.getElementById('printme'), 40, 20, {
+//		    	doc.fromHTML(printContents, 40, 20, {
+//				'width': 2024,
+    //        			'elementHandlers': specialElementHandlers
+  //  			},
+//			function(){
+  //  			doc.save('displinwiselist.pdf');
+//			}
+//	        );
+//		});
+//		});
+
+	</script>
+
     </head>
-    <body>
+    <body id="pbody">
 
     <?php $this->load->view('template/header'); ?>
 	<form action="<?php echo site_url('report/disciplinewiselist');?>" id="myForm" method="POST" class="form-inline">
  	<table width="100%" border="0">
             <tr style="font-weight:bold;">
                <td>  Select Campus<br>
-                    <select name="camp" id="camp" style="width:400px;">
+                    <select name="camp" id="camp" style="width:250px;">
 			<? if  (!empty($this->camp)){ ?>
 			<option value="<?php echo $this->camp; ?>" > <?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name ." ( ". $this->commodel->get_listspfic1('study_center','sc_code','sc_id' ,$this->camp)->sc_code ." )"; ?></option>
 			<?  }else{ ?>
@@ -55,7 +110,7 @@
 
                  <td><div> Select Subject<br>
 			
-                    <select name="subj[]" id="subj" style="width:400px;" title="You have to choose multiple subject by pressing Ctrl "  multiple>
+                    <select name="subj[]" id="subj" style="width:250px;" title="You have to choose multiple subject by pressing Ctrl "  multiple>
 			<? if  (!empty($this->subj)){ ?>
 			<option value="<?php echo $this->subj; ?>" > <?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name ." ( ".$this->commodel->get_listspfic1('subject','sub_code','sub_id' ,$this->subj)->sub_code ." )"; ?></option>
 			<?  }else{ ?>
@@ -78,6 +133,15 @@
                 <td><input type="submit" name="filter" id="crits" value="Search" /></td>
 		<td>
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+		<button id="cmd">PDF</button>
+        <!--    <img src='<?php //echo base_url(); ?>assets/images/pdflogo.png' alt='PDF'  onclick="javascript:pdfDiv('printme')" style='width:30px;height:30px;' title="Click for PDF" >
+	<a href="<?php //echo base_url() ;?>sisindex.php/report/convertpdf/<?php //echo $this->result;?>/report/disciplinewiselist">
+            <img src='<?php //echo base_url(); ?>assets/images/pdflogo.png' alt='PDF' style='width:30px;height:30px;' title="Click for PDF" >
+	</a> -->
+<!--	<a href="<?php echo base_url() ;?>sisindex.php/report/convertpdf">
+            <img src='<?php echo base_url(); ?>assets/images/pdflogo.png' alt='PDF' style='width:30px;height:30px;' title="Click for PDF" >
+	</a>
+<a class="button" href="javascript:demoFromHTML()">Generate PDF</a>		        -->
         </td>
             </tr>
         </table>
@@ -92,6 +156,11 @@
 		});
 	</script>
 </form>
+<!--		<form name="pform" id="pform" action="<?php echo base_url() ?>/sisindex.php/report/convertpdf/" method="post">
+			<input type="hidden" name="fname" id="fname" value="report/disciplinewiselist" />
+			<input type="hidden" name="rdata" id="rdata" value="<?php print_r($this->result); ?>" />
+			<input type="submit" value="GPDF" />
+		</form>			-->
     <table width="100%">
     
        <tr>
