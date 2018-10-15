@@ -61,7 +61,7 @@
                      foreach($this->result as $row){ ?>
                      <tr>
                      <td> <?php echo ++$count; ?> </td>
-	       	    <td><?php echo $this->sismodel->get_listspfic1('society_master_list','soc_name','soc_id',$row->society_id)->soc_name ?></td>
+	       	    <td><?php echo $this->sismodel->get_listspfic1('society_master_list','soc_sname','soc_id',$row->society_id)->soc_sname ?></td>
 		    <td><?php echo $row->society_head ?> </td>
                     <td><?php echo $row->society_secretary ?> </td>
                     <td><?php echo $row->society_treasurer ?> </td>

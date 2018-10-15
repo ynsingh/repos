@@ -68,11 +68,11 @@
               ?>
                 <tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $row->soc_name ?></td>
-		    <td><?php echo $row->soc_code ?> </td>
+                    <td><?php echo $row->soc_sname ?></td>
+		    <td><?php echo $row->soc_scode ?> </td>
                     <td><?php echo $row->soc_address ?> </td>
                     <td><?php echo $row->soc_purpose ?> </td>
-		    <td><?php echo $row->soc_remark ?> </td>
+		    <td><?php echo $row->soc_sremark ?> </td>
                     <td><?php  echo $row->soc_regdate ?> </td> 
 		   <!-- <td><?php //echo $row->soc_creatordate ?> </td> -->
                      <?php if($row->soc_id >1){ ?>

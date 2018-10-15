@@ -4168,12 +4168,12 @@ public function addsociety(){
 
             if($this->form_validation->run()==TRUE){
             $data = array(
-                'soc_code'=>($_POST['soc_code']),    
-                'soc_name'=>ucfirst(strtolower($_POST['soc_name'])),
-		'soc_code'=>($_POST['soc_code']),
+                'soc_scode'=>($_POST['soc_code']),    
+                'soc_sname'=>ucfirst(strtolower($_POST['soc_name'])),
+		//'soc_code'=>($_POST['soc_code']),
                 'soc_address'=>ucwords($_POST['soc_address']), 
 		'soc_purpose'=>ucwords($_POST['soc_purpose']),
-		'soc_remark'=>ucwords($_POST['soc_remark']),
+		'soc_sremark'=>ucwords($_POST['soc_remark']),
                 'soc_regdate'=>ucwords($_POST['soc_regdate']),
                 'soc_creatorid'=>$this->session->userdata('id_user'),
                 'soc_creatordate'=>date('y-m-d'),
@@ -4181,26 +4181,12 @@ public function addsociety(){
                 'soc_modifydate' => date('y-m-d'),
                                     
             );
-             
-            $soc_name = $_POST['soc_name'];
-	    $soc_code = $_POST['soc_code'];
-            $soc_address =$_POST['soc_address'];
-	    $soc_purpose = $_POST['soc_purpose'];
-	    $soc_remark = $_POST['soc_remark'];
-            $soc_regdate =$_POST['soc_regdate'];
                $data1 = array(
-                'soc_name'=>$_POST['soc_name'],
-		'soc_code'=>$_POST['soc_code'],
+                'soc_sname'=>$_POST['soc_name'],
+		'soc_scode'=>$_POST['soc_code'],
             );
-
-
-             // print_r($data);die;
              $socdatadupe = $this->SIS_model->isduplicatemore('society_master_list', $data1);
-            // print_r($socdatadupe);die;
-
                    if($socdatadupe == 1 ){
-            
-
                         $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Society Code' = $soc_code, 'Society Name' = $soc_name.");
                         redirect('setup/addsociety');
                         return;
@@ -4259,7 +4245,7 @@ public function displaysociety(){
             'id' => 'soc_name',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $society_data->soc_name,
+            'value' => $society_data->soc_sname,
 	    'readonly' => 'readonly' 
         );
 
@@ -4268,7 +4254,7 @@ public function displaysociety(){
             'id' => 'soc_code',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $society_data->soc_code,
+            'value' => $society_data->soc_scode,
         );
 
 
@@ -4296,7 +4282,7 @@ public function displaysociety(){
            'id' => 'soc_remark',
            'maxlength' => '50',
            'size' => '40',
-           'value' => $society_data->soc_remark,
+           'value' => $society_data->soc_sremark,
 	);
 
          $data['soc_regdate'] = array(
@@ -4346,10 +4332,10 @@ public function displaysociety(){
           
 
              if($society_data->soc_name != $soc_name)
-                $logmessage = "Add Society " .$society_data->soc_name. " changed by " .$soc_name;
+                $logmessage = "Add Society " .$society_data->soc_sname. " changed by " .$soc_name;
 		
 	    if($society_data->soc_code != $soc_code)
-                $logmessage = "Add Society " .$society_data->soc_code. " changed by " .$soc_code;
+                $logmessage = "Add Society " .$society_data->soc_scode. " changed by " .$soc_code;
 
              if($society_data->soc_address != $soc_address)
                 $logmessage = "Add Society " .$society_data->soc_address. " changed by " .$soc_address;
@@ -4358,7 +4344,7 @@ public function displaysociety(){
                 $logmessage = "Add Society " .$society_data->soc_purpose. " changed by " .$soc_purpose;		
 
 		 if($society_data->soc_remark != $soc_remark)
-                $logmessage = "Add Society " .$society_data->soc_remark. " changed by " .$soc_remark;
+                $logmessage = "Add Society " .$society_data->soc_sremark. " changed by " .$soc_remark;
  
              if($society_data->soc_regdate != $soc_regdate)
                 $logmessage = "Add Society " .$society_data->soc_regdate. " changed by " .$soc_regdate;
@@ -4366,11 +4352,11 @@ public function displaysociety(){
 
 
               $update_data = array(
-               'soc_name'=>ucfirst(strtolower($_POST['soc_name'])),
-	       'soc_code'=>($_POST['soc_code']),
+               'soc_sname'=>ucfirst(strtolower($_POST['soc_name'])),
+	       'soc_scode'=>($_POST['soc_code']),
                'soc_address'=>($_POST['soc_address']),
 	       'soc_purpose'=>($_POST['soc_purpose']),
-	       'soc_remark'=>ucwords($_POST['soc_remark']),
+	       'soc_sremark'=>ucwords($_POST['soc_remark']),
                'soc_regdate'=>($_POST['soc_regdate']),
 
 

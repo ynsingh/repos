@@ -51,7 +51,7 @@
                         <select name="society_name" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select societies ---------</option>
                         <?php foreach($this->socresult as $datas): ?>
-                        <option value="<?php echo $datas->soc_id;?>"><?php echo $datas->soc_name; ?></option>
+                        <option value="<?php echo $datas->soc_id;?>"><?php echo $datas->soc_sname; ?></option>
                         <?php endforeach; ?>
                         </select>
                         </td></tr>

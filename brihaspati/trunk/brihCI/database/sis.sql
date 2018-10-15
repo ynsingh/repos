@@ -740,12 +740,12 @@ CREATE TABLE `society_master_list` (
 -- Table structure for societies
 --
 
-CREATE TABLE `socieies` (
+CREATE TABLE `societies` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `society_id` varchar(100)  NOT NULL,
   `society_head` varchar(255) NOT NULL,
   `society_secretary` varchar(255) NOT NULL,
-  `society_treasure` varchar(255) NOT NULL,
+  `society_treasurer` varchar(255) NOT NULL,
   `society_members` varchar(255) NOT NULL, 
   `society_totalvalues` varchar(255) NOT NULL,
    UNIQUE (`society_head`,`society_id`)
