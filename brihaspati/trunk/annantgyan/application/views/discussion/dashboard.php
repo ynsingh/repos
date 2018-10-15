@@ -49,6 +49,7 @@ $this->load->view('template/topstyle.php');
 </div>
 
 <?php $current = 'discussion';?>
+ <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 <h1 id="tables" class="page-header">Dashboard</h1>
 
 <table class="table">
@@ -129,4 +130,4 @@ $this->load->view('template/topstyle.php');
     </tbody>
 </table>
  </div>
-
+</div>

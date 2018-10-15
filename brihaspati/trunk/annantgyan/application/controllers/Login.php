@@ -321,7 +321,16 @@ class Login extends CI_Controller {
 			if(isset($this->session->userdata['crs_id'])){
 				$couid=$this->session->userdata['crs_id'];
 			}else{
-				$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+				$data = array('uct_userid'    => $suid,'uct_type' => 'Student' );
+				$result = $this->commodel->isduplicatemore("user_course_type",$data);
+				if($result){
+					$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+				}else{
+					$confmes = "You are not enrolled in any courses.";
+	                                $this->session->set_flashdata('error',$confmes);
+					redirect('login/signin');
+				}
+					
 			}
 			$data['couid'] = $couid;
 

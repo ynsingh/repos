@@ -46,7 +46,7 @@ $this->load->view('template/topstyle.php');
     ?>
 </div>
 
-<?php $current = 'exam';?>
+<?php $current = 'progress';?>
  <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 <div class="form-group col-md-10">
 <table  border=2 align="center">
@@ -66,45 +66,45 @@ $this->load->view('template/topstyle.php');
                 echo "Sr. No.";
                 echo "</th>";
                 echo "<th>";
-                echo "Test Name";
+                echo "Test Name (Test Code)";
                 echo "</th>";
 
                 echo "<th>";
-                echo "Test Code";
+                echo "Correct Answered";
                 echo "</th>";
                 echo "<th>";
-                echo "Test Date";
+                echo "Marks";
                 echo "</th>";
 		echo "<th>";
 		echo "Available Actions";
                 echo "</th>";
                 echo "</tr>";
 
-		if(!empty($testdata)){
+		if(!empty($testrdata)){
 		$i=1;
-		foreach ($testdata as $row) : 
+		foreach ($testrdata as $row) : 
 	   	echo "<tr>";
 	        echo "<td>";
 		echo $i;
 		echo "</td>";
 		echo "<td>";
-		echo $row->testname;
+		echo $this->commodel->get_listspfic1('test','testname','testid',$row->st_testid)->testname."( ".$this->commodel->get_listspfic1('test','testcode','testid',$row->st_testid)->testcode ." )";
 		echo "</td>";
 
 		echo "<td>";
-		echo $row->testcode;
+		echo $row->st_correctlyanswered;
 		echo "</td>";
 		echo "<td>";
-		echo $row->testdate;
+		echo $row->st_marks;
 		echo "</td>";
 		echo "<td>";
-		$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
-		$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
-		if(!$isexist){
-			echo anchor('exam/quiz/' . $row->testid, "Start Exam") ;
-		}else{
-			echo "Submitted";
-		}
+//		$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
+//		$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
+//		if(!$isexist){
+			echo anchor('progress/answercopy/' . $row->st_testid, "View Answer Copy") ;
+//		}else{
+//			echo "Submitted";
+//		}
 		echo "</td>";
 		echo "</tr>";
 		$i++;

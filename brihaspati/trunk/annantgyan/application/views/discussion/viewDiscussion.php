@@ -48,6 +48,7 @@ $this->load->view('template/topstyle.php');
 </div>
 
 <?php $current = 'discussion';?>
+ <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 <div class="form-group col-md-10">
 SORT: <?php echo anchor('discussion/viewDiscussion/sort/age/' . (($dir == 'ASC') ? 'DESC' : 'ASC'),'Newest '. (($dir == 'ASC') ? 'DESC' : 'ASC'));?>
 </div>
@@ -80,4 +81,5 @@ SORT: <?php echo anchor('discussion/viewDiscussion/sort/age/' . (($dir == 'ASC')
 
   </tbody>
 </table>
+</div>
 </div>

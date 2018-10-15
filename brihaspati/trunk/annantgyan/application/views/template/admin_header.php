@@ -59,10 +59,10 @@
           <li><a href="<?php echo site_url('admin/courseannouncement');?>"><span ></span> Courses Announcement</a>
       
           <li><a href="<?php echo site_url('admin/upload_fileview');?>"><span ></span> Upload Courses Content </a></li>
+          <li><a href="<?php echo site_url('admin/displayqas');?>"><span ></span>Result</a><li>
               <li><a href="<?php echo site_url('admin/referallist');?>"><span ></span> Recommender List </a></li>
               <li><a href="<?php echo site_url('admin/couworkshoplist');?>"><span ></span> Course/Workshop Registration List </a></li>
               <li><a href="<?php echo site_url('admin/enquirylist');?>"><span ></span> Enquiry List </a></li>
-         <!-- <li><a href="<?php //echo site_url('admin/mapcoursecontent');?>"><span ></span> Map Courses Content</a>-->
        	<li class="dropdown">
                <!-- <a href="#" class="<?php //if((strpos($request_uri,"discussion/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Discussion<span class="caret"></span></a> -->
                 <a href="#" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Discussion<span class="caret"></span></a>

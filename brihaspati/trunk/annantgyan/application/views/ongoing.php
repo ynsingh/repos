@@ -360,58 +360,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     	<table style="font-size: 16px;width:100%;">
         <?php $i=1;
-        if(!empty($course_data)){
-        foreach($course_data as $row){
-            $cid = $row->crsann_crsid;
-            $sdate = $row->crsann_regstart;
-            $edate = $row->crsann_regend;
-            $cdate = date('Y-m-d');
-            if(($edate >= $cdate) && ($sdate <= $cdate)){
-
-            $wdata = array('cou_id' => $cid);
-           // $sdata = '*';
-            $cdata = $this->commodel->get_listspficemore('courses','*',$wdata);
-           // print_r($cdata);die;
-            ?>
-    		<tr>
-    		
-    			<td>
-    		<?php 
-            if(!empty($cdata)){
-                foreach($cdata as $row2){
-
-            ?>		
-		    <b><?php echo $i++;?> .</b> 
-		<?php 
-			echo "<b><font color=blue>";
-			echo $row2->cou_name; 
-			
-	    		echo "</font></b> <br> "; 
-			echo $row2->cou_eligible; 
-		?>     
-    	   </br>
-           ( <?php echo $row2->cou_discipline; ?> )</br>
-
-           <?php
-            }}
+	if(!empty($course_data)){
+        	foreach($course_data as $row){
+            		$cid = $row->crsann_crsid;
+            		$sdate = $row->crsann_regstart;
+            		$edate = $row->crsann_regend;
+            		$cdate = date('Y-m-d');
+            		if(($edate >= $cdate) && ($sdate <= $cdate)){
+            			$wdata = array('cou_id' => $cid);
+            			$cdata = $this->commodel->get_listspficemore('courses','*',$wdata);
+    				echo "<tr>";
+    				echo "<td>";
+            			if(!empty($cdata)){
+                			foreach($cdata as $row2){
+		    				echo "<b>". $i++." .</b> ";
+						echo "<b><font color=blue>";
+						echo $row2->cou_name; 
+	    					echo "</font></b> <br> "; 
+						echo $row2->cou_eligible; 
+    	   					echo "</br>( ";
+						echo $row2->cou_discipline; 
+						echo ")</br>";
+            				}
+				}
            ?>
-    			</td>
-
-    			<td valign="top">
+    				</td>	
+    				<td valign="top">
     				<a href="<?php echo site_url('workshop/courseenroll'); echo "/"; echo $row2->cou_id;?>" >
-    					<button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open enroll form." style="width:100%;">Enroll</button>
+    				<button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open enroll form." style="width:100%;">Enroll</button>
     				</a>
-    			</td>
-    		  
-    		</tr>	
-        
-    		<tr height=20></tr>
-           <?php }}}?> 
-	<tr><td colspan=2>
-	<br>
-                If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).
-
-	</td></tr>	
+    				</td>
+    				</tr>	
+    				<tr height=20></tr>
+<?php 			}
+		} 
+		if(!empty($cdata)){
+			echo "<tr><td colspan=2>";
+        		echo "<br>";
+                	echo "If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).";
+        		echo "</td></tr>	";
+		} 
+	} ?> 
     	</table>	
 	</div>
 
@@ -451,6 +440,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</td></tr>
 	</table>
 	</div>
+
+<div class="col-md-6"  id="card">
+
+        <table style="font-size: 16px;width:100%;">
+			<tr>
+			<td align=center>
+			<h3>	<b><u>	Running Courses</u></b> </h3>
+				</td>
+			</tr>
+        <?php $i=1;
+        if(!empty($course_data)){
+		foreach($course_data as $row){
+	        	$cid = $row->crsann_crsid;
+        	    	$sdate = $row->crsann_crsstart;
+	            	$edate = $row->crsann_crsend;
+        	    	$cdate = date('Y-m-d');
+	            	if(($edate >= $cdate) && ($sdate <= $cdate)){
+
+        	    		$wdata = array('cou_id' => $cid);
+	            		$cdata = $this->commodel->get_listspficemore('courses','*',$wdata);
+				echo "<tr>";
+                        	echo "<td>";
+	  	         	if(!empty($cdata)){
+                			foreach($cdata as $row2){
+	                    			echo "<b>". $i++." .</b>";
+		                        	echo "<b><font color=blue>";
+        		        	        echo $row2->cou_name;
+						echo "</font></b> <br> ";
+						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+						echo $row->crsann_crsstart;
+						echo " - ";
+						echo $row->crsann_crsend;
+        	    			}
+				 }
+           ?>
+                        </td>
+                </tr>
+                <tr height=20></tr>
+	   <?php 	}
+		}
+	}?>
+        </table>
+        </div>
+
 </div>
 <!--   </div>-->
     		

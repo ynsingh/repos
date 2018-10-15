@@ -4,7 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('template/topstyle.php');
 ?>
 <body>
-
+<!--
+ <script type="text/javascript">
+  $(document).ready(function(){
+  $('#back').on('click', function(){
+        <?php $send = $_SERVER['HTTP_REFERER'];?> 
+        var redirect_to="<?php echo $send;?>";             
+        window.location.href = redirect_to;
+      });
+   });
+  </script>
+-->
 <div class="fluid-container">
         <div class="row">
                 <div class="col-md-12">
@@ -46,7 +56,7 @@ $this->load->view('template/topstyle.php');
     ?>
 </div>
 
-<?php $current = 'exam';?>
+<?php $current = 'progress';?>
  <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 <div class="form-group col-md-10">
 <table  border=2 align="center">
@@ -66,46 +76,52 @@ $this->load->view('template/topstyle.php');
                 echo "Sr. No.";
                 echo "</th>";
                 echo "<th>";
-                echo "Test Name";
+                echo "Question";
                 echo "</th>";
 
                 echo "<th>";
-                echo "Test Code";
+                echo "Your Answer";
                 echo "</th>";
                 echo "<th>";
-                echo "Test Date";
+                echo "Correct Answer";
                 echo "</th>";
-		echo "<th>";
-		echo "Available Actions";
-                echo "</th>";
+//		echo "<th>";
+//		echo "Available Actions";
+  //              echo "</th>";
                 echo "</tr>";
 
-		if(!empty($testdata)){
+		if(!empty($sansdata)){
 		$i=1;
-		foreach ($testdata as $row) : 
+		foreach ($sansdata as $row) : 
 	   	echo "<tr>";
 	        echo "<td>";
 		echo $i;
 		echo "</td>";
 		echo "<td>";
-		echo $row->testname;
+		echo $this->commodel->get_listspfic1('question','question','qid',$row->quid)->question;
 		echo "</td>";
 
 		echo "<td>";
-		echo $row->testcode;
+		$stans=$row->stdanswer;
+		echo $stans;
+		echo "<br>";
+		echo $this->commodel->get_listspfic1('question',$stans,'qid',$row->quid)->$stans;
 		echo "</td>";
 		echo "<td>";
-		echo $row->testdate;
+		$actans=$this->commodel->get_listspfic1('question','correctanswer','qid',$row->quid)->correctanswer;
+		echo $actans;
+		echo "<br>";
+		echo $this->commodel->get_listspfic1('question',$actans,'qid',$row->quid)->$actans;
 		echo "</td>";
-		echo "<td>";
-		$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
-		$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
-		if(!$isexist){
-			echo anchor('exam/quiz/' . $row->testid, "Start Exam") ;
-		}else{
-			echo "Submitted";
-		}
-		echo "</td>";
+//		echo "<td>";
+//		$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
+//		$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
+//		if(!$isexist){
+//			echo anchor('progress/answercopy/' . $row->st_testid, "View Answer Copy") ;
+//		}else{
+//			echo "Submitted";
+//		}
+//		echo "</td>";
 		echo "</tr>";
 		$i++;
 	?>
@@ -116,7 +132,11 @@ $this->load->view('template/topstyle.php');
 			echo "</td></tr>";
 	}
 ?>
-	</form>
+		<tr><td colspan=6>
+		<a href="javascript:window.history.go(-1);"> <button type="button" class="btn btn-primary btn-sm" >Back</button></a>
+<!--		 <input type="button" name="verifyans" class="btn btn-success submit" value="Back">
+		<button type="button" class="btn btn-primary btn-sm"  id= "back">Back</button> -->
+		</td></tr>
   </tbody>
 </table>
 </div>

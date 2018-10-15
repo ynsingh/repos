@@ -672,7 +672,77 @@ class Admin extends CI_Controller {
                 $this->load->view('admin/viewexam',$data);
         }
 
+	function displayqas(){
+		if(isset($this->session->userdata['firstName'])){
+			$data['coudata'] = $this->commodel->get_orderlistspficemore('courses','cou_id,cou_name,cou_code','','');
+			$data['testdata'] = $this->commodel->get_orderlistspficemore('test','testid,testname,testcode','','');
+			if(isset($_POST['testres'])){
+				 $crsid          = $this->input->post('cou_name');
+                                 $tstid          = $this->input->post('testname');
+				 $data['testid']=$tstid;
+				 $data['subid']=$crsid;
+				 $whdata =array('subid' =>$crsid,'testid'=>$tstid);
+				 $data['studata'] =   $this->commodel->get_distinctrecord('studentquestion','su_id',$whdata);
+			}
+                        $this->load->view('admin/displayqas',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+	}
 
+	function studentquesans($tid,$cid,$sid){
+		if(isset($this->session->userdata['firstName'])){
+			$data['tid']=$tid;
+			$data['cid']=$cid;
+			$data['sid']=$sid;
+
+                        $whdata = array('testid'=>$tid,'subid'=>$cid,'su_id'=>$sid);
+                        $data['quest_data'] = $this->commodel->get_orderlistspficemore('studentquestion','quid,stdanswer',$whdata,'quid asc');
+                        $this->load->view('admin/studentquesans',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+        }
+
+	function anscopy(){
+		if(isset($this->session->userdata['firstName'])){
+			if(isset($_POST['verifyans'])){
+				$tstid=$this->input->post("tid");
+				$crsid=$this->input->post("cid");
+				$suid=$this->input->post("suid");
+				$marks=$this->input->post("smarks");
+				$cans=$this->input->post("correctans");
+				$sansData = array(
+                                	'st_testid'                	=>$tstid,
+                                        'st_subid'                 	=>$crsid,
+                                        'st_stdid'              	=>$suid,
+                                        'st_correctlyanswered'          =>$cans,
+                                        'st_marks'               	=>$marks,
+                                        'st_status'               	=>'',
+                                        'st_endtime'               	=>'',
+                                        'st_starttime'         		=>'',
+                                );
+                              	$insert = $this->db->insert('studenttest',$sansData);
+                                if($insert)
+                                {
+        	                        $message='student result successfully updated in databse.'.$suid;
+                                }
+                                else{
+	                                $message=' Data is not updated in databse.'.$suid;
+                                }
+
+				$data['testid']=$tstid;
+				$data['subid']=$crsid;
+				$whdata =array('subid' =>$crsid,'testid'=>$tstid);
+				$data['studata'] =   $this->commodel->get_distinctrecord('studentquestion','su_id',$whdata);
+			}
+		//	redirect('admin/displayqas',$data);
+			$this->load->view('admin/displayqas',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+
+	}
 	public function logout(){
 		
 		$this->session->sess_destroy();

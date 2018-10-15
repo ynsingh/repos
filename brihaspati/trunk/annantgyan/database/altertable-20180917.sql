@@ -17,7 +17,7 @@ CREATE TABLE `test` (
   `attemptedstudents` bigint(20) DEFAULT NULL,
   `testcode` varchar(40) NOT NULL,
   PRIMARY KEY (`testid`),
-  UNIQUE KEY `testname` (`testname`),
+  UNIQUE KEY `testname` (`testname`,`subid`),
   CONSTRAINT `test_fk1` FOREIGN KEY (`subid`) REFERENCES `courses` (`cou_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

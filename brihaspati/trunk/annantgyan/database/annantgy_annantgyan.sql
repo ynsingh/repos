@@ -423,25 +423,37 @@ CREATE TABLE `studentquestion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-
 --
 -- Table structure for table `studenttest`
 --
 
 DROP TABLE IF EXISTS `studenttest`;
 CREATE TABLE `studenttest` (
-  `stid` int(11) NOT NULL AUTO_INCREMENT,
-  `stdid` int(11) NOT NULL DEFAULT '0',
-  `testid` bigint(20) NOT NULL DEFAULT '0',
-  `starttime` time DEFAULT NULL,
-  `endtime` time NULL ,
-  `correctlyanswered` int(11) DEFAULT NULL,
-  `status` enum('over','inprogress') DEFAULT NULL,
-  PRIMARY KEY (`stid`),
-  UNIQUE KEY (`stdid`,`testid`),
-  CONSTRAINT `studenttest_ibfk_1` FOREIGN KEY (`stdid`) REFERENCES `sign_up` (`su_id`),
-  CONSTRAINT `studenttest_ibfk_2` FOREIGN KEY (`testid`) REFERENCES `test` (`testid`)
+  `st_stid` int(11) NOT NULL,
+  `st_subid` int(11) DEFAULT NULL,
+  `st_stdid` int(11) NOT NULL DEFAULT '0',
+  `st_testid` bigint(20) NOT NULL DEFAULT '0',
+  `st_starttime` time DEFAULT NULL,
+  `st_endtime` time DEFAULT NULL,
+  `st_correctlyanswered` int(11) DEFAULT NULL,
+  `st_marks` int(11) DEFAULT '0',
+  `st_status` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `studenttest`
+  ADD PRIMARY KEY (`st_stid`),
+  ADD UNIQUE KEY `st_stdid` (`st_stdid`,`st_subid`,`st_testid`),
+  ADD KEY `studenttest_ibfk_2` (`st_testid`);
+
+
+ALTER TABLE `studenttest`
+  MODIFY `st_stid` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `studenttest`
+  ADD CONSTRAINT `studenttest_ibfk_1` FOREIGN KEY (`st_stdid`) REFERENCES `sign_up` (`su_id`),
+  ADD CONSTRAINT `studenttest_ibfk_2` FOREIGN KEY (`st_testid`) REFERENCES `test` (`testid`);
+
 
 -- --------------------------------------------------------
 
@@ -493,7 +505,7 @@ CREATE TABLE `test` (
   `attemptedstudents` bigint(20) DEFAULT NULL,
   `testcode` varchar(40) NOT NULL,
   PRIMARY KEY (`testid`),
-  UNIQUE KEY `testname` (`testname`),
+  UNIQUE `testname` ( `testname`, `subid`),
   CONSTRAINT `test_fk1` FOREIGN KEY (`subid`) REFERENCES `courses` (`cou_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

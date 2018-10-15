@@ -47,6 +47,7 @@ $this->load->view('template/topstyle.php');
 </div>
 
 <?php $current = 'discussion';?>
+ <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 <div class="form-group col-md-10"><b>    <a href="<?php echo site_url('discussion/viewDiscussion');?>"><span ></span>View Discussion</a></b></div>
 <div class="form-group col-md-10">
 <!-- Discussion - initial comment -->
@@ -100,4 +101,4 @@ $this->load->view('template/topstyle.php');
 <?php echo form_close() ; ?>
 </br>
 </div>
-
+</div>

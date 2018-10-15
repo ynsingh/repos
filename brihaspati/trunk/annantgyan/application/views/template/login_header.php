@@ -141,7 +141,7 @@ function Logout() {
 		<li><a href="<?php echo site_url('exam/listexam');?>"><span ></span>Quiz / Assignment</a></li>
 		</ul>
 	</li>
-        <li><a href="<?php //echo site_url('');?>"><span ></span>Progress</a></li>
+        <li><a href="<?php echo site_url('progress/listrexam');?>" class="<?php if((strpos($request_uri,"progress/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Progress</a></li>
         <li><a href="<?php echo site_url('login/usrfeedback');?>" class="<?php if((strpos($request_uri,"login/usrfeedback")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Feedback</a></li>
 
         <li><a href="<?php //echo site_url('');?>"><span ></span>Certificates</a></li>

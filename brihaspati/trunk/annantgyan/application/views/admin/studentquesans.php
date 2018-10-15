@@ -59,51 +59,83 @@ if(isset($this->session->userdata['firstName'])){
 </div>  
 
 <div class="container">
-	<center><h2>View Question List</h2></center>
+	<center><h2>View Student Answer Copy</h2></center>
 	<div class="col-md-12" id='card'>
-		
+		 <form name="frm" id="frmid" action="<?php echo site_url('admin/anscopy')?>" method="POST" enctype="multipart/form-data">
 		
 		<table style="font-size:18px;"><tr>
-			<td><a href="<?php echo site_url('admin/viewexam');?>">View Exam</a></td><td> &nbsp;&nbsp;&nbsp;</td> 
+	<!--		<td><a href="<?php //echo site_url('admin/viewexam');?>">View Exam</a></td><td> &nbsp;&nbsp;&nbsp;</td>  -->
 			<?php
-				echo "<td>".$this->commodel->get_listspfic1('courses','cou_name','cou_id',$sid)->cou_name." </td>";
+				echo "<td>".$this->commodel->get_listspfic1('courses','cou_name','cou_id',$cid)->cou_name." </td>";
 				echo "<td>&nbsp;&nbsp;&nbsp; </td>";
 				echo "<td>".$this->commodel->get_listspfic1('test','testname','testid',$tid)->testname;
 				echo "  (  ".$this->commodel->get_listspfic1('test','testcode','testid',$tid)->testcode." ) </td>";
+				echo "<td>&nbsp;&nbsp;&nbsp; </td>";
+				echo "<td> ".$this->commodel->get_listspfic1('sign_up','su_name','su_id',$sid)->su_name."</td>";
 				
 			?>
 		</tr></table>
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Question</th><th>Option 1</th><th>Option 2</th><th>Option 3</th><th>Option 4</th><th>Correct Answer</th><th>Marks</th> <th> Actions</th>
+					<th>Sr. No.</th><th>Question</th><th>Student Answer</th><th>Correct Answer</th><th>Marks</th> <!--<th> Actions</th> -->
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
-						$i=1;
+				$i=1;
+				$smarks=0;
+				$correctques=0;
 						if(!empty($quest_data)){
-							foreach($quest_data as $row){	
+							foreach($quest_data as $row){
 						?>
 				<tr>
-					
 								<td><?php echo $i++;?></td>
-								<td><?php echo $row->question;?></td>
-								<td><?php echo $row->optiona;?></td>
-								<td><?php echo $row->optionb;?></td>
-								<td><?php echo $row->optionc;?></td>
-								<td><?php echo $row->optiond;?></td>
-								<td><?php echo $row->correctanswer   ;?></td>
-								<td><?php echo $row->marks  ;?></td>
+								<td><?php echo $this->commodel->get_listspfic1('question','question','qid',$row->quid)->question;?></td>
 								<td><?php 
-									echo anchor('admin/delete_quest/' . $row->qid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
-								?> 
+								$stans =$row->stdanswer;
+								echo $stans;
+								echo "<br>";
+								echo $this->commodel->get_listspfic1('question',$stans,'qid',$row->quid)->$stans;
+								?></td>
+								<?php $correctans= $this->commodel->get_listspfic1('question','correctanswer','qid',$row->quid)->correctanswer   ;?>
+								<td><?php echo $correctans;
+								echo "<br>";
+								echo $this->commodel->get_listspfic1('question',$correctans,'qid',$row->quid)->$correctans;
+								?>
 								</td>
+								<td><?php 
+									if($row->stdanswer == $correctans){
+										$mark= $this->commodel->get_listspfic1('question','marks','qid',$row->quid)->marks;
+										$smarks=$smarks+$mark;
+										$correctques++;
+										echo $mark;
+									}else{
+										echo 0;
+									}
+								?></td>
+							<!--	<td><?php 
+									//send values in hidden format - suid, testid, crsid,marks, correctquestion 
+									//echo anchor('admin/delete_quest/' . $row->qid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+								?> 
+								</td>-->
+
 								
 				</tr>
 				<?php 		}
-						}
-						else{ ?>
+						
+				?>
+				<tr><td colspan=6 align="center">
+
+				<input type="hidden" name="cid" value="<?php echo $cid;?>" >
+			        <input type="hidden" name="tid" value="<?php echo $tid;?>" >
+				<input type="hidden" name="suid" value="<?php echo $sid;?>" >
+				<input type="hidden" name="smarks" value="<?php echo $smarks;?>" >
+			        <input type="hidden" name="correctans" value="<?php echo $correctques;?>" >
+
+				<input type="submit" name="verifyans" class="btn btn-success submit" value="Verify">
+				</td></tr>
+				<?php	}	else{ ?>
 							<tr>
 							<td colspan=10 align=center> No Records found</td>
 							</tr>
@@ -113,6 +145,7 @@ if(isset($this->session->userdata['firstName'])){
 				
 			</tbody>
 		</table>
+	</form>
 	</div>
 	
 </div>

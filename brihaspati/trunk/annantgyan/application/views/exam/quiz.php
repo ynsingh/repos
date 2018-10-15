@@ -47,7 +47,7 @@ $this->load->view('template/topstyle.php');
 </div>
 
 <?php $current = 'exam';?>
-
+ <div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
 <div class="form-group col-md-10">
 <table  border=2 align="center">
   <thead>
@@ -60,24 +60,6 @@ $this->load->view('template/topstyle.php');
   </thead>
   <tbody>
 	 <form method="post" action="<?php echo base_url();?>index.php/exam/quizsubmit">
- <input type="hidden" name="starttime" value="10/9/2018 12:58:27 AM">
-<!--
-<?php //foreach($questions as $row) { ?>
-    
-    <?php //$ans_array = array($row->choice1, $row->choice2, $row->choice3, $row->answer);
-	//shuffle($ans_array); ?>
-    
-    <p><?=$row->quizID?>.<?=$row->question?></p>
-    
-    <input type="radio" name="quizid<?=$row->quizID?>" value="<?=$ans_array[0]?>" required> <?=$ans_array[0]?><br>
-    <input type="radio" name="quizid<?=$row->quizID?>" value="<?=$ans_array[1]?>"> <?=$ans_array[1]?><br>
-    <input type="radio" name="quizid<?=$row->quizID?>" value="<?=$ans_array[2]?>"> <?=$ans_array[2]?><br>
-    <input type="radio" name="quizid<?=$row->quizID?>" value="<?=$ans_array[3]?>"> <?=$ans_array[3]?><br>
-    
-    <?php //} ?>
-    
-<br><br>
--->
 	<?php 
 		$i=1;
 		foreach ($questions as $result) : 
@@ -108,11 +90,12 @@ $this->load->view('template/topstyle.php');
       </tr>
     <?php endforeach ; ?>
 	<tr><td>
-	<input type="hidden" name="sid" value="<?=$subid;?>" size="25">
-	<input type="hidden" name="tid" value="<?=$testid;?>" size="25">
- 	<input type="submit" value="Submit">
+	<input type="hidden" name="sid" value="<?php echo $subid;?>" size="25">
+	<input type="hidden" name="tid" value="<?php echo $testid;?>" size="25">
+ 	<input type="submit" name="submit" value="Submit">
     </td></tr>
 	</form>
   </tbody>
 </table>
+</div>
 </div>
