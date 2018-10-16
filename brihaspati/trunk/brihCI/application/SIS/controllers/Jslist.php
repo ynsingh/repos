@@ -193,5 +193,57 @@ class Jslist extends CI_Controller
               
     }
     /****************************************closer employee detail by pf no *********************************/
+    
+    
+    
+     /***** This function has been created for get the employee detail by pf no ********************************/
+    
+    public function getempdata2(){
+        $values=array();
+        $pfno= $this->input->post('emplypfno');
+       // echo "pfno---".$pfno;
+        $emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
+        $empdetail = $emp_data->result();
+        if(count($empdetail)>0){
+            
+            foreach($empdetail as $detail){
+                $campus=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$detail->emp_scid)->sc_name;
+                $uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
+                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+                $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
+                $schme=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id',$detail->emp_schemeid)->sd_name;
+                $schmecd=$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id',$detail->emp_schemeid)->sd_code;
+                $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
+                $desigcd=$this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$detail->emp_desig_code)->desig_code;
+                $empname=$detail->emp_name;
+                $ifcbank=$detail->emp_bank_ifsc_code;
+                $accno=$detail->emp_bank_accno;
+                $phno=$detail->emp_phone;
+                $address=$detail->emp_address;
+                $email=$detail->emp_secndemail;
+                $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
+                $dor=$detail->emp_dor;
+                $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$detail->emp_salary_grade)->sgm_name;
+                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade)->sgm_max;
+                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade)->sgm_min;
+                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
+                $payscale=$payband."(".$pay_min."-".$pay_max.")".$gardepay;
+                                
+                array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
+                $detail->emp_doj,$empname,$accno,$detail->emp_aadhaar_no,$detail->emp_dob, $address,$detail->emp_phone,$dor,$payscale);
+            }
+        } 
+       // echo "values in controller===".$values;
+        echo json_encode($values);
+    }
+    /****************************************closer employee detail by pf no *********************************/
+    
+    
+    /* This function has been created for get society members on the basis of society */
+    public function getsocietymembers(){
+        $selval = $this->input->post('society');
+        $socmember=$this->sismodel->get_listspfic1('societies','society_members','society_id',$selval)->society_members;
+        echo json_encode($socmember);
+    }
 }    
 
