@@ -386,21 +386,40 @@ Login obj=null;
 return obj;
 
 }
+            private static void wait1(int k){
+            	do{
+                          k--;
+                }
+                while(k>0);
+            }
+           
+
 
 public static  boolean update1(Login obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
-
         try
         {
-            tx = (Transaction) session.beginTransaction();
+		session.update(obj);
+		 boolean flg1;
+                do{
+                        flg1=true;
+                        wait1(1000);
+                        tx = session.beginTransaction();
+                        tx.commit();
+                        if(!(tx.wasCommitted())){
+                                tx.rollback();
+                                flg1=false;
+                        }
+                }
+                while(!(flg1));
 
-            session.update(obj);
-            tx.commit();
+//            tx = (Transaction) session.beginTransaction();
 
-
+  //          session.update(obj);
+    //        tx.commit();
 
         }
         catch (RuntimeException e) {

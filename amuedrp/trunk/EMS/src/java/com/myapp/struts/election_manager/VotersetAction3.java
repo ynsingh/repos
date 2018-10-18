@@ -84,15 +84,17 @@ EO, IITKAA 2012
 	String institute_id=(String)session.getAttribute("institute_id");
         String username=(String)session.getAttribute("username");
 
-         Election e1=ElectionDAO.searchElection(election, institute_id);
+        Election e1=ElectionDAO.searchElection(election, institute_id);
+	Date date = new Date();
 
         subRPOTKM="Credentials for voting in "+e1.getElectionName();
 	bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not voted in "+e1.getElectionName()+". Please accept any security certificate presented by the browser. Voting over web portal will close on"+e1.getEndDate()+" IST.\n\n For casting your ballot on web portal, you can click on the following link\n\n"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email=";
-	bodymessRPOTKM11="\n\n or \n\n http://172.26.82.23:8080"+request.getContextPath()+"/voterlogin.do?email=";
-
-        bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at\nhttp://172.26.82.23:8080/EMS\nhttp://educontent.iitk.ernet.in:8080/EMS\nhttps://172.26.82.23:8080/EMS\nhttps://educontent.iitk.ernet.in:8443/EMS\nfor voting. Your login is ";
-        bodymessRPOTKM3="\n\nYou are requested to use the latest mail for casting your ballot.\n\n\n\n\n"+username+"\n\nEO,"+e1.getElectionName();
-
+//	bodymessRPOTKM11="\n\n or \n\n http://172.26.82.23:8080"+request.getContextPath()+"/voterlogin.do?email=";
+//	bodymessRPOTKM11="\n\n\n\n or use these crediential for voting email ";
+        //bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at\nhttp://172.26.82.23:8080/EMS\nhttp://educontent.iitk.ernet.in:8080/EMS\nhttps://172.26.82.23:8080/EMS\nhttps://educontent.iitk.ernet.in:8443/EMS\nfor voting. Your login is ";
+        //bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at\nhttp://election.iitk.ac.in/EMS\nhttps://election.iitk.ac.in/EMS\nfor voting. Your login is ";
+        bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at\nhttp://election.iitk.ac.in/EMS\nfor voting. Your login is ";
+        bodymessRPOTKM3="\n\nYou are requested to use the latest mail for casting your ballot.\n\n\n\n\n"+username+"\n\nEO,"+e1.getElectionName()+"\n\n Date "+date.toString();
 
 
 
@@ -141,14 +143,16 @@ if(action.equalsIgnoreCase("1"))//got Reset Password & One Time Key with Voting 
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 
-            				mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+            		//		mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+            				mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
   
                                         log.add( "\nReset Password & One time key link has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         {
 
                                           //mailSend1(path,obj1.getAlternateMail(),admin_password,bodymessRPOTKM1"For Casting Vote  for "+e.getElectionName()+" election","\n Your Login Id for EMS is"+obj2.getUserId()+" Password "+obj2.getPassword()+"\nClick  http://202.141.40.218:8080/EMS/voterlogin.do?email="+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+"\n");
-                                          mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                        //  mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                          mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
 
                                         log.add( "\nReset Password & One time key link has been send successfully to Alternate Mail= "+obj1.getAlternateMail()+"\n");
                                         }
@@ -203,14 +207,17 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 
-                                       mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+
+                                       //mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                       mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
                                        //mailSend(path,obj1.getEmail(),admin_password,bodymessRPOTKM1"For Casting Vote  for "+e.getElectionName()+" election","\n Your Login Id for EMS is"+obj2.getUserId()+" Password "+obj2.getPassword()+"\nClick  http://202.141.40.218:8080/EMS/voterlogin.do?email="+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+"\n");
 
                                         log.add( "\nReset Password & One time key link has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         {
 
-                                          mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                          //mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM11+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                          mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
                                          // mailSend1(path,obj1.getAlternateMail(),admin_password,bodymessRPOTKM1"For Casting Vote  for "+e.getElectionName()+" election","\n Your Login Id for EMS is"+obj2.getUserId()+" Password "+obj2.getPassword()+"\nClick  http://202.141.40.218:8080/EMS/voterlogin.do?email="+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+"\n");
                                           log.add( "\nReset Password & One time key link has been send successfully to Alternate Mail= "+obj1.getAlternateMail()+"\n");
                                         }

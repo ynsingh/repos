@@ -491,17 +491,17 @@ if(str!=null)
                         <input type="submit" name="button" style="font-family: arial;font-size: 12px"  value="<%=resource.getString("login.button.sigin.login")%>" dir="<%=rtl%>"  onclick="return submitLogin();" /></td><td><input type="submit" name="button" style="font-family: arial;font-size: 12px" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" onclick="return submitForget();" />
                     </td>
                     </tr>
-                    <tr><td width="250px" colspan="2">
+            <%--        <tr><td width="250px" colspan="2">
 
-                            <p class="emailheadhome1" align="left">
+                            <p class="emailheadhome1" align="left">--%>
                         <%--<form  action="./admin/remote" method="post">--%>
-      <%=resource.getString("loginwithopen")%><br/>
+<%--      <%=resource.getString("loginwithopen")%><br/>
 <%=resource.getString("pleaseclickyour")%><input type="textbox" style="width:300px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;" name="email" value="http://202.141.40.216:8081/openid/username" id="email2"/>
-<br>     <input class="buttonhome" type="button" value="<%=resource.getString("login.button.sigin.login")%>" onclick="send()"/><br>Please replace username with your actual username.
+<br>     <input class="buttonhome" type="button" value="<%=resource.getString("login.button.sigin.login")%>" onclick="send()"/><br>Please replace username with your actual username. --%>
         <%--</form>--%>
-</p>
+<%--</p>
 
-                        </td></tr>
+                        </td></tr>--%>
                     <tr><td width="250px" colspan="2"  class="homepage" style="color:white">
 
                              <b><%=resource.getString("importantlink")%></b>
