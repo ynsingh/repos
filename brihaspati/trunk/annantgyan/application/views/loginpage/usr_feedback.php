@@ -180,7 +180,8 @@ textarea.form-control {
 			  			 	<textarea  class="form-control" id="description" placeholder="Enter Your Message" name="su_sugge"></textarea>
 			  			</div>
 			  			<div>
-			  				<input type="submit" name="submit" class="btn btn-default submit" value="Send Enquiry">
+			  				<!--<input type="submit" name="submit" class="btn btn-default submit" value="Send Enquiry"> -->
+			  				<input type="submit" name="submit" class="btn btn-pill btn-primary btn-lg " value="Send Enquiry">
 			  			</div>
 			  		</div>
 			  		

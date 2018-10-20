@@ -676,14 +676,22 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['firstName'])){
 			$data['coudata'] = $this->commodel->get_orderlistspficemore('courses','cou_id,cou_name,cou_code','','');
 			$data['testdata'] = $this->commodel->get_orderlistspficemore('test','testid,testname,testcode','','');
+			$crsid = '';
+			$tstid = '';
 			if(isset($_POST['testres'])){
-				 $crsid          = $this->input->post('cou_name');
-                                 $tstid          = $this->input->post('testname');
+				$crsid          = $this->input->post('cou_name');
+				$tstid          = $this->input->post('testname');
+			}
+				if($crsid == ''){
+					$crsid=$this->input->post("cid");
+				}
+				if($tstid == ''){
+					$tstid=$this->input->post("tid");
+				}
 				 $data['testid']=$tstid;
 				 $data['subid']=$crsid;
 				 $whdata =array('subid' =>$crsid,'testid'=>$tstid);
 				 $data['studata'] =   $this->commodel->get_distinctrecord('studentquestion','su_id',$whdata);
-			}
                         $this->load->view('admin/displayqas',$data);
                 }else{
                         $this->load->view('admin/admin_login');

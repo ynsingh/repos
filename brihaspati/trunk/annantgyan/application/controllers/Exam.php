@@ -60,12 +60,14 @@ class Exam extends CI_Controller {
 	//	echo $tstid; die();
 		$whdata = array ('subid' => $crsid, 'testid' => $tstid);
                 $whorder = 'qid';
-                $sfdata = 'qid,correctanswer';
+                $sfdata = 'qid,correctanswer,marks';
 		$questions = $this->commodel->get_orderlistspficemore('question',$sfdata,$whdata,$whorder);
 		$data['subid'] = $crsid ;
 		$cdate = date('Y-m-d');
 		$usid  = $this->session->userdata['su_id'];
 		if(isset($_POST['submit'])){
+			$cans = 0;
+			$tmarks = 0;
 			foreach ($questions as $row){
 				$ans = $this->input->post($row->qid);
 				$stuquesdata = array(
@@ -77,9 +79,25 @@ class Exam extends CI_Controller {
 					'stdanswer' => $ans,
 				);
 				$insflag = $this->db->insert('studentquestion', $stuquesdata);
+				if($ans ==  $row->correctanswer){
+					$cans = $cans + 1;
+					$tmarks = $tmarks + $row->marks;
+				}
 			}
+			//
+			$sansData = array(
+                                        'st_testid'                     =>$tstid,
+                                        'st_subid'                      =>$crsid,
+                                        'st_stdid'                      =>$usid,
+                                        'st_correctlyanswered'          =>$cans,
+                                        'st_marks'                      =>$tmarks,
+                                        'st_status'                     =>'',
+                                        'st_endtime'                    =>'',
+                                        'st_starttime'                  =>'',
+                        );
+                        $insert = $this->db->insert('studenttest',$sansData);
 			//$this->load->view('exam/listexam');
 			redirect('exam/listexam');
 		}
-	}
+	}//end of the function
 }

@@ -136,8 +136,11 @@ if(isset($this->session->userdata['firstName'])){
 						                if(!$isexist){
 									echo anchor('admin/studentquesans/' . $testid."/".$subid."/".$row->su_id , "View Question Answer") ;
 						                }else{
-						                        echo "Verified";
-                						}
+									echo "Verified";
+									echo "  |  ";
+									echo anchor('admin/studentquesans/' . $testid."/".$subid."/".$row->su_id , "View Answer Copy") ;
+								}
+							//	echo "&nbsp;&nbsp;";
 
 									//echo anchor('admin/addquestion/' . $row->testid."/".$row->subid , "Add Question") ;
 //								echo "&nbsp;| ";

@@ -20,6 +20,17 @@ if(isset($this->session->userdata['firstName'])){
 !function($,n,e){var o=$();$.fn.dropdownHover=function(e){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function t(e){o.find(":focus").blur(),h.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(c),i.addClass("open"),r.trigger(a)}var r=$(this),i=r.parent(),d={delay:100,instantlyCloseOthers:!0},s={delay:$(this).data("delay"),instantlyCloseOthers:$(this).data("close-others")},a="show.bs.dropdown",u="hide.bs.dropdown",h=$.extend(!0,{},d,e,s),c;i.hover(function(n){return i.hasClass("open")||r.is(n.target)?void t(n):!0},function(){c=n.setTimeout(function(){i.removeClass("open"),r.trigger(u)},h.delay)}),r.hover(function(n){return i.hasClass("open")||i.is(n.target)?void t(n):!0}),i.find(".dropdown-submenu").each(function(){var e=$(this),o;e.hover(function(){n.clearTimeout(o),e.children(".dropdown-menu").show(),e.siblings().children(".dropdown-menu").hide()},function(){var t=e.children(".dropdown-menu");o=n.setTimeout(function(){t.hide()},h.delay)})})}))},$(document).ready(function(){$('[data-hover="dropdown"]').dropdownHover()})}(jQuery,this);
 </script>
 	
+	
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('#back').on('click', function(){
+        <?php $send = $_SERVER['HTTP_REFERER'];?> 
+        var redirect_to="<?php echo $send;?>";             
+        window.location.href = redirect_to;
+      });
+   });
+  </script>
+	
 </head>
 <body>
 
@@ -131,9 +142,20 @@ if(isset($this->session->userdata['firstName'])){
 			        <input type="hidden" name="tid" value="<?php echo $tid;?>" >
 				<input type="hidden" name="suid" value="<?php echo $sid;?>" >
 				<input type="hidden" name="smarks" value="<?php echo $smarks;?>" >
-			        <input type="hidden" name="correctans" value="<?php echo $correctques;?>" >
-
+				<input type="hidden" name="correctans" value="<?php echo $correctques;?>" >
+				<?php
+				$datadup = array('st_stdid' => $sid, 'st_testid' => $tid,'st_subid' =>$cid);
+                                $isexist=$this->commodel->isduplicatemore('studenttest',$datadup);
+				if(!$isexist){
+				?>
 				<input type="submit" name="verifyans" class="btn btn-success submit" value="Verify">
+				<?php
+				}else{
+
+				?>
+				<button type="button" class="btn btn-primary btn-sm"  id= "back">Back</button> 
+				<?php }
+				?>
 				</td></tr>
 				<?php	}	else{ ?>
 							<tr>
