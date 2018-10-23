@@ -4,12 +4,49 @@
     <title>Salary Head</title>
     <head>
        <!--<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script> -->
-        <?php $this->load->view('template/header'); ?>
-        
+       <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+ 
+        <script> 
+         $(document).ready(function(){
+                
+                /****************************************** start of Payscale  list********************************/
+                $('#paycomm').on('change',function(){
+                    var wtcode = $('#worktype').val();
+                    var paycomm = $('#paycomm').val();
+                    var wpc = wtcode+","+ paycomm;
+                    if(paycomm == ''){
+                        $('#payscale').prop('disabled',true);
+                   
+                    }
+                    else{
+                        $('#payscale').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getwpcpaylist",
+                            type: "POST",
+                            data: {"wpc" : wpc},
+                            dataType:"html",
+                            success:function(data){
+                    //        alert("data==1="+data);
+                                $('#payscale').html(data.replace(/^"|"$/g, ' '));
+                            },
+                            error:function(data){
+                                //alert("data in error==="+data);
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                    }
+                }); 
+                /******************************************end of payscale list********************************/
+        });
+
+        </script>
+ 
         <script> 
         </script>
     </head>
     <body>
+        <?php $this->load->view('template/header'); ?>
         <table width="100%">
             <tr>
                 <?php
@@ -72,9 +109,9 @@
                         <td>
                             <select name="payscale" id="payscale" class="my_dropdown" style="width:100%;">
                 		<option value="" disabled selected >------Select Pay Scale ---------------</option>
-                                <?php foreach($this->salgrade as $sgdata): ?>	
-   				<option value="<?php echo $sgdata->sgm_id; ?>"><?php echo $sgdata->sgm_name."( ".$sgdata->sgm_min." - ".$sgdata->sgm_max." )".$sgdata->sgm_gradepay; ?></option> 
-                                <?php endforeach; ?>
+                                <?php //foreach($this->salgrade as $sgdata): ?>	
+<!--   				<option value="<?php //echo $sgdata->sgm_id; ?>"><?php //echo $sgdata->sgm_name."( ".$sgdata->sgm_min." - ".$sgdata->sgm_max." )".$sgdata->sgm_gradepay; ?></option> -->
+                                <?php //endforeach; ?>
                             </select>
 			    </select>
                         </td>

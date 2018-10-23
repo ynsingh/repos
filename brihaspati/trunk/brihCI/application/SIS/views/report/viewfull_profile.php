@@ -151,7 +151,8 @@
                                 </td>
                                 <td>
 <?php   			echo    "<b>Designation</b> <br>";
-					echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name; 
+					$designame = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$data->emp_desig_code)->desig_name;
+					echo $designame; 
 					if(($this->headflag)||($data->emp_head == "HEAD")){
         		                        echo " & Head";
 	                                }
@@ -216,7 +217,12 @@
 <?php   echo    "<b>NHIS ID No</b> <br>".$data->emp_nhisidno;?>
                                 </td>
   <td>
-<?php   echo    "<b>Date of Appointment</b> <br>". implode('-', array_reverse(explode('-', $data->emp_doj)))." ".$data->emp_jsession;?>
+<?php   
+		echo    "<b>Date of Appointment</b> <br>". implode('-', array_reverse(explode('-', $data->emp_doj)))." ".$data->emp_jsession;
+		if($designame == "VC"){
+			echo    "<br><b>Date of Appointment as VC</b> <br>". implode('-', array_reverse(explode('-', $data->emp_dojvc)));
+		}
+?>
                                 </td>
                                 <td>
 <?php   echo    "<b>Date of Retirement</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dor)));?>
@@ -255,7 +261,7 @@
                                 </td>
                                 <td>
 
-<?php   echo    "<b>Spouce Name</b> <br>".$data->emp_spousename; ?>
+<?php   echo    "<b>Spouse Name</b> <br>".$data->emp_spousename; ?>
                                 </td>
                               
                        
@@ -323,10 +329,10 @@
 <?php   echo    "<b>Qualification</b> <br>".$data->emp_qual;?>
                                 </td>
                                 <td>
-<?php   echo    "<b>ASRR Exam Status</b> <br>".$data->emp_AssrExam_status?>
+<?php   echo    "<b>ASRR Exam </b> <br>".$data->emp_AssrExam_status?>
                                 </td>
                                 <td>
-<?php   echo    "<b>Date of ASRR Exam</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam))) ;?>
+<?php   echo    "<b>ASRR Passed</b> <br>".substr( (implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam)))),3,10) ;?>
                                 </td>
 <td>
 <?php   echo    "<b>Grade</b> <br>".$data->emp_grade;?>
@@ -363,46 +369,51 @@
 <?php   echo    "<b>Remarks</b> <br>".$data->emp_remarks;?>                               
 </td>
 </tr>
-<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>PhD Details:</b></label></td> </tr>
-<tr><td><b>Phd Status</b><br><?php echo $data->emp_phd_status;?></td><td><b>Date of Phd Completion</b><br><?php   echo implode('-', array_reverse(explode('-', $data->emp_dateofphd)));?></td><td><b>Discipline</b><br><?php   echo    $data->emp_phddiscipline;?></td> <td><b>PhD Type</b><br><?php   echo    $data->emp_phdtype;?></td></tr><tr><td><b>Institute Name</b><br><?php echo$data->emp_phdinstname;?></td><td><b> Deputed by Unversity</b><br><?php
+<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Ph.D. Details:</b></label></td> </tr>
+<tr>
+<td><b>Ph.D. Status</b><br><?php echo $data->emp_phd_status;?></td>
+<td><b>Date of Ph.D. Completion</b><br><?php   echo implode('-', array_reverse(explode('-', $data->emp_dateofphd)));?></td>
+<td><b>Discipline</b><br><?php   echo    $data->emp_phddiscipline;?></td> 
+<td><b>Specialisation</b><br><?php   echo    $data->emp_phdspecialisation;?></td> 
+</tr>
+<tr>
+<td><b>Ph.D. Type</b><br><?php   echo    $data->emp_phdtype;?></td>
+<td><b>University/Institutions Name</b><br><?php echo$data->emp_phdinstname;?></td>
+<td><b>College</b><br><?php   echo    $data->emp_phdcollege;?></td> 
+<td><b> Deputed by Unversity</b><br><?php
           $udep=$data->emp_phdunivdeput;
                     $udepnew=explode(",",$udep);
           echo    $udepnew[0];?>
 </td>
 <?php if((!empty($udepnew[0])) && ($udepnew[0] == "No")){ ?>
+<tr>
 <td>
 <?php  
 echo    "<b>If NO (Type of Leave availed for Ph.D) </b> <br>";
 echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$udepnew[1])->lt_name;?>
-				 <td>
+</td><td>
 <?php  echo    "<b>Leave From</b> <br>".$udepnew[2];?>
-                                </td>
-</tr>
-<tr>
+</td>
 <td>
 <?php echo    "<b>Leave To</b> <br>".$udepnew[3];?>
-</td>
-<td>
-</td>
-<td>
 </td>
 <td>
 </td>
 </tr>
 <?php } else {
 
-echo "<td colspan=2>";
+//echo "<td colspan=2>";
 
 
 }?>
-<tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>NET Details:</b></label></td> </tr>
+<tr><td colspan="4"><label for="Net Details " style="font-size:17px;color:#0099CC"><b>NET Details:</b></label></td> </tr>
                                 </td>
         <?php
           $ntq=$data->emp_netqualified;
                 if(!empty($ntq)){
                     $ntqnew=explode(",",$ntq);
 echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
-</td><td><b>Organiser</b><br><?php   echo    $ntqnew[1];?></td><td><b>Year of Passing</b><br><?php   echo    implode('-', array_reverse(explode('-', $data->emp_netpassingyear)));?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
+</td><td><b>Organiser</b><br><?php   echo    $ntqnew[1];?></td><td><b>Year of Passing</b><br><?php   echo   substr( (implode('-', array_reverse(explode('-', $data->emp_netpassingyear)))),6,10);?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
 
 
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Veterinary Council (VC) Registration:</b></label></td> </tr>
@@ -484,6 +495,19 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
                             <td colspan= "13" align="center"> No Records found...!</td>
                         <?php endif;?>
 </tr>
+
+<?php
+        if(!empty($emsdata)){
+		foreach($emsdata as $ppwdata){
+			echo "<tr>";
+                        echo "<td> <b>Preferred Place of Working - First</b> <br>".$ppwdata->ems_pwplace1."</td>";
+                        echo "<td> <b>	Preferred Place of Working - Second</b> <br>".$ppwdata->ems_pwplace2."</td>";
+                        echo "<td> <b>	Preferred Place of Working - Third</b> <br>".$ppwdata->ems_pwplace3."</td>";
+			echo "<td></td>";
+                        echo "</tr>";
+		}			
+	}
+?>
 		</table>
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                         <tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">

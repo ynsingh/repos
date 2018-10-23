@@ -315,13 +315,17 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('phddiscipline','Discipline','trim|xss_clean');
             $this->form_validation->set_rules('phdtype','phdtype','trim|xss_clean');
             $this->form_validation->set_rules('phdinstname','InstName','trim|xss_clean');
+            $this->form_validation->set_rules('phdsplname','Specialisation Name','trim|xss_clean');
+            $this->form_validation->set_rules('phdcollname','College Name','trim|xss_clean');
             $this->form_validation->set_rules('univdeput','univdeput','trim|xss_clean');
             $this->form_validation->set_rules('udeput','If YES','trim|xss_clean');
             $this->form_validation->set_rules('udt','If NO','trim|xss_clean');
             $this->form_validation->set_rules('leavedatefrom','Leave From','trim|xss_clean');
             $this->form_validation->set_rules('leavedateto','Leave To','trim|xss_clean');
+
             $this->form_validation->set_rules('netqual','NET qualified','trim|xss_clean');
             $this->form_validation->set_rules('netqualyes','NET Organiser','trim|xss_clean');
+            $this->form_validation->set_rules('netqualno','NET Reason','trim|xss_clean');
             $this->form_validation->set_rules('passyear','NET passyear','trim|xss_clean');
             $this->form_validation->set_rules('netdiscipline','NET Discipline','trim|xss_clean');
             
@@ -348,6 +352,9 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
             $this->form_validation->set_rules('spousename','Spouse Name','trim|xss_clean');
             $this->form_validation->set_rules('jsession','Session','trim|xss_clean');
+            $this->form_validation->set_rules('ppwpref1','Preferred Place of Working - First ','trim|xss_clean');
+            $this->form_validation->set_rules('ppwpref2','Preferred Place of Working - Second ','trim|xss_clean');
+            $this->form_validation->set_rules('ppwpref3','Preferred Place of Working - Third ','trim|xss_clean');
             
             
             //Repopulate forms value
@@ -402,7 +409,7 @@ class Staffmgmt extends CI_Controller
                         $netdispln = $_POST['netdiscipline'];   
                     }
                     else{
-                        $netdetail=$_POST['netqual'];
+                        $netdetail=$_POST['netqual'].",".$_POST['netqualno'];
                         $netpassyear=NULL;
                         $netdispln=NULL;
                     }
@@ -508,6 +515,8 @@ class Staffmgmt extends CI_Controller
                     'emp_phddiscipline'         =>$_POST['phddiscipline'],
                     'emp_phdtype'               =>$_POST['phdtype'],
                     'emp_phdinstname'           =>$_POST['phdinstname'],
+                    'emp_phdcollege'            =>$_POST['phdcollname'],
+                    'emp_phdspecialisation'     =>$_POST['phdsplname'],
                     'emp_phdunivdeput'          =>$udval,
                     'emp_netqualified'          =>$netdetail,
                     'emp_netpassingyear'        =>$netpassyear,
@@ -620,6 +629,9 @@ class Staffmgmt extends CI_Controller
                         'ems_vci_alliregno'         =>$_POST['allvciregno'],
                         'ems_vci_alliregdate'       =>$_POST['allvciregdate'],
                         'ems_vci_allivaliddate'     =>$_POST['allvcrvaliddate'],
+                        'ems_pwplace1'                  =>$_POST['ppwpref1'],
+                        'ems_pwplace2'                  =>$_POST['ppwpref2'],
+                        'ems_pwplace3'                  =>$_POST['ppwpref3'],
                       
 		    );
                     /* insert record in  employe_emaster_support */
@@ -876,6 +888,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('leavedateto','Leave To','trim|xss_clean');
             $this->form_validation->set_rules('netqual','NET qualified','trim|xss_clean');
             $this->form_validation->set_rules('netqualyes','NET Organiser','trim|xss_clean');
+            $this->form_validation->set_rules('netqualno','NET Reason','trim|xss_clean');
             $this->form_validation->set_rules('passyear','NET passyear','trim|xss_clean');
             $this->form_validation->set_rules('netdiscipline','NET Discipline','trim|xss_clean');
             /*********************modification in vcr registration*****************************/
@@ -906,6 +919,13 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
             $this->form_validation->set_rules('spousename','Spouse Name','trim|xss_clean');
             $this->form_validation->set_rules('session','Session','trim|xss_clean');
+
+	    $this->form_validation->set_rules('phdsplname','Specialisation Name','trim|xss_clean');
+            $this->form_validation->set_rules('phdcollname','College Name','trim|xss_clean');
+	    $this->form_validation->set_rules('ppwpref1','Preferred Place of Working - First ','trim|xss_clean');
+            $this->form_validation->set_rules('ppwpref2','Preferred Place of Working - Second ','trim|xss_clean');
+            $this->form_validation->set_rules('ppwpref3','Preferred Place of Working - Third ','trim|xss_clean');
+
 
             if($this->form_validation->run() == FALSE){
                 //redirect('staffmgmt/editempprofile/'.$id);
@@ -967,7 +987,7 @@ class Staffmgmt extends CI_Controller
                     $netdpln=$_POST['netdiscipline'];
                 }
                 else{
-                    $netdetail=$_POST['netqual'];
+                    $netdetail=$_POST['netqual'].",".$_POST['netqualno'];
                     $netpass=NULL;
                     $netdpln=NULL;
                 }
@@ -1049,6 +1069,8 @@ class Staffmgmt extends CI_Controller
                 'emp_phddiscipline'              =>$_POST['phddiscipline'],
                 'emp_phdtype'                    =>$_POST['phdtype'],
                 'emp_phdinstname'                =>$_POST['phdinstname'],
+		'emp_phdcollege'          	=>$_POST['phdcollname'],
+                'emp_phdspecialisation'          =>$_POST['phdsplname'],
                 'emp_phdunivdeput'               =>$udval,
                 'emp_netqualified'               =>$netdetail,
                 'emp_netpassingyear'             =>$netpass,
@@ -1139,7 +1161,9 @@ class Staffmgmt extends CI_Controller
                 'ems_vci_alliregno'         =>$_POST['allvciregno'],
                 'ems_vci_alliregdate'       =>$_POST['allvciregdate'],
                 'ems_vci_allivaliddate'     =>$_POST['allvcrvaliddate'],
-                      
+		'ems_pwplace1'                  =>$_POST['ppwpref1'],
+                'ems_pwplace2'                  =>$_POST['ppwpref2'],
+                'ems_pwplace3'                  =>$_POST['ppwpref3'],
             );
             $upempdata_flag=$this->sismodel->updaterec('employee_master_support', $dataems,'ems_empid',$id);
             
@@ -1228,7 +1252,8 @@ class Staffmgmt extends CI_Controller
                     redirect('empmgmt/viewempprofile');
                 }
                 else{
-                    redirect('staffmgmt/employeelist');
+                   $this->load->view('staffmgmt/editempprofile', $data);
+                   // redirect('staffmgmt/employeelist');
                 }    
             }
             }//form true    
@@ -1548,23 +1573,27 @@ class Staffmgmt extends CI_Controller
         $whdata = '';
 	//  get role id and user id
 	$rlid=$this->session->userdata('id_role');
+        $usrname=$this->session->userdata('username');
         if ($rlid == 5){
-                $usrid=$this->session->userdata('id_user');
-		$deptid = '';
-		$whdatad = array('userid' => $usrid,'roleid' => $rlid);
-        	$resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
-                foreach($resu as $rw){
-                        $deptid=$rw->deptid;
-                }
-                $whdata = array ('sp_dept' => $deptid);
-                //array_push($whdata,'sp_dept' => $deptid);
+		if(($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
+                }else{
+               	 	$usrid=$this->session->userdata('id_user');
+			$deptid = '';
+			$whdatad = array('userid' => $usrid,'roleid' => $rlid);
+        		$resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+	                foreach($resu as $rw){
+        	                $deptid=$rw->deptid;
+                	}
+	                $whdata = array ('sp_dept' => $deptid);
+        	        //array_push($whdata,'sp_dept' => $deptid);
+		}
         }
         if ($rlid == 10){
 		// get uo authid
 		// default is null and for VC,  R also null but others uo pass it in filter
                 $usrname=$this->session->userdata('username');
 //              print_r( $usrname); die;
-                if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+                if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
                 }else{
                       $uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
                       $whdata = array ('sp_uo' => $uoid);
@@ -1630,6 +1659,9 @@ class Staffmgmt extends CI_Controller
 	    }*/
 		$this->wtyp = $wtype;
                 $this->desigm = $post;	
+//		if(($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
+//			 unset($whdata['emp_dept_code']);		
+  //              }
  	 	$data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield, $whdata,$whorder);
          }
          else{

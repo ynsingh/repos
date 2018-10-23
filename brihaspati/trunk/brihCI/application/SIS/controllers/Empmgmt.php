@@ -1283,7 +1283,7 @@ public function disciplin_profile() {
         $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
         $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
         $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
-        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',2)->org_code;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
 	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
  
 

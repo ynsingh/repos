@@ -279,6 +279,7 @@ CREATE TABLE `employee_master` (
   `emp_dob` date default NULL,
   `emp_doj` date default NULL,
   `emp_jsession` varchar(100) default null,
+  `emp_paycomm` VARCHAR(255) NULL,
   `emp_salary_grade` int(11) NOT NULL,
   `emp_pnp` VARCHAR(255) default NULL,
   `emp_bank_accno` varchar(20) default NULL,
@@ -336,6 +337,8 @@ CREATE TABLE `employee_master` (
   `emp_phdtype` VARCHAR(50) default NULL,
   `emp_phdinstname` VARCHAR(255) default NULL,
   `emp_phdunivdeput` VARCHAR(255) default NULL,
+  `emp_phdspecialisation` VARCHAR(255) NULL,
+  `emp_phdcollege` VARCHAR(255) NULL,
   `emp_netqualified` VARCHAR(50) default NULL,
   `emp_netpassingyear` date  default NULL,
   `emp_netdiscipline`  VARCHAR(255) default NULL,
@@ -414,6 +417,9 @@ CREATE TABLE employee_master_support (
  ems_plino2 varchar(256) default null,
  ems_society varchar(256) default null,
  ems_societymember varchar(256) default null, 
+ ems_pwplace1 INT(11) NULL, 
+ ems_pwplace2 INT(11) NULL, 
+ ems_pwplace3 INT(11) NULL,
  PRIMARY KEY  (ems_id)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

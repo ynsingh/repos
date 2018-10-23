@@ -91,7 +91,7 @@
                                 $rest = substr($uname, -21);
      //                           if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
-                        //              echo anchor("empmgmt/add_leavepertdata/{$emp_id}"," Add ",array('title' => ' Add Leave Data' , 'class' => 'red-link'));
+                                      echo anchor("empmgmt/add_leavepertdata/{$emp_id}"," Add ",array('title' => ' Add Leave Data' , 'class' => 'red-link'));
                                 }
                                 ?>
 
@@ -152,7 +152,7 @@
                                 <?php
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
-                        //                      echo anchor("empmgmt/edit_leavepertdata/{$record->empsd_id}","Edit",array('title' => ' Edit Leave Data' , 'class' => 'red-link'));
+                                              echo anchor("empmgmt/edit_leavepertdata/{$record->empsd_id}","Edit",array('title' => ' Edit Leave Data' , 'class' => 'red-link'));
                                         }
                                 ?>
                                 </td>

@@ -210,7 +210,7 @@
              <td><label for="p" style="font-size:15px;"><font color='Blue'> Position Present</font> </label>
              <div>
                <!--  <?php //echo form_input($p); ?> -->
-		<input type="text" name="p" id="p" class="keyup-numeric" size="30" value="<?php echo $p['value']; ?>" placeholder="Position" required="required" oninput="getptypevalueper(this.value)" /><br>
+		<input type="text" name="p" id="p" class="keyup-numeric" size="30" value="<?php echo $p['value']; ?>" placeholder="Position" required="required" oninput="getsstypevalueper(this.value)" /><br>
              </div>
 	     </td>
              <td><label for="v" style="font-size:15px;"><font color='Blue'> Position Vacant</font> </label>

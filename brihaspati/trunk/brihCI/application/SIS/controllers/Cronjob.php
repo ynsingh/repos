@@ -18,10 +18,10 @@ class Cronjob extends CI_Controller
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"lgnmodel"); 
         $this->load->model('SIS_model',"sismodel");
-        if(empty($this->session->userdata('id_user'))) {
-            $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-            redirect('welcome');
-        }
+//        if(empty($this->session->userdata('id_user'))) {
+  //          $this->session->set_flashdata('flash_data', 'You don\'t have access!');
+    //        redirect('welcome');
+      //  }
     }
 
 
@@ -36,6 +36,7 @@ class Cronjob extends CI_Controller
 
     public function index(){
  	echo "This is cron page";       
+	$this->autoretirement();
     }
     /* this function is created to check staff retire date for the staff retirement process */
     public function autoretirement(){ 

@@ -351,7 +351,7 @@ class Report  extends CI_Controller
 	//get all profile and service data
 	$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
 
-	$fieldems="ems_empid,ems_vci_status,ems_vci_statchapter,ems_vci_statregno,ems_vci_statregdate,ems_vci_statvaliddate,ems_vci_alliregno,ems_vci_alliregdate,ems_vci_allivaliddate";
+	$fieldems="ems_empid,ems_vci_status,ems_vci_statchapter,ems_vci_statregno,ems_vci_statregdate,ems_vci_statvaliddate,ems_vci_alliregno,ems_vci_alliregdate,ems_vci_allivaliddate,ems_pwplace1,ems_pwplace2,ems_pwplace3 ";
         $whdataems = array ('ems_empid' => $emp_id);
         $whorderems = '';
         $emp_data['emsdata'] = $this->sismodel->get_orderlistspficemore('employee_master_support',$fieldems,$whdataems,$whorderems);
@@ -1128,7 +1128,7 @@ public function disciplinewiselist(){
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>--Select University Officer--';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -1172,7 +1172,7 @@ public function disciplinewiselist(){
         $pt_select_box =' ';
         $pt_select_box.='<option value=null>--Select Post--';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname ==='admin')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname ==='admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
         	$pt_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$pt_select_box.='<option value='.All.'>'.All. ' ';
@@ -1210,7 +1210,7 @@ public function disciplinewiselist(){
         $uo_select_box =' ';
         $uo_select_box.='<option value=null>--Select University Officer--';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
         	$uo_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$uo_select_box.='<option value='.All.'>'.All. ' ';
@@ -1251,7 +1251,7 @@ public function disciplinewiselist(){
         $dept_select_box =' ';
         $dept_select_box.='<option value=null>--Select Department--';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
         	$dept_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$dept_select_box.='<option value='.All.'>'.All. ' ';
@@ -1290,7 +1290,7 @@ public function disciplinewiselist(){
         $post_select_box =' ';
         $post_select_box.='<option value=null>-- Select Post --';
 	$usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
         	$post_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$post_select_box.='<option value='.All.'>'.All. ' ';
@@ -1325,7 +1325,7 @@ public function disciplinewiselist(){
         $post_select_box =' ';
         $post_select_box.='<option value=null>-- Select Post --';
         $usrname=$this->session->userdata('username');
-        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($username === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
                 $post_select_box.='<option value='.All.'>'.All. ' ';
         }
         //$post_select_box.='<option value='.All.'>'.All. ' ';

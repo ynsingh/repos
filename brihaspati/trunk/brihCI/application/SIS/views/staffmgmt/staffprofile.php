@@ -13,6 +13,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
             $(document).ready(function(){
+		 $("#dojvc").hide();
+		$( "#netqno" ).hide();
             var today = new Date();
             
             $('#StartDate,#StartDatevc,#Dateofassrexam,#Dateofhgp1,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
@@ -51,17 +53,31 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 //alert(birthDate);
 		var grp_id =  $('#grpid').val();
 		var wrktype_id = $('#worktypeid').val();
+
 		if(((grp_id =='B') && (wrktype_id == "Non Teaching"))||((grp_id =='C') && (wrktype_id == "Non Teaching"))){
 	                var retDate = new Date(birthDate.getFullYear() + 58, birthDate.getMonth(), birthDate.getDate()-1);
 		}else{
 			var retDate = new Date(birthDate.getFullYear() + 60, birthDate.getMonth(), birthDate.getDate()-1);
 		}
                 //alert(retDate);
+                var jdatevc = $('#StartDatevc').val();
+		var desig_id = $('#desigid').val();
+              if( desig_id == 1){
+                var retDate = new Date(birthDate.getFullYear() + 70, birthDate.getMonth(), birthDate.getDate()-1);
+                var jDate = new Date(jdatevc);
+                var retDaten = new Date(jDate.getFullYear() + 3, jDate.getMonth(), jDate.getDate()-1);
+                var retDatef = ((retDate > retDaten)?retDaten:retDate);
+		var lastDayWithSlashes = new Date(retDatef.getFullYear(), retDatef.getMonth() + 1, retDatef.getDate());
+               	var lastDay = (lastDayWithSlashes.getFullYear()+ '-' + ((lastDayWithSlashes.getMonth() +1) < 10 ? '0' : '')+(lastDayWithSlashes.getMonth() +1)+ '-' + lastDayWithSlashes.getDate());
+
+              }
+	      else{
+
                 // var lastDayWithSlashes = (retDate.getFullYear()+ '/' + (retDate.getMonth() + 1)+'/' +retDate.getDate());
                 var lastDayWithSlashes = new Date(retDate.getFullYear(), retDate.getMonth() + 1, 0);
                 //var lastDay = (lastDayWithSlashes.getFullYear()+ '/' + (lastDayWithSlashes.getMonth() +1)+ '/' + lastDayWithSlashes.getDate());
                 var lastDay = (lastDayWithSlashes.getFullYear()+ '-' + ((lastDayWithSlashes.getMonth() +1) < 10 ? '0' : '')+(lastDayWithSlashes.getMonth() +1)+ '-' + lastDayWithSlashes.getDate());
-                //alert(lastDayWithSlashes);
+		}
                 return $('#Dateofretir').val(lastDay);
                
             });
@@ -352,7 +368,65 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }); 
             /************************ close Plan NON PLAN ICAR GOI******************************************************************/
 
+	 /************************Old payband start******************************************************************/
+            
+            $('#emppostid').on('change',function(){
+		var desig_id = $('#desigid').val();
+                var grp_id =  $('#grpid').val();
+                var wrktype_id = $('#worktypeid').val();
+                var cudshmpostwrktype = grp_id+","+wrktype_id+","+desig_id;
+                if(desig_id == ''){
+                   $('#payband').prop('disabled',true);
+                }
+                else{
+                    $('#payband').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesigpaylist",
+                        type: "POST",
+                        data: {"gwtdesig" : cudshmpostwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#payband').html(data.replace(/^"|"$/g, ''));
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                        }
+                    });
+                }
+            }); 
 
+	 /************************close old payband******************************************************************/
+
+	 /************************new payband start ******************************************************************/
+            
+            $('#emppostid').on('change',function(){
+		var desig_id = $('#desigid').val();
+                var grp_id =  $('#grpid').val();
+                var wrktype_id = $('#worktypeid').val();
+
+                var cudshmpostwrktype = grp_id+","+wrktype_id+","+desig_id;
+                if(desig_id == ''){
+                   $('#newpayband').prop('disabled',true);
+                }
+                else{
+                    $('#newpayband').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesigpaylist",
+                        type: "POST",
+                        data: {"gwtdesig" : cudshmpostwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#newpayband').html(data.replace(/^"|"$/g, ''));
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                        }
+                    });
+                }
+            }); 
+	 /************************close new payband******************************************************************/
             
             /************************Employee type******************************************************************/
             
@@ -394,6 +468,54 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 }
             }); 
             /************************ closer Employee type******************************************************************/
+            /************************Employee Grade******************************************************************/
+            
+            $('#worktypeid').on('change',function(){
+                var worktype = $(this).val();
+              //  alert("comin ======="+worktype);
+                if(worktype === ''){
+                   $('#empgrade').prop('disabled',true);
+                }
+                else{
+             
+                    $('#empgrade').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
+                        type: "POST",
+                        data: {"wtype" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee Grade******************************************************************/
+        
+            /*****************************************vet council registration************************************************************ */
+            
+            $('#vcrapp,#vcrnoapp').on('change',function(){
+                var vcrradioval = $(this).val();
+               // alert("vcrradioval====="+vcrradioval);
+                if(vcrradioval == 'Applicable'){
+                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',false);
+                    $('#allvciregno,#allvciregdate,#allvcrvaliddate').prop('disabled',false);
+                                      
+                }
+                else{
+                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',true);
+                    $('#allvciregno,#allvciregdate,#allvcrvaliddate').prop('disabled',true);
+                       
+                }
+            }); 
+            
+           /****************VCR closer*************************************************************************/
             
             /**Allows only letters, numbers and spaces. All other characters will return an error.**/
             $('.keyup-characters').keyup(function() {
@@ -471,12 +593,15 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 var redioval = $(this).val();
                // alert("redioval===="+redioval);
                 if(redioval == 'No'){
-                    $('#netqualyes,#passyear,#netdiscipline').prop('disabled',true);
+                    $('#passyear,#netdiscipline').prop('disabled',true);
+                   $( "#netqno" ).show();
+			$( "#netqyes" ).hide();
                                       
                 }
                 else{
                     $('#netqualyes,#passyear,#netdiscipline').prop('disabled',false);
-                   
+                    $( "#netqno" ).hide();
+		    $( "#netqyes" ).show();
                     
                     
                 }
@@ -502,54 +627,15 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }); 
             
            /**************** Additional Assignments closer*************************************************************************/
-            /************************Employee Grade******************************************************************/
-            
-            $('#worktypeid').on('change',function(){
-                var worktype = $(this).val();
-              //  alert("comin ======="+worktype);
-                if(worktype === ''){
-                   $('#empgrade').prop('disabled',true);
-                }
-                else{
-             
-                    $('#empgrade').prop('disabled',false);
-                    $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
-                        type: "POST",
-                        data: {"wtype" : worktype},
-                        dataType:"html",
-                        success:function(data){
-                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
-                            
-                        },
-                        error:function(data){
-                            alert("error occur..!!");
-                 
-                        }
-                                            
-                    });
-                }
-            }); 
-            /************************ closer Employee Grade******************************************************************/
-        
-            /*****************************************vet council registration************************************************************ */
-            
-            $('#vcrapp,#vcrnoapp').on('change',function(){
-                var vcrradioval = $(this).val();
-               // alert("vcrradioval====="+vcrradioval);
-                if(vcrradioval == 'Applicable'){
-                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',false);
-                    $('#allvciregno,#allvciregdate,#allvcrvaliddate').prop('disabled',false);
-                                      
-                }
-                else{
-                    $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',true);
-                    $('#allvciregno,#allvciregdate,#allvcrvaliddate').prop('disabled',true);
-                       
-                }
-            }); 
-            
-           /****************VCR closer*************************************************************************/
+		 $('#desigid').on('change',function(){
+			var desigvcid= $('#desigid').val();
+			if(desigvcid == 1){
+				$("#dojvc").show();
+			}
+			else{
+				$("#dojvc").hide();
+			}
+		  });
            
         
         });
@@ -759,24 +845,25 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="caste" value="<?php echo isset($_POST["caste"]) ? $_POST["caste"] : ''; ?>" placeholder="Caste..." size="33" >
                 </div></td>
                        
+
                 <td><label for="payband" style="font-size:15px;"><font color='blue'>Pay Band</font><font color='Red'>*</font></label>
-                    <div><select name="payband" required style="width:300px;"> 
+                    <div><select name="payband" id="payband" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
-                        <?php foreach($this->salgrd as $salgrddata): ?>	
-                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
-                            </option> 
- 			<?php endforeach; ?>
+                        <?php //foreach($this->salgrd as $salgrddata): ?>	
+                      <!--      <option value="<?php //echo $salgrddata->sgm_id; ?>"><?php //echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
+                            </option> -->
+ 			<?php //endforeach; ?>
                        
                     </select></div>
                 </td>
 		 <td><label for="newpayband" style="font-size:15px;"><font color='blue'>New Pay Band</font><font color='Red'></font></label>
-                    <div><select name="newpayband" required style="width:300px;">
+                    <div><select name="newpayband"  id="newpayband" style="width:300px;">
                         <option selected="selected" disabled selected>--- Select New Pay Band ---</option>
-                        <?php foreach($this->salgrdn as $salgrddatan): ?>
-                            <option value="<?php echo $salgrddatan->sgm_id; ?>"><?php echo $salgrddatan->sgm_name."(". $salgrddatan->sgm_min."-".$salgrddatan->sgm_max.")".$salgrddatan->sgm_level; ?>
+<!--                        <?php //foreach($this->salgrdn as $salgrddatan): ?>
+                            <option value="<?php //echo $salgrddatan->sgm_id; ?>"><?php //echo $salgrddatan->sgm_name."(". $salgrddatan->sgm_min."-".$salgrddatan->sgm_max.")".$salgrddatan->sgm_level; ?>
                             </option>
-                        <?php endforeach; ?>
-
+                        <?php //endforeach; ?>
+-->
                     </select></div>
                 </td>
 
@@ -828,14 +915,22 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         </select>
                      </div>
 		</td>                 
-		<td><label for="dateofjoiningvc" style="font-size:15px;"><font color='blue'>Date Of Appointment as VC</font><font color='Red'></font></label>
-                    <div><input type="text" name="dateofjoiningvc" value="<?php echo isset($_POST["dateofjoining"]) ? $_POST["dateofjoining"] : ''; ?>" id="StartDatevc"  size="33" >
+		<td>
+			<?php
+			$loguname=$this->session->userdata('username');
+			if($loguname == 'admin' || $loguname =='rsection@tanuvas.org.in'){
+			
+			?>
+			<div  id="dojvc">
+			<label for="dateofjoiningvc" style="font-size:15px;"><font color='blue'>Date Of Appointment as VC</font><font color='Red'></font></label><br>
+                    <input type="text" name="dateofjoiningvc" value="<?php echo isset($_POST["dateofjoiningvc"]) ? $_POST["dateofjoiningvc"] : ''; ?>" id="StartDatevc"  size="33" >
                   <!--      <select name="jsession" style="width:140px;" id="jsession" required>
                                 <option selected="selected" disabled selected>Select Session</option>
                                 <option value="Forenoon">Forenoon</option>
                                 <option value="Afternoon">Afternon</option>
                         </select>-->
                      </div>
+		<?php } ?>
                 </td>
                 <td><label for="DateofBirth" style="font-size:15px;"><font color='blue'>Date Of Birth</font><font color='Red'>*</font></label>
                     <div><input type="text" name="DateofBirth" id="Dateofbirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>"  size="33" required="required">
@@ -865,7 +960,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
-                <td><label for="assrexamdate" style="font-size:15px;"><font color='blue'>Date Of ASRR Exam</font></label>
+                <td><label for="assrexamdate" style="font-size:15px;"><font color='blue'>ASRR Passed</font></label>
                     <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo isset($_POST["assrexamdate"]) ? $_POST["assrexamdate"] : ''; ?>"class="form-control" size="33" />
                 <div></td>    
                 
@@ -940,7 +1035,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 		                         
             </tr>
             <tr>
-		<td><label for="PhD Details " style="font-size:15px;"><b>PhD Details:</b></label></td> </tr>
+		<td><label for="PhD Details " style="font-size:15px;"><b>Ph.D. Details:</b></label></td> </tr>
             <tr>
                 <td><label for="phdstatus" style="font-size:15px;"><font color='blue'>Ph.D. Status</font></label>
                     <div><select name="phdstatus" style="width:300px;"> 
@@ -954,8 +1049,21 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="33" />
                 </div></td>    
                 <td><label for="Discipline " style="font-size:15px;"><font color='blue'>Discipline</font></label>
-                <div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="PhD Discipline........" size="33" >
+                    <div> <select id="phddiscipline" style="width:300px;" name="phddiscipline" required> 
+                        <option selected="selected" disabled selected>--------Ph.D. Discipline-----</option>
+                       <?php foreach($this->subject as $subdata): ?>	
+   				<option class="test" value="<?php echo $subdata->sub_id; ?>"><?php echo $subdata->sub_name; ?></option> 
+ 			<?php endforeach; ?>
+                      
+                    </select></div>
+                <!--<div><input type="text" name="phddiscipline" class="keyup-characters" value="<?php //echo isset($_POST["phddiscipline"]) ? $_POST["phddiscipline"] : ''; ?>" placeholder="PhD Discipline........" size="33" >
+                </div>-->
+		</td>
+		 <td><label for="spl" style="font-size:15px;"><font color='blue'>Ph.D. Specialisation</font></label>
+                <div><input type="text" name="phdsplname" class="keyup-characters" value="<?php echo isset($_POST["phdsplname"]) ? $_POST["phdsplname"] : ''; ?>" placeholder="Ph.D. Specialiation." size="33" >
                 </div></td>
+            </tr>
+            <tr>
                 <td><label for="phdtype" style="font-size:15px;"><font color='blue'>Ph.D. Type</font></label>
                     <div><select name="phdtype" style="width:300px;"> 
                         <option value="">-------------PhD type ----------</option>
@@ -963,10 +1071,11 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Part time">Part time</option>
                     </select></div>
                 </td>
-            </tr>
-            <tr>
                 <td><label for="InstName" style="font-size:15px;"><font color='blue'>University/Institution Name</font></label>
-                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="PhD University/Institution Name........" size="33" >
+                <div><input type="text" name="phdinstname" class="keyup-characters" value="<?php echo isset($_POST["phdinstname"]) ? $_POST["phdinstname"] : ''; ?>" placeholder="Ph.D. University/Institution Name." size="33" >
+                </div></td>
+		 <td><label for="collegeName" style="font-size:15px;"><font color='blue'>College Name</font></label>
+                <div><input type="text" name="phdcollname" class="keyup-characters" value="<?php echo isset($_POST["phdcollname"]) ? $_POST["phdcollname"] : ''; ?>" placeholder="Ph.D. College Name." size="33" >
                 </div></td>
                 <td><label for="univdeput" style="font-size:15px;"><font color='blue'>Whether Deputed by University</font></label>
                     <div><select name="univdeput" id="univdeput" style="width:300px;"> 
@@ -975,6 +1084,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="No">No</option>
                     </select></div>
                 </td>    
+            </tr>
+            <tr>
                 <td><label for="udeput" style="font-size:15px;"><font color='blue'>If YES </font> </label>
                 <div><input type="radio" name="udeput" id="udeput" value="withsalary">with Salary &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="udeput" id="udeput2" value="withoutsalary">without Salary
@@ -989,8 +1100,6 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                        
                     </select>   
                 </div></td>
-            </tr>
-            <tr>
                 <td><label for="leavedatefrom" style="font-size:15px;"><font color='blue'>Leave From</font></label>
                     <div><input type="text" name="leavedatefrom" id="leavedatefrom" value="<?php echo isset($_POST["leavedatefrom"]) ? $_POST["leavedatefrom"] : ''; ?>"class="form-control" size="33" />
                 <div></td>
@@ -1004,8 +1113,9 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <div><input type="radio" name="netqual" id="netqual" value="Yes">Yes &nbsp;&nbsp;&nbsp;
                 <input type="radio" name="netqual" id="netqual2" value="No">NO
                 </div></td>
-                <td><label for="netqualyes" style="font-size:15px;"><font color='blue'>If Yes </font></label>
-                <div>
+                <td>
+                <div id="netqyes">
+		    <label for="netqualyes" style="font-size:15px;"><font color='blue'>If Yes </font></label><br>
                     <select name="netqualyes" id="netqualyes" style="width:300px;"> 
                         <option value="">--------- Select Organiser--------</option>
                         <option value="ICAR">ICAR</option>
@@ -1013,7 +1123,19 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="UGC">UGC</option>
                         <option value="TNSET">INSET</option>
                     </select>   
-                </div></td>
+                </div>
+		<div id="netqno">
+  		    <label for="netqualno" style="font-size:15px;"><font color='blue'>If No </font></label><br>
+                    <select name="netqualno" id="netqualno" style="width:300px;"> 
+                        <option value="">--------- Select Reason--------</option>
+                        <option value="Exempted_by_Subject">Exempte by Subect</option>
+                        <option value="Exempted_by_Year">Exempted by Year</option>
+                        <option value="Entry_Level_Ph.D.">Entry Level Ph.D.</option>
+                    </select>   
+                </div>
+
+		
+		</td>
                 <td><label for="passdate" style="font-size:15px;"><font color='blue'>Year of Passing</font></label>
                     <div><input type="text" name="passyear" id="passyear" value="<?php echo isset($_POST["passyear"]) ? $_POST["passyear"] : ''; ?>" placeholder="Year of Passing Date  ........" size="33" />
                 <div></td>
@@ -1099,6 +1221,34 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="asignplace" style="font-size:15px;"><font color='blue'>Assignment Place</font></label>
                 <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="33" >
                 </div></td>
+		<td><label for="pref1" style="font-size:15px;"><font color='blue'>Preferred Place of Working - First </font> <font color='Red'></font></label>
+                    <div> <select id="ppwpref1" style="width:300px;" name="ppwpref1" >
+                        <option selected="selected" disabled selected>-Preferred Place of Working--</option>
+                       <?php foreach($this->campus as $camdata): ?>
+                                <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
+                        <?php endforeach; ?>
+
+                    </select></div>
+                </td>
+		<td><label for="pref2" style="font-size:15px;"><font color='blue'>Preferred Place of Working - Second </font> <font color='Red'></font></label>
+                    <div> <select id="ppwpref2" style="width:300px;" name="ppwpref2" >
+                        <option selected="selected" disabled selected>-Preferred Place of Working--</option>
+                       <?php foreach($this->campus as $camdata): ?>
+                                <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
+                        <?php endforeach; ?>
+
+                    </select></div>
+                </td>
+		<td><label for="pref3" style="font-size:15px;"><font color='blue'>Preferred Place of Working - Third </font> <font color='Red'></font></label>
+                    <div> <select id="ppwpref3" style="width:300px;" name="ppwpref3" >
+                        <option selected="selected" disabled selected>-Preferred Place of Working--</option>
+                       <?php foreach($this->campus as $camdata): ?>
+                                <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
+                        <?php endforeach; ?>
+
+                    </select></div>
+                </td>
+
             </tr>
             <tr>
            <!-- </tr>
