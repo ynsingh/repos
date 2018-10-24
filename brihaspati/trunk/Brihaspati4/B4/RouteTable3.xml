@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoutingTable LocalNodeID="1245bdc58e" Tag="0002">
+<!-- LocalNodeID is retained, if it is not there, then it can be randomly generated and its existence can be confirmed from initial neighbour. Unless it is confirmed, the node will not send its routing table to neighbours, Thus no querry will be route to it. -->
+<!-- Tag= 0002 refers to the "Msg type" code of the xml file. The code 0002 is the "Routing Table Update" type of Msg -->  
+   <column columnNo="0">
+
+      <row NodeID="00df6842cd" rowNo="0">
+      	 <NodeID>00df6842cd</NodeID>
+      	 <rowNo>0</rowNo>
+         <IP4Addr>x.y.z.p</IP4Addr>
+         <IP6Addr></IP6Addr>
+         <IP4reachability>true</IP4reachability>
+         <IP6reachability>true</IP6reachability>
+         <httpstatus>true</httpstatus>
+         <httpport>abcd</httpport>
+         <tcpstatus>true</tcpstatus>
+         <tcpport>abcd</tcpport>
+         <udpstatus>true</udpstatus>
+         <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be Ture or False -->
+         <Proxy></Proxy>
+      </row>
+	  
+      <row NodeID="509754bdce" rowNo="1">
+      <NodeID>509754bdce</NodeID>
+      	 <rowNo>1</rowNo>
+		 <IP4Addr>x.y.z.a</IP4Addr>
+         <IP6Addr></IP6Addr>
+         <httpstatus>true</httpstatus>
+         <httpport>abcd</httpport>
+         <tcpstatus>true</tcpstatus>
+         <tcpport>abcd</tcpport>
+         <udpstatus>true</udpstatus>
+         <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+         <Proxy></Proxy>
+      </row>
+	  
+      <row NodeID="bcffabcdef" rowNo="2">
+      <NodeID>bcffabcdef</NodeID>
+      	 <rowNo>2</rowNo>
+	  <IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+         <Proxy></Proxy>
+      </row>
+   </column>
+   <column columnNo="1">
+   	<row NodeID="22fdba4109" rowNo="0">
+   	<NodeID>22fdba4109</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="2ffe25bbbc" rowNo="1">
+   	<NodeID>2ffe25bbbc</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="2cffeeffaa" rowNo="2">
+   	<NodeID>2cffeeffaa</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+   <column columnNo="2">
+   	<row NodeID="24469744bf" rowNo="0">
+   	<NodeID>24469744bf</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24ff568411" rowNo="1">
+   	<NodeID>24ff568411</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="246fbcbcaf" rowNo="2">
+   	<NodeID>246fbcbcaf</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+   <column columnNo="3">
+   	<row NodeID="24dd651429" rowNo="0">
+   	<NodeID>24dd651429</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24d1211136" rowNo="1">
+   	<NodeID>24d1211136</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24d8bbbbad" rowNo="2">
+   	<NodeID>24d8bbbbad</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+   <column columnNo="4">
+   	<row NodeID="24dff25690" rowNo="0">
+   	<NodeID>24df325690</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df4dadde" rowNo="1">
+   	<NodeID>24dfbdadde</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24dfa3fccc" rowNo="2">
+   	<NodeID>124563fccc</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+   <column columnNo="5">
+   	<row NodeID="24df265890" rowNo="0">
+   	<NodeID>24df265890</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df255441" rowNo="1">
+   	<NodeID>24df255441</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df2bbdae" rowNo="2">
+   	<NodeID>24df2bbdae</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+   <column columnNo="6">
+   	<row NodeID="24df213257" rowNo="0">
+   	<NodeID>24df213257</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df210012" rowNo="1">
+   	<NodeID>24df210012</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df213698" rowNo="2">
+   	<NodeID>24df213698</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+   </column>
+   <column columnNo="7">
+   	<row NodeID="24df215aad" rowNo="0">
+   	<NodeID>24df215bad</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df215aae" rowNo="1">
+   	<NodeID>24df215aae</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df215ddd" rowNo="2">
+   	<NodeID>24df215ddd</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+   <column columnNo="8">
+   	<row NodeID="24df215bbc" rowNo="0">
+   	<NodeID>24df215bdc</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df215bcc" rowNo="1">
+   	<NodeID>24df215bcc</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df215b5a" rowNo="2">
+   	<NodeID>24df215baa</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+   </column>
+   <column columnNo="9">
+   	<row NodeID="24df215bdb" rowNo="0">
+   	<NodeID>24df215bd3</NodeID>
+      	 <rowNo>0</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df215bde" rowNo="1">
+   	<NodeID>24df215bdc</NodeID>
+      	 <rowNo>1</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+   	<row NodeID="24df215bd7" rowNo="2">
+   	<NodeID>24df215bdd</NodeID>
+      	 <rowNo>2</rowNo>
+	<IP4Addr>x.y.z.a</IP4Addr>
+      <IP6Addr></IP6Addr>
+      <httpstatus>true</httpstatus>
+      <httpport>abcd</httpport>
+      <tcpstatus>true</tcpstatus>
+      <tcpport>abcd</tcpport>
+      <udpstatus>true</udpstatus>
+      <udpport>abcd</udpport>
+<!-- TCP, UDP, HTTP Get, HTTP Post -->
+<!-- can be True or False -->
+	</row>
+	
+	</column>
+</RoutingTable>
+
