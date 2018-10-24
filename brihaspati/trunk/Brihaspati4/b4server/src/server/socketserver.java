@@ -7,21 +7,21 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
- 
-public class socketserver 
+
+public class socketserver
 {
- 
+
     private static Socket socket;
- 
+
     public static void main(String[] args)
     {
         try
         {
- 
+
             int port = 25001;
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Server Started and listening to the port 25000");
- 
+
             //Server is running always. This is done using this while(true) loop
             while(true)
             {
@@ -33,12 +33,12 @@ public class socketserver
                 BufferedReader br = new BufferedReader(isr);
                 String cert = br.readLine();
                 System.out.println("Message received from client is "+ cert);
- 
+
                 //Multiplying the number by 2 and forming the return message
                 String returnMessage;
                 try
                 {
-                    
+
                     returnMessage = cert + "dhvani" + "\n";
                 }
                 catch(NumberFormatException e)
@@ -46,7 +46,7 @@ public class socketserver
                     //Input was not a number. Sending proper message back to client.
                     returnMessage = "Please send a proper number\n";
                 }
- 
+
                 //Sending the response back to the client.
                 OutputStream os = socket.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(os);
@@ -66,7 +66,7 @@ public class socketserver
             {
                 socket.close();
             }
-            catch(Exception e){}
+            catch(Exception e) {}
         }
     }
 }

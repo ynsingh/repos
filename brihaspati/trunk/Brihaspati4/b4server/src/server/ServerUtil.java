@@ -14,22 +14,22 @@ import java.util.Random;
 
 public class ServerUtil {
 
-	/** Generate a random Key */
-  public static int generateRandomKey() {
-  	int key=new Random().nextInt();
-  	if(key<=0) {
-  		do{
-  			key=new Random().nextInt();
-  		} while(key<=0);
-  	}
-  	return key;
-  }
+    /** Generate a random Key */
+    public static int generateRandomKey() {
+        int key=new Random().nextInt();
+        if(key<=0) {
+            do {
+                key=new Random().nextInt();
+            } while(key<=0);
+        }
+        return key;
+    }
 
-  /** Generate  random integers in the range 0..999999. */
-  public static int RandomInteger() {
-  	Random randomGenerator = new Random();
-  	int randomInt = randomGenerator.nextInt(1000000);
-  	return randomInt;
-  }
+    /** Generate  random integers in the range 0..999999. */
+    public static int RandomInteger() {
+        Random randomGenerator = new Random();
+        int randomInt = randomGenerator.nextInt(1000000);
+        return randomInt;
+    }
 }
 
