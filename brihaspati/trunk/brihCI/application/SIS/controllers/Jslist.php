@@ -222,17 +222,62 @@ class Jslist extends CI_Controller
                 $address=$detail->emp_address;
                 $email=$detail->emp_secndemail;
                 $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
-                $dor=$detail->emp_dor;
+                $dor=date('d-m-Y',strtotime($detail->emp_dor));
+                $doj=date('d-m-Y',strtotime($detail->emp_doj));
+                $dob=date('d-m-Y',strtotime($detail->emp_dob));
                 $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$detail->emp_salary_grade)->sgm_name;
                 $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade)->sgm_max;
                 $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade)->sgm_min;
                 $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
                 $payscale=$payband."(".$pay_min."-".$pay_max.")".$gardepay;
+                $aadhaarno=substr($detail->emp_aadhaar_no, -4);
+                $paycomm=$detail->emp_paycomm;
                                 
                 array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
-                $detail->emp_doj,$empname,$accno,$detail->emp_aadhaar_no,$detail->emp_dob, $address,$detail->emp_phone,$dor,$payscale);
+                $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor,$payscale,$ifcbank,$paycomm);
             }
+            
         } 
+        $emp_data2=$this->sismodel->get_listrow('employee_master_support','ems_code',$pfno);
+        $empdetail2 = $emp_data2->result();
+        if(count($empdetail2)>0){
+            
+            foreach($empdetail2 as $detail2){
+                $housetype=$detail2->ems_house_type;
+                $houseno=$detail2->ems_house_no;
+                $pensioncontri=$detail2->ems_pensioncontri;
+                $upfno=$detail2->ems_upfno;
+                $univemp=$detail2->ems_universityemp;
+                $washallowance=$detail2->ems_washingallowance;
+                $dedtupf=$detail2->ems_deductupf;
+                $hragrade=$detail2->ems_hragrade;
+                $ccagrade=$detail2->ems_ccagrade;
+                $inclsummary=$detail2->ems_inclsummary;
+                $lic1no=$detail2->ems_lic1no;
+                $lic1amount=$detail2->ems_lic1amount;
+                $lic2no=$detail2->ems_lic2no;
+                $lic2amount=$detail2->ems_lic2amount;
+                $lic3no=$detail2->ems_lic3no;
+                $lic3amount=$detail2->ems_lic3amount;
+                $lic4no=$detail2->ems_lic4no;
+                $lic4amount=$detail2->ems_lic4amount;
+                $lic5no=$detail2->ems_lic5no;
+                $lic5amount=$detail2->ems_lic5amount;
+                $prdno1=$detail2->ems_prdno1;
+                $prdno2=$detail2->ems_prdno2;
+                $prdno3=$detail2->ems_prdno3;
+                $plino1=$detail2->ems_plino1;
+                $plino2=$detail2->ems_plino2;
+                $society=$detail2->ems_society;
+                $socmem=$detail2->ems_societymember;
+                
+                
+                array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
+                $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
+                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem);      
+            }
+            
+        }
        // echo "values in controller===".$values;
         echo json_encode($values);
     }

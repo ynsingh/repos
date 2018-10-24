@@ -25,7 +25,7 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-                            //alert("datat==="+data);
+                           // alert("datat==="+data);
                             var empinput=data.split(',');
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
@@ -45,6 +45,63 @@
                             $('#contact').val(empinput[15].replace(/"|"/g,""));
                             $('#dor').val(empinput[16].replace(/"|"/g,""));
                             $('#pscale').val(empinput[17].replace(/[[\]"|"]/g,""));
+                            $('#bname').val(empinput[18].replace(/[[\]"|"]/g,""));
+                            $('#ifsccode').val(empinput[19].replace(/[[\]"|"]/g,""));
+                            $('#branch').val(empinput[20].replace(/[[\]"|"]/g,""));
+                            $('#pcomm').val(empinput[21].replace(/[[\]"|"]/g,""));
+                            
+                            var pcon=empinput[22].replace(/[[\]"|"]/g,"");
+                            if(pcon ==='yes'){
+                                $('#pcontri').prop("checked", true);
+                               // $('#pcontri1').is(':checked');
+                            } 
+                            //$('#pcontri').val(empinput[21].replace(/[[\]"|"]/g,""));
+                            $('#upfno').val(empinput[23].replace(/[[\]"|"]/g,""));
+                            $('#qtrno').val(empinput[24].replace(/[[\]"|"]/g,""));
+                            $('#qtrtype').val(empinput[25].replace(/[[\]"|"]/g,""));
+                            var univemp=empinput[26].replace(/[[\]"|"]/g,"");
+                            if(univemp ==='yes'){
+                                $('#uniemp').prop("checked", true);
+                              
+                            } 
+                           // $('#uniemp').val(empinput[25].replace(/[[\]"|"]/g,""));
+                         //   $('#washallw').val(empinput[26].replace(/[[\]"|"]/g,""));
+                            var washA=empinput[27].replace(/[[\]"|"]/g,"");
+                            if(washA ==='yes'){
+                                $('#washallw').prop("checked", true);
+                              
+                            } 
+                           // $('#dedupf').val(empinput[27].replace(/[[\]"|"]/g,""));
+                            var Dupf=empinput[28].replace(/[[\]"|"]/g,"");
+                            if(Dupf ==='yes'){
+                                $('#dedupf').prop("checked", true);
+                              
+                            } 
+                            $('#hragrade').val(empinput[29].replace(/[[\]"|"]/g,""));
+                            $('#ccagrade').val(empinput[30].replace(/[[\]"|"]/g,""));
+                            var Isumm=empinput[31].replace(/[[\]"|"]/g,"");
+                            if(Isumm ==='yes'){
+                                $('#incsumm').prop("checked", true);
+                              
+                            } 
+                          //  $('#incsumm').val(empinput[30].replace(/[[\]"|"]/g,""));
+                            $('#lic1no').val(empinput[32].replace(/[[\]"|"]/g,""));
+                            $('#lic1amount').val(empinput[33].replace(/[[\]"|"]/g,""));
+                            $('#lic2no').val(empinput[34].replace(/[[\]"|"]/g,""));
+                            $('#lic2amount').val(empinput[35].replace(/[[\]"|"]/g,""));
+                            $('#lic3no').val(empinput[36].replace(/[[\]"|"]/g,""));
+                            $('#lic3amount').val(empinput[37].replace(/[[\]"|"]/g,""));
+                            $('#lic4no').val(empinput[38].replace(/[[\]"|"]/g,""));
+                            $('#lic4amount').val(empinput[39].replace(/[[\]"|"]/g,""));
+                            $('#lic5no').val(empinput[40].replace(/[[\]"|"]/g,""));
+                            $('#lic5amount').val(empinput[41].replace(/[[\]"|"]/g,""));
+                            $('#prdno1').val(empinput[42].replace(/[[\]"|"]/g,""));
+                            $('#prdno2').val(empinput[43].replace(/[[\]"|"]/g,""));
+                            $('#prdno3').val(empinput[44].replace(/[[\]"|"]/g,""));
+                            $('#plino1').val(empinput[45].replace(/[[\]"|"]/g,""));
+                            $('#plino2').val(empinput[46].replace(/[[\]"|"]/g,""));
+                            $('#society').val(empinput[47].replace(/[[\]"|"]/g,""));
+                            $('#socmem').val(empinput[48].replace(/[[\]"|"]/g,""));
                                
                         },
                         error:function(data){
@@ -137,47 +194,53 @@
                         <tr><td colspan="5"><b><span style="color:#0099CC;">Personal Details</span></b></td></tr>
                         <tr>
                             <td> Employee Name:<input type="text" id="empname" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td> Bank Ac No:<input type="text"  id="accno" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td>  E Aadhar No:<input type="text" id="addharno" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Bank ACC No:<input type="text" name="accno" id="accno" value="" style="text-decoration:none;border:0; word-break: break-all;"></td>
+                            <td> Bank Name:<input type="text" name="bname" id="bname" value="" style="text-decoration:none;border:0; word-break: break-all;"></td>
+                            <td> IFSC Code:<input type="text" name="ifsccode" id="ifsccode" value="" style="text-decoration:none;border:0; word-break: break-all;"></td>
+                            
                         </tr>
                         <tr>
+                            <td> Bank Branch:<input type="text" name="bbranch" id="branch" value="" style="text-decoration:none;border:0; word-break: break-all;"></td>
+                            <td> E Aadhar No:<input type="text" id="addharno" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
                             <td> Date of Birth:<input type="text" id="dob" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td> Address:<input type="text" id="add" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td> Contact details:<input type="text"  id="contact" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Contact No:<input type="text"  id="contact" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            
+                            
                         </tr>
                         <tr>
+                            <td> Address:<input type="text" id="add" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
                             <td colspan="5"> Pension Contribution:
                             <!--<input type="checkbox" name="pcontri" id="pcontri" value=""> -->
-                                <input type="radio" name="pcontri" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="pcontri" checked value="no">No
+                                <input type="radio" name="pcontri" id="pcontri" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="pcontri" id="pcontri" checked value="no">No
                 
                             </td>
                         </tr>
                         <tr><td colspan="5"><b> <hr/> <span style="color:#0099CC;">Work Details</span></b></td></tr> 
                         <tr>
-                            <td> Campus Name:<!--  <textarea id="campus" value="" rows="3" cols="40"  ></textarea> --><input type="text"  id="campus" value="" size="40" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td> University Officer Control:<input type="text"  id="uo" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Campus Name:<input type="text"  id="campus" value="" size="40" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> UO:<input type="text"  id="uo" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
                             <td> Department:<input type="text" id="dept" value=""style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                             <td> Scheme:<input type="text" id="schm" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
                         </tr>
                         <tr>
-                            <td> Scheme:<input type="text" id="schm" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                           
                             <td> DDO:<input type="text"  id="ddo" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
                             <td> Working Type:<input type="text" id="wtype" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Group :<input type="text"  id="group" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Designation:<input type="text" id="desig" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
                         </tr>
                         
                         <tr>
-                            <td> Group :<input type="text"  id="group" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td> Designation:<input type="text" id="desig" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            
                             <td> Employee type:<input type="text" id="etype" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Date of joining :<input type="text"  id="doj" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Date of Retirement:<input type="text" id="dor" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            <td> Pay Commision:<input type="text" id="pcomm" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
+                            
                         </tr> 
                         <tr>
-                            <td> Date of joining :<input type="text"  id="doj" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                            <td> Date of Retirement:<input type="text" id="dor" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly>
-                                
-                            </td>
                             <td> Pay Scale:<input type="text" id="pscale" value="" style="text-decoration:none;border:0; word-break: break-all;" readonly></td>
-                        </tr>
-                        <tr>
                             <td> UPF No :<input type="text" name="upfno" id="upfno" value="" ></td>
                             <td> Quater No :<input type="text" name="qtrno" id="qtrno" value=""></td>
                             <td> Quarter type:
@@ -196,25 +259,22 @@
                          
                         <tr>
                             <td> University Employee:
-                                <input type="radio" name="uniemp" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="uniemp"  checked  value="no">No
+                                <input type="radio" name="uniemp" id="uniemp" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="uniemp" id="uniemp" checked  value="no">No
                                 <!--<input type="checkbox" name="uniemp"   id="uniemp" value=""> -->
                             </td>
                             <td> Washing Allowance:
-                                <input type="radio" name="washallw" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="washallw" checked value="no">No
+                                <input type="radio" name="washallw" id="washallw"  value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="washallw"  id="washallw" checked value="no">No
                                 <!--<input type="checkbox" name="washallw" id="washallw"   value=""> -->
                             </td>
                             <td> Deduct UPF:
-                                <input type="radio" name="dedupf" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="dedupf"  checked value="no">No
+                                <input type="radio" name="dedupf" id="dedupf" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="dedupf" id="dedupf"  checked value="no">No
                                 <!--<input type="checkbox" name="dedupf" id="dedupf"  value="">-->
                             </td>
-                            
-                        </tr>
-                        <tr>
                             <td> HRA GRADE:
-                            <div><select name="hragrade" id="hragrade" > 
+                            <div><select name="hragrade" id="hragrade"> 
                                     <option value="" >------------ HRA GRADE ---------</option>
                                     <?php foreach($this->hglist as $hgdata): ?>	
                                     <option value="<?php echo $hgdata->hgc_id; ?>"><?php echo $hgdata->hgc_gradename;?>
@@ -223,6 +283,10 @@
                                
                             </select></div>
                             </td>
+                            
+                        </tr>
+                        <tr>
+                            
                             <td> CCA Grade :
                                 <div><select name="ccagrade" id="ccagrade" > 
                                     <option value="">------------ CCA GRADE ---------</option>
@@ -233,17 +297,17 @@
                                    
                                 </select></div>
                             </td>
-                            <td> Include in Summary:
-                                <input type="radio" name="incsumm" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="incsumm" checked  value="no">No
+                            <td colspan="3"> Include in Summary:
+                                <input type="radio" name="incsumm" id="incsumm" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="incsumm" id="incsumm" checked  value="no">No
                                 
                             </td>
                             
                         </tr> 
                         <tr><td colspan="5"><b>  <hr/><span style="color:#0099CC;">LIC/PRD/PLI/Society Entry</span></b></td></tr>
                         <tr>
-                            <td> LIC1 No:<input type="text" name="lic1no" id="lic1no" value="">
-                            Amount:<input type="text" name="lic1amount" id="lic1amount" value=""></td>
+                            <td> LIC1 No:<input type="text" name="lic1no" id="lic1no" value=""></td>
+                            <td>Amount:<input type="text" name="lic1amount" id="lic1amount" value=""></td>
                             <td> PRD1 No :<input type="text" name="prdno1" id="prdno1" value=""></td>
                             
                             <td> Society:
@@ -259,26 +323,26 @@
                                 </td>
                         </tr>
                         <tr>
-                            <td> LIC2 No:<input type="text" name="lic2no" id="lic1no" value="">
-                            Amount:<input type="text" name="lic2amount" id="lic2amount" value=""></td>
+                            <td> LIC2 No:<input type="text" name="lic2no" id="lic2no" value=""></td>
+                            <td>Amount:<input type="text" name="lic2amount" id="lic2amount" value=""></td>
                             <td> PRD2 No :<input type="text" name="prdno2" id="prdno2" value=""></td>
                             <td> Society Member:<br/> <input type="text" name="societymember" id="socmem" value=""></td>
                         </tr>
                         <tr>
-                            <td> LIC3 No:<input type="text" name="lic3no" id="lic3no" value="">
-                            Amount:<input type="text" name="lic3amount" id="lic3amount" value=""></td>
+                            <td> LIC3 No:<input type="text" name="lic3no" id="lic3no" value=""></td>
+                            <td>Amount:<input type="text" name="lic3amount" id="lic3amount" value=""></td>
                             <td colspan="2"> PRD3 No :<input type="text" name="prdno3" id="prdno3" value=""></td>
                           
                         </tr>
                         <tr>
-                            <td > LIC4 No:<input type="text" name="lic4no" id="lic4no" value="">
-                            Amount:<input type="text" name="lic4amount" id="lic4amount" value=""></td>
+                            <td > LIC4 No:<input type="text" name="lic4no" id="lic4no" value=""></td>
+                            <td >Amount:<input type="text" name="lic4amount" id="lic4amount" value=""></td>
                             <td colspan="2"> PLI1 No :<input type="text" name="plino1" id="plino1" value=""></td>
                           
                         </tr>
                         <tr>
-                            <td> LIC5 No:<input type="text" name="lic5no" id="lic5no" value="">
-                            Amount:<input type="text" name="lic5amount" id="lic5amount" value=""></td>
+                            <td> LIC5 No:<input type="text" name="lic5no" id="lic5no" value=""></td>
+                            <td>Amount:<input type="text" name="lic5amount" id="lic5amount" value=""></td>
                             <td  colspan="2"> PLI2 No :<input type="text" name="plino2" id="plino2" value=""></td>
                           
                         </tr>
