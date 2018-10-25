@@ -500,10 +500,25 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
         if(!empty($emsdata)){
 		foreach($emsdata as $ppwdata){
 			echo "<tr>";
-                        echo "<td> <b>Preferred Place of Working - First</b> <br>".$ppwdata->ems_pwplace1."</td>";
-                        echo "<td> <b>	Preferred Place of Working - Second</b> <br>".$ppwdata->ems_pwplace2."</td>";
-                        echo "<td> <b>	Preferred Place of Working - Third</b> <br>".$ppwdata->ems_pwplace3."</td>";
-			echo "<td></td>";
+                        echo "<td colspan=4> <b>Preferred Place of Working </b> </td>";
+                        echo "</tr>";
+			echo "<tr>";
+			$prf1 = "";$prf2 = "";$prf3 = "";
+			if(!empty($ppwdata->ems_pwplace1)){
+				$prf1 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$ppwdata->ems_pwplace1)->sc_name;
+			}
+			if(!empty($ppwdata->ems_pwplace2)){
+				$prf2 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$ppwdata->ems_pwplace2)->sc_name;
+			}
+			if(!empty($ppwdata->ems_pwplace3)){
+				$prf3 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$ppwdata->ems_pwplace3)->sc_name;
+			}
+                        echo "<td> <b>First Preference</b> <br>".$prf1."</td>";
+                        echo "<td> <b> Second Preference</b> <br>".$prf2."</td>";
+                        echo "<td> <b>Third Preference</b> <br>".$prf3."</td>";
+			echo "<td>";
+			echo $ppwdata->ems_pwplace1;
+			echo "</td>";
                         echo "</tr>";
 		}			
 	}

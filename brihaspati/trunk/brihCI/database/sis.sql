@@ -301,7 +301,7 @@ CREATE TABLE `employee_master` (
   `emp_phd_status` varchar(100) default NULL,
   `emp_dateofphd` Date default NULL,
   `emp_AssrExam_status` varchar(100) default NULL,
-  `emp_dateofAssrExam` Date default NULL,
+  `emp_dateofAssrExam` varchar(10) default NULL,
   `emp_dateofHGP` date default NULL,
   `emp_yop` int(11) default NULL,
   `emp_doprobation` date default NULL,
@@ -340,7 +340,7 @@ CREATE TABLE `employee_master` (
   `emp_phdspecialisation` VARCHAR(255) NULL,
   `emp_phdcollege` VARCHAR(255) NULL,
   `emp_netqualified` VARCHAR(50) default NULL,
-  `emp_netpassingyear` date  default NULL,
+  `emp_netpassingyear` varchar(10)  default NULL,
   `emp_netdiscipline`  VARCHAR(255) default NULL,
   `emp_dojvc` date default NULL,
   `emp_salary_gradenew` int(11) default NULL ,
@@ -442,7 +442,7 @@ CREATE TABLE `hod_list` (
   `hl_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `hl_modifierid` varchar(255) NOT NULL,
   `hl_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-   UNIQUE (`hl_userid`,`hl_deptid`,`hl_scid`)
+   UNIQUE (`hl_userid`,`hl_deptid`,`hl_empcode`,`hl_datefrom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -680,6 +680,7 @@ CREATE TABLE `salary_formula` (
 
 CREATE TABLE `salary_grade_master` (
   `sgm_id` int(11) NOT NULL auto_increment,
+  `sgm_pc` VARCHAR(50) NULL  DEFAULT '6th',
   `sgm_name` varchar(20) NOT NULL,
   `sgm_max` int(11) NOT NULL default '0',
   `sgm_min` int(11) NOT NULL default '0',
@@ -697,6 +698,7 @@ CREATE TABLE `salary_grade_master` (
 CREATE TABLE `salary_grade_master_archive` (
      `sgma_id` int(11) NOT NULL auto_increment,
      `sgma_sgmid` int(11) NOT NULL,
+      `sgma_pc` VARCHAR(50) NULL,
      `sgma_name` varchar(20) NOT NULL,
      `sgma_max` int(11) NOT NULL default '0',
      `sgma_min` int(11) NOT NULL default '0',

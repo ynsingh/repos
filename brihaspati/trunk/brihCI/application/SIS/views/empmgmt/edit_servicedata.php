@@ -398,7 +398,7 @@
 		    <td>Designation<font color='Red'>*</font></td>
                         <td><select name="designation" id="desigid" required style="width:350px;"> 
                             <?php if(!empty($servicedata->empsd_desigcode)):;?> 
-                            <option value="<?php echo $servicedata->empsd_desigcode;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$servicedata->empsd_desigcode)->desig_name;?></option>    
+                            <option value="<?php echo $servicedata->empsd_desigcode;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$servicedata->empsd_desigcode)->desig_name;?></option>    
                             <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                             <?php endif;?>
@@ -485,7 +485,7 @@
                 <tr>
                     <td>Date From<font color='Red'>*</font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo $servicedata->empsd_dojoin; ?>"  size="40" required="required">
-			<select name="fsession" style="width:110px;" id="fsession" required>
+			<select name="fsession" style="width:110px;" id="fsession" >
                 <option selected="selected" disabled selected>Select Session</option>
                         <option value="Forenoon">Forenoon</option>
                         <option value="Afternoon">Afternon</option>
@@ -495,7 +495,7 @@
                 <tr>
                     <td>Date To<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo $servicedata->empsd_dorelev; ?>"  size="40" >
-			<select name="tsession" style="width:110px;" id="tsession" required>
+			<select name="tsession" style="width:110px;" id="tsession" >
                 <option selected="selected" disabled selected>Select Session</option>
                         <option value="Forenoon">Forenoon</option>
                         <option value="Afternoon">Afternon</option>

@@ -193,7 +193,7 @@
                    <option selected="selected" disabled selected>------ Select UO------</option> 
                          <?php //foreach($this->authresult as $udatas): ?>
                      <!--   <option value="<?php //echo $udatas->id; ?>"><?php //echo $udatas->name ." (Priority: ". $udatas->priority ." ,Code: ". $udatas->code .")"; ?></option> -->
-                          <!--option value="<?php echo $datas->ul_uocode; ?>"><?php echo $datas->ul_uoname ." ( ". $udatas->ul_uocode." )"; ?></option-->
+                          <!--option value="<?php //echo $datas->ul_uocode; ?>"><?php //echo $datas->ul_uoname ." ( ". $udatas->ul_uocode." )"; ?></option-->
                         <?php //endforeach; ?>
                         </select>
                     </td>

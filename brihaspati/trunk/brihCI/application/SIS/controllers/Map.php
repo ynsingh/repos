@@ -1892,11 +1892,12 @@ public function schemedept(){
             }//formvalidation
             else{
                 
+                $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
                 /** check dulicate entry and insert in edrpuser table**********************/
                 $isdup= $this->loginmodel->isduplicate('edrpuser','username',$_POST['emailid']);
-                $parts = explode('@',$_POST['emailid']); 
-                $passwd=md5($parts[0]);
                 if(!$isdup){
+                	$parts = explode('@',$_POST['emailid']); 
+	                $passwd=md5($parts[0]);
                     $dataeu = array(
                         'username'=> $_POST['emailid'],
                         'password'=> $passwd,
@@ -1920,35 +1921,6 @@ public function schemedept(){
                             'status' => 1
                         );
                         $userflagup=$this->loginmodel->insertrec('userprofile', $dataup);
-                    }//if $userflageu closer
-                }//ifdupedrpuser check closer     
-                /*************************check for duplicate entry in hod list and insert in table*************/
-                $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
-                $duphod = array('hl_userid' => $userid, 'hl_scid' => $_POST['campus'],'hl_deptid'=> $_POST['deptname']);
-                $isduphod= $this->sismodel->isduplicatemore('hod_list',$duphod);
-                if(!$isduphod){
-                    $usr =$this->session->userdata('username'); 
-                   // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
-                    $pfno='';
-                    if(!empty($_POST['usrname'])){
-                        $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
-                    }
-		    $uopid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['uo'])->priority;
-                    $datahod = array(
-                        'hl_userid'=> $userid,
-                        'hl_empcode'=> $pfno,
-                        'hl_deptid'=> $_POST['deptname'],
-                        'hl_scid'=> $_POST['campus'],
-			'hl_uopid'=> $uopid,
-                        'hl_datefrom'=> $_POST['DateFrom'],
-                        'hl_dateto'=> $_POST['DateTo'],
-                        'hl_status'=> $_POST['status'],
-                        'hl_creatorid'=> $usr,
-                        'hl_creatordate'=> date('y-m-d'),
-                        'hl_modifierid'=> $usr,
-                        'hl_modifydate'=> date('y-m-d'),
-                    );
-                    $hodlistflag=$this->sismodel->insertrec('hod_list', $datahod) ;
                     /* insert into user_role_type */
                     $dataurt = array(
                         'userid'=> $userid,
@@ -1958,6 +1930,39 @@ public function schemedept(){
                         'usertype'=>'HoD'
                     );
                     $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
+                    }//if $userflageu closer
+                }//ifdupedrpuser check closer     
+                /*************************check for duplicate entry in hod list and insert in table*************/
+
+                $pfno='';
+                if(!empty($_POST['usrname'])){
+                   $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
+                }
+		$datefrm = $_POST['DateFrom'];
+		if(empty($datefrm)){
+			$datefrm = date('y-m-d') ;
+		}
+                $duphod = array('hl_userid' => $userid, 'hl_empcode' => $pfno,'hl_datefrom'=> $datefrm,'hl_deptid'=> $_POST['deptname']);
+                $isduphod= $this->sismodel->isduplicatemore('hod_list',$duphod);
+                if(!$isduphod){
+                    $usr =$this->session->userdata('username'); 
+                   // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
+		    $uopid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['uo'])->priority;
+                    $datahod = array(
+                        'hl_userid'=> $userid,
+                        'hl_empcode'=> $pfno,
+                        'hl_deptid'=> $_POST['deptname'],
+                        'hl_scid'=> $_POST['campus'],
+			'hl_uopid'=> $uopid,
+                        'hl_datefrom'=> $datefrm,
+                        'hl_dateto'=> $_POST['DateTo'],
+                        'hl_status'=> $_POST['status'],
+                        'hl_creatorid'=> $usr,
+                        'hl_creatordate'=> date('y-m-d'),
+                        'hl_modifierid'=> $usr,
+                        'hl_modifydate'=> date('y-m-d'),
+                    );
+                    $hodlistflag=$this->sismodel->insertrec('hod_list', $datahod) ;
                     $sub=' Registred as a HOD' ;
                     $mess="You are registered as a Hod. Your login id ".$_POST['emailid'] ." and password is ".$passwd ;
                     //$mails = $this->mailmodel->mailsnd($email, $sub, $mess,'','Sis');
@@ -2137,9 +2142,9 @@ public function schemedept(){
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
 //	$this->authresult=$this->loginmodel->get_listspfic2('authorities','id','name');
-	$selectfield ="priority,code,name,id";
-        $whorder = "priority asc";
-        $this->authresult=$this->loginmodel->get_orderlistspficemore('authorities',$selectfield,'',$whorder);
+//	$selectfield ="priority,code,name,id";
+  //      $whorder = "priority asc";
+    //    $this->authresult=$this->loginmodel->get_orderlistspficemore('authorities',$selectfield,'',$whorder);
         //$this->uo=$this->sismodel->get_list('uo_list');
 	if(isset($_POST['setuo'])) {
             
@@ -2185,23 +2190,29 @@ public function schemedept(){
                             'status' => 1
                         );
                         $userflagup=$this->loginmodel->insertrec('userprofile', $dataup);
+                    /* insert into user_role_type */
+                   $dataurt = array(
+                        'userid'=> $userid,
+                        'roleid'=> 5,
+                        //'deptid'=> $_POST['deptname'],
+                       // 'scid'=>  $_POST['campus'],
+                        'usertype'=>'UO'
+                    );
+                    $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
                     }//if $userflageu closer
                 }//ifdupedrpuser check closer     
                 /*************************check for duplicate entry in uo list and insert in table*************/
               $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
-                $dupuo = array('ul_userid' =>$userid/* ,'hl_scid' => $_POST['campus'],'ul_deptid'=> $_POST['deptname']*/);
+              $pfno='';
+              if(!empty($_POST['usrname'])){
+              		$pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
+              }
+              $dupuo = array('ul_empcode' =>$pfno,'ul_authuoid' => $_POST['uo'],'ul_datefrom'=> $_POST['DateForm']);
+              //$dupuo = array('ul_userid' =>$userid/* ,'hl_scid' => $_POST['campus'],'ul_deptid'=> $_POST['deptname']*/);
               $isdupuo= $this->sismodel->isduplicatemore('uo_list',$dupuo);
                 // $isdupuo= $this->loginmodel->isduplicatemore('authorities',$dupuo);
-                if(!$isdupuo){
+              if(!$isdupuo){
                     $usr =$this->session->userdata('username'); 
-                   // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
-                    $pfno='';
-                    if(!empty($_POST['usrname'])){
-                        $pfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$_POST['usrname'])->emp_code;
-                    }
-//print_r($pfno);die;
-                    //   $authuoid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['authresult'])->priority;
-		   // $authuoid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['authresult'])->code;
 		    $datauo = array(
                         'ul_userid'=> $userid,
                         'ul_empcode'=> $pfno,
@@ -2213,22 +2224,13 @@ public function schemedept(){
                         'ul_creatordate'=> date('Y-m-d'),
                         'ul_modifierid'=> $usr,
                         'ul_modifydate'=> date('Y-m-d'),
-                        'ul_uoname' =>$this->loginmodel->get_listspfic1('authorities', 'name','priority', $record->ul_authuoid)->name,
-                        'ul_uocode' =>$this->loginmodel->get_listspfic1('authorities','code','priority',$record->ul_authuoid)->code,
+                        'ul_uoname' =>$this->loginmodel->get_listspfic1('authorities','name','id',$_POST['uo'])->name,
+                        'ul_uocode' =>$this->loginmodel->get_listspfic1('authorities','code','id',$_POST['uo'])->code,
 
                     );
 
 
                     $uolistflag=$this->sismodel->insertrec('uo_list', $datauo) ;
-                    /* insert into user_role_type */
-                   $dataurt = array(
-                        'userid'=> $userid,
-                        'roleid'=> 5,
-                        //'deptid'=> $_POST['deptname'],
-                       // 'scid'=>  $_POST['campus'],
-                        'usertype'=>'UO'
-                    );
-                    $userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
                     $sub=' Registred as a UO' ;
                     $mess="You are registered as a UO. Your login id ".$_POST['emailid'] ." and password is ".$passwd ;
                     //$mails = $this->mailmodel->mailsnd($email, $sub, $mess,'','Sis');

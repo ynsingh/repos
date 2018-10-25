@@ -7,10 +7,33 @@
 <html>
 <title>editsalarygrademaster</title>
     <head>    
-        <?php $this->load->view('template/header'); ?>
-       
+      <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+ <script>
+        $(document).ready(function(){
+     //           $("#sgname").hide();
+                $("#slevel" ).hide();
+                $("#sgpay").hide();
+        
+                 $('#paycomm').on('change',function(){
+                        var pc= $('#paycomm').val();
+                        if(pc == '6th'){
+                              //  $("#sgname").show();
+                                $("#sgpay").show();
+                                $("#slevel").hide();
+                        }
+                        else{
+                                $("#slevel").show();
+                            //    $("#sgname").hide();
+                                $("#sgpay").hide();
+                        }
+                  });
+
+
+        });
+ </script>   
     </head>
     <body>
+        <?php $this->load->view('template/header'); ?>
 
 <script>
         function goBack() {
@@ -46,6 +69,18 @@
         <table>  
         <?php
             echo form_open('setup/editsalarygrademaster/' . $sgm_id);
+		echo "<tr>";
+                echo "<td><label for=\"paycomm\" class=\"control-label\">Pay Commission:</label></td>";
+                echo "<td>";
+                echo "<select name=\"paycomm\" id=\"paycomm\" style=\"width:100%;\">";
+                echo "<option value=".$sgm_pc.">".$sgm_pc."</option>";
+                echo "<option value=\"\" disabled selected >------Select ---------------</option>";
+                echo "<option value=\"6th\">6th</option>";
+                echo "<option value=\"7th\">7th</option>";
+                echo "</select>";
+                echo "</td>";
+                echo "</tr>";
+
        
             echo "<tr>";
                 echo "<td>";
@@ -82,7 +117,7 @@
                 echo "</td>";
             echo "</tr>";
             
-            echo "<tr>";
+            echo "<tr id='sgpay'>";
                 echo "<td>";
                     echo form_label('Salary Grade Pay Band', 'sgm_gradepay');
                 echo "</td>";
@@ -95,7 +130,7 @@
                 echo "</td>";
             echo "</tr>";
 
-echo "<tr>";
+echo "<tr id='slevel'>";
                echo "<td>";
                echo form_label('Salary Level ','sgm_level');
 

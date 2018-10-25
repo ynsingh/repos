@@ -6,12 +6,35 @@
  -->
 
 <html>
-<title>Salary Grade Master</title>
  <head>    
-	<?php $this->load->view('template/header'); ?>
+<title>Salary Grade Master</title>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+ <script>
+        $(document).ready(function(){
+     //           $("#sgname").hide();
+                $("#slevel" ).hide();
+                $("#sgpay").hide();
 	
+		 $('#paycomm').on('change',function(){
+                        var pc= $('#paycomm').val();
+                        if(pc == '6th'){
+                              //  $("#sgname").show();
+                                $("#sgpay").show();
+                                $("#slevel").hide();
+                        }
+                        else{
+                                $("#slevel").show();
+                            //    $("#sgname").hide();
+                                $("#sgpay").hide();
+                        }
+                  });
+
+
+ 	});
+ </script>	
  </head>    
    <body>
+	<?php $this->load->view('template/header'); ?>
 
      <table width="100%"> 
        <tr><td>
@@ -39,10 +62,21 @@
     </table>  
         <form action="<?php echo site_url('setup/salarygrademaster');?>" method="POST" class="form-inline">
           <table>
-            <tr>  
+		<tr>
+                        <td><label for="paycomm" class="control-label">Pay Commission:</label></td>
+                        <td>
+                            <select name="paycomm" id="paycomm" style="width:100%;">
+                                <option value="" disabled selected >------Select ---------------</option>
+                                <option value="6th">6th</option>
+                                <option value="7th">7th</option>
+                            </select>
+                        </td>
+                </tr>
+
+            <tr id="sgname">  
                 <td><label for="sgmname" class="control-label">Salary Grade Name :</label></td>
                 <td>
-                <input type="text" name="sgmname"  size="40" value="<?php echo isset($_POST["sgmname"]) ? $_POST["sgmname"] : ''; ?>"  class="form-control"  placeholder="Salary Grade Name.."/><br>
+                <input type="text" name="sgmname" id="sgmname"  size="40" value="<?php echo isset($_POST["sgmname"]) ? $_POST["sgmname"] : ''; ?>"  class="form-control"  placeholder="Salary Grade Name.."/><br>
                 </td>
  		<!--<td><?php //echo form_error('sgmname')?></td>--> 
             </tr>
@@ -64,17 +98,17 @@
                 </td>
 		 <!--<td><?php //echo form_error('sgmmin')?></td>-->
             </tr>
-            <tr>
+            <tr id="sgpay">
                 <td>   
                 <label for="sgmgradepay" class="control-label">Salary Grade Pay :</label>
                 </td>
                 <td>
-                    <input type="text" name="sgmgradepay"  size="40" value="<?php echo isset($_POST["sgmgradepay"]) ? $_POST["sgmgradepay"] : ''; ?>" placeholder="Salary Grade Pay .."/> <br>
+                    <input type="text" name="sgmgradepay" id="sgmgradepay" size="40" value="<?php echo isset($_POST["sgmgradepay"]) ? $_POST["sgmgradepay"] : ''; ?>" placeholder="Salary Grade Pay .."/> <br>
                 </td>
  		<!--<td><?php //echo form_error('sgmgradepay')?></td>-->
             </tr>
-	 <tr>
-                <td> Salary Level<font color='Red'>*</font></td>
+	 <tr id="slevel">
+                <td> Salary Level<font color='Red'></font></td>
                 <td><select name="sgmlevel" style="width:410px;" id="sgmlevel">           
                 <option selected="selected" disabled selected>------ Select Level------</option>
                         <option value="Level-1">Level-1</option>

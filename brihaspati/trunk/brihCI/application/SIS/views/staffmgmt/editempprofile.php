@@ -19,7 +19,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 $( "#netqno" ).hide();
             var today = new Date(); 
                   
-            $('#StartDate,#StartDatevc,#Dateofassrexam,#Dateofhgp,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
+            $('#StartDate,#StartDatevc,#Dateofhgp,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -30,7 +30,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-            $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#passyear,#leavedatefrom,#leavedateto,#allvcrvaliddate,#vcrvaliddate').datepicker({
+            $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#vciregdate,#leavedatefrom,#leavedateto,#allvcrvaliddate,#vcrvaliddate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -1299,7 +1299,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                         <option value="">--------- Select Reason--------</option>
                         <?php endif?>
-                        <option value="Exempted_by_Subject">Exempte by Subect</option>
+                        <option value="Exempted_by_Subject">Exempted by Subject</option>
                         <option value="Exempted_by_Year">Exempted by Year</option>
                         <option value="Entry_Level_Ph.D.">Entry Level Ph.D.</option>
                     </select>
@@ -1307,7 +1307,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>
 
                 <td><label for="passdate" style="font-size:15px;"><font color='Blue'>Year of Passing</font></label>
-                    <div><input type="text" name="passyear" id="passyear" value="<?php if(!empty($editdata->emp_netqualified) && $ntqnew[0] == 'Yes'){echo $editdata->emp_netpassingyear;} ?>" placeholder="Year of Passing Date  ........" size="33" />
+                    <div><input type="text" name="passyear" id="passyear" value="<?php if(!empty($editdata->emp_netqualified) && $ntqnew[0] == 'Yes'){echo $editdata->emp_netpassingyear;} ?>" placeholder="Year of Passing Date " size="33" />
                 <div></td>
                 <td><label for="netdiscipline" style="font-size:15px;"><font color='Blue'>Discipline</font></label>
                 <div><input type="text" name="netdiscipline" id="netdiscipline" class="keyup-characters" value="<?php if(!empty($editdata->emp_netqualified) && $ntqnew[0] == 'Yes'){echo $editdata->emp_netdiscipline ;} ?>" placeholder="NET Discipline........" size="33" >
@@ -1437,7 +1437,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </div></td>
             </tr>
             <tr>
-                <td ><label for="asignplace" style="font-size:15px;"><font color='Blue'>Assignment Place</font></label>
+                <td colspan=4><label for="asignplace" style="font-size:15px;"><font color='Blue'>Assignment Place</font></label>
                <!-- <div><input type="text" name="asignplace" class="keyup-characters" value="<?php if(!empty($editasign->aa_place)){echo $editasign->aa_place;} ?>" placeholder="Place........" size="28" >-->
                 <div><input type="text" name="asignplace" class="keyup-characters" value="<?php if(!empty($aaplace)){echo $aaplace;} ?>" placeholder="Place........" size="33" >
                 </div></td>
@@ -1461,7 +1461,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 				$prefloc3='';
 			}
 ?>
-		 <td><label for="pref1" style="font-size:15px;"><font color='blue'>Preferred Place of Working - First </font> <font color='Red'></font></label>
+		 <tr>
+            <td colspan=4><label for="pref" style="font-size:15px;"><b>Preferred Place of Working: </b></label></td>
+            </tr>
+                <tr>
+		 <td><label for="pref1" style="font-size:15px;"><font color='blue'>First Preference</font> <font color='Red'></font></label>
                     <div> <select id="ppwpref1" style="width:300px;" name="ppwpref1" >
 			<option value="<?php echo $pref1;?>"><?php echo $prefloc1;?></option>
                        <?php foreach($this->campus as $camdata): ?>
@@ -1470,7 +1474,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 
                     </select></div>
                 </td>
-                <td><label for="pref2" style="font-size:15px;"><font color='blue'>Preferred Place of Working - Second </font> <font color='Red'></font></label>
+                <td><label for="pref2" style="font-size:15px;"><font color='blue'> Second Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref2" style="width:300px;" name="ppwpref2" >
 			<option value="<?php echo $pref2;?>"><?php echo $prefloc2?></option>
                        <?php foreach($this->campus as $camdata): ?>
@@ -1479,7 +1483,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 
                     </select></div>
                 </td>
-                <td><label for="pref3" style="font-size:15px;"><font color='blue'>Preferred Place of Working - Third </font> <font color='Red'></font></label>
+                <td><label for="pref3" style="font-size:15px;"><font color='blue'> Third Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref3" style="width:300px;" name="ppwpref3" >
 			<option value="<?php echo $pref3;?>"><?php echo $prefloc3;?></option>
                        <?php foreach($this->campus as $camdata): ?>
@@ -1488,7 +1492,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 
                     </select></div>
                 </td>
-
+		<td></td>
 	</tr><tr>
                 <td><label for="remarks" style="font-size:15px;"><font color='Blue'>Remarks</font></label>
                     <div><textarea name="remarks" rows="3" cols="40"  ><?php echo $editdata->emp_remarks;?></textarea>

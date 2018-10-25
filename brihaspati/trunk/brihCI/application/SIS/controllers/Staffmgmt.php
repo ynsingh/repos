@@ -147,6 +147,7 @@ class Staffmgmt extends CI_Controller
                 $whdata['emp_dept_code'] = $deptid;
 		$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
         }
+//	echo $rlid; die();
 	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_post,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
 	 $this->wtyp='';
@@ -1252,7 +1253,8 @@ class Staffmgmt extends CI_Controller
                     redirect('empmgmt/viewempprofile');
                 }
                 else{
-                   $this->load->view('staffmgmt/editempprofile', $data);
+                   redirect('staffmgmt/editempprofile/'.$id);
+                   //$this->load->view('staffmgmt/editempprofile', $data);
                    // redirect('staffmgmt/employeelist');
                 }    
             }

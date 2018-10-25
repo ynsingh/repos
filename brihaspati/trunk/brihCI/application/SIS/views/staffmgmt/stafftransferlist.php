@@ -68,8 +68,19 @@
                                       echo $empname."(" . $pfno .")"; 
                                 ?>
                             </td>
-                            <td><?php echo date('d-m-Y H:i:s',strtotime($record->uit_dateofrelief));?></td>
-                            <td><?php echo date('d-m-Y H:i:s',strtotime($record->uit_dateofjoining));?></td>
+	<?php			if($record->uit_dateofrelief != '0000-00-00 00:00:00'){
+					$uitdorf =date('d-m-Y H:i:s',strtotime($record->uit_dateofrelief));
+				}else{
+					$uitdorf ='';
+				}
+				if($record->uit_dateofjoining != '0000-00-00 00:00:00'){
+					$uitdoj = date('d-m-Y H:i:s',strtotime($record->uit_dateofjoining));
+				}else{
+					$uitdoj = '';
+				}
+		?>
+                            <td><?php echo $uitdorf;?></td>
+                            <td><?php echo $uitdoj;?></td>
                             <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->uit_uoc_to)->name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->uit_dept_to)->dept_name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_desig_to)->desig_name; ?></td>

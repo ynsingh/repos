@@ -17,7 +17,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 		$( "#netqno" ).hide();
             var today = new Date();
             
-            $('#StartDate,#StartDatevc,#Dateofassrexam,#Dateofhgp1,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
+            $('#StartDate,#StartDatevc,#Dateofhgp1,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -28,7 +28,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-	    $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#passyear,#leavedatefrom,#leavedateto,#allvcrvaliddate,#vcrvaliddate').datepicker({
+	    $('#Dateofprob,#Dateofregular,#asigndatefrom,#asigndateto,#leavedatefrom,#leavedateto,#allvcrvaliddate,#vcrvaliddate').datepicker({
                 dateFormat: 'yy/mm/dd',
                 autoclose:true,
                 changeMonth: true,
@@ -960,7 +960,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
-                <td><label for="assrexamdate" style="font-size:15px;"><font color='blue'>ASRR Passed</font></label>
+                <td><label for="assrexamdate" style="font-size:15px;"><font color='blue'>ASRR Passed(MM-YYYY)</font></label>
                     <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo isset($_POST["assrexamdate"]) ? $_POST["assrexamdate"] : ''; ?>"class="form-control" size="33" />
                 <div></td>    
                 
@@ -1128,7 +1128,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
   		    <label for="netqualno" style="font-size:15px;"><font color='blue'>If No </font></label><br>
                     <select name="netqualno" id="netqualno" style="width:300px;"> 
                         <option value="">--------- Select Reason--------</option>
-                        <option value="Exempted_by_Subject">Exempte by Subect</option>
+                        <option value="Exempted_by_Subject">Exempted by Subject</option>
                         <option value="Exempted_by_Year">Exempted by Year</option>
                         <option value="Entry_Level_Ph.D.">Entry Level Ph.D.</option>
                     </select>   
@@ -1136,8 +1136,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 
 		
 		</td>
-                <td><label for="passdate" style="font-size:15px;"><font color='blue'>Year of Passing</font></label>
-                    <div><input type="text" name="passyear" id="passyear" value="<?php echo isset($_POST["passyear"]) ? $_POST["passyear"] : ''; ?>" placeholder="Year of Passing Date  ........" size="33" />
+                <td><label for="passdate" style="font-size:15px;"><font color='blue'>Year of Passing(MM-YYYY)</font></label>
+                    <div><input type="text" name="passyear" id="passyear" value="<?php echo isset($_POST["passyear"]) ? $_POST["passyear"] : ''; ?>" placeholder="Year of Passing Date" size="33" />
                 <div></td>
                 <td><label for="netdiscipline" style="font-size:15px;"><font color='blue'>Discipline</font></label>
                 <div><input type="text" name="netdiscipline" id="netdiscipline" class="keyup-characters" value="<?php echo isset($_POST["netdiscipline"]) ? $_POST["netdiscipline"] : ''; ?>" placeholder="NET Discipline........" size="33" >
@@ -1221,7 +1221,11 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="asignplace" style="font-size:15px;"><font color='blue'>Assignment Place</font></label>
                 <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="33" >
                 </div></td>
-		<td><label for="pref1" style="font-size:15px;"><font color='blue'>Preferred Place of Working - First </font> <font color='Red'></font></label>
+		<tr>
+            <td><label for="pref" style="font-size:15px;"><b>Preferred Place of Working: </b></label></td>
+            </tr>
+		<tr>
+		<td><label for="pref1" style="font-size:15px;"><font color='blue'> First Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref1" style="width:300px;" name="ppwpref1" >
                         <option selected="selected" disabled selected>-Preferred Place of Working--</option>
                        <?php foreach($this->campus as $camdata): ?>
@@ -1230,7 +1234,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 
                     </select></div>
                 </td>
-		<td><label for="pref2" style="font-size:15px;"><font color='blue'>Preferred Place of Working - Second </font> <font color='Red'></font></label>
+		<td><label for="pref2" style="font-size:15px;"><font color='blue'> Second Preference</font> <font color='Red'></font></label>
                     <div> <select id="ppwpref2" style="width:300px;" name="ppwpref2" >
                         <option selected="selected" disabled selected>-Preferred Place of Working--</option>
                        <?php foreach($this->campus as $camdata): ?>
@@ -1239,7 +1243,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 
                     </select></div>
                 </td>
-		<td><label for="pref3" style="font-size:15px;"><font color='blue'>Preferred Place of Working - Third </font> <font color='Red'></font></label>
+		<td><label for="pref3" style="font-size:15px;"><font color='blue'>Third Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref3" style="width:300px;" name="ppwpref3" >
                         <option selected="selected" disabled selected>-Preferred Place of Working--</option>
                        <?php foreach($this->campus as $camdata): ?>

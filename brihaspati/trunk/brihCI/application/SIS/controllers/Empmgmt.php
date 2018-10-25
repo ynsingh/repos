@@ -2031,7 +2031,39 @@ public function disciplin_profile() {
         $this->load->view('empmgmt/edit_technicalprofile');
         
     }//closer
-    
+    /**This function Delete records */
+    public function delete_serviceprofile($id) {
+        $this->roleid=$this->session->userdata('id_role');
+        $usrid=$this->session->userdata('id_user');
+        $this->emp_id=$this->sismodel->get_listspfic1('employee_servicedetail', 'empsd_empid', 'empsd_id',$id)->empsd_empid;
+	if( $usrid == 1){
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('employee_servicedetail','empsd_id',$id);
+        if (! delflag   )
+        {
+            $this->logger->write_logmessage("delete", "Error in deleting employee_servicedetail record" . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting employee_servicedetail record" . " [id:" . $id . "]");
+            $this->session->set_flashdata("err_message",'Error in deleting deleting employee_servicedetail record - ');
+            redirect('report/service_profile/'.$this->emp_id);
+        }
+        else{
+
+            $this->logger->write_logmessage("delete", " Deleted employee_servicedetail Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted employee_servicedetail Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('report/service_profile/'.$this->emp_id);
+        }
+	}
+	else{
+	    $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+	    $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete employee_servicedetail Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete employee_servicedetail Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee service record.' );
+            redirect('report/service_profile/'.$this->emp_id);
+	}
+        $this->load->view('report/service_profile/'.$this->emp_id);
+
+    }//closer 
     
     
     

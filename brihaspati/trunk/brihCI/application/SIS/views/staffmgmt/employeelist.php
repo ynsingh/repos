@@ -296,7 +296,10 @@ $(document).ready(function(){
                                             ."<b>scheme-: </b>".$schm . "( " .$schmcode." )"."<br/>"."<b>subject-: </b>".$sub;
                             ?></td>
                             <td>
-                                <?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
+                                <?php 
+					if(!empty($record->emp_desig_code)){
+					echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
+					}
 				$cdate = date('Y-m-d');
                                 $headflag="false";
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
