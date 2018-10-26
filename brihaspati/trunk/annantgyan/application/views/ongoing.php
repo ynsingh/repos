@@ -381,6 +381,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	   					echo "</br>( ";
 						echo $row2->cou_discipline; 
 						echo ")</br>";
+						
             				}
 				}
            ?>
@@ -396,8 +397,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		} 
 		if(!empty($cdata)){
 			echo "<tr><td colspan=2>";
+			echo "<b>Depawali scholarship offer to you all.</b>";
+
         		echo "<br>";
-                	echo "If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).";
+			echo "You will get off 50 % of the course enrollment fees till 9 November 2018. Get enroll yourself as soon as possible.";
+//                	echo "If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).";
         		echo "</td></tr>	";
 		} 
 	} ?> 

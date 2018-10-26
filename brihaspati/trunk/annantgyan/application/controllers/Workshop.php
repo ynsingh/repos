@@ -24,7 +24,13 @@ class Workshop extends CI_Controller {
 
 	public function courseenroll(){
 		$cid = $this->uri->segment(3); 
-		$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
+		//$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
+		$cfees = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
+		$cdate = date('Y-m-d');
+		if ($cdate < "2018-11-10"){
+			$cfees = $cfees / 2;
+		}
+		$data['courfees'] = $cfees;
 		$data['courseid'] = $cid;
 		$data['crscode'] = $this->commodel->get_listspfic1('courses','cou_code','cou_id',$cid)->cou_code;
 		$this->load->view('courseenroll',$data);
@@ -33,7 +39,14 @@ class Workshop extends CI_Controller {
 	public function ongoing_workshop()
 	{
 		$cid = $this->uri->segment(3); 
-		$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
+		//$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
+		$cfees = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
+                $cdate = date('Y-m-d');
+                if ($cdate < "2018-11-10"){
+                        $cfees = $cfees / 2;
+                }
+                $data['courfees'] = $cfees;
+
 		$data['cid'] = $cid;
 			//$cid = $this->uri->segment(3); 
 		if(isset($_POST['submit'])){

@@ -87,17 +87,17 @@ if(isset($this->session->userdata['firstName'])){
 			<br>
 			<select name="cdur_week"  required="">
 				<option value="" selected="" disabled="">Select Weeks</option>
-				<option value="week 1">Week 1</option>
-				<option value="week 2">Week 2</option>
-				<option value="week 3">Week 3</option>
-				<option value="week 4">Week 4</option>
-				<option value="week 5">Week 5</option>
-				<option value="week 6">Week 6</option>
+				<option value="week 1">1 Week</option>
+				<option value="week 2">2 Week </option>
+				<option value="week 3">3 Week </option>
+				<option value="week 4">4 Week </option>
+				<option value="week 5">5 Week </option>
+				<option value="week 6">6 Week </option>
 			</select>	
 			<br>
 			
 			<label for="crsdate " class="cols-sm-2 control-label">Course Registration Start Date</label>
-			<input type="text" class="form-control" name="crsdate" id="crsdate"  placeholder="Enter Course Name" required/>
+			<input type="text" class="form-control" name="crsdate" id="crsdate"  placeholder="Enter Course Registration Start Date" required/>
 			        
             <script>
                 $('#crsdate').datepicker({
@@ -119,7 +119,7 @@ if(isset($this->session->userdata['firstName'])){
             </script>
           
 			<label for="credate " class="cols-sm-2 control-label">Course Registration End Date</label>
-			<input type="text" class="form-control" name="credate" id="credate"  placeholder="Enter Course Name" required/>
+			<input type="text" class="form-control" name="credate" id="credate"  placeholder="Enter Course Registration End Date" required/>
 			<script>
                 $('#credate').datepicker({
                 onSelect: function(value, ui) {
@@ -139,7 +139,7 @@ if(isset($this->session->userdata['firstName'])){
                 });
             </script>
 			<label for="csdate " class="cols-sm-2 control-label">Course Start Date</label>
-			<input type="text" class="form-control" name="csdate" id="csdate"  placeholder="Enter Course Name" required/>
+			<input type="text" class="form-control" name="csdate" id="csdate"  placeholder="Enter Course Start Date" required/>
 			<script>
                 $('#csdate').datepicker({
                 onSelect: function(value, ui) {
@@ -159,7 +159,7 @@ if(isset($this->session->userdata['firstName'])){
                 });
             </script>
 			<label for="cedate " class="cols-sm-2 control-label">Course End Date</label>
-			<input type="text" class="form-control" name="cedate" id="cedate"  placeholder="Enter Course Name" required/>
+			<input type="text" class="form-control" name="cedate" id="cedate"  placeholder="Enter Course End Date" required/>
 			<script>
                 $('#cedate').datepicker({
                 onSelect: function(value, ui) {
@@ -179,7 +179,7 @@ if(isset($this->session->userdata['firstName'])){
                 });
             </script>
 			<label for="cfdate " class="cols-sm-2 control-label">Course Feedback Date</label>
-			<input type="text" class="form-control" name="cfdate" id="cfdate"  placeholder="Enter Course Name" required/>
+			<input type="text" class="form-control" name="cfdate" id="cfdate"  placeholder="Enter Course Feedback Date" required/>
 			<script>
                 $('#cfdate').datepicker({
                 onSelect: function(value, ui) {
@@ -199,7 +199,7 @@ if(isset($this->session->userdata['firstName'])){
                 });
             </script>
 			<label for="ccdate " class="cols-sm-2 control-label">Course Certificate Date</label>
-			<input type="text" class="form-control" name="ccdate" id="ccdate"  placeholder="Enter Course Name" required/>
+			<input type="text" class="form-control" name="ccdate" id="ccdate"  placeholder="Enter Course Certificate Date" required/>
 			<script>
                 $('#ccdate').datepicker({
                 onSelect: function(value, ui) {
