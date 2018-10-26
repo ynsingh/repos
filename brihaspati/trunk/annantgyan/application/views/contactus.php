@@ -77,35 +77,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</div>	
 
 </div>	
+<div class="container" id="card">
+	<div class="col-md-6 col-sm-6" >
+        	<div class="contact-left">
+			<div class="address" style="font-size: 14px;">
+				<h4 style="font-size: 20px;color: #79522f;"><b>Registered Central Office Address:</b></h5>
+				 <p>
+					Pakwa Inar, Naya Bhojpur<br>
+					Ward Number 22<br>
+					District: Buxar<br>
+					Bihar-802133<br>
+					<b>Contact to:</b> Dr. D. N. Dubey <br>
+					<b>Email:</b> dndubey@annantgyan.com<br>
+					or<br>
+					Founder and Director “Annant Gyan”:<br>
+					<b>Contact Number:</b> 7987828714 <br>
+					<b>Email:</b> amar24india@gmail.com <br>
+   	
+					For any query kindly send message to admin “Annant Gyan” at annantgyan@gmail.com & 	admin@annantgyan.com
+				</p>
+	
+				<h4 style="font-size: 20px;color: #79522f;"><b>Branch Office Address:</b></h5>
+				<p>
+					1. Block B, New colony Hurawali, <br>
+					Murar, Gwalior, Madhya Pradesh<br>
+					<b>Contact to:</b> Mr. Ramesh Kumar Ojha<br>
+					<b>Email:</b> 	 rojha@annantgyan.com<br>
+					<br>	
+					2.  8, 1st Main Road, Nagarjuna Residency,<br>
+					 Seegehalli, K. R. Puram,<br>
+					 Banglore-560049, Karnataka<br>
+					<b>Contact to:</b> Mrs. Preety Chaturvedi<br>
+					<b>Email: </b>	 preety@annantgyan.com
+				 </p>
+				 <h4 style="font-size: 20px;color: #79522f;"><b>Website Development & Maintenance</b></h5>
+				 <p>
+					SBRA, O-6, IIT Kanpur, 208016 <br>
+					<b>Contact to:</b> Mr. Nagendra Kumar Singh <br>
+					<b>Email:</b> nksingh@annantgyan.com <br>
+				 </p>
+				<p>&nbsp; </p>
 
-				<div class="container" id="card">
- 					<div class="col-md-6 col-sm-6" >
-                        <div class="contact-left">
-                            <div class="address" style="font-size: 20px;">
-                                <h5  style="font-size: 20px;color: #79522f;"><b>Address:</b></h5>
+   <!--                     	<h5  style="font-size: 20px;color: #79522f;"><b>Address:</b></h5>
                                 <p>
                                     Naya Bhojpur, District Buxar, Bihar-802133</p>
-                            </div>
-                            <div class="address address-mdl"  style="font-size: 20px;">
                                 <h5  style="font-size: 20px;color: #79522f;"><b>Phone Number:</b></h5>
                                 <p>
                                    7987828714</p>
                                 
-                              <h5  style="font-size: 20px;color: #79522f;"><b>Email:</b></h5>
+                        	<h5  style="font-size: 20px;color: #79522f;"><b>Email:</b></h5>
                                 <p>
                                     <a href="mailto:info@example.com">annantgyan@gmail.com</a>
                                 </p>
-                                
-                            </div>
+                  -->              
                         </div>
-                    </div>
+        	</div>
+	</div>
 
-                    <div class="col-md-6">
+       <div class="col-md-6">
                     	<div >
                     		 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.733646468064!2d84.15199401541612!3d25.580526822318042!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399278efe70290dd%3A0x83e80a6acf8b74a!2sAnnant+Gyan+Knowledge+and+Skills+Private+Limited!5e0!3m2!1sen!2sin!4v1527677241490" allowfullscreen style="height: 300px;width: 100%;"></iframe>
                     	</div>	 
-                    </div>	
-                </div>    	
+       </div>	
+</div>    	
 
 
 <?php include 'template/footer.php';?>

@@ -68,7 +68,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="container">
 	<div class="col-md-6" align=justify id="card">
 	<p> </p>
-<p>	Recommender can motivate/ instruct/ provide information about courses and helpful during enrollment & payment process to students for different ongoing online certified courses/ workshops of “Annant Gyan”. They must have to provide his/her mail id during enrollment process for facilitation amount. 
+	<p>Earning opportunity is open to all as recommender in upcoming online/offline certified courses and workshops.  </p>
+	<p>Recommenders can motivate/ instruct/ provide information about online/offline courses/workshops and helpful during enrollment and payment process to students in the learning platform of “Annant Gyan”. They must have to provide his/her mail id during enrollment process for facilitation amount. </p>
+	<p>We shall pay 10% of enrollment fee as facilitation amount to our recommenders for their recommendation on courses/workshops enrollment after completion of courses and workshops.  </p>
+	<p>For any query kindly mail to admin “Annant Gyan” at annantgyan@gmail.com or admin@annantgyan.com </p>
+<!--<p>	Recommender can motivate/ instruct/ provide information about courses and helpful during enrollment & payment process to students for different ongoing online certified courses/ workshops of “Annant Gyan”. They must have to provide his/her mail id during enrollment process for facilitation amount. 
 </p>
 <p>
 We shall provide facilitation amount to our recommenders from enrollment fee after 1 November 2018. First time we have to process it, so need your coordination if any delay.
@@ -84,7 +88,7 @@ All school teachers/college professors/ instructors/ person working in education
 </li></ol>
 <p>
  *Note: All financially weak graduate and students must have to submit one application regarding request to become recommender by taking signature with seal by gazetted officers or village Mukhiya or school/ college principal/director to admin@annantgyan.com. After verification, we shall send approval letter to them.
-</p>
+</p>-->
 </div>
 <div class="col-md-6" id="">
     	

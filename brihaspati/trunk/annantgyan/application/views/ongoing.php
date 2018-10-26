@@ -407,24 +407,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-4">
 	  <table>
 	    <tr><td>
-		  <a href="<?php echo base_url('docs'); ?>/Course&workshopcalender.pdf" target="_blank">
+		  <a href="<?php echo base_url('docs'); ?>/Course_workshop_calender.pdf" target="_blank">
 		  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Calendar." style="width:100%;">Course Calendar</button>
        		</a>
-  	  </td></tr>
+	  </td></tr>
+<!--
 	  <tr height=10><td></td></tr>
 	   <tr><td>
-		  <a href="<?php echo base_url('docs'); ?>/Structureofonlinecoursesworkshops.pdf" target="_blank">
+		  <a href="<?php //echo base_url('docs'); ?>/Structureofonlinecoursesworkshops.pdf" target="_blank">
 		  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Structure</button>
 	       </a>
 	</td></tr>
-
+-->
 	<tr height=10><td></td></tr>
 	   <tr><td>
 		  <a href="<?php echo base_url('docs'); ?>/Greetings.pdf" target="_blank">
-	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">Course Utility Message</button>
+	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Utility Message." style="width:100%;">Course Utility Message</button>
 	       </a>
 	</td></tr> 
-
+<!--
+	<tr height=10><td></td></tr>
+           <tr><td>
+                  <a href="<?php echo base_url('docs'); ?>/Scholarship_opportunity.pdf" target="_blank">
+                  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Scholarship opportunity." style="width:100%;">Scholarship opportunity</button>
+               </a>
+        </td></tr> -->
 <!--	<tr height=10><td></td></tr>
 	   <tr><td>
 		  <a href="<?php //echo base_url('docs'); ?>/UtilityMessageonvedicmathematics.pdf" target="_blank">
@@ -435,7 +442,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<tr height=10><td></td></tr>
 	   <tr><td>
 		  <a href="<?php echo base_url('docs'); ?>/forigner_cont.pdf" target="_blank">
-	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Structure." style="width:100%;">International Candidate Enrollment Process</button>
+	        <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open International Candidate Enrollment Process." style="width:100%;">International Candidate Enrollment Process</button>
 	       </a>
 	</td></tr>
 	</table>

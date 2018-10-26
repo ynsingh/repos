@@ -48,13 +48,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="panel panel-default ">
             <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
                  <h4 class="panel-title">
-                    <a href="#" class="ing">Q.1: How to register?</a>
+                    <a href="#" class="ing">Q.1: How to submit answer of daily quiz and weekly assignments?</a>
               </h4>
 
             </div>
             <div id="question0" class="panel-collapse collapse" style="height: 0px;">
                 <div class="panel-body">
-                     <h5><span class="label label-primary">Answer</span></h5>
+		     <h3><span class="label label-primary">
+				Go to exam section in green area- open Quiz/Assignment- Start exam- Answer the objective question and submit it.
+		     </span></h3>
 
                     <p>
                         </p>
@@ -64,13 +66,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="panel panel-default ">
             <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question1">
                  <h4 class="panel-title">
-                    <a href="#" class="ing">Q.2: Why do we use it?</a>
+                    <a href="#" class="ing">Q.2: Can I register multiple courses?</a>
               </h4>
 
             </div>
             <div id="question1" class="panel-collapse collapse" style="height: 0px;">
                 <div class="panel-body">
-                     <h5><span class="label label-primary">Answer</span></h5>
+                     <h3><span class="label label-primary">Yes. You can register in multiple courses.</span></h3>
 
                     <p></p>
                 </div>
@@ -79,13 +81,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="panel panel-default ">
             <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question2">
                  <h4 class="panel-title">
-                    <a href="#" class="ing">Q.3: Where does it come from?</a>
+                    <a href="#" class="ing">Q.3: In which language are the courses offered?</a>
               </h4>
 
             </div>
             <div id="question2" class="panel-collapse collapse" style="height: 0px;">
                 <div class="panel-body">
-                     <h5><span class="label label-primary">Answer</span></h5>
+                     <h3><span class="label label-primary">Annant Gyan offers courses in English and Hindi</span></h3>
 
                     <p></p>
                 </div>
@@ -94,13 +96,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="panel panel-default ">
             <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question3">
                  <h4 class="panel-title">
-                    <a href="#" class="ing">Q.4: Where can I get some?</a>
+                    <a href="#" class="ing">Q.4: What should be done if I forget my password?</a>
               </h4>
 
             </div>
             <div id="question3" class="panel-collapse collapse" style="height: 0px;">
                 <div class="panel-body">
-                     <h5><span class="label label-primary">Answer</span></h5>
+                     <h3><span class="label label-primary">
+				You'll find a "Forgot password" link right top corner on the Login screen. <br>
+				Click the link, and enter your email address. 
+				We'll send an email that will allow you to reset/change your password.
+		    </span></h3>
 
                     <p></p>
                 </div>

@@ -98,33 +98,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </br>
 <div class="container ">
 
-	
+<!--	
     <div class="col-md-12">
 	 	<div class="panel panel-primary" id="bgstyle">
 
      	 	<div class="panel-heading" style="font-size: 18px; border-radius: 15px 10px; ">
-     	 		<a href="<?php echo site_url('General-Subject-Related-Links');?>" style="color: white;" target=_blank>Online Video Lectures for IIT-JEE & Medical Entrance Exam</a></div>
+     	 		<a href="<?php //echo site_url('General-Subject-Related-Links');?>" style="color: white;" target=_blank>Online Video Lectures for IIT-JEE & Medical Entrance Exam</a></div>
      
     	</div>
     </div>
-
+-->
     <div class="col-md-12" id="card">
     	<p class="text-center" style="font-size: 22px;text-decoration: underline;color:black;"><b>ANNANT GYAN NEWS FORUM</b></p>
 
     	<table style="font-size: 18px;width:100%;">
         <tr>
-	  <td>
+	  <td align="justify">
 
-            <li>
-              We have started enrollment process of various online certified courses/workshops (https://annantgyan.com/Course-Registration). It is open till 10 October 2018.
+	    <li>
+		We have started the enrollment process of two specialized online certified crash courses and open till  9 December 2018 at <a href="https://annantgyan.com/Course-Registration" style="color:red; text-decoration: underline;"> Course-Registration</a>
+Both online crash courses are commencing from 10th   Dec to 30th Dec 2018.<br>
+<b>(a) “Ganit Gyananjali- </b>based on different sutras of Vedic Mathematics”. 
+It is beneficial for the all students preparing competitive exams like banking, SSC, UPSC, IBPS, GMAT, GRE, CAT and CSAT etc. <br>
+<b>(b) “Ganit Gyananjali-</b> a quick Vedic solutions”
+It is based on Vedic mathematics and beneficial for students of standard 6th to 12th. <br>
+<!--<b>Note:</b> We are also providing scholarship opportunity (up to 50% reduction in enrollment fee) for all students by pre enrollment test.-->
+<!--              We have started enrollment process of various online certified courses/workshops (https://annantgyan.com/Course-Registration). It is open till 10 October 2018. -->
             </li>
 <li>
-Our specialized online certified courses/workshops are commencing from 11th October and continue till 16 November 2018.
+“Annant Gyan” is providing earning opportunity to all interested individuals as recommender. 
+Interested people can register themselves on <a href="https://annantgyan.com/welcome/referalenroll" style="color:red; text-decoration: underline;">“Recommender Registration” </a> link. <!--  https://annantgyan.com/welcome/referalenroll-->
+<!--Our specialized online certified courses/workshops are commencing from 11th October and continue till 16 November 2018. -->
 <!--We shall start the online certified courses/workshops on 11th October and end at 16 November 2018.-->
 </li>
 <li>
+Now our six specialized online certified courses/workshops are running till 16 November 2018.
+<!--“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on “recommender link” on our website.-->
 <!--“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on recommender link on our website.-->
-“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on “recommender link” on our website.
 </li>
 
           </td>
@@ -149,7 +159,7 @@ Our specialized online certified courses/workshops are commencing from 11th Octo
 
     		<tr>
     			<ul>
-    				<td><li>Feedback on 17<sup>th</sup> November 2018.</td>
+    		<!--		<td><li>Feedback on 17<sup>th</sup> November 2018.</td> -->
     			</ul>
     		</tr>
     				

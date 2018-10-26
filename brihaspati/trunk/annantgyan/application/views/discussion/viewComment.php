@@ -64,7 +64,7 @@ $this->load->view('template/topstyle.php');
 <?php foreach ($comment_query as $comment_result) : ?>
   <li class="media">
     <a class="pull-left" href="#">
-      <img class="media-object" src="<?php%20echo%20base_url()%20;%20?>img/profile.svg" />
+      <img class="media-object" src="<?php echo base_url()?>/img/profile.svg" />
     </a>
     <div class="media-body">
       <!--<h4 class="media-heading"><?php //echo $comment_result->cm_usrid . anchor('discussion/cflag/'.$comment_result->cm_dsid . '/' . $comment_result->cm_id,$this->lang->line('comments_flag')) ; ?></h4>-->
