@@ -11,6 +11,9 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
             $(document).ready(function(){
+		  $("#dagp").hide();
+		  $("#satp").hide();
+
                 $('#DateofAGP,#Datefrom,#Dateto').datepicker({
                     dateFormat: 'yy/mm/dd',
                     autoclose:true,
@@ -257,7 +260,22 @@
                         });
                     }
                   });
-		});
+
+/***********************************************************************/
+		$('#worktypeid').on('change',function(){
+                        var wtid= $('#worktypeid').val();
+                        if(wtid == "Teaching"){
+                                $("#dagp").show();
+                        }
+                        else{
+                                $("#dagp").hide();
+                        }
+                  });
+           
+
+
+
+	});
 </script> 
     </head>
     <body>
@@ -367,17 +385,17 @@
                     </td>
                 </tr>
 
-	<tr>
+	<tr id="satp">
 
-                    <td>Shown Against The Post<font color='Red'>*</font></td>
-                        <td colspan=2><select name="emppost" id="emppostid"  style="width:350px;" required>
+                    <td>Shown Against The Post<font color='Red'></font></td>
+                        <td colspan=2><select name="emppost" id="emppostid"  style="width:350px;" >
                             <option selected="selected" disabled selected>-------Shown Against The Post---------</option>
                         </select>
                     </td>
                 </tr>
 	 <tr>
-                <td>Level<font color='Red'>*</font></td>
-                <td colspan=2><select name="level" style="width:350px;" id="lvel" required>
+                <td>Level<font color='Red'></font></td>
+                <td colspan=2><select name="level" style="width:350px;" id="lvel" >
                 <option selected="selected" disabled selected>------------ Select Level---------</option>
                         <option value="Level-1">Level-1</option>
                         <option value="Level-2">Level-2</option>
@@ -401,7 +419,7 @@
                 </td>
         </tr>		
 			<tr>
-	    <td>Pay Band<font color='Red'>*</font></td>
+	    <td>Pay Band<font color='Red'></font></td>
                     <td colspan=2><select name="payband" id="payband" style="width:350px;" onchange="gradelist(this.value)"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php foreach($this->salgrd as $salgrddata): ?>	
@@ -426,7 +444,7 @@
                             <input type="text" name="orderno" id="orderno" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
                     </td>
                 </tr>
-                <tr>
+                <tr id="dagp">
                     <td>Date of AGP<font color='Red'></font></td>
                         <td colspan=2><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
                     </td>
@@ -444,7 +462,7 @@
                 <tr>
                     <td>Date To<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
-			 <select name="tsession" style="width:110px;" id="tsession" required>
+			 <select name="tsession" style="width:110px;" id="tsession" >
                 <option selected="selected" disabled selected>Select Session</option>
                         <option value="Forenoon">Forenoon</option>
                         <option value="Afternoon">Afternon</option>

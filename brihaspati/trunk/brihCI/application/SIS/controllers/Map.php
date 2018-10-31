@@ -2317,9 +2317,15 @@ public function uolist(){
                 //$pfno = $this->input->post('usrname', TRUE);
 		//date check
 		$frmd = strtotime($datefrom);
-		$tod = strtotime($dateto);
-		if($tod >$frmd){
-
+		if($dateto != "0000-00-00 00:00:00"){
+			
+			$tod = strtotime($dateto);	
+			if($tod < $frmd){
+				$this->session->set_flashdata('err_message','Edit UO Detail - To date must be grater than from date. From date = '.$datefrom .' To date = '.$dateto, 'error');
+				$this->load->view('map/edit_uo',$data);
+			        return;
+			}
+		}
                 $logmessage = "";
                 if($data['uodata']->ul_empcode != $pfno)
                     $logmessage = "Edit UO user " .$data['uodata']->ul_empcode . " changed by " .$pfno;
@@ -2374,9 +2380,9 @@ public function uolist(){
                         $this->session->set_flashdata('success','UO details updated successfully pfno ='.$pfno." Email Id = "."[ " .$_POST['emailid']. " ]");
                         redirect("map/uolist");
                     }
-		}else{
-                        $this->session->set_flashdata('err_message','Edit UO Detail - To date must be grater than from date. From date = '.$datefrom .' To date = '.$dateto, 'error');
-		}
+	//	}else{
+          //              $this->session->set_flashdata('err_message','Edit UO Detail - To date must be grater than from date. From date = '.$datefrom .' To date = '.$dateto, 'error');
+	//	}
             }//else form validation true
         }//buton check
         $this->load->view('map/edit_uo',$data);

@@ -11,6 +11,7 @@
     </head>
 <script>
 
+//                            url: "<?php echo base_url();?>sisindex.php/report/getuolist"
 $(document).ready(function(){
 		/****************************************** start of uofficer********************************/
                 $('#wtype').on('change',function(){
@@ -23,7 +24,7 @@ $(document).ready(function(){
                     else{
                         $('#uoff').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getuolist",
+                            url: "<?php echo base_url();?>sisindex.php/report/getspuolist",
                             type: "POST",
                             data: {"worktype" : workt},
                             dataType:"html",
@@ -105,21 +106,28 @@ $(document).ready(function(){
                     }
                 }); 
 
-
                 /****************************************** start post********************************/
-                $('#wtype').on('change',function(){
-                    var workt = $(this).val();
+               // $('#wtype').on('change',function(){
+                $('#dept').on('change',function(){
+			var wtcode = $('#wtype').val();
+                    var uoid = $('#uoff').val();
+                    var dept = $('#dept').val();
+                    //alert(sc_code);
+                    var wtuodept = wtcode+","+uoid+","+dept;
+                   // var workt = $(this).val();
                    //alert("post====="+workt);
-                    if(workt == ''){
+                    if(dept == ''){
                         $('#desig').prop('disabled',true);
 
                     }
                     else{
                         $('#desig').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
+                            //url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
+                            url: "<?php echo base_url();?>sisindex.php/report/getuodeptpostlist_sp",
                             type: "POST",
-                            data: {"worktype" : workt},
+                            //data: {"worktype" : workt},
+			    data: {"wtuodept" : wtuodept},
                             dataType:"html",
                             success:function(data){
                             //alert("data==1="+data);
@@ -297,9 +305,10 @@ $(document).ready(function(){
                             ?></td>
                             <td>
                                 <?php 
-					if(!empty($record->emp_desig_code)){
+				if(!empty($record->emp_desig_code)){
 					echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; 
-					}
+				}
+
 				$cdate = date('Y-m-d');
                                 $headflag="false";
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
@@ -316,27 +325,54 @@ $(document).ready(function(){
                             <td>
                                 <?php $phone=$record->emp_phone;
                                       $adhaar=$record->emp_aadhaar_no;
-                                      //echo "<b> Contact no-:</b>".$phone."<br/>"."<b> Aadhaar No-: </b>".$adhaar;
                                       echo $phone."<br/>".$adhaar;
-                                      ?>  
+                                ?>  
                             </td>
-                            <!-- <td><?php //echo $record->emp_post; ?></td>-->
                             <td> <?php 
-		//		$roleid=$this->session->userdata('id_role');
 				$uname = $this->session->userdata('username');
+                                $rest = substr($uname, -21);
+
+
+		        	if($roleid == 5){
+                			$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
+		                	$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
+		                        $deptuocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
+        			}
+
+
 				$suocid='';
 				if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
-		                        $suocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
-				//	if($uocid == $record->emp_uocid){
-				//		//echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
-				//	}
+		                        //$suocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
+		                        $suocid=$deptuocid;
                 		}
-                                if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))||($suocid == $record->emp_uocid)){
-                                //if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
+
+				 $flagffs=false;
+				 $flagcppm=false;
+				 $flagro=false;
+				 $flaguooff =false;
+				 $flaghod=false;
+				if(($suocid == $record->emp_uocid) && ($this->session->userdata('username') == 'deanffsoffice@tanuvas.org.in')&&(!(in_array($record->emp_id, $uoempid)))){
+					$flagffs=true;
+				}
+				if(($suocid == $record->emp_uocid) && ($this->session->userdata('username') == 'deancppmoffice@tanuvas.org.in')&&(!(in_array($record->emp_id, $uoempid)))){
+					$flagcppm=true;
+				}
+				if(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($record->emp_id, $uoempid))){
+					$flagro=true;
+				}
+				if(($rest == 'office@tanuvas.org.in') && (in_array($record->emp_id, $hodempid))&&(!(in_array($record->emp_id, $uoempid)))&&($deptuocid == $record->emp_uocid)){
+					$flaguooff =true;
+				}
+				if(($roleid == 5)&&($hdeptid == $record->emp_dept_code)&&($record->emp_id != $hempid)&&(!(in_array($record->emp_id, $uoempid)))){
+					$flaghod=true;
+				}
+//			echo "flag true ".$flagffs .")||( ".$flagcppm. ")||(". $flagro.")||(".$flaguooff.")||(".$flaghod	;
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                              //  if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))||($suocid == $record->emp_uocid)){
+                                //  if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
 						
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 					echo "<br>";
-//					print_r($record);
 					if($record->emp_worktype === "Teaching"){
 						if(!($headflag)){
 							if($record->emp_head == "HEAD"){
@@ -346,8 +382,8 @@ $(document).ready(function(){
 							}
 						}
 					}
-//					echo "<br>";
-                              //          echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));
+				//	echo "<br>";
+                              //        echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));
 				}
 				?></td>
                         </tr>

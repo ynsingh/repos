@@ -611,9 +611,9 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
 	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|required|xss_clean');
-	    $this->form_validation->set_rules('level','Level','trim|required|xss_clean');
-            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|xss_clean');
+	    $this->form_validation->set_rules('level','Level','trim|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','trim|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
             $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
@@ -635,6 +635,22 @@ public function disciplin_profile() {
                 }
 
 		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+		if(empty($_POST['level'])){
+			$level='';
+		}else{
+			$level=$_POST['level'];
+		}
+		if(empty($_POST['payband'])){
+			$payb='';
+		}else{
+			$payb=$_POST['payband'];
+		}
+		if(empty($_POST['tsession'])){
+			$ts='';
+		}else{
+			$ts=$_POST['tession'];
+		}
+		
                 $data = array(
                     'empsd_empid'           =>$empid,
                     'empsd_campuscode'      =>$_POST['campus'],
@@ -646,15 +662,15 @@ public function disciplin_profile() {
                     'empsd_group'           =>$_POST['group'],
                     'empsd_desigcode'       =>$desigcode,
 		    'empsd_shagpstid'       =>$_POST['emppost'],
-		    'empsd_level'           =>$_POST['level'],
-                    'empsd_pbid'            =>$_POST['payband'],
+		    'empsd_level'           =>$level,
+                    'empsd_pbid'            =>$payb,
                     'empsd_gradepay'        =>$_POST['gradepay'],
                     'empsd_orderno'        =>$_POST['orderno'],
                     'empsd_pbdate'          =>$_POST['DateofAGP'],
                     'empsd_dojoin'          =>$_POST['Datefrom'],
 		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$_POST['Dateto'],
-		    'empsd_tsession'	    =>$_POST['tsession'],
+		    'empsd_tsession'	    =>$ts,
 		    'empsd_orderno'         =>'',
 		    'empsd_filename'	    => $name,
                 );
@@ -712,7 +728,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/service_profile/'.$empid);
                     }
                                        
                 }

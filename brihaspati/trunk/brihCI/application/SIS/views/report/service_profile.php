@@ -122,8 +122,32 @@
                                 <?php 
 				$uname=$this->session->userdata('username');
 				$rest = substr($uname, -21);
+
+/*				$flagffs=false;
+                                 $flagcppm=false;
+                                 $flagro=false;
+                                 $flaguooff =false;
+                                 $flaghod=false;
+                                if(($this->session->userdata('username') == 'deanffsoffice@tanuvas.org.in')&&(!(in_array($emp_id, $uoempid)))){
+                                        $flagffs=true;
+                                }
+                                if(($this->session->userdata('username') == 'deancppmoffice@tanuvas.org.in')&&(!(in_array($emp_id, $uoempid)))){
+                                        $flagcppm=true;
+                                }
+                                if(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid))){
+                                        $flagro=true;
+                                }
+                                if(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid))&&(!(in_array($emp_id, $uoempid)))){
+                                        $flaguooff =true;
+                                }
+                                if(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid)))){
+                                        $flaghod=true;
+                                }
+
+  */                              if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
+//				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 
 					echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
 				}
@@ -202,7 +226,8 @@
                                 <?php 
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 				//   if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
+			//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 
 						echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Service Data' , 'class' => 'red-link'));
 						echo "  | ";

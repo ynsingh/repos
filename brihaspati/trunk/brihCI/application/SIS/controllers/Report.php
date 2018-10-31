@@ -400,7 +400,7 @@ class Report  extends CI_Controller
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
-        $whorder = 'empsd_dojoin desc';
+        $whorder = 'empsd_dojoin desc,empsd_id desc';
         $emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
 
 	$emp_data['uoempid']=$this->getempuoid();
@@ -812,8 +812,8 @@ public function disciplinewiselist(){
 		}
 		if ($rlid == 10){
 			$usrname=$this->session->userdata('username');
-//			print_r( $usrname); die;
-			if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+//			print_r( $usrname); die; 
+			if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
 			}else{
 				$uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
 				$whdata = array ('sp_uo' => $uoid);
@@ -1025,6 +1025,7 @@ public function disciplinewiselist(){
                 }
                 $datawh['emp_dept_code'] = $deptid;
         }
+
 	$whorder = 'emp_desig_code asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_desig_code',$datawh,$whorder);
         $desig_select_box =' ';
@@ -1323,7 +1324,7 @@ public function disciplinewiselist(){
 
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$whdata,$whorder);
         $post_select_box =' ';
-        $post_select_box.='<option value=null>-- Select Post --';
+        $post_select_box.='<option value=null>-- Select --';
         $usrname=$this->session->userdata('username');
         if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($username === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
                 $post_select_box.='<option value='.All.'>'.All. ' ';

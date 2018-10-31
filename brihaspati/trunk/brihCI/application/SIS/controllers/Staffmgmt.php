@@ -28,8 +28,37 @@ class Staffmgmt extends CI_Controller
     	public function index(){
     		//$this->load->view('staffmgmt/staffprofile');    
     	}
-    
-    	public function getuohodempid(){
+   
+	 
+	public function getempuoid(){
+                $selectfield='emp_id';
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+
+                $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
+                //$emp_data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $empuoempid=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $empuoid = array();
+                foreach($empuoempid as $row){
+                        $empuoid[]=$row->emp_id;
+                }
+                return $empuoid;
+        }
+
+//get all hod empid
+        public function getemphodid(){
+                $selectfield='emp_id';
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+
+                $joincond = 'employee_master.emp_code = hod_list.hl_empcode';
+                //$emp_data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $emphodempid = $this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+                $emphodid = array();
+                foreach($emphodempid as $row){
+                        $emphodid[]=$row->emp_id;
+                }
+                return $emphodid;
+        }
+/*    	public function getuohodempid(){
 		$data['loguname']=$this->session->userdata('username');
 		$rlid=$this->session->userdata('id_role');
 
@@ -43,7 +72,7 @@ class Staffmgmt extends CI_Controller
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 $data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
     	}
-
+*/
     	public function addhead($id){
 		$whdata = array ('emp_id' => $id);
 		$idata = array('emp_head' => "HEAD");
@@ -147,7 +176,6 @@ class Staffmgmt extends CI_Controller
                 $whdata['emp_dept_code'] = $deptid;
 		$uopid=$this->sismodel->get_listspfic1('hod_list','hl_uopid','hl_deptid',$deptid)->hl_uopid;
         }
-//	echo $rlid; die();
 	 $selectfield ="emp_id,emp_code,emp_head,emp_photoname,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_specialisationid,emp_desig_code,emp_post,emp_email,emp_phone,emp_aadhaar_no,emp_name,emp_worktype";
          $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
 	 $this->wtyp='';
@@ -225,6 +253,8 @@ class Staffmgmt extends CI_Controller
 	}
 	//$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master','*',$whdata,'emp_dept_code asc,emp_desig_code asc');
 //	$data['records'] = $this->sismodel->get_list('employee_master');
+	$data['uoempid']=$this->getempuoid();
+        $data['hodempid']=$this->getemphodid();
         $this->logger->write_logmessage("view"," view employee list" );
         $this->logger->write_dblogmessage("view"," view employee list");
         $this->load->view('staffmgmt/employeelist',$data);

@@ -1272,7 +1272,7 @@ CREATE TABLE `uo_list` (
   `ul_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `ul_modifierid` varchar(255) NOT NULL,
   `ul_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-   UNIQUE (`ul_userid`,`ul_uoname`,`ul_uocode`)
+   UNIQUE (`ul_userid`,`ul_empcode`,`ul_datefrom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 --
