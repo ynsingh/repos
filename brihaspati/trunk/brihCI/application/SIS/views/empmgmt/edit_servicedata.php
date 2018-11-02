@@ -12,6 +12,10 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
             $(document).ready(function(){
+		 $("#dagp").hide();
+                  $("#satp").hide();
+
+
                 $('#DateofAGP,#Datefrom,#Dateto').datepicker({
                     dateFormat: 'yy/mm/dd',
                     autoclose:true,
@@ -187,7 +191,7 @@
             });
 
  /************************select shown against the post value *****************************************************/
-             $('#desigid').on('change',function(){
+/*             $('#desigid').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var dept_id = $('#scid').val();
@@ -231,7 +235,7 @@
                     });
                 }
             }); 
-
+*/
             /************************closer for shown against the post*****************************************/
  $("#payband").on('change',function(){
                         var leaveid = $(this).val();
@@ -256,6 +260,20 @@
                         });
                     }
                   });
+
+/**********************************************************************************************/
+		 $('#worktypeid').on('change',function(){
+                        var wtid= $('#worktypeid').val();
+                        if(wtid == "Teaching"){
+                                $("#dagp").show();
+                        }
+                        else{
+                                $("#dagp").hide();
+                        }
+                  });
+
+
+
 
             }); 
         </script>
@@ -406,9 +424,9 @@
                     </td>
                 </tr>
 
-                <tr>
-                <td>Shown Against The Post<font color='Red'>*</font></td>
-<td><select name="emppost" id="emppostid"  style="width:350px;" required>
+                <tr id="satp">
+                <td>Shown Against The Post<font color='Red'></font></td>
+<td><select name="emppost" id="emppostid"  style="width:350px;" >
                             <?php if(!empty($servicedata->empsd_shagpstid)):;?>
                             <option value="<?php echo $servicedata->empsd_shagpstid;?>"><?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $servicedata->empsd_shagpstid)->desig_name ?></option>
                             <?php else:?>
@@ -419,8 +437,8 @@
                     </td>   
                 </tr>
 <tr>
-                <td>Level<font color='Red'>*</font></td>
-                 <td><select name="level" style="width:350px;" id="lvel" required>
+                <td>Level<font color='Red'></font></td>
+                 <td><select name="level" style="width:350px;" id="lvel" >
                             <?php if(!empty($servicedata->empsd_level)):;?>
                             <option value="<?php echo $servicedata->empsd_level;?>"><?php echo $servicedata->empsd_level;?></option>
                             <?php else:?>
@@ -449,8 +467,8 @@
                 </tr>
  
                 <tr>
-                    <td>Pay Band<font color='Red'>*</font></td>
-                    <td><select name="payband" id="payband" required style="width:350px;" onchange="gradelist(this.value)">
+                    <td>Pay Band<font color='Red'></font></td>
+                    <td><select name="payband" id="payband"  style="width:350px;" onchange="gradelist(this.value)">
                         <?php if(!empty($servicedata->empsd_pbid)):;?>
                         <option value="<?php echo $servicedata->empsd_pbid;?>">
                             <?php
@@ -477,7 +495,7 @@
                         <td><input type="text" name="gradepay" id="gradepay" value="<?php echo $servicedata->empsd_gradepay;?>"  size="40" readonly>
                     </td>
                 </tr>
-                <tr>
+                <tr id="dagp">
                     <td>Date of AGP<font color='Red'></font></td>
                         <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo $servicedata->empsd_pbdate;?>"  size="40" >
                     </td>

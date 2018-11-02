@@ -242,12 +242,30 @@
                 <tr>
                     <td><label for="Datefrom" >Date From<font color='Red'></font></label></td>
                     <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo $uodata->ul_datefrom ;?>"   size="45" >
+			 <select name="jsession" style="width:140px;" id="jsession" required>
+<?php                           if(!empty($uodata->ul_fromsession)){ ?>
+                                <option value="<?php echo $uodata->ul_fromsession;?>"><?php echo $uodata->ul_fromsession;?></option>
+<?php                           } ?>
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>     
                          
                 </tr>
                 <tr>
                     <td><label for="Dateto" >Date To<font color='Red'></font></label></td>
                     <td><input type="text" name="DateTo" id="Dateto"  value="<?php echo $uodata->ul_dateto ;?>"   size="45" >
+			 <select name="tsession" style="width:140px;" id="tsession" >
+<?php                           if(!empty($uodata->ul_fromsession)){ ?>
+                                <option value="<?php echo $uodata->ul_fromsession;?>"><?php echo $uodata->ul_fromsession;?></option>
+<?php                           } ?>
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>     
                          
                 </tr>

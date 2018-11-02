@@ -209,12 +209,30 @@
                 <tr>
                     <td><label for="Datefrom" style="font-size:15px;">Date From<font color='Red'></font></label></td>
                     <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo $hoddata->hl_datefrom ;?>"   size="45" >
+			<select name="jsession" style="width:140px;" id="jsession" required>
+<?php				if(!empty($hoddata->hl_fromsession)){ ?>
+                                <option value="<?php echo $hoddata->hl_fromsession;?>"><?php echo $hoddata->hl_fromsession;?></option>
+<?php				} ?>
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>     
                          
                 </tr>
                 <tr>
                     <td><label for="Dateto" style="font-size:15px;">Date To<font color='Red'></font></label></td>
                     <td><input type="text" name="DateTo" id="Dateto"  value="<?php echo $hoddata->hl_dateto ;?>"   size="45" >
+			<select name="tsession" style="width:140px;" id="tsession" >
+<?php				if(!empty($hoddata->hl_tosession)){ ?>
+                                <option value="<?php echo $hoddata->hl_tosession;?>"><?php echo $hoddata->hl_tosession;?></option>
+<?php				} ?>
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>     
                          
                 </tr>

@@ -360,7 +360,7 @@ public function disciplin_profile() {
                         redirect("empmgmt/extstaffpro");
                     }
                     else{
-                        redirect("report/viewfull_profile");
+                        redirect("report/performance_profile/".$empid);
                     }    
                 }
                 else{
@@ -373,7 +373,7 @@ public function disciplin_profile() {
                         redirect("empmgmt/viewempprofile");
                     }
                     else{
-                       redirect("report/viewfull_profile/".$empid); 
+                       redirect("report/performance_profile/".$empid); 
                     }
                     
                 }
@@ -579,7 +579,7 @@ public function disciplin_profile() {
                     }
                     else{
                         //$this->load->view('report/viewfull_profile');
-                        redirect('report/viewfull_profile/'.$id);
+                        redirect('report/performance_profile/'.$id);
                     }
                                         
                 }
@@ -828,9 +828,9 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
 	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|required|xss_clean');
-	    $this->form_validation->set_rules('level','Level','trim|required|xss_clean');
-            $this->form_validation->set_rules('payband','PayBand','trim|required|xss_clean');
+	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|xss_clean');
+	    $this->form_validation->set_rules('level','Level','trim|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','trim|xss_clean');
             $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
@@ -978,7 +978,7 @@ public function disciplin_profile() {
                     }
                     else{
 			$uid = $this->sismodel->get_listspfic1('employee_servicedetail','empsd_empid','empsd_id',$id)->empsd_empid;
-                        redirect('report/viewfull_profile/'.$uid);
+                        redirect('report/service_profile/'.$uid);
                     }
                                         
                 }
@@ -1037,7 +1037,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/disciplin_profile/'.$empid);
                     }
                 }
             }//else
@@ -1095,7 +1095,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/recruit_profile/'.$empid);
                     }
                                        
                 }
@@ -1230,7 +1230,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/deputation_profile/'.$empid);
                     }
                                        
                 }
@@ -1283,7 +1283,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/deptexam_profile/'.$empid);
                     }
                                        
                 }
@@ -1352,7 +1352,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/workorder_profile/'.$empid);
                     }
                                        
                 }
@@ -1646,7 +1646,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/academic_profile/'.$empid);
                     }
                                        
                 }
@@ -1871,7 +1871,7 @@ public function disciplin_profile() {
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/technical_profile/'.$empid);
                     }
                                        
                 }

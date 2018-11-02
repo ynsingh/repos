@@ -343,10 +343,15 @@ class Report  extends CI_Controller
 
 	//for adding head next to designation
 	$cdate=date('Y-m-d');
-	$this->headflag="false";
         $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
-        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+
+	$this->headflag="false";
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto' =>'0000-00-00 00:00:00' );
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+	
+	$this->uoflag="false";
+        $uhwdata = array('ul_empcode' =>$empcode, 'ul_dateto'=> '0000-00-00 00:00:00');
+        $this->uoflag=$this->sismodel->isduplicatemore("uo_list",$uhwdata);
 
 	//get all profile and service data
 	$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();

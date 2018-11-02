@@ -1067,7 +1067,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>
             </tr>
             <tr>
-                <td><label for="assrexamdate" style="font-size:15px;"><font color='Blue'>ASRR Passed</font></label>
+                <td><label for="assrexamdate" style="font-size:15px;"><font color='Blue'>ASRR Passed(MM-YYYY)</font></label>
                     <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo $editdata->emp_dateofAssrExam ;?>"class="form-control" size="33" />
                     </div>
                 </td>    
@@ -1081,18 +1081,18 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td> 
                 
                 <?php 
-                    $fulldata=$editdata->emp_bank_ifsc_code;
-                    $bname=explode(",",$fulldata);  
+                //    $fulldata=$editdata->emp_bank_ifsc_code;
+                  //  $bname=explode("#",$fulldata);  
                     
                 ;?>
                 <td><label for="bankname" style="font-size:15px;"><font color='Blue'>Bank Name</font></label>
-                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo $bname[0]; ?>" placeholder="Bank Name..." size="33" >
+                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo $editdata->emp_bankname ?>" placeholder="Bank Name..." size="33" >
                     </div>
                 </td>
             </tr>
             <tr>
                 <td><label for="ifsccode" style="font-size:15px;"><font color='Blue'>IFSC Code</font></label>
-                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo $bname[1]; ?>" placeholder="IFSC CODE..." size="33" >
+                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo $editdata->emp_bank_ifsc_code; ?>" placeholder="IFSC CODE..." size="33" >
                     </div>
                 </td>
                 <td><label for="bankacno" style="font-size:15px;"><font color='Blue'>Bank ACC No</font><font color='Red'></font></label>

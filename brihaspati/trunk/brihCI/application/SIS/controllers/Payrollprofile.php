@@ -80,16 +80,18 @@ class Payrollprofile extends CI_Controller
                 $bankname = $this->input->post('bname', '');
                 $ifsccode = $this->input->post('ifsccode', '');
                 $bbranch = $this->input->post('bbranch', '');
-                if(!empty($bankname)|| !empty($ifsccode) ||!empty($bbranch) ){
-                    $bank_ifsc=$bankname.",".$ifsccode.",".$bbranch;
+            /*    if(!empty($bankname)|| !empty($ifsccode) ||!empty($bbranch) ){
+                    $bank_ifsc=$bankname."#".$ifsccode."#".$bbranch;
                     
                 }
                 else{
-                    $bank_ifsc='';
-                }
+                    $bank_ifsc='##';
+                }*/
                 $dataems=array(
                     'emp_bank_accno'         =>$_POST['accno'],
-                    'emp_bank_ifsc_code'     =>$bank_ifsc,
+                    'emp_bank_ifsc_code'     =>$ifsccode,
+                    'emp_bankname'     =>$bankname,
+                    'emp_bankbranch'     =>$bbranch,
                     
                 );
                 $datapp = array(

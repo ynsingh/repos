@@ -320,6 +320,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|xss_clean|numeric');
             
             $this->form_validation->set_rules('bankname','Bank Name','trim|xss_clean');
+            //$this->form_validation->set_rules('bankbranch','Bank Branch Name','trim|xss_clean');
             $this->form_validation->set_rules('ifsccode','IFSC CODE','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('bankacno','Bank ACC No','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
@@ -402,7 +403,8 @@ class Staffmgmt extends CI_Controller
             else{
                 //$udval='';
                 $pfno=0;
-                $bank_ifsccode=$_POST['bankname'].",".$_POST['ifsccode'];
+                //$bank_ifsccode=$_POST['bankname']."#".$_POST['ifsccode']."#";
+                $bank_ifsccode=$_POST['ifsccode'];
                 $emppostname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['emppost'])->desig_name; 
                // $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['uocontrol'])->authority_id;
                 //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
@@ -518,6 +520,8 @@ class Staffmgmt extends CI_Controller
                     
                     'emp_aadhaar_no'            =>$_POST['Aadharrno'],
                     'emp_bank_ifsc_code'        =>$bank_ifsccode,
+                    'emp_bankname'       	=>$_POST['bankname'],
+                    'emp_bankbranch'        	=>'',
                     'emp_bank_accno'            =>$_POST['bankacno'],
                     'emp_dob'                   =>$_POST['DateofBirth'],
                     'emp_father'                =>$_POST['fathername'],
@@ -885,6 +889,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|xss_clean|numeric');
             
             $this->form_validation->set_rules('bankname','Bank Name','trim|xss_clean');
+            //$this->form_validation->set_rules('bankbranch','Bank Branch Name','trim|xss_clean');
             $this->form_validation->set_rules('ifsccode','IFSC CODE','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('bankacno','Bank ACC No','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
@@ -1071,7 +1076,9 @@ class Staffmgmt extends CI_Controller
                 'emp_pan_no'                     => $this->input->post('panno'),
                 
                 'emp_aadhaar_no'                 => $this->input->post('Aadharrno'),
-                'emp_bank_ifsc_code'             => $bankname.','.$ifsccode,
+                'emp_bank_ifsc_code'             => $ifsccode,
+                'emp_bankname'             	=> $bankname,
+                'emp_bankbranch'             	=> '',
                 'emp_dob'                        => $this->input->post('DateofBirth'),
                 'emp_father'                     => $this->input->post('fathername'),
                 
@@ -2842,7 +2849,8 @@ class Staffmgmt extends CI_Controller
         $transtype = "mutual,".$_POST['empname']; 
         $postto2=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['postto'])->desig_name;
         $postfrom2=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;
-       
+        $ddoidfrom = $this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$_POST['empname'])->emp_ddoid;
+        $ddouseridfrom = $this->sismodel->get_listspfic1('employee_master','emp_ddouserid','emp_id',$_POST['empname'])->emp_ddouserid;
         $data2=array(
             'uit_registrarname'                => $this->input->post('registrarname'),
             'uit_desig'                        => $this->input->post('designation'),
@@ -2874,13 +2882,14 @@ class Staffmgmt extends CI_Controller
             'uit_emptypeto'                    => $this->input->post('employeetype'),
             'uit_schm_from'                    => $this->input->post('schemto'),
             'uit_schm_to'                      => $this->input->post('schemfrom'),
-            'uit_ddoid_to'                     => $this->input->post('ddo'),
+            'uit_ddoid_to'                     => $ddoid, // from ddo
             'uit_group_to'                     => $this->input->post('group'),
             'uit_paybandid_to'                 => $this->input->post('payband'),
             'uit_vacanttype_to'                => $this->input->post('empptfrom'),
             'uit_transfertype'                 => $transtype,
                     
         );
+            //'uit_ddoid_to'                     => $this->input->post('ddo'), // from ddo
         $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data2);
         if(!$usrinputtfr_flag){
             $this->logger->write_logmessage("error","Error in Staff Transfer and Posting", "Error in Staff Transfer and Posting" );
@@ -2929,11 +2938,13 @@ class Staffmgmt extends CI_Controller
            'emp_scid'         => $_POST['campusfrom'] ,
            'emp_uocid'        => $_POST['uocfrom'],
            'emp_uocuserid'    => $_POST['uocfrom'],
-           'emp_ddouserid'    => $_POST['ddo'],
-           'emp_ddoid'        => $_POST['ddo'],
+           'emp_ddouserid'    => $ddouserid,//from ddo
+           'emp_ddoid'        => $ddoid,//from ddo
            'emp_group'        => $_POST['group'],
                     
         );
+           //'emp_ddouserid'    => $_POST['ddo'],//from ddo
+//           'emp_ddoid'        => $_POST['ddo'],//from ddo
         $upempdata_flag=$this->sismodel->updaterec('employee_master', $empdata2,'emp_id',$id);
                     
         /****************************************insert record in service particular************************************************/

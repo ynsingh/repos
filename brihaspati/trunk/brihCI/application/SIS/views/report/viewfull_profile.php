@@ -156,6 +156,9 @@
 					if(($this->headflag)||($data->emp_head == "HEAD")){
         		                        echo " & Head";
 	                                }
+					if(($this->uoflag)||($data->emp_head == "UO")){
+        		                        echo " & UO";
+	                                }
 ?>
                                 </td>
                         </tr>
@@ -300,12 +303,19 @@
                                 </td>
 <td>
 <?php 
-	  $fulldata=$data->emp_bank_ifsc_code;
-                    $bname=explode(",",$fulldata);
-	  echo    "<b>Bank Name</b> <br>".$bname[0]; ?>
+	/*  $fulldata=$data->emp_bank_ifsc_code;
+		$bnm="";$bifsc="";
+		if(!empty($fulldata)){
+                    $bname=explode("#",$fulldata);
+			$bnm=$bname[0];
+			$bifsc=$bname[1];
+		}
+*/
+	  echo    "<b>Bank Name</b> <br>".$data->emp_bankname; ?>
                                 </td>
                                 <td>
-<?php   echo    "<b>IFSC Code</b> <br>".$bname[1]; ?>
+
+<?php   echo    "<b>IFSC Code</b> <br>".$data->emp_bank_ifsc_code; ?>
                                 </td>
 
                                 <td>
@@ -410,10 +420,16 @@ echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$u
                                 </td>
         <?php
           $ntq=$data->emp_netqualified;
+		$ntqnew0="";
+		$ntqnew1="";
                 if(!empty($ntq)){
                     $ntqnew=explode(",",$ntq);
-echo    "<td><b>NET qualified</b> <br>".$ntqnew[0]; ?>
-</td><td><b>Organiser</b><br><?php   echo    $ntqnew[1];?></td><td><b>Year of Passing</b><br><?php   echo   substr( (implode('-', array_reverse(explode('-', $data->emp_netpassingyear)))),6,10);?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
+			$ntqnew0=$ntqnew[0];
+			if($ntqnew0 == "Yes"){
+				$ntqnew1=$ntqnew[1];
+			}
+echo    "<td><b>NET qualified</b> <br>".$ntqnew0; ?>
+</td><td><b>Organiser</b><br><?php   echo    $ntqnew1;?></td><td><b>Year of Passing</b><br><?php   echo   substr( (implode('-', array_reverse(explode('-', $data->emp_netpassingyear)))),6,10);?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
 
 
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Veterinary Council (VC) Registration:</b></label></td> </tr>

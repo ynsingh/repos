@@ -216,10 +216,16 @@ class Jslist extends CI_Controller
                 $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
                 $desigcd=$this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$detail->emp_desig_code)->desig_code;
                 $empname=$detail->emp_name;
+
                 $ifcbank=$detail->emp_bank_ifsc_code;
+		$bank=$detail->emp_bankname;
+		$bnkadd=str_replace(","," ",$detail->emp_bankbranch);
+//		$ifcbank=$bank[0]."#".$bank[1]."#".$bnkadd;
+
                 $accno=$detail->emp_bank_accno;
                 $phno=$detail->emp_phone;
-                $address=$detail->emp_address;
+                $address=str_replace(","," ",$detail->emp_address);
+		$address=preg_replace("/[\n\r]/","", $address);
                 $email=$detail->emp_secndemail;
                 $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
                 $dor=date('d-m-Y',strtotime($detail->emp_dor));
@@ -232,9 +238,16 @@ class Jslist extends CI_Controller
                 $payscale=$payband."(".$pay_min."-".$pay_max.")".$gardepay;
                 $aadhaarno=substr($detail->emp_aadhaar_no, -4);
                 $paycomm=$detail->emp_paycomm;
+//		if(empty($paycomm)){
+//			$paycomm ="";
+//		}
                                 
                 array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
-                $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor,$payscale,$ifcbank,$paycomm);
+                $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor,$payscale,$bank,$ifcbank,$bnkadd,$paycomm);
+
+//		array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
+  //              $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor."16",$payscale."17",$ifcbank.'181920',$paycomm.'21');
+
             }
             
         } 
@@ -275,6 +288,10 @@ class Jslist extends CI_Controller
                 array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
                 $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
                 $prdno2,$prdno3,$plino1,$plino2,$society, $socmem);      
+
+//                array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
+  //              $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
+    //            $prdno2,$prdno3,$plino1,$plino2,$society, $socmem);      
             }
             
         }

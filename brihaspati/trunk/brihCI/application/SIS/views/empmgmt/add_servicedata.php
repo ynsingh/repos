@@ -191,7 +191,7 @@
 	    });
 
 	/************************select shown against the post value *****************************************************/
-	       $('#desigid').on('change',function(){
+	 /*      $('#desigid').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var dept_id = $('#scid').val();
@@ -235,7 +235,7 @@
                     });
                 }
             }); 
-
+*/
             /************************closer for shown against the post*****************************************/
 		 $("#payband").on('change',function(){
                         var leaveid = $(this).val();

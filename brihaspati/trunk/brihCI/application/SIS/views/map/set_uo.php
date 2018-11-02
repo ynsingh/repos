@@ -178,7 +178,6 @@
                     <td>
                         <select name="campus" id="camp" style="width:100%;" required="required">
                         <option selected="selected" disabled selected>------ Select Campus------</option> 
-                        <!-- <option value="">-------------Select Campus--------------- </option>  -->
                         <?php foreach($this->campus as $datas): ?>
                         <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
                         <?php endforeach; ?>
@@ -228,12 +227,24 @@
                 <tr>
                     <td><label for="Datefrom" >Date From<font color='Red'></font></label></td>
                     <td><input type="text" name="DateFrom" id="Datefrom" value="<?php echo isset($_POST["DateFrom"]) ? $_POST["DateFrom"] : ''; ?>"  size="45" >
+			<select name="jsession" style="width:140px;" id="jsession" required>
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>     
                          
                 </tr>
                 <tr>
                     <td><label for="Dateto" >Date To<font color='Red'></font></label></td>
                     <td><input type="text" name="DateTo" id="Dateto" value="<?php echo isset($_POST["DateTo"]) ? $_POST["DateTo"] : ''; ?>"  size="45" >
+			<select name="tsession" style="width:140px;" id="tsession" >
+                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="Forenoon">Forenoon</option>
+                                <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>     
                          
                 </tr>

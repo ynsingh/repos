@@ -95,8 +95,20 @@
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->hl_scid)->sc_name;?></td>
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->hl_deptid)->dept_name;?></td>
                             <td><?php echo $record->hl_status;?></td>
-                            <td><?php echo $record->hl_datefrom;?></td>
-                            <td><?php echo $record->hl_dateto;?></td>
+                            <td><?php echo $record->hl_datefrom;
+				 if(!empty($record->hl_fromsession)){
+                                        echo "<br>";
+                                        echo $record->hl_fromsession;
+                                }
+
+				?></td>
+                            <td><?php echo $record->hl_dateto;
+				 if(!empty($record->hl_tosession)){
+                                        echo "<br>";
+                                        echo $record->hl_tosession;
+                                }
+
+				?></td>
                             <td> <?php echo anchor("map/edithod/{$record->hl_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
                             </td>
                             

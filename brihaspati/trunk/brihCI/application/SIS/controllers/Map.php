@@ -1885,6 +1885,8 @@ public function schemedept(){
             $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
             $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
             $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
+            $this->form_validation->set_rules('jsession','jsession','trim|xss_clean'); 
+            $this->form_validation->set_rules('tsession','tsession','trim|xss_clean'); 
             
             if($this->form_validation->run() == FALSE){
                 $this->load->view('map/set_hod');
@@ -1948,6 +1950,8 @@ public function schemedept(){
                     $usr =$this->session->userdata('username'); 
                    // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
 		    $uopid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['uo'])->priority;
+                $jsession = $this->input->post('jsession', TRUE);
+                $tsession = $this->input->post('tsession', TRUE);
                     $datahod = array(
                         'hl_userid'=> $userid,
                         'hl_empcode'=> $pfno,
@@ -1956,6 +1960,8 @@ public function schemedept(){
 			'hl_uopid'=> $uopid,
                         'hl_datefrom'=> $datefrm,
                         'hl_dateto'=> $_POST['DateTo'],
+			'hl_fromsession'=>$jsession,
+			'hl_tosession'=>$tsession,
                         'hl_status'=> $_POST['status'],
                         'hl_creatorid'=> $usr,
                         'hl_creatordate'=> date('y-m-d'),
@@ -2047,6 +2053,8 @@ public function schemedept(){
             $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
             $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
             $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
+            $this->form_validation->set_rules('jsession','jsession','trim|xss_clean'); 
+            $this->form_validation->set_rules('tsession','tsession','trim|xss_clean'); 
             
             if($this->form_validation->run() == FALSE){
                 $this->load->view('map/edit_hod',$data);
@@ -2061,6 +2069,8 @@ public function schemedept(){
                 $dateto = $this->input->post('DateTo', TRUE);
                 $emailid = $this->input->post('emailid', TRUE);
                 $status = $this->input->post('status', TRUE);
+                $jsession = $this->input->post('jsession', TRUE);
+                $tsession = $this->input->post('tsession', TRUE);
                 //echo $campus."dept==".$deptname."user". $usrname."datef". $datefrom."dto". $dateto."email==".$emailid;
                 // die;               
                 $logmessage = "";
@@ -2100,6 +2110,8 @@ public function schemedept(){
                     'hl_datefrom'=> $datefrom,
                     'hl_dateto'=> $dateto,
                     'hl_status'=> $status,
+			'hl_fromsession'=>$jsession,
+			'hl_tosession'=>$tsession,
                     'hl_creatorid'=> $usr,
                     'hl_creatordate'=> date('y-m-d'),
                     'hl_modifierid'=> $usr,
@@ -2155,6 +2167,8 @@ public function schemedept(){
             $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
             $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
             $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
+            $this->form_validation->set_rules('jsession','jsession','trim|xss_clean'); 
+            $this->form_validation->set_rules('tsession','tsession','trim|xss_clean'); 
             
             if($this->form_validation->run() == FALSE){
                 $this->load->view('map/set_uo');
@@ -2212,6 +2226,8 @@ public function schemedept(){
               $isdupuo= $this->sismodel->isduplicatemore('uo_list',$dupuo);
                 // $isdupuo= $this->loginmodel->isduplicatemore('authorities',$dupuo);
               if(!$isdupuo){
+                $jsession = $this->input->post('jsession', TRUE);
+                $tsession = $this->input->post('tsession', TRUE);
                     $usr =$this->session->userdata('username'); 
 		    $datauo = array(
                         'ul_userid'=> $userid,
@@ -2220,6 +2236,8 @@ public function schemedept(){
                         'ul_datefrom'=> $_POST['DateFrom'],
                         'ul_dateto'=> $_POST['DateTo'],
                         'ul_status'=> $_POST['status'],
+			'ul_fromsession'=>$jsession,
+			'ul_tosession'=>$tsession,
                         'ul_creatorid'=> $usr,
                         'ul_creatordate'=> date('Y-m-d'),
                         'ul_modifierid'=> $usr,
@@ -2300,6 +2318,8 @@ public function uolist(){
             $this->form_validation->set_rules('DateFrom','Datefrom','trim|xss_clean');
             $this->form_validation->set_rules('DateTo','Dateto','trim|xss_clean'); 
             $this->form_validation->set_rules('status','Status','trim|xss_clean'); 
+            $this->form_validation->set_rules('jsession','jsession','trim|xss_clean'); 
+            $this->form_validation->set_rules('tsession','tsession','trim|xss_clean'); 
             
             if($this->form_validation->run() == FALSE){
                 $this->load->view('map/edit_uo',$data);
@@ -2314,6 +2334,8 @@ public function uolist(){
                 $dateto = $this->input->post('DateTo', TRUE);
                 $emailid = $this->input->post('emailid', TRUE);
                 $status = $this->input->post('status', TRUE);
+                $jsession = $this->input->post('jsession', TRUE);
+                $tsession = $this->input->post('tsession', TRUE);
                 //$pfno = $this->input->post('usrname', TRUE);
 		//date check
 		$frmd = strtotime($datefrom);
@@ -2353,6 +2375,8 @@ public function uolist(){
                     'ul_datefrom'=> $datefrom,
                     'ul_dateto'=> $dateto,
                     'ul_status'=> $status,
+			'ul_fromsession'=>$jsession,
+			'ul_tosession'=>$tsession,
                     'ul_creatorid'=> $usr,
                     'ul_creatordate'=> date('Y-m-d'),
                     'ul_modifierid'=> $usr,

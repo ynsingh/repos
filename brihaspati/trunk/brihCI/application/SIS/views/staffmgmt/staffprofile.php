@@ -652,7 +652,31 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         }
          /*************************************************************************************************************************/      
         </script>
-   
+  <style>
+.tooltip {
+    position: relative;
+/*    display: inline-block;*/
+/*    border-bottom: 1px dotted black; */
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute; 
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+</style> 
     </head>
    <body>
         <!--<div>-->
@@ -785,13 +809,18 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="empname" style="font-size:15px;"><font color='blue'>Employee Name</font> <font color='Red'>*</font></label>
-                    <div><input type="text" name="empname"  class="keyup-characters" value="<?php echo isset($_POST["empname"]) ? $_POST["empname"] : ''; ?>" placeholder="employee name..." size="33" required="required">
+                <div class="tooltip">
+			
+		<input type="text" name="empname"  class="keyup-characters" value="<?php echo isset($_POST["empname"]) ? $_POST["empname"] : ''; ?>" placeholder="Mohan H. M" size="33" required="required">
+		<span class="tooltiptext">Mohan H. M</span>
                 </div></td>
-                <td><label for="fathername" style="font-size:15px;"><font color='blue'>Fathers Name</font></label>
-                    <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="33" >
+                <td ><label for="fathername" style="font-size:15px;"><font color='blue'>Fathers Name</font></label>
+                    <div class="tooltip"><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Ram M. H. D" size="33" >
+			<span class="tooltiptext">Ram M. H. D</span>
                 </div></td>
                 <td><label for="spousename" style="font-size:15px;"><font color='blue'>Spouse Name</font></label>
-                    <div><input type="text" name="spousename" class="keyup-characters" value="<?php echo isset($_POST["spousename"]) ? $_POST["spousename"] : ''; ?>" placeholder="Spouse Name..." size="33" >
+                    <div class="tooltip"><input type="text" name="spousename" class="keyup-characters" value="<?php echo isset($_POST["spousename"]) ? $_POST["spousename"] : ''; ?>" placeholder="Teetha S. P. R" size="33" >
+		<span class="tooltiptext">Teetha S. P. R</span>
                 </div></td>
                 <td><label for="orderno" style="font-size:15px;"> <font color='blue'> Appointment Order No</font></label>
                     <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="33">
