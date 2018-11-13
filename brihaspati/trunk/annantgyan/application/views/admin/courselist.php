@@ -70,7 +70,11 @@ if(isset($this->session->userdata['firstName'])){
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Course Code</th><th>Course Eligible</th><th>Course Description</th><th>Course Fees</th> <th>Actions</th>
+					<th>Sr. No.</th><th>Course Name</th><th>Course Code</th><th>Course Eligible</th>
+					<th>Course Description</th>
+					<th>Course Fees</th> 
+					<th>Fees Description</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,6 +91,7 @@ if(isset($this->session->userdata['firstName'])){
 								<td><?php echo $row->cou_eligible;?></td>
 								<td><?php echo $row->cou_discipline;?></td>
 								<td><?php echo $row->cou_fees;?></td>
+								<td><?php echo $row->cou_feedescription;?></td>
 								
 								<td> <a href="#">Edit</a></td>
 				</tr>

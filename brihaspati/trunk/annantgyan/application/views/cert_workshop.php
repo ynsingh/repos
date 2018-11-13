@@ -90,6 +90,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	 	</p>
 	 	
     </div>
+	<div class="col-md-12"  id="card" >
+                <table align="center" style="color: black;font-size: 18px;">
+                <tr bgcolor="lightblue"> <th> Course Name </th><th>&nbsp;&nbsp;&nbsp;&nbsp; </th><th> Duration</th></tr>
+                <tr><td>
+ Magical and Logical Power of Vedic Mathematics(In English)
+                </td><td>
+                </td><td>
+
+                     11-10-2018 - 16-11-2018
+                </td></tr>
+		<tr><td colspan=7>
+		&nbsp;
+                </td></tr>
+                
+                <tr><td>
+ Magical and Logical Power of Vedic Mathematics (Application based) (In English)
+                </td><td>
+                </td><td>
+                     11-10-2018 - 16-11-2018
+		</td></tr>
+		<tr><td colspan=7>
+			&nbsp;
+                </td></tr>
+		<tr><td>
+ Logical Power of Vedic Mathematics (In English)
+                </td><td>
+                </td><td>
+
+                     11-10-2018 - 16-11-2018
+                </td></tr>
+		<tr><td colspan=7>
+		&nbsp;
+                </td></tr>
+
+                <tr><td>
+ Logical Power of Vedic Mathematics (In Hindi)
+                </td><td>
+                </td><td>
+                     11-10-2018 - 16-11-2018
+                </td></tr>
+
+		<table>
+
+        </div>
 
 </div>
 </br></br></br></br></br>

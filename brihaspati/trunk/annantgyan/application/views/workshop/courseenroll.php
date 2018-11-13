@@ -100,9 +100,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="col-md-6" id="">
 
 	     <form action="<?php echo site_url('workshop/ongoing_workshop');?>" method="post"  id="card" > 
+dbfgsgfjdfgbdsfbgasdjfdsklfklasjfklasjkf
 	       		
-    			<div class="form-group">
-    				<label for="name" class="cols-sm-2 control-label" style="font-size: 20px;text-decoration: underline;">Enrollment on course / workshop</label></br>
+				<label for="name" class="cols-sm-2 control-label" style="font-size: 20px;text-decoration: underline;">Enrollment on course / workshop</label></br>
+    					<div class="form-group">
+							<label for="course name" class="cols-sm-2 control-label">Course Name</label>
+							<div class="cols-sm-3">
+								<div class="input-group">
+									<input type="text" class="form-control" name="crsname" id="crsname"  placeholder="Course Name" value="<?php echo  $cid; ?>" readonly/>
+								</div>
+							</div>
+						</div>
+    					<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>
 							<div class="cols-sm-3">
 								<div class="input-group">

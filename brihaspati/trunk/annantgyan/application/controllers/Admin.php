@@ -18,7 +18,6 @@ class Admin extends CI_Controller {
 		$this->load->helper('cookie');
 		$this->load->helper('string');
 		$this->load->helper(array('url','form'));
-
 		$this->load->library('email');
 		
 	}
@@ -156,18 +155,20 @@ class Admin extends CI_Controller {
             	redirect('admin/admin_addcourse');
             }else{
 
-				$cname 		= $this->input->post('cname');
-				$ccode 	    = $this->input->post('ccode');
-				$cdesc 		= $this->input->post('cdesc');
-				$celig      = $this->input->post('celig');
-				$cfees 	    = $this->input->post('cfees');
+				$cname 	     = $this->input->post('cname');
+				$ccode 	     = $this->input->post('ccode');
+				$cdesc 	     = $this->input->post('cdesc');
+				$celig       = $this->input->post('celig');
+				$cfees 	     = $this->input->post('cfees');
+				$cfeesdes    = $this->input->post('cfeesdes');
 				
 				$insdata = array(
-						    'cou_name'		=> $cname,
+				    	'cou_name'		=> $cname,
             				'cou_code' 		=> $ccode,  
-							'cou_discipline' 	=> $cdesc,         
+					'cou_discipline' 	=> $cdesc,         
             				'cou_eligible ' 	=> $celig,
             				'cou_fees' 		=> $cfees,          				
+            				'cou_feedescription' 	=> $cfeesdes,          				
         			);
 				//print_r($insdata);die();
         		$insflag = $this->db->insert('courses',$insdata);
@@ -582,6 +583,7 @@ class Admin extends CI_Controller {
                         	        $this->form_validation->set_rules('optionc'.$i, 'optionc', 'trim|xss_clean');
                                 	$this->form_validation->set_rules('optiond'.$i, 'optiond', 'trim|xss_clean');
 	                                $this->form_validation->set_rules('correctans'.$i, 'correctans', 'trim|xss_clean');
+	                                $this->form_validation->set_rules('expans'.$i, 'expans', 'trim|xss_clean');
 					$this->form_validation->set_rules('marks'.$i, 'marks', 'trim|xss_clean');
 				}
                                 if($this->form_validation->run() == FALSE){
@@ -600,6 +602,7 @@ class Admin extends CI_Controller {
 		                                        $optionc          	= $this->input->post('optionc'.$i);
                 		                        $optiond          	= $this->input->post('optiond'.$i);
                                 		        $correctanswer          = $this->input->post('correctans'.$i);
+                                		        $expanswer          = $this->input->post('expans'.$i);
 		                                        $marks         		= $this->input->post('marks'.$i);
 
 							$cdate = date('Y-m-d H:i:s');
@@ -612,6 +615,7 @@ class Admin extends CI_Controller {
 		                                                'optionc'              	=>$optionc,
                 		                                'optiond'               =>$optiond,
                                 		                'correctanswer'         =>$correctanswer,
+                                		                'explanation'         =>$expanswer,
                                                 		'marks'        		=>$marks,
 		                                        );
 							$insert = $this->db->insert('question',$userData);

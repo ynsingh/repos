@@ -335,8 +335,9 @@ class Login extends CI_Controller {
 			$data['couid'] = $couid;
 
 			$whdata = array('acu_courseid' => $couid);
-			$sdata = 'acu_weekname';
-			$getuploadata = $this->commodel->get_distinctrecord('admin_conteupload',$sdata,$whdata);
+			$sdata = 'acu_id,acu_weekname';
+			$whorder = "acu_weekname desc";
+			$getuploadata = $this->commodel->get_distinctrecord('admin_conteupload',$sdata,$whdata,$whorder);
 			$data['getuploadata'] = $getuploadata;
 			$sdata = ['crs_id' => $couid];
                         $this->session->set_userdata($sdata);
@@ -596,7 +597,8 @@ class Login extends CI_Controller {
 	function usrcoustructure(){
 		$suid = $this->session->userdata['su_id'];
 		if(!empty($suid)){	
-			$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
+			$couid=$this->session->userdata['crs_id'];
+		//	$couid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$suid)->uct_courseid;
 			$data['couid'] = $couid;
 
 			$this->load->view('loginpage/usr_cou_strucutre',$data);

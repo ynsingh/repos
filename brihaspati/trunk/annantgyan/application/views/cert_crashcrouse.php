@@ -87,6 +87,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	 	</p>
 	 	
     </div>
+<div class="col-md-12"  id="card" >
+                <table align="center" style="color: black;font-size: 18px;">
+                <tr bgcolor="lightblue"> <th> Course Name </th><th>&nbsp;&nbsp;&nbsp;&nbsp; </th><th> Duration</th><th>&nbsp;&nbsp;&nbsp;&nbsp; </th><th>Last date of Enrollment </th><th>&nbsp;&nbsp;&nbsp;&nbsp; </th><th> Action</th></tr>
+		<tr><td>
+		Ganit Gyananjali- based on different sutras of Vedic Mathematics<br>
+		For all students preparing competitive exams like banking, SSC,<br> UPSC, IBPS, GMAT, GRE, CAT and CSAT etc.
+                </td><td>
+                </td><td>
+
+                     10-12-2018 - 30-12-2018
+		</td><td>
+		</td><td>
+			09-12-2018
+                </td><td>
+		</td><td>
+		<a href="https://annantgyan.com/workshop/courseenroll/7" >
+		 <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open enroll form." style="width:100%;">Enroll</button>
+		</a>
+                </td></tr>
+		<tr><td colspan=7>
+                &nbsp;
+                </td></tr>
+
+		<tr bgcolor="lightgray"><td>
+		Ganit Gyananjali- a quick Vedic solutions<br>
+		For students of standard 8th to 12th
+                </td><td>
+                </td><td>
+                     10-12-2018 - 30-12-2018
+		</td><td>
+		</td><td>
+			09-12-2018
+                </td><td>
+		</td><td>
+		<a href="https://annantgyan.com/workshop/courseenroll/8" >
+			 <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open enroll form." style="width:100%;">Enroll</button>
+		</a>
+                </td></tr>
+                <table>
+
+        </div>
+	
 <div class="row">
     	<div class="col-md-12">
     		<img src="<?php echo base_url('images/crash_course.png');?>" style="width: 100%;" id="card">

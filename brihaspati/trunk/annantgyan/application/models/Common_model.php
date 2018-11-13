@@ -270,14 +270,18 @@ class Common_model extends CI_Model
         return $this->db->get()->result();
     }
     // get the distict value
-    public function get_distinctrecord($tbname,$selectfield,$whdata){
+    public function get_distinctrecord($tbname,$selectfield,$whdata,$whorder=''){
 	    $this->db->flush_cache();
 	    $this->db->distinct();
 	    $this->db->select($selectfield);
 	    $this->db->from($tbname);
 	    if($whdata != ''){
-                        $this->db->where($whdata);
-            }
+                 $this->db->where($whdata);
+	    }
+	    if($whorder != ''){
+                $this->db->order_by($whorder);
+	    }
+
         return $this->db->get()->result();
     }
 

@@ -50,12 +50,15 @@ class Workshop extends CI_Controller {
 		$data['cid'] = $cid;
 			//$cid = $this->uri->segment(3); 
 		if(isset($_POST['submit'])){
-			$this->form_validation->set_rules('name','Name','trim|required');
+			$this->form_validation->set_rules('name','Name','trim|required|xss_clean');
        			$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
             		$this->form_validation->set_rules('place','Place','trim|required|xss_clean');
             		$this->form_validation->set_rules('nationality','Nationality','trim|required|xss_clean');
             		$this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric');
 			$this->form_validation->set_rules('amount','Amount','trim|required|xss_clean');
+			$this->form_validation->set_rules('fatname','Father Name','trim|xss_clean');
+			$this->form_validation->set_rules('designame','Father Designation','trim|xss_clean');
+			$this->form_validation->set_rules('fcatname','Force Category','trim|xss_clean');
             
 			$cid = $this->input->post('courseid');
 			$data['courseid']=$cid;
@@ -73,6 +76,9 @@ class Workshop extends CI_Controller {
 				$rperson        = $this->input->post('reperson');
 				$amount         = $this->input->post('amount');
 				$cid         	= $this->input->post('courseid');
+				$fatname        = $this->input->post('fatname');
+				$fdesigname     = $this->input->post('designame');
+				$fcatname       = $this->input->post('fcatname');
 
 				$data = array(
 					'courseid'	=> $cid,
@@ -84,6 +90,9 @@ class Workshop extends CI_Controller {
            				'refperson'	=> $rperson,
            				'place'		=> $place,
            				'nationality'   => $nationality,
+           				'fatname'	=> $fatname,
+           				'designame'	=> $fdesigname,
+           				'fcatname'	=> $fcatname,
 				);
 				/*
 				 This is commented on 8 september 2018 for stop duplicate signup
@@ -102,6 +111,13 @@ class Workshop extends CI_Controller {
 					return;
 				}
 				 */
+				if($cid == 12){
+					if((empty($fatname)) ||(empty($fdesigname)) ||(empty($fcatname))){
+						$this->session->set_flashdata('error',"Either Father name or Father designation or Force Category is empty. Kindly fill these details.");
+						redirect('Course-Registration');
+						return;
+					}
+				}
 				$this->load->view('courseenroll_confirm',$data);
 				return;
 			}//else close
@@ -113,12 +129,15 @@ class Workshop extends CI_Controller {
 
 		if(isset($_POST['pay'])){
 
-			$this->form_validation->set_rules('firstname','Name','trim|required');
+			$this->form_validation->set_rules('firstname','Name','trim|required|xss_clean');
        			$this->form_validation->set_rules('email','Email','trim|required|xss_clean|valid_email');
             		$this->form_validation->set_rules('place','Place','trim|required|xss_clean');
             		$this->form_validation->set_rules('nationality','Nationality','trim|required|xss_clean');
             		$this->form_validation->set_rules('contact','Contacat Number','trim|xss_clean|numeric|required');
 			$this->form_validation->set_rules('amount','Amount','trim|required|xss_clean');
+			$this->form_validation->set_rules('fatname','Father Name','trim|xss_clean');
+			$this->form_validation->set_rules('designame','Father Designation','trim|xss_clean');
+			$this->form_validation->set_rules('fcatname','Force Category','trim|xss_clean');
             
             		if($this->form_validation->run() == FALSE){
             			redirect('workshop/ongoing_workshop');
@@ -132,6 +151,9 @@ class Workshop extends CI_Controller {
 				$rperson        = $this->input->post('reperson');
 				$amount         = $this->input->post('amount');
 				$cid         	= $this->input->post('courseid');
+				$fatname        = $this->input->post('fatname');
+				$fdesigname     = $this->input->post('designame');
+				$fcatname       = $this->input->post('fcatname');
 						//$crscode        = $this->input->post('coursecode');
             	    		$courname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$cid)->cou_name;
 				$crscode = $this->commodel->get_listspfic1('courses','cou_code','cou_id',$cid)->cou_code;
@@ -197,6 +219,15 @@ class Workshop extends CI_Controller {
 					}else{
                             			$signinsert = $this->db->insert('sign_up',$signupdata);
 						$signupid = $this->db->insert_id();
+						//create insert data
+						$uddata = array(
+							'ud_userid' 		=> $signupid,
+							'ud_fname' 		=> $fatname,
+							'ud_fdesig' 		=> $fdesigname,
+							'ud_fadcategory' 	=> $fcatname,
+						);
+						//insert entry in user details 
+                            			$udinsert = $this->db->insert('userdetails',$uddata);
 					}
 					$suname = $this->commodel->get_listspfic1('sign_up','su_name','su_id',$signupid)->su_name;
 					$userdata = ['su_id' => $signupid ,'su_emailid' => $mailid,'su_name' => $suname];

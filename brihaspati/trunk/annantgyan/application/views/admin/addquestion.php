@@ -85,7 +85,7 @@ $('.clockpicker').clockpicker();
 <h2 class="text-center"> Add Questions in Exam</h2>
 <div class="container" >
 <div class="col-md-3"></div>
-<div class="col-md-12" id='card'> 
+<div class="col-md-16" id='card'> 
 	<table style="font-size:18px;"><tr>
 			<td><a href="<?php echo site_url('admin/viewexam');?>">View Exam</a></td>
 	</tr></table>
@@ -96,7 +96,7 @@ $('.clockpicker').clockpicker();
 				<td>
 			<label for="crsname" class="cols-sm-2 control-label">Course Name</label>
 			<br>
-			<select name="cou_name"  style="width:400px;" >
+			<select name="cou_name"  style="width:250px;" >
 				<option value="<php echo $sid;?>" > <?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$sid)->cou_name;?></option>
 				<option value="" selected="" disabled="">Select Course Name</option>
 				<?php if(!empty($couname)){
@@ -109,7 +109,7 @@ $('.clockpicker').clockpicker();
 
 			<label for="crstst" class="cols-sm-2 control-label">Test No</label>
 			<br>
-			<select name="cou_test" style="width:150px;">
+			<select name="cou_test" style="width:100px;">
 				<option value="<php echo $tid;?>" > <?php echo $this->commodel->get_listspfic1('test','testname','testid',$tid)->testname." ( ".$this->commodel->get_listspfic1('test','testcode','testid',$tid)->testcode . " ) ";?></option>
 				<option value="" selected="" disabled="">Select Tests</option>
 				<option value="1">Test 1</option>
@@ -124,32 +124,32 @@ $('.clockpicker').clockpicker();
 			<tr><td>
 			<label for="tstname" class="cols-md-2 control-label">Question<?php echo $i;?></label>
 			<br>
-			<textarea name="<?php echo "question".$i;?>" placeholder="Enter Question" style="width:400px;">
+			<textarea name="<?php echo "question".$i;?>" placeholder="Enter Question" style="width:250px;">
 			</textarea>
 			</td><td>
 			<label for="tstcode" class="cols-md-2 control-label">Option1</label>
 			<br>
-			<textarea name="<?php echo "optiona".$i;?>" placeholder="Enter Option1" style="width:150px;">
+			<textarea name="<?php echo "optiona".$i;?>" placeholder="Enter Option1" style="width:100px;">
 			</textarea>
 			</td><td>
 			<label for="tstcode" class="cols-md-2 control-label">Option2</label>
 			<br>
-			<textarea name="<?php echo "optionb".$i;?>" placeholder="Enter Option2" style="width:150px;">
+			<textarea name="<?php echo "optionb".$i;?>" placeholder="Enter Option2" style="width:100px;">
 			</textarea>
 			</td><td>
 			<label for="tstcode" class="cols-md-2 control-label">Option3</label>
 			<br>
-			<textarea name="<?php echo "optionc".$i;?>" placeholder="Enter Option3" style="width:150px;">
+			<textarea name="<?php echo "optionc".$i;?>" placeholder="Enter Option3" style="width:100px;">
 			</textarea>
 			</td><td>
 			<label for="tstcode" class="cols-md-2 control-label">Option4</label>
 			<br>
-			<textarea name="<?php echo "optiond".$i;?>" placeholder="Enter Option4" style="width:150px;">
+			<textarea name="<?php echo "optiond".$i;?>" placeholder="Enter Option4" style="width:100px;">
 			</textarea>
 			</td><td>
 			<label for="tstdesc" class="cols-md-2 control-label">Correct Answer</label>
 			<br>
-			 <select name="<?php echo "correctans".$i;?>" style="width:150px;">
+			 <select name="<?php echo "correctans".$i;?>" style="width:100px;">
                                 <option value="" selected="" disabled="">Select Option</option>
                                 <option value="optiona">Option A</option>
                                 <option value="optionb">Option B</option>
@@ -157,6 +157,11 @@ $('.clockpicker').clockpicker();
                                 <option value="optiond">Option D</option>
                         </select> 
 
+			</td><td>
+			<label for="expans" class="cols-md-2 control-label">Answer Explanation</label>
+			<br>
+			<textarea name="<?php echo "expans".$i;?>" placeholder="Enter Answer Explanationn" style="width:200px;">
+			</textarea>
 			</td><td>
 			<label for="tstdate" class="cols-md-2 control-label">Marks</label>
 			<br>

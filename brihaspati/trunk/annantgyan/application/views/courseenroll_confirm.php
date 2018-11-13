@@ -68,34 +68,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="col-md-6" id="card">
     	
 	    <!-- <form action="<?= $action; ?>/_payment" method="post" id="payuForm" name="payuForm" > -->
-	    	<form action="<?php echo site_url('workshop/enroll_workshop'); ?>" method="post" >
 	       		<!--<input type="hidden" name="key" value="<?//= $mkey ?>" />
                 <input type="hidden" name="hash" value="<?//= $hash ?>"/>
 				<input type="hidden" name="txnid" value="<?//= $tid ?>" />
 				<input name="surl" value="<?//= $surl ?>" size="64" type="hidden" />
 				<input name="furl" value="<?//= $furl ?>" size="64" type="hidden" /> 
 				<input type="hidden" class="form-control"  name="address1" value="<?php //echo $owid;?>"/>-->
-    			<div class="form-group">
+		    	<form action="<?php echo site_url('workshop/enroll_workshop'); ?>" method="post" >
     				<label for="name" class="cols-sm-2 control-label" style="font-size: 20px;text-decoration: underline;">Enrollment on course / workshop</label></br>
-							<label for="name" class="cols-sm-2 control-label">Your Name</label>
-							<div class="cols-sm-3">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="firstname" id="name" value="<?php echo $firstname?>" required/>
-								</div>
+    					<div class="form-group">
+						<label for="name" class="cols-sm-2 control-label">Your Name</label>
+						<div class="cols-sm-3">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="firstname" id="name" value="<?php echo $firstname?>" required/>
 							</div>
 						</div>
+					</div>
 
 					<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your Email</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="email" id="email" value="<?php echo $mailid; ?>" required/>
-								</div>
+						<label for="email" class="cols-sm-2 control-label">Your Email</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="email" id="email" value="<?php echo $mailid; ?>" required/>
 							</div>
 						</div>
-
+					</div>
+				<?php if($courseid == 12){ ?>
+					<div class="form-group">
+						<label for="fname" class="cols-sm-2 control-label">Father's Name</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="fatname" id="fatname" value="<?php echo $fatname; ?>" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="designame" class="cols-sm-2 control-label">Father's Designation</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="designame" id="designame" value="<?php echo $designame; ?>" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="fcatname" class="cols-sm-2 control-label">Force Category</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="fcatname" id="fcatname" value="<?php echo $fcatname; ?>" />
+							</div>
+						</div>
+					</div>
+				<?php } ?>
 					<div class="form-group">
 							<label for="email" class="cols-sm-2 control-label">Your Place</label>
 							<div class="cols-sm-10">
@@ -117,7 +145,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>			
 
 				<div class="form-group">
-    				
 							<label for="name" class="cols-sm-2 control-label">Contact Number</label>
 							<div class="cols-sm-3">
 								<div class="input-group">
@@ -128,7 +155,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 				<div class="form-group">
-    				
 							<label for="name" class="cols-sm-2 control-label">School / College Name (Optional)</label>
 							<div class="cols-sm-3">
 								<div class="input-group">
@@ -140,7 +166,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>	
 
 				<div class="form-group">
-    				
 							<label for="name" class="cols-sm-2 control-label">Referral Person (Optional)</label>
 							<div class="cols-sm-3">
 								<div class="input-group">
@@ -151,7 +176,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>	
 
 				<div class="form-group">
-    				
 							<label for="name" class="cols-sm-2 control-label">Amount</label>
 							<div class="cols-sm-3">
 								<div class="input-group">
@@ -168,8 +192,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				
 				<div class="form-group ">
 						<input type="hidden" class="form-control"  name="courseid" value="<?php echo $courseid;?>"/>
-						<!--<input type="submit" name="pay"  class="btn btn-primary btn-lg btn-block login-button" value="Pay Now">-->
 						<input type="submit" name="pay"  class="btn btn-primary btn-lg btn-block login-button" value="Register">
+						<!--<input type="submit" name="pay"  class="btn btn-primary btn-lg btn-block login-button" value="Pay Now">-->
 						<!--<button type="button" class="btn btn-primary btn-lg btn-block login-button" name="pay">Payment</button>-->
 				</div>			
 

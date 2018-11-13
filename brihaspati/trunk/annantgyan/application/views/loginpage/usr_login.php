@@ -148,24 +148,56 @@ jQuery(function ($) {
 					       <div class="col-md-4">
 					                <h2 style='margin-bottom:0px;margin-top:0px;'>Course Content</h2>
                                     			<ul class="nav nav-tabs nav-stacked" role="tablist">
-                                    			<li role="presentation" class="active">
-                               <?php 
-                               				foreach($getuploadata as $data){
-				                                echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>';
+							<li role="presentation" class="active">
+<!--
+							<div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question1">
+                 <h4 class="panel-title">
+                    <a href="#" class="ing">Q.2: Can I register multiple courses?</a>
+              </h4>
+
+            </div>
+            <div id="question1" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                     <h3><span class="label label-primary">Yes. You can register in multiple courses.</span></h3>
+
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    -->                           <?php 
+			foreach($getuploadata as $data){
+				?>
+		<!--			<div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse"  data-target="#<?php //echo $data->acu_id; ?>"> 
+					<div class="panel-heading collapsed accordion-toggle"> -->
+					<div>
+					<a data-toggle="collapse" href="#<?php echo $data->acu_id; ?>">
+<?php	
+					echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>'; 
+?>
+					</a>
+				 	</div>
+<?php
                                 				$whdata1 = array('acu_courseid' => $couid,'acu_weekname' => $data->acu_weekname) ;
                                     				$sdata1 = 'acu_weekcontname,acu_seqno,acu_contpath,acu_filename';
-                                    				$getcontname = $this->commodel->get_distinctrecord('admin_conteupload',$sdata1,$whdata1);
+								$getcontname = $this->commodel->get_distinctrecord('admin_conteupload',$sdata1,$whdata1);
+?>
+								 <div id="<?php echo $data->acu_id; ?>" class="panel-collapse collapse" style="height: 0px;">
+<?php
                                     				foreach($getcontname as $row1){
                                         				$fpath1 = $row1->acu_contpath;
                                         				$fname1 = $row1->acu_filename;
                                         				$fpathname1 = $fpath1.'/'.$fname1;
                                         				if(!empty($fpathname1)){
                                  ?>
-					                                        <a href="<?php echo base_url().'/'.$fpathname1?>" target="content" id="close">
+										<div>
+										<a href="<?php echo base_url().'/'.$fpathname1?>" target="content" id="close">
                                           					<?php echo $row1->acu_weekcontname;?>
-                                          					</a>       
+										</a> 
+										</div>      
                                   <?php 				}
-                                				}
+								}
+							echo	"</div>";
                             				}
 				?>
                                 			</li>
@@ -201,7 +233,9 @@ jQuery(function ($) {
 			<div class="container">    
 				<div id='card' class="col-md-12" style="background-color: lightgreen;">
 				<center>
-				<h2> Course content will be available after 10<sup>th</sup> October 2018. Kindly visit the course structure and course calendar links</h2>
+				<h2> Course content will be available after <?php echo implode('-', array_reverse(explode('-', $startdate))); ?>
+					<!--10<sup>th</sup> October 2018-->
+					. Kindly visit the course structure and course calendar links</h2>
   				</center>
 				</div>
 			</div>

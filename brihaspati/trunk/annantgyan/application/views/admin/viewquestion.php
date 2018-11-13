@@ -76,7 +76,11 @@ if(isset($this->session->userdata['firstName'])){
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Question</th><th>Option 1</th><th>Option 2</th><th>Option 3</th><th>Option 4</th><th>Correct Answer</th><th>Marks</th> <th> Actions</th>
+					<th>Sr. No.</th><th>Question</th><th>Option 1</th><th>Option 2</th><th>Option 3</th><th>Option 4</th>
+					<th>Correct Answer</th>
+					<th>Explanation</th>
+					<th>Marks</th> 
+					<th> Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -94,6 +98,7 @@ if(isset($this->session->userdata['firstName'])){
 								<td><?php echo $row->optionc;?></td>
 								<td><?php echo $row->optiond;?></td>
 								<td><?php echo $row->correctanswer   ;?></td>
+								<td><?php echo $row->explanation   ;?></td>
 								<td><?php echo $row->marks  ;?></td>
 								<td><?php 
 									echo anchor('admin/delete_quest/' . $row->qid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";

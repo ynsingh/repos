@@ -61,7 +61,7 @@ $this->load->view('template/topstyle.php');
           <th>Course Name</th>
           <th>Title</th>
           <th>Description</th>
-          <td>Actions</td>
+          <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -76,7 +76,7 @@ $this->load->view('template/topstyle.php');
                   <td><?php echo $row->ds_title; ?></td>
                   <td><?php echo $row->ds_body; ?></td>
 		  <td><?php 
-			echo anchor('admin/update_item/ds/allow/'.$row->ds_id,"Allow") .' ' . anchor('admin/update_item/ds/disallow/'.$row->ds_id,"Disallow") ; ?>
+//			echo anchor('admin/update_item/ds/allow/'.$row->ds_id,"Allow") .' ' . anchor('admin/update_item/ds/disallow/'.$row->ds_id,"Disallow") ; ?>
                   </td>
                 </tr>
 	    <?php endforeach ; 
@@ -95,30 +95,33 @@ $this->load->view('template/topstyle.php');
         <tr>
           <th>Id</th>
           <th>Name(Email)</th>
-          <th>Course name</th>
+<!--          <th>Course name</th>-->
           <th>Discussion Title</th>
           <th>Comment</th>
-         <td>Actions</td>
+         <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-	<?php 
+<?php 
 		if(!empty($comment_query)):
-		if ($comment_query->num_rows() > 0) { ?>
-            <?php foreach ($comment_query->result() as $row) : ?>
+			if(count($comment_query) > 0) {
+				foreach ($comment_query as $row) :
+?>
                 <tr>
                   <td><?php echo $row->cm_id ; ?></td>
-                  <td><?php echo $row->usr_name ; ?></td>
-                  <td><?php echo $row->usr_email ; ?></td>
-                  <td><?php echo anchor('admin/update_item/cm/allow/'.
-                    $row->cm_id,$this->lang->line('admin_dash_allow')) . 
-                    ' ' . anchor('admin/update_item/cm/disallow/'.
-                    $row->cm_id,$this->lang->line('admin_dash_disallow')) ; ?>
+                  <td><?php echo $this->commodel->get_listspfic1('sign_up','su_name','su_id',$row->cm_usrid)->su_name ." ( ".$this->commodel->get_listspfic1('sign_up','su_emailid','su_id',$row->cm_usrid)->su_emailid ." )" ?></td>
+                  <td><?php echo $this->commodel->get_listspfic1('discussions','ds_title','ds_id',$row->cm_dsid)->ds_title ." ( ".$this->commodel->get_listspfic1('discussions','ds_body','ds_id',$row->cm_dsid)->ds_body ." )" ; ?></td>
+                  <td><?php echo $row->cm_body; ?></td>
+		  <td><?php 
+					//	echo anchor('admin/update_item/cm/allow/'.$row->cm_id,"Allow") .' ' . anchor('admin/update_item/cm/disallow/'.$row->cm_id,"Disallow") ; 
+					
+
+//					echo anchor('admin/update_item/cm/allow/'.
+  //                  $row->cm_id,$this->lang->line('admin_dash_allow')) . 
+    //                ' ' . anchor('admin/update_item/cm/disallow/'.
+//		    $row->cm_id,$this->lang->line('admin_dash_disallow')) ; 
+?>
                   </td>
-                </tr>
-                <tr>
-                  <td colspan="3"><?php echo $row->cm_body; ?></td>
-                  <td></td>
                 </tr>
 	    <?php endforeach ; 
 		}?>
@@ -131,3 +134,5 @@ $this->load->view('template/topstyle.php');
 </table>
  </div>
 </div>
+<br><br>
+<br><br>

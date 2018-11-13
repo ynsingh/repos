@@ -45,8 +45,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <h3 class="text-center">Courses / Workshop Dates</h3>
 <div class="container">
 <div class="col-md-12" align=justify id="card">
-	<iframe src="<?php echo site_url('assets/course_pdf/calender.pdf')?>" width="100%" style="height:550px;"></iframe>
-	<?php //$this->load->view('loginpage/calender.php');?>
+<?php
+	 $cid=$this->session->userdata['crs_id'];
+	$path = 'assets/course_pdf/calender'.$cid.'.pdf';
+if(file_exists($path)){
+?>
+        <iframe src="<?php echo site_url($path);?>" width="100%" style="height:550px;"></iframe>
+<?php }?>
+
 </div>
 </div>
 </br></br></br></br>

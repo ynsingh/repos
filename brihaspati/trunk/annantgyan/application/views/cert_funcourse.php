@@ -89,7 +89,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	 	</p>
 	 	
     </div>
+	<div class="col-md-12"  id="card" >
+		<table align="center" style="color: black;font-size: 18px;">
+		<tr bgcolor="lightblue"> <th> Course Name </th><th>&nbsp;&nbsp;&nbsp;&nbsp; </th><th> Duration</th></tr>
+		<tr><td>
+		Application of Vedic Mathematics for Kids (In English)
+		</td><td>
+		</td><td>
 
+		     11-10-2018 - 16-11-2018
+		</td></tr>
+		<tr><td colspan=7>
+                &nbsp;
+                </td></tr>
+
+		<tr><td>
+		Application of Vedic Mathematics for Kids (In Hindi)
+		</td><td>
+		</td><td>
+		     11-10-2018 - 16-11-2018
+		</td></tr>
+		<table>
+
+	</div>
     <div class="row">
     	<div class="col-md-12">
     		<img src="<?php echo base_url('images/Learn-With-Fun.png');?>" style="width: 100%;" id="card">

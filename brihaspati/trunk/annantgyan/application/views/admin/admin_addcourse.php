@@ -78,6 +78,8 @@ if(isset($this->session->userdata['firstName'])){
 			<input type="text" class="form-control" name="celig" id="celig"  placeholder="Enter Course Eligibility" required/>
 			<label for="name" class="cols-sm-2 control-label">Course Fees</label>
 			<input type="text" class="form-control" name="cfees" id="cfees"  placeholder="Enter Course Fees" required/>
+			<label for="name" class="cols-sm-2 control-label">Course Fees Description</label>
+			<input type="text" class="form-control" name="cfeesdes" id="cfeesdes"  placeholder="Enter Course Fees Description" required/>
 			<br>
 		<input type="submit" name="submit" class="btn btn-success submit" value="Submit"></td>
 	</div>

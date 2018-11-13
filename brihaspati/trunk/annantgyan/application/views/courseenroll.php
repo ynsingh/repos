@@ -25,6 +25,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 !function($,n,e){var o=$();$.fn.dropdownHover=function(e){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function t(e){o.find(":focus").blur(),h.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(c),i.addClass("open"),r.trigger(a)}var r=$(this),i=r.parent(),d={delay:100,instantlyCloseOthers:!0},s={delay:$(this).data("delay"),instantlyCloseOthers:$(this).data("close-others")},a="show.bs.dropdown",u="hide.bs.dropdown",h=$.extend(!0,{},d,e,s),c;i.hover(function(n){return i.hasClass("open")||r.is(n.target)?void t(n):!0},function(){c=n.setTimeout(function(){i.removeClass("open"),r.trigger(u)},h.delay)}),r.hover(function(n){return i.hasClass("open")||i.is(n.target)?void t(n):!0}),i.find(".dropdown-submenu").each(function(){var e=$(this),o;e.hover(function(){n.clearTimeout(o),e.children(".dropdown-menu").show(),e.siblings().children(".dropdown-menu").hide()},function(){var t=e.children(".dropdown-menu");o=n.setTimeout(function(){t.hide()},h.delay)})})}))},$(document).ready(function(){$('[data-hover="dropdown"]').dropdownHover()})}(jQuery,this);
 		</script>
+	<script>
+	$(document).ready(function(){
+
+        //         $("#fname").hide();
+	//	 $("#fdesigname").hide();
+	//	 $("#fcatname").hide();
+		 
+	    });
+	</script>
 	
 </head>
 <body>
@@ -100,8 +109,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	     <form action="<?php echo site_url('workshop/ongoing_workshop');?>" method="post"  id="card" > 
 	       		
-    			<div class="form-group">
-    				<label for="name" class="cols-sm-2 control-label" style="font-size: 20px;text-decoration: underline;">Enrollment on course / workshop</label></br>
+				<label for="name" class="cols-sm-2 control-label" style="font-size: 20px;text-decoration: underline;">Enrollment on course / workshop</label></br>
+						<div class="form-group">
+                                                        <label for="course name" class="cols-sm-2 control-label">Course Name</label>
+                                                        <div class="cols-sm-3">
+                                                                <div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-book" aria-hidden="true"></i></span>
+                                                                        <input type="text" class="form-control" name="crsname" id="crsname"  placeholder="Course Name" value="<?php echo  $this->commodel->get_listspfic1('courses','cou_name','cou_id',$courseid)->cou_name; ?>" readonly/>
+                                                                </div>
+                                                        </div>
+                                                </div>
+    						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>
 							<div class="cols-sm-3">
 								<div class="input-group">
@@ -128,7 +146,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 							</div>
 						</div>
-
+					<?php if($courseid == 12){ ?>
+						<div class="form-group" id="fname">
+                                                        <label for="father name" class="cols-sm-2 control-label">Father's Name</label>
+                                                        <div class="cols-sm-3">
+                                                                <div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+                                                                        <input type="text" class="form-control" name="fatname" id="fatname"  placeholder="Father's Name" value=""/>
+                                                                </div>
+                                                        </div>
+                                                </div>
+						<div class="form-group" id="fdesigname">
+                                                        <label for="fdesig name" class="cols-sm-2 control-label">Father's Designation</label>
+                                                        <div class="cols-sm-3">
+                                                                <div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-certificate" aria-hidden="true"></i></span>
+                                                                        <input type="text" class="form-control" name="designame" id="designame"  placeholder="Designation Name" value="" />
+                                                                </div>
+                                                        </div>
+                                                </div>
+						<div class="form-group" id="fcatname">
+                                                        <label for="cat name" class="cols-sm-2 control-label">Force Category</label>
+                                                        <div class="cols-sm-3">
+                                                                <div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-book" aria-hidden="true"></i></span>
+									<select name="fcatname" style="width: 100%;" >
+                                                                                <option selected="" disabled="" value="">Select </option>
+                                                                                <option value="Indian Army">
+                                                                                        Indian Army
+                                                                                </option>
+                                                                                <option value="Indian Airforce">
+                                                                                        Indian Airforce
+                                                                                </option>
+                                                                                <option value="Indian Navy">
+                                                                                        Indian Navy
+                                                                                </option>
+                                                                                <option value="BSF">
+                                                                                        BSF
+                                                                                </option>
+                                                                                <option value="CRPF">
+                                                                                        CRPF
+                                                                                </option>
+                                                                                <option value="Indian Police">
+                                                                                        Indian Police
+                                                                                </option>
+                                                                                <option value="other">
+                                                                                        Other Forces
+                                                                                </option>
+                                                                        </select>
+                                                                </div>
+                                                        </div>
+                                                </div>
+					<?php } ?>
 					<div class="form-group">
 							<label for="email" class="cols-sm-2 control-label">Your Place</label>
 							<div class="cols-sm-10">

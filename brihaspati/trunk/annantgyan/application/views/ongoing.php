@@ -381,6 +381,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	   					echo "</br>( ";
 						echo $row2->cou_discipline; 
 						echo ")</br>";
+						echo " <b>";
+						echo "Last date of Enrollment : ". implode('-', array_reverse(explode('-', $edate)));
+						echo "</b></br>";
 						
             				}
 				}
@@ -396,8 +399,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php 			}
 		} 
 		if(!empty($cdata)){
-			echo "<tr><td colspan=2>";
-			echo "<b>Depawali scholarship offer to you all.</b>";
+			echo "<tr><td colspan=2 >  ";
+			echo "<b><font color=green>Deepawali scholarship offer</font> </b>";
 
         		echo "<br>";
 			echo "You will get off 50 % of the course enrollment fees till 9 November 2018. Get enroll yourself as soon as possible.";
@@ -411,10 +414,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-4">
 	  <table>
 	    <tr><td>
-		  <a href="<?php echo base_url('docs'); ?>/Course_workshop_calender.pdf" target="_blank">
+		  <a href="<?php echo base_url('docs'); ?>/Course_stucture_and_calender.pdf" target="_blank">
 		  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Calendar." style="width:100%;">Course Calendar</button>
        		</a>
 	  </td></tr>
+	
+		<tr height=10><td></td></tr>
+           <tr><td>
+                  <a href="<?php echo base_url('docs'); ?>/Course_Contents.pdf" target="_blank">
+                  <button type="button" class="btn btn-primary" align="left" id="signup1" title="Click to open Course Content." style="width:100%;">Course Content</button>
+               </a>
+        </td></tr>
+
 <!--
 	  <tr height=10><td></td></tr>
 	   <tr><td>

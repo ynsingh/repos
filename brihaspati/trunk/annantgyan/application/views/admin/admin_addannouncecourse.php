@@ -73,7 +73,7 @@ if(isset($this->session->userdata['firstName'])){
 		<div class="form-group">
 			<labe<label for="cname" class="cols-sm-2 control-label">Course Name</label>
 			<br>
-			<select name="cname"  required="">
+			<select name="cname"  required="" style="width:600px;">
 				<option value="" selected="" disabled="">Select Course Name</option>
 				<?php if(!empty($couname)){
 					foreach($couname as $row){	

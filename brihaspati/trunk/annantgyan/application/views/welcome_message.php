@@ -116,18 +116,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	  <td align="justify">
 
 	    <li>
-		We have started the enrollment process of two specialized online certified crash courses and open till  9 December 2018 at <a href="https://annantgyan.com/Course-Registration" style="color:red; text-decoration: underline;"> Course-Registration</a>
-Both online crash courses are commencing from 10th   Dec to 30th Dec 2018.<br>
+		We have started the enrollment process of two specialized online certified crash courses and open till  9 December 2018 at <a href="https://annantgyan.com/Course-Registration" style="color:blue; text-decoration: underline;"> Course-Registration</a>
+Both online crash courses are commencing from 10<sup>th</sup>   Dec and continue till 30<sup>th</sup> Dec 2018.<br>
 <b>(a) “Ganit Gyananjali- </b>based on different sutras of Vedic Mathematics”. 
 It is beneficial for the all students preparing competitive exams like banking, SSC, UPSC, IBPS, GMAT, GRE, CAT and CSAT etc. <br>
 <b>(b) “Ganit Gyananjali-</b> a quick Vedic solutions”
-It is based on Vedic mathematics and beneficial for students of standard 6th to 12th. <br>
-<!--<b>Note:</b> We are also providing scholarship opportunity (up to 50% reduction in enrollment fee) for all students by pre enrollment test.-->
+It is based on Vedic mathematics and beneficial for students of standard 8<sup>th</sup> to 12<sup>th</sup>. <br>
+<b>Note:</b> We are also providing Deepawali scholarship offer (up to 50% reduction in enrollment fee) for all students.<!-- by pre enrollment test.-->
 <!--              We have started enrollment process of various online certified courses/workshops (https://annantgyan.com/Course-Registration). It is open till 10 October 2018. -->
             </li>
 <li>
 “Annant Gyan” is providing earning opportunity to all interested individuals as recommender. 
-Interested people can register themselves on <a href="https://annantgyan.com/welcome/referalenroll" style="color:red; text-decoration: underline;">“Recommender Registration” </a> link. <!--  https://annantgyan.com/welcome/referalenroll-->
+Interested people can register themselves on <a href="https://annantgyan.com/welcome/referalenroll" style="color:blue; text-decoration: underline;">“Recommender Registration” </a> link. <!--  https://annantgyan.com/welcome/referalenroll-->
 <!--Our specialized online certified courses/workshops are commencing from 11th October and continue till 16 November 2018. -->
 <!--We shall start the online certified courses/workshops on 11th October and end at 16 November 2018.-->
 </li>

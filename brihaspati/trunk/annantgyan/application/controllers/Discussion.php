@@ -42,7 +42,7 @@ class Discussion extends CI_Controller {
 //		"SELECT * FROM 'comments', 'users'              WHERE 'comments'.'usr_id' = 'users'.'usr_id'              AND 'cm_is_active' = '0' "
 		$whdata=array('cm_is_active' => 0);
 		$whorder='';
-		$page_data['comment_query'] = $this->commodel->get_orderlistspficemore('comments,sign_up','*',$whdata,$whorder);
+		$page_data['comment_query'] = $this->commodel->get_orderlistspficemore('comments','*',$whdata,$whorder);
 
 		//$whdata="'discussions.ds_usrid' = 'sign_up.su_id' AND 'ds_is_active' = '0'";
 		$whdata = array('ds_is_active' => 0);
@@ -111,10 +111,16 @@ class Discussion extends CI_Controller {
 	} else {
 		//get the user id and course id
 		$userid=$this->session->userdata['su_id'];
-		$crsid=$this->session->userdata['crs_id'];
+		if($userid == 1){
+			$crsid="";
+		}
+		else{
+			$crsid=$this->session->userdata['crs_id'];
+		}
+	//	echo $userid; die();
 		date_default_timezone_set("Asia/Calcutta");
 	        $cdate = date("Y-m-d H:i:s");
-            $data = array('ds_crsid' => $crsid,
+            	$data = array('ds_crsid' => $crsid,
                           'ds_usrid' => $userid,
                           'ds_title' => $this->input->post('ds_title'),
                           'ds_body' =>  $this->input->post('ds_body'),
