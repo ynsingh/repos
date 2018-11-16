@@ -132,20 +132,66 @@ textarea.form-control {
 <div class="container">
 	<div class="row">
 		<div class="col-md-2"></div>
-	<div class="col-md-7 col-sm-7">
-		<section id="contact">
-			<div class="section-content">
-				<h1 class="section-header"> <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s">Feeedback Form</span></h1>
+			<div class="col-md-7 col-sm-7">
+				<section id="contact">
+					<div class="section-content">
+						<h1 class="section-header"> <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s">Feeedback Form</span></h1>
 				
-			</div>
-			<div class="contact-section">
-			<div class="container">
-				<form action="<?php echo site_url('login/usrfeedback');?>" method="POST">
-					<!--<div class="col-md-6 form-line">-->
-						<div class="col-md-6">
-						<div class="col-sm-12 form-group">
-                <label>Q 1. How do you rate your overall experience?</label>
-                <p>
+					</div>
+					<div class="contact-section">
+						<div class="container">
+			<?php 
+			if($countq >0){
+	if(!empty($fquestions)){
+			?>
+							<form action="<?php echo site_url('login/usrfeedback');?>" method="POST">
+							<div class="col-md-6">
+								<div class="col-sm-12 form-group">
+		<table>
+		<?php 
+                $i=1;
+                foreach ($fquestions as $result) :
+        	?>
+      	<tr>
+        <td>
+        <?php
+		echo "<font size='5'>";
+                echo "<p>";
+                echo $i;
+		echo "&nbsp;)&nbsp;";
+                echo $result->fq_question;
+		echo "</p>";
+		if(!empty($result->fq_optiona)){
+               // echo "<input type='radio' name='" .$result->fq_id. "' value='".$result->fq_optiona."' required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optiona;
+                echo "<input type='radio' name='" .$i. "' value='".$result->fq_optiona."' required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optiona;
+		echo "<br>";
+		}
+		if(!empty($result->fq_optionb)){
+               // echo "<input type='radio' name='".$result->fq_id. "' value='".$result->fq_optionb."' required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optionb;
+                echo "<input type='radio' name='".$i. "' value='".$result->fq_optionb."' required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optionb;
+		echo "<br>";
+		}
+		if(!empty($result->fq_optionc)){
+               // echo "<input type='radio' name='".$result->fq_id."' value='".$result->fq_optionc ."' required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optionc;
+                echo "<input type='radio' name='".$i."' value='".$result->fq_optionc ."' required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optionc;
+		echo "<br>";
+		}
+		if(!empty($result->fq_optiond)){
+               // echo "<input type='radio' name='".$result->fq_id."' value='".$result->fq_optiond."'required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optiond;
+                echo "<input type='radio' name='".$i."' value='".$result->fq_optiond."'required>"."&nbsp;&nbsp;&nbsp;&nbsp;". $result->fq_optiond;
+		echo "<br>";
+		}
+		echo "</font>";
+                $i++;
+        ?>
+        </td>
+      </tr>
+  <?php endforeach ; ?>
+
+	</table>
+<!--	
+        			        <label>Q 1. How do you rate your overall experience?</label>
+                				<p>
                     <label class="radio-inline">
                     <input type="radio" name="experience" id="radio_experience" value="bad" >
                     Bad
@@ -161,39 +207,41 @@ textarea.form-control {
                     Good
                     </label>
                 </p>
-                </div>	
-
-			  			<!--<div class="form-group">
-			  				<label for="exampleInputUsername">Your name</label>
-					    	<input type="text" class="form-control" id="" placeholder=" Enter Name" name="usr_name">
-				  		</div>
-				  		<div class="form-group">
-					    	<label for="exampleInputEmail">Email-Id</label>
-					    	<input type="email" class="form-control" id="exampleInputEmail" placeholder=" Enter Email id" name="usr_email">
-					  	</div>	
-					  	<div class="form-group">
-					    	<label for="telephone">Mobile No.</label>
-					    	<input type="tel" class="form-control" id="telephone" placeholder=" Enter 10-digit mobile no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" name="usr_mobile">
-			  			</div>-->
+		</div>	
+-->
 			  			<div class="form-group">
 			  				<label for ="description">Suggestion</label>
 			  			 	<textarea  class="form-control" id="description" placeholder="Enter Your Message" name="su_sugge"></textarea>
 			  			</div>
 			  			<div>
-			  				<!--<input type="submit" name="submit" class="btn btn-default submit" value="Send Enquiry"> -->
-			  				<input type="submit" name="submit" class="btn btn-pill btn-primary btn-lg " value="Send Enquiry">
+			  				<input type="submit" name="submit" class="btn btn-pill btn-primary btn-lg " value="Submit">
 			  			</div>
 			  		</div>
 			  		
 				</form>
+		<?php } 
+		else 
+		{ ?>
+
+			<p>
+			<font size=6>Thanks for submitting the feedback. </font>
+			</p>
+<?php		}
+?>
+		<?php }else{ ?>
+			<p>
+			<font size=6>Feedback Question Come Soon. </font>
+			</p>
+		<?php  } ?>
 			</div>
+	
 		</section>
 	</div>
 </div>
 </div>
 
 
-
+<br><br>
 <?php $this->load->view('template/footer.php');?>
 </body>
 </html>

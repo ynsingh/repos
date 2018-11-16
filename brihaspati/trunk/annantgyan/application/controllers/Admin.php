@@ -554,6 +554,129 @@ class Admin extends CI_Controller {
                 $this->load->view('admin/viewexam',$data);
         }
 	
+	public function addfeedbkquestion($sid){
+		if(isset($this->session->userdata['firstName'])){
+			//get the total no of question in test
+/*			$whdata = array('testid'=>$tid,'subid'=>$sid); 
+			$totqres = $this->commodel->get_orderlistspficemore('test','totalquestions',$whdata,'');
+			foreach ($totqres as $row){
+				$totq = $row->totalquestions;
+			}
+			//get the total no of question available for test
+			$totalqa= $this->commodel->getnoofrows('question',$whdata);
+			// get the no of question needed
+			$noq = $totq - $totalqa;
+
+			$data['tid']=$tid; */
+			$noq=11;
+			$data['sid']=$sid;
+			$data['qreq']=$noq;
+			$message[]='';	
+
+			if(isset($_POST['cou_quest'])){
+				$i=1;
+				$this->form_validation->set_rules('cou_name', 'course name', 'trim|required|xss_clean');
+				//      $this->form_validation->set_rules('cou_week', 'course week', 'trim|required|xss_clean');
+				for($i;$i<=$noq;$i++){
+	                                $this->form_validation->set_rules('question'.$i, 'question', 'trim|xss_clean');
+        	                        $this->form_validation->set_rules('optiona'.$i, 'optiona', 'trim|xss_clean');
+                	                $this->form_validation->set_rules('optionb'.$i, 'optionb', 'trim|xss_clean');
+                        	        $this->form_validation->set_rules('optionc'.$i, 'optionc', 'trim|xss_clean');
+                                	$this->form_validation->set_rules('optiond'.$i, 'optiond', 'trim|xss_clean');
+	//                                $this->form_validation->set_rules('correctans'.$i, 'correctans', 'trim|xss_clean');
+	  //                              $this->form_validation->set_rules('expans'.$i, 'expans', 'trim|xss_clean');
+	//				$this->form_validation->set_rules('marks'.$i, 'marks', 'trim|xss_clean');
+				}
+                                if($this->form_validation->run() == FALSE){
+                                        $this->load->view('admin/addfeedbkquestion',$data);
+                                        return;
+//                                      redirect('admin/createexam');
+                                }else{
+//                                        $testid          	= $tid;
+					$subid            	= $sid;
+					$i=1;
+					for($i;$i<=$noq;$i++){
+						$question          	= $this->input->post('question'.$i);
+						if(!empty($question)){
+                        		                $optiona          	= $this->input->post('optiona'.$i);
+                	                	        $optionb          	= $this->input->post('optionb'.$i);
+		                                        $optionc          	= $this->input->post('optionc'.$i);
+                		                        $optiond          	= $this->input->post('optiond'.$i);
+                                	//	        $correctanswer          = $this->input->post('correctans'.$i);
+                                	//	        $expanswer          = $this->input->post('expans'.$i);
+		                          //              $marks         		= $this->input->post('marks'.$i);
+
+							$cdate = date('Y-m-d H:i:s');
+                                		        $userData = array(
+                                            //    		'testid'              	=>$testid,
+		                                                'fq_crsid'              	=>$subid,
+                		                                'fq_question'              =>$question,
+                                		                'fq_optiona'              	=>$optiona,
+                                                		'fq_optionb'               =>$optionb,
+		                                                'fq_optionc'              	=>$optionc,
+                		                                'fq_optiond'               =>$optiond,
+                                		//                'correctanswer'         =>$correctanswer,
+                                		  //              'explanation'         =>$expanswer,
+                                                //		'marks'        		=>$marks,
+		                                        );
+							$insert = $this->db->insert('feedbackquestion',$userData);
+							
+							if($insert)
+		                                        {
+                		                                $message[$i]='Your question '.$i.' successfully updated in databse.';
+                                		        }
+		                                        else{
+                		                                $message[$i]='Your question '.$i.' Data is not updated in databse.';
+                                		        }
+						}//end of empty
+					}//end of for internal
+					$data['message']=$message;
+                                        $this->session->set_flashdata('success', 'Your question successfully updated in databse.');
+                                        redirect('admin/viewfeedbkquestion/'.$subid,$data);
+                                               // return;
+                                }//else of validation
+			}//end of submit
+			$this->load->view('admin/addfeedbkquestion',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+	}
+	
+	public function viewfeedbkquestion($sid){
+		if(isset($this->session->userdata['firstName'])){
+//			$data['tid']=$tid;
+			$data['sid']=$sid;
+			$whdata = array('fq_crsid'=>$sid);
+                        $data['quest_data'] = $this->commodel->get_orderlistspficemore('feedbackquestion','*',$whdata,'');
+                        $this->load->view('admin/viewfeedbkquestion',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+
+        }
+	
+	function delete_feedquest($id){
+                $contflag=$this->commodel->deleterow('feedbackquestion','fq_id', $id);
+                $smsg= "The question has been deleted.";
+                $fmsg= "The question was not found  and could not be deleted.";
+
+                if(!$contflag)
+                {
+                        $this->logger->write_message("error", $fmsg." Error  in deleting content " ."[qid:" . $id . "]");
+                        $this->logger->write_dbmessage("error", $fmsg." Error  in deleting content "." [qid:" . $id . "]");
+                        $this->session->set_flashdata('err_message', $fmsg.' Error in Deleting content - ', 'error');
+                        redirect('admin/courselist');
+                        return;
+                }
+                else{
+                        $this->logger->write_logmessage("delete", $smsg." Deleted   content " . "[qid:" . $id . "] deleted successfully.. " );
+                        $this->logger->write_dblogmessage("delete",$smg. " Deleted content" ." [qid:" . $id . "] deleted successfully.. " );
+                        $this->session->set_flashdata("success", $smsg.' Content Deleted successfully...' );
+                        redirect('admin/courselist');
+                }
+                $this->load->view('admin/courselist',$data);
+        }
+
 	public function addquestion($tid,$sid){
 		if(isset($this->session->userdata['firstName'])){
 			//get the total no of question in test

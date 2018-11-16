@@ -8,10 +8,10 @@ if(isset($this->session->userdata['firstName'])){
 	<title>Annant Gyan</title>
 	
 		<link href="<?php echo base_url('assets/css');?>/style.css" rel="stylesheet">
-				<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<!--<link href="<?php //echo base_url('assets/css');?>/bootstrap.min1.css" rel="stylesheet">-->
-	  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	  	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+      		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	
 
 
@@ -59,49 +59,64 @@ if(isset($this->session->userdata['firstName'])){
 </div>  
 
 <div class="container">
-	<center><h2>Course List</h2></center>
-	
+	<center><h2>View Feedback Question List</h2></center>
 	<div class="col-md-12" id='card'>
+		
+		
 		<table style="font-size:18px;"><tr>
-			<td><a href="<?php echo site_url('admin/admin_addcourse');?>">Add Course</a></td>
+			<td><a href="<?php echo site_url('admin/courselist');?>">View Course List</a></td><td> &nbsp;&nbsp;&nbsp;</td> 
+			<?php
+				echo "<td>".$this->commodel->get_listspfic1('courses','cou_name','cou_id',$sid)->cou_name." </td>";
+				echo "<td>&nbsp;&nbsp;&nbsp; </td>";
+//				echo "<td>".$this->commodel->get_listspfic1('test','testname','testid',$tid)->testname;
+//				echo "  (  ".$this->commodel->get_listspfic1('test','testcode','testid',$tid)->testcode." ) </td>";
+				
+			?>
 		</tr></table>
-		
-		
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Course Code</th><th>Course Eligible</th>
-					<th>Course Description</th>
-					<th>Course Fees</th> 
-					<th>Fees Description</th>
-					<th>Actions</th>
+					<th>Sr. No.</th><th>Question</th>
+					<th>Option 1</th><th>Option 2</th><th>Option 3</th><th>Option 4</th>
+<!--					<th>Correct Answer</th>
+					<th>Explanation</th>
+					<th>Marks</th> -->
+					<th> Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
 						$i=1;
-						if(!empty($userdata)){
-							foreach($userdata as $row){	
+						if(!empty($quest_data)){
+							foreach($quest_data as $row){	
 						?>
 				<tr>
 					
 								<td><?php echo $i++;?></td>
-								<td><?php echo $row->cou_name;?></td>
-								<td><?php echo $row->cou_code;?></td>
-								<td><?php echo $row->cou_eligible;?></td>
-								<td><?php echo $row->cou_discipline;?></td>
-								<td><?php echo $row->cou_fees;?></td>
-								<td><?php echo $row->cou_feedescription;?></td>
+								<td><?php echo $row->fq_question;?></td>
+								<td><?php echo $row->fq_optiona;?></td>
+								<td><?php echo $row->fq_optionb;?></td>
+								<td><?php echo $row->fq_optionc;?></td>
+								<td><?php echo $row->fq_optiond;?></td>
+							<!--	<td><?php //echo $row->correctanswer   ;?></td>
+								<td><?php //echo $row->explanation   ;?></td>
+								<td><?php //echo $row->marks  ;?></td>-->
+								<td><?php 
+									echo anchor('admin/delete_feedquest/' . $row->fq_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+								?> 
+								</td>
 								
-								<td> <a href="#">Edit</a>
-<?php
-								echo "&nbsp;| ";
-								echo anchor('admin/addfeedbkquestion/' . $row->cou_id , "Add Feedback Question") ;
-								echo "&nbsp;| ";
-								echo anchor('admin/viewfeedbkquestion/' . $row->cou_id , "View Feedback Question") ;
-?>
 				</tr>
-				<?php }}?>
+				<?php 		}
+						}
+						else{ ?>
+							<tr>
+							<td colspan=10 align=center> No Records found</td>
+							</tr>
+					<?php
+						} ?>
+
+				
 			</tbody>
 		</table>
 	</div>

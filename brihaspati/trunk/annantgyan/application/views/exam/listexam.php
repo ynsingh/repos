@@ -98,12 +98,21 @@ $this->load->view('template/topstyle.php');
 		echo $row->testdate;
 		echo "</td>";
 		echo "<td>";
-		$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
-		$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
-		if(!$isexist){
-			echo anchor('exam/quiz/' . $row->testid, "Start Exam") ;
-		}else{
-			echo "Submitted";
+
+		//$enddate = $this->commodel->get_listspfic1('courseannouncement','crsann_crsend','crsann_crsid',$subid)->crsann_crsend;
+		$enddate = $this->commodel->get_listspfic1('courseannouncement','crsann_feedbkdate','crsann_crsid',$subid)->crsann_feedbkdate;
+		$cdate = date("Y-m-d");
+		if($cdate <= $enddate){	
+			$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
+			$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
+			if(!$isexist){
+				echo anchor('exam/quiz/' . $row->testid, "Start Exam") ;
+			}else{
+				echo "Submitted";
+			}
+		}
+		else{
+			echo "Timeover";
 		}
 		echo "</td>";
 		echo "</tr>";

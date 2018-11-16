@@ -522,57 +522,77 @@ class Login extends CI_Controller {
 
 	function usrfeedback(){
 		$sid = $this->session->userdata['su_id'];
-		$cid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$sid)->uct_courseid;
+	//	$countq = 0;
+		if(!empty($sid)){
+			$cid  = $this->session->userdata['crs_id'];
 
-		if(isset($_POST['submit'])) {
-        
-            $this->form_validation->set_rules('experience','Question First','trim|xss_clean|required');
-            $this->form_validation->set_rules('su_sugge','Suggestion','trim|xss_clean|required');
-                      
-            //if form validation true
-            if($this->form_validation->run()==TRUE){
+			$whdata = array ('fq_crsid' => $cid);
+        	        $whorder = 'fq_id';
+			$sfdata = 'fq_id,fq_question,fq_optiona,fq_optionb,fq_optionc,fq_optiond';
+			$fbkq=$this->commodel->get_orderlistspficemore('feedbackquestion',$sfdata,$whdata,$whorder);
+			$sz=sizeof($fbkq);
+			$data['countq'] = $sz;
+
+			$datadup = array ('stf_courseid' => $cid, 'stf_studentid' => $sid);
+			$isexist=$this->commodel->isduplicatemore('stu_feedback',$datadup);
+			if($isexist){
+				$data['fquestions'] ='';
+				$this->load->view('loginpage/usr_feedback',$data);
+				return;
+			}
+			else{	
+//		$cid = $this->commodel->get_listspfic1('user_course_type','uct_courseid','uct_userid',$sid)->uct_courseid;
+				$data['fquestions'] = $fbkq;
+
+				if(isset($_POST['submit'])) {
+        		    		$this->form_validation->set_rules('su_sugge','Suggestion','trim|xss_clean|required');
+					$ans1='';$ans2='';$ans3='';$ans4='';$ans5='';$ans6='';$ans7='';$ans8='';$ans9='';$ans10='';$ans11=''; 
+					for($i=1;$i<=$sz;$i++){
+						${"ans".$i} =$_POST[$i];
+					}
+			                //if form validation true
+		        		if($this->form_validation->run()==TRUE){
             
-                $data = array(
-                    'stf_studentid'		=>	$sid,
-                    'stf_courseid'		=>	$cid,
-                    'stf_ans1'			=>	$_POST['experience'],
-                   /* 'stf_ans2'					=>  ,
-                    'stf_ans3'					=>  ,
-                    'stf_ans4'					=>  ,
-                    'stf_ans5'					=>  ,
-                    'stf_ans6'					=>  ,
-                    'stf_ans7'					=>  ,
-                    'stf_ans8'					=>  ,
-                    'stf_ans9'					=>  ,
-                    'stf_ans10'					=>  ,
-                    'stf_ans11'					=>  ,*/
-                    'stf_suggestion'	=>	$_POST['su_sugge'],
-                   // ''		=>	$_POST[''],
-                    'stf_date'			=>	date('y-m-d h:i:s')
-                   
-                );
-                $insert = $this->commodel->insertrec('stu_feedback', $data) ;
+                				$data = array(
+			                	    'stf_studentid'		=>	$sid,
+	        	        		    'stf_courseid'		=>	$cid,
+				                    'stf_ans1'			=>	$ans1,
+                				    'stf_ans2'			=>  	$ans2,
+	        		        	    'stf_ans3'			=>  	$ans3,
+			        	            'stf_ans4'			=>  	$ans4,
+        	        			    'stf_ans5'			=>  	$ans5,
+	        			       	    'stf_ans6'			=>  	$ans6,
+			                	    'stf_ans7'			=>  	$ans7,
+	        		        	    'stf_ans8'			=>  	$ans8,
+        				            'stf_ans9'			=>  	$ans9,
+	        	        		    'stf_ans10'			=>  	$ans10,
+	                			    'stf_ans11'			=>  	$ans11,
+	        		        	    'stf_suggestion'		=>	$_POST['su_sugge'],
+			        	            'stf_date'			=>	date('y-m-d h:i:s')           
+	                			);
+			        	        $insert = $this->commodel->insertrec('stu_feedback', $data) ;
                                
-                if (!$insert)
-                {
-                    $this->logger->write_logmessage("insert", "Feedback detail not submitted.");
-                    $this->logger->write_dblogmessage("insert", "Feedback detail not submitted.");
-                    $this->session->set_flashdata("error",'Feedback detail not submitted.' );
-                    redirect('login/usrfeedback');
-
-                }
+                				if (!$insert)
+				                {
+        	        			    	$this->logger->write_logmessage("insert", "Feedback detail not submitted.");
+			                   		$this->logger->write_dblogmessage("insert", "Feedback detail not submitted.");
+                			    		$this->session->set_flashdata("error",'Feedback detail not submitted.' );
+		        	            		redirect('login/usrfeedback');
+                				}
+			                	else{
+	        	        		    $this->logger->write_logmessage("insert","Feedback Detail Send Successfully!!");
+				                    $this->logger->write_dblogmessage("insert", "Feedback Detail Submitted");
+        	        			    $this->session->set_flashdata("success", "Feedback Detail Submit Successfully...");
+		        	        	    redirect('login/usrfeedback');
+                				}
+            				}
+        			}
+			$this->load->view('loginpage/usr_feedback',$data);
+			}//end if exist
+		}//end if for session
                 else{
-                    $this->logger->write_logmessage("insert","Feedback Detail Send Successfully!!");
-                    $this->logger->write_dblogmessage("insert", "Feedback Detail Submitted");
-                    $this->session->set_flashdata("success", "Feedback Detail Submit Successfully...");
-                     redirect('login/usrfeedback');
+                        redirect('login/signin');
                 }
-
-
-                     
-            }
-        }
-		$this->load->view('loginpage/usr_feedback');
 	}
 
 	function usrfaq(){
