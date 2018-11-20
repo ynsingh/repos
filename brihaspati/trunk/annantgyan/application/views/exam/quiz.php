@@ -3,6 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $this->load->view('template/topstyle.php');
 ?>
+<head>
+<script type="text/javascript">
+   //         function countDown(secs, elem)
+     //       {
+       //         var element = document.getElementById(elem);
+         //       element.innerHTML = "<h2>You have <b>"+secs+"</b> seconds to answer the questions</h2>";
+           //     if(secs < 1) {
+             //       document.myform.submit();
+               // }
+//                else
+  //              {
+    //                secs--;
+      //              setTimeout('countDown('+secs+',"'+elem+'")',1500);
+        //        }
+          //  }
+
+            </script>
+            <div id="status"></div>
+	   <script type="text/javascript">
+	//	countDown(900,"status");
+	</script>
+</head>
 <body>
 
 <div class="fluid-container">
@@ -53,14 +75,18 @@ $this->load->view('template/topstyle.php');
   <thead>
     <tr>
     <th>
-	<?php 
-		echo "Test Name : ".$this->commodel->get_listspfic1('test','testname','testid',$testid)->testname ." ( ".$this->commodel->get_listspfic1('test','testcode','testid',$testid)->testcode ." )";	
+	<?php
+		$tname= $this->commodel->get_listspfic1('test','testname','testid',$testid)->testname;
+		echo "Test Name : ".$tname ." ( ".$this->commodel->get_listspfic1('test','testcode','testid',$testid)->testcode ." )";	
 	?>
     </tr>
   </thead>
   <tbody>
-	 <form method="post" action="<?php echo base_url();?>index.php/exam/quizsubmit">
+
+	 <form method="post" name="myform" id="myform"action="<?php echo base_url();?>index.php/exam/quizsubmit">
 	<?php 
+		//check for question empty
+		// give the message time over/exam not start
 		$i=1;
 		foreach ($questions as $result) : 
 	?>
@@ -95,6 +121,17 @@ $this->load->view('template/topstyle.php');
  	<input type="submit" name="submit" value="Submit">
     </td></tr>
 	</form>
+<?php 
+		if($tname == "final exam"){ 
+?>
+<script type="text/javascript">
+function myfunc () {
+var frm = document.getElementById("myform"); // myform is the name of your form
+frm.submit();
+}
+window.setInterval ("myfunc()", 1200000); // equals 20 min so two hours must be 7200000 ?
+</script>
+<?php } ?>
   </tbody>
 </table>
 </div>

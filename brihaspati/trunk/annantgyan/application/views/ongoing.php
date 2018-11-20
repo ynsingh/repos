@@ -400,10 +400,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		} 
 		if(!empty($cdata)){
 			echo "<tr><td colspan=2 >  ";
-			echo "<b><font color=green>Deepawali scholarship offer</font> </b>";
+			echo "<b><font color=green>Christmas scholarship offer for Quick Maths (Sr No. 3,4,5)</font> </b>";
 
         		echo "<br>";
-			echo "You will get off 50 % of the course enrollment fees till 9 November 2018. Get enroll yourself as soon as possible.";
+			echo "You will get off 50 % of the course enrollment fees till 1 January 2019. Get enroll yourself as soon as possible.";
 //                	echo "If you face any trouble in enrollment process. Kindly feel free to contact Mr. N. K. Singh, Email:nksinghiitk@gmail.com ,9450136012(M).";
         		echo "</td></tr>	";
 		} 
@@ -481,7 +481,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	            	if(($edate >= $cdate) && ($sdate <= $cdate)){
 
         	    		$wdata = array('cou_id' => $cid);
-	            		$cdata = $this->commodel->get_listspficemore('courses','*',$wdata);
+	            		$cdata = $this->commodel->get_listspficemore('courses','cou_name',$wdata);
 				echo "<tr>";
                         	echo "<td>";
 	  	         	if(!empty($cdata)){
@@ -503,6 +503,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	   <?php 	}
 		}
 	}?>
+        </table>
+        </div>
+<div class="col-md-6"  id="card">
+
+        <table style="font-size: 16px;width:100%;">
+                        <tr>
+                        <td align=center>
+                        <h3>    <b><u>  Past Courses</u></b> </h3>
+                                </td>
+                        </tr>
+        <?php $i=1;
+        if(!empty($course_data)){
+                foreach($course_data as $row){
+                        $cid = $row->crsann_crsid;
+                        $sdate = $row->crsann_crsstart;
+                        $edate = $row->crsann_crsend;
+                        $cdate = date('Y-m-d');
+                        if(($edate < $cdate) ){
+
+                                $wdata = array('cou_id' => $cid);
+                                $cdata = $this->commodel->get_listspficemore('courses','cou_name',$wdata);
+                                echo "<tr>";
+                                echo "<td>";
+                                if(!empty($cdata)){
+                                        foreach($cdata as $row2){
+                                                echo "<b>". $i++." . </b>";
+                                                echo "<b><font color=blue>";
+                                                echo $row2->cou_name;
+                                                echo "</font></b> <br> ";
+                                                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                                echo $row->crsann_crsstart;
+                                                echo " - ";
+                                                echo $row->crsann_crsend;
+                                        }
+                                 }
+           ?>
+                        </td>
+                </tr>
+                <tr height=20></tr>
+           <?php        }
+                }
+        }?>
         </table>
         </div>
 

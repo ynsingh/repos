@@ -139,7 +139,8 @@ jQuery(function ($) {
 		$startdate = $coudata->crsann_crsstart;
     		$enddate = $coudata->crsann_crsend;
     		$cdate = date('Y-m-d');
-		if(($enddate >= $cdate) && ($startdate <= $cdate)){
+		//if(($enddate >= $cdate) && ($startdate <= $cdate)){
+		if(($startdate <= $cdate)){
     ?>
  			<center><h3><?php echo $this->commodel->get_listspfic1('courses','cou_name','cou_id',$couid)->cou_name;?></h3></center>
 			<div class="container" style="margin-top: 10px;border:2px solid orange;border-radius: 15px 15px 15px 15px;" id="card">
@@ -165,7 +166,9 @@ jQuery(function ($) {
                 </div>
             </div>
         </div>
-    -->                           <?php 
+	-->                           <?php 
+			$wk="";
+//			print_r($getuploadata);
 			foreach($getuploadata as $data){
 				?>
 		<!--			<div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse"  data-target="#<?php //echo $data->acu_id; ?>"> 
@@ -173,7 +176,13 @@ jQuery(function ($) {
 					<div>
 					<a data-toggle="collapse" href="#<?php echo $data->acu_id; ?>">
 <?php	
-					echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>'; 
+					
+//				if($wk != $data->acu_weekname){
+					if ((strcasecmp($wk, $data->acu_weekname)) != 0){ 
+						echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>';
+
+						$wk=$data->acu_weekname;
+					}
 ?>
 					</a>
 				 	</div>

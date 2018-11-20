@@ -91,8 +91,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<b>Email:</b> dndubey@annantgyan.com<br>
 					or<br>
 					Founder and Director “Annant Gyan”:<br>
-					<b>Contact Number:</b> 7987828714 <br>
-					<b>Email:</b> amar24india@gmail.com <br>
+					<b>Contact Number:</b> 7987828714,8827861811 <br>
+					<b>Email:</b> amar24india@gmail.com,annantgyan@gmail.com <br>
    	
 					For any query kindly send message to admin “Annant Gyan” at annantgyan@gmail.com & 	admin@annantgyan.com
 				</p>

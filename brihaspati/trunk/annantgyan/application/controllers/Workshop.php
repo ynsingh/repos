@@ -27,8 +27,10 @@ class Workshop extends CI_Controller {
 		//$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
 		$cfees = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
 		$cdate = date('Y-m-d');
-		if ($cdate < "2018-11-10"){
-			$cfees = $cfees / 2;
+		if(($cid == 9 )|| ($cid == 10)||($cid == 11)){
+			if ($cdate < "2019-01-01"){
+				$cfees = $cfees / 2;
+			}
 		}
 		$data['courfees'] = $cfees;
 		$data['courseid'] = $cid;
@@ -41,10 +43,12 @@ class Workshop extends CI_Controller {
 		$cid = $this->uri->segment(3); 
 		//$data['courfees'] = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
 		$cfees = $this->commodel->get_listspfic1('courses','cou_fees','cou_id',$cid)->cou_fees;
-                $cdate = date('Y-m-d');
-                if ($cdate < "2018-11-10"){
-                        $cfees = $cfees / 2;
-                }
+		$cdate = date('Y-m-d');
+		if(($cid == 9 )|| ($cid == 10)||($cid == 11)){
+	                if ($cdate < "2019-01-01"){
+        	                $cfees = $cfees / 2;
+                	}
+		}
                 $data['courfees'] = $cfees;
 
 		$data['cid'] = $cid;

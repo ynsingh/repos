@@ -26,7 +26,7 @@ class Exam extends CI_Controller {
 		$cdate = date('Y-m-d');
 		$whdata = array ('subid' => $crsid, 'testdate <=' => $cdate);
                 $whorder = 'testid';
-		$data['testdata'] = $this->commodel->get_orderlistspficemore('test','testid,testcode,testname,testdate,subid',$whdata,$whorder);
+		$data['testdata'] = $this->commodel->get_orderlistspficemore('test','testid,testcode,testname,testdate,subid,testfrom,testto',$whdata,$whorder);
 		$data['subid'] = $crsid ;
 		$this->load->view('exam/listexam',$data);
 	}
@@ -44,8 +44,16 @@ class Exam extends CI_Controller {
 //		$testids = $this->commodel->get_orderlistspficemore('test','testid',$whdata,$whorder);
 //		foreach ($testids as $row){
 //			$tstid = $row->testid;
-//		}
+		//		}
+		//		get the test name
+		//		if name is final exam
+		//		then get the date and time  ( start and end)
+		//		get the current time
+		//		compare with exam time
+		//		if exist between
+		//		else send null question
 		// get the question from question table  where test id and subject id
+		// put check for tring to duplicate  for smart user
 		$whdata = array ('subid' => $crsid, 'testid' => $tstid);
 		$whorder = 'qid';
 		$sfdata = 'qid,question,optiona,optionb,optionc,optiond';
@@ -57,35 +65,39 @@ class Exam extends CI_Controller {
 	public function quizsubmit(){
 		$crsid=$this->session->userdata['crs_id'];
 		$tstid=$this->input->post("tid");
-	//	echo $tstid; die();
-		$whdata = array ('subid' => $crsid, 'testid' => $tstid);
-                $whorder = 'qid';
-                $sfdata = 'qid,correctanswer,marks';
-		$questions = $this->commodel->get_orderlistspficemore('question',$sfdata,$whdata,$whorder);
-		$data['subid'] = $crsid ;
-		$cdate = date('Y-m-d');
-		$usid  = $this->session->userdata['su_id'];
-		if(isset($_POST['submit'])){
-			$cans = 0;
-			$tmarks = 0;
-			foreach ($questions as $row){
-				$ans = $this->input->post($row->qid);
-				$stuquesdata = array(
-					'su_id'      => $usid,
-					'testid'	=> $tstid,
-					'subid'	=> $crsid,
-					'quid' 	=> $row->qid,
-					'answered' =>'answered',
-					'stdanswer' => $ans,
-				);
-				$insflag = $this->db->insert('studentquestion', $stuquesdata);
-				if($ans ==  $row->correctanswer){
-					$cans = $cans + 1;
-					$tmarks = $tmarks + $row->marks;
+		//	echo $tstid; die();
+		//	check for duplicate submition
+		$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $tstid,'subid' =>$crsid);
+                $isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
+                if(!$isexist){
+			$whdata = array ('subid' => $crsid, 'testid' => $tstid);
+	                $whorder = 'qid';
+                	$sfdata = 'qid,correctanswer,marks';
+			$questions = $this->commodel->get_orderlistspficemore('question',$sfdata,$whdata,$whorder);
+			$data['subid'] = $crsid ;
+			$cdate = date('Y-m-d');
+			$usid  = $this->session->userdata['su_id'];
+			if(isset($_POST['submit'])){
+				$cans = 0;
+				$tmarks = 0;
+				foreach ($questions as $row){
+					$ans = $this->input->post($row->qid);
+					$stuquesdata = array(
+						'su_id'      => $usid,
+						'testid'	=> $tstid,
+						'subid'	=> $crsid,
+						'quid' 	=> $row->qid,
+						'answered' =>'answered',
+						'stdanswer' => $ans,
+					);
+					$insflag = $this->db->insert('studentquestion', $stuquesdata);
+					if($ans ==  $row->correctanswer){
+						$cans = $cans + 1;
+						$tmarks = $tmarks + $row->marks;
+					}
 				}
-			}
 			//
-			$sansData = array(
+				$sansData = array(
                                         'st_testid'                     =>$tstid,
                                         'st_subid'                      =>$crsid,
                                         'st_stdid'                      =>$usid,
@@ -94,10 +106,18 @@ class Exam extends CI_Controller {
                                         'st_status'                     =>'',
                                         'st_endtime'                    =>'',
                                         'st_starttime'                  =>'',
-                        );
-                        $insert = $this->db->insert('studenttest',$sansData);
-			//$this->load->view('exam/listexam');
-			redirect('exam/listexam');
-		}
+        	                );
+	                        $insert = $this->db->insert('studenttest',$sansData);
+				//$this->load->view('exam/listexam');
+				redirect('exam/listexam');
+				return;
+			}// close of submit
+		}// close of alreay submitted
+		else{
+		// put the message for already submitted
+                //                        echo "Submitted";
+                }
+		redirect('exam/listexam');
+
 	}//end of the function
 }

@@ -177,7 +177,29 @@ if(isset($this->session->userdata['firstName'])){
                    // defaultDate: '1yr',
                     yearRange: 'c-36:c+10',
                 });
+	    </script>
+
+		<label for="cexdate " class="cols-sm-2 control-label">Course Exam Date</label>
+                        <input type="text" class="form-control" name="cexdate" id="cexdate"  placeholder="Enter Course Exam Date" required/>
+                        <script>
+                $('#cexdate').datepicker({
+                onSelect: function(value, ui) {
+                    console.log(ui.selectedYear)
+                    var today = new Date(), 
+                    dob = new Date(value), 
+                    age = 2017-ui.selectedYear;
+
+                },
+                
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy-mm-dd',
+                   // defaultDate: '1yr',
+                    yearRange: 'c-36:c+10',
+                });
             </script>
+
+
 			<label for="cfdate " class="cols-sm-2 control-label">Course Feedback Date</label>
 			<input type="text" class="form-control" name="cfdate" id="cfdate"  placeholder="Enter Course Feedback Date" required/>
 			<script>

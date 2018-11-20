@@ -69,7 +69,7 @@ if(isset($this->session->userdata['firstName'])){
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Registration Start Date</th><th>Registration End Date</th><th>Course Start Date</th><th>Course End Date</th><th>Course Duration</th><th>Feedback Date</th> <th>Certificate Date</th><th>Actions</th>
+					<th>Sr. No.</th><th>Course Name</th><th>Registration Start Date</th><th>Registration End Date</th><th>Course Start Date</th><th>Course End Date</th><th>Course Duration</th><th>Final Exam Date </th><th>Feedback Date</th> <th>Certificate Date</th><th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -88,6 +88,7 @@ if(isset($this->session->userdata['firstName'])){
 								<td><?php echo $row->crsann_crsstart;?></td>
 								<td><?php echo $row->crsann_crsend;?></td>
 								<td><?php echo $row->crsann_duration;?></td>
+								<td><?php echo $row->crsann_fexamdate;?></td>
 								<td><?php echo $row->crsann_feedbkdate;?></td>
 								<td><?php echo $row->crsann_certdate;?></td>
 								

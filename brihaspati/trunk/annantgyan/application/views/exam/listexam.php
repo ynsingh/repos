@@ -98,10 +98,27 @@ $this->load->view('template/topstyle.php');
 		echo $row->testdate;
 		echo "</td>";
 		echo "<td>";
-
+		$cdate = date("Y-m-d");
+		if($row->testname == "final exam"){
+			//get the current time
+			//gget the exam start time 
+			//compare if exist between 
+			// start exam
+			// else time over
+			$examdate = $this->commodel->get_listspfic1('courseannouncement','crsann_fexamdate','crsann_crsid',$subid)->crsann_fexamdate;
+			if($cdate == $examdate){
+				$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
+	                        $isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
+        	                if(!$isexist){
+                	                echo anchor('exam/quiz/' . $row->testid, "Start Exam") ;
+                        	}else{
+                                	echo "Submitted";
+                        	}
+			}
+		}
+		else{
 		//$enddate = $this->commodel->get_listspfic1('courseannouncement','crsann_crsend','crsann_crsid',$subid)->crsann_crsend;
 		$enddate = $this->commodel->get_listspfic1('courseannouncement','crsann_feedbkdate','crsann_crsid',$subid)->crsann_feedbkdate;
-		$cdate = date("Y-m-d");
 		if($cdate <= $enddate){	
 			$datadup = array('su_id' => $this->session->userdata('su_id'), 'testid' => $row->testid,'subid' =>$subid);
 			$isexist=$this->commodel->isduplicatemore('studentquestion',$datadup);
@@ -113,6 +130,7 @@ $this->load->view('template/topstyle.php');
 		}
 		else{
 			echo "Timeover";
+		}
 		}
 		echo "</td>";
 		echo "</tr>";

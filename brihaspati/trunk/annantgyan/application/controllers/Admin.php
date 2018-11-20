@@ -194,6 +194,7 @@ class Admin extends CI_Controller {
             $this->form_validation->set_rules('credate','Course Registartion End Date','trim|xss_clean');
             $this->form_validation->set_rules('csdate','Course  Start Date','trim|xss_clean');
             $this->form_validation->set_rules('cedate','Course End Date','trim|xss_clean');
+            $this->form_validation->set_rules('cexdate','Course Exam Date','trim|xss_clean');
             $this->form_validation->set_rules('cfdate','Course Feedback Date','trim|xss_clean');
             $this->form_validation->set_rules('ccdate','Course Certificate Date','trim|xss_clean');
             
@@ -207,6 +208,7 @@ class Admin extends CI_Controller {
 				$credate      = $this->input->post('credate');
 				$csdate 	    = $this->input->post('csdate');
 				$cedate 	    = $this->input->post('cedate');
+				$cexdate 	    = $this->input->post('cexdate');
 				$cfdate 	    = $this->input->post('cfdate');
 				$ccdate 	    = $this->input->post('ccdate');
 				
@@ -217,6 +219,7 @@ class Admin extends CI_Controller {
             				'crsann_regend' 	=> $credate,
             				'crsann_crsstart' 		=> $csdate, 
             				'crsann_crsend'       => $cedate,   				
+            				'crsann_fexamdate'       => $cexdate,   				
             				'crsann_feedbkdate'=> $cfdate, 
             				'crsann_certdate'=> $ccdate, 
             				'crsann_creatorid'=> $this->session->userdata('userEmail'), 
@@ -470,6 +473,7 @@ class Admin extends CI_Controller {
 					$testtotalq        = $this->input->post('test_totalq');
 
 					$tdiff=$testto - $testfrom;
+//					$tdiff= dateDiff($testto,$testfrom);
 					$cdate = date('Y-m-d H:i:s');
 					$userData = array(
 						'testname' 		=>$testname,
@@ -557,18 +561,21 @@ class Admin extends CI_Controller {
 	public function addfeedbkquestion($sid){
 		if(isset($this->session->userdata['firstName'])){
 			//get the total no of question in test
-/*			$whdata = array('testid'=>$tid,'subid'=>$sid); 
+/*			$whdata = array('subid'=>$sid); 
 			$totqres = $this->commodel->get_orderlistspficemore('test','totalquestions',$whdata,'');
 			foreach ($totqres as $row){
 				$totq = $row->totalquestions;
 			}
 			//get the total no of question available for test
-			$totalqa= $this->commodel->getnoofrows('question',$whdata);
+			$totalqa= $this->commodel->getnoofrows('feedbackquestion',$whdata);
 			// get the no of question needed
 			$noq = $totq - $totalqa;
 
 			$data['tid']=$tid; */
-			$noq=11;
+			$totalqa =0;
+			$whdata = array('fq_crsid'=>$sid);
+			$totalqa= $this->commodel->getnoofrows('feedbackquestion',$whdata);
+			$noq=11 - $totalqa;
 			$data['sid']=$sid;
 			$data['qreq']=$noq;
 			$message[]='';	
