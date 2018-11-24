@@ -71,6 +71,7 @@ CREATE TABLE `courseannouncement` (
         `crsann_regend` DATE NULL ,
         `crsann_crsstart` DATE NULL ,
         `crsann_crsend` DATE NULL ,
+	`crsann_fexamdate` DATE NULL,
         `crsann_feedbkdate` DATE NULL ,
         `crsann_certdate` DATE NULL ,
         `crsann_creatorid` VARCHAR(255) NOT NULL ,
@@ -516,6 +517,7 @@ DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
   `testid` bigint(20) NOT NULL AUTO_INCREMENT,
   `testname` varchar(30) NOT NULL,
+  `testcode` varchar(40) NOT NULL,
   `testdesc` varchar(100) DEFAULT NULL,
   `testdate` date DEFAULT NULL,
   `testtime` time DEFAULT NULL,
@@ -524,8 +526,8 @@ CREATE TABLE `test` (
   `testto` time  DEFAULT NULL ,
   `duration` int(11) DEFAULT NULL,
   `totalquestions` int(11) DEFAULT NULL,
+  `maxmarks` INT(4) NOT NULL DEFAULT '2',
   `attemptedstudents` bigint(20) DEFAULT NULL,
-  `testcode` varchar(40) NOT NULL,
   PRIMARY KEY (`testid`),
   UNIQUE `testname` ( `testname`, `subid`),
   CONSTRAINT `test_fk1` FOREIGN KEY (`subid`) REFERENCES `courses` (`cou_id`)

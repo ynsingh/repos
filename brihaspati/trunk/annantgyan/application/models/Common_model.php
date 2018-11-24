@@ -162,6 +162,20 @@ class Common_model extends CI_Model
 //		print_r($this->db->get()->row());
       return $this->db->get()->row();
     }
+
+    //get the list of one/specific  records with  one specific fields for specific values
+    public function get_listspfic1a($tbname,$selfield1,$whdata){
+                $this->db->flush_cache();
+                $this->db->select($selfield1);
+                $this->db->from($tbname);
+                $this->db->limit(1);
+                if ($whdata!= '') {
+                        $this->db->where($whdata);
+                }
+      return $this->db->get()->row();
+    }
+
+
 //get the list of all/specific  records with  one specific fields for specific values
     public function get_listspficarry($tbname,$selfield1,$fieldname='',$fieldvalue=''){
 		$this->db->flush_cache();

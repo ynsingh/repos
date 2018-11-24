@@ -141,7 +141,14 @@ function Logout() {
 		<li><a href="<?php echo site_url('exam/listexam');?>"><span ></span>Quiz / Assignment</a></li>
 		</ul>
 	</li>
-        <li><a href="<?php echo site_url('progress/listrexam');?>" class="<?php if((strpos($request_uri,"progress/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Progress</a></li>
+	<li class="dropdown">
+		<a href="#" class="<?php if((strpos($request_uri,"progress/")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Progress<span class="caret"></span></a>
+		<ul class="dropdown-menu">
+	<li><a href="<?php echo site_url('progress/listrexam');?>"><span ></span>Progress Exam Wise</a></li>
+	<li><a href="<?php echo site_url('progress/resultsheet');?>"><span ></span>Progress Card</a></li>
+	</ul>
+	</li>
+
         <li><a href="<?php echo site_url('login/usrfeedback');?>" class="<?php if((strpos($request_uri,"login/usrfeedback")!==false) || $request_uri=="" || $request_uri=="/"){echo "active";}?>"><span ></span>Feedback</a></li>
 
         <li><a href="<?php //echo site_url('');?>"><span ></span>Certificates</a></li>

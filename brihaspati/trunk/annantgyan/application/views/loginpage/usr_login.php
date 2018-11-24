@@ -179,8 +179,11 @@ jQuery(function ($) {
 					
 //				if($wk != $data->acu_weekname){
 					if ((strcasecmp($wk, $data->acu_weekname)) != 0){ 
-						echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.'</div>';
-
+						echo '<br><div style="font-size:20px;" id="open">'.$data->acu_weekname.' 
+                	                	        <span class="glyphicon glyphicon-triangle-bottom"></span>
+							
+							</div>';
+// glyphicon glyphicon-chevron-down  glyphicon glyphicon-menu-down  glyphicon glyphicon-triangle-bottom glyphicon glyphicon-collapse-down
 						$wk=$data->acu_weekname;
 					}
 ?>

@@ -116,27 +116,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	  <td align="justify">
 
 	    <li>
-		We have started the enrollment process of two specialized online certified crash courses and open till  9 December 2018 at <a href="https://annantgyan.com/Course-Registration" style="color:blue; text-decoration: underline;"> Course-Registration</a>
+We have started the enrollment process of six specialized online certified crash courses.
+Enrollment process of Ganit Gyananjali is open till 9 December 2018, Quick Maths and
+application of Vedic mathematics is open till 6 January 2019 at <a href="https://annantgyan.com/Course-Registration" style="color:blue; text-decoration: underline;"> Course-Registration</a>
+<!--https://annantgyan.com/Course-Registration -->
+<!--		We have started the enrollment process of two specialized online certified crash courses and open till  9 December 2018 at <a href="https://annantgyan.com/Course-Registration" style="color:blue; text-decoration: underline;"> Course-Registration</a>
 Both online crash courses are commencing from 10<sup>th</sup>   Dec and continue till 30<sup>th</sup> Dec 2018.<br>
 <b>(a) “Ganit Gyananjali- </b>based on different sutras of Vedic Mathematics”. 
 It is beneficial for the all students preparing competitive exams like banking, SSC, UPSC, IBPS, GMAT, GRE, CAT and CSAT etc. <br>
 <b>(b) “Ganit Gyananjali-</b> a quick Vedic solutions”
 It is based on Vedic mathematics and beneficial for students of standard 8<sup>th</sup> to 12<sup>th</sup>. <br>
-<b>Note:</b> We are also providing Deepawali scholarship offer (up to 50% reduction in enrollment fee) for all students.<!-- by pre enrollment test.-->
+<b>Note:</b> We are also providing Deepawali scholarship offer (up to 50% reduction in enrollment fee) for all students.--><!-- by pre enrollment test.-->
 <!--              We have started enrollment process of various online certified courses/workshops (https://annantgyan.com/Course-Registration). It is open till 10 October 2018. -->
             </li>
 <li>
-“Annant Gyan” is providing earning opportunity to all interested individuals as recommender. 
-Interested people can register themselves on <a href="https://annantgyan.com/welcome/referalenroll" style="color:blue; text-decoration: underline;">“Recommender Registration” </a> link. <!--  https://annantgyan.com/welcome/referalenroll-->
+The online specialized crash course number (6) “Application of Vedic Mathematics” is specially
+open for children of Ex and working Defence Personals (Army, Air force &amp; Navy) / all Central
+Security Forces / all State Police Forces.<br>
+(Course is free of cost. Only 11/- as an enrollment token).
+<!--“Annant Gyan” is providing earning opportunity to all interested individuals as recommender. 
+Interested people can register themselves on <a href="https://annantgyan.com/welcome/referalenroll" style="color:blue; text-decoration: underline;">“Recommender Registration” </a> link.--> <!--  https://annantgyan.com/welcome/referalenroll-->
 <!--Our specialized online certified courses/workshops are commencing from 11th October and continue till 16 November 2018. -->
 <!--We shall start the online certified courses/workshops on 11th October and end at 16 November 2018.-->
 </li>
 <li>
-Now our six specialized online certified courses/workshops are running till 16 November 2018.
+We are also providing Christmas Scholarship opportunity in Quick Maths course series for the
+students of standard 5<sup>th</sup> , 6<sup>th</sup> and 7<sup>th</sup> (up to 50% reduction in enrollment fee). The Scholarship
+opportunity is open till 1 st January 2019.
+<!--Now our six specialized online certified courses/workshops are running till 16 November 2018.-->
 <!--“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on “recommender link” on our website.-->
 <!--“Annant Gyan” is providing earning opportunity to all school teachers/ college professors/ instructors/ persons working in educational organizations/ financially weak graduates*/ financially weak students*/ schools/ colleges/ organizations and “Annant Gyan” marketing heads. Interested people can register themselves on recommender link on our website.-->
 </li>
-
+<li>
+The “Annant Gyan” is providing earning opportunity to all interested individuals as
+recommender at  <a href="https://annantgyan.com/welcome/referalenroll" style="color:blue; text-decoration: underline;">“Recommender Registration” </a> .<!--https://annantgyan.com/welcome/referalenroll. -->
+</li>
           </td>
         </tr>
 

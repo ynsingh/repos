@@ -179,7 +179,10 @@ $('.clockpicker').clockpicker();
 			<br>
 			<input type="text" name="test_totalq" placeholder="Enter total no of question" style="width:600px;">
 			<br>
-
+			<label for="tstmm " class="cols-md-2 control-label">Max Marks</label>
+                        <br>
+                        <input type="text" name="test_mm" placeholder="Enter Max Marks" style="width:600px;">
+			<br>
 <br>
 
 	<!--	</div>

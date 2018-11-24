@@ -19,7 +19,7 @@ if(isset($this->session->userdata['firstName'])){
 	
 !function($,n,e){var o=$();$.fn.dropdownHover=function(e){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function t(e){o.find(":focus").blur(),h.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(c),i.addClass("open"),r.trigger(a)}var r=$(this),i=r.parent(),d={delay:100,instantlyCloseOthers:!0},s={delay:$(this).data("delay"),instantlyCloseOthers:$(this).data("close-others")},a="show.bs.dropdown",u="hide.bs.dropdown",h=$.extend(!0,{},d,e,s),c;i.hover(function(n){return i.hasClass("open")||r.is(n.target)?void t(n):!0},function(){c=n.setTimeout(function(){i.removeClass("open"),r.trigger(u)},h.delay)}),r.hover(function(n){return i.hasClass("open")||i.is(n.target)?void t(n):!0}),i.find(".dropdown-submenu").each(function(){var e=$(this),o;e.hover(function(){n.clearTimeout(o),e.children(".dropdown-menu").show(),e.siblings().children(".dropdown-menu").hide()},function(){var t=e.children(".dropdown-menu");o=n.setTimeout(function(){t.hide()},h.delay)})})}))},$(document).ready(function(){$('[data-hover="dropdown"]').dropdownHover()})}(jQuery,this);
 </script>
-	
+
 </head>
 <body>
 
@@ -59,56 +59,86 @@ if(isset($this->session->userdata['firstName'])){
 </div>  
 
 <div class="container">
-	<center><h2>View Exam List</h2></center>
+	<center><h2>View Course Feedback</h2></center>
+<!--	<div class="col-md-12" id='card'> -->
 	<div class="col-md-12" id='card'>
 		
-		
+<!--		
 		<table style="font-size:18px;"><tr>
-			<td><a href="<?php echo site_url('admin/upload_fileview');?>">View Upload Content</a></td>
+			<td><a href="<?php //echo site_url('admin/upload_fileview');?>">View Upload Content</a></td>
 			<td> &nbsp;&nbsp;&nbsp;&nbsp;</td>
-			<td><a href="<?php echo site_url('admin/createexam');?>">Create Exam</a></td>
+			<td><a href="<?php //echo site_url('admin/createexam');?>">Create Exam</a></td>
 		</tr></table>
+-->
+		<form name="frm" id="frmid" action="<?php echo site_url('admin/coursefeedback')?>" method="POST" enctype="multipart/form-data">
+			<table style="font-size:18px;"><tr><td>
+                        <label for="crsname" class="cols-sm-2 control-label">Course Name</label>
+<!--                        <br> -->
+                        <select name="couname"  id="couid" style="width:200px;" >
+                                <option value="" selected="" disabled="">Select Course Name</option>
+                                <?php if(!empty($coudata)){
+                                        foreach($coudata as $row){
+                                ?>
+                                        <option value="<?php echo $row->cou_id;?>"><?php echo $row->cou_name ."( ".$row->cou_code ." )";?></option>
+                                <?php }}?>
+			</select>
+			</td><td>
+				&nbsp;
+			</td><td>
+			<input type="submit" name="testres" class="btn btn-success submit" value="Submit">	
+			</td></tr></table>
+		</form>
+		<table style="font-size:18px;"><tr>
+		</tr></table>
+
+		<?php	
+				if(!empty($subid)){	
+					echo 	"<table><thead style=\"font-size: 18px;\"><tr> <th><b>".
+						$this->commodel->get_listspfic1('courses','cou_name','cou_id',$subid)->cou_name. 
+						"</b></th></tr></thead></table>"; 
+				}
+		?>
 		<table class="table table-bordered">
 			<thead style="font-size: 18px;">
 				<tr  class="info">
-					<th>Sr. No.</th><th>Course Name</th><th>Course Week</th>
-					<th>Test Name(Test Code)</th><th>Test Description</th>
-					<th>Test Date</th><th>Test Time</th><th>Total Questions</th> 
-					<th>Max Marks</th><th>Total Students</th><th> Actions</th>
+					<th>Sr. No.</th><th>Student Name</th>
+					<th>Answer1</th>
+					<th>Answer2</th>
+					<th>Answer3</th>
+					<th>Answer4</th>
+					<th>Answer5</th>
+					<th>Answer6</th>
+					<th>Answer7</th>
+					<th>Answer8</th>
+					<th>Answer9</th>
+					<th>Answer10</th>
+					<th>Answer11</th>
+					<th>Suggestion</th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php 
-						$i=1;
-						if(!empty($test_data)){
-							foreach($test_data as $row){	
-								$cname = $this->commodel->get_listspfic1('courses','cou_name','cou_id',$row->subid)->cou_name;
+			<?php
+			       			$i=1;	
+						if(!empty($studata)){
+							foreach($studata as $row){	
 						?>
 				<tr>
-					
 								<td><?php echo $i++;?></td>
-								<td><?php echo $cname;?></td>
-								<td><?php //echo $row->acu_weekname;?></td>
-								<td><?php echo $row->testname." ( ". $row->testcode." )";?></td>
-								<td><?php echo $row->testdesc;?></td>
-								<td><?php echo $row->testdate;?></td>
-								<td><?php echo $row->testfrom." - ".$row->testto   ;?></td>
-								<td><?php echo $row->totalquestions  ;?></td>
-								<td><?php echo $row->maxmarks  ;?></td>
-								<td><?php echo $row->attemptedstudents ;?></td>
-								<td><?php 
-									echo anchor('admin/addquestion/' . $row->testid."/".$row->subid , "Add Question") ;
-								echo "&nbsp;| ";
-									echo anchor('admin/viewquestion/' . $row->testid."/".$row->subid , "View Question") ;
-								echo "&nbsp;| ";
-									echo anchor('admin/delete_test/' . $row->testid , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
-								echo "&nbsp; ";
-						//		echo anchor(base_url().'/'. $row->acu_contpath.'/'.$row->acu_filename , "View", array('title' => 'View Details' , 'class' => 'red-link', 'target'=>'blank')) . " ";
-								?> 
-								</td>
-								
+								<td><?php echo $this->commodel->get_listspfic1('sign_up','su_name','su_id',$row->stf_studentid)->su_name;?></td>
+								<td><?php echo $row->stf_ans1;?></td>
+								<td><?php echo $row->stf_ans2;?></td>
+								<td><?php echo $row->stf_ans3;?></td>
+								<td><?php echo $row->stf_ans4;?></td>
+								<td><?php echo $row->stf_ans5;?></td>
+								<td><?php echo $row->stf_ans6;?></td>
+								<td><?php echo $row->stf_ans7;?></td>
+								<td><?php echo $row->stf_ans8;?></td>
+								<td><?php echo $row->stf_ans9;?></td>
+								<td><?php echo $row->stf_ans10;?></td>
+								<td><?php echo $row->stf_ans11;?></td>
+								<td><?php echo $row->stf_suggestion;?></td>
 				</tr>
-				<?php 		}
+					<?php 		}
 						}
 						else{ ?>
 							<tr>
@@ -116,8 +146,6 @@ if(isset($this->session->userdata['firstName'])){
 							</tr>
 					<?php
 						} ?>
-
-				
 			</tbody>
 		</table>
 	</div>

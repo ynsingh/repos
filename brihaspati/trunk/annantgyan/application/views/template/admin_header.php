@@ -16,9 +16,6 @@
     font-size: 18px;
 }
 
-
-
-
 #menu ul li a:hover{
     background-color:white;
     color: black;
@@ -54,12 +51,25 @@
       <ul class="nav navbar-nav">
         <li><a href="<?php echo site_url('admin/adminhome');?>"><span class="glyphicon glyphicon-home"></span> Home </a></li>
 
-         
+	<li class="dropdown" > 
+		 <a href="#" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Course<span class="caret"></span></a>
+		<ul class="dropdown-menu">
           <li><a href="<?php echo site_url('admin/courselist');?>"><span ></span> Courses List</a>
-          <li><a href="<?php echo site_url('admin/courseannouncement');?>"><span ></span> Courses Announcement</a>
-      
-          <li><a href="<?php echo site_url('admin/upload_fileview');?>"><span ></span> Upload Courses Content </a></li>
-          <li><a href="<?php echo site_url('admin/displayqas');?>"><span ></span>Result</a><li>
+	  <li><a href="<?php echo site_url('admin/courseannouncement');?>"><span ></span> Courses Announcement</a>
+	  <li><a href="<?php echo site_url('admin/coursefeedback');?>"><span ></span> Courses Feedback</a>
+
+		 </ul>
+      <li>
+
+	  <li><a href="<?php echo site_url('admin/upload_fileview');?>"><span ></span> Upload Courses Content </a></li>
+
+	  <li class="dropdown" >
+		<a href="#" data-toggle="dropdown" data-hover="dropdown"  data-close-others="false">Result<span class="caret"></span></a>
+		<ul class="dropdown-menu">
+			<li> <a href="<?php echo site_url('admin/displayqas');?>"><span ></span>Result Test Wise</a> </li>
+			<li> <a href="<?php echo site_url('admin/displayresadm');?>"><span ></span>Result Student Wise</a>  </li>
+		</ul>
+	  <li>
               <li><a href="<?php echo site_url('admin/referallist');?>"><span ></span> Recommender List </a></li>
               <li><a href="<?php echo site_url('admin/couworkshoplist');?>"><span ></span> Course/Workshop Registration List </a></li>
               <li><a href="<?php echo site_url('admin/enquirylist');?>"><span ></span> Enquiry List </a></li>

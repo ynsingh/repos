@@ -441,6 +441,7 @@ class Admin extends CI_Controller {
 				$this->form_validation->set_rules('fmin', 'test from time', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('tmin', 'test time to', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('test_totalq', 'test total question', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('test_mm', 'test Max Marks', 'trim|required|xss_clean');
 				if($this->form_validation->run() == FALSE){
 					$this->load->view('admin/createexam',$data);
 					return;
@@ -471,6 +472,7 @@ class Admin extends CI_Controller {
                                         }
 					$testto            = $testtohrs.":".$testtomin.":00";
 					$testtotalq        = $this->input->post('test_totalq');
+					$testmm        = $this->input->post('test_mm');
 
 					$tdiff=$testto - $testfrom;
 //					$tdiff= dateDiff($testto,$testfrom);
@@ -485,6 +487,7 @@ class Admin extends CI_Controller {
 						'testto' 		=>$testto,
 						'duration' 		=>$tdiff,
 						'totalquestions' 	=>$testtotalq,
+						'maxmarks' 		=>$testmm,
 						'testcode' 		=>$testcode,
 					);
 					$insert = $this->db->insert('test',$userData);
@@ -885,6 +888,115 @@ class Admin extends CI_Controller {
                 }
 
 	}
+	function displayresadm(){
+		if(isset($this->session->userdata['firstName'])){
+//			get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$whdata)
+			$cdate = date("Y-m-d");
+			$joincond = 'courses.cou_id=courseannouncement.crsann_crsid';
+			$whdata = array('crsann_crsend <' => $cdate );
+			$data['coudata'] = $this->commodel->get_jointbrecord('courses','cou_id,cou_name,cou_code','courseannouncement',$joincond,$whdata);
+			$crsid = '';
+			 if(isset($_POST['testres'])){
+                                $crsid          = $this->input->post('couname');
+				$stuid          = $this->input->post('stuname');
+
+				$data['stuid']=$stuid;
+				$data['subid']=$crsid;
+
+				$whdata =array('subid' =>$crsid);
+				$examdata =   $this->commodel->get_distinctrecord('test','testid,testname,testcode,maxmarks',$whdata);
+				$i=0;
+				foreach($examdata as $row){
+					$tstid = $row->testid;
+					$onerec['testid'] =  $tstid;
+					$onerec['testname'] =  $row->testname;
+					$onerec['testcode'] = $row->testcode;
+					$onerec['maxmarks'] = $row->maxmarks;
+
+					$whdata1 = array('st_subid' =>$crsid,'st_stdid'=>$stuid,'st_testid' =>$tstid);
+					// dupliacte
+					$isexist=$this->commodel->isduplicatemore('studenttest',$whdata1);
+					if($isexist){
+						//get marks and set attempted
+						$onerec['stmarks'] = $this->commodel->get_listspfic1a('studenttest','st_marks',$whdata1)->st_marks;
+						$onerec['stattemp'] = "Appeared";
+					}
+					else{
+						//set marks zero and set not attempted
+						$onerec['stmarks'] = 0;
+						$onerec['stattemp'] = "Not Appeared";
+					}
+					// add array  in array
+					$compdata[$i] = $onerec;
+					$i++;
+				}
+				
+                                $data['studata'] =   $compdata;
+//                                $data['studata'] =   $this->commodel->get_distinctrecord('test','testid,testname,testcode,maxmarks',$whdata);
+//				$whdata =array('st_subid' =>$crsid,'st_stdid'=>$stuid);
+  //                              $data['studata'] =   $this->commodel->get_distinctrecord('studenttest','st_testid,st_marks',$whdata);
+
+                        }
+			$this->load->view('admin/displayresadm',$data);
+		}else{
+                        $this->load->view('admin/admin_login');
+                }
+
+        }
+
+	function coursefeedback(){
+                if(isset($this->session->userdata['firstName'])){
+//                      get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$whdata)
+                        $cdate = date("Y-m-d");
+                        $joincond = 'courses.cou_id=courseannouncement.crsann_crsid';
+                        $whdata = array('crsann_crsend <' => $cdate );
+                        $data['coudata'] = $this->commodel->get_jointbrecord('courses','cou_id,cou_name,cou_code','courseannouncement',$joincond,$whdata);
+                        $crsid = '';
+                         if(isset($_POST['testres'])){
+                                $crsid          = $this->input->post('couname');
+                               // $stuid          = $this->input->post('stuname');
+
+                               // $data['stuid']=$stuid;
+                                $data['subid']=$crsid;
+
+                                $whdata =array('stf_courseid' =>$crsid);
+                                $examdata =   $this->commodel->get_distinctrecord('stu_feedback','*',$whdata);
+                          /*      $i=0;
+				foreach($examdata as $row){
+                                        $tstid = $row->testid;
+                                        $onerec['testid'] =  $tstid;
+                                        $onerec['testname'] =  $row->testname;
+                                        $onerec['testcode'] = $row->testcode;
+                                        $onerec['maxmarks'] = $row->maxmarks;
+
+                                        $whdata1 = array('st_subid' =>$crsid,'st_stdid'=>$stuid,'st_testid' =>$tstid);
+                                        // dupliacte
+                                        $isexist=$this->commodel->isduplicatemore('studenttest',$whdata1);
+                                        if($isexist){
+                                                //get marks and set attempted
+                                                $onerec['stmarks'] = $this->commodel->get_listspfic1a('studenttest','st_marks',$whdata1)->st_marks;
+                                                $onerec['stattemp'] = "Appeared";
+                                        }
+                                        else{
+                                                //set marks zero and set not attempted
+                                                $onerec['stmarks'] = 0;
+                                                $onerec['stattemp'] = "Not Appeared";
+                                        }
+                                        // add array  in array
+                                        $compdata[$i] = $onerec;
+                                        $i++;
+                                }
+			   */
+                                $data['studata'] =   $examdata;
+			 }
+			$this->load->view('admin/coursefeedback',$data);
+                }else{
+                        $this->load->view('admin/admin_login');
+                }
+
+        }
+
+
 	public function logout(){
 		
 		$this->session->sess_destroy();
