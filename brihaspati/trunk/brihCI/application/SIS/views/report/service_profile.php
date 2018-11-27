@@ -218,15 +218,19 @@
                                 <td>
                                     <?php  $dojoin=implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>
                                     <?php  $dorelve=implode('-', array_reverse(explode('-', $record->empsd_dorelev))); ?>
-				    <?php echo "<b>From-: </b>".$dojoin ." ".$record->empsd_fsession."<br>"."<b>To-: </b>".$dorelve ." " .$record->empsd_tsession;?>
+				    <?php echo "<b>From-: </b>".$dojoin ." ".$record->empsd_fsession."<br>"."<b>To-: </b>".$dorelve ." " .$record->empsd_tsession;
+					echo "<br>";
+                                    echo "<b>Order NO.-: </b>".$record->empsd_orderno;
+
+					?>
                                 </td>
                                 <td>
                                     <?php 
                                     $date1 = new DateTime($record->empsd_dojoin);
                                     $date2 = new DateTime($record->empsd_dorelev);
                                     $diff = $date1->diff($date2);
-                                    echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d." "
-                                    ;?>
+                                    echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d." ";
+				?>
                                 </td>
                                 <td>
                                 <?php 

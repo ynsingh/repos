@@ -73,40 +73,41 @@
 		$i=1;
                 if( count($allsc) ):  ?>
                     <?php foreach($allsc as $record){
-
-			if ($uoid != ($record->ul_authuoid)){
-		
-			echo "<tr>";
-			echo "<td>";
-				echo $i;
-			echo "</td>";
-                        echo "<td>";
-				if (!empty($record->ul_authuoid)){
-                               echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->ul_authuoid)->name; 
-			       echo " ( ";
-                               echo $this->lgnmodel->get_listspfic1('authorities','code','id',$record->ul_authuoid)->code;
-                               echo " ) ";
-                              echo " ( ";
-                                     echo $this->lgnmodel->get_listspfic1('authorities','priority','id',$record->ul_authuoid)->priority;
-                                      echo " ) ";
-				}
-			echo "</td>";
-			echo "<td>";
+				$usrnme=$this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
+				$uos = array("asection@tanuvas.org.in", "rsection@tanuvas.org.in");
+				if (!(in_array($usrnme, $uos))) {
+					if ($uoid != ($record->ul_authuoid)){
+						echo "<tr>";
+						echo "<td>";
+						echo $i;
+						echo "</td>";
+                        			echo "<td>";
+						if (!empty($record->ul_authuoid)){
+                			               echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->ul_authuoid)->name; 
+						       echo " ( ";
+                        			       echo $this->lgnmodel->get_listspfic1('authorities','code','id',$record->ul_authuoid)->code;
+			                               echo " ) ";
+                        			       echo " ( ";
+		                                       echo $this->lgnmodel->get_listspfic1('authorities','priority','id',$record->ul_authuoid)->priority;
+                		                       echo " ) ";
+						}
+						echo "</td>";
+						echo "<td>";
 				
-//				$empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
-				if (!empty($record->ul_empcode)){
-				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
+						if (!empty($record->ul_empcode)){
+							echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$record->ul_empcode)->emp_name;
+						}
+						if (!empty($record->ul_userid)){ 
+							echo " ( ";
+							echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
+							echo " ) ";
+						}
+                			        echo "</td>";
+						$i++;
+                        			echo "</tr>";
+						$uoid = $record->ul_authuoid;
+					}
 				}
-				if (!empty($record->ul_userid)){ 
-				echo " ( ";
-				echo $this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;
-				echo " ) ";
-				}
-                        echo "</td>";
-			$i++;
-                        echo "</tr>";
-			$uoid = $record->ul_authuoid;
-			}
                     ?>
                 <?php }; ?>
             <?php else : ?>

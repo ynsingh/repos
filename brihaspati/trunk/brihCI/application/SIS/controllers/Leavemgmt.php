@@ -7,7 +7,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
+// in place of id user use empid
 class Leavemgmt extends CI_Controller
 {
     function __construct() {
@@ -724,53 +724,52 @@ public function staffleavedetails() {
 
 /*Apply for leave*/
 
-public function leaveapply()
-{
-		 $id=$this->session->userdata('id_user');
-
-		 $this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
-       		 if(isset($_POST['leaveapply']))
-				 {
-                      $this->form_validation->set_rules('la_type','Leave Type','trim|xss_clean|required');
-                      $this->form_validation->set_rules('la_desc','Leave Purpose','trim|xss_clean|required'); 
-				 			 $this->form_validation->set_rules('applied_la_from_date','From Date','trim|xss_clean|required');
-                      $this->form_validation->set_rules('applied_la_to_date','To Date','trim|xss_clean|required');
-             }
+	public function leaveapply()
+	{
+		$id=$this->session->userdata('id_user');
+		$this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
+       		if(isset($_POST['leaveapply']))
+		{
+                      	$this->form_validation->set_rules('la_type','Leave Type','trim|xss_clean|required');
+                      	$this->form_validation->set_rules('la_desc','Leave Purpose','trim|xss_clean|required'); 
+			$this->form_validation->set_rules('applied_la_from_date','From Date','trim|xss_clean|required');
+                      	$this->form_validation->set_rules('applied_la_to_date','To Date','trim|xss_clean|required');
+             	}
  				 //if form validation true
               	if($this->form_validation->run()==TRUE)
-					{
-					// get the dept id of this user
-					$deptid=$this->commodel->get_listspfic1('Department','dept_id','dept_id')->dept_id;
-					$lat=$_POST['applied_la_to_date'];
-					$laf=$_POST['applied_la_from_date'];
-					$frmdt=new DateTime($laf);
-					$todt=new DateTime($lat);
-               $lat1=explode(" ",$lat);
-					$laf1=explode(" ",$laf);
-					if($lat==$laf)
-					{
-					$this->session->set_flashdata("err_message", "Leave From Date and To Date can not be same...");
-               redirect("leavemgmt/leaveapply");
-					}
+		{
+			// get the dept id of this user
+			$deptid=$this->commodel->get_listspfic1('Department','dept_id','dept_id')->dept_id;
+			$lat=$_POST['applied_la_to_date'];
+			$laf=$_POST['applied_la_from_date'];
+			$frmdt=new DateTime($laf);
+			$todt=new DateTime($lat);
+               		$lat1=explode(" ",$lat);
+			$laf1=explode(" ",$laf);
+			if($lat==$laf)
+			{
+				$this->session->set_flashdata("err_message", "Leave From Date and To Date can not be same...");
+			        redirect("leavemgmt/leaveapply");
+			}
 	
-					if(($laf1[0]==$lat1[0])&&($laf1[1]<12)&&($lat1[1]<12))
-					{
-					$lday=0.5;
-					$data = array(
+			if(($laf1[0]==$lat1[0])&&($laf1[1]<12)&&($lat1[1]<12))
+			{
+				$lday=0.5;
+				$data = array(
 					'la_type'=>$_POST['la_type'],
 					'la_userid' => $this->session->userdata('id_user'),
 					'la_deptid' => $deptid,
 					'la_year' => date('Y'),
 					'la_days'=> $lday,
 					'la_desc'=>$_POST['la_desc'],
-			      'applied_la_from_date'=>$_POST['applied_la_from_date'],
-               'applied_la_to_date'=>$_POST['applied_la_to_date'],
+			      		'applied_la_from_date'=>$_POST['applied_la_from_date'],
+               				'applied_la_to_date'=>$_POST['applied_la_to_date'],
 					'granted_la_from_date'=>0,
 					'granted_la_to_date'=>0
-               );					
-					}
-					elseif(($laf1[0]==$lat1[0])&&($laf1[1]>=12)&&($lat1[1]>12))
-					{
+		               );					
+			}
+			elseif(($laf1[0]==$lat1[0])&&($laf1[1]>=12)&&($lat1[1]>12))
+			{
 					$lday=0.5;
 					$data = array(
 					'la_type'=>$_POST['la_type'],

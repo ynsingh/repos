@@ -63,6 +63,7 @@
                     <td>
                         <select name="salhtnt" id="emptnt" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select ---------------</option>
+                	<option value="Common">Common</option>
                 	<option value="Teaching">Teaching</option>
                 	<option value="Non Teaching">Non Teaching</option>
 			</select>

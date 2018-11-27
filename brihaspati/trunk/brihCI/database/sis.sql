@@ -533,6 +533,7 @@ CREATE TABLE `leave_apply` (
   `la_status` int(11) default '0',
   `la_desc` varchar(100) NOT NULL,
   `la_rejres` varchar(100) DEFAULT NULL,
+`la_upfile` VARCHAR(255) NULL,
    PRIMARY KEY  (`la_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------

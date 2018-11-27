@@ -138,7 +138,7 @@
             <tbody>
                 <?php $serial_no = 1;
 		$opid = 0;
-                $poid1=0;$ss1=0;$sp1=0;$sv1=0;
+                $poid1=0;$ss1=0;$sp1=0;$sv1=0;$ss=0;$sp=0;$sv=0;
                 
                if( count($allpost) ):  ?>
                 <?php foreach($allpost as $record){
@@ -170,11 +170,12 @@
                 }
                 if ($rlid == 10){
                         $usrname=$this->session->userdata('username');
-			if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')){
+			if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
                         }else{
-                        	$uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
-                        	$whdata['sp_uo'] = $uoid;
-                	}
+                                $uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
+                                $whdata = array ('sp_uo' => $uoid);
+                        }
+
 		}
 
 
@@ -221,7 +222,12 @@
 //			. $emp->emp_name .
 			echo " </td>";
                         //echo "<td>". $emp->emp_post ." </td>";
+			if(!empty($emp->emp_desig_code)){
+//			$postnme = $this->commodel->get_listspfic1('designation','desig_name','desig_id', $emp->emp_desig_code)->desig_name;
                         echo "<td>". $this->commodel->get_listspfic1('designation','desig_name','desig_id', $emp->emp_desig_code)->desig_name ." </td>";
+			}else{
+			echo "<td></td>";
+			}
                         echo "<td>". $emp->emp_dor ." </td>";
                         echo '</tr>';
                     }//emp

@@ -73,6 +73,7 @@
                         <?php else:?>
                 	<option value="" disabled selected >------Select ---------------</option>
                         <?php endif;?>
+                	<option value="Common">Common</option>
                 	<option value="Teaching">Teaching</option>
                 	<option value="Non Teaching">Non Teaching</option>
                                 

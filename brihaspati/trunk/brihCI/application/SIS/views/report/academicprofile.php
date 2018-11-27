@@ -146,7 +146,7 @@
                             <tbody>
                                
                                 
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;">Diploma</span></b></td></tr>
+                                    <tr><td colspan="6"><b><span style="color:#0099CC;">P. G. Diploma</span></b></td></tr>
                                     <?php if( !empty($diploma) ):  ?>
                                     <?php foreach($diploma as $record){; ?>
                                         

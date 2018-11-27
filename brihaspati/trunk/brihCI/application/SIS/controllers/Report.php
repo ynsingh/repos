@@ -455,9 +455,9 @@ class Report  extends CI_Controller
 
         //get all profile and service data
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
-        $empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
-        $selectfield="la_type,granted_la_from_date,granted_la_to_date,la_taken";
-        $whdata = array ('la_userid' => $empuserid,'la_status' =>'1');
+     //   $empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
+        $selectfield="la_id,la_type,granted_la_from_date,granted_la_to_date,la_taken,la_upfile";
+        $whdata = array ('la_userid' => $emp_id,'la_status' =>'1');
 //	get the id of these leave type
 //	$orwhin = array('UEL on ML', 'EL', 'METERNITY LEAVE','EOL');
         $leaveid1 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Unearned Leave on Medical Leave')->lt_id;
@@ -465,6 +465,9 @@ class Report  extends CI_Controller
         $leaveid3 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Meternity Leave')->lt_id;
         $leaveid4 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Extra Ordinary Leave')->lt_id;
 	$orwhin = array($leaveid1,$leaveid2,$leaveid3,$leaveid4);
+//print_r($orwhin);
+//echo 
+//die();
         //for leave perticular
      //   $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,'');
         $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
@@ -860,16 +863,19 @@ public function disciplinewiselist(){
         $this->logger->write_dblogmessage("view"," view position Summary");
         $this->load->view('report/positionsummary',$data);
     }   
+
     public function positionvacancy(){
         $selectfield ="sp_emppost";
 	$whdata ='';
 	$whdata = $this->getwhdata();
+     
+        $data['tnttype']='';
         //$whdata = array('sp_uo'=> $uo);
          if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
             $post  = $this->input->post('post');
-		$this->wtyp = $wtype;
+		$data['tnttype']=$this->wtyp = $wtype;
 		$this->desigm = $post;
             $whdata['sp_tnt']=$wtype;
             if(!empty($post) && ($post!="All")){

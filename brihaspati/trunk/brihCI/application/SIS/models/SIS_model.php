@@ -41,6 +41,21 @@ class SIS_model extends CI_Model
             return true;
          }
     }
+	//update the complete record from specific table with multiple where condition
+//$datawh = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function updaterecarry($tbname, $datar,$datawh){
+        $this->db2->trans_start();
+        if(! $this->db2->where($datawh)->update($tbname, $datar))
+                {
+            $this->db2->trans_rollback();
+            return false;
+                }
+	else {
+            $this->db2->trans_complete();
+            return true;
+                }
+    }
+
     // check the record is already exist
     public function isduplicate($tbname,$fieldname,$fieldvalue) {
         $this->db2->from($tbname);
@@ -63,6 +78,14 @@ class SIS_model extends CI_Model
             $this->db2->where($fieldname, $fieldvalue);
 	}
         return $this->db2->get()->row();
+    }
+// get the sum of values
+    public function get_sumofvalue($tbname,$selectfield,$whdata){
+            $this->db2->flush_cache();
+            $this->db2->select_sum($selectfield);
+            $this->db2->from($tbname);
+            $this->db2->where($whdata);
+            return $this->db2->get()->result();
     }
 
 //get the list of all records with  two specific fields for specific values

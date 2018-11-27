@@ -134,7 +134,7 @@ class Setup3 extends CI_Controller
         $data['nonteach']=array();
         $data['tntboth']=array();
         foreach($data['records'] as $record){
-            if($record->sh_tnt == NULL){
+            if(($record->sh_tnt == NULL)||($record->sh_tnt == 'Common')){
                 array_push($data['tntboth'],$record->sh_id);
             }
             if($record->sh_tnt =='Teaching'){

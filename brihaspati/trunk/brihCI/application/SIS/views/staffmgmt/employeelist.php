@@ -382,13 +382,14 @@ $(document).ready(function(){
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 					echo "<br>";
 					if($record->emp_worktype === "Teaching"){
-						if(!($headflag)){
-							if($record->emp_head == "HEAD"){
+					//	if(!($headflag)){
+					//		if(($record->emp_head == "HEAD")){
+						if(($headflag)||($record->emp_head == "HEAD")){
         	                        			echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
 							}else{
         	                                		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
 							}
-						}
+					//	}
 					}
 				//	echo "<br>";
                               //        echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));

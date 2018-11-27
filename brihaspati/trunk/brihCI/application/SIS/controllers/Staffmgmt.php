@@ -29,7 +29,7 @@ class Staffmgmt extends CI_Controller
     		//$this->load->view('staffmgmt/staffprofile');    
     	}
    
-	 
+//get all uoid	 
 	public function getempuoid(){
                 $selectfield='emp_id';
                 $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
@@ -77,16 +77,99 @@ class Staffmgmt extends CI_Controller
 		$whdata = array ('emp_id' => $id);
 		$idata = array('emp_head' => "HEAD");
 		$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
-//insert record in hod list
+		$cdate = date("Y-m-d");
+		$cdatetime = date('Y-m-d H:i:s');
+		
+		//insert record in hod list
+//		hl_userid | hl_empcode | hl_deptid | hl_scid | hl_uopid | hl_datefrom  | hl_fromsession | hl_dateto  | hl_tosession | hl_status | hl_creatorid | hl_creatordate      | hl_modifierid | hl_modifydate
+//		$ithis->session->userdata('username')\
+		$empid = $id;
+		$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+		$uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
+		$hldata = array(
+			'hl_userid' => $this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid,
+			'hl_empcode' => $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code,
+			'hl_deptid' => $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
+			'hl_scid' => $this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
+			'hl_uopid' => $uopid,
+			'hl_datefrom' => $cdatetime,
+			'hl_fromsession' => 'Forenoon',
+			'hl_status' => 'Fulltime',
+			'hl_creatorid' => $this->session->userdata('username'),
+			'hl_creatordate' => $cdatetime,
+			'hl_modifierid' => $this->session->userdata('username'),
+			'hl_modifydate' => $cdatetime,
+		); 
+		$hiflag=$this->sismodel->insertrec('hod_list',$hldata);	
+		$this->logger->write_logmessage("insert", "HEAD data insert in hod table table.".$id);
+                $this->logger->write_dblogmessage("insert", "HEAD data insert in hod table table.".$id );
+
+
+		//insert record in service details
+//empsd_id | empsd_empid | empsd_orderno | empsd_campuscode | empsd_ucoid | empsd_deptid | empsd_schemeid | empsd_ddoid | empsd_worktype | empsd_group | empsd_shagpstid | empsd_desigcode | empsd_pbid | empsd_level | empsd_gradepay | empsd_pbdate | empsd_dojoin | empsd_dorelev | empsd_filename | empsd_fsession | empsd_tsession |
+//       1 |        1306 |               | 2                |           2 |            8 |             11 |          11 | Non Teaching   | C           | 73              | 88              |         10 | Level-7     |                | 1993-07-22   | 1993-07-22   | 2008-12-12    |                | NULL           | NULL           |
+
+
+			$emppost =  $this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+			$pstid =$this->commodel->get_listspfic1('designation','desig_id','desig_name',$emppost)->desig_id;
+		$sddata = array(
+			'empsd_empid' => $empid,
+			'empsd_campuscode' =>$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
+			'empsd_ucoid' =>$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid,
+			'empsd_deptid' =>$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
+			'empsd_schemeid' =>$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid,
+			'empsd_ddoid' =>$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid,
+			'empsd_worktype' =>$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype,
+			'empsd_group' =>$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group,
+			'empsd_shagpstid' =>$pstid,
+			'empsd_desigcode' =>$this->sismodel->get_listspfic1('employee_master','emp_desig_code ','emp_id',$empid)->emp_desig_code ,
+			'empsd_pbid' =>$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade,
+			'empsd_level' =>'',
+			'empsd_gradepay' =>'',
+			'empsd_pbdate' =>$cdate,
+			'empsd_dojoin' =>$cdate,
+			'empsd_dorelev' =>$cdate,
+			'empsd_filename' =>'',
+			'empsd_fsession' =>'Forenoon',
+			'empsd_tsession' =>'Forenoon',
+		);
+		$sdiflag=$this->sismodel->insertrec('employee_servicedetail',$sddata);
+		$this->logger->write_logmessage("insert", "HEAD data insert in employee_service detail table.".$id);
+                $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_service detail table.".$id );
+
+
+
 		$this->logger->write_logmessage("insert", "HEAD data insert in employee_master table.".$id);
                 $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_master table.".$id );
 		$this->employeelist();
 	}
 
 	public function removehead($id){
-		$whdata = array ('emp_id' => $id);
+//		$whdata = array ('emp_id' => $id);
+		$cdatetime = date('Y-m-d H:i:s');
 		$rdata = array('emp_head' => "");
 		$upflag=$this->sismodel->updaterec('employee_master', $rdata,'emp_id',$id);
+//		update in hod list 
+		$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$id)->emp_uocid ;
+                $uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
+		$whdata = array(
+                        'hl_userid' => $this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$id)->emp_userid,
+                        'hl_empcode' => $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$id)->emp_code,
+                        'hl_deptid' => $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$id)->emp_dept_code,
+                        'hl_scid' => $this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$id)->emp_scid,
+                        'hl_uopid' => $uopid,
+
+		);
+                $hldata = array(
+			'hl_dateto' => $cdatetime,
+                        'hl_tosession' => 'Forenoon',
+                        'hl_modifierid' => $this->session->userdata('username'),
+                        'hl_modifydate' => $cdatetime,
+                ); 
+                $hiflag=$this->sismodel->updaterecarry('hod_list',$hldata,$whdata); 
+                $this->logger->write_logmessage("insert", "HEAD data insert in hod table table.".$id);
+                $this->logger->write_dblogmessage("insert", "HEAD data insert in hod table table.".$id );
+
 		$this->logger->write_logmessage("insert", "HEAD data remove in employee_master table.".$id);
                 $this->logger->write_dblogmessage("insert", "HEAD data remove in employee_master table.".$id );
 		$this->employeelist();
@@ -261,6 +344,8 @@ class Staffmgmt extends CI_Controller
     }
 
     public function staffprofile(){
+	$uname=$this->session->userdata('username');
+	if(($uname == "admin")||($uname == "rsection@tanuvas.org.in")){
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
@@ -769,6 +854,11 @@ class Staffmgmt extends CI_Controller
         }//post
         
     $this->load->view('staffmgmt/staffprofile');    
+	}
+	else{
+	 $this->session->set_flashdata('err_message', 'You do not have the right to add user profile.');
+	 redirect('staffmgmt/employeelist');
+	}
     }
     
     /* This function has been created for get list of Department on the basis of campus */
@@ -1715,6 +1805,8 @@ class Staffmgmt extends CI_Controller
 
   /*this function has been created for add new staff Position record */
   public function newstaffposition(){
+	$uname=$this->session->userdata('username');
+        if(($uname == "admin")||($uname == "rsection@tanuvas.org.in")){
         $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id,sc_code', 'sc_name');
         $this->desigresult = $this->commodel->get_listspfic2('designation','desig_id', 'desig_name');
         $this->authorty = $this->lgnmodel->get_list('authorities', 'id', 'name');
@@ -1859,7 +1951,12 @@ class Staffmgmt extends CI_Controller
       }
     }
    }
-   $this->load->view('staffmgmt/newstaffposition');
+   		$this->load->view('staffmgmt/newstaffposition');
+	}
+	else{
+		$this->session->set_flashdata('err_message','You do not have the right to add new staff position.' .  '.', 'error');
+		redirect('staffmgmt/staffposition');
+	}
    }
 
   /*This function has been created for update the staff position record */

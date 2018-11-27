@@ -17,7 +17,7 @@
 
 
                 $('#DateofAGP,#Datefrom,#Dateto').datepicker({
-                    dateFormat: 'yy/mm/dd',
+                    dateFormat: 'yy-mm-dd',
                     autoclose:true,
                     changeMonth: true,
                     changeYear: true,
@@ -165,6 +165,8 @@
 /************************select Designation on basis of Group*******************/
             $('#grpid').on('change',function(){
                 var grp_id = $(this).val();
+		var wt= $('#worktypeid').val();
+		var gwt = grp_id+","+wt;
                 if(grp_id == ''){
                     $('#desigid').prop('disabled',true);
                 }
@@ -172,9 +174,11 @@
              
                     $('#desigid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
+                        //url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
+			 url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesiglist",
                         type: "POST",
-                        data: {"group" : grp_id},
+                        //data: {"group" : grp_id},
+                        data: {"gwt" : gwt},
                         dataType:"html",
                         success:function(data){
                             $('#desigid').html(data.replace(/^"|"$/g, ''));
@@ -489,10 +493,21 @@
                     </select>
                     </td>
                 </tr>
-                
+               <?php 
+			if(!empty($servicedata->empsd_gradepay)){
+				$gp =$servicedata->empsd_gradepay;
+			}else{
+				$gp = $gardepay;
+			}
+		?> 
                 <tr>
                     <td>Grade Pay<font color='Red'></font></td>
-                        <td><input type="text" name="gradepay" id="gradepay" value="<?php echo $servicedata->empsd_gradepay;?>"  size="40" readonly>
+                        <td><input type="text" name="gradepay" id="gradepay" value="<?php echo $gp;?>"  size="40" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Order No.<font color='Red'></font></td>
+                        <td><input type="text" name="orderno" id="orderno" value="<?php echo $servicedata->empsd_orderno;?>"  size="40" >
                     </td>
                 </tr>
                 <tr id="dagp">

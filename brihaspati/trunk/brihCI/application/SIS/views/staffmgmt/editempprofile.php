@@ -643,6 +643,32 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         }*/
 
         </script>   
+ <style>
+.tooltip {
+    position: relative;
+/*    display: inline-block;*/
+/*    border-bottom: 1px dotted black; */
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+</style> 
+
     </head>
     <body>
         <div>
@@ -833,15 +859,19 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             </tr>
             <tr>
                 <td><label for="empname" style="font-size:15px;"><font color='Blue'>Employee Name</font><font color='Red'>*</font></label>
-                    <div><input type="text" name="empname"  value="<?php echo $editdata->emp_name ;?>" placeholder="employee name..." size="33" required="required">
+                    <div class="tooltip">
+			<input type="text" name="empname"  value="<?php echo $editdata->emp_name ;?>" placeholder="Mohan H. M" size="33" required="required">
+			<span class="tooltiptext">Mohan H. M</span>
                     </div>
                 </td>
                 <td><label for="fathername" style="font-size:15px;"><font color='Blue'>Fathers Name</font></label>
-                    <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo $editdata->emp_father; ?>" placeholder="Fathers Name..." size="33" >
+                    <div class="tooltip"><input type="text" name="fathername" class="keyup-characters" value="<?php echo $editdata->emp_father; ?>" placeholder="Ram H. M D" size="33" >
+			 <span class="tooltiptext">Ram H. M D</span>
                     </div>    
                 </td>
 		<td><label for="spousename" style="font-size:15px;"><font color='Blue'>Spouse Name</font></label>
-                    <div><input type="text" name="spousename" class="keyup-characters" value="<?php echo $editdata->emp_spousename; ?>" placeholder="Spouse Name..." size="33" >
+                    <div class="tooltip"><input type="text" name="spousename" class="keyup-characters" value="<?php echo $editdata->emp_spousename; ?>" placeholder="Teetha S. P. R" size="33" >
+			 <span class="tooltiptext">Teetha S. P. R</span>
                 </div></td>
                 <td><label for="orderno" style="font-size:15px;"><font color='Blue'> Appointment Order No</font></label>
                     <div><input type="text" name="orderno"  value="<?php echo $editdata->emp_apporderno ?>" placeholder="order No..." size="33">

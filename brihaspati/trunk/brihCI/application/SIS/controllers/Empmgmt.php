@@ -648,7 +648,7 @@ public function disciplin_profile() {
 		if(empty($_POST['tsession'])){
 			$ts='';
 		}else{
-			$ts=$_POST['tession'];
+			$ts=$_POST['tsession'];
 		}
 		
                 $data = array(
@@ -671,7 +671,6 @@ public function disciplin_profile() {
 		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$_POST['Dateto'],
 		    'empsd_tsession'	    =>$ts,
-		    'empsd_orderno'         =>'',
 		    'empsd_filename'	    => $name,
                 );
                 $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
@@ -682,7 +681,7 @@ public function disciplin_profile() {
                     $_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
                     $_FILES['userFile']['size'] = $_FILES['userfile']['size'];
                     $config['upload_path'] = 'uploads/SIS/serviceattachment/';
-                    $config['max_size'] = '20480000';
+                    $config['max_size'] = '2048000000';
                     $config['allowed_types'] = 'pdf';
                     $config['file_name'] = $name;
                     $config['overwrite'] = TRUE;
@@ -902,7 +901,7 @@ public function disciplin_profile() {
                     $file_ext = end( $fileExt1);
                     $new_name = $id.".".$newFileName; 
                 }    
- 
+
                 $edit_data = array(
                     'empsd_campuscode'      =>$campus,
 		    'empsd_ucoid'           =>$uocontrol,
@@ -922,7 +921,6 @@ public function disciplin_profile() {
 		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$dateto,
 		    'empsd_tsession'	    =>$_POST['tsession'],
-		    'empsd_orderno' 	    =>'',
 		    'empsd_filename'	    => $new_name,
                 );
 		
@@ -930,7 +928,7 @@ public function disciplin_profile() {
                 if(!empty($_FILES['userfile']['name'])){
                     
                     $config['upload_path'] = 'uploads/SIS/serviceattachment/';
-                    $config['max_size'] = '20480000';
+                    $config['max_size'] = '2048000000';
                     $config['allowed_types'] = 'pdf';
                     $config['file_name'] = $new_name;
                     $config['overwrite'] = TRUE;
@@ -1107,6 +1105,7 @@ public function disciplin_profile() {
     /***********************************Start Add service detail******************************************/
     public function add_leavepertdata($empid) {
         $this->roleid=$this->session->userdata('id_role');
+	$this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
         $this->emp_id = $empid;
         $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
         $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
@@ -1115,66 +1114,139 @@ public function disciplin_profile() {
         //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
 	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
        //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
-        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+  //      $this->salgrd=$this->sismodel->get_list('salary_grade_master');
  
 
-        if(isset($_POST['addservdata'])) {	
+        if(isset($_POST['addleavedata'])) {	
             //form validation
-            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
-	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
-            $this->form_validation->set_rules('department','Department','trim|xss_clean');
-	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
-	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
-	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
-	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
-            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
-	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|required|xss_clean');
+    //        $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+//	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|xss_clean|required');
+            $this->form_validation->set_rules('la_type','la Type','trim|xss_clean|required');
+            $this->form_validation->set_rules('layear','la year','trim|xss_clean');
+            $this->form_validation->set_rules('ladays','la Days','trim|xss_clean|required');
+            $this->form_validation->set_rules('la_desc','Description','trim|xss_clean');
+            $this->form_validation->set_rules('applied_la_to_date','To date','trim|xss_clean');
+            $this->form_validation->set_rules('applied_la_from_date','From Date','trim|xss_clean');
+	   // $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
+//	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
+//	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+//	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
+  //          $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+//	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|required|xss_clean');
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/add_leavepertdata');
             }//formvalidation
             else{
 		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+		$lat=$_POST['applied_la_to_date'];
+                $laf=$_POST['applied_la_from_date'];
+		$ldays = $_POST['ladays'];
+		$parts = explode(" ",$laf);
+	        $ldate = $parts[0];
+		$ltype = $_POST['la_type'];
+		$cdate = date("Y-m-d");
+		$attachfilename=$empid."_".$ltype."_".$ldate;
+		if(!empty($_FILES['userfile']['name'])){
+	                $newFileName = $_FILES['userfile']['name'];
+        	        $fileExt1 = explode('.', $newFileName);
+                	$file_ext = end( $fileExt1);
+	                $new_name = $attachfilename.".".$file_ext;
+                }
+                else{
+        	        $new_name='';
+                }
+                //$data = array(
+                  //  'la_userid'           =>$empid,
+//                    'empsd_campuscode'      =>$_POST['campus'],
+  //                  'empsd_ucoid'           =>$_POST['uocontrol'],
+                   // 'la_deptid'          =>$_POST['department'],
+//                    'empsd_schemeid'        =>$_POST['schemecode'],
+  //                  'empsd_ddoid'           =>$_POST['ddo'],
+//		    'empsd_worktype'        =>$_POST['workingtype'],
+  //                  'empsd_group'           =>$_POST['group'],
+    //                'empsd_desigcode'       =>$desigcode,
+//		    'empsd_shagpstid'       =>$_POST['emppost'],
+//		    'empsd_level'           =>$_POST['level'],
+  //                  'empsd_pbid'            =>$_POST['payband'],
+    //                'empsd_gradepay'        =>$_POST['gradepay'],
+         //           'la_type'        =>$_POST['la_type'],
+           //         'la_year'        =>$_POST['layear'],
+             //       'applied_la_from_date'        =>$laf,
+               //     'applied_la_to_date'        =>$lat,
+                 //   'la_days'        =>$ldays,
+                   // 'granted_la_from_date'        =>$laf,
                 $data = array(
-                    'empsd_empid'           =>$empid,
-                    'empsd_campuscode'      =>$_POST['campus'],
-                    'empsd_ucoid'           =>$_POST['uocontrol'],
-                    'empsd_deptid'          =>$_POST['department'],
-                    'empsd_schemeid'        =>$_POST['schemecode'],
-                    'empsd_ddoid'           =>$_POST['ddo'],
-		    'empsd_worktype'        =>$_POST['workingtype'],
-                    'empsd_group'           =>$_POST['group'],
-                    'empsd_desigcode'       =>$desigcode,
-		    'empsd_shagpstid'       =>$_POST['emppost'],
-		    'empsd_level'           =>$_POST['level'],
-                    'empsd_pbid'            =>$_POST['payband'],
-                    'empsd_gradepay'        =>$_POST['gradepay'],
-                    'empsd_orderno'        =>$_POST['orderno'],
-                    'empsd_pbdate'          =>$_POST['DateofAGP'],
-                    'empsd_dojoin'          =>$_POST['Datefrom'],
-		    'empsd_dorelev'         =>$_POST['Dateto'],
-		    'empsd_orderno'         =>''
+                    'la_userid'           =>$empid,
+                    'la_deptid'          =>$_POST['department'],
+                    'la_type'        =>$_POST['la_type'],
+                    'la_year'        =>$_POST['layear'],
+                    'applied_la_from_date'        =>$laf,
+                    'applied_la_to_date'        =>$lat,
+                    'la_days'        =>$ldays,
+                    'granted_la_from_date'        =>$laf,
+                    'granted_la_to_date'        =>$lat,
+                    'la_taken'        =>$ldays,
+                    'la_status'        =>'1',
+                    'la_desc'        =>$_POST['la_desc'],
+                    'la_rejres'        =>'',
+		    'la_upfile' =>$new_name,
                 );
-                $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
+                $servdataflag=$this->sismodel->insertrec('leave_apply', $data) ;
+//		$insertid = $this->->insert_id();
+		$msgphoto='';
+		if(!empty($_FILES['userfile']['name'])){
+		$config = array(
+                            'upload_path' =>  "./uploads/SIS/empleave",
+                            'allowed_types' => "gif|jpg|png|jpeg|pdf",
+                            'overwrite' => TRUE,
+                            'max_size' => "1000000", // Can be set to particular file size 
+                            'max_height' => "768",
+                            'max_width' => "1024",
+                            //'encrypt_name' => TRUE,
+                            'file_name' => $new_name
+                        );
+                        $this->load->library('upload',$config);
+                        if(! $this->upload->do_upload()){
+                            $ferror='';
+                            $error = array('error' => $this->upload->display_errors());
+                            foreach ($error as $item => $value):
+                               $ferror = $ferror ."</br>". $item .":". $value;
+                            endforeach;
+                            // $ferror=str_replace("\r\n","",$ferror);
+                            $simsg = "The permitted size of doc is 1000kb";
+                            $ferror = $simsg.$ferror;
+                            $this->logger->write_logmessage("uploaddoc","doc upload in sis error", $ferror);
+                            $this->logger->write_dblogmessage("uploaddoc","doc upload in sis error", $ferror);
+                            $this->session->set_flashdata('err_message', $ferror);
+
+                        }
+                        else {
+                            $upload_data=$this->upload->data();
+                            $msgphoto=" and doc" ;
+                        }
+		}
+
                 if(!$servdataflag)
                 {
-                    $this->logger->write_logmessage("error","Error in insert staff service record", "Error in insert staff service record." );
-                    $this->logger->write_dblogmessage("error","Error in insert staff service record ", "Error in insert staff service record" );
-                    $this->session->set_flashdata('err_message','Error in insert staff service record ');
+                    $this->logger->write_logmessage("error","Error in insert staff leave record", "Error in insert staff leave record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff leave record ", "Error in insert staff leave record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff leave record ');
                     $this->load->view('empmgmt/add_leavepertdata',$data);
                 }
                 else{
                     $this->roleid=$this->session->userdata('id_role');
                     $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
                     $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
-                    $this->logger->write_logmessage("insert","Add Staff Service Data", "Staff Service record insert successfully." );
-                    $this->logger->write_dblogmessage("insert","Add Staff Service Data", "Staff Service record insert successfully ." );
-                    $this->session->set_flashdata('success','Service Data record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    $this->logger->write_logmessage("insert","Add Staff leave Data", "Staff leave record insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add Staff leave Data", "Staff leave record insert successfully ." );
+                    $this->session->set_flashdata('success','Leave Data record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]".$msgphoto);
                     if($this->roleid == 4){
                         redirect('empmgmt/viewempprofile');
                     }
                     else{
-                        redirect('report/viewfull_profile/'.$empid);
+                        redirect('report/leave_profile/'.$empid);
                     }
                                        
                 }

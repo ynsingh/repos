@@ -92,7 +92,7 @@
      //                           if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 //				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-     //                                 echo anchor("empmgmt/add_leavepertdata/{$emp_id}"," Add ",array('title' => ' Add Leave Data' , 'class' => 'red-link'));
+                                      echo anchor("empmgmt/add_leavepertdata/{$emp_id}"," Add ",array('title' => ' Add Leave Data' , 'class' => 'red-link'));
                                 }
                                 ?>
 
@@ -103,10 +103,12 @@
                     <thead>
                         <tr>
                             <th>Nature of Leave</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                            <th>No. of Days</th>
-                                <th> </th>
+                            <th>Max Limit</th>
+			    <th> From Date -To Date</th>
+                            <th>Availed Leave</th>
+                            <th>Balance Leave</th>
+                            <th>Attachment</th>
+                            <th> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,38 +119,81 @@
                             <tr>
                                 <td>
 
-                                <?php $sc=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name;
-                                "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->empsd_campuscode)->sc_code.")";
-                                 if ($record->empsd_ucoid != 0) $uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name;
-                                 if ($record->empsd_deptid != 0)$dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name;
-                                 $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
-                                 $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name;
-                                echo "<b>Campus-: </b>".$sc."<br/> "."<b>UO-: </b>".$uo."<br/> "."<b>Dept-: </b>".$dept."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
+                                <?php 
+//				echo $this->session->userdata('id_user');
+				$ltype=$record->la_type;
+				echo $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$ltype)->lt_name;
+				//$sc=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->empsd_campuscode)->sc_name;
+                                //"&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->empsd_campuscode)->sc_code.")";
+                                // if ($record->empsd_ucoid != 0) $uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->empsd_ucoid)->name;
+                                // if ($record->empsd_deptid != 0)$dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_deptid)->dept_name;
+                                // $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
+                                // $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name;
+                               // echo "<b>Campus-: </b>".$sc."<br/> "."<b>UO-: </b>".$uo."<br/> "."<b>Dept-: </b>".$dept."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
                                 ?>
                                 </td>
                                 <td>
                                     <?php
-                                    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name;
-                                    $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
-                                    $group=$record->empsd_group;
-                                    $worktype=$record->empsd_worktype;
-                                    echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
+
+					$lmval= $this->sismodel->get_listspfic1('leave_type_master','lt_value','lt_id',$ltype)->lt_value;
+					echo $lmval;
+//                                    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name;
+  //                                  $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
+    //                                $group=$record->empsd_group;
+      //                              $worktype=$record->empsd_worktype;
+        //                            echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
                                     ?>
                                </td>
 				<td>
+<?php					echo $record->granted_la_from_date ." - ". $record->granted_la_to_date; ?>
+				<td>
                                     <?php
-                                    $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name;
-                                    $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
-                                    $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
-                                    $pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
-                                    $dateofagp=implode('-', array_reverse(explode('-', $record->empsd_pbdate)));
-                                    $gradepay=$record->empsd_gradepay;
-                                    $level=$record->empsd_level;
-                                    echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; ?>
+					$lval= $record->la_taken;
+					echo $lval;
+/*					$whdata=array('la_userid' =>$emp_id, 'la_type'=>$ltype);
+					$lval= $this->sismodel->get_sumofvalue('leave_apply','la_taken',$whdata);					
+					foreach($lval as $row){
+						$lfval=$row->la_taken;
+					}
+					echo $lfval;
+*/
+                              //      $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name;
+                                //    $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
+                                  //  $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
+                                    //$pbgp= $this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->empsd_pbid)->sgm_gradepay;
+//                                    $dateofagp=implode('-', array_reverse(explode('-', $record->empsd_pbdate)));
+  //                                  $gradepay=$record->empsd_gradepay;
+    //                                $level=$record->empsd_level;
+      //                              echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; ?>
                                 </td>
                                 <td>
-                                    <?php echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;?>
+                                    <?php
+					$lfval=0;
+					$laid=$record->la_id;
+					$whdata=array('la_userid' =>$emp_id, 'la_type'=>$ltype,'la_id <=' =>$laid); 
+					$ltval= $this->sismodel->get_sumofvalue('leave_apply','la_taken',$whdata);                                       
+                                        foreach($ltval as $row){
+                                                $lfval=$row->la_taken;
+                                        }
+
+					$bal = $lmval - $lfval;
+					echo $bal;
+//					echo "<b>From-: </b>".$dojoin."<br>"."<b>To-: </b>".$dorelve;
+					?>
                                 </td>
+				<td>
+				<?php
+					if(!empty($record->la_upfile)){
+				?>
+				<a href="<?php echo base_url().'uploads/SIS/empleave/'.$record->la_upfile ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php echo $record->la_upfile ?>">Download the pdf</a>
+                        <?php }
+                                else{
+                                echo " No attachment found";
+                                }
+                        ?>
+
+				</td>
                                 <td>
                                 <?php
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
