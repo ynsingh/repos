@@ -157,7 +157,7 @@
                         ;?>
                     </td> 
                     <td><font color='Blue'>IFSC Code :</font></td>
-                    <td  colspan="2"><?php echo $bname[1]; ?></td> 
+                    <td  colspan="2"><?php if(!empty($bname[1])){echo $bname[1]; }?></td> 
                
                 </tr>
                 <tr></tr>

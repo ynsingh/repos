@@ -3854,8 +3854,8 @@ public function displaysalarygrademaster(){
             $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean|required');
             $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash');
             //$this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash|callback_isDdoExist');
-            $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('remark','Remark','trim|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('remark','Remark','trim|xss_clean');
 
             if($this->form_validation->run()==TRUE){
 
@@ -3992,9 +3992,9 @@ public function displaysalarygrademaster(){
             $this->form_validation->set_rules('campusname','Campus Name','trim|xss_clean|required');
             $this->form_validation->set_rules('deptname','Department Name','trim|xss_clean|required');
             $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash');
-            $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('remark','Remark','trim|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required');
+            $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('remark','Remark','trim|xss_clean');
 
         if ($_POST)
         {

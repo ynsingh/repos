@@ -114,6 +114,7 @@ class Staffmgmt extends CI_Controller
 			$pstid =$this->commodel->get_listspfic1('designation','desig_id','desig_name',$emppost)->desig_id;
 		$sddata = array(
 			'empsd_empid' => $empid,
+			'empsd_authority' =>'Head',
 			'empsd_campuscode' =>$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
 			'empsd_ucoid' =>$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid,
 			'empsd_deptid' =>$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
@@ -2463,6 +2464,7 @@ class Staffmgmt extends CI_Controller
         //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1],'cudsd_deptid' => $parts[2],'cudsd_schid' => $parts[3]);
         $datawh=array('ddo_scid' => $parts[0],'ddo_deptid' => $parts[1],'ddo_schid' => $parts[2]);
         $comb_data = $this->sismodel->get_listspficemore('ddo','ddo_id,ddo_name,ddo_code',$datawh);
+//print_r("nksc".$comb_data); die();
         $ddo_select_box ='';
         $ddo_select_box.='<option value="">-------Drawing and Disbursing Officer--------';
         foreach($comb_data as $combdataid){
@@ -2471,7 +2473,9 @@ class Staffmgmt extends CI_Controller
             //$ddolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ddouserid)->lastname;
             //$ddoflname=$ddofname." ".$ddolname;
             //$ddo_select_box.='<option value='.$combdataid->cudsd_ddoid.'>'.$ddoflname.' ';
+	
             $ddo_select_box.='<option value='.$combdataid->ddo_id.'>'.$combdataid->ddo_name. '(' .$combdataid->ddo_code. ')'.' ';
+//	print_r("nksc".$ddo_select_box);
             
         }
         echo json_encode($ddo_select_box);

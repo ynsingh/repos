@@ -104,6 +104,7 @@
                         <tr>
                             <th>Nature of Leave</th>
                             <th>Max Limit</th>
+			    <th> Year </th>
 			    <th> From Date -To Date</th>
                             <th>Availed Leave</th>
                             <th>Balance Leave</th>
@@ -144,6 +145,9 @@
         //                            echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
                                     ?>
                                </td>
+				<td>
+					<?php  echo $record->la_year ?>
+				</td>
 				<td>
 <?php					echo $record->granted_la_from_date ." - ". $record->granted_la_to_date; ?>
 				<td>
@@ -199,7 +203,7 @@
 //                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 				//if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-              //                                echo anchor("empmgmt/edit_leavepertdata/{$record->empsd_id}","Edit",array('title' => ' Edit Leave Data' , 'class' => 'red-link'));
+                                             echo anchor("empmgmt/edit_leavepertdata/{$record->la_id}","Edit",array('title' => ' Edit Leave Data' , 'class' => 'red-link'));
                                         }
                                 ?>
                                 </td>

@@ -113,6 +113,7 @@
                         <tr>
                             <th>Parent Details</th>
                             <th>Working Details</th>
+			    <th>From - To Date </th>
                             <th ></th>
                         </tr>
                     </thead>
@@ -139,16 +140,19 @@
                                     <?php 
 				$sc1='';$uo1='';$dept1='';
 				if((!isset($record->swap_wcampus))&&(!empty($record->swap_wcampus))){
-                                $sc1=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->swap_wcampus)->sc_name. "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->swap_wcampus)->sc_code.")";
+		                	$sc1=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $record->swap_wcampus)->sc_name. "&nbsp;"."(".$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $record->swap_wcampus)->sc_code.")";
 				}
                                  if ($record->swap_wuo != 0) $uo1=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $record->swap_wuo)->name;
-                                 if ($record->swap_wdept != 0)$dept1=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->swap_wodept)->dept_name;
+                                 if ($record->swap_wdept != 0)$dept1=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->swap_wdept)->dept_name;
 //                               $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->empsd_schemeid)->sd_name;
 //                               $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$record->empsd_ddoid)->ddo_name; 
                                  echo "<b>Campus-: </b>".$sc1."<br/> "."<b>UO-: </b>".$uo1."<br/> "."<b>Dept-: </b>".$dept1;
                                  //."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
                                     ?>
                                </td>
+				<td>
+<?php					echo $record->swap_fromdate ." - ".$record->swap_todate ?>
+				</td>
                                 <td>
                                 <?php
                                // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){

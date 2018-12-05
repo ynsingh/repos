@@ -631,7 +631,7 @@ public function disciplin_profile() {
                     $newFileName = $_FILES['userfile']['name'];
                     $fileExt1 = explode('.', $newFileName);
                     $file_ext = end( $fileExt1);
-                    $name = $empid.".".$newFileName;
+                    $name = $empid."_".$newFileName;
                 }
 
 		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
@@ -832,6 +832,7 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('payband','PayBand','trim|xss_clean');
             $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
+            $this->form_validation->set_rules('hnoauth','Authority Type','trim|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
@@ -856,6 +857,7 @@ public function disciplin_profile() {
                 $payb = $this->input->post('payband', TRUE);
                 $gradepay = $this->input->post('gradepay', TRUE);
                 $orderno = $this->input->post('orderno', TRUE);
+                $huoauth = $this->input->post('huoauth', TRUE);
                 $dataofagp = $this->input->post('DateofAGP', TRUE);
                 $datefrom = $this->input->post('Datefrom', TRUE);
                 $dateto = $this->input->post('Dateto', TRUE);
@@ -887,6 +889,8 @@ public function disciplin_profile() {
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_gradepay. " changed by " .$gradepay;
                 if($eds_data['servicedata']->empsd_orderno != $orderno)
                         $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_orderno. " changed by " .$orderno;
+                if($eds_data['servicedata']->empsd_authority != $huoauth)
+                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_authority. " changed by " .$huoauth;
                 if($eds_data['servicedata']->empsd_pbdate != $dataofagp)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbdate. " changed by " .$dataofagp;
                 if($eds_data['servicedata']->empsd_dojoin != $datefrom)
@@ -899,7 +903,7 @@ public function disciplin_profile() {
                     $newFileName = $_FILES['userfile']['name'];
                     $fileExt1 = explode('.', $newFileName);
                     $file_ext = end( $fileExt1);
-                    $new_name = $id.".".$newFileName; 
+                    $new_name = $id."_".$newFileName; 
                 }    
 
                 $edit_data = array(
@@ -918,6 +922,7 @@ public function disciplin_profile() {
                     'empsd_orderno'        =>$orderno,
                     'empsd_pbdate'          =>$dataofagp,
                     'empsd_dojoin'          =>$datefrom,
+                    'empsd_authority'          =>$huoauth,
 		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$dateto,
 		    'empsd_tsession'	    =>$_POST['tsession'],
@@ -1139,16 +1144,17 @@ public function disciplin_profile() {
                 redirect('empmgmt/add_leavepertdata');
             }//formvalidation
             else{
-		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+//		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+		$lat=NULL;$laf=NULL;
+		$ltype = $_POST['la_type'];
 		$lat=$_POST['applied_la_to_date'];
                 $laf=$_POST['applied_la_from_date'];
 		$ldays = $_POST['ladays'];
-		$parts = explode(" ",$laf);
-	        $ldate = $parts[0];
-		$ltype = $_POST['la_type'];
 		$cdate = date("Y-m-d");
-		$attachfilename=$empid."_".$ltype."_".$ldate;
 		if(!empty($_FILES['userfile']['name'])){
+			$parts = explode(" ",$laf);
+		        $ldate = $parts[0];
+			$attachfilename=$empid."_".$ltype."_".$ldate;
 	                $newFileName = $_FILES['userfile']['name'];
         	        $fileExt1 = explode('.', $newFileName);
                 	$file_ext = end( $fileExt1);
@@ -1157,26 +1163,6 @@ public function disciplin_profile() {
                 else{
         	        $new_name='';
                 }
-                //$data = array(
-                  //  'la_userid'           =>$empid,
-//                    'empsd_campuscode'      =>$_POST['campus'],
-  //                  'empsd_ucoid'           =>$_POST['uocontrol'],
-                   // 'la_deptid'          =>$_POST['department'],
-//                    'empsd_schemeid'        =>$_POST['schemecode'],
-  //                  'empsd_ddoid'           =>$_POST['ddo'],
-//		    'empsd_worktype'        =>$_POST['workingtype'],
-  //                  'empsd_group'           =>$_POST['group'],
-    //                'empsd_desigcode'       =>$desigcode,
-//		    'empsd_shagpstid'       =>$_POST['emppost'],
-//		    'empsd_level'           =>$_POST['level'],
-  //                  'empsd_pbid'            =>$_POST['payband'],
-    //                'empsd_gradepay'        =>$_POST['gradepay'],
-         //           'la_type'        =>$_POST['la_type'],
-           //         'la_year'        =>$_POST['layear'],
-             //       'applied_la_from_date'        =>$laf,
-               //     'applied_la_to_date'        =>$lat,
-                 //   'la_days'        =>$ldays,
-                   // 'granted_la_from_date'        =>$laf,
                 $data = array(
                     'la_userid'           =>$empid,
                     'la_deptid'          =>$_POST['department'],
@@ -1255,6 +1241,125 @@ public function disciplin_profile() {
         }//ifpost button
         $this->load->view('empmgmt/add_leavepertdata');
     }//function close
+
+	public function	edit_leavepertdata($id){
+		$this->roleid=$this->session->userdata('id_role');
+		$empid = $this->sismodel->get_listspfic1('leave_apply','la_userid','la_id',$id)->la_userid;
+
+		$this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
+	        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+	
+		$this->emp_id = $empid;
+        	$data['id'] = $id;
+	        $data['leavedata'] = $this->sismodel->get_listrow('leave_apply','la_id',$id)->row();
+		if(isset($_POST['editleavedata'])) {
+            		//form validation
+		        $this->form_validation->set_rules('department','Department','trim|xss_clean|required');
+		        $this->form_validation->set_rules('la_type','la Type','trim|xss_clean|required');
+		        $this->form_validation->set_rules('layear','la year','trim|xss_clean');
+		        $this->form_validation->set_rules('ladays','la Days','trim|xss_clean|required');
+	            	$this->form_validation->set_rules('la_desc','Description','trim|xss_clean');
+        	    	$this->form_validation->set_rules('applied_la_to_date','To date','trim|xss_clean');
+	            	$this->form_validation->set_rules('applied_la_from_date','From Date','trim|xss_clean');
+        	    	if($this->form_validation->run() == FALSE){
+
+                		redirect('empmgmt/add_leavepertdata');
+	        	}//formvalidation
+            		else{
+				$lat=NULL;$laf=NULL;
+                		$ltype = $_POST['la_type'];
+                		$lat=$_POST['applied_la_to_date'];
+                		$laf=$_POST['applied_la_from_date'];
+                		$ldays = $_POST['ladays'];
+                		$cdate = date("Y-m-d");
+                		if(!empty($_FILES['userfile']['name'])){
+		                        $parts = explode(" ",$laf);
+                		        $ldate = $parts[0];
+		                        $attachfilename=$empid."_".$ltype."_".$ldate;
+                		        $newFileName = $_FILES['userfile']['name'];
+		                        $fileExt1 = explode('.', $newFileName);
+                		        $file_ext = end( $fileExt1);
+		                        $new_name = $attachfilename.".".$file_ext;
+                		}
+		                else{
+                		        $new_name=$data['leavedata']->la_upfile;
+		                }
+
+				$ludata = array(
+                    			'la_deptid'                 =>$_POST['department'],
+                    			'la_type'                   =>$_POST['la_type'],
+                    			'la_year'                   =>$_POST['layear'],
+                    			'applied_la_from_date'      =>$laf,
+                    			'applied_la_to_date'        =>$lat,
+                    			'la_days'        	    =>$ldays,
+                    			'granted_la_from_date'      =>$laf,
+                    			'granted_la_to_date'        =>$lat,
+                    			'la_taken'                  =>$ldays,
+                    			'la_desc'                   =>$_POST['la_desc'],
+                    			'la_upfile'                 =>$new_name,
+                		);
+                		$leavedataflag=$this->sismodel->updaterec('leave_apply', $ludata,'la_id',$id) ;
+				$msgphoto='';
+                		if(!empty($_FILES['userfile']['name'])){
+                			$config = array(
+                            			'upload_path' =>  "./uploads/SIS/empleave",
+                            			'allowed_types' => "gif|jpg|png|jpeg|pdf",
+                            			'overwrite' => TRUE,
+                            			'max_size' => "1000000", // Can be set to particular file size 
+                            			'max_height' => "768",
+                            			'max_width' => "1024",
+                            			//'encrypt_name' => TRUE,
+                            			'file_name' => $new_name
+                        		);
+                        		$this->load->library('upload',$config);
+                        		if(! $this->upload->do_upload()){
+                            			$ferror='';
+                            			$error = array('error' => $this->upload->display_errors());
+                            			foreach ($error as $item => $value):
+                               				$ferror = $ferror ."</br>". $item .":". $value;
+                            			endforeach;
+                            			// $ferror=str_replace("\r\n","",$ferror);
+                            			$simsg = "The permitted size of doc is 1000kb";
+                            			$ferror = $simsg.$ferror;
+                            			$this->logger->write_logmessage("uploaddoc","doc upload in sis error", $ferror);
+                            			$this->logger->write_dblogmessage("uploaddoc","doc upload in sis error", $ferror);
+                            			$this->session->set_flashdata('err_message', $ferror);
+
+                        		}
+                        		else {
+                            			$upload_data=$this->upload->data();
+                            			$msgphoto=" and doc" ;
+                        		}
+                		}
+
+                		if(!$servdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff leave record", "Error in insert staff leave record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff leave record ", "Error in insert staff leave record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff leave record ');
+                    			$this->load->view('empmgmt/add_leavepertdata',$data);
+                		}
+                		else{
+
+                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff leave Data", "Staff leave record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff leave Data", "Staff leave record insert successfully ." );
+                    			$this->session->set_flashdata('success','Leave Data record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]".$msgphoto);
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/leave_profile/'.$empid);
+ 					}
+                		}
+            		}//else
+
+        	}//ifpost button
+        	$this->load->view('empmgmt/edit_leavepertdata',$data);
+	}
     /***********************************Start Add service detail******************************************/
     public function add_deputatdata($empid) {
         $this->roleid=$this->session->userdata('id_role');
@@ -1381,6 +1486,9 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean');
 	    $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
             $this->form_validation->set_rules('department','Department','trim|xss_clean');
+	    $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+
 /*	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
 	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean'); */
             if($this->form_validation->run() == FALSE){
@@ -1403,6 +1511,8 @@ public function disciplin_profile() {
                     'swap_wcampus'      =>$wcamp,
 		    'swap_wuo'        	=>$wuo,
                     'swap_wdept'        =>$wdept,
+                    'swap_fromdate'        =>$_POST['Datefrom'],
+                    'swap_todate'        =>$_POST['Dateto'],
                     'swap_creatorid'    =>$this->session->userdata('username'),
 		    'swap_creatordate'  =>date('Y-m-d'),
 		    'swap_modifierid'   =>$this->session->userdata('username'),

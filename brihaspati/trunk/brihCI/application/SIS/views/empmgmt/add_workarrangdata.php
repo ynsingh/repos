@@ -182,7 +182,7 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/viewfull_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/workorder_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
@@ -247,6 +247,25 @@
 		</select>
 		</td>
 	</tr>
+	<tr>
+                    <td>Date From<font color='Red'></font></td>
+                        <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40"  >
+<!--
+                         <select name="fsession" style="width:110px;" id="fsession" required>
+                <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select></td>-->
+                </tr>
+                <tr>
+                    <td>Date To<font color='Red'></font></td>
+                        <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
+                   <!--      <select name="tsession" style="width:110px;" id="tsession" >
+                         <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select></td>-->
+                </tr>
 <!--
 <tr>
                 <td>Scheme Name<font color='Red'></font></td>

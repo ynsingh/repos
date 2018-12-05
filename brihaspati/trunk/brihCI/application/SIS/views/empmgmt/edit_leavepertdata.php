@@ -1,7 +1,6 @@
-<!--@name add_servicedata.php  @author Manorama Pal(palseema30@gmail.com) -->
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
  <html>
-    <title>Service Details</title>
+    <title>Edit leave Details</title>
     <head>
         <?php $this->load->view('template/header'); ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
@@ -9,12 +8,15 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
         <script>
             $(document).ready(function(){
-		  $("#dagp").hide();
-		  $("#satp").hide();
+	//		$("#filerow").hide();
 
-                $('#DateofAGP,#Datefrom,#Dateto').datepicker({
+                $('#Datefrom,#Dateto,#StartDate,#LastDate').datepicker({
                     dateFormat: 'yy-mm-dd',
                     autoclose:true,
                     changeMonth: true,
@@ -165,9 +167,6 @@
             /************************select Designation on basis of Group*******************/
             $('#grpid').on('change',function(){
                 var grp_id = $(this).val();
-		var wrktype_id = $('#worktypeid').val();
-		var wtg=grp_id+","+wrktype_id;
-//		alert(wtg);
                 if(grp_id == ''){
                     $('#desigid').prop('disabled',true);
                 }
@@ -175,15 +174,13 @@
              
                     $('#desigid').prop('disabled',false);
                     $.ajax({
-                      //  url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
-                        url: "<?php echo base_url();?>sisindex.php/jslist/getgwdesiglist",
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
                         type: "POST",
-                       // data: {"group" : grp_id},
-                        data: {"gwt" : wtg},
+                        data: {"group" : grp_id},
                         dataType:"html",
                         success:function(data){
-//				alert("data==1="+data);
                             $('#desigid').html(data.replace(/^"|"$/g, ''));
+                       
                         },
                         error:function(data){
                             //alert("data in error part==="+data);
@@ -196,7 +193,7 @@
 	    });
 
 	/************************select shown against the post value *****************************************************/
-	 /*      $('#desigid').on('change',function(){
+	       $('#desigid').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var dept_id = $('#scid').val();
@@ -240,7 +237,7 @@
                     });
                 }
             }); 
-*/
+
             /************************closer for shown against the post*****************************************/
 		 $("#payband").on('change',function(){
                         var leaveid = $(this).val();
@@ -266,21 +263,20 @@
                     }
                   });
 
-/***********************************************************************/
-		$('#worktypeid').on('change',function(){
-                        var wtid= $('#worktypeid').val();
-                        if(wtid == "Teaching"){
-                                $("#dagp").show();
-                        }
-                        else{
-                                $("#dagp").hide();
-                        }
-                  });
-           
+            /************************closer for payband*****************************************/
+	//	$('#StartDate').on('change',function(){
+          //              var wtid= $('#StartDate').val();
+            //            if(wtid != ""){
+              //                  $("#filerow").show();
+                //        }
+                  //      else{
+                    //            $("#filerow").hide();
+                      //  }
+              //    });
 
 
-
-	});
+            /************************closer for upload row display*****************************************/
+		});
 </script> 
     </head>
     <body>
@@ -292,12 +288,12 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/service_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/leave_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Add Service Details</b>";
+                    echo "<b>Add Leave Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -319,14 +315,14 @@
             </td></tr>
         </table>
         <div> 
-            <form id="myform" action="<?php echo site_url('empmgmt/add_servicedata/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
+            <form id="myform" action="<?php echo site_url('empmgmt/edit_leavepertdata/'.$id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="empid" value="<?php echo  $this->emp_id ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Service Details</th></thead></tr>
+                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Leave Details</th></thead></tr>
                 <tr></tr><tr></tr>
                 <tr>
-                    <td>Campus Name <font color='Red'>*</font></td>
-                        <td colspan=2><select id="camp" style="width:350px;" name="campus" required> 
+                    <td><label>Campus Name <font color='Red'>*</font></label></td>
+                        <td><select id="camp" style="width:350px;" name="campus" required> 
                             <option selected="selected" disabled selected>--------Campus Name-----</option>
                             <?php foreach($this->campus as $camdata): ?>
 			     <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>	
@@ -335,154 +331,110 @@
                     </td>
                 </tr> 
 		<tr>
- 		<td>University Officer Control<font color='Red'>*</font></td>
-		<td colspan=2><select name="uocontrol" style="width:350px;"id="uocid" required>
+ 		<td><label>University Officer Control<font color='Red'>*</font></label></td>
+		<td><select name="uocontrol" style="width:350px;"id="uocid" required>
 		<option selected="selected" disabled selected>--------University Officer Control -----</option>
 		</select>
 		</td>
 		</tr>
 		<tr>
-		<td>Department<font color='Red'>*</font></td>
-		<td colspan=2><select name="department" style="width:350px;"id="scid" required>
-		<option selected="selected" disabled selected>--------Department-----</option>
+		<td><label>Department<font color='Red'>*</font></label></td>
+		<td><select name="department" style="width:350px;"id="scid" required>
+			<?php if(!empty($leavedata->la_deptid)):;?>
+                            	<option value="<?php echo $leavedata->la_deptid;?>"><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$leavedata->la_deptid)->dept_name?></option>
+                            <?php else:?>
+				<option selected="selected" disabled selected>--------Department-----</option>
+                            <?php endif;?>
 		</select>
 		</td>
-	</tr>
-<tr>
-                <td>Scheme Name<font color='Red'>*</font></td>
-                <td colspan=2><select name="schemecode" style="width:350px;"id="schmid" required>
-                <option selected="selected" disabled selected>--------Scheme Name-----</option>
-                </select>
-                </td>
-        </tr>
-<tr>
-                <td>Drawing and Disbursing Officer<font color='Red'>*</font></td>
-                <td colspan=2><select name="ddo" style="width:350px;"id="ddoid" required>
-                <option selected="selected" disabled selected>--------Drawing and Disbursing Officer-----</option>
-                </select>
-                </td>
-       		</tr>
+		</tr>
 		<tr>
-			<td>Working Type<font color='Red'>*</font></td>
-                        <td colspan=2><select id="worktypeid" name="workingtype" required style="width:350px;">
-                        <option selected="selected" disabled selected>------------- Working Type -------------</option>
-                        <option value="Teaching">Teaching</option>
-                        <option value="Non Teaching">Non Teaching</option>
-                    </select>
-                </td>
+                        <td><label for="lt_remarks" class="control-label">Leave Type: <font color='Red'> *</font> </label></td>
+                        <td>
+                 		<select name="la_type" style="width:350px;" id="mySelect" required>
+					 <?php if(!empty($leavedata->la_type)):;?>
+                                <option value="<?php echo $leavedata->la_type;?>"><?php echo $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$leavedata->la_type)->lt_name?></option>
+                            <?php else:?>
+                                <option selected="selected" disabled selected>--------Select Leave Type-----</option>
+                            <?php endif;?>
+			            <?php foreach($this->leaveresult as $datas)
+                                        { ?>
+                        		<option value="<?php echo $datas->lt_id; ?>"><?php echo $datas->lt_name; ?></option>
+                                <?php } ?>
+                                </select>
+                        </td>
+                </tr>
+		<tr>
+                        <td><label for="lt_remarks" class="control-label">Purpose/Comments: <font color='Red'> </font> </label></td>
+		         <td><textarea name="la_desc"  class="form-control" size="30" rows="5" cols="44" value="<?php echo $leavedata->la_desc; ?>"/></textarea></td>
+                </tr>
+		<tr>
+                    <td><label>Year<font color='Red'>*</font></label></td>
 
-	<tr>
-                <td>Group<font color='Red'>*</font></td>
-                <td colspan=2><select name="group" style="width:350px;" id="grpid" required>
-		<option selected="selected" disabled selected>------------ Select Group ---------</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                </select>
-                </td>
-        </tr>
-                <tr>
-                    <td>Designation<font color='Red'>*</font></td>
-                        <td colspan=2><select name="designation" id="desigid"  style="width:350px;" required> 
-                            <option selected="selected" disabled selected>------- Select Designation ---------</option>
-                        </select>
+                    <td>
+                            <input type="text" name="layear" id="layear" value="<?php echo $leavedata->la_year; ?>" size="40" required>
                     </td>
                 </tr>
 
-	<tr id="satp">
+		<tr>
+                        <td><label for="lt_remarks" class="control-label">From Date: <font color='Red'> </font> </label></td>
+         		<td><input type="text" name="applied_la_from_date" id="StartDate" class="form-control" value="<?php echo $leavedata->applied_la_from_date; ?>"  style="width:350px" /></td>
 
-                    <td>Shown Against The Post<font color='Red'></font></td>
-                        <td colspan=2><select name="emppost" id="emppostid"  style="width:350px;" >
-                            <option selected="selected" disabled selected>-------Shown Against The Post---------</option>
-                        </select>
-                    </td>
-                </tr>
-	 <tr>
-                <td>Level<font color='Red'></font></td>
-                <td colspan=2><select name="level" style="width:350px;" id="lvel" >
-                <option selected="selected" disabled selected>------------ Select Level---------</option>
-                        <option value="Level-1">Level-1</option>
-                        <option value="Level-2">Level-2</option>
-                        <option value="Level-3">Level-3</option>
-                        <option value="Level-4">Level-4</option>
-			<option value="Level-5">Level-5</option>
-                        <option value="Level-6">Level-6</option>
-                        <option value="Level-7">Level-7</option>
-                        <option value="Level-8">Level-8</option>
-			<option value="Level-9">Level-9</option>
-                        <option value="Level-10">Level-10</option>
-                        <option value="Level-11">Level-11</option>
-                        <option value="Level-12">Level-12</option>
-			<option value="Level-13">Level-13</option>
-                        <option value="Level-14">Level-14</option>
-                        <option value="Level-15">Level-15</option>
-                        <option value="Level-16">Level-16</option>
-			<option value="Level-17">Level-17</option>
-                        <option value="Level-18">Level-18</option>
-                </select>
-                </td>
-        </tr>		
-			<tr>
-	    <td>Pay Band<font color='Red'></font></td>
-                    <td colspan=2><select name="payband" id="payband" style="width:350px;" onchange="gradelist(this.value)"> 
-                        <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
-                        <?php foreach($this->salgrd as $salgrddata): ?>	
-                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
-                            </option> 
- 			<?php endforeach;?>
-                       
-                    </select>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>Grade Pay<font color='Red'></font></td>
-		    <td colspan=2>
-                            <input type="text" name="gradepay" id="gradepay" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" readonly>
-                    </td>
+            <script>
+//               $.datetimepicker.setLocale('en');
+  //             $('#StartDate').datetimepicker({
+    //           dayOfWeekStart : 1,
+      //         lang:'en',
+        //       formatTime:'H:i',
+          //     formatDate:'Y-m-d',
+            //                            minDate:0,
+              // });
+               //step 5 for give minute duration
+              // $('#StartDate').datetimepicker();
+             </script>
                 </tr>
                 <tr>
-                    <td>Order No<font color='Red'></font></td>
+                        <td><label for="lt_remarks" class="control-label">To Date: <font color='Red'> </font> </label></td>
+         		<td><input type="text" name="applied_la_to_date" id="LastDate" class="form-control" value="<?php echo $leavedata->applied_la_to_date; ?>"style="width:350px" /></td>
+                         <script>
+                //                        $.datetimepicker.setLocale('en');
+                  //                      $('#LastDate').datetimepicker({
+                    //                    dayOfWeekStart : 1,
+                      //                  lang:'en',
+                        //                formatTime:'H:i',
+                          ///              formatDate:'Y-m-d',
+                             //           minDate:0,
+                               //         });
+                                        //step 5 for give minute duration
+                                 //       $('#LastDate').datetimepicker();
+                                 </script>
+                </tr>
+		<tr>
+                    <td><label>No of Days<font color='Red'>*</font></label></td>
 
-		    <td colspan=2>
-                            <input type="text" name="orderno" id="orderno" value="<?php //echo isset($_POST["gradename"]) ? $_POST["gradename"] : ''; ?>" size="40" >
+                    <td>
+                            <input type="text" name="ladays" id="ladays" value="<?php echo $leavedata->la_days; ?>" size="40" required>
                     </td>
                 </tr>
-                <tr id="dagp">
-                    <td>Date of AGP<font color='Red'></font></td>
-                        <td colspan=2><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date From<font color='Red'>*</font></td>
-                        <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" required="required" >
-                    
-			 <select name="fsession" style="width:110px;" id="fsession" required>
-                <option selected="selected" disabled selected>Select Session</option>
-                        <option value="Forenoon">Forenoon</option>
-                        <option value="Afternoon">Afternon</option>
-                        </select></td>
-                </tr>
-                <tr>
-                    <td>Date To<font color='Red'></font></td>
-                        <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
-			 <select name="tsession" style="width:110px;" id="tsession" >
-               		 <option selected="selected" disabled selected>Select Session</option>
-                        <option value="Forenoon">Forenoon</option>
-                        <option value="Afternoon">Afternon</option>
-                        </select></td>
-                </tr>
-        <tr>
-            <td>Upload Attachment</td>
-            <td colspan=2><input type='file' name='userfile' size='20' style="font-size:15px;"/>
+		<tr id="filerow">
+		<td><label for="userfile" style="font-size:;"><font color=''>Upload Supporting Doc</font></label>
+		</td>
+                   <td>
+                        <input type="file" name='userfile'>
+			<?php if(!empty($leavedata->la_upfile)):;?>
+				<td colspan="2">
+		                <a href="<?php echo base_url().'uploads/SIS/empleave/'.$leavedata->la_upfile ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php echo $leavedata->la_upfile ?>">Download the pdf</a>
+				</td>
+			<?php endif;?>
             </td>
-        </tr>
 
+		</td>
+		</tr>
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">
-                    <button name="addservdata" >Submit</button>
+                    <button name="editleavedata" >Submit</button>
 		    <!--input type="reset" name="Reset" value="Clear"/-->
 			<button type="button" onclick="history.back();">Back</button>
                     </td>

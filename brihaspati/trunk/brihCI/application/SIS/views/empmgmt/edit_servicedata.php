@@ -293,7 +293,7 @@
                     }
                     else{
                         
-                        echo anchor('report/viewfull_profile/'.$servicedata->empsd_empid, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/service_profile/'.$servicedata->empsd_empid, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
@@ -513,6 +513,21 @@
                 <tr id="dagp">
                     <td>Date of AGP<font color='Red'></font></td>
                         <td><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo $servicedata->empsd_pbdate;?>"  size="40" >
+                    </td>
+                </tr>
+                <tr>
+                    <td>Authority Type<font color='Red'></font></td>
+			<td>
+			<select name="hupauth" style="width:350px;" id="huoauth" >
+<?php			if(!empty($servicedata->empsd_authority)){ ?>
+				<option value="<?php echo $servicedata->empsd_authority;?>"><?php echo $servicedata->authority;?></option>
+                       <?php }else{?>
+	                	<option selected="selected" disabled selected>Select Value</option>
+                       <?php }?>
+
+                        <option value="Head">Head</option>
+                        <option value="UO">UO</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

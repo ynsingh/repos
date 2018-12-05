@@ -15,7 +15,9 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
         <script>
             $(document).ready(function(){
-                $('#DateofAGP,#Datefrom,#Dateto,#StartDate,#LastDate').datepicker({
+			$("#filerow").hide();
+
+                $('#Datefrom,#Dateto,#StartDate,#LastDate').datepicker({
                     dateFormat: 'yy-mm-dd',
                     autoclose:true,
                     changeMonth: true,
@@ -261,6 +263,20 @@
                         });
                     }
                   });
+
+            /************************closer for payband*****************************************/
+		$('#StartDate').on('change',function(){
+                        var wtid= $('#StartDate').val();
+                        if(wtid != ""){
+                                $("#filerow").show();
+                        }
+                        else{
+                                $("#filerow").hide();
+                        }
+                  });
+
+
+            /************************closer for upload row display*****************************************/
 		});
 </script> 
     </head>
@@ -354,8 +370,8 @@
                 </tr>
 
 		<tr>
-                        <td><label for="lt_remarks" class="control-label">From Date: <font color='Red'> *</font> </label></td>
-         		<td><input type="text" name="applied_la_from_date" id="StartDate" class="form-control" value="<?php echo isset($_POST["la_from_date"]) ? $_POST["la_from_date"] : ''; ?>"  style="width:350px" required/></td>
+                        <td><label for="lt_remarks" class="control-label">From Date: <font color='Red'> </font> </label></td>
+         		<td><input type="text" name="applied_la_from_date" id="StartDate" class="form-control" value="<?php echo isset($_POST["la_from_date"]) ? $_POST["la_from_date"] : ''; ?>"  style="width:350px" /></td>
 
             <script>
 //               $.datetimepicker.setLocale('en');
@@ -371,7 +387,7 @@
              </script>
                 </tr>
                 <tr>
-                        <td><label for="lt_remarks" class="control-label">To Date: <font color='Red'> *</font> </label></td>
+                        <td><label for="lt_remarks" class="control-label">To Date: <font color='Red'> </font> </label></td>
          		<td><input type="text" name="applied_la_to_date" id="LastDate" class="form-control" style="width:350px" /></td>
                          <script>
                 //                        $.datetimepicker.setLocale('en');
@@ -393,7 +409,7 @@
                             <input type="text" name="ladays" id="ladays" value="<?php echo isset($_POST["ladays"]) ? $_POST["ladays"] : ''; ?>" size="40" required>
                     </td>
                 </tr>
-		<tr>
+		<tr id="filerow">
 		<td><label for="userfile" style="font-size:;"><font color=''>Upload Supporting Doc</font></label>
 		</td>
                    <td>

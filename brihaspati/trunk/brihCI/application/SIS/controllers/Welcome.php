@@ -43,6 +43,7 @@ class Welcome extends CI_Controller {
                 $result = $this->login->validate_user($_POST);
                 /*get role by using model class and set templates according to role*/
                 //$roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
+		$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_email', $result->username)->emp_id;
                 $wharray=array('userid'=>$result->id);
 		$roles=$this->sismodel->get_listspficemore('user_role_type','roleid,deptid',$wharray);
                 if(!empty($result)) {
@@ -51,6 +52,7 @@ class Welcome extends CI_Controller {
                         		foreach($roles as $row):
                             			if($row->roleid == 1){
                                 			$data = [
+							'id_emp' => $empid,
 			                                'id_user' => $result->id,
                         			        'username' => $result->username,
 			                                'id_role' => $row->roleid
@@ -60,6 +62,7 @@ class Welcome extends CI_Controller {
                            			} 
                             			if($row->roleid == 2){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid
@@ -69,6 +72,7 @@ class Welcome extends CI_Controller {
                         			}
                             			if($row->roleid == 3){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid
@@ -78,6 +82,7 @@ class Welcome extends CI_Controller {
                         			}
                             			if($row->roleid == 4){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid
@@ -87,6 +92,7 @@ class Welcome extends CI_Controller {
                         			}
                             			if($row->roleid == 5){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid,
@@ -97,6 +103,7 @@ class Welcome extends CI_Controller {
                         			}
                             			if($row->roleid == 6){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid
@@ -106,6 +113,7 @@ class Welcome extends CI_Controller {
                         			}
                             			if($row->roleid == 7){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid
@@ -115,6 +123,7 @@ class Welcome extends CI_Controller {
                         			}
                             			if($row->roleid == 10){
 			                                $data = [
+							'id_emp' => $empid,
                         			        'id_user' => $result->id,
 			                                'username' => $result->username,
                         			        'id_role' => $row->roleid
@@ -126,8 +135,9 @@ class Welcome extends CI_Controller {
                     		}else{
                         		foreach($roles as $row):
                             			$data = [
-		                                'id_user' => $result->id,
-                		                'username' => $result->username,                                    
+							'id_emp' => $empid,
+		                                	'id_user' => $result->id,
+                		                	'username' => $result->username,                                    
                                 		];
                             			$this->session->set_userdata($data);
                             			redirect('rolehome'); 

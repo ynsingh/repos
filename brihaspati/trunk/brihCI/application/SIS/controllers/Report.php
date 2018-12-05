@@ -456,8 +456,9 @@ class Report  extends CI_Controller
         //get all profile and service data
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
      //   $empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
-        $selectfield="la_id,la_type,granted_la_from_date,granted_la_to_date,la_taken,la_upfile";
+        $selectfield="la_id,la_type,granted_la_from_date,granted_la_to_date,la_taken,la_year,la_upfile";
         $whdata = array ('la_userid' => $emp_id,'la_status' =>'1');
+	$whorder = "la_type asc,la_year desc";
 //	get the id of these leave type
 //	$orwhin = array('UEL on ML', 'EL', 'METERNITY LEAVE','EOL');
         $leaveid1 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Unearned Leave on Medical Leave')->lt_id;
@@ -469,8 +470,8 @@ class Report  extends CI_Controller
 //echo 
 //die();
         //for leave perticular
-     //   $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,'');
-        $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
+        $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,$whorder);
+     //   $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
 
 	$emp_data['uoempid']=$this->getempuoid();
 	$emp_data['hodempid']=$this->getemphodid();

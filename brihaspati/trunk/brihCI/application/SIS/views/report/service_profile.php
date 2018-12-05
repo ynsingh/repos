@@ -198,7 +198,11 @@
 					}
 				    $group=$record->empsd_group;
 				    $worktype=$record->empsd_worktype;
-				    echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
+				    echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost;
+					if(!empty($record->empsd_authority)){
+						echo " ( ".$record->empsd_authority." )";
+					}
+					echo "<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
                                     ?>
                                </td>
 <td> 
