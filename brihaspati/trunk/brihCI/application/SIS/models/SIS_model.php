@@ -88,7 +88,16 @@ class SIS_model extends CI_Model
             return $this->db2->get()->result();
     }
 
-//get the list of all records with  two specific fields for specific values
+    // get the max values of selected field
+    public function get_maxvalue($tbname,$selectfield,$whdata){
+            $this->db->flush_cache();
+            $this->db->select_max($selectfield);
+            $this->db->from($tbname);
+            $this->db->where($whdata);
+            return $this->db->get()->result();
+    }
+
+    //get the list of all records with  two specific fields for specific values
     public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue='',$grpby=''){
                 $this->db2->flush_cache();
                 $this->db2->from($tbname);
