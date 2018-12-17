@@ -201,6 +201,7 @@ class Jslist extends CI_Controller
     public function getempdata2(){
         $values=array();
         $pfno= $this->input->post('emplypfno');
+	$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
        // echo "pfno---".$pfno;
         $emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
         $empdetail = $emp_data->result();
@@ -287,7 +288,7 @@ class Jslist extends CI_Controller
                 
                 array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
                 $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
-                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem);      
+                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem,$empid);      
 
 //                array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
   //              $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,

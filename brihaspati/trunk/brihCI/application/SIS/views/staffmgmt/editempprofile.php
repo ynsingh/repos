@@ -248,8 +248,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 //var schm_id = $('#schmid').val();
                 var desig_id = $('#desigid').val();
                 var wrktype_id = $('#worktypeid').val();
+		var empid="<?php echo $id;?>";
                 //var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+wrktype_id;
-                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id;
+                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id+","+empid;
+//		alert ("nks"+empid);
+//		alert("nks"+olddept+"new"+dept_id);
               //  alert("comin script===bsix===="+cudshmdesigwrktype);
                 //var grp_id = $(this).val();
                 if(desig_id == ''){
@@ -257,7 +260,6 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 //    $('#emptypeid').prop('disabled',true);
                 }
                 else{
-             
                     $('#emppostid').prop('disabled',false);
                    // $('#emptypeid').prop('disabled',false);
                     $.ajax({
@@ -266,9 +268,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         data: {"combsix" : cudshmdesigwrktype},
                         dataType:"html",
                         success:function(data){
-                            //alert("seemas"+data);
+		//		alert ("nks"+data);
                             var empdata=data;
-                           // alert("empdata"+empdata);
                      //       var empinput=empdata.split(',');
 //                            var val1 = empinput[0].replace(/\"/g,"");
 				var val1 = empdata.replace(/\"/g,"");
@@ -284,14 +285,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                                    
                             }   
       //                      $('#emptypeid').html(empinput[1].replace(/^"|"$/g, ''));
-                       
                         },
                         error:function(data){
                             //alert("data in error part==="+data);
                             alert("error occur..!!");
-                 
                         }
-                                            
                     });
                 }
             }); 
@@ -811,22 +809,13 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="emppost" style="font-size:15px;"><font color='Blue'>Shown against the Post</font><font></font></label>
 			<div><select name="emppost" id="emppostid" required style="width:300px;">
                     <?php if(!empty($editdata->emp_post)):;?>
-			<!--<option value="<?php //echo $editdata->emp_post;?>"><?php //echo $editdata->emp_post;?></option>
-                        -->
                         <option value="<?php 
-                        echo $this->commodel->get_listspfic1('designation','desig_id','desig_name',$editdata->emp_post)->desig_id ?>">
+                        echo $this->commodel->get_listspfic1('designation','desig_id','desig_name',$editdata->emp_post)->desig_id ;?>">
                         <?php echo $editdata->emp_post;?></option>
                         <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                          <?php endif;?>
 			 </select></div>
-<!--
-                    <div><input type="text" id="emppost" name="emppost" value="<?php //echo $editdata->emp_post; ?>" readonly  size="35">
-                    </div>
-                    <?php //else:?>
-                    <div><input type="text" id="emppost" name="emppost" placeholder="Employee Post..."readonly  size="35">
-                    </div>
-                    <?php //endif?>-->
                 </td>
                 <td><label for="pnp" style="font-size:15px;"><font color='Blue'>Plan / Non Plan</font></label>
                     <div><select name="pnp" id="pnptypeid" style="width:300px;">

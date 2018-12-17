@@ -90,11 +90,11 @@ class SIS_model extends CI_Model
 
     // get the max values of selected field
     public function get_maxvalue($tbname,$selectfield,$whdata){
-            $this->db->flush_cache();
-            $this->db->select_max($selectfield);
-            $this->db->from($tbname);
-            $this->db->where($whdata);
-            return $this->db->get()->result();
+            $this->db2->flush_cache();
+            $this->db2->select_max($selectfield);
+            $this->db2->from($tbname);
+            $this->db2->where($whdata);
+            return $this->db2->get()->result();
     }
 
     //get the list of all records with  two specific fields for specific values

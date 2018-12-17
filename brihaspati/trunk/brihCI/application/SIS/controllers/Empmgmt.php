@@ -64,6 +64,66 @@ class Empmgmt extends CI_Controller
         $this->load->view('empmgmt/viewempprofile',$data);
     }
 
+public function academic_profile() {
+
+	//get id for employee to show data      
+        $currentuser=$this->session->userdata('username');
+        $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('saq_empid' => $emp_id, 'saq_dgree LIKE'=> 'B%') ;
+        $emp_data['ugraduate'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+
+        $whdata = array ('saq_empid' => $emp_id, 'saq_dgree LIKE'=> 'M%') ;
+        $emp_data['masters'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+        //$str='B%,M%';
+        $whdata = array ('saq_empid' => $emp_id,'saq_dgree NOT LIKE ' => 'B%','saq_dgree NOT LIKE ' => 'M%');
+        $emp_data['schooledu'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+
+        $whdata = array ('saq_empid' => $emp_id,'saq_dgree LIKE ' => 'P%','saq_dgree NOT LIKE ' => '%Diploma');
+        $emp_data['doctrate'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+
+        $whdata = array ('saq_empid' => $emp_id,'saq_dgree LIKE ' => '%Diploma');
+        $emp_data['diploma'] = $this->sismodel->get_orderlistspficemore('staff_academic_qualification',$selectfield,$whdata,'');
+
+	$this->load->view('empmgmt/academicprofile',$emp_data);
+    }
+
+public function technical_profile() {
+	 //get id for employee to show data      
+        $currentuser=$this->session->userdata('username');
+        $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
+        $emp_data['emp_id']=$emp_id;
+	
+	//for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('stq_empid' => $emp_id) ;
+        $emp_data['technical'] = $this->sismodel->get_orderlistspficemore('staff_technical_qualification',$selectfield,$whdata,'');
+
+	$this->load->view('empmgmt/technicalprofile',$emp_data);
+  }
+
+	
+
 public function service_profile() {
 
         //get id for employee to show data      
@@ -88,6 +148,7 @@ public function service_profile() {
 
         $this->load->view('empmgmt/service_profile',$emp_data);
   }
+
 public function performance_profile() {
 
         //get id for employee to show data      
@@ -114,7 +175,6 @@ public function performance_profile() {
 public function leave_profile() {
 
         //get id for employee to show data      
-//        $emp_id = $this->uri->segment(3);
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
@@ -128,9 +188,10 @@ public function leave_profile() {
 
         //get all profile and service data
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
-        $empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
-        $selectfield="la_type,granted_la_from_date,granted_la_to_date,la_taken";
-        $whdata = array ('la_userid' => $empuserid,'la_status' =>'1');
+        //$empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
+        $selectfield="la_id,la_type,granted_la_from_date,granted_la_to_date,la_taken,la_year,la_upfile";
+        $whdata = array ('la_userid' => $emp_id,'la_status' =>'1');
+        $whorder = "la_type asc,la_year desc";
 //      get the id of these leave type
 //      $orwhin = array('UEL on ML', 'EL', 'METERNITY LEAVE','EOL');
         $leaveid1 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Unearned Leave on Medical Leave')->lt_id;
@@ -139,8 +200,8 @@ public function leave_profile() {
         $leaveid4 =$this->sismodel->get_listspfic1('leave_type_master','lt_id','lt_name', 'Extra Ordinary Leave')->lt_id;
         $orwhin = array($leaveid1,$leaveid2,$leaveid3,$leaveid4);
         //for leave perticular
-     //   $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,'');
-        $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
+      //  $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemoreorwh('leave_apply',$selectfield,$whdata,'la_type',$orwhin,'');
+        $emp_data['leavedata'] = $this->sismodel->get_orderlistspficemore('leave_apply',$selectfield,$whdata,$whorder);
 
         $this->load->view('empmgmt/leave_profile',$emp_data);
   }
@@ -194,7 +255,6 @@ public function deptexam_profile() {
 public function workorder_profile() {
 
         //get id for employee to show data      
-  //      $emp_id = $this->uri->segment(3);
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
@@ -211,6 +271,7 @@ public function workorder_profile() {
         $selectfield="*";
         $whdata = array ('swap_empcode' => $empcode);
         $emp_data['workarrangdata'] = $this->sismodel->get_orderlistspficemore('staff_working_arrangements_perticulars',$selectfield,$whdata,'');
+
         $this->load->view('empmgmt/workorder_profile',$emp_data);
   }
 public function recruit_profile() {
@@ -832,7 +893,7 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('payband','PayBand','trim|xss_clean');
             $this->form_validation->set_rules('gradepay','Grade Pay','trim|xss_clean');
             $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
-            $this->form_validation->set_rules('hnoauth','Authority Type','trim|xss_clean');
+            $this->form_validation->set_rules('huoauth','Authority Type','trim|xss_clean');
             $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');

@@ -4,7 +4,7 @@
 @ author sumit saxena[sumitsesaxena@gmail.com]
  -->
 <html>
-<title>View Faculty list</title>
+<title>View Employee Work order Profile</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         
@@ -98,6 +98,7 @@
                         <tr>
                             <th>Parent Details</th>
                             <th>Working Details</th>
+			    <th>From - To Date </th>
                             <th ></th>
                         </tr>
                     </thead>
@@ -134,6 +135,10 @@
                                  //."<br/> "."<b>Scheme-: </b>".$schme."</br> "."<b>DDO-: </b>".$ddo;
                                     ?>
                                </td>
+				<td>
+<?php                                   echo $record->swap_fromdate ." - ".$record->swap_todate ?>
+                                </td>
+
                                 <td>
                                 <?php
                               //  if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){

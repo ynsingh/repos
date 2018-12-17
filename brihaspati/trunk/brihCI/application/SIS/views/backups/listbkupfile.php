@@ -78,9 +78,9 @@
                             <td><?php echo $serial_no++; ?></td>
 				<td> <?php echo $item;      ?> </td>
 			    <td>
-
-				 <a href="<?php echo base_url().'backups/'.$key.$item ; ?>"
-                               target="_blank" type="application/octet-stream" download="<?php echo $item ;?>">Download </a>
+			<?php  echo anchor('backups/download_bkup_file/'.$key.$item, "Download" ,array('title' => 'Download Backup File' , 'class' => 'top_parent')); 
+				echo " | ";
+				echo anchor('backups/delete_bkup_file/'.$key.$item, "Delete" ,array('title' => 'Delete Backup File' , 'class' => 'top_parent')); ?>
 
 			    </td>
 			</tr>

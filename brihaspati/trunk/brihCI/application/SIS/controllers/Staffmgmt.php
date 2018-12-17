@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name Staffmgmt.php
+ * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author Manorama Pal (palseema30@gmail.com) Staff Profile,  Staff transfer and posting
  * re-engineering in add profile and edit profile according to tanuvas structure - 16 OCT 2017  
  * @author Om Prakash (omprakashkgp@gmail.com) Staff Position , Staff Position Archive
@@ -77,12 +78,11 @@ class Staffmgmt extends CI_Controller
 		$whdata = array ('emp_id' => $id);
 		$idata = array('emp_head' => "HEAD");
 		$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
+
 		$cdate = date("Y-m-d");
 		$cdatetime = date('Y-m-d H:i:s');
 		
 		//insert record in hod list
-//		hl_userid | hl_empcode | hl_deptid | hl_scid | hl_uopid | hl_datefrom  | hl_fromsession | hl_dateto  | hl_tosession | hl_status | hl_creatorid | hl_creatordate      | hl_modifierid | hl_modifydate
-//		$ithis->session->userdata('username')\
 		$empid = $id;
 		$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
 		$uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
@@ -106,12 +106,8 @@ class Staffmgmt extends CI_Controller
 
 
 		//insert record in service details
-//empsd_id | empsd_empid | empsd_orderno | empsd_campuscode | empsd_ucoid | empsd_deptid | empsd_schemeid | empsd_ddoid | empsd_worktype | empsd_group | empsd_shagpstid | empsd_desigcode | empsd_pbid | empsd_level | empsd_gradepay | empsd_pbdate | empsd_dojoin | empsd_dorelev | empsd_filename | empsd_fsession | empsd_tsession |
-//       1 |        1306 |               | 2                |           2 |            8 |             11 |          11 | Non Teaching   | C           | 73              | 88              |         10 | Level-7     |                | 1993-07-22   | 1993-07-22   | 2008-12-12    |                | NULL           | NULL           |
-
-
-			$emppost =  $this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
-			$pstid =$this->commodel->get_listspfic1('designation','desig_id','desig_name',$emppost)->desig_id;
+		$emppost =  $this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+		$pstid =$this->commodel->get_listspfic1('designation','desig_id','desig_name',$emppost)->desig_id;
 		$sddata = array(
 			'empsd_empid' => $empid,
 			'empsd_authority' =>'Head',
@@ -137,8 +133,6 @@ class Staffmgmt extends CI_Controller
 		$sdiflag=$this->sismodel->insertrec('employee_servicedetail',$sddata);
 		$this->logger->write_logmessage("insert", "HEAD data insert in employee_service detail table.".$id);
                 $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_service detail table.".$id );
-
-
 
 		$this->logger->write_logmessage("insert", "HEAD data insert in employee_master table.".$id);
                 $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_master table.".$id );
@@ -174,7 +168,6 @@ class Staffmgmt extends CI_Controller
 		$this->logger->write_logmessage("insert", "HEAD data remove in employee_master table.".$id);
                 $this->logger->write_dblogmessage("insert", "HEAD data remove in employee_master table.".$id );
 		$this->employeelist();
-
 	}
 /*	
 	public function changepf($empid){
@@ -2505,23 +2498,22 @@ class Staffmgmt extends CI_Controller
         	//echo json_encode("post=vaccancy==3=".$combval);
         $parts = explode(',',$combval);
         /******************Query for filteraion the post************************************/
-        /*$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                       'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_group' => $parts[5],'sp_tnt' => $parts[6]);*/
-        //$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-          //             'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
         $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2], 'sp_tnt' => $parts[4]);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_vacant',$datawh);
         //echo json_encode("post====".$emppost_data);
+	// for same department
+	$empdept=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$parts[5])->emp_dept_code;	
+	$emppostname=$this->sismodel->get_listspfic1('employee_master', 'emp_post', 'emp_id',$parts[5])->emp_post;
+	$emppostid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_name',$emppostname)->desig_id;
+//        echo "nks123".$emppostname."xxxxxx".$emppostid;	
         $emppost_select_box ='';
         $emppost_select_box.='<option value="">-------------- Select Post -----------------';
+	if($empdept == $parts[2]){
+		$emppost_select_box.='<option value='.$emppostid.'>'.$emppostname.' ';
+	}
+	
         if(!empty($emppost_data)){ 
-        	//echo json_encode("post=vaccancy==1=".$emppost_data->sp_vacant);
-           // foreach($emppost_data as $records){ 
-             //   if($records->sp_vacant > 0){ 
-                    /*$datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                        'sp_schemecode'=> $parts[3],'sp_group' => $parts[5],'sp_tnt' => $parts[6]); */ 
                     $datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],'sp_tnt' => $parts[4],'sp_vacant>' =>0); 
-                    //$emppost_finaldata = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_vacant',$datawh2);
                     $emppost_finaldata = $this->sismodel->get_distinctrecord('staff_position', 'sp_emppost',$datawh2);
                     foreach($emppost_finaldata as $empdata){
                         $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$empdata->sp_emppost)->desig_name;

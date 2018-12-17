@@ -518,9 +518,9 @@
                 <tr>
                     <td>Authority Type<font color='Red'></font></td>
 			<td>
-			<select name="hupauth" style="width:350px;" id="huoauth" >
+			<select name="huoauth" style="width:350px;" id="huoauth" >
 <?php			if(!empty($servicedata->empsd_authority)){ ?>
-				<option value="<?php echo $servicedata->empsd_authority;?>"><?php echo $servicedata->authority;?></option>
+				<option value="<?php echo $servicedata->empsd_authority;?>"><?php echo $servicedata->empsd_authority;?></option>
                        <?php }else{?>
 	                	<option selected="selected" disabled selected>Select Value</option>
                        <?php }?>

@@ -22,28 +22,30 @@ class Backups extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
+	/**
+	* folder names to backup that are in the same directory as the CI index.php
+	* these can either be just 1 folder name "application" or a path like "application/controllers"
+	* if this array is empty then entire site structure is backed up
+	* public $directories = array("application", "forum", "assets/images", "assets/js", "assets/css", "system");
+	*/
+	private $directories = array("application", "docs","database","config", "assets",  "system","uploads","index.php","slcmsindex.php","bgasindex.php","hrmindex.php","sisindex.php",);
 
 	/**
 	* containts a list of all the directories to ignore, leave empty to backup all
 	*/
-	private $directories = array("application", "docs","database","config", "assets",  "system","uploads",);
+	private $ignore_directories = array('backups','site_backup');
 
-/**
-* containts a list of all the directories to ignore, leave empty to backup all
-*/
-private $ignore_directories = array('backups');
+	/**
+	* the directory name used for the temp file copy when everything is backed up
+	*/
+	private $copy_directory = "site_backup";
 
-/**
-* the directory name used for the temp file copy when everything is backed up
-*/
-private $copy_directory = "site_backup";
-
-/**
-* used to mark that the directory structure has alread been copied
-*/
-private $structure_copied = FALSE;
+	/**
+	* used to mark that the directory structure has alread been copied
+	*/
+	private $structure_copied = FALSE;
 	
-public $base_path = "";
+	public $base_path = "";
 
 	function __construct() {
         	parent::__construct();
@@ -132,6 +134,7 @@ public $base_path = "";
 
 	public $backup_type=2;
 	//public function get_site_backup($file_path, $backup_type, $file_format = 1) {
+		// file format (zip=1)
 	public function get_site_backup($file_format = 1) {
 		$file_path = "backups/site_backups/";
 		$this->zip->clear_data();
@@ -189,7 +192,8 @@ public $base_path = "";
 			}
 		*/
 		}
-		 $this->listbkupfile();
+		$this->session->set_flashdata('success','Application Backup taken successfully.');
+		$this->listbkupfile();
 	}
 
 	private function copy_site_files($path, $dest) {
@@ -257,77 +261,31 @@ public $base_path = "";
 			}
 		}
 	}
-/*
-	function delete_site_file($file_id) {
-		$this->session->keep_flashdata($this->back_url_key);
-		if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL) {
-			$this->back_url = $this->home_url;
-		}
-		$file_data = $this->backup->delete_site_file($file_id);
-		if ($file_data !== NULL) {
-			$file = $file_data->backup_location . $file_data->backup_name;
-			if (file_exists($file)) {
-				unlink($file);
-			}
-		}
-		redirect($this->back_url);
-	}
 
-	function download_site_file($file_id) {
-		$this->session->keep_flashdata($this->back_url_key);
-		if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL) {
-			$this->back_url = $this->home_url;
-		}
-		$file_data = $this->backup->check_site_file($file_id);
-		if ($file_data !== NULL) {
-			$this->load->helper('download');
-			$file_path = $file_data->backup_location . $file_data->backup_name;
-			$data = file_get_contents($file_path); // Read the file's contents
-			$filename = basename($file_path);
-			$ext = pathinfo($filename, PATHINFO_EXTENSION);
-			$name = md5(date('d-m-Y H:i:s')) . date('_d-m-Y_H:i:s') . '.' . $ext;
-			force_download($name, $data);
-		}
-		redirect($this->back_url);
-	}
-*/
-
-    	function zipData($source, $destination) {
-        if (extension_loaded('zip')) {
-            if (file_exists($source)) {
-                $zip = new ZipArchive();
-                if ($zip->open($destination, ZIPARCHIVE::CREATE)) {
-                    $source = realpath($source);
-                    if (is_dir($source)) {
-                        $iterator = new RecursiveDirectoryIterator($source);
-                        // skip dot files while iterating 
-                        $iterator->setFlags(RecursiveDirectoryIterator::SKIP_DOTS);
-                        $files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::SELF_FIRST);
-                        foreach ($files as $file) {
-                            $file = realpath($file);
-                            if (is_dir($file)) {
-                                $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
-                            } else if (is_file($file)) {
-                                $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
-                            }
-                        }
-                    } else if (is_file($source)) {
-                        $zip->addFromString(basename($source), file_get_contents($source));
-                    }
+	function delete_bkup_file($loc,$filename) {
+		$file_path = $this->base_path."backups/".$loc."/".$filename;
+		if (file_exists($file_path)) {
+			unlink($file_path);
+                        $this->session->set_flashdata('success','Backup file deleted.');
+		}else{
+                        $this->session->set_flashdata('error','Backup file does not exist.');
                 }
-                return $zip->close();
-            }
-        }
-        return false;
-    }
-	
-	public function payrollsitebkup(){
-		$filename = 'payroll-'.date('Y-m-d').'.zip';
-		$path='C:\\xampp\\htdocs\\CodeIgniter\\';
-		$filedata=$this->zip->read_dir($path); 
-		$this->zip->add_data($filename, $filedata); 
-		$this->zip->archive('backups/'.$filename);
 
-		$this->zip->download($filename);
-	}	
+		$this->listbkupfile();
+	}
+
+	function download_bkup_file($loc,$filename) {
+		$file_path = $this->base_path."backups/".$loc."/".$filename;
+		if (file_exists($file_path)) {
+			$this->load->helper('download');
+			$data = file_get_contents($file_path); // Read the file's contents
+			$name = $filename;	
+			force_download($name, $data);
+		}else{
+			 $this->session->set_flashdata('error','Backup file does not exist.');
+		}
+		$this->listbkupfile();
+	}
+
+
 }//close class
