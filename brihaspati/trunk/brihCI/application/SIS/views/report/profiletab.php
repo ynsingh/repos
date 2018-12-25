@@ -79,6 +79,14 @@
 			<b>  <a href='<?php echo site_url()."/report/technical_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Technical Qualification</a> </b></td>
 		</tr>
                 <tr>
+			<?php if($current == 'promotional') { ?>
+				<td class=btn active>
+			<?php }else{ ?>
+				<td class=btn1>
+			<?php } ?>
+			<b>  <a href='<?php echo site_url()."/report/promotional_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Promotional Details</a></b> </td>
+		</tr>
+                <tr>
 			<?php if($current == 'service') { ?>
 				<td class=btn active>
 			<?php }else{ ?>

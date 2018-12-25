@@ -149,6 +149,32 @@ public function service_profile() {
         $this->load->view('empmgmt/service_profile',$emp_data);
   }
 
+public function promotional_profile() {
+
+        //get id for employee to show data      
+        $currentuser=$this->session->userdata('username');
+        $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+      //  $cdate=date('Y-m-d');
+  //      $this->headflag="false";
+    //    $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+      //  $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+      //  $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('spd_empid' => $emp_id);
+        $whorder = 'spd_id desc';
+        $emp_data['promotionaldata'] = $this->sismodel->get_orderlistspficemore('staff_promotionals_details',$selectfield,$whdata,$whorder);
+
+        $this->load->view('report/promotional_profile',$emp_data);
+  }
+
+
+
 public function performance_profile() {
 
         //get id for employee to show data      
@@ -797,6 +823,128 @@ public function disciplin_profile() {
         }//ifpost button
         $this->load->view('empmgmt/add_servicedata');
     }//function close
+
+
+    /***********************************Start Add service detail******************************************/
+    public function add_promotionaldata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+  //      $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
+//	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+//        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+ 
+
+        if(isset($_POST['addpromotdata'])) {	
+            //form validation
+	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
+	    $this->form_validation->set_rules('tlevel','Academic Level','trim|xss_clean');
+            $this->form_validation->set_rules('DateofAL','Date of AL','trim|xss_clean');
+            $this->form_validation->set_rules('payband','Academic Grade Pay','trim|xss_clean');
+            $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
+	    $this->form_validation->set_rules('ntlevel','Entry Level','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('Datesg','Date Selection Grade','trim|xss_clean');
+            $this->form_validation->set_rules('Datesp','Date Sepecial Grade','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                
+                redirect('empmgmt/add_promotionaldata');
+            }//formvalidation
+            else{
+
+		if(empty($_POST['paycomm'])){
+                        $pc='';
+                }else{
+                        $pc=$_POST['paycomm'];
+                }
+
+		if(empty($_POST['tlevel'])){
+			$level=$_POST['ntlevel'];
+		}else{
+			$level=$_POST['tlevel'];
+		}
+		if(empty($_POST['payband'])){
+			$agp='';
+		}else{
+			$agp=$_POST['payband'];
+		}
+		if(empty($_POST['DateofAGP'])){
+                        $agpdate='';
+                }else{
+                        $agpdate=$_POST['DateofAGP'];
+                }
+		if(empty($_POST['DateofAL'])){
+                        $ldate='';
+                }else{
+                        $ldate=$_POST['DateofAL'];
+                }
+		if(empty($_POST['Datefrom'])){
+                        $dojp='';
+                }else{
+                        $dojp=$_POST['Datefrom'];
+                }
+		if(empty($_POST['Datesg'])){
+                        $datesg='';
+                }else{
+                        $datesg=$_POST['Datesg'];
+                }
+		if(empty($_POST['Datesp'])){
+                        $datesp='';
+                }else{
+                        $datesp=$_POST['Datesp'];
+                }
+
+                $data = array(
+                    'spd_empid'           	=>$empid,
+		    'spd_wtype'        		=>$_POST['workingtype'],
+                    'spd_paycom'      		=>$pc,
+                    'spd_agp'           	=>$agp,
+                    'spd_agpdate'          	=>$agpdate,
+		    'spd_level'           	=>$level,
+		    'spd_leveldate'           	=>$ldate,
+                    'spd_group'           	=>$_POST['group'],
+                    'spd_designation'       	=>$_POST['designation'],
+                    'spd_dojinpost'        	=>$dojp,
+                    'spd_selgradedate'          =>$datesg,
+		    'spd_specialgrddate'       	=>$datesp,
+                    'spd_creatordate'           =>date('Y-m-d H:i:s'),
+                    'spd_creatorid'        	=>$this->session->userdata('username'),
+                    'spd_modifierid'        	=>$this->session->userdata('username'),
+                    'spd_modifydate'          	=>date('Y-m-d H:i:s')
+                );
+                $servdataflag=$this->sismodel->insertrec('staff_promotionals_details', $data) ;
+
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in insert staff Promotional record", "Error in insert staff Promotional record." );
+                    $this->logger->write_dblogmessage("error","Error in insert staff Promotional record ", "Error in insert staff Promotional record" );
+                    $this->session->set_flashdata('err_message','Error in insert staff Promotional record ');
+                    $this->load->view('empmgmt/add_promotionaldata',$data);
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("insert","Add Staff Promotional Data", "Staff Promotional record insert successfully." );
+                    $this->logger->write_dblogmessage("insert","Add Staff Promotional Data", "Staff Promotional record insert successfully ." );
+                    $this->session->set_flashdata('success','Promotional Data record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/promotional_profile/'.$empid);
+                    }
+                                       
+                }
+            }//else
+        }//ifpost button
+        $this->load->view('empmgmt/add_promotionaldata');
+    }//function close
+
 /* This function has been created for get list of uco on the basis of campus */
     /*In future this code may be replace when either campusid added in the 
      authority or authority added in campus.*/
@@ -1557,12 +1705,18 @@ public function disciplin_profile() {
                 redirect('empmgmt/add_workarrangdata');
             }//formvalidation
             else{
-        $empcamp=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
-        $empuo=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
-        $empdept=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+        	$empcamp=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+	        $empuo=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+        	$empdept=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
 		if(isset($_POST['campus'])){ $wcamp = $_POST['campus'];} else {$wcamp='';}
 		if(isset($_POST['uocontrol'])){ $wuo = $_POST['uocontrol'];} else {$wuo='';}
 		if(isset($_POST['department'])){ $wdept = $_POST['department'];} else {$wdept='';}
+		$wds=$_POST['workdept'];
+		if($wds === "Yes"){
+			$wcamp=$empcamp;
+			$wuo=$empuo;
+			$wdept=$empdept;
+		}
                 $data = array(
                     'swap_userid'       =>$empuserid,
                     'swap_empcode'      =>$empcode,
@@ -1572,8 +1726,8 @@ public function disciplin_profile() {
                     'swap_wcampus'      =>$wcamp,
 		    'swap_wuo'        	=>$wuo,
                     'swap_wdept'        =>$wdept,
-                    'swap_fromdate'        =>$_POST['Datefrom'],
-                    'swap_todate'        =>$_POST['Dateto'],
+                    'swap_fromdate'     =>$_POST['Datefrom'],
+                    'swap_todate'       =>$_POST['Dateto'],
                     'swap_creatorid'    =>$this->session->userdata('username'),
 		    'swap_creatordate'  =>date('Y-m-d'),
 		    'swap_modifierid'   =>$this->session->userdata('username'),
@@ -2290,6 +2444,7 @@ public function disciplin_profile() {
         $this->load->view('empmgmt/edit_technicalprofile');
         
     }//closer
+
     /**This function Delete records */
     public function delete_serviceprofile($id) {
         $this->roleid=$this->session->userdata('id_role');
@@ -2324,6 +2479,39 @@ public function disciplin_profile() {
 
     }//closer 
     
+	/**This function Delete records */
+    	public function delete_workorderprofile($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+	        $usrid=$this->session->userdata('id_user');
+		$empcode=$this->sismodel->get_listspfic1('staff_working_arrangements_perticulars', 'swap_empcode', 'swap_id',$id)->swap_empcode;
+		$this->emp_id=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$empcode)->emp_id;
+//        	$this->emp_id=$this->sismodel->get_listspfic1('staff_working_arrangements_perticulars', 'swap_userid', 'swap_id',$id)->swap_userid;
+	        if( $usrid == 1){
+        		/* Deleting academicprofile Record */
+		        $delflag=$this->sismodel->deleterow('staff_working_arrangements_perticulars','swap_id',$id);
+		        if (! delflag   )
+        		{
+            			$this->logger->write_logmessage("delete", "Error in deleting staff_working_arrangements_perticulars record" . " [id:" . $id . "]");
+            			$this->logger->write_dblogmessage("delete", "Error in deleting staff_working_arrangements_perticulars record" . " [id:" . $id . "]");
+            			$this->session->set_flashdata("err_message",'Error in deleting deleting staff_working_arrangements_perticulars record - ');
+            			redirect('report/workorder_profile/'.$this->emp_id);
+        		}
+        		else{
+            			$this->logger->write_logmessage("delete", " Deleted staff_working_arrangements_perticulars Record  ". " [id:" . $id . "]");
+            			$this->logger->write_dblogmessage("delete", "Deleted staff_working_arrangements_perticulars Record  " . " [id:" . $id . "]");
+            			$this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            			redirect('report/workorder_profile/'.$this->emp_id);
+        		}
+        	}
+        	else{
+            		$lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+            		$this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_working_arrangements_perticulars Record  ". " [id:" . $id . "]");
+            		$this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff_working_arrangements_perticulars Record  " . " [id:" . $id . "]");
+            		$this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee service record.' );
+            		redirect('report/workorder_profile/'.$this->emp_id);
+        	}
+        	$this->load->view('report/workorder_profile/'.$this->emp_id);
+    	}//closer 
     
     
 }//classcloser    

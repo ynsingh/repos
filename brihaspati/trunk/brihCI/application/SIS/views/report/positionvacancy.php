@@ -36,9 +36,11 @@
                     else{
                         $('#post').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getpostlist_sp",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist",
+                            //url: "<?php echo base_url();?>sisindex.php/report/getpostlist_sp",
                             type: "POST",
-                            data: {"worktype" : workt},
+                            data: {"wtype" : workt},
+                            //data: {"worktype" : workt},
                             dataType:"html",
                             success:function(data){
                             //alert("data==1="+data);

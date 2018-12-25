@@ -350,7 +350,8 @@ class Staffmgmt extends CI_Controller
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
 	$whdata=array('sgm_level'=> "");
         $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
-	$whdata=array('sgm_gradepay'=> "");
+	$whdata=array('sgm_level !='=> "");
+	//$whdata=array('sgm_gradepay'=> "");
         $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
         /*********************select category/community list*****************************************/
         $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
@@ -898,7 +899,8 @@ class Staffmgmt extends CI_Controller
 //        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
 	$whdata=array('sgm_level'=> "");
         $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
-        $whdata=array('sgm_gradepay'=> "");
+        //$whdata=array('sgm_gradepay'=> "");
+	$whdata=array('sgm_level !='=> "");
         $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
 
         $this->states=$this->commodel->get_listspficarry('states','id,name','country_id',101); 

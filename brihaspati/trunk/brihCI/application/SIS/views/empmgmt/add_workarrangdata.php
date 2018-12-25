@@ -250,38 +250,11 @@
 	<tr>
                     <td>Date From<font color='Red'></font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40"  >
-<!--
-                         <select name="fsession" style="width:110px;" id="fsession" required>
-                <option selected="selected" disabled selected>Select Session</option>
-                        <option value="Forenoon">Forenoon</option>
-                        <option value="Afternoon">Afternon</option>
-                        </select></td>-->
                 </tr>
                 <tr>
                     <td>Date To<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo isset($_POST["Dateto"]) ? $_POST["Dateto"] : ''; ?>"  size="40" >
-                   <!--      <select name="tsession" style="width:110px;" id="tsession" >
-                         <option selected="selected" disabled selected>Select Session</option>
-                        <option value="Forenoon">Forenoon</option>
-                        <option value="Afternoon">Afternon</option>
-                        </select></td>-->
                 </tr>
-<!--
-<tr>
-                <td>Scheme Name<font color='Red'></font></td>
-                <td><select name="schemecode" style="width:350px;"id="schmid" required>
-                <option selected="selected" disabled selected>--------Scheme Name-----</option>
-                </select>
-                </td>
-        </tr>
-<tr>
-                <td>Drawing and Disbursing Officer<font color='Red'></font></td>
-                <td><select name="ddo" style="width:350px;"id="ddoid" required>
-                <option selected="selected" disabled selected>--------Drawing and Disbursing Officer-----</option>
-                </select>
-                </td>
-       		</tr>
--->
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">

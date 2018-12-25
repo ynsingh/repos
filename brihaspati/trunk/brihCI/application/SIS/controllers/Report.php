@@ -414,6 +414,33 @@ class Report  extends CI_Controller
         $this->load->view('report/service_profile',$emp_data);
   }
 
+public function promotional_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="*";
+        $whdata = array ('spd_empid' => $emp_id);
+        $whorder = 'spd_id desc';
+        $emp_data['promotionaldata'] = $this->sismodel->get_orderlistspficemore('staff_promotionals_details',$selectfield,$whdata,$whorder);
+
+        $emp_data['uoempid']=$this->getempuoid();
+        $emp_data['hodempid']=$this->getemphodid();
+
+        $this->load->view('report/promotional_profile',$emp_data);
+  }
+
+
   public function performance_profile() {
 
         //get id for employee to show data      
@@ -871,30 +898,21 @@ public function disciplinewiselist(){
 	$whdata = $this->getwhdata();
      
         $data['tnttype']='';
-        //$whdata = array('sp_uo'=> $uo);
-         if(isset($_POST['filter'])) {
-            //echo "ifcase post of filter";
-            $wtype = $this->input->post('wtype');
-            $post  = $this->input->post('post');
+        if(isset($_POST['filter'])) {
+        	$wtype = $this->input->post('wtype');
+            	$post  = $this->input->post('post');
 		$data['tnttype']=$this->wtyp = $wtype;
 		$this->desigm = $post;
-            $whdata['sp_tnt']=$wtype;
-            if(!empty($post) && ($post!="All")){
-                //$whdata = array('sp_tnt'=> $wtype,'sp_emppost' =>$post);
-		// $whdata['sp_tnt']=$wtype;
-		 $whdata['sp_emppost']=$post;
-            }
-      //      else{
-                //$whdata = array('sp_tnt'=> $wtype);
-	//	 $whdata['sp_tnt']=$wtype;
-          //  }
-//print_r($whdata); die;
-            $data['allpost']=$this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
-         }
-         else{
-            // $data['allpost']=$this->sismodel->get_distinctrecord('staff_position','sp_emppost','');
-            $data['allpost']=$this->sismodel->get_distinctrecord('staff_position',$selectfield,$whdata);
-         }
+            	$whdata['sp_tnt']=$wtype;
+            	if(!empty($post) && ($post!="All")){
+			$whdata['sp_emppost']=$post;
+            	}
+            	$data['allpost']=$this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
+        }
+        else{
+            	// $data['allpost']=$this->sismodel->get_distinctrecord('staff_position','sp_emppost','');
+            	$data['allpost']=$this->sismodel->get_distinctrecord('staff_position',$selectfield,$whdata);
+        }
         $this->logger->write_logmessage("view"," view position vacancy" );
         $this->logger->write_dblogmessage("view"," view position vacancy");
         $this->load->view('report/positionvacancy',$data);
@@ -1206,18 +1224,6 @@ public function disciplinewiselist(){
 	 $whdata = '';
         $whdata = $this->getwhdata();
         $whdata['sp_tnt'] = $combid;
-/*	$rlid=$this->session->userdata('id_role');
-        if ($rlid == 5){
-                $usrid=$this->session->userdata('id_user');
-                $deptid = '';
-                $whdatad = array('userid' => $usrid,'roleid' => $rlid);
-                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
-                foreach($resu as $rw){
-                        $deptid=$rw->deptid;
-                }
-                $datawh['sp_dept'] = $deptid;
-        }
-*/
 	$whorder = 'sp_uo asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_uo',$whdata,$whorder);
         $uo_select_box =' ';
@@ -1284,19 +1290,6 @@ public function disciplinewiselist(){
         $combid= $this->input->post('worktype');
 	 $whdata = '';
         $whdata = $this->getwhdata();
-/*	$datawh ='';
-                $rlid=$this->session->userdata('id_role');
-                if ($rlid == 5){
-                        $usrid=$this->session->userdata('id_user');
-                        $deptid = '';
-                        $whdatad = array('userid' => $usrid,'roleid' => $rlid);
-                        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
-                        foreach($resu as $rw){
-                                $deptid=$rw->deptid;
-                        }
-                        $datawh = array ('sp_dept' => $deptid);
-                }
-*/
         $whdata['sp_tnt'] = $combid;
 	$whorder = 'sp_emppost asc';
         $comb_data = $this->sismodel->get_orderdistinctrecord('staff_position','sp_emppost',$whdata,$whorder);

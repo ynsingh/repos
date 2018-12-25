@@ -91,6 +91,14 @@
                 
                 
                 <tr>
+			<?php if($current == 'promotional') { ?>
+				<td class=btn active>
+			<?php }else{ ?>
+				<td class=btn1>
+			<?php } ?>
+			<b>  <a href='<?php echo site_url()."/empmgmt/promotional_profile"?>' style="font-size:17px;color:#0099CC;text-decoration: none">Promotional Details</a></b> </td>
+		</tr>
+                <tr>
 			<?php if($current == 'service') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
