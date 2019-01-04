@@ -825,7 +825,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="">------ Select Plan / Non-Plan -----------</option>
                         <?php endif?>
                         <option value="Plan">Plan</option>
-                        <option value="Non-Paln">Non-Plan</option>
+                        <option value="Non-Plan">Non-Plan</option>
                         <option value="GOI">GOI</option>
                         <option value="ICAR">ICAR</option> 
                     </select></div>
@@ -914,12 +914,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                         <option value="">------------ Select Religion ---------</option>
                         <?php endif?>
-                        <option value="Hinduism">Hinduism</option>
+                        <option value="Hindu">Hindu</option>
                         <option value="Islam">Islam</option>
-                        <option value="Sikhism">Sikhism</option>
-                        <option value="Christianity">Christianity</option>
-                        <option value=" Buddhism">Buddhism</option>
-                        <option value="Jainism">Jainism</option>
+                        <option value="Sikh">Sikh</option>
+                        <option value="Christian">Christian</option>
+                        <option value=" Buddh">Buddh</option>
+                        <option value="Jain">Jain</option>
                     </select></div>
                 </td>
             </tr>
@@ -931,7 +931,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             
                 <td><label for="payband" style="font-size:15px;"><font color='Blue'>Pay Band</font><font color='Red'>*</font></label>
                     <div><select name="payband" id="payband" required style="width:300px;"> 
-			
+			<?php
+                        if(!empty($editdata->emp_salary_grade)){ ?>
                         <option value="<?php echo $editdata->emp_salary_grade;?>">
                             <?php
                             $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$editdata->emp_salary_grade)->sgm_name;
@@ -940,7 +941,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$editdata->emp_salary_grade)->sgm_gradepay;
                             ;?>
                             <?php echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;?></option>
-
+			<?php } ?>
                             <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
                             </option> 
@@ -1203,7 +1204,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>    
                 </td>
                 <td><label for="Discipline " style="font-size:15px;"><font color='Blue'>Discipline</font></label>
-		<div> <select id="phddiscipline" style="width:300px;" name="phddiscipline" required>
+		<div> <select id="phddiscipline" style="width:300px;" name="phddiscipline" >
 			 <?php if(!empty($editdata->emp_phddiscipline)):?>
                         <option  value="<?php echo $editdata->emp_phddiscipline;?>"><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$editdata->emp_phddiscipline)->sub_name;?></option>
                         <?php else:?>

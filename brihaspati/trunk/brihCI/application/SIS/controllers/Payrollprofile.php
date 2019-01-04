@@ -183,20 +183,27 @@ class Payrollprofile extends CI_Controller
 					'sle_modifierid' => $this->session->userdata('username'),
 					'sle_modifidate' => date('Y-m-d H:i:s')
 				);
-
-				$insflag=$this->sismodel->insertrec('salary_leave_entry', $empldata);	
+				if(!empty($empid)){
+					$insflag=$this->sismodel->insertrec('salary_leave_entry', $empldata);	
+				}else{
+					$this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '  , 'error');
+					redirect('payrollprofile/viewpayleaveentry');
+					return;
+				}
 				if (!$insflag)
 		                    	{
                 	        	$this->logger->write_logmessage("insert","Trying to add leave  values in payroll profile ", " payroll profile leave values are not inserted please try again");
                         		$this->logger->write_dblogmessage("insert","Trying to add leave values in payroll profile", " payroll profile leave values are not inserted please try again");
                         		$this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '  , 'error');
                         		redirect('payrollprofile/payleaveentry');
+					return;
 	                    	}
         	            	else{
                 	        	$this->logger->write_logmessage("insert","Add leave entry  values in payroll profile", "payroll profile leave values inserted  successfully...");
                         		$this->logger->write_dblogmessage("insert","Add  leave entry values in payroll profile", " payroll profile values inserted  successfully...");
 	                        	$this->session->set_flashdata("success", " Payroll Profile leave values inserted  successfully. PF No is  " ."[ "  .$emppfno. " ]");
  		       	                redirect('payrollprofile/viewpayleaveentry');
+					return;
                 	    	}
 
 
@@ -208,14 +215,38 @@ class Payrollprofile extends CI_Controller
 	public function viewpayleaveentry(){
 		$cyear= date("Y");
 		$cmonth= date("M");
+		if(isset($_POST['filter'])) {
+                        $this->form_validation->set_rules('month','Month','trim|xss_clean');
+                        $this->form_validation->set_rules('year','Year','trim|xss_clean');
+			$cmonth = $this->input->post('month', '');
+                        $cyear = $this->input->post('year', '');
+		} 
 		$whdata = array('sle_year' =>$cyear,'sle_month' =>$cmonth);
-		$selectfield='sle_empid,sle_pal,sle_eol';
+		$selectfield='sle_id,sle_empid,sle_pal,sle_eol';
 		$whorder ='sle_empid';
 		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_leave_entry',$selectfield,$whdata,$whorder);
 		$this->load->view('payrollprofile/viewpayleaveentry',$data);
 	}
+	
+	public function deletepayleaves($id){
+                $roleid=$this->session->userdata('id_role');
+                if($roleid == 1){
+                        $delflag=$this->sismodel->deleterow('salary_leave_entry','sle_id',$id);
+			$this->logger->write_logmessage("delete"," to delete sal leave  values in payroll profile ", " payroll profile sal leave values are  deleted");
+                        $this->logger->write_dblogmessage("delete","to delete sal leave values in payroll profile", " payroll profile sal leave values are  deleted ");
+                        $this->session->set_flashdata("success", " Payroll Profile transfer values removed  successfully. SLE No is  " ."[ "  .$id. " ]");
+                        redirect('payrollprofile/viewpayleaveentry');
+                }else{
+                        $this->session->set_flashdata("err_message", " You do not have the privledge to remove the data");
+                        redirect('payrollprofile/viewpayleaveentry');
+                }
+        }
 
        	public function paytransentry(){
+		$whorder='hg_gradeid';
+		$data['hragrade'] =$this->sismodel->get_orderlistspficemore('hra_grade','hg_gradeid,hg_amount','',$whorder);
+		$whorder='cca_gradeid';
+		$data['ccagrade'] =$this->sismodel->get_orderlistspficemore('ccaallowance_calculation','cca_gradeid,cca_amount','',$whorder);
 	        if(isset($_POST['ptransent'])) {
             		$this->form_validation->set_rules('emppfno','Employee PF Number','trim|xss_clean');
 	            	$this->form_validation->set_rules('days','Days','trim|xss_clean');
@@ -272,14 +303,34 @@ class Payrollprofile extends CI_Controller
 
 			}
 		}
-		$this->load->view('payrollprofile/paytransentry');
+		$this->load->view('payrollprofile/paytransentry',$data);
 	}
 
+	public function deletepaytrans($id){
+		$roleid=$this->session->userdata('id_role');
+		if($roleid == 1){
+			$delflag=$this->sismodel->deleterow('salary_transfer_entry','ste_id',$id);	
+			$this->logger->write_logmessage("delete"," to delete sal trans  values in payroll profile ", " payroll profile sal trans values are  deleted");
+                        $this->logger->write_dblogmessage("delete","to delete sal trans values in payroll profile", " payroll profile sal trans values are  deleted ");
+			$this->session->set_flashdata("success", " Payroll Profile transfer values removed  successfully. STE No is  " ."[ "  .$id. " ]");
+			redirect('payrollprofile/viewpaytransentry');
+		}else{
+			$this->session->set_flashdata("err_message", " You do not have the privledge to remove the data");
+			redirect('payrollprofile/viewpaytransentry');
+		}
+	}
 	public function viewpaytransentry(){
 		$cyear= date("Y");
 		$cmonth= date("M");
+		if(isset($_POST['filter'])) {
+                        $this->form_validation->set_rules('month','Month','trim|xss_clean');
+                        $this->form_validation->set_rules('year','Year','trim|xss_clean');
+                        $cmonth = $this->input->post('month', '');
+                        $cyear = $this->input->post('year', '');
+                }
+
 		$whdata = array('ste_year' =>$cyear,'ste_month' =>$cmonth);
-		$selectfield='ste_empid,ste_days,ste_transit,ste_hrafrom,ste_hrato';
+		$selectfield='ste_id,ste_empid,ste_days,ste_transit,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato';
 		$whorder ='ste_empid';
 		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$selectfield,$whdata,$whorder);
 		$this->load->view('payrollprofile/viewpaytransentry',$data);

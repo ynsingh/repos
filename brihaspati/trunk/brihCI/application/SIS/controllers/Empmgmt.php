@@ -829,12 +829,6 @@ public function disciplin_profile() {
     public function add_promotionaldata($empid) {
         $this->roleid=$this->session->userdata('id_role');
         $this->emp_id = $empid;
-  //      $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-        //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
-//	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
-//        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
- 
 
         if(isset($_POST['addpromotdata'])) {	
             //form validation
@@ -1135,9 +1129,11 @@ public function disciplin_profile() {
 		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$dateto,
 		    'empsd_tsession'	    =>$_POST['tsession'],
-		    'empsd_filename'	    => $new_name,
+//		    'empsd_filename'	    => $new_name,
                 );
-		
+		if(!empty($new_name)){
+			$edit_data['empsd_filename']=$new_name;
+		}	
 		$msgfile='';
                 if(!empty($_FILES['userfile']['name'])){
                     
@@ -1200,6 +1196,138 @@ public function disciplin_profile() {
         }   
     }
     /****************************  Closer UPDATE DATA *************************/
+
+
+    /*edit employee promotional detail*/
+    
+    public function edit_promotdata($id) {
+        $this->roleid=$this->session->userdata('id_role');
+/*        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+        $this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+*/
+        $data['id'] = $id;
+        $data['promotdata'] = $this->sismodel->get_listrow('staff_promotionals_details','spd_id',$id)->row();
+        $this->load->view('empmgmt/edit_promotdata',$data);
+        
+    }
+    /****************************  START UPDATE DATA *************************/
+    public function update_promotdata($id){
+        $this->roleid=$this->session->userdata('id_role');
+        $sperf_dataquery=$this->sismodel->get_listrow('staff_promotionals_details','spd_id', $id);
+        $eds_data['promotdata'] = $sperf_dataquery->row();
+	$empid = $sperf_dataquery->row()->spd_empid;
+        $data['id'] = $id;
+        if(isset($_POST['editpromotdata'])) {	
+            //form validation
+	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
+	    $this->form_validation->set_rules('tlevel','Academic Level','trim|xss_clean');
+            $this->form_validation->set_rules('DateofAL','Date of AL','trim|xss_clean');
+            $this->form_validation->set_rules('payband','Academic Grade Pay','trim|xss_clean');
+            $this->form_validation->set_rules('DateofAGP','Date of AGP','trim|xss_clean');
+	    $this->form_validation->set_rules('ntlevel','Entry Level','trim|xss_clean');
+            $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
+            $this->form_validation->set_rules('Datesg','Date Selection Grade','trim|xss_clean');
+            $this->form_validation->set_rules('Datesp','Date Sepecial Grade','trim|xss_clean');
+            if($this->form_validation->run() == FALSE){
+//               $this->load->view('empmgmt/edit_promotdata/',$data);
+                redirect('empmgmt/edit_promotdata/'.$id);
+		return; 
+            }//formvalidation
+            else{
+
+		if(empty($_POST['paycomm'])){
+                        $pc='';
+                }else{
+                        $pc=$_POST['paycomm'];
+                }
+
+		if(empty($_POST['tlevel'])){
+			$level=$_POST['ntlevel'];
+		}else{
+			$level=$_POST['tlevel'];
+		}
+		if(empty($_POST['payband'])){
+			$agp='';
+		}else{
+			$agp=$_POST['payband'];
+		}
+		if(empty($_POST['DateofAGP'])){
+                        $agpdate='';
+                }else{
+                        $agpdate=$_POST['DateofAGP'];
+                }
+		if(empty($_POST['DateofAL'])){
+                        $ldate='';
+                }else{
+                        $ldate=$_POST['DateofAL'];
+                }
+		if(empty($_POST['Datefrom'])){
+                        $dojp='';
+                }else{
+                        $dojp=$_POST['Datefrom'];
+                }
+		if(empty($_POST['Datesg'])){
+                        $datesg='';
+                }else{
+                        $datesg=$_POST['Datesg'];
+                }
+		if(empty($_POST['Datesp'])){
+                        $datesp='';
+                }else{
+                        $datesp=$_POST['Datesp'];
+                }
+
+                $data = array(
+//                    'spd_empid'           	=>$empid,
+		    'spd_wtype'        		=>$_POST['workingtype'],
+                    'spd_paycom'      		=>$pc,
+                    'spd_agp'           	=>$agp,
+                    'spd_agpdate'          	=>$agpdate,
+		    'spd_level'           	=>$level,
+		    'spd_leveldate'           	=>$ldate,
+                    'spd_group'           	=>$_POST['group'],
+                    'spd_designation'       	=>$_POST['designation'],
+                    'spd_dojinpost'        	=>$dojp,
+                    'spd_selgradedate'          =>$datesg,
+		    'spd_specialgrddate'       	=>$datesp,
+                    'spd_modifierid'        	=>$this->session->userdata('username'),
+                    'spd_modifydate'          	=>date('Y-m-d H:i:s')
+                );
+                $servdataflag=$this->sismodel->updaterec('staff_promotionals_details', $data,'spd_id', $id) ;
+
+                if(!$servdataflag)
+                {
+                    $this->logger->write_logmessage("error","Error in update staff Promotional record", "Error in update staff Promotional record." );
+                    $this->logger->write_dblogmessage("error","Error in update staff Promotional record ", "Error in update staff Promotional record" );
+                    $this->session->set_flashdata('err_message','Error in update staff Promotional record ');
+                    //$this->load->view('empmgmt/edit_promotdata/'.$id,$data);
+                    redirect('empmgmt/edit_promotdata/'.$id);
+		    return; 
+                }
+                else{
+                    $this->roleid=$this->session->userdata('id_role');
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    $this->logger->write_logmessage("update","Update Staff Promotional Data", "Staff Promotional record update successfully." );
+                    $this->logger->write_dblogmessage("update","Update Staff Promotional Data", "Staff Promotional record update successfully ." );
+                    $this->session->set_flashdata('success','Promotional Data record updated successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    if($this->roleid == 4){
+                        redirect('empmgmt/viewempprofile');
+                    }
+                    else{
+                        redirect('report/promotional_profile/'.$empid);
+                    }
+                                       
+                }
+        }  } 
+    }
+    /****************************  Closer UPDATE promotional DATA *************************/
+
     /***********************************Start Add service detail******************************************/
     public function add_disciplindata($empid) {
         $this->roleid=$this->session->userdata('id_role');

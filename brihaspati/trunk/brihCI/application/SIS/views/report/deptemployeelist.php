@@ -71,7 +71,8 @@
                     else{
                         $('#dept').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getdeptlist",
+                            //url: "<?php echo base_url();?>sisindex.php/report/getdeptlist",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getdeptlist",
                             type: "POST",
                             data: {"worktypeuo" : wrktypeuo},
                             dataType:"html",
@@ -143,7 +144,7 @@
                     </select> 
                 </td> 
                 <td><div>  Select Department<br>
-                    <select name="dept[]" id="dept" style="width:250px;"  title="You have to choose multiple subject by pressing Ctrl" multiple> 
+                    <select name="dept[]" id="dept" style="width:400px;"  title="You have to choose multiple subject by pressing Ctrl" multiple> 
 			 <?php if((!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
                         <option value="<?php echo $this->deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$this->deptmt)->dept_code ." )"; ?></option>
                         <?php  }else{ ?>

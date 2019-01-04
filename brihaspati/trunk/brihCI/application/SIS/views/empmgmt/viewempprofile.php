@@ -14,6 +14,10 @@
                 size: auto;   /* auto is the initial value */
                 margin:0;  /* this affects the margin in the printer settings */
             }
+	html
+	{
+	    overflow: scroll;
+	}
         </style>
         <script type="text/javascript">
              function printDiv(printme) {
@@ -62,7 +66,7 @@
 
 	<div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
-        <table width="100%" border=0>
+        <table width="100%" border=0 >
                 <tr style=" background-color:grey;width:100%;"> 
 			<td colspan="10"><img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >
 			</td>
@@ -747,6 +751,8 @@
 		</table>        
          </div>   
  </div>   
+        <p> &nbsp; </p>   
+        <p> &nbsp; </p>   
         <p> &nbsp; </p>   
         </div><?php $this->load->view('template/footer'); ?></div>
     </body>

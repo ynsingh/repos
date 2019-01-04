@@ -77,6 +77,7 @@
                         <tr>
 		</table>
 		<table class="TFtable" align="center">
+                        <?php if( !empty($promotionaldata) ):  ?>
                     <thead>
                         <tr>
                             <th>Working Type</th>
@@ -97,7 +98,6 @@
                     </thead>
                     <tbody>
                         
-                        <?php if( !empty($promotionaldata) ):  ?>
                             <?php foreach($promotionaldata as $record){;
 //print_r($record);
 //die;

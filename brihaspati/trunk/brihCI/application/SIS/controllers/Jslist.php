@@ -34,18 +34,8 @@ class Jslist extends CI_Controller
                 $datawh=array('desig_type' => $groups);
 		$rlid=$this->session->userdata('id_role');
        	        $usrid=$this->session->userdata('id_user');
-//	        if ($rlid == 5){
-//	                $deptid = '';
-  //              	$whdatad = array('userid' => $usrid,'roleid' => $rlid);
-    //    	        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
-//	                foreach($resu as $rw){
-  //                      	$deptid=$rw->deptid;
-    //            	}
-        	//        $datawh['emp_dept_code'] = $deptid;
-//	        }
 
 		$whorder = "desig_name asc";
-//		echo $deptid; die();
         	$grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
                 //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
                 $desig_select_box ='';
@@ -141,7 +131,68 @@ class Jslist extends CI_Controller
         } //if close   
         echo json_encode($emptype_select_box);
     }
-    
+   
+	/* get the dept list on the basis of UO */
+	public function getdeptlist(){
+		$combid= $this->input->post('worktypeuo');
+        	$parts = explode(',',$combid);
+       // echo "sc===".$combid;
+        	if($parts[1]!="All"){
+            		$datawh=array('dept_uoid' => $parts[1]);
+            	//	$datawh=array('emp_worktype' => $parts[0],'emp_uocid' => $parts[1]);
+        	}
+        	else{
+            	//	$datawh=array('emp_worktype' => $parts[0]);
+        	}
+//      get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
+        $whorder = 'dept_name asc';
+	$comb_data = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
+//        $comb_data = $this->sismodel->get_orderdistinctrecord('employee_master','emp_dept_code',$datawh,$whorder);
+        $dept_select_box =' ';
+        $dept_select_box.='<option value=null>--Select Department--';
+        $dept_select_box.='<option value='.All.'>'.All. ' ';
+        if(count($comb_data)>0){
+            foreach($comb_data as $detail){
+//                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+  //              $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
+
+    //            $dept_select_box.='<option value='.$detail->emp_dept_code.'>'.$deptname. '(' .$deptcode. ')'.' ';
+                $dept_select_box.='<option value='.$detail->dept_id.'>'.$detail->dept_name. '(' .$detail->dept_code. ')'.' ';
+
+            }
+        }
+        echo json_encode($dept_select_box);
+
+	}
+
+	public function getemppdata(){
+	        $values=array();
+        	$pfno= $this->input->post('emplypfno');
+	        $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
+       // echo "pfno---".$pfno;
+        	$emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
+	        $empdetail = $emp_data->result();
+        	if(count($empdetail)>0){
+			 foreach($empdetail as $detail){
+		                $campus=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$detail->emp_scid)->sc_name;
+                		$uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
+		                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+		                $schme=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id',$detail->emp_schemeid)->sd_name;
+				$designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
+		                $empname=$detail->emp_name;
+				$ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
+				array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$designame,$empname,$empid);
+			}
+		}
+		else{
+			$mess="Please enter the valid PF Number";
+			array_push($values,$mess);
+		}
+		//implode("+",$values);
+		echo json_encode($values);
+	}
+
+ 
     /***** This function has been created for get the employee detail by pf no ********************************/
     public function getempdata(){
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;

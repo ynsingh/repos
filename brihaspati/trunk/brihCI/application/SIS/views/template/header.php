@@ -42,7 +42,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
         if (($this->session->userdata('username')) !=''){
 ?>
-
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<?php //echo $this->session->userdata('id_emp'); ?>
+<table id="uname"><tr><td align=center>Welcome  
+	<?php  
+	//	if($role == 1){
+	//		echo $this->session->userdata('username');
+	//	}else{
+			$dexist=false;
+			$empid=$this->session->userdata('id_emp');
+			if(!empty($empid)){
+				$dexist=$this->sismodel->isduplicate('employee_master','emp_id',$this->session->userdata('id_emp'));
+			}
+			if($dexist){
+				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id' ,$this->session->userdata('id_emp'))->emp_name ." ( ";
+			}			
+			echo $this->session->userdata('username');
+			if($dexist){
+				echo " ) "; 
+			}
+	//	}
+	?>  
+</td></tr></table>
 <?php } ?>
 

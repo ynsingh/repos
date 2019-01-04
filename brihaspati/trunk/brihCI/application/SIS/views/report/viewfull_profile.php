@@ -189,16 +189,17 @@
                                 </td>
 <td>
 <?php   
-	 		    $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_grade)->sgm_name;
-                            $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_grade)->sgm_max;
-                            $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$data->emp_salary_grade)->sgm_min;
-                            $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$data->emp_salary_grade)->sgm_gradepay;
 				echo    "<b>Pay Band</b> <br>";
+		if(!empty($data->emp_salary_grade)){
+	 		$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_grade)->sgm_name;
+                        $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_grade)->sgm_max;
+                        $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$data->emp_salary_grade)->sgm_min;
+	                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$data->emp_salary_grade)->sgm_gradepay;
 					echo $payband."(".$pay_min."-".$pay_max.")".$gardepay; 
+		}
 					echo "<br>";
 
-			if(!empty($data->emp_salary_gradenew)){
-
+		if(!empty($data->emp_salary_gradenew)){
 	 		    $paybandn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$data->emp_salary_gradenew)->sgm_name;
                             $pay_maxn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$data->emp_salary_gradenew)->sgm_max;
                             $pay_minn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$data->emp_salary_gradenew)->sgm_min;

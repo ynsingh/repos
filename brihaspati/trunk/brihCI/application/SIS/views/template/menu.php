@@ -143,10 +143,10 @@ echo "<ul class=\"sf-menu\" >";
 						echo anchor('report/retiredemplist', 'Retired Employee Profile', array('title' => 'View Retired Employee List'));
 //                                            echo anchor('staffmgmt/retiredstafflist', 'Retired Staff Profile', array('title' => 'Retired Staff Profile'));
                                         echo "</li>";
-                                      /*  echo "<li>";
+                                        echo "<li>";
 						echo anchor('cronjob/autoretirement', 'Retire Employee Update', array('title' => 'Retired Employee'));
                                         echo "</li>";
-                                        */
+                                        
                                 echo "</ul>";
 			echo "</li>";
                         /*echo "<li>";

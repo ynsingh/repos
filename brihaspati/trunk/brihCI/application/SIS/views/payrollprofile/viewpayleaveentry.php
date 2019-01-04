@@ -192,54 +192,58 @@ $(document).ready(function(){
         </div>
 </tr>
         </table>
-<!--
-<form action="<?php //echo site_url('payrollprofile/viewpayleaveentry');?>" id="myForm" method="POST" class="form-inline">
+		<?php
+                //set the month array
+                    $cmonth= date('M');
+
+                    $formattedMonthArray = array(
+                         "1" => "Jan", "2" => "Feb", "3" => "Mar", "4" => "Apr",
+                         "5" => "May", "6" => "Jun", "7" => "Jul", "8" => "Aug",
+                        "9" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec",
+                    );
+
+                    // set start and end year range
+                    $cyear= date("Y");
+                    $yearArray = range(2015,  $cyear); 
+?>
+
+
+<form action="<?php echo site_url('payrollprofile/viewpayleaveentry');?>" id="myForm" method="POST" class="form-inline">
           <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
-                <td>  Select Working Type<br>
-                    <select name="wtype" id="wtype" style="width:200px;">
-				<?php //if  (!empty($this->wtyp)){ ?>
-                        <option value="<?php //echo $this->wtyp; ?>" > <?php //echo $this->wtyp; ?></option>
-                        <?php // }else{ ?>
-                      <option value="" disabled selected>-- Select Working Type --</option>
-                          <?php // } ?>
-                      <option value="Teaching">Teaching</option>
-                      <option value="Non Teaching"> Non Teaching</option>
-                    </select>
-		 </td>
-               <td>  Select UO<br>
-                    <select name="uoff" id="uoff" style="width:200px;">
-                      <option value="" disabled selected>-- Select University officer--</option>
-                    </select>
-                </td>
-                <td>  Select Department<br>
-                    <select name="dept" id="dept" style="width:200px;">
-                      <option value="" disabled selected>-- Select Department --</option>
-                    </select>
-                </td>
-                <td>  Select Designation<br>
-                    <select name="desig" id="desig" style="width:200px;">
-                      <option value="" disabled selected>-- Select Designation --</option>
-                    </select>
-                </td>
+		 <td><b>Select Month</b> <br>
+                        <select name="month" id="month" style="width:300px;font-weight:bold;">
+                            <option value="" disabled selected>--------Select Month ----------</option>
+                            <?php
+                                foreach ($formattedMonthArray as $month) {
+                                    $selected = ($month == $cmonth) ? 'selected' : '';
 
-                <td>  Select Shown Against Post<br>
-                    <select name="post" id="post" style="width:200px;">
-			<?php //if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
-                        <option value="<?php //echo $this->desigm; ?>" > <?php //echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
-                        <?php // }else{ ?>
-                      <option value="" disabled selected>-- Select Post --</option>
-			 <?php  //} ?>
-                    </select>
-                </td>
+                                    echo '<option  '.$selected.' value="'.$month.'">'.$month.'</option>';
+                                }
+                            ?>
+
+                        </select>
+                    </td>
+                    <td><b>Select Year</b> <br>
+                        <select name="year" id="year" style="width:300px;font-weight:bold;">
+                            <option value="" disabled selected>--------Select Year ----------</option>
+                            <?php
+                                foreach ($yearArray as $year) {
+                                // if you want to select a particular year
+                                $selected = ($year == $cyear) ? 'selected' : '';
+
+                                echo '<option '.$selected.' value="'.$year.'">'.$year.'</option>';
+                                }
+                            ?>
+                        </select>
+                    </td>
+
 		<td>
-		 Search String<br>
-                          <input type="text" name="strin" id="strin" style="width:100" placeholder="Enter String" value="<?php //echo isset($_POST["emp_name"]) ? $_POST["dept_name"] :  ''; ?>">
-
-                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
+			<br>
+                    <input type="submit" name="filter" id="crits" value="Search"/>
                 </td>
             </tr>
-        </table><br> -->
+        </table><br> 
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>
@@ -248,8 +252,8 @@ $(document).ready(function(){
                     
                     <th>Employee Name</th>
                     <th>PAL</th>
-                    <th colspan=2>EOL</th>
-<!--                    <th>Action</th>-->
+                    <th>EOL</th>
+                    <th>Action</th>
                     
                 </tr>
             </thead>
@@ -259,6 +263,7 @@ $(document).ready(function(){
 		 ?>
                     <?php foreach($records as $record){ ?>
                         <tr>
+<?php	//		print_r($record); ?>
                             <td><?php echo $serial_no++; ?></td>
 			    <td><?php 
                                     $ename=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$record->sle_empid)->emp_name;
@@ -288,6 +293,9 @@ $(document).ready(function(){
 				?>
                             </td>
                             <td> <?php
+				if(($roleid == 1)){
+                                        echo anchor("payrollprofile/deletepayleaves/{$record->sle_id}","Delete",array('title' => 'Delete Details' , 'class' => 'red-link'));
+                                }
                         //        if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
                                //         echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
                           //      }

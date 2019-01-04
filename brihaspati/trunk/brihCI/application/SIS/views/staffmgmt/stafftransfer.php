@@ -454,8 +454,10 @@
                 var sc_code = $('#camp').val();
                 var dept_id = $('#scidto').val();
                 var schm_id = $('#schmidto').val();
+	//	alert("nks"+sc_code+"'"+dept_id+"'"+schm_id);
                 var campdeptschm = sc_code+","+dept_id+","+schm_id;
-            //    alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
+	//	alert("nks"+campdeptschm);
+               // alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
                 if(schm_id == ''){
                     $('#ddoid').prop('disabled',true);
                 }

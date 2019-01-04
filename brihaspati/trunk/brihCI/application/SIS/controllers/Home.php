@@ -13,6 +13,7 @@ class Home extends CI_Controller
         parent::__construct();
 	$this->load->model("university_model", "universitym");
 	$this->load->model("common_model", "commodel");
+	$this->load->model("SIS_model", "sismodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');

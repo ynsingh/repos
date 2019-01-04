@@ -18,85 +18,32 @@
                     if(pfno!=''){
                       //  alert("23==="+pfno);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/jslist/getempdata2",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getemppdata",
                             type: "POST",
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
                           //  alert("datat==="+data);
                             var empinput=data.split(",");
+                            var valm=empinput[0].replace(/[[\]"|"]/g,"");
+                            var n=(valm.trim()).startsWith("<div ");                            
+                            if(n){
+                            $('#error').val("Please enter valid PF Number");
+                                }
+                                else{
+                            $('#error').val("");
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
+                                
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
                             $('#dept').val(empinput[2].replace(/"|"/g,""));
                             $('#schm').val(empinput[3].replace(/"|"/g,""));
                             $('#ddo').val(empinput[4].replace(/"|"/g,""));
                             $('#wtype').val(empinput[5].replace(/"|"/g,""));
-       //                     $('#group').val(empinput[6].replace(/"|"/g,""));
-                            $('#desig').val(empinput[7].replace(/"|"/g,""));
-      //                      $('#etype').val(empinput[8].replace(/"|"/g,""));
-    //                        $('#doj').val(empinput[9].replace(/"|"/g,""));
-                            $('#empname').val(empinput[10].replace(/"|"/g,""));
-  //                          $('#accno').val(empinput[11].replace(/"|"/g,""));
-//                            $('#addharno').val(empinput[12].replace(/"|"/g,""));
-                        //    $('#dob').val(empinput[13].replace(/"|"/g,""));
-                      //      $('#add').val(empinput[14].replace(/"|"/g,""));
-                    //        $('#contact').val(empinput[15].replace(/"|"/g,""));
-                  //          $('#dor').val(empinput[16].replace(/"|"/g,""));
-                //            $('#pscale').val(empinput[17].replace(/[[\]"|"]/g,""));
+                            $('#desig').val(empinput[6].replace(/"|"/g,""));
+                            $('#empname').val(empinput[7].replace(/"|"/g,""));
+                            $('#empid').val(empinput[8].replace(/[[\]"|"]/g,""));
 
-              //              $('#bname').val(empinput[18].replace(/[[\]"|"]/g,""));
-            //                $('#ifsccode').val(empinput[19].replace(/[[\]"|"]/g,""));
-          //                  $('#branch').val(empinput[20].replace(/[[\]"|"]/g,""));
-        //                    $('#pcomm').val(empinput[21].replace(/[[\]"|"]/g,""));
-      //                      
-    //                        var pcon=empinput[22].replace(/[[\]"|"]/g,"");
-  //                          if(pcon ==='yes'){
-//                                $('#pcontri').prop("checked", true);
-                        //    } 
-                      //      $('#upfno').val(empinput[23].replace(/[[\]"|"]/g,""));
-                    //        $('#qtrno').val(empinput[24].replace(/[[\]"|"]/g,""));
-                  //          $('#qtrtype').val(empinput[25].replace(/[[\]"|"]/g,""));
-                //            var univemp=empinput[26].replace(/[[\]"|"]/g,"");
-              //              if(univemp ==='yes'){
-            //                    $('#uniemp').prop("checked", true);
-                              
-          //                  } 
-        //                    var washA=empinput[27].replace(/[[\]"|"]/g,"");
-      //                      if(washA ==='yes'){
-    //                            $('#washallw').prop("checked", true);
-                              
-  //                          } 
-//                            var Dupf=empinput[28].replace(/[[\]"|"]/g,"");
-                            //if(Dupf ==='yes'){
-                          //      $('#dedupf').prop("checked", true);
-                              
-                        //    } 
-                      //      $('#hragrade').val(empinput[29].replace(/[[\]"|"]/g,""));
-                    //        $('#ccagrade').val(empinput[30].replace(/[[\]"|"]/g,""));
-                  //          var Isumm=empinput[31].replace(/[[\]"|"]/g,"");
-                //            if(Isumm ==='yes'){
-              //                  $('#incsumm').prop("checked", true);
-            //                  
-          //                  } 
-        //                    $('#lic1no').val(empinput[32].replace(/[[\]"|"]/g,""));
-      //                      $('#lic1amount').val(empinput[33].replace(/[[\]"|"]/g,""));
-    //                        $('#lic2no').val(empinput[34].replace(/[[\]"|"]/g,""));
-  //                          $('#lic2amount').val(empinput[35].replace(/[[\]"|"]/g,""));
-//                            $('#lic3no').val(empinput[36].replace(/[[\]"|"]/g,""));
-                      //      $('#lic3amount').val(empinput[37].replace(/[[\]"|"]/g,""));
-                    //        $('#lic4no').val(empinput[38].replace(/[[\]"|"]/g,""));
-                  //          $('#lic4amount').val(empinput[39].replace(/[[\]"|"]/g,""));
-                //            $('#lic5no').val(empinput[40].replace(/[[\]"|"]/g,""));
-              //              $('#lic5amount').val(empinput[41].replace(/[[\]"|"]/g,""));
-            //                $('#prdno1').val(empinput[42].replace(/[[\]"|"]/g,""));
-          //                  $('#prdno2').val(empinput[43].replace(/[[\]"|"]/g,""));
-        //                    $('#prdno3').val(empinput[44].replace(/[[\]"|"]/g,""));
-      //                      $('#plino1').val(empinput[45].replace(/[[\]"|"]/g,""));
-    //                        $('#plino2').val(empinput[46].replace(/[[\]"|"]/g,""));
-  //                          $('#society').val(empinput[47].replace(/[[\]"|"]/g,""));
-//                            $('#socmem').val(empinput[48].replace(/[[\]"|"]/g,""));
-                              $('#empid').val(empinput[49].replace(/[[\]"|"]/g,""));
-				
+				 } 				
                         },
                         error:function(data){
                             alert("error occur..!!");
@@ -166,6 +113,9 @@
                     <td><label for="emppfno" style="font-size:15px;font-weight:bold;"><font>Employee PF No</font> <font color='Red'>*</font></label>
                     <div><input type="text" name="emppfno" id="emppfno" value="" placeholder="Employee PF No..."  required>   </div> 
                     </td>
+			 <td>
+                                <input type="text" id="error" value="" style="text-decoration:none;border:0; font-size:25px;font-weight:bold;color:red; word-break: break-all;width:400px;" readonly>
+                        </td>
                 </tr>
                 </table>
             <?php echo form_open_multipart('payrollprofile/payleaveentry','id="my_id"');?>

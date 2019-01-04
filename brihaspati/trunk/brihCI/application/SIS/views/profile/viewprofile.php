@@ -12,21 +12,6 @@
 
             <div>
                 <?php $this->load->view('template/header'); ?>
-                <?php 
-/*			if($this->session->userdata('id_role') == 1){
-				$this->load->view('template/menu');
-			}
-			if($this->session->userdata('id_role') == 2){
-				$this->load->view('template/facultymenu');
-			}
-			if($this->session->userdata('id_role') == 3){
-				$this->load->view('template/stumenu');
-			}
- */
-		?>
-
-<!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
-
 
             </div> 		    
                     <?php
@@ -109,6 +94,7 @@
 	  </td>
      </tr>
 </table>
+<?php $empid=$this->session->userdata('id_emp'); ?>
 <table style="width:100%;" class="heading1" border=0>
 		<tr>
 		<td>
@@ -124,11 +110,28 @@
 		<tr>
                    <td> Name :</td> 
                    <td >
-                   <?php  echo $this->name->firstname ;?>&nbsp;&nbsp;<?php echo  $this->lastn->lastname ;
+                   <?php  
+				$dexist=$this->sismodel->isduplicate('employee_master','emp_id',$this->session->userdata('id_emp'));
+				if($dexist){
+				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$this->session->userdata('id_emp'))->emp_name; 
+				}
+		?>
+	<?php		//	$this->name->firstname ;?>&nbsp;&nbsp;<?php //echo  $this->lastn->lastname ;
 //			echo $this->session->userdata('id_dept');
 //			 echo "( ". $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->session->userdata('id_dept'))->dept_name ." )";
 		?></td>
                 </tr>
+		<tr>
+		<td> Designation : </td>
+		<td>
+		<?php  
+			 if($dexist){
+			 $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id' ,$empid)->emp_desig_code; 
+			echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$desigid)->desig_name;
+			}
+		?>	
+		</td>
+		</tr>
 		<tr>
                    <td>Address :</td>
                    <td >
@@ -141,12 +144,14 @@
                </tr>
                <tr>
                    <td>Email :</td> 
-                   <td ><?php  echo $this->email->email ;?></td>
+                   <td ><?php  //echo //$this->currentlog; 
+			echo $this->email->email ;
+		?></td>
                </tr>
-	       <tr>
+	    <!--   <tr>
                    <td>Secondary Email :</td>
-                   <td><?php  echo $this->secmail->secmail ;?></td>
-               </tr>
+                   <td><?php  //echo $this->email->email ;//$this->secmail->secmail ;?></td>
+               </tr> -->
                </div>
                </div> 
       <!--         </div>-->

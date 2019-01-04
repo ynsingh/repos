@@ -1344,7 +1344,7 @@ class Setup2 extends CI_Controller
         $data['name'] = array(
                 'name' => 'name',
                 'id' => 'name',
-                'maxlength' => '50',
+                'maxlength' => '100',
                 'size' => '40',
                 'value' => $edit_data->name,
                 );

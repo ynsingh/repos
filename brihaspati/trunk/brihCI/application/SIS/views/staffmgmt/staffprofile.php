@@ -859,12 +859,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                  <td><label for="religion" style="font-size:15px;"><font color='blue'>Religion</font></label>
                     <div><select name="religion" style="width:300px;"> 
                         <option value="">---------- Select Religion -----------</option>
-                        <option value="Hinduism">Hinduism</option>
+                        <option value="Hindu">Hindu</option>
                         <option value="Islam">Islam</option>
-                        <option value="Sikhism">Sikhism</option>
-                        <option value="Christianity">Christianity</option>
-                        <option value=" Buddhism">Buddhism</option>
-                        <option value="Jainism">Jainism</option>
+                        <option value="Sikh">Sikh</option>
+                        <option value="Christian">Christian</option>
+                        <option value=" Buddh">Buddh</option>
+                        <option value="Jain">Jain</option>
                     </select><div>
                 </td>
             </tr>
