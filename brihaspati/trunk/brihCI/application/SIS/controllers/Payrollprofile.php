@@ -213,19 +213,98 @@ class Payrollprofile extends CI_Controller
 	}
 
 	public function viewpayleaveentry(){
-		$cyear= date("Y");
-		$cmonth= date("M");
+		$cyear=	$this->session->flashdata('empyear');
+		$cmonth=$this->session->flashdata('empmonth');
+		if(empty($cyear)){
+			$cyear= date("Y");
+		}
+		if(empty($cmonth)){
+			$cmonth= date("M");
+		}
 		if(isset($_POST['filter'])) {
                         $this->form_validation->set_rules('month','Month','trim|xss_clean');
                         $this->form_validation->set_rules('year','Year','trim|xss_clean');
 			$cmonth = $this->input->post('month', '');
                         $cyear = $this->input->post('year', '');
 		} 
+		$data['cyer']=$cyear;
+		$data['cmon']=$cmonth;
 		$whdata = array('sle_year' =>$cyear,'sle_month' =>$cmonth);
 		$selectfield='sle_id,sle_empid,sle_pal,sle_eol';
 		$whorder ='sle_empid';
 		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_leave_entry',$selectfield,$whdata,$whorder);
 		$this->load->view('payrollprofile/viewpayleaveentry',$data);
+	}
+
+
+       	public function editpayleaveentry($id){
+		$data['id']=$id;
+		$empid=$this->sismodel->get_listspfic1('salary_leave_entry','sle_empid','sle_id',$id)->sle_empid;
+		$empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$empid)->emp_name;
+		$data['empname']=$empname;
+		$empcampid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+		$data['empcamp']=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$empcampid)->sc_name;
+		$empuoid=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+		$data['empuo']=$this->lgnmodel->get_listspfic1('authorities','name','id',$empuoid)->name;
+		$empdeptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+		$data['empdept']=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$empdeptid)->dept_name;
+		$empschid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
+		$data['empsch']=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$empschid)->sd_name;
+		$data['empschcode']=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$empschid)->sd_code;
+		$empddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+		$data['empddo']=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$empddoid)->ddo_name;
+		$data['empwtype']=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+		$empdesigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
+		$data['empdesig']=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$empdesigid)->desig_name;
+		$data['empeol']=$this->sismodel->get_listspfic1('salary_leave_entry','sle_eol','sle_id',$id)->sle_eol;
+		$data['emppal']=$this->sismodel->get_listspfic1('salary_leave_entry','sle_pal','sle_id',$id)->sle_pal;
+		$data['empmon']=$this->sismodel->get_listspfic1('salary_leave_entry','sle_month','sle_id',$id)->sle_month;
+		$data['empyear']=$this->sismodel->get_listspfic1('salary_leave_entry','sle_year','sle_id',$id)->sle_year;
+
+	        if(isset($_POST['epleaveent'])) {
+	            	$this->form_validation->set_rules('pal','PAL','trim|xss_clean');
+            		$this->form_validation->set_rules('eol','EOL','trim|xss_clean');
+            		$this->form_validation->set_rules('month','Month','trim|xss_clean');
+            		$this->form_validation->set_rules('year','Year','trim|xss_clean');
+            		if($this->form_validation->run() == FALSE){
+				$this->load->view('payrollprofile/editpayleaveentry',$data);
+                		return;
+            		}    
+            		else{
+                
+                		$emppal = $this->input->post('pal', '');
+                		$empeol = $this->input->post('eol', '');
+                		$empmonth = $this->input->post('month', '');
+                		$empyear = $this->input->post('year', '');
+				$empldata = array(
+					'sle_year' => $empyear,
+					'sle_month' => $empmonth,
+					'sle_pal' => $emppal,
+					'sle_eol' => $empeol,
+					'sle_modifierid' => $this->session->userdata('username'),
+					'sle_modifidate' => date('Y-m-d H:i:s')
+				);
+				$insflag=$this->sismodel->updaterec('salary_leave_entry', $empldata,'sle_id',$id);	
+				if (!$insflag)
+		                    	{
+                	        	$this->logger->write_logmessage("insert","Trying to update leave  values in payroll profile ", " payroll profile leave values are not updated please try again");
+                        		$this->logger->write_dblogmessage("insert","Trying to update leave values in payroll profile", " payroll profile leave values are not updated please try again");
+                        		$this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '  , 'error');
+                        		redirect('payrollprofile/editpayleaveentry/'.$id);
+					return;
+	                    	}
+        	            	else{
+                	        	$this->logger->write_logmessage("update","Update leave entry  values in payroll profile", "payroll profile leave values updated  successfully...");
+                        		$this->logger->write_dblogmessage("update","Update  leave entry values in payroll profile", " payroll profile values updateed  successfully...");
+	                        	$this->session->set_flashdata("success", " Payroll Profile leave values updated  successfully. Name is  " ."[ "  .$empname. " ]");
+					$this->session->set_flashdata('empyear', $empyear);
+					$this->session->set_flashdata('empmonth', $empmonth);
+ 		       	                redirect('payrollprofile/viewpayleaveentry');
+					return;
+                	    	}
+			}
+		}
+		$this->load->view('payrollprofile/editpayleaveentry',$data);
 	}
 	
 	public function deletepayleaves($id){
@@ -253,6 +332,8 @@ class Payrollprofile extends CI_Controller
             		$this->form_validation->set_rules('transit','Transit','trim|xss_clean');
 	            	$this->form_validation->set_rules('hrafrom','HRAfrom','trim|xss_clean');
 	            	$this->form_validation->set_rules('hrato','HRAto','trim|xss_clean');
+	            	$this->form_validation->set_rules('ccafrom','CCAfrom','trim|xss_clean');
+	            	$this->form_validation->set_rules('ccato','CCAto','trim|xss_clean');
             		$this->form_validation->set_rules('month','Month','trim|xss_clean');
             		$this->form_validation->set_rules('year','Year','trim|xss_clean');
             		if($this->form_validation->run() == FALSE){
@@ -261,14 +342,13 @@ class Payrollprofile extends CI_Controller
                 		return;
             		}    
             		else{
-                
-  //              		$emppfno = $this->input->post('emppfno', '');
                 		$empid = $this->input->post('empid', '');
-//				echo "I".$emppfno."and id is ".$empid ; die();
                 		$empdays = $this->input->post('days', '');
                 		$emptransit = $this->input->post('transit', '');
                 		$emphrafrom = $this->input->post('hrafrom', '');
                 		$emphrato = $this->input->post('hrato', '');
+                		$empccafrom = $this->input->post('ccafrom', '');
+                		$empccato = $this->input->post('ccato', '');
                 		$empmonth = $this->input->post('month', '');
                 		$empyear = $this->input->post('year', '');
 //				$empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$emppfno)->emp_id;
@@ -280,6 +360,8 @@ class Payrollprofile extends CI_Controller
 					'ste_transit' => $emptransit,
 					'ste_hrafrom' => $emphrafrom,
 					'ste_hrato' => $emphrato,
+					'ste_ccafrom' => $empccafrom,
+					'ste_ccato' => $empccato,
 					'ste_creatorid' => $this->session->userdata('username'),
 					'ste_createdate' => date('Y-m-d H:i:s'),
 					'ste_modifierid' => $this->session->userdata('username'),
@@ -306,6 +388,122 @@ class Payrollprofile extends CI_Controller
 		$this->load->view('payrollprofile/paytransentry',$data);
 	}
 
+	public function viewpaytransentry(){
+		$cyear= $this->session->flashdata('empyear');
+                $cmonth=$this->session->flashdata('empmonth');
+                if(empty($cyear)){
+                        $cyear= date("Y");
+                }
+                if(empty($cmonth)){
+                        $cmonth= date("M");
+                }
+
+		if(isset($_POST['filter'])) {
+                        $this->form_validation->set_rules('month','Month','trim|xss_clean');
+                        $this->form_validation->set_rules('year','Year','trim|xss_clean');
+                        $cmonth = $this->input->post('month', '');
+                        $cyear = $this->input->post('year', '');
+                }
+
+		$data['cyer']=$cyear;
+		$data['cmon']=$cmonth;
+		$whdata = array('ste_year' =>$cyear,'ste_month' =>$cmonth);
+		$selectfield='ste_id,ste_empid,ste_days,ste_transit,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato';
+		$whorder ='ste_empid';
+		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$selectfield,$whdata,$whorder);
+		$this->load->view('payrollprofile/viewpaytransentry',$data);
+	}
+
+       	public function editpaytransentry($id){
+		$data['id']=$id;
+		$whorder='hg_gradeid';
+		$data['hragrade'] =$this->sismodel->get_orderlistspficemore('hra_grade','hg_gradeid,hg_amount','',$whorder);
+		$whorder='cca_gradeid';
+		$data['ccagrade'] =$this->sismodel->get_orderlistspficemore('ccaallowance_calculation','cca_gradeid,cca_amount','',$whorder);
+
+		$empid=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_empid','ste_id',$id)->ste_empid;
+                $empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$empid)->emp_name;
+                $data['empname']=$empname;
+                $empcampid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+                $data['empcamp']=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$empcampid)->sc_name;
+                $empuoid=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+                $data['empuo']=$this->lgnmodel->get_listspfic1('authorities','name','id',$empuoid)->name;
+                $empdeptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+                $data['empdept']=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$empdeptid)->dept_name;
+                $empschid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
+                $data['empsch']=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$empschid)->sd_name;
+                $data['empschcode']=$this->sismodel->get_listspfic1('scheme_department','sd_code','sd_id',$empschid)->sd_code;
+                $empddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+                $data['empddo']=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$empddoid)->ddo_name;
+                $data['empwtype']=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+                $empdesigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
+                $data['empdesig']=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$empdesigid)->desig_name;
+                $data['empdays']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_days','ste_id',$id)->ste_days;
+                $data['emptransit']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_transit','ste_id',$id)->ste_transit;
+                $data['empmon']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_month','ste_id',$id)->ste_month;
+                $data['empyear']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_year','ste_id',$id)->ste_year;
+                $data['emphrafrom']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_hrafrom','ste_id',$id)->ste_hrafrom;
+                $data['emphrato']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_hrato','ste_id',$id)->ste_hrato;
+                $data['empccafrom']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_ccafrom','ste_id',$id)->ste_ccafrom;
+                $data['empccato']=$this->sismodel->get_listspfic1('salary_transfer_entry','ste_ccato','ste_id',$id)->ste_ccato;
+
+	        if(isset($_POST['eptransent'])) {
+	            	$this->form_validation->set_rules('days','Days','trim|xss_clean');
+            		$this->form_validation->set_rules('transit','Transit','trim|xss_clean');
+	            	$this->form_validation->set_rules('hrafrom','HRAfrom','trim|xss_clean');
+	            	$this->form_validation->set_rules('hrato','HRAto','trim|xss_clean');
+	            	$this->form_validation->set_rules('ccafrom','CCAfrom','trim|xss_clean');
+	            	$this->form_validation->set_rules('ccato','CCAto','trim|xss_clean');
+            		$this->form_validation->set_rules('month','Month','trim|xss_clean');
+            		$this->form_validation->set_rules('year','Year','trim|xss_clean');
+            		if($this->form_validation->run() == FALSE){
+                        		$this->session->set_flashdata('err_message','Validation fails in payroll transfer profile - '  , 'error');
+				$this->load->view('payrollprofile/editpaytransentry',$data);
+                		return;
+            		}    
+            		else{
+                		$empid = $this->input->post('empid', '');
+                		$empdays = $this->input->post('days', '');
+                		$emptransit = $this->input->post('transit', '');
+                		$emphrafrom = $this->input->post('hrafrom', '');
+                		$emphrato = $this->input->post('hrato', '');
+                		$empccafrom = $this->input->post('ccafrom', '');
+                		$empccato = $this->input->post('ccato', '');
+                		$empmonth = $this->input->post('month', '');
+                		$empyear = $this->input->post('year', '');
+				$empldata = array(
+					'ste_year' => $empyear,
+					'ste_month' => $empmonth,
+					'ste_days' => $empdays,
+					'ste_transit' => $emptransit,
+					'ste_hrafrom' => $emphrafrom,
+					'ste_hrato' => $emphrato,
+					'ste_ccafrom' => $empccafrom,
+					'ste_ccato' => $empccato,
+					'ste_modifierid' => $this->session->userdata('username'),
+					'ste_modifydate' => date('Y-m-d H:i:s')
+				);
+				$insflag=$this->sismodel->updaterec('salary_transfer_entry', $empldata,'ste_id',$id);	
+				if (!$insflag)
+		                    	{
+                	        	$this->logger->write_logmessage("insert","Trying to update transfer  values in payroll profile ", " payroll profile transfer values are not updated please try again");
+                        		$this->logger->write_dblogmessage("insert","Trying to update transfer values in payroll profile", " payroll profile transfer values are not updated please try again");
+                        		$this->session->set_flashdata('err_message','Error in  updated values in payroll profile - '  , 'error');
+                        		redirect('payrollprofile/editpaytransentry/'.$id);
+	                    	}
+        	            	else{
+                	        	$this->logger->write_logmessage("insert","Update transfer entry  values in payroll profile", "payroll profile transfer values updated  successfully...");
+                        		$this->logger->write_dblogmessage("insert","Update transfer entry values in payroll profile", " payroll profile values updated  successfully...");
+	                        	$this->session->set_flashdata("success", " Payroll Profile transfer values updated  successfully. Name is  " ."[ "  .$empname. " ]");
+					$this->session->set_flashdata('empyear', $empyear);
+                                        $this->session->set_flashdata('empmonth', $empmonth);
+ 		       	                redirect('payrollprofile/viewpaytransentry');
+                	    	}
+			}
+		}
+		$this->load->view('payrollprofile/editpaytransentry',$data);
+	}
+
 	public function deletepaytrans($id){
 		$roleid=$this->session->userdata('id_role');
 		if($roleid == 1){
@@ -318,22 +516,6 @@ class Payrollprofile extends CI_Controller
 			$this->session->set_flashdata("err_message", " You do not have the privledge to remove the data");
 			redirect('payrollprofile/viewpaytransentry');
 		}
-	}
-	public function viewpaytransentry(){
-		$cyear= date("Y");
-		$cmonth= date("M");
-		if(isset($_POST['filter'])) {
-                        $this->form_validation->set_rules('month','Month','trim|xss_clean');
-                        $this->form_validation->set_rules('year','Year','trim|xss_clean');
-                        $cmonth = $this->input->post('month', '');
-                        $cyear = $this->input->post('year', '');
-                }
-
-		$whdata = array('ste_year' =>$cyear,'ste_month' =>$cmonth);
-		$selectfield='ste_id,ste_empid,ste_days,ste_transit,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato';
-		$whorder ='ste_empid';
-		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$selectfield,$whdata,$whorder);
-		$this->load->view('payrollprofile/viewpaytransentry',$data);
 	}
  }
 ?>

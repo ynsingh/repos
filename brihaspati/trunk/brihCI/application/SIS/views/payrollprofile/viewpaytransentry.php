@@ -219,7 +219,10 @@ $(document).ready(function(){
 
                                     echo '<option  '.$selected.' value="'.$month.'">'.$month.'</option>';
                                 }
+				if(!empty($cmon)){
                             ?>
+                            <option selected value="<?php echo $cmon ; ?>"><?php echo $cmon ; ?></option>
+			<?php } ?>
 
                         </select>
                     </td>
@@ -233,7 +236,10 @@ $(document).ready(function(){
 
                                 echo '<option '.$selected.' value="'.$year.'">'.$year.'</option>';
                                 }
+				 if(!empty($cyer)){
                             ?>
+                            <option selected value="<?php echo $cyer ; ?>"><?php echo $cyer ; ?></option>
+			<?php } ?>
                         </select>
                     </td>
 		 <td>
@@ -289,22 +295,30 @@ $(document).ready(function(){
                             ?></td>
                             <td>
                                 <?php 
-                                 echo $record->ste_hrafrom;
+                                if(!empty($record->ste_hrafrom)){
+					echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->ste_hrafrom)->hgc_gradename;
+				}
 				?>
                             </td>
                             <td>
                                 <?php 
-                                 echo $record->ste_hrato;
+                                if(!empty($record->ste_hrato)){
+					echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->ste_hrato)->hgc_gradename;
+				}
 				?>
                             </td>
 				<td>
                                 <?php
-                                 echo $record->ste_ccafrom;
+                                if(!empty($record->ste_ccafrom)){
+					echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->ste_ccafrom)->hgc_gradename;
+				}
                                 ?>
                             </td>
                             <td>
                                 <?php
-                                 echo $record->ste_ccato;
+                                if(!empty($record->ste_ccato)){
+					echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->ste_ccato)->hgc_gradename;
+				}
                                 ?>
                             </td>
 
@@ -316,6 +330,8 @@ $(document).ready(function(){
                             <td> <?php
 				if(($roleid == 1)){
 					echo anchor("payrollprofile/deletepaytrans/{$record->ste_id}","Delete",array('title' => 'Delete Details' , 'class' => 'red-link'));
+					 echo " | ";
+                                        echo anchor("payrollprofile/editpaytransentry/{$record->ste_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
 				}
                         //        if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
                                //         echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));

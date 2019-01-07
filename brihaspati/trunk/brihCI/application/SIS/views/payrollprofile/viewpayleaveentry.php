@@ -220,8 +220,10 @@ $(document).ready(function(){
 
                                     echo '<option  '.$selected.' value="'.$month.'">'.$month.'</option>';
                                 }
+				 if(!empty($cmon)){
                             ?>
-
+                            <option selected value="<?php echo $cmon ; ?>"><?php echo $cmon ; ?></option>
+			<?php } ?>
                         </select>
                     </td>
                     <td><b>Select Year</b> <br>
@@ -234,7 +236,10 @@ $(document).ready(function(){
 
                                 echo '<option '.$selected.' value="'.$year.'">'.$year.'</option>';
                                 }
+				 if(!empty($cyer)){
                             ?>
+                            <option selected value="<?php echo $cyer ; ?>"><?php echo $cyer ; ?></option>
+			<?php } ?>
                         </select>
                     </td>
 
@@ -284,20 +289,20 @@ $(document).ready(function(){
                             ?>
                             </td>
                             <td><?php
-					echo $record->sle_pal;
+				echo $record->sle_pal;
                             ?></td>
                             <td>
                                 <?php 
                                  echo $record->sle_eol;
-			
 				?>
                             </td>
                             <td> <?php
 				if(($roleid == 1)){
                                         echo anchor("payrollprofile/deletepayleaves/{$record->sle_id}","Delete",array('title' => 'Delete Details' , 'class' => 'red-link'));
+					echo " | ";
+                                        echo anchor("payrollprofile/editpayleaveentry/{$record->sle_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
                                 }
                         //        if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
-                               //         echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
                           //      }
                                 ?></td>
                         </tr>
