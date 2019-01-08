@@ -779,8 +779,143 @@ class Setup3 extends CI_Controller
     /*********************  closer Salary Head Default value  *******************************************/
     
     /*********************   Salary Slip  form *********************************************************/
-     public function salaryslip(){
-        $this->load->view('setup3/salaryslip');
+    public function salaryslip(){
+        $empid=$this->uri->segment(3);
+        $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+        $whorder = " sh_name asc";
+       // $whdata = array ('saq_empid' => $emp_id,'saq_dgree NOT LIKE ' => 'B%','saq_dgree NOT LIKE ' => 'M%');
+	$whdata = array('sh_type' =>'I');// 'sh_tnt' => $this->emptnt,'sh_tnt' => NULL);
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        $whdata = array('sh_type' =>'D');
+        $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        
+        $this->emppfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $this->emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code ','emp_id',$empid)->emp_type_code;
+        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$this->emptype)->empt_id;
+        
+        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+        $data['allowedhead']=explode(", ",$strarray);
+       // print_r($data['allowedhead']);
+        if(isset($_POST['upsalhdval'])){
+            $tcount = $this->input->post('totalcount', TRUE);
+            $tded = $this->input->post('totalded', TRUE);
+          //  $totalincome = $this->input->post('incometotal', TRUE);
+           // $totaldeduction = $this->input->post('deductiontotal', TRUE);
+            //$netpay = $this->input->post('netpay', TRUE);
+            $month=$this->uri->segment(4);
+            $year=$this->uri->segment(5);
+            $totalincome=0;
+            $totaldeduction = 0;
+            $netpay = 0;
+            /***************************Incomes************************************/
+            for ($i=0; $i<$tcount ;$i++){
+                $headidin = $this->input->post('sheadidin'.$i, TRUE);
+               // $headid = $this->input->post('sheadid'.$i, TRUE);
+                $headval = $this->input->post('headamtI'.$i, TRUE);
+               // $headval = $this->input->post('headamt'.$i, TRUE);
+               
+              //  echo "totalcc===".$tcount;
+              //  echo "===print===".$headidin."====".$headval;
+               // echo"\n====="."ttincome===".$totalincome."tdeduction==--".$totaldeduction."=netpay===".$netpay;
+              //  echo "\n====".$LIC1."===".$LIC2."===".$LIC3."===".$LIC4."====".$LIC5."===".$LIC5."====".$PRD1."===".$PRD2."====".$PRD3."====".$PLI1."===".$PLI2;
+               // die;
+                $saldata = array(
+                
+                    'sald_empid'   =>$empid,
+                    'sald_sheadid'  =>$headidin,
+                    'sald_shamount' =>$headval,
+                    'sald_month'    =>$month,
+                    'sald_year'     =>'2018',
+                
+                
+                
+                );
+                $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
+                $totalincome+=$headval;
+            } //tcount
+            /*******************************Deductions***********************************/
+            for ($j=0; $j<$tded ;$j++){
+                $headidD = $this->input->post('sheadidded'.$j, TRUE);
+                
+               
+                $headvald = $this->input->post('headamtD'.$j, TRUE);
+                $saldata = array(
+                
+                    'sald_empid'   =>$empid,
+                    'sald_sheadid'  =>$headidD,
+                    'sald_shamount' => $headvald,
+                    'sald_month'    =>$month,
+                    'sald_year'     =>'2018',
+                
+                
+                
+                );
+                $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
+               
+                $totaldeduction+=$headvald;
+                
+            }//totalcount 
+            $netpay=$totalincome - $totaldeduction;
+            $scid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+            $uoccid=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+            $deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+            $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
+            $sopost=$this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+            $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+            $schmid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
+            $payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+            $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+            $wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+            $emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
+            $group=$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group;
+            
+            $saldata1 = array(
+               'sal_empid'             =>$empid,
+               'sal_scid'              =>$scid,
+               'sal_uoid'              =>$uoccid,
+               'sal_deptid'            =>$deptid,
+               'sal_desigid'           =>$desigid,
+               'sal_sapost'            =>$sopost,
+               'sal_ddoid'             =>$ddoid,
+               'sal_schemeid'          =>$schmid,
+               'sal_payscaleid'        =>$payscaleid,
+               'sal_bankaccno'         =>$bankaccno,
+               'sal_worktype'          =>$wtype,
+               'sal_emptype'           =>$emptype,
+               'sal_group'             =>$group,
+               'sal_month'             =>$month,
+               'sal_year'              =>'2018',
+               'sal_totalincome'       =>$totalincome,
+               'sal_totaldeduction'    =>$totaldeduction,
+               'sal_netsalary'         =>$netpay,
+               'sal_status'            =>'paid',
+               'sal_paiddate'          =>date('y-m-d'),
+               'sal_creatorid'         =>$this->session->userdata('username'),
+               'sal_creationdate'       =>date('y-m-d'),
+               'sal_updatedate'        =>date('y-m-d'),    
+               'sal_modifierid'        =>$this->session->userdata('username'),
+           
+            );
+              
+            if (!$upsaldataflag)
+            {
+                $this->logger->write_logmessage("insert","Trying to add  salary data head wise", "  salary data head wise value is not added ".$this->emppfno);
+                $this->logger->write_dblogmessage("insert","Trying to add salary data head wise ", " salary data head wise value is not added ".$this->emppfno);
+                $this->session->set_flashdata('err_message','Error in  salary data head wise value - '  , 'error');
+                redirect('setup3/salaryslip',$data);
+            }
+            else{
+            
+                $upsalaryflag = $this->sismodel->insertrec('salary', $saldata1);
+                $this->logger->write_logmessage("insert"," salary data head wise value  ", " salary data head wise value added  successfully...");
+                $this->logger->write_dblogmessage("insert"," salary data head wise value ", "salary data head wise value added  successfully...");
+                $this->session->set_flashdata("success", "   salary data head wise value updated successfully... PF NO [ " .$this->emppfno. " ]");
+                redirect("setup3/salaryslip",$data);
+            }
+            
+        }//for button
+        $this->load->view('setup3/salaryslip',$data);
         
     }
     /********************* closer  Salary Slip  form *********************************************************/
@@ -1423,4 +1558,459 @@ class Setup3 extends CI_Controller
     }//closer
     /********************* closer Delete City Compensatory Allowance(CCA)*********************************************************/
     
+    
+    
+    /*********************  Salary Processing *******************************************/
+    public function salaryprocess(){
+        $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no";
+        $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+        $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
+        $data['emplist'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
+        $month = $this->input->post('month', TRUE);
+        $year = $this->input->post('year', TRUE);
+       // echo "999==".$month."--------".$year;
+        $cmonth= date('M');
+        $cyear= date("Y"); 
+        $data['selmonth']=$cmonth;
+        $data['selyear']=$cyear;
+        if(isset($_POST['salpro'])){
+            $data['selmonth']=$month;
+            $data['selyear']=$year;
+            if(!empty($data['emplist'])){
+                /**********************************income and deduction head *********************/
+                $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+                $whorder = " sh_name asc";
+                $whdata = array('sh_type' =>'I');
+                $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+                $whdata = array('sh_type' =>'D');
+                $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+            }
+             
+        } //form
+        $this->load->view('setup3/empSalary',$data);
+        
+    }
+    /*********************  closer Salary Processing  *******************************************/
+    
+    /*********************   Salary Slip  form *********************************************************/
+   /*  public function salaryslip(){
+        $this->load->view('setup3/salaryslip');
+        
+    }*/                                 
+    /********************* closer  Salary Slip  form *********************************************************/
+    
+    
+    /************get allowed salary heads sccording to selected information od employee**********************/
+   /* public function getAllowedsalaryhead($emptype){
+        
+        $selectfield ="shc_salheadid";
+        $whorder = "shc_id asc";
+	$whdata = array('shc_emptypeid' =>$emptype);
+        $strhead= $this->sismodel->get_orderlistspficemore('salaryhead_configuration',$selectfield,$whdata,$whorder);
+        
+        $Asalhead=explode(", ",$strhead->shc_salheadid);
+        echo "uoiu00===".$strhead."hsdfgh===".$Asalhead;
+        
+        return $Asalhead;
+      
+    }*/
+        
+    /*********************************************closer **********************************************/
+    
+    /************get allowed salary heads default value and formula **********************************/
+    public function getDefaultheadval($emp_id,$shid){
+        $this->salgrd=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$emp_id)->emp_salary_grade;
+        $selectfield='shdv_defaultvalue';
+        $whdata=array ('shdv_paybandid' => $this->salgrd,'shdv_salheadid'=>$shid);
+        $this->defval=$this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$selectfield,$whdata,'');
+        $fvalue=$this->defval[0]->shdv_defaultvalue;
+      //  echo "999=====".$fvalue;
+        //die;
+        
+        return $fvalue;
+    }
+    /*********************************************closer ******************************************************/
+    
+    /************get formula value **********************************************************************/
+    public function getformulaval($shid,$empid,$pbid,$worktype){
+        $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$shid);
+        if(!empty($formula1)){
+            $formula=$formula1->sf_formula;
+            preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
+            //echo "in parenthesis inside: " . $match[2];
+            //echo "before and after inside: " . $match[1] . $match[3] . "\n";
+            $strfmla=explode("+",$match[2]);
+            $strfmla2=explode("*",$match[3]);
+            
+            $sfield ="shdv_defaultvalue";
+            if(!empty($strfmla[0])){
+                $tok1id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[0])->sh_id;
+                $wdata = array('shdv_paybandid' =>$pbid,'shdv_salheadid' =>$tok1id);
+                $headval1= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfield,$wdata,'');  
+                $headval1=$headval1[0]->shdv_defaultvalue;
+            }
+            else{
+                $headval1=0;
+            }
+            if(!empty($strfmla[1])){
+                $tok2id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[1])->sh_id;
+                $wdata = array('shdv_paybandid' =>$pbid,'shdv_salheadid' => $tok2id);
+                $headval2= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfield,$wdata,''); 
+                $headval2=$headval2[0]->shdv_defaultvalue;
+            }
+            else{
+                $headval2=0; 
+            }
+            $rawfor=$headval1 + $headval2 ;
+            //$rawfor=$headval1[0]->shdv_defaultvalue + $headval2[0]->shdv_defaultvalue ;
+            $finalval=$rawfor * $strfmla2[1];
+                            
+        }//emptyformulacheck  
+        else{
+            $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
+            $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
+            if($shid == $ccaid || $shid == $hraid){
+                if($shid == $ccaid){
+                    $ccagrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid);
+                    if(!empty($ccagrade)){
+                        $ccagrade= $ccagrade->ems_ccagrade;
+                        $sfield="cca_amount";
+                        $wdata = array('cca_payscaleid' =>$pbid,'cca_workingtype' =>$worktype,'cca_gradeid' =>$ccagrade);
+                       // echo $pbid,$worktype,$ccagrade;
+                        $headvalc= $this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$sfield,$wdata,'');  
+                        if(!empty($headvalc)){
+                            $headvalcca=$headvalc[0]->cca_amount;
+                            $finalval=$headvalcca;
+                        }
+                        else{
+                            $finalval=0;
+                        }
+                    }
+                    else{
+                        $finalval=0;
+                    }
+                }
+                if($shid == $hraid){
+                    $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);
+                    if(!empty($hragrade)){
+                        $hragrade= $hragrade->ems_hragrade;
+                        $sfield="hg_amount";
+                        $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
+                        $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
+                        if(!empty($headvalh)){
+                            $headvalhra=$headvalh[0]->hg_amount;
+                            $finalval=$headvalhra; 
+                        }
+                        else{
+                            $finalval=0;    
+                        }
+                    }
+                    else{
+                        $finalval=0;
+                    }
+                }
+            }
+            else{
+                $finalval=0;
+            }    
+        }
+        return $finalval;
+        
+    }
+    /************closer formula value *******************************************************************/
+    public function getInsertSalarydata($empid,$salheadid,$salamnt,$month,$year){
+        $saldata = array(
+            'sald_empid'       =>$empid,   
+            'sald_sheadid'     =>$salheadid,
+            'sald_shamount'    =>$salamnt, 
+            'sald_month'       =>$month,
+            'sald_year'        =>$year,
+        );
+        
+        $dupcheck = array(
+            'sald_empid'       =>$empid,   
+            'sald_sheadid'     =>$salheadid,
+            'sald_month'       =>$month,
+            'sald_year'        =>$year,
+        ); 
+        
+        $emidexits= $this->sismodel->isduplicatemore('salary_data',$dupcheck);
+        if(!$emidexits){
+            
+            /* insert record in  salary data */
+            $this->sismodel->insertrec('salary_data', $saldata);
+            $this->logger->write_logmessage("insert", "data insert in salary_data table.");
+            $this->logger->write_dblogmessage("insert", "data insert in salary_data table." );
+            
+        }
+        else{
+            
+            /* update record in  salary data */
+            $selectfield ="sald_id";
+            $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$salheadid,'sald_month' =>$month,'sald_year' =>$year);
+            $saldataid= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,'');
+            
+            $this->sismodel->updaterec('salary_data', $saldata,'sald_id',$saldataid[0]->sald_id);
+            $this->logger->write_logmessage("update", "data update in salary_data table.");
+            $this->logger->write_dblogmessage("update", "data update in salary_data table." ); 
+            
+        }
+        
+    }
+    /************closer insert Salarydata *******************************************************************/
+    
+    /************ InsertSalary ******************************************************************************/
+    public function getInsertSalary($empid,$scid,$uoid,$deptid,$desigid,$sapost,$ddoid,$schemeid,$payscaleid,
+                    $bankaccno,$worktype,$emptype,$group,$month,$year,$tincome,$tdeduction,$netsal,$status){
+       
+        $salinst=array(
+            'sal_empid'             =>$empid,
+            'sal_scid'              =>$scid,
+            'sal_uoid'              =>$uoid,
+            'sal_deptid'            =>$deptid,
+            'sal_desigid'           =>$desigid,
+            'sal_sapost'            =>$sapost,
+            'sal_ddoid'             =>$ddoid,
+            'sal_schemeid'          =>$schemeid,
+            'sal_payscaleid'        =>$payscaleid,
+            'sal_bankaccno'         =>$bankaccno,
+            'sal_worktype'          =>$worktype,
+            'sal_emptype'           =>$emptype,
+            'sal_group'             =>$group,
+            'sal_month'             =>$month,
+            'sal_year'              =>$year,
+            'sal_totalincome'       =>$tincome,
+            'sal_totaldeduction'    =>$tdeduction,
+            'sal_netsalary'         =>$netsal,
+            'sal_status'            =>$status,
+            'sal_paiddate'          =>date('y-m-d'),
+            'sal_creationdate'      =>date('y-m-d'),
+            'sal_creatorid'         =>$this->session->userdata('username'),
+            'sal_updatedate'        =>date('y-m-d'),
+            'sal_modifierid'        =>$this->session->userdata('username'),
+        );
+        
+        $dupcheck = array(
+            'sal_empid'             =>$empid,
+            'sal_month'             =>$month,
+            'sal_year'              =>$year,
+        );  
+        
+        $emidexits= $this->sismodel->isduplicatemore('salary',$dupcheck);
+        
+        if(!$emidexits){
+            /* insert record in  salary detail */
+           $this->sismodel->insertrec('salary',  $salinst);
+            $this->logger->write_logmessage("insert", "data insert in salary table.");
+            $this->logger->write_dblogmessage("insert", "data insert in salary table." );
+            
+        }
+        else{
+            
+            $salinst=array(
+                'sal_empid'             =>$empid,
+                'sal_scid'              =>$scid,
+                'sal_uoid'              =>$uoid,
+                'sal_deptid'            =>$deptid,
+                'sal_desigid'           =>$desigid,
+                'sal_sapost'            =>$sapost,
+                'sal_ddoid'             =>$ddoid,
+                'sal_schemeid'          =>$schemeid,
+                'sal_payscaleid'        =>$payscaleid,
+                'sal_bankaccno'         =>$bankaccno,
+                'sal_worktype'          =>$worktype,
+                'sal_emptype'           =>$emptype,
+                'sal_group'             =>$group,
+                'sal_month'             =>$month,
+                'sal_year'              =>$year,
+                'sal_totalincome'       =>$tincome,
+                'sal_totaldeduction'    =>$tdeduction,
+                'sal_netsalary'         =>$netsal,
+                'sal_status'            =>$status,
+                'sal_paiddate'          =>$paiddate,
+                'sal_updatedate'        =>date('y-m-d'),
+                'sal_modifierid'        =>$this->session->userdata('username'),
+            );
+            
+            /* update record in  salary detail */
+            
+            $selectfield ="sal_id";
+            $whdata = array('sal_empid' =>$empid,'sal_month' =>$month,'sal_year' =>$year);
+            $saldataid= $this->sismodel->get_orderlistspficemore('salary',$selectfield,$whdata,'');
+            $this->sismodel->updaterec('salary',  $salinst,'sal_id',$saldataid[0]->sal_id);
+            $this->logger->write_logmessage("update", "data update in salary table.");
+            $this->logger->write_dblogmessage("update", "data update in salary table." ); 
+        }   
+        
+    }
+    /************ closer InsertSalary ******************************************************************************/
+    /*public function getallowedhead($emptype){
+        $selectfield ="shc_id, shc_emptypeid, shc_salheadid";
+        $whorder = "shc_id asc";
+	$whdata = array('shc_emptypeid' =>$emptype);
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salaryhead_configuration',$selectfield,$whdata,$whorder);
+               
+    }*/
+    /******************************copy previous month salary to next month**************************************************************************/
+    public function copysalary(){
+        $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_post,emp_worktype,emp_type_code,"
+                . "emp_email,emp_phone,emp_salary_grade,emp_bank_accno,emp_ddoid,emp_group,emp_aadhaar_no";
+        $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+      //  $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
+        $data['emplist'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,'');
+        $cmonth= date('M');
+        $cyear= date("Y"); 
+        $data['selmonth']=$cmonth;
+        $data['selyear']=$cyear;
+        if(isset($_POST['salcopy'])){
+            foreach($data['emplist'] as $record){
+                
+                $empexist=$this->sismodel->isduplicate('salary_data','sald_empid',$record->emp_id);
+               
+                if(!$empexist){
+                    /*********************************Default Salary***************************************************/
+                    $this->DefalutSalaryPro($record->emp_id,$cmonth,$cyear);
+                }
+                else{
+                    
+                    //select sald_id,sald_empid,sald_sheadid,sald_shamount,sald_month from salary_data
+                    // where sald_empid=15 && sald_month=(SELECT sald_month from salary_data 
+                    // where sald_id=(select max(sald_id) from salary_data where sald_empid=15));
+                    
+                   // echo "problem in else loop 1";
+                    $selectfield ="sald_id";
+                    $whdata = array('sald_empid'=>$record->emp_id);
+                    $salmaxid= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata); 
+                    $salmonth=$this->sismodel->get_listspfic1('salary_data','sald_month','sald_id',$salmaxid[0]->sald_id)->sald_month;
+                    $salyear=$this->sismodel->get_listspfic1('salary_data','sald_year','sald_id',$salmaxid[0]->sald_id)->sald_year;
+                    //print_r("valuesof max====".$salmaxid[0]->sald_id.$salmonth);
+                  
+                    //  if(!empty($headvalues)){
+                    $selectfield ="sald_sheadid,sald_shamount";
+                    $whdata = array ('sald_empid'=>$record->emp_id,'sald_month'=>$salmonth,'sald_year'=>$salyear);
+                    $headvalues = $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,'');
+                    
+                  //  die;
+                    foreach($headvalues as $saldata){
+                        /******************insert in salary data******************/
+                        $this->getInsertSalarydata($record->emp_id,$saldata->sald_sheadid,$saldata->sald_shamount,$cmonth,$cyear);
+                         
+                    }
+                    //die;
+                    /**************************insert in salary *********************/
+                    $selectfield1 ="sal_id";
+                    $whdata1 = array('sal_empid'=>$record->emp_id);
+                    $salmaxid1= $this->sismodel->get_maxvalue('salary',$selectfield1,$whdata1); 
+                    $salmonth1=$this->sismodel->get_listspfic1('salary','sal_month','sal_id',$salmaxid1[0]->sal_id)->sal_month;
+                    $salyear1=$this->sismodel->get_listspfic1('salary','sal_year','sal_id',$salmaxid1[0]->sal_id)->sal_year;
+                    
+                    $selectfield1 ="sal_scid,sal_uoid,sal_deptid,sal_desigid,sal_sapost,sal_ddoid,sal_schemeid,sal_payscaleid,sal_bankaccno,
+                        sal_worktype,sal_emptype,sal_group,sal_totalincome,sal_totaldeduction,sal_netsalary";
+                    $whdata1 = array('sal_empid' =>$record->emp_id,'sal_month'=>$salmonth1,'sal_year'=>$salyear1);
+                    $headvalues1= $this->sismodel->get_orderlistspficemore('salary',$selectfield1,$whdata1,''); 
+                   // print_r("valuesof max=yyyy===".$headvalues1->sal_totalincome."\n"."===am---".$headvalues1->sal_totaldeduction); 
+                   // die;
+                    foreach($headvalues1 as $saldata2){
+                        $this->getInsertSalary($record->emp_id,$saldata2->sal_scid,$saldata2->sal_uoid,$saldata2->sal_deptid,$saldata2->sal_desigid,
+                        $saldata2->sal_sapost,$saldata2->sal_ddoid,$saldata2->sal_schemeid,$saldata2->sal_payscaleid,$saldata2->sal_bankaccno,$saldata2->sal_worktype,
+                        $saldata2->sal_emptype,$saldata2->sal_group,$cmonth,$cyear,$saldata2->sal_totalincome,$saldata2->sal_totaldeduction,$saldata2->sal_netsalary,'process');
+                    }
+                }    
+            
+            }//emplistloop
+            $this->logger->write_logmessage("insert", " Salary data copy "."Salary data copy");
+            $this->logger->write_dblogmessage("insert"," Salary data copy "."Salary data copy");
+            $this->session->set_flashdata("success", 'Salary data copy successfully ...' );
+                 
+        }
+        $this->load->view('setup3/empSalary',$data);
+    
+    }
+    public function DefalutSalaryPro($empid,$cmonth,$cyear){
+        $sumincome=0;$sumdeduct=0;
+        $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+       // $whorder = " sh_name asc";
+        $whdata = array('sh_type' =>'I');
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        $whdata = array('sh_type' =>'D');
+        $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        $emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
+        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$emptype)->empt_id;
+        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+        $allowedhead=explode(", ",$strarray);
+        $wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        foreach($data['incomes'] as $record1){
+            if($record1->sh_tnt == $wtype || $record1->sh_tnt == NULL){
+                if(in_array($record1->sh_id,$allowedhead)){
+                    if($record1->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record1->sh_id,$empid,$payscaleid,$wtype);
+                    }
+                    else{
+                        $this->dheadval=$this->getDefaultheadval($empid,$record1->sh_id);
+                    }
+                }
+                else{
+                    $this->dheadval=0;   
+                }
+            
+            $this->getInsertSalarydata($empid,$record1->sh_id,$this->dheadval,$cmonth,$cyear);
+            $sumincome+=$this->dheadval;
+            }
+        }
+        foreach($data['deduction'] as $record2){
+            if($record2->sh_tnt == $wtype || $record2->sh_tnt == NULL){
+                if(in_array($record2->sh_id,$allowedhead)){
+                    if($record2->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record2->sh_id,$empid,$payscaleid,$wtype);
+                    }
+                    else{
+                    
+                        $this->dheadval=$this->getDefaultheadval($empid,$record2->sh_id);
+                    }
+                } 
+                else{
+                    $this->dheadval=0; 
+                }
+            //}    
+            $this->getInsertSalarydata($empid,$record2->sh_id,$this->dheadval,$cmonth,$cyear);
+            $sumdeduct+=$this->dheadval;
+            }
+            
+        }
+        $this->SalaryPolicies($empid,$cmonth,$cyear);
+        $netsalary=$sumincome - $sumdeduct;
+        
+        $scid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+        $uoccid=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+        $deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+        $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
+        $sopost=$this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+        $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+        $schmid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
+        $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+        $group=$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group;
+        
+        /*************************************insert in salary ********************************************************/
+        $this->getInsertSalary($empid,$scid,$uoccid,$deptid,$desigid,$sopost,$ddoid,$schmid,$payscaleid,$bankaccno,$wtype,
+        $emptype,$group,$cmonth,$cyear,$sumincome,$sumdeduct,$netsalary,'process');
+        
+    }
+    public function SalaryPolicies($empid,$cmonth,$cyear){
+        $licprdpli = array(
+            "LIC1" => "LIC1",
+            "LIC2" => "LIC2",
+            "LIC3" => "LIC3",
+            "LIC4" => "LIC4",
+            "LIC5" => "LIC5",
+            "PRD1" => "PRD1",
+            "PRD2" => "PRD2",
+            "PRD3" => "PRD3",
+            "PLI1" => "PLI1",
+            "PLI2" => "PLI2",
+        );
+        foreach ($licprdpli as $lpdpi) {
+            $this->getInsertSalarydata($empid,$lpdpi,0,$cmonth,$cyear);
+        }
+    }
 }//class    
