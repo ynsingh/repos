@@ -1,0 +1,1 @@
+ALTER TABLE `Staff_Performance_Data` ADD `spd_int_medal` INT(11) NULL AFTER `spd_uni_award`, ADD `spd_nat_medal` INT(11) NULL AFTER `spd_int_medal`, ADD `spd_uni_medal` INT(11) NULL AFTER `spd_nat_medal`;

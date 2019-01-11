@@ -349,6 +349,9 @@ public function disciplin_profile() {
         $this->roleid=$this->session->userdata('id_role');
         $this->emp_id = $empid;
         if(isset($_POST['extstaffpro'])) {
+            $this->form_validation->set_rules('awards_national','awards_National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('awards_international','awards_International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('awards_university','awards_University','trim|xss_clean|numeric');
             $this->form_validation->set_rules('national','National','trim|xss_clean|numeric');
             $this->form_validation->set_rules('international','International','trim|xss_clean|numeric');
             $this->form_validation->set_rules('university','University','trim|xss_clean|numeric');
@@ -382,9 +385,12 @@ public function disciplin_profile() {
                 }
                 $data = array(
                     'spd_empid'                =>$empid,
-                    'spd_int_award'            =>$_POST['national'],
-                    'spd_nat_award'            =>$_POST['international'],
-                    'spd_uni_award'            =>$_POST['university'],
+                    'spd_int_award'            =>$_POST['awards_national'],
+                    'spd_nat_award'            =>$_POST['awards_international'],
+                    'spd_uni_award'            =>$_POST['awards_university'],
+                    'spd_int_medal'            =>$_POST['national'],
+                    'spd_nat_medal'            =>$_POST['international'],
+                    'spd_uni_medal'            =>$_POST['university'],
                     'spd_res_pub_int'          =>$_POST['research_international'],
                     'spd_res_pub_nat'          =>$_POST['research_national'],
                     'spd_pop_pub_int'          =>$_POST['popular_international'],
@@ -490,6 +496,9 @@ public function disciplin_profile() {
        // $this->emp_id = $id;
         if(isset($_POST['updateextpro'])) {
             //$edpref_data['id'] = $id;
+            $this->form_validation->set_rules('awards_national','awards_National','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('awards_international','awards_International','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('awards_university','awards_University','trim|xss_clean|numeric');
             $this->form_validation->set_rules('national','National','trim|xss_clean|numeric');
             $this->form_validation->set_rules('international','International','trim|xss_clean|numeric');
             $this->form_validation->set_rules('university','University','trim|xss_clean|numeric');
@@ -518,9 +527,12 @@ public function disciplin_profile() {
             }
             else
             {
-                $int_award = $this->input->post('international', TRUE);
-                $nat_award = $this->input->post('national', TRUE);
-                $uni_award = $this->input->post('university', TRUE);
+                $int_award = $this->input->post('awards_international', TRUE);
+                $nat_award = $this->input->post('awards_national', TRUE);
+                $uni_award = $this->input->post('awards_university', TRUE);
+                $int_medal = $this->input->post('international', TRUE);
+                $nat_medal = $this->input->post('national', TRUE);
+                $uni_medal = $this->input->post('university', TRUE);
                 $res_pub_int = $this->input->post('research_international', TRUE);
                 $res_pub_nat = $this->input->post('research_national', TRUE);
                 $pop_pub_int = $this->input->post('popular_international', TRUE);
@@ -597,6 +609,9 @@ public function disciplin_profile() {
                     'spd_int_award'            =>$int_award,
                     'spd_nat_award'            =>$nat_award,
                     'spd_uni_award'            =>$uni_award,
+                    'spd_int_medal'            =>$int_medal,
+                    'spd_nat_medal'            =>$nat_medal,
+                    'spd_uni_medal'            =>$uni_medal,
                     'spd_res_pub_int'          =>$res_pub_int,
                     'spd_res_pub_nat'          =>$res_pub_nat,
                     'spd_pop_pub_int'          =>$pop_pub_int,
@@ -2466,30 +2481,6 @@ public function disciplin_profile() {
         $this->load->view('empmgmt/edit_academicprofile',$data);
         
     }
-    /*********************This function Delete records ****************************************************/
-    
-    public function delete_academicprofile($id) {
-        $this->roleid=$this->session->userdata('id_role');
-        $this->emp_id=$this->sismodel->get_listspfic1('staff_academic_qualification', 'saq_empid', 'saq_id',$id)->saq_empid;
-        /* Deleting academicprofile Record */
-        $delflag=$this->sismodel->deleterow('staff_academic_qualification','saq_id',$id);
-        if (! delflag   )
-        {   
-            $this->logger->write_logmessage("delete", "Error in deleting staff academic qualification record" . " [id:" . $id . "]");
-            $this->logger->write_dblogmessage("delete", "Error in deleting staff academic qualification record" . " [id:" . $id . "]");
-            $this->session->set_flashdata('Error in deleting deleting staff academic qualification record - ');
-            redirect('empmgmt/edit_academicprofile');
-        }
-        else{
-         
-            $this->logger->write_logmessage("delete", " Deleted staff academic qualification Record  ". " [id:" . $id . "]");
-            $this->logger->write_dblogmessage("delete", "Deleted staff academic qualification Record  " . " [id:" . $id . "]");
-            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
-            redirect('empmgmt/edit_academicprofile/'.$this->emp_id);
-        }
-        $this->load->view('empmgmt/edit_academicprofile');
-        
-    }
     
     /*************************************************************************************************************/
     
@@ -2549,6 +2540,31 @@ public function disciplin_profile() {
         $this->load->view('empmgmt/edit_technicalprofile',$data);
         
     }
+    /*********************This function Delete records ****************************************************/
+    
+    public function delete_academicprofile($id) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id=$this->sismodel->get_listspfic1('staff_academic_qualification', 'saq_empid', 'saq_id',$id)->saq_empid;
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('staff_academic_qualification','saq_id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in deleting staff academic qualification record" . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting staff academic qualification record" . " [id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting deleting staff academic qualification record - ');
+            redirect('empmgmt/edit_academicprofile');
+        }
+        else{
+         
+            $this->logger->write_logmessage("delete", " Deleted staff academic qualification Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted staff academic qualification Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+            redirect('empmgmt/edit_academicprofile/'.$this->emp_id);
+        }
+        $this->load->view('empmgmt/edit_academicprofile');
+        
+    }
+
     /**This function Delete records */
     public function delete_techprofile($id) {
         $this->roleid=$this->session->userdata('id_role');
@@ -2573,12 +2589,13 @@ public function disciplin_profile() {
         
     }//closer
 
-    /**This function Delete records */
+    /**This function Delete records in service data*/
     public function delete_serviceprofile($id) {
-        $this->roleid=$this->session->userdata('id_role');
+        $roleid=$this->session->userdata('id_role');
+        $this->roleid=$roleid;
         $usrid=$this->session->userdata('id_user');
         $this->emp_id=$this->sismodel->get_listspfic1('employee_servicedetail', 'empsd_empid', 'empsd_id',$id)->empsd_empid;
-	if( $usrid == 1){
+	if(($roleid == 1)||($roleid == 5)){
         /* Deleting academicprofile Record */
         $delflag=$this->sismodel->deleterow('employee_servicedetail','empsd_id',$id);
         if (! delflag   )
@@ -2604,6 +2621,41 @@ public function disciplin_profile() {
             redirect('report/service_profile/'.$this->emp_id);
 	}
         $this->load->view('report/service_profile/'.$this->emp_id);
+
+    }//closer 
+    
+    /**This function Delete records in leave perticulars */
+    public function delete_leavepertdata($id) {
+        $roleid=$this->session->userdata('id_role');
+        $this->roleid=$roleid;
+        $usrid=$this->session->userdata('id_user');
+        $this->emp_id=$this->sismodel->get_listspfic1('leave_apply', 'la_userid', 'la_id',$id)->la_userid;
+	if(($roleid == 1)||($roleid == 5)){
+        /* Deleting academicprofile Record */
+        $delflag=$this->sismodel->deleterow('leave_apply','la_id',$id);
+        if (! delflag   )
+        {
+            $this->logger->write_logmessage("delete", "Error in deleting employee_leavedetail record" . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in deleting employee_leavedetail record" . " [id:" . $id . "]");
+            $this->session->set_flashdata("err_message",'Error in deleting deleting employee_leavedetail record - ');
+            redirect('report/leave_profile/'.$this->emp_id);
+        }
+        else{
+
+            $this->logger->write_logmessage("delete", " Deleted employee_leavedetail Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted employee_leavedetail Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Leave Record  Deleted successfully ...' );
+            redirect('report/leave_profile/'.$this->emp_id);
+        }
+	}
+	else{
+	    $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+	    $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete employee_leavedetail Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete employee_leavedetail Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee leave record.' );
+            redirect('report/leave_profile/'.$this->emp_id);
+	}
+        $this->load->view('report/leave_profile/'.$this->emp_id);
 
     }//closer 
     

@@ -24,7 +24,7 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-                            alert("datat==="+data);
+                         //   alert("datat==="+data);
                             var empinput=data.split(",");
 			    var valm=empinput[0].replace(/[[\]"|"]/g,"");
 			    var n=(valm.trim()).startsWith("<div ");				
@@ -42,7 +42,9 @@
                             $('#wtype').val(empinput[5].replace(/"|"/g,""));
                             $('#desig').val(empinput[6].replace(/"|"/g,""));
                             $('#empname').val(empinput[7].replace(/"|"/g,""));
-                            $('#empid').val(empinput[8].replace(/[[\]"|"]/g,""));
+                            $('#hrafrom').val(empinput[8].replace(/[[\]"|"]/g,""));
+                            $('#ccafrom').val(empinput[9].replace(/[[\]"|"]/g,""));
+                            $('#empid').val(empinput[10].replace(/[[\]"|"]/g,""));
 				}			
                         },
                         error:function(data){
@@ -138,6 +140,8 @@
                         <tr>
                             <td><b>Days:</b><br><input type="text" name="days" id="days" value="" style="width:300px;"></td>
                             <td><b>HRA From:</b><br>
+<!--				<input type="text" name="hrafrom" id="hrafrom" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td> -->
+				<!--<input type="text" name="hrafrom" id="hrafrom" value="" style="width:300px;">-->
 					<div> <select id="hrafrom" style="width:300px;" name="hrafrom" >
 					<option selected="selected" disabled selected>--------HRA From-----</option>
 					<?php foreach($hragrade as $camdata): ?>
@@ -145,7 +149,7 @@
                         		<?php endforeach; ?>
 			
                     			</select></div>
-				<!--<input type="text" name="hrafrom" id="hrafrom" value="" style="width:300px;">-->
+			
 			</td>
                         <td><b>HRA To:</b><br>
 				<div> <select id="hrato" style="width:300px;" name="hrato" >

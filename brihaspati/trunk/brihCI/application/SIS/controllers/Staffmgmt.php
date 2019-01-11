@@ -1087,9 +1087,6 @@ class Staffmgmt extends CI_Controller
             else{
                 $new_name=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_id',$id)->emp_photoname;
             }
-                /*'emp_name'                       => $this->input->post('empname'),*/
-               // 'emp_bank_ifsc_code'             => $this->input->post('bankname'),
-                /*----extra field added---------------------------------------------*/
             
             if(!empty($_POST['univdeput'])){
                 if($_POST['univdeput'] =='Yes'){
@@ -1354,12 +1351,10 @@ class Staffmgmt extends CI_Controller
                   if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
                          $mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
                   }
-           // $this->mailmodel->mailsnd($_POST['emailid'],$sub,$mess,'');
 		
             /* insert record in service details with check duplicate , if uo then update in uolist table  and if hod then update in hod list table */
-            $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
-           // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
-            $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,$_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','',$this->input->post('orderno'));
+           // $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
+           // $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,$_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','',$this->input->post('orderno'));
 
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );

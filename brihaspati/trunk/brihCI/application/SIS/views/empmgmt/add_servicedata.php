@@ -349,15 +349,15 @@
 		</td>
 	</tr>
 <tr>
-                <td>Scheme Name<font color='Red'>*</font></td>
-                <td colspan=2><select name="schemecode" style="width:350px;"id="schmid" required>
+                <td>Scheme Name<font color='Red'></font></td>
+                <td colspan=2><select name="schemecode" style="width:350px;"id="schmid" >
                 <option selected="selected" disabled selected>--------Scheme Name-----</option>
                 </select>
                 </td>
         </tr>
 <tr>
-                <td>Drawing and Disbursing Officer<font color='Red'>*</font></td>
-                <td colspan=2><select name="ddo" style="width:350px;"id="ddoid" required>
+                <td>Drawing and Disbursing Officer<font color='Red'></font></td>
+                <td colspan=2><select name="ddo" style="width:350px;"id="ddoid" >
                 <option selected="selected" disabled selected>--------Drawing and Disbursing Officer-----</option>
                 </select>
                 </td>

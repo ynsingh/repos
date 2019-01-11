@@ -70,6 +70,17 @@
         <tr></tr><tr></tr>
         
         <tr>
+            <td>Number of Awards at National</td>
+            <td>Number of Awards at International</td>
+            <td>Number of Awards at University</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="awards_national"  class="form-control" size="30" value="<?php echo isset($_POST["awards_national"]) ? $_POST["awards_national"] : ''; ?>" /></td>
+            <td><input type="text" name="awards_international"  class="form-control" size="30" /></td>
+            <td><input type="text" name="awards_university"  class="form-control" size="30" /></td>
+        </tr>
+	<tr></tr>
+	<tr>
             <td>Number of Medals at National</td>
             <td>Number of Medals at International</td>
             <td>Number of Medals at University</td>

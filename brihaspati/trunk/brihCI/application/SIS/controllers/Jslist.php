@@ -181,7 +181,9 @@ class Jslist extends CI_Controller
 				$designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
 		                $empname=$detail->emp_name;
 				$ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
-				array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$designame,$empname,$empid);
+				$hragrade = $this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid)->ems_hragrade;
+				$ccagrade = $this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid)->ems_ccagrade;
+				array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$designame,$empname,$hragrade,$ccagrade,$empid);
 			}
 		}
 		else{
@@ -293,7 +295,7 @@ class Jslist extends CI_Controller
 //		if(empty($paycomm)){
 //			$paycomm ="";
 //		}
-                                
+       // 22 item push                         
                 array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
                 $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor,$payscale,$bank,$ifcbank,$bnkadd,$paycomm);
 
@@ -336,7 +338,7 @@ class Jslist extends CI_Controller
                 $society=$detail2->ems_society;
                 $socmem=$detail2->ems_societymember;
                 
-                
+                // 28 item push
                 array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
                 $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
                 $prdno2,$prdno3,$plino1,$plino2,$society, $socmem,$empid);      

@@ -59,15 +59,27 @@
         <tr></tr><tr></tr>
         
         <tr>
+            <td>Number of Awards at National</td>
+            <td>Number of Awards at International</td>
+            <td>Number of Awards at University</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="awards_national"   size="30" value="<?php echo $performancedata->spd_nat_award ; ?>" /></td>
+            <td><input type="text" name="awards_international"  value="<?php echo $performancedata->spd_int_award ; ?>" size="30" /></td>
+            <td><input type="text" name="awards_university" value="<?php echo $performancedata->spd_uni_award; ?>"   size="30" /></td>
+        </tr>
+		<tr></tr>
+	<tr>
             <td>Number of Medals at National</td>
             <td>Number of Medals at International</td>
             <td>Number of Medals at University</td>
         </tr>
         <tr>
-            <td><input type="text" name="national"   size="30" value="<?php echo $performancedata->spd_nat_award ; ?>" /></td>
-            <td><input type="text" name="international"  value="<?php echo $performancedata->spd_int_award ; ?>" size="30" /></td>
-            <td><input type="text" name="university" value="<?php echo $performancedata->spd_uni_award; ?>"   size="30" /></td>
+            <td><input type="text" name="national"   size="30" value="<?php echo $performancedata->spd_nat_medal ; ?>" /></td>
+            <td><input type="text" name="international"  value="<?php echo $performancedata->spd_int_medal ; ?>" size="30" /></td>
+            <td><input type="text" name="university" value="<?php echo $performancedata->spd_uni_medal; ?>"   size="30" /></td>
         </tr>
+
         <tr></tr><tr></tr>
         <tr><thead><th  style="background-color:gray; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp;B) Publications</th></thead></tr> 
         <tr></tr><tr></tr>    

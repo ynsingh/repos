@@ -91,12 +91,15 @@ class Payrollprofile extends CI_Controller
                 $dataems=array(
                     'emp_bank_accno'         =>$_POST['accno'],
                     'emp_bank_ifsc_code'     =>$ifsccode,
-                    'emp_bankname'     =>$bankname,
-                    'emp_bankbranch'     =>$bbranch,
+                    'emp_bankname'           =>$bankname,
+                    'emp_bankbranch'         =>$bbranch,
                     
                 );
+		$qtrtype = $this->input->post('qtrtype', '');
+		$society = $this->input->post('society', '');
+		$socmem = $this->input->post('societymember', '');
                 $datapp = array(
-                    'ems_house_type'          =>$_POST['qtrtype'],
+                    'ems_house_type'          =>$qtrtype,
                     'ems_house_no'            =>$_POST['qtrno'],
                     'ems_pensioncontri'        =>$_POST['pcontri'],
                     'ems_upfno'                =>$_POST['upfno'], 
@@ -121,15 +124,21 @@ class Payrollprofile extends CI_Controller
                     'ems_prdno3'               =>$_POST['prdno3'],
                     'ems_plino1'               =>$_POST['plino1'],
                     'ems_plino2'               =>$_POST['plino2'],
-                    'ems_society'              =>$_POST['society'],
-                    'ems_societymember'        =>$_POST['societymember'],
+                    'ems_society'              =>$society,
+                    'ems_societymember'        =>$socmem,
                 );
-                $emppfno = $this->input->post('emppfno', '');
-                $getid= $this->sismodel->get_listspfic1('employee_master_support','ems_id','ems_code',$emppfno)->ems_id;
-                if(!empty($getid)){
+              //  $emppfno = $this->input->post('emppfno', '');
+		$empid = $this->input->post('empid', '');
+		//print_r($datapp); echo $emppfno; echo "empid".$empid;die();
+                //$getid= $this->sismodel->get_listspfic1('employee_master_support','ems_id','ems_code',$emppfno)->ems_id;
+                $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
+               // if(!empty($getid)){
+                if(!empty($empid)){
                   //  $entryid=$getid->ems_id;
-                    $pprofileflag=$this->sismodel->updaterec('employee_master_support', $datapp, 'ems_id', $getid);
-                    $emsflag=$this->sismodel->updaterec('employee_master', $dataems , 'emp_code', $emppfno);
+                    //$pprofileflag=$this->sismodel->updaterec('employee_master_support', $datapp, 'ems_id', $getid);
+                    $pprofileflag=$this->sismodel->updaterec('employee_master_support', $datapp, 'ems_empid', $empid);
+                    //$emsflag=$this->sismodel->updaterec('employee_master', $dataems , 'emp_code', $emppfno);
+                    $emsflag=$this->sismodel->updaterec('employee_master', $dataems , 'emp_id', $empid);
                     if (!$pprofileflag)
                     {
                         $this->logger->write_logmessage("update","Trying to add updated values in payroll profile ", " payroll profile values are not updated please try again");

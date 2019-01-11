@@ -65,10 +65,10 @@
         <table width="100%"><tr><td>
         <?php
 		$roleid=$this->session->userdata('id_role');
-        $uname=$this->session->userdata('username');
-        if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')){
-                echo anchor('payrollprofile/viewpayleaveentry', "View Leave Entry" ,array('title' => 'View staff Leave Entry ' , 'class' => 'top_parent'));
-        }
+        	$uname=$this->session->userdata('username');
+        	if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')){
+                	echo anchor('payrollprofile/viewpayleaveentry', "View Leave Entry" ,array('title' => 'View staff Leave Entry ' , 'class' => 'top_parent'));
+        	}
             
             ?>
         </td></tr>

@@ -144,20 +144,24 @@
                     <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Awards and Medals : </b></td></tr>
                     <tr>
                         <th>Description</th>
-                        <th colspan="5"> Number of Medals</th>
+                        <th > Number of Awards</th>
+                        <th colspan="4"> Number of Medals</th>
                         
                         <tbody>
                             <tr>
                                 <td><?php echo "International";?></td>
-                                <td colspan="5"><?php echo $performancedata->spd_int_award;?></td>
+                                <td ><?php echo $performancedata->spd_int_award;?></td>
+                                <td colspan="5"><?php echo $performancedata->spd_int_medal;?></td>
                             </tr>
                             <tr>
                                 <td><?php echo "National";?></td>
-                                <td colspan="5"><?php echo $performancedata->spd_nat_award;?></td>
+                                <td ><?php echo $performancedata->spd_nat_award;?></td>
+                                <td colspan="5"><?php echo $performancedata->spd_nat_medal;?></td>
                             </tr> 
                             <tr>
                                 <td><?php echo "University";?></td>
-                                <td colspan="5"><?php echo $performancedata->spd_uni_award;?></td>
+                                <td ><?php echo $performancedata->spd_uni_award;?></td>
+                                <td colspan="5"><?php echo $performancedata->spd_uni_medal;?></td>
                             </tr>   
                         </tbody>     
                     </tr>

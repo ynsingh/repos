@@ -364,8 +364,8 @@
                     </td>
                 </tr>
 <tr>
-                    <td>Scheme<font color='Red'>*</font></td>
-			<td><select name="schemecode" style="width:350px;"id="schmid" required>
+                    <td>Scheme<font color='Red'></font></td>
+			<td><select name="schemecode" style="width:350px;"id="schmid" >
                             <?php if(!empty($servicedata->empsd_schemeid)):;?>
                             <option value="<?php echo $servicedata->empsd_schemeid;?>"><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$servicedata->empsd_schemeid)->sd_name; ?></option>
                             <?php else:?>
@@ -376,8 +376,8 @@
                     </td>
                 </tr>
 		<tr>
-		<td>Drawing and Disbursing Officer<font color='Red'>*</font></td>
-		<td><select name="ddo" style="width:350px;"id="ddoid" required>
+		<td>Drawing and Disbursing Officer<font color='Red'></font></td>
+		<td><select name="ddo" style="width:350px;"id="ddoid" >
                             <?php if(!empty($servicedata->empsd_ddoid)):;?>
                             <option value="<?php echo $servicedata->empsd_ddoid;?>"><?php echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$servicedata->empsd_ddoid)->ddo_name; ?></option>
                             <?php else:?>
@@ -496,8 +496,10 @@
                <?php 
 			if(!empty($servicedata->empsd_gradepay)){
 				$gp =$servicedata->empsd_gradepay;
-			}else{
+			}else if(!empty($gardepay)){
 				$gp = $gardepay;
+			}else{
+				$gp="";
 			}
 		?> 
                 <tr>

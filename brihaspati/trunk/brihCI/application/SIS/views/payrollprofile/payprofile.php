@@ -25,7 +25,7 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-                          //  alert("datat==="+data);
+                //            alert("datat==="+data);
                             var empinput=data.split(",");
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
@@ -165,7 +165,7 @@
                             $('#society').val(empinput[45].replace(/[[\]"|"]/g,""));
                             $('#socmem').val(empinput[46].replace(/[[\]"|"]/g,""));
 */
-                               
+   				$('#empid').val(empinput[49].replace(/[[\]"|"]/g,""));                            
                         },
                         error:function(data){
                             alert("error occur..!!");
@@ -397,6 +397,7 @@
                         </tr>
                         <tr>
                             <td colspan="6">   
+				 <input type="hidden" name="empid" id="empid" value="" >
                             <button name="pprofile" id="pprofile">Submit</button>
                             <input type="reset" name="Reset" value="Clear"/>
                             </td>
