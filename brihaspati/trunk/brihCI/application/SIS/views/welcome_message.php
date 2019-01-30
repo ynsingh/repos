@@ -5,7 +5,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<title>Welcome </title>
-	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
          <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/style.css">
 <!--	<style type="text/css">

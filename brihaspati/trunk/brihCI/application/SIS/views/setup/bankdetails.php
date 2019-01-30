@@ -54,7 +54,7 @@ echo "<body>";
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div style="margin-left:0%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -73,7 +73,7 @@ echo "<body>";
         <table class="TFtable" >
             <thead>
                 <tr>
-<thead><th>Sr. No</th><th>Bank Name</th><th>Bank Address</th><th>Bank Branch</th><th>Account No</th><th>Account Name</th><th>Account Type</th><th>IFSC Code</th><th>PAN No</th><th>TAN No</th><th>GST No</th><th>Action</th></thead>
+<thead><th>Sr. No</th><th>Campus</th><th>Bank Name</th><th>Bank Address</th><th>Bank Branch</th><th>Account No</th><th>Account Name</th><th>Account Type</th><th>IFSC Code</th><th>PAN No</th><th>TAN No</th><th>GST No</th><th>Action</th></thead>
 <tbody>
 <?php
 $srno = 0;
@@ -86,6 +86,26 @@ foreach ($this->result as $row)
         ?>
  <tr>
         <td><?php echo $srno;?></td>
+	<td>
+<?php
+		if ($row->campusid != 0) {	
+		$sc=$this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->campusid)->sc_name.
+		"&nbsp;"."(".$this->common_model->get_listspfic1('study_center', 'sc_code', 'sc_id', $row->campusid)->sc_code.")";
+	}else{$sc="";}
+	echo $sc;
+		echo "<br>";
+if ($row->ucoid != 0) {$uo=$this->login_model->get_listspfic1('authorities', 'name', 'id', $row->ucoid)->name; }else{ $uo='';}
+
+		echo $uo;
+		echo "<br>";
+if ($row->deptid != 0) {$dept=$this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $row->deptid)->dept_name;}else{$dept='';}
+		echo $dept;
+		echo "<br>";
+		if ( $row->schemeid != 0) {$schme=$this->SIS_model->get_listspfic1('scheme_department','sd_name','sd_id',$row->schemeid)->sd_name."&nbsp;"."(".$this->SIS_model->get_listspfic1('scheme_department','sd_code','sd_id',$row->schemeid)->sd_code.")";}else{ $schme='';}
+
+		echo $schme;
+?>
+	</td>
         <td><?php echo $row->bank_name;?></td>
         <td><?php echo $row->bank_address;?></td>
         <td><?php echo $row->branch_name;?></td>

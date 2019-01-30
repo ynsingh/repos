@@ -380,7 +380,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
             
-            $this->form_validation->set_rules('emptype','Employee Type','trim|required|xss_clean');
+            $this->form_validation->set_rules('emptype','Post Type','trim|required|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','trim|required|xss_clean');
             $this->form_validation->set_rules('newpayband','New PayBand','trim|xss_clean');
             $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
@@ -953,7 +953,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
 // enabled by nks
             $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');            
-            $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
+            $this->form_validation->set_rules('emptype','Post Type','trim|xss_clean');
             $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
 	    $this->form_validation->set_rules('newpayband','New PayBand','trim|xss_clean');
             $this->form_validation->set_rules('dateofjoiningvc','Date of Joining as VC','trim|xss_clean');
@@ -1425,7 +1425,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('emailsentto','EmailSentto','trim|required|xss_clean');
             $this->form_validation->set_rules('schemfrom','Scheme Name From','trim|xss_clean');
             $this->form_validation->set_rules('schemto','Scheme Name To','trim|xss_clean');
-            $this->form_validation->set_rules('emptypeto','Employee Type To','trim|xss_clean');
+            $this->form_validation->set_rules('emptypeto','Post Type To','trim|xss_clean');
             $this->form_validation->set_rules('empmutual','Employee Name for Mutual Transfer','trim|xss_clean');
             
             $this->form_validation->set_rules('emppfno','PF No','trim|xss_clean');
@@ -1811,7 +1811,7 @@ class Staffmgmt extends CI_Controller
                 $this->form_validation->set_rules('pnp','Plan / Non Plan','xss_clean|required');
                 $this->form_validation->set_rules('group','Group','xss_clean|required');
                 $this->form_validation->set_rules('tnt','Teaching non teaching ','xss_clean|required');
-                $this->form_validation->set_rules('type','Employee Type','xss_clean|required');
+                $this->form_validation->set_rules('type','Post Type','xss_clean|required');
                 $this->form_validation->set_rules('emppost','Employee Post','xss_clean|required');
                 $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
                 $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
@@ -2020,7 +2020,7 @@ class Staffmgmt extends CI_Controller
                 $this->form_validation->set_rules('pnp','Plan / Non Plan','xss_clean|required');
                 $this->form_validation->set_rules('group','Group','xss_clean|required');
                 $this->form_validation->set_rules('tnt','Teaching non teaching ','xss_clean|required');
-                $this->form_validation->set_rules('type','Employee Type','xss_clean|required');
+                $this->form_validation->set_rules('type','Post Type','xss_clean|required');
                 $this->form_validation->set_rules('emppost','Employee Post','xss_clean|required');
                 $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
                 $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
@@ -2223,7 +2223,7 @@ class Staffmgmt extends CI_Controller
        echo json_encode($uco_select_box);
     }
 
- /* This function has been created for get position of Employee Type */
+ /* This function has been created for get position of Post Type */
     public function getemptypevalue(){
        $emptype = $this->input->post('emptype');
        //echo "get emp type vale====1==>".$emptype;
@@ -2260,7 +2260,7 @@ class Staffmgmt extends CI_Controller
 	
     }
  
- /* This function has been created for calculate position of Employee Type */
+ /* This function has been created for calculate position of Post Type */
     public function getsstype(){
        $emptype = $this->input->post('sstype');
        $parts = explode(',',$emptype);
@@ -2307,7 +2307,7 @@ class Staffmgmt extends CI_Controller
 	  echo json_encode($p.','.$v.','.$p1.','.$p2.','.$p3.','.$p4.','.$p5.','.$p6);
     }
 
-	/* This function has been created for calculate position of Employee Type */
+	/* This function has been created for calculate position of Post Type */
     public function getsstypeper(){
        $emptype = $this->input->post('sstype');
        $parts = explode(',',$emptype);
@@ -2545,7 +2545,7 @@ class Staffmgmt extends CI_Controller
         $emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_type',$datawh);
         // echo json_encode("seema=77===".$emptype_data);
         $emptype_select_box ='';
-        $emptype_select_box.='<option value="">------ Select Employee Type -----------';
+        $emptype_select_box.='<option value="">------ Select Post Type -----------';
         if(!empty($emptype_data)){ 
                       
             foreach($emptype_data as $empdata){

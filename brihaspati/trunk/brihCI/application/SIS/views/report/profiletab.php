@@ -102,14 +102,14 @@
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
 		</tr>
-                <tr>
+<!--                <tr>
 			<?php if($current == 'leave') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
-		</tr>
+			<b>  <a href='<?php //echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
+		</tr> -->
                 <tr>
 			<?php if($current == 'deputation') { ?>
 				<td class=btn active>
@@ -124,7 +124,7 @@
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php echo site_url()."/report/deptexam_profile/".$emp_id?>' style="font-size:10px;color:#0099CC;text-decoration: none">Departmental Exam Passed Details</a></b> </td>
+			<b>  <a href='<?php echo site_url()."/report/deptexam_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Departmental Exam Passed Details</a></b> </td>
 		</tr>
                 <tr>
 			<?php if($current == 'workorder') { ?>

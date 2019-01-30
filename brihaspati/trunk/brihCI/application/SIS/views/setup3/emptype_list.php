@@ -12,14 +12,14 @@
         <table width="100%"><tr colspan="2">
         <?php 
         echo "<td align=\"left\" width=\"33%\">";
-	echo anchor('setup3/employeetype/', "Add Employee Type" ,array('title' => 'View Employee Type ' , 'class' => 'top_parent'));
+	echo anchor('setup3/employeetype/', "Add Post Type" ,array('title' => 'View Post Type ' , 'class' => 'top_parent'));
         echo "</td>";
         echo "<td align=\"center\" width=\"34%\">";
-        echo "<b>Employee Type List</b>";
+        echo "<b>Post Type List</b>";
         echo "</td>";
         echo "<td align=\"right\" width=\"33%\">";
 	$help_uri = site_url()."/help/helpdoc#SalaryHeadList";
-        echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+//        echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
         echo "</td>";
         ?>
         <div>     
@@ -46,8 +46,8 @@
             <thead>
                 <tr>
                     <th>Sr.No</th>
-                    <th>Employee Type Code</th>
-                    <th>Employee Type</th>
+                    <th>Post Type Code</th>
+                    <th>Post Type</th>
                     <th>Short Name</th>
                     <th>PF Applies</th>
                     <th>Max PF Limit</th>

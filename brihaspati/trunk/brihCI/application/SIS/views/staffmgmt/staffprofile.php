@@ -794,9 +794,9 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="ICAR">ICAR</option>  -->
                     </select></div>
                 </td>
-                <td><label for="emptype" style="font-size:15px;"><font color='blue'>Employee Type</font><font color='Red'>*</font></label>
+                <td><label for="emptype" style="font-size:15px;"><font color='blue'>Post Type</font><font color='Red'>*</font></label>
                     <div><select id="emptypeid" name="emptype" required style="width:300px;"> 
-                        <option selected="selected" disabled selected>-------- Select Employee Type ------</option>
+                        <option selected="selected" disabled selected>-------- Select Post Type ------</option>
                         <!--<option value="Permanent">Permanent</option>
                         <option value="Temporary">Temporary</option>-->
                     </select><div>

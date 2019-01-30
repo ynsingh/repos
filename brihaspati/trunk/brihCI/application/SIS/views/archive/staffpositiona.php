@@ -42,7 +42,7 @@
 		<th> U O Control </th>
 		<th> Department Name </th>
 		<th> Working Type </th>
-		<th> Employee Type </th>
+		<th> Post Type </th>
 		<th> Employee Post </th>
 		<th> Pay Band </th>
 		<th> Method of Recruitment </th>

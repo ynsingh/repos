@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Welcome to IGNTU</title>
+        <title>Welcome to TANUVAS</title>
 	 <?php $this->load->view('template/header'); ?>
        
     </head>

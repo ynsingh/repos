@@ -20,7 +20,7 @@
             echo "</td>";
             echo "<td align=\"right\" width=\"33%\">";
             $help_uri = site_url()."/help/helpdoc#SalaryHeadList";
-            echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+//            echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
             echo "</td>";
             ?>
             <div>     

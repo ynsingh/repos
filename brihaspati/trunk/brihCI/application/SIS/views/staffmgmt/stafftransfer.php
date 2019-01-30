@@ -800,7 +800,7 @@
                         <td><label for="employeetype" style="font-size:15px;">Working Type From<font color='Red'>*</font></label>
                             <div>
                                 <select name="employeetype" id="emptype"  style="width:350px;" required="required"> 
-                                <option value="">------------ Select Employee Type ---------------</option>
+                                <option value="">------------ Select Working Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
                                 <option value="Non Teaching">Non Teaching</option>
                                 </select>
@@ -833,7 +833,7 @@
                          <td><label for="postfrom" style="font-size:15px;">Post From<font color='Red'>*</font></label>
                             <div><input type="text" name="postfrom" id="postfrom"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                         </td>
-                         <td><label for="emppt" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
+                         <td><label for="emppt" style="font-size:15px;">Post Type<font color='Red'>*</font></label>
                              <div><input type="text" name="empptfrom" id="emppt"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                         </td>
                     </tr>
@@ -899,7 +899,7 @@
                         </td>
                         <td><label for="employeetype" style="font-size:15px;">Working Type To<font color='Red'>*</font></label>
                             <div><select name="emptypeto" id="emptypeto" style="width:350px;" required="required"> 
-                                <option value="">------------ Select Employee Type ---------------</option>
+                                <option value="">------------ Select Working  Type ---------------</option>
                                 <option value="Teaching">Teaching</option>
                                 <option value="Non Teaching">Non Teaching</option>                     
                             </select></div>
@@ -941,7 +941,7 @@
                         <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
                             <div><input type="text" name="postto" id="postto"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                         </td>
-                         <td><label for="emppt" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
+                         <td><label for="emppt" style="font-size:15px;">Post Type<font color='Red'>*</font></label>
                              <div><input type="text" name="vacanttype" id="vtypeid"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
                            
                         </td>
@@ -955,9 +955,9 @@
                          
                         </div>       
                         </td>
-                        <td><label for="emptype" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
+                        <td><label for="emptype" style="font-size:15px;">Post Type<font color='Red'>*</font></label>
                             <div><select id="vtypeid" name="vacanttype" required style="width:350px;"> 
-                            <option selected="selected" disabled selected>-------- Select Employee Type ------</option>
+                            <option selected="selected" disabled selected>-------- Select Post Type ------</option>
                             
                             </select><div>
                         </td> 
@@ -1019,7 +1019,7 @@
                           <br/> Dr. A B SINGH &nbsp; &nbsp;Registrar Incharge &nbsp;&nbsp;&nbsp;34567 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BC8776 &nbsp;&nbsp; C898000 &nbsp;&nbsp;
                             <br/><br/>
                             <tr><td align="left"><b>Employee Transfer To Details:</b> </td></tr>    
-                            <tr><td align="left"><b>Employee PF No. &nbsp;&nbsp;&nbsp;&nbsp &nbsp;&nbsp;Campus Code &nbsp;&nbsp; Authority(UCO)Code &nbsp;&nbsp; Department Code &nbsp;&nbsp;  Scheme Code &nbsp;&nbsp; DDO Code &nbsp;&nbsp; AGP Code &nbsp;&nbsp; Working Type &nbsp;&nbsp; Group &nbsp;&nbsp;Designation Code&nbsp;&nbsp;Shown against Post Code&nbsp;&nbsp; Employee Type </b> <br/>
+                            <tr><td align="left"><b>Employee PF No. &nbsp;&nbsp;&nbsp;&nbsp &nbsp;&nbsp;Campus Code &nbsp;&nbsp; Authority(UCO)Code &nbsp;&nbsp; Department Code &nbsp;&nbsp;  Scheme Code &nbsp;&nbsp; DDO Code &nbsp;&nbsp; AGP Code &nbsp;&nbsp; Working Type &nbsp;&nbsp; Group &nbsp;&nbsp;Designation Code&nbsp;&nbsp;Shown against Post Code&nbsp;&nbsp; Post Type </b> <br/>
                                 V1234&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CU001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVC-AGB
                                 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;1007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D149

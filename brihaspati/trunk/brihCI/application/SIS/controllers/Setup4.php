@@ -1,7 +1,8 @@
 <?php
 
 /* 
- * @name Setup3.php
+ * @name Setup4.php
+ * @author Nagendra Kumar Singh (nksinghiitk@gmail.com) 
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com) Saving Master
  */
  
@@ -436,5 +437,49 @@ public function rejectedincomereq(){
 	$this->load->view('setup4/rejectedincomereq');
 
 	}//end view rejected function
+
+	public function displaypaymatrix(){
+		$data['paymat']=$this->sismodel->get_list('paymatrix');	
+		$this->logger->write_logmessage("view"," view Pay Matrix", "view pay matrix");		
+		$this->load->view('setup4/displaypaymatrix',$data);
+	}
+
+	public function paymatrix(){
+		if(isset($_POST['paymatrix'])) {
+		        $this->form_validation->set_rules('pmlevel','Salary Level','trim|xss_clean|required');
+			for($i=1;$i<=40;$i++){
+                        	$this->form_validation->set_rules('subpaylevel'.$i, 'Sub Pay Level', 'trim|xss_clean');
+			}
+	                if($this->form_validation->run()==TRUE){
+        	 		$data = array(
+		                    	'pm_level'=>$_POST['pmlevel'],
+				);
+					for($i=1;$i<=40;$i++){
+                                                $field='pm_sublevel'.$i ;
+						$fieldv = $this->input->post('subpaylevel'.$i,'0');
+						$data[$field]=$fieldv;
+					}
+//				print_r($data); die();
+                    		$pmflag=$this->sismodel->insertrec('paymatrix', $data) ;
+                if ( ! $pmflag)
+                {
+                    $this->logger->write_logmessage("error", "Error in adding pay matrix detail");
+                    $this->logger->write_dblogmessage("error", "Error in adding pay matrix detail");
+                    $this->session->set_flashdata("err_message",'Error in adding pay matrix detail');
+                    redirect('setup4/paymatrix');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","pay matrix record insert successfully");
+                    $this->logger->write_dblogmessage("insert", "Add pay matrix record");
+                    $this->session->set_flashdata("success", "Pay matrix added successfully...");
+                    redirect("setup4/displaypaymatrix");
+                }
+				
+			
+			}
+		}
+		$this->load->view('setup4/paymatrix');
+	}
 
 }//end class

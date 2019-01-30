@@ -1,5 +1,6 @@
 <?php
 // Please refer to dompdf_config.inc.php for details on each configuration option.
+define("DOMPDF_AUTOLOAD_PREPEND", true);
 
 //define("DOMPDF_TEMP_DIR", "/tmp");
 //define("DOMPDF_FONT_DIR", DOMPDF_DIR."/lib/fonts/");

@@ -60,9 +60,15 @@
         </thead></tr>
 	<tbody>
 	     <?php
-		$count = 0;
+		$count = 0; $pcom="";
 	        foreach ($this->result as $row)
                 {
+			$sgmpc= $row->sgm_pc;
+			if(strcmp($pcom,$sgmpc)){
+				echo "<tr><td colspan=8><b>". $sgmpc ." Pay commission </b></td></tr>";
+				$pcom=$sgmpc;
+			}
+
               ?>    
 		<tr>
                     <td><?php echo ++$count; ?> </td>

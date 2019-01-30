@@ -115,6 +115,9 @@
 				if($dexist){
 				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$this->session->userdata('id_emp'))->emp_name; 
 				}
+//				else get userid
+//	 get empcode from uolist
+// get empdetails from employee master
 		?>
 	<?php		//	$this->name->firstname ;?>&nbsp;&nbsp;<?php //echo  $this->lastn->lastname ;
 //			echo $this->session->userdata('id_dept');

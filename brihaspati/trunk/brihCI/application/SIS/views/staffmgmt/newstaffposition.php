@@ -354,7 +354,7 @@
                 <option value="physical director" <?php echo set_select('grouppost','physical director'); ?> class="dropdown-item"> Physical Director </option></td>
 		-->
 		
-		<td><label for="type" style="font-size:15px;"><font color='blue'> Employee Type</font><font color='Red'> *</font> </label>
+		<td><label for="type" style="font-size:15px;"><font color='blue'> Post Type</font><font color='Red'> *</font> </label>
           	    <div><select name="type" id="type" class="my_dropdown" style="width:338px;" onchange="getemptype(this.value)" >
                		 <option value="" disabled selected >------Select----------------</option>
                		 <option value="Permanent"<?php echo set_select('type', 'Permanent'); ?> class="dropdown-item"> Permanent </option>

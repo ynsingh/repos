@@ -28,10 +28,10 @@
             <tr>
                 <?php
                     echo "<td align=\"left\" width=\"33%\">";
-                    echo anchor('setup3/employeetype_list/', "View Employee Type" ,array('title' => 'View Employee Type' , 'class' => 'top_parent'));
+                    echo anchor('setup3/employeetype_list/', "View Post Type" ,array('title' => 'View Post Type' , 'class' => 'top_parent'));
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Edit Employee Type Details</b>";
+                    echo "<b>Edit Post Type Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -63,7 +63,7 @@
             <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <table>
                 <tr>
-                    <td><label for="emptnt" class="control-label">Employee Type:</label></td>
+                    <td><label for="emptnt" class="control-label">Working Type:</label></td>
                     <td>
                         <select name="emptnt" id="emptnt" class="my_dropdown" style="width:100%;">
                         <?php if(!empty($emptypedata->empt_tnt)):;?>
@@ -78,15 +78,15 @@
                     </td>
 	     	</tr>
                  <tr>
-                	<td><label for="emptype_code" class="control-label">Employee Type Code:</label></td>
+                	<td><label for="emptype_code" class="control-label">Post Type Code:</label></td>
                 	<td><input type="text" name="emptype_code" value="<?php echo $emptypedata->empt_code; ?>"  class="form-control" size="40" /><br></td>
 	     	</tr>
                 <tr>
-                	<td><label for="emptype_name" class="control-label">Employee Type Name:</label></td>
+                	<td><label for="emptype_name" class="control-label">Post Type Name:</label></td>
                         <?php if(($emptypedata->empt_name == 'Temporary')||($emptypedata->empt_name == 'Permanent')||($emptypedata->empt_name == 'Regular') ):;?>
                         <td><input type="text" name="emptype_name" value="<?php echo $emptypedata->empt_name; ?>" readonly class="form-control" size="40" /><br></td>
                 	<?php else:?>
-                        <td><input type="text" name="emptype_name" value="<?php echo $emptypedata->empt_name; ?>" placeholder=" Employee Type Name" class="form-control" size="40" /><br></td>
+                        <td><input type="text" name="emptype_name" value="<?php echo $emptypedata->empt_name; ?>" placeholder=" Post Type Name" class="form-control" size="40" /><br></td>
                         <?php endif;?>
                 </tr>
                 <tr>
@@ -118,7 +118,7 @@
                         
 	     	</tr>
                 <tr>
-                	<td><label for="emptype_sname" class="control-label">Employee Type Short Name:</label></td>
+                	<td><label for="emptype_sname" class="control-label">Post Type Short Name:</label></td>
                 	<td><input type="text" name="emptype_sname" value="<?php echo $emptypedata->empt_shortname; ?>"  class="form-control" size="40" /><br></td>
 	     	</tr>
                

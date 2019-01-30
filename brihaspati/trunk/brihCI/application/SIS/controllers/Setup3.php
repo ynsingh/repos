@@ -399,8 +399,8 @@ class Setup3 extends CI_Controller
         if(isset($_POST['addemptype'])) {
             //form validation
             
-            $this->form_validation->set_rules('emptype_code','Employee Type Code','trim|required|xss_clean|alpha_numeric_spaces|callback_isemptypecode_Exist');
-            $this->form_validation->set_rules('emptype_name','Employee Type Name','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('emptype_code','Post Type Code','trim|required|xss_clean|alpha_numeric_spaces|callback_isemptypecode_Exist');
+            $this->form_validation->set_rules('emptype_name','Post Type Name','trim|required|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('pfapplies','PF applies','trim|xss_clean');
             $this->form_validation->set_rules('maxpf_limit','Max PF Limit','trim|xss_clean|numeric');
             $this->form_validation->set_rules('emptype_sname','Employee Short name','trim|xss_clean|alpha_numeric_spaces');
@@ -435,7 +435,7 @@ class Setup3 extends CI_Controller
                 $emptdup = $this->sismodel->isduplicatemore('employee_type', $dupcheck);
                 if($emptdup == 1 ){
                     
-                    $this->session->set_flashdata("err_message", "Record is already exist with this 'Employee Type Name = $etname' ");
+                    $this->session->set_flashdata("err_message", "Record is already exist with this 'Post Type Name = $etname' ");
                     $this->load->view('setup3/employeetype');
                     return;
                 }
@@ -443,15 +443,15 @@ class Setup3 extends CI_Controller
                     $emptyeflag=$this->sismodel->insertrec('employee_type', $data);
                     if (!$emptyeflag)
                     {
-                        $this->logger->write_logmessage("insert","Trying to add employee type ", " employee type is not added ".$etname);
-                        $this->logger->write_dblogmessage("insert","Trying to add employee type ", " employee type is not added ".$etname);
-                        $this->session->set_flashdata('err_message','Error in adding employee type - '  , 'error');
+                        $this->logger->write_logmessage("insert","Trying to add Post type ", " post type is not added ".$etname);
+                        $this->logger->write_dblogmessage("insert","Trying to add Post type ", " post type is not added ".$etname);
+                        $this->session->set_flashdata('err_message','Error in adding post type - '  , 'error');
                         redirect('setup3/employeetype');
                     }
                     else{
-                        $this->logger->write_logmessage("insert","Add employee type ", "employee type ".$_POST['emptype_name'] ." added  successfully...");
-                        $this->logger->write_dblogmessage("insert","Add  employee type ", "employee type  ".$_POST['emptype_name'] ."added  successfully...");
-                        $this->session->set_flashdata("success", " Employee Type = "."[" .$_POST['emptype_name'] . "]" ." record insert successfully...");
+                        $this->logger->write_logmessage("insert","Add post type ", "post type ".$_POST['emptype_name'] ." added  successfully...");
+                        $this->logger->write_dblogmessage("insert","Add  post type ", "post type  ".$_POST['emptype_name'] ."added  successfully...");
+                        $this->session->set_flashdata("success", " Post Type = "."[" .$_POST['emptype_name'] . "]" ." record insert successfully...");
                         redirect("setup3/employeetype_list");
                     }
                     
@@ -473,7 +473,7 @@ class Setup3 extends CI_Controller
             $is_exist= $this->sismodel->isduplicate('employee_type','empt_code',$etcode);
             if ($is_exist)
             {
-                $this->form_validation->set_message('isemptypecode_Exist', 'Employee Type Code =  ' . $etcode .' is already exist. so please insert any other code.');
+                $this->form_validation->set_message('isemptypecode_Exist', 'Post Type Code =  ' . $etcode .' is already exist. so please insert any other code.');
                 return false;
             }
             else {
@@ -489,8 +489,8 @@ class Setup3 extends CI_Controller
 
     public function employeetype_list(){
         $data['emptype_record'] =$this->sismodel->get_list('employee_type');
-        $this->logger->write_logmessage("view"," view employee type list" );
-        $this->logger->write_dblogmessage("view"," view employee type list");
+        $this->logger->write_logmessage("view"," view post type list" );
+        $this->logger->write_dblogmessage("view"," view post type list");
         $this->load->view('setup3/emptype_list',$data);
     }
      /**************************************closer  Display employee type  **************************/
@@ -502,11 +502,11 @@ class Setup3 extends CI_Controller
         if(isset($_POST['updateemptype'])) {
             //form validation
             
-            $this->form_validation->set_rules('emptype_code','Employee Type Code','trim|required|xss_clean|alpha_numeric_spaces');
-            $this->form_validation->set_rules('emptype_name','Employee Type Name','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('emptype_code','Post Type Code','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('emptype_name','Post Type Name','trim|required|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('pfapplies','PF applies','trim|xss_clean');
             $this->form_validation->set_rules('maxpf_limit','Max PF Limit','trim|xss_clean|numeric');
-            $this->form_validation->set_rules('emptype_sname','Employee Short name','trim|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('emptype_sname','Post type Short name','trim|xss_clean|alpha_numeric_spaces');
                                   
             if($this->form_validation->run() == FALSE){
              
@@ -524,15 +524,15 @@ class Setup3 extends CI_Controller
                 
                 $logmessage = "";
                 if($data['emptypedata']->empt_code != $etcode)
-                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_code. " changed by " .$etcode;
+                    $logmessage = "Edit Post Type Data " .$data['emptypedata']->empt_code. " changed by " .$etcode;
                 if($data['emptypedata']->empt_name != $etname)
-                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_name. " changed by " .$etname;
+                    $logmessage = "Edit Post Type Data " .$data['emptypedata']->empt_name. " changed by " .$etname;
                 if($data['emptypedata']->empt_shortname != $etnickname)
-                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_shortname . " changed by " .$etnickname;
+                    $logmessage = "Edit Post Type Data " .$data['emptypedata']->empt_shortname . " changed by " .$etnickname;
                 if($data['emptypedata']->empt_pfapplies != $etpfaply)
-                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_pfapplies . " changed by " .$etpfaply;
+                    $logmessage = "Edit Post Type Data " .$data['emptypedata']->empt_pfapplies . " changed by " .$etpfaply;
                 if($data['emptypedata']->empt_maxpflimit != $etpfmaxlimit)
-                    $logmessage = "Edit Employee Type Data " .$data['emptypedata']->empt_maxpflimit . " changed by " .$etpfmaxlimit;
+                    $logmessage = "Edit Post Type Data " .$data['emptypedata']->empt_maxpflimit . " changed by " .$etpfmaxlimit;
                 
                 $editdata = array(
                     'empt_code'                  =>$_POST['emptype_code'],
@@ -579,16 +579,16 @@ class Setup3 extends CI_Controller
                 $editetflag=$this->sismodel->updaterec('employee_type', $editdata, 'empt_id', $id);
                 if(!$editetflag){
                       
-                    $this->logger->write_logmessage("error","Edit employee type error", "Edit employee type details. $logmessage ");
-                    $this->logger->write_dblogmessage("error","Edit employee type error", "Edit employee type. $logmessage ");
-                    $this->session->set_flashdata('err_message','Error in updating employee type - ' . $logmessage . '.', 'error');
+                    $this->logger->write_logmessage("error","Edit post type error", "Edit post type details. $logmessage ");
+                    $this->logger->write_dblogmessage("error","Edit post type error", "Edit post type. $logmessage ");
+                    $this->session->set_flashdata('err_message','Error in updating post type - ' . $logmessage . '.', 'error');
                     $this->load->view('setup3/edit_emptype', $data);
                     
                 }
                 else{
-                    $this->logger->write_logmessage("update","Edit employee type by  ".$this->session->userdata('username') , "Edit employee type details. $logmessage ");
-                    $this->logger->write_dblogmessage("update","Edit employee type by  ".$this->session->userdata('username') , "Edit employee type details. $logmessage ");
-                    $this->session->set_flashdata('success','Record updated successfully.'.'[ Employee Type is = ' .$_POST['emptype_name'] .' ]');
+                    $this->logger->write_logmessage("update","Edit post type by  ".$this->session->userdata('username') , "Edit post type details. $logmessage ");
+                    $this->logger->write_dblogmessage("update","Edit post type by  ".$this->session->userdata('username') , "Edit post type details. $logmessage ");
+                    $this->session->set_flashdata('success','Record updated successfully.'.'[ Post Type is = ' .$_POST['emptype_name'] .' ]');
                     redirect('setup3/employeetype_list');
                     
                 }
@@ -793,8 +793,9 @@ class Setup3 extends CI_Controller
         $this->emppfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
         $this->emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code ','emp_id',$empid)->emp_type_code;
         $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$this->emptype)->empt_id;
-        
+//       echo $this->emptypeid; die(); 
         $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+//	print_r($strarray); die();
         $data['allowedhead']=explode(", ",$strarray);
        // print_r($data['allowedhead']);
         if(isset($_POST['upsalhdval'])){

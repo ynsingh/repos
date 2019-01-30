@@ -65,7 +65,7 @@
             <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <table>
                 <tr>
-                    <td><label for="salhtnt" class="control-label">Employee Type:</label></td>
+                    <td><label for="salhtnt" class="control-label">Working Type:</label></td>
                     <td>
                         <select name="salhtnt" id="emptnt" class="my_dropdown" style="width:100%;">
                         <?php if(!empty($salhdata->sh_tnt)):;?>

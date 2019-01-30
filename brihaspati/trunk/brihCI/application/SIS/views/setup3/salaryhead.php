@@ -59,7 +59,7 @@
             <form action="<?php echo site_url('setup3/salaryhead');?>" method="POST" enctype="multipart/form-data">
             <table>
                 <tr>
-                    <td><label for="salhtnt" class="control-label">Employee Type:</label></td>
+                    <td><label for="salhtnt" class="control-label">Post Type:</label></td>
                     <td>
                         <select name="salhtnt" id="emptnt" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select ---------------</option>

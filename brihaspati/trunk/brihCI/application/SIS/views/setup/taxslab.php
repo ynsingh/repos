@@ -19,7 +19,7 @@
            echo anchor('setup/displaytaxslab', 'Tax Slab Master', array('class' => 'top_parent'));
            echo "<td align=\"right\">";
 	   $help_uri = site_url()."/help/helpdoc#Scheme";
-	   echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+//	   echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
            echo "</td>";
        	?>
         <div>

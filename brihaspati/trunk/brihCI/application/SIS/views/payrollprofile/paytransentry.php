@@ -204,7 +204,7 @@
                                 <div> <select id="ccato" style="width:300px;" name="ccato" >
                                         <option selected="selected" disabled selected>--------CCA To-----</option>
                                         <?php foreach($ccagrade as $camdata): ?>
-                                                <option class="test" value="<?php echo $camdata->cca_gradeid; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$candata->cca_gradeid)->hgc_gradename; ?></option>
+                                                <option class="test" value="<?php echo $camdata->cca_gradeid; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$camdata->cca_gradeid)->hgc_gradename; ?></option>
                                         <?php endforeach; ?>
 
                                         </select></div>

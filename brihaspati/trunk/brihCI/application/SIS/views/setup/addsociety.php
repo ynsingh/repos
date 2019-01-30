@@ -71,7 +71,7 @@ yearRange: 'c-47:c+50',
                 <?php
                  echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";
-                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+          //       echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                  echo "</td>";
                  ?>
                 <div  style="width:100%;">

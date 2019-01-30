@@ -171,7 +171,7 @@
 <?php   echo    "<b>Plan / Non Plan</b> <br>".$data->emp_pnp ?>
                                 </td>
                                 <td>
-<?php   echo    "<b>Employee Type</b> <br>".$data->emp_type_code; ?>
+<?php   echo    "<b>Post Type</b> <br>".$data->emp_type_code; ?>
                                 </td>
   <td>
 <?php   echo    "<b>Appointment Order No</b> <br>".$data->emp_apporderno; ?>

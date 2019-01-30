@@ -38,7 +38,7 @@
                     $(".headamtI").each(function(){
                         if($(this).val() != "")
                             sum += parseInt($(this).val());   
-                            alert("seema-----"+sum);
+                          //  alert("seema-----"+sum);
                     });
                     $("#Tincome").val(sum);
                     var tincome = parseInt($("#Tincome").val());
@@ -56,7 +56,7 @@
                     $(".headamtD").each(function(){
                         if($(this).val() != "")
                             sumded += parseInt($(this).val());   
-                            alert("seema--ded---"+sumded);
+                           // alert("seema--ded---"+sumded);
                     });
     
                     $("#Tdeduction").val(sumded);
@@ -234,7 +234,7 @@
                     foreach($incomes as $incomedata){ ?>
                     
                     <tr>
-                    <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == NULL) :?>    
+                    <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == 'Common') :?>    
                     <td>
                         
                         <?php  echo $incomedata->sh_name/*"==id==".$incomedata->sh_id */;
@@ -391,7 +391,7 @@
                      <?php foreach($deduction as $deductdata){ ?>
                    
                         <tr>
-                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == NULL) :?>       
+                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
                         <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/ ;
                             if(in_array($deductdata->sh_id,$allowedhead)){
                             echo "<font color=\"red\">*</font>" ;
@@ -497,7 +497,7 @@
                     
                         foreach($incomes as $incomedata){ ?>
                         <tr>
-                            <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == NULL) :?>    
+                            <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == 'Common') :?>    
                             <td>
                         
                                 <?php  echo $incomedata->sh_name/*."==id==".$incomedata->sh_id*/ ;
@@ -547,7 +547,7 @@
                      <?php foreach($deduction as $deductdata){ ?>
                    
                         <tr>
-                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == NULL) :?>       
+                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
                         <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/ ;
                             if(in_array($deductdata->sh_id,$allowedhead)){
                             echo "<font color=\"red\">*</font>" ;
@@ -626,7 +626,7 @@
                     
                         foreach($incomes as $incomedata){ ?>
                         <tr>
-                            <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == NULL) :?>    
+                            <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == 'Common') :?>    
                             <td>
                         
                                 <?php  echo $incomedata->sh_name/*."==id==".$incomedata->sh_id*/ ;
@@ -676,7 +676,7 @@
                      <?php foreach($deduction as $deductdata){ ?>
                    
                         <tr>
-                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == NULL) :?>       
+                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
                         <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/ ;
                             if(in_array($deductdata->sh_id,$allowedhead)){
                             echo "<font color=\"red\">*</font>" ;

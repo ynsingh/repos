@@ -37,10 +37,10 @@
             <tr>
                 <?php
                     echo "<td align=\"left\" width=\"33%\">";
-                    echo anchor('setup3/employeetype_list/', "View Employee Type" ,array('title' => 'View employee type ' , 'class' => 'top_parent'));
+                    echo anchor('setup3/employeetype_list/', "View Post Type" ,array('title' => 'View employee type ' , 'class' => 'top_parent'));
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Add Employee Type</b>";
+                    echo "<b>Add Post Type</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -72,7 +72,7 @@
             <form action="<?php echo site_url('setup3/employeetype');?>" method="POST" enctype="multipart/form-data">
             <table>
                 <tr>
-                	<td><label for="emptnt" class="control-label">Employee Type:</label></td>
+                	<td><label for="emptnt" class="control-label">Post Type:</label></td>
                         <td>
                             <select name="emptnt" id="emptnt" class="my_dropdown" style="width:100%;">
                 		<option value="" disabled selected >------Select ---------------</option>
@@ -82,12 +82,12 @@
                         </td>
 	     	</tr>
                 <tr>
-                	<td><label for="emptype_code" class="control-label">Employee Type Code:</label></td>
-                	<td><input type="text" name="emptype_code" value="<?php echo isset($_POST["emptype_code"]) ? $_POST["emptype_code"] : ''; ?>" placeholder="Employee Type Name" class="form-control" size="40" /><br></td>
+                	<td><label for="emptype_code" class="control-label">Post Type Code:</label></td>
+                	<td><input type="text" name="emptype_code" value="<?php echo isset($_POST["emptype_code"]) ? $_POST["emptype_code"] : ''; ?>" placeholder="Post Type Name" class="form-control" size="40" /><br></td>
 	     	</tr>
                 <tr>
-                	<td><label for="emptype_name" class="control-label">Employee Type Name:</label></td>
-                	<td><input type="text" name="emptype_name" value="<?php echo isset($_POST["emptype_name"]) ? $_POST["emptype_name"] : ''; ?>" placeholder=" Employee Type Name" class="form-control" size="40" /><br></td>
+                	<td><label for="emptype_name" class="control-label">Post Type Name:</label></td>
+                	<td><input type="text" name="emptype_name" value="<?php echo isset($_POST["emptype_name"]) ? $_POST["emptype_name"] : ''; ?>" placeholder=" Post Type Name" class="form-control" size="40" /><br></td>
 	     	</tr>
                 <tr>
                 	<td><label for="pfapplies" class="control-label">PF Applies:</label></td>
@@ -105,7 +105,7 @@
                         
 	     	</tr>
                 <tr>
-                	<td><label for="emptype_sname" class="control-label">Employee Type Short Name:</label></td>
+                	<td><label for="emptype_sname" class="control-label">Post Type Short Name:</label></td>
                 	<td><input type="text" name="emptype_sname" value="<?php echo isset($_POST["emptype_sname"]) ? $_POST["emptype_sname"] : ''; ?>"  placeholder=" Short Name"  class="form-control" size="40" /><br></td>
 	     	</tr>
                

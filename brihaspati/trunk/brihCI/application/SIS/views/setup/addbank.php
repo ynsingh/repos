@@ -9,6 +9,113 @@
 <title>Add Bank</title>
  <head>    
         <?php $this->load->view('template/header'); ?>
+	 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+<script>
+            $(document).ready(function(){
+/*******uoc on the basis of campus*****************************************************************************/
+            
+            /*
+            In future this code may be replace when either campusid added in the 
+            autority or authority added in campus.*/
+            $('#camp').on('change',function(){
+                var sc_code = $(this).val();
+                //alert(sc_code);
+                if(sc_code == ''){
+                    $('#uocid').prop('disabled',true);
+                   
+                }
+                else{
+                    $('#uocid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getuoclist",
+                        type: "POST",
+                        data: {"campusname" : sc_code},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#uocid').html(data.replace(/^"|"$/g, ''));
+                                                 
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                    });
+                }
+            }); 
+/*****end of uoc***************************************************************************/
+            /************************select department on basis of uoc and campus*******************/           
+             $('#uocid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var combid = sc_code+","+uoc_id;
+               //alert("combid=="+combid);
+                if(uoc_id == ''){
+                    $('#scid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#scid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getnewdeptlist",
+                        type: "POST",
+                        data: {"campuoc" : combid},
+                        dataType:"html",
+                        success:function(data){
+                            
+                            $('#scid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+
+/************************select schemes on the basis of department*******************/
+                       
+             $('#scid').on('change',function(){
+                //var sc_code = $('#camp').val();
+                //var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                //var campuocdept = sc_code+","+uoc_id+","+dept_id;
+                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"comb=="+campuocdept);
+                if(dept_id == ''){
+                    $('#schmid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#schmid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getnewdeptschemelist",
+                        type: "POST",
+                       // data: {"combthree" : campuocdept},
+                         data: {"combdept" : dept_id},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("ok===="); 
+                            //alert("data==1="+data);
+                            $('#schmid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+        /*********************closer of scheme**************************************************/    
+      });
+</script> 
         
  </head>
    <body>
@@ -20,7 +127,7 @@
            echo anchor('setup/displaybankdetails', 'Bank Details', array('class' => 'top_parent'));
             echo "<td align=\"right\">";
            $help_uri = site_url()."/help/helpdoc#Bank";
-           echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+          // echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
            echo "</td>";
         ?>
         </div>
@@ -43,7 +150,7 @@
     <div>
         <form action="<?php echo site_url('setup/addbank');?>" method="POST" class="form-inline">
           <table>
-            <tr>
+<!--            <tr>
 
             <?php
                         echo "<td>";
@@ -56,6 +163,39 @@
                         echo "</select>";
                         ?>
 
+	</tr>
+-->
+	 <tr>
+                    <td>Campus Name <font color='Red'>*</font></td>
+                        <td colspan=2><select id="camp" style="width:350px;" name="campus" required>
+                            <option selected="selected" disabled selected>--------Campus Name-----</option>
+                            <?php foreach($this->campus as $camdata): ?>
+                             <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                <td>University Officer Control<font color='Red'>*</font></td>
+                <td colspan=2><select name="uocontrol" style="width:350px;"id="uocid" required>
+                <option selected="selected" disabled selected>--------University Officer Control -----</option>
+                </select>
+                </td>
+                </tr>
+                <tr>
+                <td>Department<font color='Red'>*</font></td>
+                <td colspan=2><select name="department" style="width:350px;"id="scid" required>
+                <option selected="selected" disabled selected>--------Department-----</option>
+                </select>
+                </td>
+        </tr>
+<tr>
+                <td>Scheme Name<font color='Red'></font></td>
+                <td colspan=2><select name="schemecode" style="width:350px;"id="schmid" >
+                <option selected="selected" disabled selected>--------Scheme Name-----</option>
+                </select>
+                </td>
+        </tr>
 
             <tr>       
                 <td><label for="name" class="control-label">Bank Name :</label></td>

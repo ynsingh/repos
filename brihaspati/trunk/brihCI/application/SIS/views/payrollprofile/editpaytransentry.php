@@ -85,7 +85,7 @@
                         		<?php endforeach; 
 					if(!empty($emphrafrom)){
 					?>
-					<option selected value="<?php echo $emphrafrom ; ?>"><?php echo $emphrafrom ; ?></option>
+					<option selected value="<?php echo $emphrafrom ; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$emphrafrom)->hgc_gradename; ?></option>
 		                        <?php } ?>
 
 			
@@ -99,7 +99,7 @@
                                         <?php endforeach; 
 					if(!empty($emphrato)){
 					?>
-					<option selected value="<?php echo $emphrato ; ?>"><?php echo $emphrato ; ?></option>
+					<option selected value="<?php echo $emphrato ; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$emphrato)->hgc_gradename ; ?></option>
 		                        <?php } ?>
 
                                         </select></div>
@@ -148,7 +148,7 @@
                                         <?php endforeach; 
 					if(!empty($empccafrom)){
 					?>
-					<option selected value="<?php echo $empccafrom ; ?>"><?php echo $empccafrom ; ?></option>
+					<option selected value="<?php echo $empccafrom ; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$empccafrom)->hgc_gradename ; ?></option>
 		                        <?php } ?>
 
                                         </select></div>
@@ -157,11 +157,11 @@
                                 <div> <select id="ccato" style="width:300px;" name="ccato" >
                                         <option selected="selected" disabled selected>--------CCA To-----</option>
                                         <?php foreach($ccagrade as $camdata): ?>
-                                                <option class="test" value="<?php echo $camdata->cca_gradeid; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$candata->cca_gradeid)->hgc_gradename; ?></option>
+                                                <option class="test" value="<?php echo $camdata->cca_gradeid; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$camdata->cca_gradeid)->hgc_gradename; ?></option>
                                         <?php endforeach; 
 					if(!empty($empccato)){
 					?>
-					<option selected value="<?php echo $empccato ; ?>"><?php echo $empccato ; ?></option>
+					<option selected value="<?php echo $empccato ; ?>"><?php echo $this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$empccato)->hgc_gradename ; ?></option>
 		                        <?php } ?>
 
                                         </select></div>

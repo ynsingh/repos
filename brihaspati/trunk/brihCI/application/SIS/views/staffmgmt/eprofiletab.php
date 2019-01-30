@@ -64,12 +64,14 @@ If you make any change in this file then you must change same file in report dir
 				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
+<!--
 			<?php if($current == 'leave') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
+			<b>  <a href='<?php //echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
+-->
 			<?php if($current == 'deputation') { ?>
 				<td class=btn active>
 			<?php }else{ ?>

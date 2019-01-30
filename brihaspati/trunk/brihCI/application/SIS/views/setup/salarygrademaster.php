@@ -108,7 +108,9 @@
  		<!--<td><?php //echo form_error('sgmgradepay')?></td>-->
             </tr>
 	 <tr id="slevel">
-                <td> Salary Level<font color='Red'></font></td>
+                <td> 
+                <label for="sgmlevel" class="control-label">Salary Level :</label>
+		</td>
                 <td><select name="sgmlevel" style="width:410px;" id="sgmlevel">           
                 <option selected="selected" disabled selected>------ Select Level------</option>
                         <option value="Level-1">Level-1</option>

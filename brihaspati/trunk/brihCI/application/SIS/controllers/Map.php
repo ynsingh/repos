@@ -2083,9 +2083,9 @@ public function schemedept(){
                 if($data['hoddata']->hl_datefrom != $datefrom)
                     $logmessage = "Edit HOD Date from " .$data['hoddata']->hl_datefrom . " changed by " .$datefrom;
                 if($data['hoddata']->hl_dateto != $dateto)
-                    $logmessage = "Edit Employee Type Data " .$data['hoddata']->hl_dateto . " changed by " .$dateto;
+                    $logmessage = "Edit Post Type Data " .$data['hoddata']->hl_dateto . " changed by " .$dateto;
                  if($data['hoddata']->hl_status != $status)
-                    $logmessage = "Edit Employee Type Data " .$data['hoddata']->hl_status . " changed by " .$status;
+                    $logmessage = "Edit Post Type Data " .$data['hoddata']->hl_status . " changed by " .$status;
                 
                 
                 $pfno='';

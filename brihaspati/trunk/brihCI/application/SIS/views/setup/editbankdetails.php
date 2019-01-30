@@ -59,17 +59,52 @@
 
              
                 echo "<tr>";
-                  echo "<td>";
-                    echo form_label('Organisation', 'org_id');                    
+                echo "<td>";
+                    echo form_label('Campus Name', 'org_id');                    
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($org_id);
+                    echo form_input($campus_name);
                 echo "</td>";
                 echo "</td>";                
                 echo "<td>";
                 echo "</td>";
             echo "</tr>";
 
+                echo "<tr>";
+                echo "<td>";
+                    echo form_label('UO', 'uco_id');                    
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($UCO);
+                echo "</td>";
+                echo "</td>";                
+                echo "<td>";
+                echo "</td>";
+            echo "</tr>";
+
+                echo "<tr>";
+                echo "<td>";
+                    echo form_label('Department Name', 'dept_id');                    
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($dept_name);
+                echo "</td>";
+                echo "</td>";                
+                echo "<td>";
+                echo "</td>";
+            echo "</tr>";
+               
+		 echo "<tr>";
+                 echo "<td>";
+                    echo form_label('Scheme Name', 'scheme_id');                    
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($scheme_name);
+                echo "</td>";
+                echo "</td>";                
+                echo "<td>";
+                echo "</td>";
+            echo "</tr>";
 
            //echo "<p>";
             echo "<tr>";

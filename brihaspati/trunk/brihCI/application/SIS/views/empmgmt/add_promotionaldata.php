@@ -49,7 +49,7 @@
          	$("#dojp").hide();
          	$("#dosp").hide();
          	$("#dosg").hide();
-         	$("#le").hide();
+//         	$("#le").hide();
 
 		$('#worktypeid').on('change',function(){
                         var wtid= $('#worktypeid').val();
@@ -58,7 +58,7 @@
          			$("#dojp").hide();
 		         	$("#dosp").hide();
          			$("#dosg").hide();
-		         	$("#le").hide();
+		         //	$("#le").hide();
                         }
                         else{
          			$("#pcom").hide();
@@ -69,7 +69,7 @@
 		         	$("#dojp").show();
          			$("#dosp").show();
 		         	$("#dosg").show();
-         			$("#le").show();
+         		//	$("#le").show();
                         }
                   });
            
@@ -232,6 +232,7 @@
                         <td colspan=2><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
                     </td>
                 </tr>
+<!--
 	<tr id=le>
                 <td>Level of Entry<font color='Red'></font></td>
                 <td colspan=2><select name="ntlevel" style="width:350px;" id="lvel" >
@@ -244,6 +245,7 @@
                 </select>
                 </td>
         </tr>
+-->
                 <tr id=dojp>
                     <td>Date of Joing in the Post <font color='Red'></font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" >

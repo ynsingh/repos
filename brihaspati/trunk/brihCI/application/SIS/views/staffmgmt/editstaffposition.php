@@ -177,7 +177,7 @@
                  <?php echo form_input($grouppost); ?>
              </div>
 	     </td>
-             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Employee Type</font> </label>
+             <td><label for="ss" style="font-size:15px;"><font color='Blue'> Post Type</font> </label>
              <div>
                  <?php echo form_input($type); ?>
              </div>

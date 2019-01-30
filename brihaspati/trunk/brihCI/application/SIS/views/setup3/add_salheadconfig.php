@@ -53,7 +53,7 @@
             <table width="100%" border="0">
                 <tr>
                     <?php  // echo"seloption====".$seloption;?>
-                    <td>Employee Type <font color='Red'>*</font>
+                    <td>Post Type <font color='Red'>*</font>
                         <select id="emptype" style="width:350px;" name="emptype" required onchange="this.form.submit();"> 
                         <?php if (!empty($seloption)) :?>
                         <option value="<?php echo $seloption;?>"><?php 
@@ -62,7 +62,7 @@
                         $tnt=$this->sismodel->get_listspfic1('employee_type','empt_tnt ','empt_id',$seloption)->empt_tnt;
                         echo $name."( ".$code.", ".$tnt. " )";?></option>
                         <?php else: ?>
-                        <option selected="selected" disabled selected>--------Select Employee Type-----</option>
+                        <option selected="selected" disabled selected>--------Select Post Type-----</option>
                         <?php endif ;?>
                             <?php foreach($this->emptype as $emptdata): ?>	
    				<option value="<?php echo $emptdata->empt_id; ?>"><?php echo $emptdata->empt_name."( ".$emptdata->empt_code.", ".$emptdata->empt_tnt. " )"; ?></option> 

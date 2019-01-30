@@ -282,7 +282,7 @@
                 <tr> 
                     <td><font color='Blue'>Plan / Non : </font></td>
                     <td><?php echo $record->emp_pnp;?></td> 
-                    <td><font color='Blue'>Employee Type :</font></td>
+                    <td><font color='Blue'>Post Type :</font></td>
                     <td> <?php echo $record->emp_type_code;?></td> 
                     <td><font color='Blue'>Application Order No:</font></td>
                     <td colspan="2"><?php echo $record->emp_apporderno ?></td>

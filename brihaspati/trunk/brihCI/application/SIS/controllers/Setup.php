@@ -26,7 +26,7 @@ class Setup extends CI_Controller
     function __construct() {
         parent::__construct();
         $this->load->model('login_model'); 
-		  $this->load->model('common_model'); 
+  	$this->load->model('common_model'); 
         $this->load->model('SIS_model');
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
@@ -2994,12 +2994,20 @@ class Setup extends CI_Controller
 /****************************************** bankdetails Module ********************************************/
 
  public function addbank(){
+	
+	$this->orgcode=$this->common_model->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+	$this->campus=$this->common_model->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
 
         if(isset($_POST['addbank'])) {
             //$this->form_validation->set_rules('bank_name','Org Code','trim|xss_clean|required|alpha_numeric_spaces|callback_isBankdetailsExist');
+	$this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+            $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|xss_clean');
+            $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
+
             $this->form_validation->set_rules('bank_name','Bank Name','trim|xss_clean|required');
             $this->form_validation->set_rules('bank_address','Bank Address','trim|xss_clean|required');
-            $this->form_validation->set_rules('branch_name','Branch Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('branch_name','Branch Name','trim|xss_clean|required');
             $this->form_validation->set_rules('account_number','Account Number','trim|xss_clean|numeric|required');
             $this->form_validation->set_rules('account_name','Account Name','trim|xss_clean|required');
             $this->form_validation->set_rules('account_type','Account Type','trim|xss_clean|alpha_numeric_spaces|required');
@@ -3012,24 +3020,30 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('remark','Remark','trim|xss_clean');
 
             if($this->form_validation->run()==TRUE){
-
+		$orgid=$_POST['org_id'];
+		if($orgid == ""){
+			$orgid =1;
+		}
+			
             $data = array( 
                // 'org_code'=>ucwords(strtolower($_POST['org_code'])),
-                'bank_name'=>strtoupper($_POST['bank_name']),
-                'bank_address'=>strtoupper($_POST['bank_address']),
-                'branch_name'=>strtoupper($_POST['branch_name']),
-                'account_number'=>strtoupper($_POST['account_number']),
-                'account_name'=>strtoupper($_POST['account_name']),
-                'account_type'=>strtoupper($_POST['account_type']),
-                'ifsc_code'=>strtoupper($_POST['ifsc_code']),
-                'pan_number'=>strtoupper($_POST['pan_number']),
-                'tan_number'=>strtoupper($_POST['tan_number']),
-                'gst_number'=>strtoupper($_POST['gst_number']),
-                'aadhar_number'=>strtoupper($_POST['aadhar_number']),
-                'org_id'=>strtoupper($_POST['org_id']),
-                'remark'=>$_POST['remark'] 
-
-
+		'campusid'      =>$_POST['campus'],
+                'ucoid'         =>$_POST['uocontrol'],
+                'deptid'        =>$_POST['department'],
+                'schemeid'      =>$_POST['schemecode'],
+                'bank_name'	=>$_POST['bank_name'],
+                'bank_address'	=>$_POST['bank_address'],
+                'branch_name'	=>$_POST['branch_name'],
+                'account_number'=>$_POST['account_number'],
+                'account_name'	=>$_POST['account_name'],
+                'account_type'	=>$_POST['account_type'],
+                'ifsc_code'	=>strtoupper($_POST['ifsc_code']),
+                'pan_number'	=>strtoupper($_POST['pan_number']),
+                'tan_number'	=>strtoupper($_POST['tan_number']),
+                'gst_number'	=>strtoupper($_POST['gst_number']),
+                'aadhar_number'	=>$_POST['aadhar_number'],
+                'org_id'	=>$orgid,
+                'remark'	=>$_POST['remark'] 
            );
 		
            $bpflag=$this->SIS_model->insertrec('bankprofile', $data) ;
@@ -3094,17 +3108,64 @@ class Setup extends CI_Controller
         {
         redirect('setup/editbankdetails');
         }
-        $bankprofile_data = $bank_data_q->row();/*
+        $bankprofile_data = $bank_data_q->row();
 
         /* Form fields */
-          
+         
+	        if ($bankprofile_data->campusid != 0) {      
+	                $sc=$this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $bankprofile_data->campusid)->sc_name.
+                	" "."(".$this->common_model->get_listspfic1('study_center', 'sc_code', 'sc_id', $bankprofile_data->campusid)->sc_code.")";
+	        }else{$sc="";}
+		if ($bankprofile_data->ucoid != 0) {
+			$uo=$this->login_model->get_listspfic1('authorities', 'name', 'id', $bankprofile_data->ucoid)->name; 
+		}else{ $uo='';}
+
+		if ($bankprofile_data->deptid != 0) {
+			$dept=$this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $bankprofile_data->deptid)->dept_name;
+		}else{$dept='';}
+                if ( $bankprofile_data->schemeid != 0) {
+			$schme=$this->SIS_model->get_listspfic1('scheme_department','sd_name','sd_id',$bankprofile_data->schemeid)->sd_name.
+			" "."(".$this->SIS_model->get_listspfic1('scheme_department','sd_code','sd_id',$bankprofile_data->schemeid)->sd_code.")";
+		}else{ $schme='';}
+ 
+        $data['campus_name'] = array(
+            'name' => 'campus_name',
+            'id' => 'campus_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $sc,
+            'readonly' => 'readonly'
+        );
+        $data['UCO'] = array(
+            'name' => 'UCO',
+            'id' => 'UCO',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $uo,
+            'readonly' => 'readonly'
+        );
+        $data['dept_name'] = array(
+            'name' => 'dept_name',
+            'id' => 'dept_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $dept,
+            'readonly' => 'readonly'
+        );
+        $data['scheme_name'] = array(
+            'name' => 'scheme_name',
+            'id' => 'scheme_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $schme,
+            'readonly' => 'readonly'
+        );
         $data['bank_name'] = array(
             'name' => 'bank_name',
             'id' => 'bank_name',
             'maxlength' => '50',
             'size' => '40',
             'value' => $bankprofile_data->bank_name,
-            'readonly' => 'readonly'
         );
         $data['bank_address'] = array(
            'name' => 'bank_address',
@@ -3228,7 +3289,7 @@ class Setup extends CI_Controller
 
         $this->form_validation->set_rules('bank_name','Bankdetails BankName ','trim|xss_clean|required');
         $this->form_validation->set_rules('bank_address','Bankdetails BankAddress ','trim|xss_clean|required');
-        $this->form_validation->set_rules('branch_name','Bankdetails BankBranch ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('branch_name','Bankdetails BankBranch ','trim|xss_clean|required');
         $this->form_validation->set_rules('account_number','Bankdetails AccountNumber ','trim|xss_clean|numeric|required');
         $this->form_validation->set_rules('account_name','Bankdetails AccountName ','trim|xss_clean');
         $this->form_validation->set_rules('account_type','Bankdetails AccountType ','trim|xss_clean|alpha_numeric_spaces|required');
@@ -3265,11 +3326,11 @@ class Setup extends CI_Controller
         {
 
             $data_bankname = ucwords(strtolower($this->input->post('bank_name', TRUE)));
-            $data_bankaddress = strtoupper($this->input->post('bank_address', TRUE));
-            $data_bankbranch = strtoupper($this->input->post('bank_branch', TRUE));
+            $data_bankaddress = $this->input->post('bank_address', TRUE);
+            $data_bankbranch = $this->input->post('bank_branch', TRUE);
             $data_accountnumber = $this->input->post('account_number', TRUE);
-            $data_accountname = strtoupper($this->input->post('account_name', TRUE));
-            $data_accounttype = strtoupper($this->input->post('account_type', TRUE));
+            $data_accountname = $this->input->post('account_name', TRUE);
+            $data_accounttype = $this->input->post('account_type', TRUE);
             $data_ifsccode = strtoupper($this->input->post('ifsc_code', TRUE));
             $data_pannumber = strtoupper($this->input->post('pan_number', TRUE));
             $data_tannumber = strtoupper($this->input->post('tan_number', TRUE));
@@ -3319,16 +3380,16 @@ class Setup extends CI_Controller
          }	
 
          $update_data = array(
-               'bank_name' =>($this->input->post('bank_name')),
+               'bank_name' =>$this->input->post('bank_name'),
                'bank_address' =>$this->input->post('bank_address'),
-               'branch_name' =>strtoupper($this->input->post('branch_name')),
+               'branch_name' =>$this->input->post('branch_name'),
                'account_number'  =>$this->input->post('account_number'),
                'account_name'  =>$this->input->post('account_name'),
                'account_type'  =>$this->input->post('account_type'), 
                'ifsc_code'  =>strtoupper($this->input->post('ifsc_code')),
                'pan_number'  =>strtoupper($this->input->post('pan_number')), 
-               'tan_number'  =>$this->input->post('tan_number'),
-               'gst_number'=>$this->input->post('gst_number'),
+               'tan_number'  =>strtoupper($this->input->post('tan_number')),
+               'gst_number'=>strtoupper($this->input->post('gst_number')),
                'aadhar_number'=>$this->input->post('aadhar_number'),
                'org_id'=>$this->input->post('org_id'),
                'remark'=>$this->input->post('remark')
@@ -3657,7 +3718,9 @@ public function salarygrademaster(){
 
 public function displaysalarygrademaster(){
 
-        $this->result = $this->SIS_model->get_list('salary_grade_master');
+     //   $this->result = $this->SIS_model->get_list('salary_grade_master');
+	$whorder = 'sgm_pc ASC, sgm_name ASC,sgm_level ASC,sgm_id ASC';
+        $this->result = $this->SIS_model->get_orderlistspficemore('salary_grade_master','*','',$whorder);
         $this->logger->write_logmessage("view"," View ", "Salary Grade Master display successfully..." );
         $this->logger->write_dblogmessage("view"," View Salary Grade Master", "Salary Grade Master successfully..." );
         $this->load->view('setup/displaysalarygrademaster',$this->result);

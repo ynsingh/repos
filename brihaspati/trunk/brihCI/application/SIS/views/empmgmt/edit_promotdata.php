@@ -49,7 +49,7 @@
          	$("#dojp").hide();
          	$("#dosp").hide();
          	$("#dosg").hide();
-         	$("#le").hide();
+ //        	$("#le").hide();
 
 		$('#worktypeid').on('change',function(){
                         var wtid= $('#worktypeid').val();
@@ -58,7 +58,7 @@
          			$("#dojp").hide();
 		         	$("#dosp").hide();
          			$("#dosg").hide();
-		         	$("#le").hide();
+//		         	$("#le").hide();
                         }
                         else{
          			$("#pcom").hide();
@@ -69,7 +69,7 @@
 		         	$("#dojp").show();
          			$("#dosp").show();
 		         	$("#dosg").show();
-         			$("#le").show();
+  //       			$("#le").show();
                         }
                   });
            
@@ -264,15 +264,14 @@
                     </td>
                 </tr>
 <?php }else{ ?>
-                <tr>
-<!--	<tr id=le>-->
+   <!--             <tr>
                 <td>Level of Entry<font color='Red'></font></td>
                 <td colspan=2><select name="ntlevel" style="width:350px;" id="lvel" >
-<?php                   if(!empty($promotdata->spd_level)) { ?>
+<?php           //        if(!empty($promotdata->spd_level)) { ?>
                         <option value="<?php echo $promotdata->spd_level;?>"><?php echo $promotdata->spd_level ; ?></option>
-<?php                   }else{ ?>
+<?php             //      }else{ ?>
                 <option selected="selected" disabled selected>------------ Select Level---------</option>
-<?php 			} ?>
+<?php 		//	} ?>
                         <option value="Level-1">Level-1</option>
                         <option value="Level-2">Level-2</option>
                         <option value="Level-3">Level-3</option>
@@ -281,6 +280,7 @@
                 </select>
                 </td>
         </tr>
+-->
                 <tr>
 <!--                <tr id=dojp> -->
                     <td>Date of Joing in the Post <font color='Red'></font></td>

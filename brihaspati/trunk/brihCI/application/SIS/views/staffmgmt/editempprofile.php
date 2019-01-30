@@ -830,12 +830,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="ICAR">ICAR</option> 
                     </select></div>
                 </td>
-                <td><label for="emptype" style="font-size:15px;"><font color='Blue'>Employee Type</font></label>
+                <td><label for="emptype" style="font-size:15px;"><font color='Blue'>Post Type</font></label>
                     <div><select name="emptype" id="emptypeid" style="width:300px;" readonly>
                         <?php if(!empty($editdata->emp_type_code)):;?>
                         <option value="<?php echo $editdata->emp_type_code;?>"><?php echo $editdata->emp_type_code;?></option>
                         <?php else:?>
-                        <option value="">------ Select Employee Type --------</option>
+                        <option value="">------ Select Post Type --------</option>
                         <?php endif?>
                        <!-- <option value="Permanent">Permanent</option>
                         <option value="Temporary">Temporary</option>-->

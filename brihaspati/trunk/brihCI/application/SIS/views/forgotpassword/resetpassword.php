@@ -10,7 +10,7 @@
     </head>
 <body>
 <br>
-<nav>   <h1>Welcome to IGNTU </h1></nav>
+<nav>   <h1>Welcome to TANUVAS </h1></nav>
 <br><br><br>
 <table>
             <tr colspan="2">
