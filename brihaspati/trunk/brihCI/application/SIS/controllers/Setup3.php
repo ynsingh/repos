@@ -947,9 +947,9 @@ class Setup3 extends CI_Controller
         if(isset($_POST['add_hragrade'])) {
             //form validation
             
-            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+//            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
             $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
-            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+        //    $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
             $this->form_validation->set_rules('payrange','Pay Range','trim|xss_clean');
             $this->form_validation->set_rules('hragrade','HRA Grade','trim|required|xss_clean');
             $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
@@ -960,9 +960,9 @@ class Setup3 extends CI_Controller
             }//formvalidation
             else{
                 $data = array(
-                    'hg_workingtype'    =>$_POST['worktype'],
+  //                  'hg_workingtype'    =>$_POST['worktype'],
                     'hg_paycomm'     =>$_POST['paycomm'],
-                    'hg_payscaleid'     =>$_POST['payscale'],
+                    'hg_payscaleid'     =>'',
                     'hg_payrange'     =>$_POST['payrange'],
                     'hg_gradeid'        =>$_POST['hragrade'],
                     'hg_amount'         =>$_POST['amount'],
@@ -973,16 +973,18 @@ class Setup3 extends CI_Controller
                 );
                 
                 $dupcheck = array(
-                    'hg_workingtype'    =>$_POST['worktype'],
-                    'hg_payscaleid'     =>$_POST['payscale'],
+    //                'hg_workingtype'    =>$_POST['worktype'],
+//                    'hg_payscaleid'     =>$_POST['payscale'],
+			'hg_paycomm'     =>$_POST['paycomm'],
+			'hg_payrange'     =>$_POST['payrange'],
                     'hg_gradeid'        =>$_POST['hragrade'],
-                    'hg_amount'         =>$_POST['amount'],
+               //     'hg_amount'         =>$_POST['amount'],
                 ); 
-                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
-                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
-                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
-                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
-                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+  //              $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
+    //            $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
+      //          $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
+        //        $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
+          //      $fullstr=$pname."( ".$min." - ".$max." )".$gp;
                 
                 $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
                 
@@ -990,7 +992,7 @@ class Setup3 extends CI_Controller
                 if($hragradedup == 1 ){
                     
                     $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type =".$_POST['worktype']
-                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$_POST['amount'].' ]');
+                             ." HRA Grade = ".$hragradename ." Amount = ".$_POST['amount'].' ]');
                     $this->load->view('setup3/add_hragrade');
                     return;
                 }
@@ -998,8 +1000,8 @@ class Setup3 extends CI_Controller
                     $hragradeflag=$this->sismodel->insertrec('hra_grade', $data);
                     if(!$hragradeflag)
                     {
-                        $this->logger->write_logmessage("insert","Trying to add HRA Grade ", " HRA Grade is not added  HRA Grade= ".$hragradename." with payscale ".$fullstr);
-                        $this->logger->write_dblogmessage("insert","Trying to add HRA Grade ", " HRA Grade is not added HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->logger->write_logmessage("insert","Trying to add HRA Grade ", " HRA Grade is not added  HRA Grade= ".$hragradename );
+                        $this->logger->write_dblogmessage("insert","Trying to add HRA Grade ", " HRA Grade is not added HRA Grade= ".$hragradename );
                         $this->session->set_flashdata('err_message','Error in adding HRA Grade - '  , 'error');
                         redirect('setup3/add_hragrade');
                     }
@@ -1008,7 +1010,7 @@ class Setup3 extends CI_Controller
                         $this->logger->write_logmessage("insert","Add HRA Grade ", " HRA Grade = ".$hragradename." added  successfully...");
                         $this->logger->write_dblogmessage("insert","Add  HRA Grade ", " HRA Grade = ".$hragradename."added  successfully...");
                         $this->session->set_flashdata("success", "[ Working Type =".$_POST['worktype'] ." HRA Grade = ".$hragradename
-                                ." Payscale = ".$fullstr ." Amount = ".$_POST['amount'].']'." record insert successfully...");
+                                 ." Amount = ".$_POST['amount'].']'." record insert successfully...");
                         redirect("setup3/hra_grade");
                     }
                     
@@ -1029,9 +1031,9 @@ class Setup3 extends CI_Controller
         if(isset($_POST['edithragrade'])) {
             
             //form validation
-            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+      //      $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
             $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
-            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+//            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
             $this->form_validation->set_rules('payrange','Pay Range','trim|xss_clean');
             $this->form_validation->set_rules('hragrade','HRA GRADE','trim|required|xss_clean');
             $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
@@ -1041,54 +1043,51 @@ class Setup3 extends CI_Controller
                 return;
             }//formvalidation
             else{
-                $wtype = $this->input->post('worktype', TRUE);
+        //        $wtype = $this->input->post('worktype', TRUE);
                 $paycomm = $this->input->post('paycomm', TRUE);
-                $payscale = $this->input->post('payscale', TRUE);
+  //              $payscale = $this->input->post('payscale', TRUE);
                 $payrange = $this->input->post('payrange', TRUE);
                 $grade = $this->input->post('hragrade', TRUE);
                 $amount = $this->input->post('amount', TRUE);
                 
-                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
-                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
-                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
-                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
-                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+    //            $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
+      //          $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
+        //        $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
+          //      $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
+            //    $fullstr=$pname."( ".$min." - ".$max." )".$gp;
                 
                 $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id', $grade)->hgc_gradename;
                 
                 $logmessage = "";
-                if($data['hragradedata']->hg_workingtype != $wtype)
-                    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_workingtype. " changed by " .$wtype;
-                if($data['hragradedata']->hg_payscaleid != $payscale)
-                    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_payscaleid. " changed by " .$payscale;
+          //      if($data['hragradedata']->hg_workingtype != $wtype)
+            //        $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_workingtype. " changed by " .$wtype;
+              //  if($data['hragradedata']->hg_payscaleid != $payscale)
+                //    $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_payscaleid. " changed by " .$payscale;
                 if($data['hragradedata']->hg_gradeid != $grade)
                     $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_gradeid . " changed by " .$grade;
                 if($data['hragradedata']->hg_amount != $amount)
                     $logmessage = "Edit HRA Grade Data " .$data['hragradedata']->hg_amount . " changed by " .$amount;
                 
                 $updata = array(
-                    'hg_workingtype'    =>$wtype,
+              //      'hg_workingtype'    =>$wtype,
                     'hg_paycomm'     =>$paycomm,
-                    'hg_payscaleid'     =>$payscale,
+                  //  'hg_payscaleid'     =>$payscale,
                     'hg_payrange'     =>$payrange,
                     'hg_gradeid'        =>$grade,
                     'hg_amount'         =>$amount,
-                    //'hg_creatorid'      =>$this->session->userdata('username'),
-                    //'hg_creatordate'    =>date('Y-m-d'),
                     'hg_modifierid'     =>$this->session->userdata('username'),
                     'hg_modifydate'     =>date('Y-m-d'),
                 );
                 $dupcheck = array(
-                    'hg_workingtype'    =>$wtype,
-                    'hg_payscaleid'     =>$payscale,
+			'hg_paycomm'     =>$paycomm,
+			 'hg_payrange'     =>$payrange,
                     'hg_gradeid'        =>$grade,
-                    'hg_amount'         =>$amount,
                 ); 
                 $hragradedup = $this->sismodel->isduplicatemore('hra_grade', $dupcheck);
                 if($hragradedup == 1 ){
                     
                     $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type = ".$wtype 
-                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$amount.' ]');
+                            ." HRA Grade = ".$hragradename ." Amount = ".$amount.' ]');
                     redirect('setup3/hra_grade');
                     return;
                 }
@@ -1105,7 +1104,7 @@ class Setup3 extends CI_Controller
                         $this->logger->write_logmessage("update","Edit  HRA Grade by  ".$this->session->userdata('username') , "Edit  HRA Grade details. $logmessage ");
                         $this->logger->write_dblogmessage("update","Edit HRA Grade by  ".$this->session->userdata('username') , "Edit HRA Grade details. $logmessage ");
                         $this->session->set_flashdata('success','Record updated successfully.'.'[ HRA Grade = '.$hragradename." Working Type =".$wtype. 
-                            " Payscale = ".$fullstr."  Amount = ".$amount.']');
+                            "  Amount = ".$amount.']');
                         redirect('setup3/hra_grade');
                     
                     }
@@ -1362,15 +1361,17 @@ class Setup3 extends CI_Controller
     /*********************  ADD City Compensatory Allowance(CCA) *********************************************************/
     public function add_ccaallowance(){
         $this->salgrade= $this->sismodel->get_list('salary_grade_master');
-        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+  //      $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         if(isset($_POST['add_ccaalowance'])) {
             //form validation
             
-            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
-            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
-            $this->form_validation->set_rules('hragrade','HRA Grade','trim|required|xss_clean');
-            $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
-            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
+    //        $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
+      //      $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
+		$this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
+            $this->form_validation->set_rules('payrange','CCA Pay Range','trim|xss_clean');
+            $this->form_validation->set_rules('hragrade','CCA Grade','trim|required|xss_clean');
+            $this->form_validation->set_rules('amount','CCA Amount','trim|required|xss_clean|numeric');
+//            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
             if($this->form_validation->run() == FALSE){
              
                 $this->load->view('setup3/add_ccaallowance');
@@ -1378,11 +1379,14 @@ class Setup3 extends CI_Controller
             }//formvalidation
             else{
                 $data = array(
-                    'cca_payscaleid'     =>$_POST['payscale'],
+			 'cca_paycomm'     =>$_POST['paycomm'],
+        	         'cca_payscaleid'     =>'',
+                    	'cca_payrange'     =>$_POST['payrange'],
+      //              'cca_payscaleid'     =>$_POST['payscale'],
                     'cca_gradeid'        =>$_POST['hragrade'],
-                    'cca_workingtype'    =>$_POST['worktype'],
+    //                'cca_workingtype'    =>$_POST['worktype'],
                     'cca_amount'         =>$_POST['amount'],
-                    'cca_description'     =>$_POST['Description'],
+  //                  'cca_description'     =>$_POST['Description'],
                     'cca_creatorid'      =>$this->session->userdata('username'),
                     'cca_creatordate'    =>date('Y-m-d'),
                     'cca_modifierid'     =>$this->session->userdata('username'),
@@ -1390,24 +1394,24 @@ class Setup3 extends CI_Controller
                 );
                 
                 $dupcheck = array(
-                    'cca_payscaleid'     =>$_POST['payscale'],
+                    'cca_paycomm'     =>$_POST['paycomm'],
                     'cca_gradeid'        =>$_POST['hragrade'],
-                    'cca_workingtype'    =>$_POST['worktype'],
-                    'cca_amount'         =>$_POST['amount'],
+                    'cca_payrange'    =>$_POST['payrange'],
+                    
                 ); 
-                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
-                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
-                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
-                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
-                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+//                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$_POST['payscale'])->sgm_name;
+  //              $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$_POST['payscale'])->sgm_min;
+    //            $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$_POST['payscale'])->sgm_max;
+      //          $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$_POST['payscale'])->sgm_gradepay;
+        //        $fullstr=$pname."( ".$min." - ".$max." )".$gp;
                 
-                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
+          //      $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
                 
                 $hragradedup = $this->sismodel->isduplicatemore('ccaallowance_calculation', $dupcheck);
                 if($hragradedup == 1 ){
                     
-                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type =".$_POST['worktype']
-                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$_POST['amount'].' ]');
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ pay commission =".$_POST['paycomm']
+                            ." Payrange = ".$_POST['payrange'] ." CCA Grade = ".$_POST['hragrade'] .' ]');
                     $this->load->view('setup3/add_ccaallowance');
                     return;
                 }
@@ -1415,17 +1419,17 @@ class Setup3 extends CI_Controller
                     $hragradeflag=$this->sismodel->insertrec('ccaallowance_calculation', $data);
                     if(!$hragradeflag)
                     {
-                        $this->logger->write_logmessage("insert","Trying to add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount is not added  HRA Grade= ".$hragradename." with payscale ".$fullstr);
-                        $this->logger->write_dblogmessage("insert","Trying to add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount is not added HRA Grade= ".$hragradename." with payscale ".$fullstr);
+                        $this->logger->write_logmessage("insert","Trying to add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount is not added  CCA Grade= ".$_POST['hragrade']." with payscale ".$_POST['payrange']);
+                        $this->logger->write_dblogmessage("insert","Trying to add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount is not added CCA Grade= ".$_POST['hragrade']." with payscale ".$_POST['payrange']);
                         $this->session->set_flashdata('err_message','Error in adding City Compensatory Allowance(CCA) amount - '  , 'error');
                         redirect('setup3/add_ccaallowance');
                     }
                     else{
                         $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$_POST['hragrade'])->hgc_gradename;
-                        $this->logger->write_logmessage("insert","Add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount for HRA Grade = ".$hragradename." added  successfully...");
-                        $this->logger->write_dblogmessage("insert","Add  City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount for HRA Grade = ".$hragradename."added  successfully...");
-                        $this->session->set_flashdata("success", "[ Working Type =".$_POST['worktype'] ." HRA Grade = ".$hragradename
-                                ." Payscale = ".$fullstr ." Amount = ".$_POST['amount'].']'." record insert successfully...");
+                        $this->logger->write_logmessage("insert","Add City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount for HRA Grade = ".$_POST['hragrade']." added  successfully...");
+                        $this->logger->write_dblogmessage("insert","Add  City Compensatory Allowance(CCA) amount ", " City Compensatory Allowance(CCA) amount for HRA Grade = ".$_POST['hragrade']."added  successfully...");
+                        $this->session->set_flashdata("success", "[Pay range =".$_POST['payrange'] ." CCA Grade = ".$_POST['hragrade']
+                                 ." Amount = ".$_POST['amount'].']'." record insert successfully...");
                         redirect("setup3/cca_allowance");
                     }
                     
@@ -1440,18 +1444,18 @@ class Setup3 extends CI_Controller
     
     /********************* Edit City Compensatory Allowance(CCA) form  *******************************************/
     public function edit_ccaallowance($id){
-        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
-        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+     //   $this->salgrade= $this->sismodel->get_list('salary_grade_master');
+//        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         $data['id'] = $id;
         $data['ccadata'] = $this->sismodel->get_listrow('ccaallowance_calculation','cca_id',$id)->row();
         if(isset($_POST['edit_cca'])) {
             
             //form validation
-            $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
-            $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
-            $this->form_validation->set_rules('hragrade','HRA GRADE','trim|required|xss_clean');
+            $this->form_validation->set_rules('paycomm','Pay Commission','trim|required|xss_clean');
+            $this->form_validation->set_rules('payrange','Pay Range','trim|required|xss_clean');
+            $this->form_validation->set_rules('hragrade','CCA GRADE','trim|required|xss_clean');
             $this->form_validation->set_rules('amount','Amount','trim|required|xss_clean|numeric');
-            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
+      //      $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
             
             if($this->form_validation->run() == FALSE){
              
@@ -1459,53 +1463,58 @@ class Setup3 extends CI_Controller
                 return;
             }//formvalidation
             else{
-                $wtype = $this->input->post('worktype', TRUE);
-                $payscale = $this->input->post('payscale', TRUE);
+                $pc = $this->input->post('paycomm', TRUE);
+                $payrange = $this->input->post('payrange', TRUE);
                 $grade = $this->input->post('hragrade', TRUE);
                 $amount = $this->input->post('amount', TRUE);
-                $description = $this->input->post('Description', TRUE);
+    //            $description = $this->input->post('Description', TRUE);
                 
-                $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
-                $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
-                $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
-                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
-                $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+      //          $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$payscale)->sgm_name;
+        //        $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$payscale)->sgm_min;
+          //      $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$payscale)->sgm_max;
+            //    $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$payscale)->sgm_gradepay;
+              //  $fullstr=$pname."( ".$min." - ".$max." )".$gp;
                 
-                $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id', $grade)->hgc_gradename;
+                $hragradename=$grade;
                 
                 $logmessage = "";
-                if($data['ccadata']->cca_workingtype != $wtype)
-                    $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_workingtype. " changed by " .$wtype;
-                if($data['ccadata']->cca_payscaleid != $payscale)
-                    $logmessage = "Edit City Compensatory Allowance(CCA) " .$data['ccadata']->cca_payscaleid. " changed by " .$payscale;
+                if($data['ccadata']->cca_paycomm != $pc)
+                    $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_paycomm. " changed by " .$pc;
+                if($data['ccadata']->cca_payrange != $payrange)
+                    $logmessage = "Edit City Compensatory Allowance(CCA) " .$data['ccadata']->cca_payrange. " changed by " .$payrange;
                 if($data['ccadata']->cca_gradeid != $grade)
                     $logmessage = " Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_gradeid . " changed by " .$grade;
                 if($data['ccadata']->cca_amount != $amount)
                     $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_amount . " changed by " .$pert;
                 
-                if($data['ccadata']->cca_description != $description)
-                    $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_description . " changed by " .$description;
+              //  if($data['ccadata']->cca_description != $description)
+                  //  $logmessage = "Edit City Compensatory Allowance(CCA) Data " .$data['ccadata']->cca_description . " changed by " .$description;
                 
                 $updata = array(
-                    'cca_payscaleid'     =>$payscale,
+                    'cca_paycomm'     =>$pc,
                     'cca_gradeid'        =>$grade,
-                    'cca_workingtype'    =>$wtype,
+                    'cca_payrange'    =>$payrange,
                     'cca_amount'         =>$amount,
-                    'cca_description'    =>$description,
                     'cca_modifierid'     =>$this->session->userdata('username'),
                     'cca_modifydate'     =>date('Y-m-d'),
                 );
                 $dupcheck = array(
-                    'cca_payscaleid'     =>$payscale,
+                    'cca_payrange'     =>$payrange,
                     'cca_gradeid'        =>$grade,
-                    'cca_workingtype'    =>$wtype,
-                    'cca_amount'         =>$amount,
+                    'cca_paycomm'    =>$pc,
                 ); 
                 $hragradedup = $this->sismodel->isduplicatemore('ccaallowance_calculation', $dupcheck);
                 if($hragradedup == 1 ){
-                    
-                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Working Type = ".$wtype 
-                            ." Payscale = ".$fullstr ." HRA Grade = ".$hragradename ." Amount = ".$amount.' ]');
+			$updata1=array(
+				'cca_amount'         =>$amount,
+                    		'cca_modifierid'     =>$this->session->userdata('username'),
+                    		'cca_modifydate'     =>date('Y-m-d'),
+			);	
+                    $editetflag1=$this->sismodel->updaterec('ccaallowance_calculation', $updata1, 'cca_id', $id);    
+			$this->logger->write_logmessage("update","Edit City Compensatory Allowance(CCA) by  ".$this->session->userdata('username') , "Edit  City Compensatory Allowance(CCA) details. )$logmessage ");
+                        $this->logger->write_dblogmessage("update","Edit City Compensatory Allowance(CCA) by  ".$this->session->userdata('username') , "Edit City Compensatory Allowance(CCA) details. $logmessage ");
+                    $this->session->set_flashdata("err_message", "Record is already exist with this combination [ Pay comm = ".$pc 
+                            ." CCA Grade = ".$hragradename ." Pay Range = ".$payrange.' ]. So only amount is updated. ');
                     redirect('setup3/cca_allowance');
                     return;
                 }
@@ -1521,8 +1530,8 @@ class Setup3 extends CI_Controller
                     else{
                         $this->logger->write_logmessage("update","Edit City Compensatory Allowance(CCA) by  ".$this->session->userdata('username') , "Edit  City Compensatory Allowance(CCA) details. $logmessage ");
                         $this->logger->write_dblogmessage("update","Edit City Compensatory Allowance(CCA) by  ".$this->session->userdata('username') , "Edit City Compensatory Allowance(CCA) details. $logmessage ");
-                        $this->session->set_flashdata('success','Record updated successfully.'.'[ HRA Grade = '.$hragradename." Working Type =".$wtype. 
-                            " Payscale = ".$fullstr."  Amount = ".$amount.']');
+                        $this->session->set_flashdata('success','Record updated successfully.'.'[ CCA Grade = '.$hragradename." Pay Comm =".$pc. 
+                            " Payrange = ".$payrange."  Amount = ".$amount.']');
                         redirect('setup3/cca_allowance');
                     
                     }

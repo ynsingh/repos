@@ -348,9 +348,9 @@ class Staffmgmt extends CI_Controller
          authority or authority added in campus.*/
         //$this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
-	$whdata=array('sgm_level'=> "");
+	$whdata=array('sgm_pc'=> "6th");
         $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
-	$whdata=array('sgm_level !='=> "");
+	$whdata=array('sgm_pc'=> "7th");
 	//$whdata=array('sgm_gradepay'=> "");
         $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
         /*********************select category/community list*****************************************/
@@ -897,10 +897,10 @@ class Staffmgmt extends CI_Controller
         $this->ddo=$this->sismodel->get_list('ddo');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
 //        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
-	$whdata=array('sgm_level'=> "");
+	$whdata=array('sgm_pc'=> "6th");
         $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
         //$whdata=array('sgm_gradepay'=> "");
-	$whdata=array('sgm_level !='=> "");
+	$whdata=array('sgm_pc'=> "7th");
         $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
 
         $this->states=$this->commodel->get_listspficarry('states','id,name','country_id',101); 
@@ -1117,7 +1117,11 @@ class Staffmgmt extends CI_Controller
                 $netpass=NULL;
                 $netdpln=NULL;
             }
-            
+           
+		$dateofjoiningvc = $_POST['dateofjoiningvc'];
+		if(empty($dateofjoiningvc)){
+			$dateofjoiningvc='';
+		} 
             $data = array(
 		'emp_code'			=> $this->input->post('empcode'),
                 'emp_specialisationid'           => $this->input->post('specialisation'),
@@ -1140,8 +1144,8 @@ class Staffmgmt extends CI_Controller
                 'emp_worktype'                   => $this->input->post('workingtype'),
                 'emp_type_code'                  => $this->input->post('emptype'),
                 'emp_salary_grade'               => $this->input->post('payband'),
-		'emp_salary_gradenew'       =>$_POST['newpayband'],
-                'emp_dojvc'                 =>$_POST['dateofjoiningvc'],
+		'emp_salary_gradenew'       	=>$_POST['newpayband'],
+                'emp_dojvc'                 	=>$dateofjoiningvc,
 // enabled by nks     close           
                 'emp_basic'                      => $this->input->post('basicpay'),
                 'emp_emolution'                  => $this->input->post('emolution'),
@@ -1187,7 +1191,7 @@ class Staffmgmt extends CI_Controller
                 'emp_photoname'                  => $new_name,
 		'emp_grade'                      => $this->input->post('empgrade'), 
                 'emp_secndemail'                 =>$_POST['secndemailid'],
-                'emp_phddiscipline'              =>$_POST['phddiscipline'],
+                'emp_phddiscipline'              =>$this->input->post('phddiscipline'),
                 'emp_phdtype'                    =>$_POST['phdtype'],
                 'emp_phdinstname'                =>$_POST['phdinstname'],
 		'emp_phdcollege'          	=>$_POST['phdcollname'],
@@ -1201,7 +1205,7 @@ class Staffmgmt extends CI_Controller
 		'emp_maritalstatus'         	 =>$_POST['maritalstatus'],
                 'emp_seniortyid'            	 =>$_POST['seniorityno'],
                 'emp_spousename'            	 =>$_POST['spousename'],
-                'emp_jsession'            	 =>$_POST['jsession'],
+                'emp_jsession'            	 =>$this->input->post('jsession'),
             );
 //print_r($data);
             /* upload photo*/
@@ -1344,10 +1348,10 @@ class Staffmgmt extends CI_Controller
                 $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
                 $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
             }
-            
+       //    $emailid= 
             $mess = 'Your Employee data updated Successfully.';
             $sub = 'Employee Profile Updated';
-	    $secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_email',$_POST['emailid'])->emp_secndemail;
+	    $secmail=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_id',$id)->emp_secndemail;
                   if((!empty($secmail))&&($secmail != '')&&($secmail != null)){
                          $mails=$this->mailmodel->mailsnd($secmail,$sub,$mess,'');
                   }
@@ -1366,7 +1370,7 @@ class Staffmgmt extends CI_Controller
                 $this->roleid=$this->session->userdata('id_role');
                 $this->logger->write_logmessage("update","update staff profile ", " Employee record updated successfully ");
                 $this->logger->write_dblogmessage("update","staff profile", "Employee record updated successfully");
-                $this->session->set_flashdata('success', 'Employee data' .$msgphoto." ".'updated Successfully......'." "."["." "."Employee PF NO:"." ".$_POST['empcode']." and "."EmailId:"." ".$_POST['emailid']." "."]");
+                $this->session->set_flashdata('success', 'Employee data' .$msgphoto." ".'updated Successfully......'." "."["." "."Employee PF NO:"." ".$_POST['empcode']." ] .");
                 if($this->roleid == 4){
                     redirect('empmgmt/viewempprofile');
                 }

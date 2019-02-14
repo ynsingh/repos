@@ -38,6 +38,10 @@ CREATE TABLE `additional_assignments` (
 
 CREATE TABLE `bankprofile` ( 
   `id` int(11) NOT NULL auto_increment,
+  `campusid` INT(11) NULL DEFAULT NULL,
+  `ucoid` INT(11) NULL DEFAULT NULL , 
+  `deptid` INT(11) NULL DEFAULT NULL, 
+  `schemeid` INT(11) NULL DEFAULT NULL,
   `bank_name` varchar(250) NOT NULL,
   `branch_name` varchar(255) NOT NULL,
   `bank_address` varchar(500) NOT NULL,
@@ -62,6 +66,10 @@ CREATE TABLE `bankprofile` (
 CREATE TABLE `bankprofile_archive` ( 
   `bpa_id` int(11) NOT NULL auto_increment,
   `bpa_bpid` int(11) NOT NULL,
+  `bpa_campusid` INT(11) NULL DEFAULT NULL,
+  `bpa_ucoid` INT(11) NULL DEFAULT NULL , 
+  `bpa_deptid` INT(11) NULL DEFAULT NULL,  
+  `bpa_schemeid` INT(11) NULL DEFAULT NULL,
   `bpa_bank_name` varchar(250) NOT NULL,
   `bpa_branch_name` varchar(255) NOT NULL,
   `bpa_bank_address` varchar(500) NOT NULL,
@@ -644,7 +652,10 @@ ALTER TABLE `map_scheme_department_archive`
 -- Table structure for table `paymatrix`
 --
 
-CREATE TABLE `paymatrix` ( `pm_id` INT(11) NOT NULL AUTO_INCREMENT , `pm_sgmid` INT(11) NULL , `pm_level` VARCHAR(255) NOT NULL , 
+CREATE TABLE `paymatrix` ( `pm_id` INT(11) NOT NULL AUTO_INCREMENT , `pm_sgmid` INT(11) NULL , 
+`pm_pc` VARCHAR(50) NULL , 
+`pm_wt` VARCHAR(50) NULL ,
+`pm_level` VARCHAR(255) NOT NULL , 
 `pm_sublevel1` VARCHAR(255) NULL ,
 `pm_sublevel2` VARCHAR(255) NULL ,
 `pm_sublevel3` VARCHAR(255) NULL ,
@@ -784,6 +795,8 @@ CREATE TABLE `salary_formula` (
 CREATE TABLE `salary_grade_master` (
   `sgm_id` int(11) NOT NULL auto_increment,
   `sgm_pc` VARCHAR(50) NULL  DEFAULT '6th',
+  `sgm_wt` VARCHAR(100) NULL , 
+  `sgm_group` VARCHAR(5) NULL ,
   `sgm_name` varchar(20) NOT NULL,
   `sgm_max` int(11) NOT NULL default '0',
   `sgm_min` int(11) NOT NULL default '0',
@@ -802,6 +815,8 @@ CREATE TABLE `salary_grade_master_archive` (
      `sgma_id` int(11) NOT NULL auto_increment,
      `sgma_sgmid` int(11) NOT NULL,
       `sgma_pc` VARCHAR(50) NULL,
+  `sgma_wt` VARCHAR(100) NULL , 
+  `sgma_group` VARCHAR(5) NULL ,
      `sgma_name` varchar(20) NOT NULL,
      `sgma_max` int(11) NOT NULL default '0',
      `sgma_min` int(11) NOT NULL default '0',
@@ -1684,7 +1699,7 @@ CREATE TABLE `ccaallowance_calculation` (
   `cca_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `cca_payscaleid` int(11)  DEFAULT NULL,
   `cca_payrange` VARCHAR(255) NULL,
-  `cca_gradeid` int(11)  DEFAULT NULL,
+  `cca_gradeid` varchar(100)  DEFAULT NULL,
   `cca_workingtype` varchar(255)  Default NULL,
   `cca_paycomm` VARCHAR(255) NULL,
   `cca_amount` double  DEFAULT NULL,

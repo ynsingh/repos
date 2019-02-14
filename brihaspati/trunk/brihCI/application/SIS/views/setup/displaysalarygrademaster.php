@@ -51,11 +51,12 @@
                 <tr>
         <th>Sr.No</th>
         <th>AGP Code </th>
-        <th>Salary Grade Name </th>
-        <th>Salary Grade Max </th>
-        <th>Salary Grade Min</th>
+        <th>Group </th>
+        <th>Salary Level of Pay </th>
+        <th>Salary Grade Name (Pay Band)</th>
+        <th>Scale of Pay Min</th>
+        <th>Scale of Pay Max </th>
         <th>Salary Grade Pay </th>
-        <th>Salary Level </th>
         <th> Action </th>
         </thead></tr>
 	<tbody>
@@ -64,20 +65,23 @@
 	        foreach ($this->result as $row)
                 {
 			$sgmpc= $row->sgm_pc;
-			if(strcmp($pcom,$sgmpc)){
-				echo "<tr><td colspan=8><b>". $sgmpc ." Pay commission </b></td></tr>";
-				$pcom=$sgmpc;
+			$sgmwt = $row->sgm_wt;
+			if((strcmp($pcom,$sgmpc))||(strcmp($wt,$sgmwt))){
+				echo "<tr><td colspan=10><b>". $sgmpc ." Pay commission  - ".$sgmwt."</b></td></tr>";
+				$pcom = $sgmpc;
+				$wt = $sgmwt;
 			}
 
               ?>    
 		<tr>
                     <td><?php echo ++$count; ?> </td>
                     <td><?php echo $row->sgm_id;?> </td>
-                    <td><?php echo $row->sgm_name;?> </td>
-                    <td><?php echo $row->sgm_max ;?> </td>
-                    <td><?php echo $row->sgm_min ;?></td>
-		    <td><?php echo $row->sgm_gradepay ;?> </td>
+                    <td><?php echo $row->sgm_group;?> </td>
                     <td><?php echo $row->sgm_level;?> </td>
+                    <td><?php echo $row->sgm_name;?> </td>
+                    <td><?php echo $row->sgm_min ;?></td>
+                    <td><?php echo $row->sgm_max ;?> </td>
+		    <td><?php echo $row->sgm_gradepay ;?> </td>
              	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
                </tr>

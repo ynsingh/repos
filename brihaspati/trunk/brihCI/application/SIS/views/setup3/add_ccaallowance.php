@@ -6,10 +6,10 @@
       <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
  
         <script> 
-         $(document).ready(function(){
+//         $(document).ready(function(){
                 
                 /****************************************** start of Payscale  list********************************/
-                $('#paycomm').on('change',function(){
+  /*              $('#paycomm').on('change',function(){
                     var wtcode = $('#worktype').val();
                     var paycomm = $('#paycomm').val();
                     var wpc = wtcode+","+ paycomm;
@@ -35,9 +35,25 @@
                             }
                         });
                     }
-                }); 
+                });  */
                 /******************************************end of payscale list********************************/
-        });
+    //    });
+
+	function ccarangeofpay(val){
+                         var pcom= $('#paycomm').val();
+//                      alert(pcom);
+//                       var val=val;
+                         $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url();?>sisindex.php/jslist/getccapayrange",
+                                data: {"pcom" : pcom},
+                                dataType:"html",
+                                success: function(data){
+  //            alert(data);
+                                        $('#payrange').html(data.replace(/^"|"$/g, ''));
+                                }
+                        });
+                }
 
         </script>
  
@@ -81,7 +97,7 @@
         </table>
         <form action="<?php echo site_url('setup3/add_ccaallowance');?>" method="POST" enctype="multipart/form-data">
             <table>
-                <tr>
+<!--                <tr>
                 	<td><label for="worktype" class="control-label">Working Type:</label></td>
                         <td>
                             <select name="worktype" id="worktype" class="my_dropdown" style="width:100%;">
@@ -91,53 +107,62 @@
 			    </select>
                         </td>
 	     	</tr>
+-->
 		<tr>
                         <td><label for="paycomm" class="control-label">Pay Commission:</label></td>
                         <td>
-                            <select name="paycomm" id="paycomm" class="my_dropdown" style="width:100%;">
+                            <select name="paycomm" id="paycomm" class="my_dropdown" style="width:100%;" onchange="ccarangeofpay(this.value)">
                                 <option value="" disabled selected >------Select ---------------</option>
                                 <option value="6th">6th</option>
                                 <option value="7th">7th</option>
                             </select>
                         </td>
                 </tr>
-
+<!--
                 <tr>
                 	<td><label for="payscale" class="control-label">Pay Scale:</label></td>
                         <td>
                             <select name="payscale" id="payscale" class="my_dropdown" style="width:100%;">
-                		<option value="" disabled selected >------Select Pay Scale ---------------</option>
+                		<option value="" disabled selected >------Select Pay Scale ---------------</option> -->
                                 <?php //foreach($this->salgrade as $sgdata): ?>	
 <!--   				<option value="<?php //echo $sgdata->sgm_id; ?>"><?php //echo $sgdata->sgm_name."( ".$sgdata->sgm_min." - ".$sgdata->sgm_max." )".$sgdata->sgm_gradepay; ?></option> -->
-                                <?php //endforeach; ?>
+<!--                                <?php //endforeach; ?>
                             </select>
 			    </select>
                         </td>
 	     	</tr>
-		<tr>
-                    <td><label for="payrange" class="control-label">Pay Range:</label></td>
-                    <td><input type="text" name="payrange" value="<?php echo isset($_POST["payrange"]) ? $_POST["payrange"] : ''; ?>" placeholder="Pay Range ( min - max)" size="30" /></td>
-                </tr> 
+-->
                 <tr>
-                	<td><label for="hragrade" class="control-label">HRA Grade:</label></td>
+                	<td><label for="ccagrade" class="control-label">CCA Grade:</label></td>
                         <td>
                             <select name="hragrade" id="hragrade" class="my_dropdown" style="width:100%;">
-                		<option value="" disabled selected >------Select HRA Grade -------</option>
-                                <?php foreach($this->hragrade as $hgcdata): ?>	
-   				<option value="<?php echo $hgcdata->hgc_id; ?>"><?php echo $hgcdata->hgc_gradename;?></option> 
-                                <?php endforeach; ?>
-                            </select>
+                		<option value="" disabled selected >------Select CCA Grade -------</option>
+                                <option value="CCA-Type-I">CCA-Type-I</option>
+                                <option value="CCA-Type-II">CCA-Type-II</option>
+                                <option value="CCA-No">CCA-No</option>
 			    </select>
                         </td>
 	     	</tr>
+		 <tr>
+                    <td><label for="payrange" class="control-label">CCA Pay Range:</label></td>
+                    <td>
+                                <div>
+                                <select name="payrange" id="payrange" style="width:100%;">
+                                        <option disabled selected >------Select----------------</option>
+                                </select>
+                                </div>
+                    </td>
+                </tr>
+
                 <tr>
-                    <td><label for="amount" class="control-label">Amount:</label></td>
+                    <td><label for="amount" class="control-label">CCA Amount:</label></td>
                     <td><input type="text" name="amount" value="<?php echo isset($_POST["amount"]) ? $_POST["amount"] : ''; ?>" placeholder="Amount In Rupees..." size="30" /></td>
                 </tr>
+<!--
                 <tr>
                     <td><label for="description" class="control-label">Description:</label></td>
-                    <td><input type="text" name="Description" value="<?php echo isset($_POST["Description"]) ? $_POST["Description"] : ''; ?>" placeholder="Description..." size="30" /></td>
-                </tr>
+                    <td><input type="text" name="Description" value="<?php //echo isset($_POST["Description"]) ? $_POST["Description"] : ''; ?>" placeholder="Description..." size="30" /></td>
+                </tr> -->
                 <tr>
                     <td></td>
                     <td>

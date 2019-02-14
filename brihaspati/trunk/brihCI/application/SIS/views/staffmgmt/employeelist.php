@@ -374,22 +374,17 @@ $(document).ready(function(){
 				if(($roleid == 5)&&($hdeptid == $record->emp_dept_code)&&($record->emp_id != $hempid)&&(!(in_array($record->emp_id, $uoempid)))){
 					$flaghod=true;
 				}
-//			echo "flag true ".$flagffs .")||( ".$flagcppm. ")||(". $flagro.")||(".$flaguooff.")||(".$flaghod	;
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                              //  if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))||($suocid == $record->emp_uocid)){
-                                //  if(($roleid == 1)||(($roleid == 5)&&($hdeptid == $record->emp_dept_code ))){
 						
 					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
 					echo "<br>";
+					echo "<br>";
 					if($record->emp_worktype === "Teaching"){
-					//	if(!($headflag)){
-					//		if(($record->emp_head == "HEAD")){
 						if(($headflag)||($record->emp_head == "HEAD")){
         	                        			echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
 							}else{
         	                                		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
 							}
-					//	}
 					}
 				//	echo "<br>";
                               //        echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));

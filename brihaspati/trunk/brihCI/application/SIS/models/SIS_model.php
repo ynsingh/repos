@@ -112,6 +112,24 @@ class SIS_model extends CI_Model
        // print_r($this->db->get()->result());
         return $this->db2->get()->result();
     }
+	// $spl = "empid NOT IN";
+	public function get_rundualquery($sel1,$tb1,$sel2, $tb2,$spl,$whdata,$whorder){
+		$this->db2->select($sel1)->from($tb1);
+		$subQuery =  $this->db2->get_compiled_select();
+ 
+		// Main Query
+		$this->db2->select($sel2)
+	         ->from($tb2)
+        	 ->where("$spl ($subQuery)", NULL, FALSE);
+		if($whdata != ''){
+                	$this->db2->where($whdata);
+	        }
+        	if($whorder != ''){
+                	$this->db2->order_by($whorder);
+        	}
+
+	        return $this->db2->get()->result();
+	}
 
     //    getting different field from table - $selectfield ('a,b,c');
     public function get_listspficemore($tbname,$selectfield,$data){

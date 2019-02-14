@@ -86,7 +86,13 @@
                  </tr>
                  <tr>
                      <td >Campus Name :</td>
-                     <td><?php  echo $this->campusname->sc_name ;?></td>
+                     <td><?php  
+			if(!empty($this->campusname->sc_name)){
+				echo $this->campusname->sc_name ;
+			}else{
+				echo $scname;
+			}
+		?></td>
                  </tr>
 	         </div>
                  </div>
@@ -113,7 +119,10 @@
                    <?php  
 				$dexist=$this->sismodel->isduplicate('employee_master','emp_id',$this->session->userdata('id_emp'));
 				if($dexist){
-				echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$this->session->userdata('id_emp'))->emp_name; 
+					echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$this->session->userdata('id_emp'))->emp_name; 
+				}
+				else{
+					echo $name;
 				}
 //				else get userid
 //	 get empcode from uolist
@@ -131,6 +140,8 @@
 			 if($dexist){
 			 $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id' ,$empid)->emp_desig_code; 
 			echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$desigid)->desig_name;
+			}else{
+				echo $designame;
 			}
 		?>	
 		</td>
@@ -138,12 +149,24 @@
 		<tr>
                    <td>Address :</td>
                    <td >
-                   <?php  echo $this->address->address ;?></td>
+                   <?php  
+			if(!empty($this->address->address)){
+				echo $this->address->address ;
+			}else{
+				echo $deptname;
+			}
+		?></td>
                 </tr>
 	        <tr>
                    <td>Mobile :</td>
                    <td>
-                   <?php  echo $this->mobile->mobile ;?></td>
+                   <?php  
+			if(!empty($this->mobile->mobile)){
+			echo $this->mobile->mobile ;
+			}else{
+				echo $mobile;
+			}
+		?></td>
                </tr>
                <tr>
                    <td>Email :</td> 

@@ -3653,17 +3653,25 @@ public function displaytaxslab(){
 public function salarygrademaster(){
 
 	if(isset($_POST['salarygrademaster'])) {
-        	$this->form_validation->set_rules('sgmname','Salary Grade Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+        	$this->form_validation->set_rules('sgmname','Salary Grade Master Name','trim|xss_clean|alpha_numeric_spaces|callback_value_exists');
             	$this->form_validation->set_rules('sgmmax','Salary Grade Master Max','trim|xss_clean|required|is_natural_no_zero');
             	$this->form_validation->set_rules('sgmmin','Salary Grade Master Min','trim|xss_clean|required|is_natural_no_zero');
             	$this->form_validation->set_rules('sgmgradepay','Salary Grade Master Gradepay','trim|xss_clean');
             	$this->form_validation->set_rules('sgmlevel','salary Grade Master Level','trim|xss_clean');
             	$this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean|required');
+            	$this->form_validation->set_rules('workingtype','Working Type','trim|xss_clean|required');
+            	$this->form_validation->set_rules('group','Group','trim|xss_clean|required');
 
             	if($this->form_validation->run()==TRUE){
 
 	    		$sgpc = $this->input->post("paycomm");		
-	    		$sgmn = $this->input->post("sgmname");		
+	    		$wt = $this->input->post("workingtype");		
+			if($sgpc == "6th"){
+				$sgmn = $this->input->post("sgmname");
+			}else{
+				$sgmn = '';
+			}
+	    		$group = $this->input->post("group");		
 	    		$sgmmax = $this->input->post("sgmmax");
            		$sgmmin = $this->input->post("sgmmin");
             		$sgmgrade = $this->input->post("sgmgradepay");
@@ -3671,6 +3679,8 @@ public function salarygrademaster(){
               
            		$data = array(
 		                'sgm_pc'=>$sgpc,
+		                'sgm_wt'=>$wt,
+		                'sgm_group'=>$group,
                 		'sgm_name'=>strtoupper($sgmn),
 		                'sgm_max'=>strtoupper($sgmmax),
                 		'sgm_min'=>strtoupper($sgmmin),
@@ -3719,7 +3729,7 @@ public function salarygrademaster(){
 public function displaysalarygrademaster(){
 
      //   $this->result = $this->SIS_model->get_list('salary_grade_master');
-	$whorder = 'sgm_pc ASC, sgm_name ASC,sgm_level ASC,sgm_id ASC';
+	$whorder = 'sgm_pc ASC, sgm_wt asc,sgm_name ASC,sgm_level ASC,sgm_id ASC';
         $this->result = $this->SIS_model->get_orderlistspficemore('salary_grade_master','*','',$whorder);
         $this->logger->write_logmessage("view"," View ", "Salary Grade Master display successfully..." );
         $this->logger->write_dblogmessage("view"," View Salary Grade Master", "Salary Grade Master successfully..." );
@@ -3746,7 +3756,21 @@ public function displaysalarygrademaster(){
             'value' => $SalaryGradeMaster_data->sgm_pc,
         );
 
+	$data['sgm_wt'] = array(
+            'name' => 'workingtype',
+            'id' => 'workngtypeid',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $SalaryGradeMaster_data->sgm_wt,
+        );
 
+	$data['sgm_group'] = array(
+            'name' => 'group',
+            'id' => 'group',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $SalaryGradeMaster_data->sgm_group,
+        );
         $data['sgm_name'] = array(
             'name' => 'sgm_name',
             'id' => 'sgm_name',
@@ -3792,15 +3816,19 @@ public function displaysalarygrademaster(){
         $data['sgm_id'] = $sgm_id;
 
         $this->form_validation->set_rules('paycomm','Pay Commission  ','trim|xss_clean|required');
-        $this->form_validation->set_rules('sgm_name','Salary Grade Master Name  ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('workingtype','Working Type  ','trim|xss_clean|required');
+        $this->form_validation->set_rules('group','Group ','trim|xss_clean|required');
+        $this->form_validation->set_rules('sgm_name','Salary Grade Master Name  ','trim|xss_clean|alpha_numeric_spaces');
         $this->form_validation->set_rules('sgm_max','Salary Grade Master Max ','trim|xss_clean|required|numeric|is_natural_no_zero');
         $this->form_validation->set_rules('sgm_min','Salary Grade Master Min ','trim|xss_clean|required|numeric|is_natural_no_zero');
-        $this->form_validation->set_rules('sgm_gradepay','Salary Grade Master Gradepay ','trim|xss_clean|numeric|is_natural_no_zero');
-        $this->form_validation->set_rules('sgm_level','Salary Grade Master Level ','trim|xss_clean');                                                                                                
+        $this->form_validation->set_rules('sgm_gradepay','Salary Grade Master Gradepay ','trim|xss_clean');
+        $this->form_validation->set_rules('sgm_level','Salary Grade Master Level ','trim|xss_clean');   
 
         if ($_POST)
         {
             $data['sgm_pc']['value'] = $this->input->post('paycomm', TRUE);
+            $data['sgm_wt']['value'] = $this->input->post('workingtype', TRUE);
+            $data['sgm_group']['value'] = $this->input->post('group', TRUE);
             $data['sgm_name']['value'] = $this->input->post('sgm_name', TRUE);
             $data['sgm_max']['value'] = $this->input->post('sgm_max', TRUE);
             $data['sgm_min']['value'] = $this->input->post('sgm_min', TRUE);
@@ -3814,9 +3842,16 @@ public function displaysalarygrademaster(){
         }
         else
         {
-
             $sgm_pc = $this->input->post('paycomm', TRUE);
-            $sgm_name = strtoupper($this->input->post('sgm_name', TRUE));
+            $sgm_wt= $this->input->post('workingtype', TRUE);
+            $sgm_group = $this->input->post('group', TRUE);
+		if($sgm_pc == "6th"){
+                                $sgm_name = $this->input->post("sgm_name",TRUE);
+                        }else{
+                                $sgm_name = '';
+                        }
+
+//            $sgm_name = strtoupper($this->input->post('sgm_name', TRUE));
             $sgm_max = strtoupper($this->input->post('sgm_max', TRUE));
             $sgm_min = strtoupper($this->input->post('sgm_min', TRUE));
             $sgm_gradepay = $this->input->post('sgm_gradepay', TRUE);
@@ -3837,6 +3872,8 @@ public function displaysalarygrademaster(){
             $instdatasgma = array(
 	       'sgma_sgmid'=> $sgm_id,
 		'sgma_pc' =>$SalaryGradeMaster_data->sgm_pc,	
+		'sgma_wt' =>$SalaryGradeMaster_data->sgm_wt,	
+		'sgma_group' =>$SalaryGradeMaster_data->sgm_group,	
                'sgma_name' => $SalaryGradeMaster_data->sgm_name,
                'sgma_max' => $SalaryGradeMaster_data->sgm_max,
                'sgma_min' => $SalaryGradeMaster_data->sgm_min,
@@ -3848,6 +3885,8 @@ public function displaysalarygrademaster(){
 
             $update_data = array(
                'sgm_pc' => $sgm_pc,
+               'sgm_wt' => $sgm_wt,
+               'sgm_group' => $sgm_group,
                'sgm_name' => $sgm_name,
                'sgm_max' => $sgm_max,
                'sgm_min' => $sgm_min,

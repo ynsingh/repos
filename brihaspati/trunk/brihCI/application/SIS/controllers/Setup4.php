@@ -451,35 +451,86 @@ public function rejectedincomereq(){
                         	$this->form_validation->set_rules('subpaylevel'.$i, 'Sub Pay Level', 'trim|xss_clean');
 			}
 	                if($this->form_validation->run()==TRUE){
-        	 		$data = array(
-		                    	'pm_level'=>$_POST['pmlevel'],
-				);
+				$level=$_POST['pmlevel'];
+				$is_exist = $this->sismodel->isduplicate('paymatrix','pm_level',$level);
+				if($is_exist){
+					$this->session->set_flashdata("err_message", "Level is already exist.");
+				}
+				else{
+	        	 		$data = array(
+			                    	'pm_pc'=>$_POST['paycomm'],
+			                    	'pm_wt'=>$_POST['workingtype'],
+			                    	'pm_level'=>$_POST['pmlevel'],
+					);
 					for($i=1;$i<=40;$i++){
                                                 $field='pm_sublevel'.$i ;
 						$fieldv = $this->input->post('subpaylevel'.$i,'0');
 						$data[$field]=$fieldv;
 					}
-//				print_r($data); die();
-                    		$pmflag=$this->sismodel->insertrec('paymatrix', $data) ;
-                if ( ! $pmflag)
-                {
-                    $this->logger->write_logmessage("error", "Error in adding pay matrix detail");
-                    $this->logger->write_dblogmessage("error", "Error in adding pay matrix detail");
-                    $this->session->set_flashdata("err_message",'Error in adding pay matrix detail');
-                    redirect('setup4/paymatrix');
+	//				print_r($data); die();
+                    			$pmflag=$this->sismodel->insertrec('paymatrix', $data) ;
+		        	        if ( ! $pmflag)
+                			{
+			                    	$this->logger->write_logmessage("error", "Error in adding pay matrix detail");
+	                    			$this->logger->write_dblogmessage("error", "Error in adding pay matrix detail");
+                    				$this->session->set_flashdata("err_message",'Error in adding pay matrix detail');
+                    				redirect('setup4/paymatrix');
 
-                }
-                else{
-                    $this->logger->write_logmessage("insert","pay matrix record insert successfully");
-                    $this->logger->write_dblogmessage("insert", "Add pay matrix record");
-                    $this->session->set_flashdata("success", "Pay matrix added successfully...");
-                    redirect("setup4/displaypaymatrix");
-                }
+                			}
+                			else{
+			                    	$this->logger->write_logmessage("insert","pay matrix record insert successfully");
+                    				$this->logger->write_dblogmessage("insert", "Add pay matrix record");
+                    				$this->session->set_flashdata("success", "Pay matrix added successfully...");
+                    				redirect("setup4/displaypaymatrix");
+                			}
 				
-			
+				}
 			}
 		}
 		$this->load->view('setup4/paymatrix');
+	}
+
+	public function editpaymatrix($id){
+		$data['id'] = $id;
+                $whdata = array('pm_id'=>$id);
+                $data['pmdata'] = $this->sismodel->get_orderlistspficemore('paymatrix','*',$whdata,'');
+		if(isset($_POST['editpaymatrix'])) {
+                                //form validation
+                	$this->form_validation->set_rules('pmlevel','Salary Level','trim|xss_clean|required');
+			for($i=1;$i<=40;$i++){
+                                $this->form_validation->set_rules('subpaylevel'.$i, 'Sub Pay Level', 'trim|xss_clean');
+                        }
+			if($this->form_validation->run()==TRUE){
+                                $level=$_POST['pmlevel'];
+				$data = array(
+                                                'pm_pc'=>$_POST['paycomm'],
+                                                'pm_wt'=>$_POST['workingtype'],
+                                                'pm_level'=>$_POST['pmlevel'],
+                                );
+                                for($i=1;$i<=40;$i++){
+                        	        $field='pm_sublevel'.$i ;
+                                        $fieldv = $this->input->post('subpaylevel'.$i,'0');
+                                        $data[$field]=$fieldv;
+                                }
+				$editpmflag=$this->sismodel->updaterec('paymatrix', $data,'pm_id',$id) ;
+				if (!$editpmflag)
+                                        {
+                                                $this->logger->write_logmessage("error", "Error in updating pay matrix detail");
+                                                $this->logger->write_dblogmessage("error", "Error in updating pay matrix detail");
+                                                $this->session->set_flashdata("err_message",'Error in updating pay matrix detail');
+                                                redirect('setup4/editpaymatrix/'.$id);
+
+                                        }
+                                        else{
+                                                $this->logger->write_logmessage("update","pay matrix record updated successfully");
+                                                $this->logger->write_dblogmessage("update", "Update pay matrix record");
+                                                $this->session->set_flashdata("success", "Updated matrix added successfully...");
+                                                redirect("setup4/displaypaymatrix");
+                                        }
+
+			}
+		}	
+                $this->load->view('setup4/editpaymatrix',$data);
 	}
 
 }//end class

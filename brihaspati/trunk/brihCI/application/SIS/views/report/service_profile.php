@@ -193,7 +193,8 @@
                                     <?php 
 				    $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_code',$record->empsd_desigcode)->desig_name; 
 					 $showagpost ="";
-					if(!empty($record->empsd_shagpstid)){
+//					if(!empty($record->empsd_shagpstid)){
+					if ( $record->empsd_shagpstid != 0) {
 					    $showagpost=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->empsd_shagpstid)->desig_name;
 					}
 				    $group=$record->empsd_group;

@@ -46,11 +46,11 @@
             <thead>
                 <tr>
                     <th>Sr.No</th>
-                    <th>Working Type</th>
+<!--                    <th>Working Type</th> -->
                     <th>Pay Commission</th>
-                    <th>Pay Scale</th>
-                    <th>Pay Range</th>
                     <th>Grade</th>
+<!--                    <th>Pay Scale</th>-->
+                    <th>Pay Range</th>
                     <th>Amount</th>
                     <th>Action</th>
                     
@@ -62,19 +62,19 @@
                     <?php foreach($hragrade as $record){ ?>
                         <tr>
                             <td><?php echo $serial_no++; ?></td>
-                            <td><?php echo $record->hg_workingtype;?></td>
+    <!--                        <td><?php //echo $record->hg_workingtype;?></td> -->
                             <td><?php echo $record->hg_paycomm;?></td>
-                                <?php  $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->hg_payscaleid)->sgm_name;
-                                    $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->hg_payscaleid)->sgm_min;
-                                    $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->hg_payscaleid)->sgm_max;
-                                    $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->hg_payscaleid)->sgm_gradepay;
-                                    $fullstr=$pname."( ".$min." - ".$max." )".$gp;
+                                <?php //  $pname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->hg_payscaleid)->sgm_name;
+//                                    $min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->hg_payscaleid)->sgm_min;
+  //                                  $max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->hg_payscaleid)->sgm_max;
+    //                                $gp=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$record->hg_payscaleid)->sgm_gradepay;
+      //                              $fullstr=$pname."( ".$min." - ".$max." )".$gp;
                 
                                     $hragradename=$this->sismodel->get_listspfic1('hra_grade_city','hgc_gradename','hgc_id',$record->hg_gradeid)->hgc_gradename;
                                 ?>
-                            <td><?php echo $fullstr;?></td>    
-                            <td><?php echo $record->hg_payrange; ?></td>
                             <td><?php echo $hragradename; ?></td>
+                            <!--<td><?php //echo $fullstr;?></td>    -->
+                            <td><?php echo $record->hg_payrange; ?></td>
                             <td><?php echo $record->hg_amount; ?></td>
                             <td> <?php // echo anchor("setup3/edit_hragrade/{$record->hg_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
                                 <a href='<?php echo site_url()."/setup3/edit_hragrade/".$record->hg_id;?>' title="Edit Details"><img src="<?php echo base_url('assets/sis/images/edit.png');?>"></a>&nbsp; 

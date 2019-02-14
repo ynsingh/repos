@@ -100,9 +100,9 @@ class Jslist extends CI_Controller
                 $parts = explode(',',$combid);
                 $datawh=array();
 		if($parts[1] == '6th'){
-			$datawh['sgm_level'] = "";
+			$datawh['sgm_pc'] = "6th";
 		}else{
-			$datawh['sgm_gradepay'] = "";
+			$datawh['sgm_pc'] = "7th";
 		}
 	        $ps_data = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_max,sgm_min,sgm_gradepay,sgm_level',$datawh);
                 $ps_select_box ='';
@@ -164,6 +164,160 @@ class Jslist extends CI_Controller
         echo json_encode($dept_select_box);
 
 	}
+
+	 public function getccapayrange(){
+                $pcom = $this->input->post('pcom');
+
+                if($pcom == '6th'){
+                        $gpr_select_box ='';
+                        $gpr_select_box.='<option value=>-------Select Pay Range--------';
+                        $gpr_select_box.='<option value=0-8000>0-8000';
+                        $gpr_select_box.='<option value=8001-12000>8001-12000';
+                        $gpr_select_box.='<option value=12001-16000>12001-16000';
+                        $gpr_select_box.='<option value=16001-inf>16001-inf';
+                }else{
+                        $gpr_select_box ='';
+                        $gpr_select_box.='<option value=>-------Select Pay Range--------';
+                        $gpr_select_box.='<option value=0-20600>0-20600';
+                        $gpr_select_box.='<option value=20601-30800>20601-30800';
+                        $gpr_select_box.='<option value=30801-41100>30801-41100';
+                        $gpr_select_box.='<option value=41101-inf>41101-inf';
+                }
+                echo json_encode($gpr_select_box);
+        }
+
+
+
+	public function getpayrange(){
+		$pcom = $this->input->post('pcom');
+		
+		if($pcom == '6th'){
+			$gpr_select_box ='';
+                        $gpr_select_box.='<option value=>-------Select Pay Range--------';
+			$gpr_select_box.='<option value=0-5299>0-5299';
+			$gpr_select_box.='<option value=5300-6699>5300-6699';
+			$gpr_select_box.='<option value=6700-8189>6700-8189';
+			$gpr_select_box.='<option value=8190-9299>8190-9299';
+			$gpr_select_box.='<option value=9300-10599>9300-10599';
+			$gpr_select_box.='<option value=10600-11899>10600-11899';
+			$gpr_select_box.='<option value=11900-13969>11900-13769';
+			$gpr_select_box.='<option value=13770-14509>13770-14509';
+			$gpr_select_box.='<option value=14510-15999>14510-15999';
+			$gpr_select_box.='<option value=16000-17299>16000-17299';
+			$gpr_select_box.='<option value=17300-19529>17300-19529';
+			$gpr_select_box.='<option value=19530-20089>19530-20089';
+			$gpr_select_box.='<option value=20090-21019>20090-21019';
+			$gpr_select_box.='<option value=21020-21579>21020-21579';
+			$gpr_select_box.='<option value=21580-22139>21580-22139';
+			$gpr_select_box.='<option value=22140-24999>22140-24999';
+			$gpr_select_box.='<option value=25000-inf>25000-inf';
+		}else{
+			$gpr_select_box ='';
+                        $gpr_select_box.='<option value=>-------Select Pay Range--------';
+			$gpr_select_box.='<option value=0-13600>0-13600';
+			$gpr_select_box.='<option value=13601-17200>13601-17200';
+			$gpr_select_box.='<option value=17201-21000>17201-21000';
+			$gpr_select_box.='<option value=21001-23900>21001-23900';
+			$gpr_select_box.='<option value=23901-27200>23901-27200';
+			$gpr_select_box.='<option value=27201-30600>27201-30600';
+			$gpr_select_box.='<option value=30601-35400>30601-35400';
+			$gpr_select_box.='<option value=35401-37300>35401-37300';
+			$gpr_select_box.='<option value=37301-41100>37301-41100';
+			$gpr_select_box.='<option value=41101-44500>41101-44500';
+			$gpr_select_box.='<option value=44501-50200>44501-50200';
+			$gpr_select_box.='<option value=50201-51600>50201-51600';
+			$gpr_select_box.='<option value=51601-54000>51601-54000';
+			$gpr_select_box.='<option value=54001-55500>54001-55500';
+			$gpr_select_box.='<option value=55601-56900>55501-56900';
+			$gpr_select_box.='<option value=56901-64200>56901-64200';
+			$gpr_select_box.='<option value=64201-inf>64201-inf';
+		}
+		echo json_encode($gpr_select_box);
+	}
+
+
+	public function getpayband(){
+                $wtype = $this->input->post('pcwt');
+                $parts = explode(',',$wtype);
+       // echo json_encode("this is testing----".$wtype);
+                if(($parts[0] == 'Teaching')&&($parts[1] == '6th')){
+                        $pb_select_box ='';
+                        $pb_select_box.='<option value=>-------Select Pay Band--------';
+                        $pb_select_box.='<option value=UGC1> UGC1';
+                        $pb_select_box.='<option value=UGC2> UGC2';
+                        $pb_select_box.='<option value=UGC3> UGC3';
+                        $pb_select_box.='<option value=UGC4> UGC4';
+                        $pb_select_box.='<option value=UGC5> UGC5';
+                        $pb_select_box.='<option value=HGP> HGP';
+                        $pb_select_box.='<option value=Fixed> Fixed';
+                }
+                elseif(($parts[0] == 'Non Teaching')&&($parts[1] == '6th')){
+                        $pb_select_box ='';
+                        $pb_select_box.='<option value= >-------Select Pay Band--------';
+                        $pb_select_box.='<option value=PB1A> PB1A';
+                        $pb_select_box.='<option value=PB1> PB1';
+                        $pb_select_box.='<option value=PB2> PB2';
+                        $pb_select_box.='<option value=PB3> PB3';
+                        $pb_select_box.='<option value=PB4> PB4';
+                }else{
+                        $pb_select_box ='';
+                }
+                echo json_encode($pb_select_box);
+        }
+
+        public function getlevelpay(){
+                $wtype = $this->input->post('wt');
+       // echo json_encode("this is testing----".$wtype);
+                if($wtype == 'Teaching'){
+                        $lpb_select_box ='';
+                        $lpb_select_box.='<option value=>-------Select Level of Pay -------';
+                        $lpb_select_box.='<option value=Level10> Level10';
+                        $lpb_select_box.='<option value=Level11> Level11';
+                        $lpb_select_box.='<option value=Level12> Level12';
+                        $lpb_select_box.='<option value=Level13A> Level13A';
+                        $lpb_select_box.='<option value=Level14> Level14';
+                        $lpb_select_box.='<option value=Level15> Level15';
+                        $lpb_select_box.='<option value=Fixed> Fixed';
+                }
+		 else{
+                        $lpb_select_box ='';
+                        $lpb_select_box.='<option value=>-------Select Level of Pay -------';
+                        $lpb_select_box.='<option value=Level1> Level1';
+                        $lpb_select_box.='<option value=Level2> Level2';
+                        $lpb_select_box.='<option value=Level3> Level3';
+                        $lpb_select_box.='<option value=Level4> Level4';
+                        $lpb_select_box.='<option value=Level5> Level5';
+                        $lpb_select_box.='<option value=Level6> Level6';
+                        $lpb_select_box.='<option value=Level7> Level7';
+                        $lpb_select_box.='<option value=Level8> Level8';
+                        $lpb_select_box.='<option value=Level9> Level9';
+                        $lpb_select_box.='<option value=Level10> Level10';
+                        $lpb_select_box.='<option value=Level11> Level11';
+                        $lpb_select_box.='<option value=Level12> Level12';
+                        $lpb_select_box.='<option value=Level13> Level13';
+                        $lpb_select_box.='<option value=Level14> Level14';
+                        $lpb_select_box.='<option value=Level15> Level15';
+                        $lpb_select_box.='<option value=Level16> Level16';
+                        $lpb_select_box.='<option value=Level17> Level17';
+                        $lpb_select_box.='<option value=Level18> Level18';
+                        $lpb_select_box.='<option value=Level19> Level19';
+                        $lpb_select_box.='<option value=Level20> Level20';
+                        $lpb_select_box.='<option value=Level21> Level21';
+                        $lpb_select_box.='<option value=Level22> Level22';
+                        $lpb_select_box.='<option value=Level23> Level23';
+                        $lpb_select_box.='<option value=Level24> Level24';
+                        $lpb_select_box.='<option value=Level25> Level25';
+                        $lpb_select_box.='<option value=Level26> Level26';
+                        $lpb_select_box.='<option value=Level27> Level27';
+                        $lpb_select_box.='<option value=Level28> Level28';
+                        $lpb_select_box.='<option value=Level29> Level29';
+                        $lpb_select_box.='<option value=Level30> Level30';
+                        $lpb_select_box.='<option value=Level31> Level31';
+                        $lpb_select_box.='<option value=Level32> Level32';
+                }
+                echo json_encode($lpb_select_box);
+        }
+
 
 	public function getemppdata(){
 	        $values=array();

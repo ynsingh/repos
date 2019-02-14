@@ -48,7 +48,8 @@
 		<th>Level </th>
 		<?php 
 			for($i=1;$i<=40;$i++){
-				echo "<th> Sub Level".$i."</th>";
+				//echo "<th> Sub Level".$i."</th>";
+				echo "<th> ".$i."</th>";
 			}
 		?>
 		<th>Action</th>
@@ -72,7 +73,7 @@
 			}
                 ?>
             <td>
-		<?php //echo anchor('setup4/edit/' . $row->pm_id , "Edit", array('title' => 'Edit ', 'class' => 'red-link'));?>
+		<?php echo anchor('setup4/editpaymatrix/' . $row->pm_id , "Edit", array('title' => 'Edit ', 'class' => 'red-link'));?>
                 <?php //echo anchor('setup4/deletem/' . $row->pm_id , "Delete", array('title' => 'Delete P', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')"));?>
             </td>
     </tr>    

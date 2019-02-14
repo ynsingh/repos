@@ -1,20 +1,20 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>Add Pay matrix</title>
+<title>Edit Pay matrix</title>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <script>
 
 		function levelofpay(val){
                          //var wt= $('#worktypeid').val();
                          var wt= val;
-                      alert(wt);
+//                      alert(wt);
                          $.ajax({
                                 type: "POST",
                                 url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpay",
                                 data: {"wt" : wt},
                                 dataType:"html",
                                 success: function(data){
-              alert(data);
+  //            alert(data);
                                         $('#pmlevel').html(data.replace(/^"|"$/g, ''));
                                 }
                         });
@@ -32,7 +32,7 @@
 <div align="left">
 <table style="margin-left:0%;">
 <tr><td>
-<?php echo anchor('setup4/displaypaymatrix/', "View Pay Matrix", array('title' => 'View Pay Matrix' , 'class' => 'top_parent'));
+<?php //echo anchor('setup4/displaypaymatrix/', "View Pay Matrix", array('title' => 'View Pay Matrix' , 'class' => 'top_parent'));
 //$help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
 ?>
@@ -62,13 +62,15 @@
         </td></tr>   
         </table>   
     <div align="left" style="margin-left:0%;">
-	<form action="<?php echo site_url('setup4/paymatrix');?>" method="POST" class="form-inline">
+	<form action="<?php echo site_url('setup4/editpaymatrix/'.$id);?>" method="POST" class="form-inline">
+		<?php foreach($pmdata as $row){ ?>
           <table cellpadding="16" class="TFtable">
 		<tr>
                         <td><label for="paycomm" class="control-label">Pay Commission:</label></td>
                         <td>
                             <select name="paycomm" id="paycomm" style="width:400px;">
-                                <option value="" disabled selected >------Select ---------------</option>
+                                <option value="<?php echo $row->pm_pc;?>"><?php echo $row->pm_pc;?></option>
+                                <option value="" >------Select ---------------</option>
                                 <option value="7th">7th</option>
                             </select>
                         </td>
@@ -77,13 +79,13 @@
                 <td><label for="workingtype" class="control-label">Working Type</label>
                 </td><td>
                         <div><select id="worktypeid" name="workingtype" required style="width:400px;" onchange="levelofpay(this.value)">
-                        <option selected="selected" disabled selected>-------- Working Type ---------</option>
+                                <option value="<?php echo $row->pm_wt;?>"><?php echo $row->pm_wt;?></option>
+                        <option value=''>-------- Working Type ---------</option>
                         <option value="Teaching">Teaching</option>
                         <option value="Non Teaching">Non Teaching</option>
                     </select></div>
                 </td>
                 </tr>
-
                 <tr>
                 <td>
                 <label for="pmlevel" class="control-label">Salary Level :</label>
@@ -91,45 +93,13 @@
                 <td>
 		<div>
 		<select name="pmlevel" style="width:400px;" id="pmlevel">
-                <option selected="selected" disabled selected>------ Select Level------</option>
+                                <option value="<?php echo $row->pm_level;?>"><?php echo $row->pm_level;?></option>
+                <option value="" >------ Select Level------</option>
                 </select>
 		</div>
                 </td>
-<!--                        <option value="Level-1">Level-1</option>
-                        <option value="Level-2">Level-2</option>
-                        <option value="Level-3">Level-3</option>
-                        <option value="Level-4">Level-4</option>
-                        <option value="Level-5">Level-5</option>
-                        <option value="Level-6">Level-6</option>
-                        <option value="Level-7">Level-7</option>
-                        <option value="Level-8">Level-8</option>
-                        <option value="Level-9">Level-9</option>
-                        <option value="Level-10">Level-10</option>
-                        <option value="Level-11">Level-11</option>
-                        <option value="Level-12">Level-12</option>
-                        <option value="Level-13">Level-13</option>
-                        <option value="Level-13A">Level-13A</option>
-                        <option value="Level-14">Level-14</option>
-                        <option value="Level-15">Level-15</option>
-                        <option value="Level-16">Level-16</option>
-                        <option value="Level-17">Level-17</option>
-                        <option value="Level-18">Level-18</option>
-                        <option value="Level-18">Level-19</option>
-                        <option value="Level-18">Level-20</option>
-                        <option value="Level-18">Level-21</option>
-                        <option value="Level-18">Level-22</option>
-                        <option value="Level-18">Level-23</option>
-                        <option value="Level-18">Level-24</option>
-                        <option value="Level-18">Level-25</option>
-                        <option value="Level-18">Level-26</option>
-                        <option value="Level-18">Level-27</option>
-                        <option value="Level-18">Level-28</option>
-                        <option value="Level-18">Level-29</option>
-                        <option value="Level-18">Level-30</option>
-                        <option value="Level-18">Level-31</option>
-                        <option value="Level-18">Level-32</option>
--->
                  </tr>
+<?php		$a ="pm_sublevel"; ?>
 	<?php
                         for($i=1;$i<=40;$i++){
 				echo "<tr><td>";
@@ -137,15 +107,16 @@
                 		echo "</td>";
                         	echo "<td> ";
 ?>
-				<input type="text" name="<?php echo "subpaylevel".$i;?>" size="40"  value="<?php echo isset($_POST["subpaylevel"]) ? $_POST["subpaylevel"] : '0'; ?>" class="form-control" placeholder="Salary Sub Pay level"/> 
+				<input type="text" name="<?php echo "subpaylevel".$i;?>" size="40"  value="<?php echo $row->{$a.$i}; ?>" class="form-control" placeholder="Salary Sub Pay level"/> 
 <?php				echo "</td>";
 				echo "</tr>";
 			}
                 ?>
 			
                 <tr><td></td>
+<?php } ?>
                 <td colspan="2">
-                <button type=submit name="paymatrix" >Add Pay Matrix </button>
+                <button type=submit name="editpaymatrix" >Edit Pay Matrix </button>
                 <input type="reset" name="Reset" value="Clear"/>
                 </td>
             </tr>
