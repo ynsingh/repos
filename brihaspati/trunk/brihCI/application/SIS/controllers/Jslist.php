@@ -165,6 +165,26 @@ class Jslist extends CI_Controller
 
 	}
 
+	public function getrentpayrange(){
+                $pcom = $this->input->post('pcom');
+
+                if($pcom == '6th'){
+                        $gpr_select_box ='';
+                        $gpr_select_box.='<option value=>-------Select Pay Range--------';
+                        $gpr_select_box.='<option value=6000-10199>6000-10199';
+                        $gpr_select_box.='<option value=10200-18599>10200-18599';
+                        $gpr_select_box.='<option value=18600-inf>18600-inf';
+                }else{
+                        $gpr_select_box ='';
+                        $gpr_select_box.='<option value=>-------Select Pay Range--------';
+                        $gpr_select_box.='<option value=18201-26200>18201-26200';
+                        $gpr_select_box.='<option value=26201-48700>26201-48700';
+                        $gpr_select_box.='<option value=48700-inf>48700-inf';
+                }
+                echo json_encode($gpr_select_box);
+        }
+
+
 	 public function getccapayrange(){
                 $pcom = $this->input->post('pcom');
 

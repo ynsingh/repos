@@ -197,12 +197,11 @@
                         </tr>
                         </tbody>
                         </table>
-                        <!--------------------------------------------------------------------------------------->
                         <table  id="myTable2"  class="TFtable" align="center">
                         <tbody>
                         <tr>
                             
-                            <td><b>Under Graduate (UG)</b>
+                            <td><b>Under Graduate (UG)</b></br>
                             <select name="degree[]" id="degree1" >
                                 <option value="">----- Select ------</option>
                                 <option value="BA">BA</option>
@@ -244,16 +243,15 @@
                         </tr>
                         </tbody>
                                                                 
-                       <!------------------------------------------------------------------------------------------->
-                        <tbody>
                     </table> 
                     <table  id="myTable3"  class="TFtable" align="center">    
+                        <tbody>
                        <tr>
                             
-                            <td><b>Post Graduate (PG)</b>
+                            <td><b>Post Graduate (PG)</b></br>
                             <select name="pgdegree[]" id="pgdegree" >
                                 <option value="">----- Select ------</option>
-                                <option value="NA">NA</option>
+                                <option value="MA">MA</option>
                                 <option value="MSc">MSc</option>
                                 <option value="MCom">Mcom</option>
                                 <option value="MCA">MCA</option>
@@ -291,11 +289,9 @@
                             </td> 
                         </tr>
                         </tbody>
-                        <!--------------------------------------------------------------------------------------->
-                        <tbody>
-                         <!---------------------------------------------------------------------------------------->
                     </table>     
                       <table  id="myTable4"  class="TFtable" align="center"> 
+                        <tbody>
                         <tr>
                             <td>
                                 <input type="text" name="pgdiploma" value="P.G.Diploma" id="pgdip" class="form-control" readonly />
@@ -339,7 +335,6 @@
                             </td>
                             
                         </tr>
-                        <!------------------------------------------------------------------------------------------->
                         <tr>
                             <td>
                                 <input type="text" name="PhD" value="PhD" id="phd" class="form-control" readonly/>

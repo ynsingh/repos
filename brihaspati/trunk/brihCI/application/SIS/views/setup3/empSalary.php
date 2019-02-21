@@ -177,8 +177,9 @@
                                 </td>
                                <td></td>
                                <td><?php echo anchor("setup3/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,"salary slip",array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
-                                <td><?php 
-                                        echo "<b>email Id-: </b>".$record->emp_email."<br/>"."<b>contact no-: </b>".$record->emp_phone."<br/>"."<b> aadhaar no-: </b>".$record->emp_aadhaar_no;
+                                <td><?php
+					$adhaar=$record->emp_aadhaar_no; 
+                                        echo "<b>email Id-: </b>".$record->emp_email."<br/>"."<b>contact no-: </b>".$record->emp_phone."<br/>"."<b> aadhaar no-: </b>".$this->sismodel->mask($adhaar,null,strlen($adhaar)-4);
                                         
                                     ?>
                                     

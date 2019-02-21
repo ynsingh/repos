@@ -169,7 +169,9 @@
                     <td><font color='Blue'>Bank ACC No :</font></td>
                     <td><?php echo $record->emp_bank_accno; ?></td>
                     <td><font color='Blue'>Aadhaar No :</font> </td>
-                    <td><?php echo $record->emp_aadhaar_no; ?></td> 
+                    <td><?php $adhaar=$record->emp_aadhaar_no;
+			echo $this->sismodel->mask($adhaar,null,strlen($adhaar)-4);
+			 ?></td> 
                     <!--<td>IFSC Code :</td>
                     <td> <?php //echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;?></td> 
                     <td>Bank ACC No :</td>

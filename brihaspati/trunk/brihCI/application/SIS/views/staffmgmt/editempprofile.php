@@ -633,6 +633,17 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         }
                   });
 
+/*********************************** ph status ***************************************************/
+		$('#phsty,#phstn').on('change',function(){
+                        var phval= $(this).val();
+                        if(phval == 'no'){
+                                $("#phdetail").hide();
+                        }else{
+                                $("#phdetail").show();
+                        }
+                });
+
+/*********************************** ph status ***************************************************/
 
  
         });
@@ -986,10 +997,10 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>    
                 </td>
                 <td><label for="phstatus" style="font-size:15px;"><font color='Blue'>Whether Physically handicapped</font></label>
-                    <div><input type="radio" name="phstatus" value="yes" <?php echo ($editdata->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="phstatus" value="no" <?php echo ($editdata->emp_phstatus == 'no'?'checked="checked"':''); ?> >No
+                    <div><input type="radio" name="phstatus" id="phsty" value="yes" <?php echo ($editdata->emp_phstatus == 'yes'?'checked="checked"':''); ?> >Yes &nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="phstatus" id="phstn" value="no" <?php echo ($editdata->emp_phstatus == 'no'?'checked="checked"':''); ?> >No
                 </div></td>
-                <td><label for="phdetail" style="font-size:15px;"><font color='Blue'>Details of PH</font></label>
+                <td id="phdetail"><label for="phdetail" style="font-size:15px;"><font color='Blue'>Details of PH</font></label>
                 <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo $editdata->emp_phdetail; ?>" placeholder="Details of PH..." size="33">
                 </div></td>
             </tr>
@@ -1194,6 +1205,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                             <option selected="true" disabled="disabled">--------- Select Phd Status ---------</option>
                         <?php endif?>
+                        <option value="Entry Level Ph.D.">Entry Level Ph.D.</option>
                         <option value="Completed">Completed</option>
                         <option value="Undergoing">Undergoing</option>
                         <option value="Not Registered">Not Registered</option>

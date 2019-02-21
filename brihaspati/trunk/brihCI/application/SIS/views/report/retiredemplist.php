@@ -273,7 +273,7 @@
                                     $phoneno=$this->sismodel->get_listspfic1('employee_master','emp_phone','emp_id',$record->emp_id)->emp_phone; 
                                     $emailid=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_id',$record->emp_id)->emp_secndemail;
                                     $eadhar=$this->sismodel->get_listspfic1('employee_master','emp_aadhaar_no','emp_id',$record->emp_id)->emp_aadhaar_no; 
-                                    echo "<b>Contact no:</b>".$phoneno ."<br/>"."<b>EmailId:</b>".$emailid."<br/>"."<b>e-Aadhar no:</b>".$eadhar;
+                                    echo "<b>Contact no:</b>".$phoneno ."<br/>"."<b>EmailId:</b>".$emailid."<br/>"."<b>e-Aadhar no:</b>".$this->sismodel->mask($eadhar,null,strlen($eadhar)-4);
                                     ?>
                                 </td>
                             </tr>

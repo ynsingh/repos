@@ -521,7 +521,9 @@
 				?></td>
                             <td><?php echo $record->emp_email; ?></td>
                             <td><?php echo $record->emp_phone; ?></td>
-                            <td><?php echo $record->emp_aadhaar_no; ?></td>
+                            <td><?php $adhaar= $record->emp_aadhaar_no;
+				echo $this->sismodel->mask($adhaar,null,strlen($adhaar)-4);
+				 ?></td>
                         </tr>
                     <?php }; ?>
                 <?php else : ?>

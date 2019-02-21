@@ -527,6 +527,7 @@
 	                	<option selected="selected" disabled selected>Select Value</option>
                        <?php }?>
 
+                        <option value="None">None</option>
                         <option value="Head">Head</option>
                         <option value="UO">UO</option>
                         </select>
@@ -535,8 +536,9 @@
                 <tr>
                     <td>Date From<font color='Red'>*</font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo $servicedata->empsd_dojoin; ?>"  size="40" required="required">
-			<select name="fsession" style="width:110px;" id="fsession" >
-                <option selected="selected" disabled selected>Select Session</option>
+			<select name="fsession" style="width:140px;" id="fsession" >
+			<option value="<?php echo $servicedata->empsd_fsession; ?>"><?php echo $servicedata->empsd_fsession; ?></option>
+                	<option  disabled >Select Session</option>
                         <option value="Forenoon">Forenoon</option>
                         <option value="Afternoon">Afternon</option>
                         </select>
@@ -545,8 +547,9 @@
                 <tr>
                     <td>Date To<font color='Red'></font></td>
                         <td><input type="text" name="Dateto" id="Dateto" value="<?php echo $servicedata->empsd_dorelev; ?>"  size="40" >
-			<select name="tsession" style="width:110px;" id="tsession" >
-                <option selected="selected" disabled selected>Select Session</option>
+			<select name="tsession" style="width:140px;" id="tsession" >
+			<option value="<?php echo $servicedata->empsd_tsession; ?>"><?php echo $servicedata->empsd_tsession; ?></option>
+               		<option  disabled >Select Session</option>
                         <option value="Forenoon">Forenoon</option>
                         <option value="Afternoon">Afternon</option>
                         </select>

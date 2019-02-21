@@ -87,7 +87,7 @@
                     <?php }; ?>
                     
                 <?php else : ?>
-                    <td colspan= "13" align="center"> No Records found...!</td>
+                    <td colspan= "6" align="center"> No Records found...!</td>
                 <?php endif;?>
                
 		</tbody>

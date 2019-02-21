@@ -23,8 +23,8 @@
                     var cols = "";
           
                     cols += '<td><select name="shorthand[]" id="shand"><option value="">----- Select  ------</option>';
-                    cols += '<option value="English Higher-shorthand">English Higher</option><option value="English Lower-shorthand">English Lower</option>';
-                    cols += '<option value="Tamil Higher-shorthand">Tamil Higher</option><option value="Tamil Lower-shorthand">Tamil Lower</option></select> </td>';
+                    cols += '<option value="English Higher-shorthand">English Higher</option><option value="English Inter-shorthand">English Inter</option><option value="English Lower-shorthand">English Lower</option>';
+                    cols += '<option value="Tamil Higher-shorthand">Tamil Higher</option><option value="Tamil Inter-shorthand">Tamil Inter</option><option value="Tamil Lower-shorthand">Tamil Lower</option></select> </td>';
                     cols += '<td><input type="text" name="board3[]" id="buniv3" placeholder="Board/university.." size="30"></td>';
                     cols += '<td><select name="result3[]" id="result3"><option value="">----- Select result ------</option>';
                     cols += '<option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
@@ -206,8 +206,10 @@
                                 <select name="shorthand[]" id="shand">
                                 <option value="">----- Select  ------</option>
                                 <option value="English Higher-shorthand">English Higher</option>
+                                <option value="English Inter-shorthand">English Inter</option>
                                 <option value="English Lower-shorthand">English Lower</option>
                                 <option value="Tamil Higher-shorthand">Tamil Higher</option>
+                                <option value="Tamil Inter-shorthand">Tamil Inter</option>
                                 <option value="Tamil Lower-shorthand">Tamil Lower</option>
                              
                             </select>

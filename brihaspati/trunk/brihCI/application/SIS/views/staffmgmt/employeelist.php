@@ -333,7 +333,7 @@ $(document).ready(function(){
                             <td>
                                 <?php $phone=$record->emp_phone;
                                       $adhaar=$record->emp_aadhaar_no;
-                                      echo $phone."<br/>".$adhaar;
+                                      echo $phone."<br/>".$this->sismodel->mask($adhaar,null,strlen($adhaar)-4); 
                                 ?>  
                             </td>
                             <td> <?php 
@@ -452,7 +452,7 @@ $(document).ready(function(){
                                 <?php $phone=$record->emp_phone;
                                       $adhaar=$record->emp_aadhaar_no;
                                       //echo "<b> Contact no-:</b>".$phone."<br/>"."<b> Aadhaar No-: </b>".$adhaar;
-                                      echo $phone."<br/>".$adhaar;
+                                      echo $phone."<br/>".$this->sismodel->mask($adhaar,null,strlen($adhaar)-4);
                                 ?>  
                             </td>
                             <td> <?php

@@ -16,7 +16,7 @@
         
         <form action="<?php echo site_url('report/retiredemplist');?>" id="myForm" method="POST" class="form-inline">
              <table width="100%"><tr >   
-                <td align="center"><b>HRA Place(Grade)</b> </td>  
+                <td align="center"><b>CCA Place(Grade)</b> </td>  
                 </tr></table>
                 <div class="scroller_sub_page">
                     <table class="TFtable" >
@@ -31,18 +31,18 @@
                         </tr></thead>
                         <tbody>
                             <?php $serial_no = 1;?>
-                            <?php if( count($hrarecord) ):  ?>
-                                <?php foreach($hrarecord as $record){ ?>
+                            <?php if( count($ccarecord) ):  ?>
+                                <?php foreach($ccarecord as $record){ ?>
                                 <tr>
                                     <td><?php echo $serial_no++; ?></td>
-                                    <td><?php echo $record->hgc_gradename; ?></td>
-                                    <td><?php $str= $record->hgc_place; 
-                                            echo wordwrap($str,80,"<br>\n");
+                                    <td><?php echo $record->cgc_gradename; ?></td>
+                                    <td><?php $str= $record->cgc_place; 
+                                            echo wordwrap($str,50,"<br>\n");
                                         ?>
                                     </td>
-                                    <td><?php echo $record->hgc_distancecover; ?></td>
-                                    <td><?php $str1=$record->hgc_description;
-                                            echo wordwrap($str1,60,"<br>\n");
+                                    <td><?php echo $record->cgc_distance; ?></td>
+                                    <td><?php $str1=$record->cgc_desc;
+                                            echo wordwrap($str1,80,"<br>\n");
                                         ?>
                                     </td>
                                     

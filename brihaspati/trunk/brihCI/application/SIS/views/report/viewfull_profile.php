@@ -325,7 +325,8 @@
                         </tr>
 <tr>
                                 <td colspan=4>
-<?php   echo    "<b>Aadhaar No</b> <br>".$data->emp_aadhaar_no;?>
+<?php   $adhaar=$data->emp_aadhaar_no;
+	echo "<b>Aadhaar No</b> <br>".$this->sismodel->mask($adhaar,null,strlen($adhaar)-4);?>
                                 </td>
 </tr>
                               

@@ -246,7 +246,18 @@ class SIS_model extends CI_Model
             }
         return $this->db2->get()->result();
     }
-	
+	// echo mask($string,null,strlen($string)-4); // *************5678
+	function mask ( $str, $start = 0, $length = null ) {
+	    	$mask = preg_replace ( "/\S/", "*", $str );
+    		if( is_null ( $length )) {
+        		$mask = substr ( $mask, $start );
+		        $str = substr_replace ( $str, $mask, $start );
+    		}else{
+        		$mask = substr ( $mask, $start, $length );
+        		$str = substr_replace ( $str, $mask, $start, $length );
+    		}
+    		return $str;
+	}	
 
     /** this function for get hod user list according to study center************************/
     //get the complete record from specific table

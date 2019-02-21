@@ -15,6 +15,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             $(document).ready(function(){
 		 $("#dojvc").hide();
 		$( "#netqno" ).hide();
+		$("#phdetail").hide();
             var today = new Date();
             
             $('#StartDate,#StartDatevc,#Dateofhgp1,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
@@ -608,6 +609,14 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }); 
             
            /****************NET closer*************************************************************************/
+		$('#phsty,#phstn').on('change',function(){
+			var phval= $(this).val();
+			if(phval == 'no'){
+				$("#phdetail").hide();
+			}else{
+				$("#phdetail").show();
+			}
+		});
            
             /****************************************Additional Assignments************************************************************ */
             
@@ -911,10 +920,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </div></td>
                 
                 <td><label for="phstatus" style="font-size:15px;"><font color='blue'>Whether Physically Handicapped</font><font color='Red'>*</font>  </label>
-                <div><input type="radio" name="phstatus" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                <input type="radio" name="phstatus" value="no">No
+                <div><input type="radio" name="phstatus" id="phsty" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="phstatus" id="phstn" value="no">No
                 </div></td>
-                <td><label for="phdetail" style="font-size:15px;"><font color='blue'>Details Of PH</font></label>
+                <td id="phdetail"><label for="phdetail" style="font-size:15px;"><font color='blue'>Details Of PH</font></label>
                 <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo isset($_POST["phdetail"]) ? $_POST["phdetail"] : ''; ?>" placeholder="Details of PH..." size="33">
                 </div></td>
             </tr>
@@ -1069,6 +1078,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="phdstatus" style="font-size:15px;"><font color='blue'>Ph.D. Status</font></label>
                     <div><select name="phdstatus" style="width:300px;"> 
                         <option value="">-------------- Phd Status -------------</option>
+                        <option value="Entry_Level_Ph.D.">Entry_Level_Ph.D.</option>
                         <option value="Completed">Completed</option>
 			<option value="Undergoing">Undergoing</option>
                         <option value="Not Registered">Not Registered</option>
@@ -1287,12 +1297,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
            <!-- </tr>
             <tr> -->
                 <td><label for="remarks" style="font-size:15px;"><font color='blue'>Remarks</font></label>
-                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="2" cols="40"  placeholder="Remarks......"></textarea>
+                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="5" cols="40"  placeholder="Remarks......"></textarea>
                 </div></td>
                 <td><label for="Address" style="font-size:15px;"><font color='blue'>Residential Address</font></label>
-                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="4" cols="40"  placeholder="Address..."></textarea>
+                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="40"  placeholder="Address..."></textarea>
                 </div></td>
-                <td colspan=2><label for="userfile" style="font-size:15px;"><font color='blue'>Upload Photo</font></label>
+                <td colspan=2><label for="userfile" style="font-size:15px;"><font color='blue'>Upload Photo(Max Size 100KB and Type gif,jpg,png,jpeg)</font></label>
                    <div>
                         <input type="file" name='userfile' accept="image/*" onchange="preview_image(event)">
                         <!--<input type='file' name='userfile' size='20' class='upload-image' />-->
