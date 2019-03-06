@@ -88,10 +88,11 @@ $(document).ready(function(){
                     else{
                         $('#post').prop('disabled',false);
                         $.ajax({
-                           // url: "<?php echo base_url();?>sisindex.php/staffmgmt/getcombdesiglist",
                             url: "<?php echo base_url();?>sisindex.php/report/getuodeptpostlist_sp",
+                          //  url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist",
                             type: "POST",
                             data: {"wtuodept" : wtuodept},
+                          //  data: {"wtype" : wtcode},
                             dataType:"html",
                             success:function(data){
                             //alert("data==1="+data);
@@ -118,26 +119,23 @@ $(document).ready(function(){
                    //alert("post====="+workt);
                     if(dept == ''){
                         $('#desig').prop('disabled',true);
-
                     }
                     else{
                         $('#desig').prop('disabled',false);
                         $.ajax({
-                            //url: "<?php echo base_url();?>sisindex.php/report/getdesiglist",
-                            url: "<?php echo base_url();?>sisindex.php/report/getuodeptpostlist_sp",
+                           // url: "<?php echo base_url();?>sisindex.php/report/getuodeptpostlist_sp",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist",
                             type: "POST",
-                            //data: {"worktype" : workt},
-			    data: {"wtuodept" : wtuodept},
+			  //  data: {"wtuodept" : wtuodept},
+                            data: {"wtype" : wtcode},
                             dataType:"html",
                             success:function(data){
                             //alert("data==1="+data);
-                                $('#desig').html(data.replace(/^"|"$/g, ''));
-
+                                $('#desig').html(data.replace(/^"|"$/g, ' '));
                             },
                             error:function(data){
                                 //alert("data in error==="+data);
                                 alert("error occur..!!");
-
                             }
                         });
                     }
@@ -232,9 +230,9 @@ $(document).ready(function(){
                 <td>  Select Shown Against Post<br>
                     <select name="post" id="post" style="width:200px;">
 			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
-                        <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
+                        <option value="<?php echo $this->desigm ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>-- Select Post --</option>
+                      <option value="" >-- Select Post --</option>
 			 <?php  } ?>
                      <!-- <option value="All" >All</option> -->
                     </select>

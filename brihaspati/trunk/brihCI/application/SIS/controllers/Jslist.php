@@ -39,7 +39,7 @@ class Jslist extends CI_Controller
         	$grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
                 //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
                 $desig_select_box ='';
-                $desig_select_box.='<option value="">--Select Designation--';
+                $desig_select_box.='<option value=null>--Select Designation--';
 		$desig_select_box.='<option value='.All.'>'.All. ' ';
 	        if(count($grp_data)>0){
 	                foreach($grp_data as $grprecord){

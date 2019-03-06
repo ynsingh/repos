@@ -227,6 +227,8 @@
 				    <?php echo "<b>From-: </b>".$dojoin ." ".$record->empsd_fsession."<br>"."<b>To-: </b>".$dorelve ." " .$record->empsd_tsession;
 					echo "<br>";
                                     echo "<b>Order NO.-: </b>".$record->empsd_orderno;
+					echo "<br>";
+                                    echo "<b>Grade-: </b>".$record->empsd_grade;
 
 					?>
                                 </td>
@@ -245,8 +247,10 @@
 			//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 
+						//								<img src=" '.base_url().'source/image.jpg' '" />
+			//			echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","<img src="'.base_url.'assets/sis/images/edit.png' '"/>",array('title' => ' Edit Service Data' , 'class' => 'red-link'));
 						echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Service Data' , 'class' => 'red-link'));
-						echo "  | ";
+						echo "  <br><br> ";
 						echo anchor("empmgmt/delete_serviceprofile/{$record->empsd_id}","Delete",array('title' => ' Delete Service Data' , 'class' => 'red-link'));
 					}
 				?>

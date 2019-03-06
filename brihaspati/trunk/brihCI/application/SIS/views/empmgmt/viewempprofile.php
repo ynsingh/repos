@@ -297,6 +297,11 @@
                         if(!empty($record->emp_specialisationid)){
                             echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name;
                         }    
+			if(!empty($data->emp_splsuboth)){
+                        echo "<br>";
+                        echo $data->emp_splsuboth;
+                }
+
                         ?>
                     </td> 
                     <td><font color='Blue'>Pay Band :</font></td>

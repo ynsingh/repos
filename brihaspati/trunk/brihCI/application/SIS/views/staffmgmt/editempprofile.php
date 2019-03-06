@@ -17,6 +17,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             $(document).ready(function(){
 		 $("#dojvc").hide();
                 $( "#netqno" ).hide();
+		$("#splsubo").hide();
             var today = new Date(); 
                   
             $('#StartDate,#StartDatevc,#Dateofhgp,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
@@ -297,7 +298,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             /************************closer for shown against the post*****************************************/
 
 	 /************************Plan NO PLan GOI ICAR******************************************************************/
-            
+           /* 
             $('#emppostid').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
@@ -325,6 +326,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     });
                 }
             }); 
+*/
             /************************ close Plan NON PLAN ICAR GOI******************************************************************/
 /************************Old payband start******************************************************************/
             
@@ -643,6 +645,16 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         }
                 });
 
+		$('#splsub').on('change',function(){
+                        var splsubid= $('#splsub').val();
+                        if(splsubid == "64"){
+                                $("#splsubo").show();
+                        }
+                        else{
+                                $("#splsubo").hide();
+                        }
+                  });
+
 /*********************************** ph status ***************************************************/
 
  
@@ -718,7 +730,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         <div>
 		<?php $current="basic"; 
 			$emp_id=$id;
-		  include 'eprofiletab.php';
+		  	include 'eprofiletab.php';
 		 ?>
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
         <!--<table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">-->
@@ -730,11 +742,14 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
            <!--form method="post" action="<?php //echo base_url('staffmgmt/update_profile/',$editdata->emp_id);?>" -->           
             <tr>
                 <td><label for="campus" style="font-size:15px;"><font color='Blue'>Campus Name</font> <font color='Red'>*</font></label>
-                    <div><select id="camp" name="campus" style="width:300px;" > 
+                    <div><select id="camp" name="campus" style="width:300px;"  > 
                         <option value="<?php echo $editdata->emp_scid;?>"><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$editdata->emp_scid)->sc_name;?></option>
-                        <?php foreach($this->campus as $camdata): ?>	
+			<?php if($this->roleid != 5){ 
+                         foreach($this->campus as $camdata): ?>	
    				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
- 			<?php endforeach; ?>
+ 			<?php endforeach;
+				}
+			 ?>
                       
                     </select></div>
                 </td>
@@ -787,8 +802,10 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                         <option value="">-----------Select Working Type--------</option>
                         <?php endif;?>
+			 <?php if($this->roleid != 5){  ?>
                         <option value="Teaching">Teaching</option>
                         <option value="Non Teaching">Non Teaching</option>
+			<?php } ?>
                         </select></div>
                 </td>
                 <td><label for="group" style="font-size:15px;"><font color='Blue'>Group</font><font color='Red'>*</font></label>
@@ -798,10 +815,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                         <option selected="selected" disabled selected>------------ Select Group ---------</option>
                         <?php endif;?>
+			 <?php if($this->roleid != 5){  ?>
                         <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
                         <option value="D">D</option>
+			<?php } ?>
                     </select></div>
                 </td>
                 <td><label for="designation" style="font-size:15px;"><font color='Blue'>Designation</font><font color='Red'>*</font></label>
@@ -828,19 +847,21 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                          <?php endif;?>
 			 </select></div>
                 </td>
+<!--
                 <td><label for="pnp" style="font-size:15px;"><font color='Blue'>Plan / Non Plan</font></label>
                     <div><select name="pnp" id="pnptypeid" style="width:300px;">
-                         <?php if(!empty($editdata->emp_pnp)):;?>   
-                        <option value="<?php echo $editdata->emp_pnp;?>"><?php echo $editdata->emp_pnp;?></option>
-                         <?php else:?>
+                         <?php //if(!empty($editdata->emp_pnp)):;?>   
+                        <option value="<?php //echo $editdata->emp_pnp;?>"><?php //echo $editdata->emp_pnp;?></option>
+                         <?php //else:?>
                         <option value="">------ Select Plan / Non-Plan -----------</option>
-                        <?php endif?>
+                        <?php //endif?>
                         <option value="Plan">Plan</option>
                         <option value="Non-Plan">Non-Plan</option>
                         <option value="GOI">GOI</option>
                         <option value="ICAR">ICAR</option> 
                     </select></div>
                 </td>
+-->
                 <td><label for="emptype" style="font-size:15px;"><font color='Blue'>Post Type</font></label>
                     <div><select name="emptype" id="emptypeid" style="width:300px;" readonly>
                         <?php if(!empty($editdata->emp_type_code)):;?>
@@ -873,14 +894,14 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div class="tooltip"><input type="text" name="spousename" class="keyup-characters" value="<?php echo $editdata->emp_spousename; ?>" placeholder="Teetha S. P. R" size="33" >
 			 <span class="tooltiptext">Teetha S. P. R</span>
                 </div></td>
-                <td><label for="orderno" style="font-size:15px;"><font color='Blue'> Appointment Order No</font></label>
+                <td><label for="orderno" style="font-size:15px;"><font color='Blue'>First Appointment Order No</font></label>
                     <div><input type="text" name="orderno"  value="<?php echo $editdata->emp_apporderno ?>" placeholder="order No..." size="33">
                 </div></td>
             </tr>
                     
             <tr>
                 <td><label for="specialisation" style="font-size:15px;"><font color='Blue'>Specialisation(Major Subject)</font></label>
-                    <div><select name="specialisation" style="width:300px;"> 
+                    <div><select name="specialisation" id="splsub" style="width:300px;"> 
                         <?php if(!empty($editdata->emp_specialisationid)):?>
                         <option  value="<?php echo $editdata->emp_specialisationid;?>"><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$editdata->emp_specialisationid)->sub_name;?></option>
                         <?php else:?>
@@ -891,6 +912,10 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
  			<?php endforeach; ?>
                        
                     </select></div>
+			 <div id="splsubo" >
+		                <input type="text" name="splsubo"   value="<?php if(!empty($editdata->emp_splsuboth)) {echo $editdata->emp_splsuboth;} ?>" placeholder="Other subject" size="33" >
+                        </div>
+
                 </td>
                 
                 <td><label for="gender" style="font-size:15px;"><font color='Blue'>Gender</font></label>
@@ -953,10 +978,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             ;?>
                             <?php echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;?></option>
 			<?php } ?>
+			 <?php if($this->roleid != 5){ ?>
                             <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
                             </option> 
- 			<?php endforeach; ?>
+ 			<?php endforeach; }?>
                        
                     </select></div>
                 </td>
@@ -974,22 +1000,32 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                             <?php echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;?></option>
 		<?php } ?>
                    <!--     <option selected="selected" disabled selected> Select New Pay Band </option>-->
+			 <?php if($this->roleid != 5){ ?>
                         <?php foreach($this->salgrdn as $salgrddatan): ?>
                             <option value="<?php echo $salgrddatan->sgm_id; ?>"><?php echo $salgrddatan->sgm_name."(". $salgrddatan->sgm_min."-".$salgrddatan->sgm_max.")".$salgrddatan->sgm_level; ?>
                             </option>
-                        <?php endforeach; ?>
+                        <?php endforeach;} ?>
 
                     </select></div>
                 </td>
 
                 <td><label for="basicpay" style="font-size:15px;"><font color='Blue'>Basic Pay</font></label>
-                    <div><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo $editdata->emp_basic; ?>" placeholder="Basic pay..." size="33" >
+                    <div><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo $editdata->emp_basic; ?>" placeholder="Basic pay..." size="33" 
+			<?php if($this->roleid == 5){ ?>
+				readonly
+			<?php } ?>
+			>
                     </div>    
                 </td> 
             </tr>
             <tr>
                 <td><label for="emolution" style="font-size:15px;"><font color='Blue'>Emolution</font></label>
-                    <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo $editdata->emp_emolution; ?>" placeholder="Emolution..." size="33" >
+                    <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo $editdata->emp_emolution; ?>" placeholder="Emolution..." size="33" 
+			<?php if($this->roleid == 5){ ?>
+                                readonly
+                        <?php } ?>
+
+			>
                     </div>    
                 </td> 
                 <td><label for="empnhisidno" style="font-size:15px;"><font color='Blue'>NHIS ID No</font></label>
@@ -1027,7 +1063,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="dateofjoining" style="font-size:15px;"><font color='Blue'>Date of Appointment</font><font color='Red'>*</font></label>
                     <div><input type="text" name="dateofjoining" value="<?php echo $editdata->emp_doj; ?>" id="StartDate"  size="15" required="required">
 			<select name="jsession" style="width:140px;" id="jsession" required>
-                                <option selected="selected" disabled selected>Select Session</option>
+                                <option value="<?php echo $editdata->emp_jsession; ?>"><?php echo $editdata->emp_jsession; ?></option>
+                                <option >Select Session</option>
                                 <option value="Forenoon">Forenoon</option>
                                 <option value="Afternoon">Afternon</option>
                         </select>
@@ -1117,17 +1154,32 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     
                 ;?>
                 <td><label for="bankname" style="font-size:15px;"><font color='Blue'>Bank Name</font></label>
-                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo $editdata->emp_bankname ?>" placeholder="Bank Name..." size="33" >
+                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo $editdata->emp_bankname ?>" placeholder="Bank Name..." size="33" 
+				<?php if($this->roleid == 5){ ?>
+                                readonly
+                        <?php } ?>
+
+				>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td><label for="ifsccode" style="font-size:15px;"><font color='Blue'>IFSC Code</font></label>
-                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo $editdata->emp_bank_ifsc_code; ?>" placeholder="IFSC CODE..." size="33" >
+                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo $editdata->emp_bank_ifsc_code; ?>" placeholder="IFSC CODE..." size="33" 
+			<?php if($this->roleid == 5){ ?>
+                                readonly
+                        <?php } ?>
+
+			>
                     </div>
                 </td>
                 <td><label for="bankacno" style="font-size:15px;"><font color='Blue'>Bank ACC No</font><font color='Red'></font></label>
-                    <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo $editdata->emp_bank_accno; ?>" placeholder="Bank Acc No..." size="33" required="required">
+                    <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo $editdata->emp_bank_accno; ?>" placeholder="Bank Acc No..." size="33" required="required"
+			<?php if($this->roleid == 5){ ?>
+                                readonly
+                        <?php } ?>
+
+			>
                     </div>
                 </td>
                 <td><label for="Aadharrno" style="font-size:15px;"><font color='Blue'>Aadhaar No</font><font color='Red'></font></label>
@@ -1535,7 +1587,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>    
                     <!--    <input type="text" name="Address" class="keyup-characters" value="<//?php echo $editdata->emp_address; ?>" placeholder="Address..." size="25" ></td>-->
                 
-                <td colspan=2><label for="userfile" style="font-size:15px;"><font color='Blue'>Upload Photo</font></label>
+                <td colspan=2><label for="userfile" style="font-size:15px;"><font color='Blue'>Upload Photo<br>(Max Size 100KB and Type gif,jpg,png,jpeg)</font></label>
                     <div><input type='file' name='userfile'  accept="image/*" onchange="preview_image(event)" size='20' />
                     
                   <!--  </div>

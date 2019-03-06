@@ -170,7 +170,7 @@ public function promotional_profile() {
         $whorder = 'spd_id desc';
         $emp_data['promotionaldata'] = $this->sismodel->get_orderlistspficemore('staff_promotionals_details',$selectfield,$whdata,$whorder);
 
-        $this->load->view('report/promotional_profile',$emp_data);
+        $this->load->view('empmgmt/promotional_profile',$emp_data);
   }
 
 
@@ -711,6 +711,7 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
 	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
 	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+	    $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
 	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
 	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|xss_clean');
@@ -761,6 +762,7 @@ public function disciplin_profile() {
                     'empsd_schemeid'        =>$_POST['schemecode'],
                     'empsd_ddoid'           =>$_POST['ddo'],
 		    'empsd_worktype'        =>$_POST['workingtype'],
+                    'empsd_grade'           =>$_POST['empgrade'],
                     'empsd_group'           =>$_POST['group'],
                     'empsd_desigcode'       =>$desigcode,
 		    'empsd_shagpstid'       =>$_POST['emppost'],
@@ -848,6 +850,7 @@ public function disciplin_profile() {
         if(isset($_POST['addpromotdata'])) {	
             //form validation
 	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
+	    $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
 	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
             $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
@@ -916,6 +919,7 @@ public function disciplin_profile() {
 		    'spd_level'           	=>$level,
 		    'spd_leveldate'           	=>$ldate,
                     'spd_group'           	=>$_POST['group'],
+                    'spd_grade'           	=>$_POST['empgrade'],
                     'spd_designation'       	=>$_POST['designation'],
                     'spd_dojinpost'        	=>$dojp,
                     'spd_selgradedate'          =>$datesg,
@@ -1043,6 +1047,7 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
 	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean');
 	    $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
+	    $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
 	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
 	    $this->form_validation->set_rules('emppost','Shown Against The Post','trim|xss_clean');
@@ -1067,6 +1072,7 @@ public function disciplin_profile() {
 		$schemecode = $this->input->post('schemecode', TRUE);
                 $ddo=$this->input->post('ddo', TRUE);
 		$worktype=$this->input->post('workingtype', TRUE);
+                $empgrade=$this->input->post('empgrade', TRUE);
                 $group=$this->input->post('group', TRUE);
                 $desigc = $this->input->post('designation', TRUE);
 		$desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$desigc)->desig_code;
@@ -1093,6 +1099,8 @@ public function disciplin_profile() {
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_ddoid. " changed by " .$ddo;
 		if($eds_data['servicedata']->empsd_worktype != $worktype)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_worktype. " changed by " .$worktype;
+		if($eds_data['servicedata']->empsd_grade != $empgrade)
+                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_grade. " changed by " .$empgrade;
 		if($eds_data['servicedata']->empsd_group != $group)
                     $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_group. " changed by " .$group;
                 if($eds_data['servicedata']->empsd_desigcode != $desigcode)
@@ -1131,6 +1139,7 @@ public function disciplin_profile() {
 		    'empsd_schemeid'        =>$schemecode,
 		    'empsd_ddoid'           =>$ddo,
 		    'empsd_worktype'        =>$worktype,
+		    'empsd_grade'           =>$empgrade,
 		    'empsd_group'           =>$group,
                     'empsd_desigcode'       =>$desigcode,
 		    'empsd_shagpstid'       =>$emppost,
@@ -1191,7 +1200,8 @@ public function disciplin_profile() {
                 else{
                     $this->roleid=$this->session->userdata('id_role');
                     $this->currentlog=$this->session->userdata('username');
-                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_email',$this->currentlog)->emp_code;
+			$empsdempid=$this->sismodel->get_listspfic1('employee_servicedetail','empsd_empid','empsd_id', $id)->empsd_empid;
+                    $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empsdempid)->emp_code;
                     $this->logger->write_logmessage("update","Edit Staff Service Data", "Staff Service Data updated successfully. $logmessage ." );
                     $this->logger->write_dblogmessage("update","Edit Staff service Data", "Staff Service Data updated successfully. $logmessage ." );
                     $this->session->set_flashdata('success','Service record updated successfully. '."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$this->currentlog." "."]");
@@ -1211,8 +1221,64 @@ public function disciplin_profile() {
         }   
     }
     /****************************  Closer UPDATE DATA *************************/
+/*edit employee dept exam detail*/
 
+    public function edit_deptexamdata($id) {
+        $this->roleid=$this->session->userdata('id_role');
+        $data['id'] = $id;
+        $data['deptexamdata'] = $this->sismodel->get_listrow('staff_department_exam_perticulars','sdep_id',$id)->row();
+        $this->load->view('empmgmt/edit_deptexamdata',$data);
 
+    }
+ public function update_deptexamdata($id){
+        $this->roleid=$this->session->userdata('id_role');
+        $sperf_dataquery=$this->sismodel->get_listrow('staff_department_exam_perticulars','sdep_id', $id);
+        $eds_data['deptexamdata'] = $sperf_dataquery->row();
+        $empcode = $sperf_dataquery->row()->sdep_empcode;
+        $data['id'] = $id;
+        if(isset($_POST['editdeptexamdata'])) {
+		 //form validation
+            	$this->form_validation->set_rules('deptexam','Departmental Exam','trim|required|xss_clean');
+		$this->form_validation->set_rules('specify','Specify','trim|xss_clean');
+            	$this->form_validation->set_rules('Datefrom','Date Of Passing','trim|xss_clean|required');
+            	if($this->form_validation->run() == FALSE){
+                	redirect('empmgmt/edit_deptexamdata/'.$id);
+            	}//formvalidation
+            	else{
+                	$udata = array(
+                    	'sdep_examname'             =>$_POST['deptexam'],
+                    	'sdep_specification'        =>$_POST['specify'],
+                    	'sdep_passdate'             =>$_POST['Datefrom'],
+                   	'sdep_modifierid'           =>$this->session->userdata('username'),
+                    	'sdep_modifydate`'          =>date('Y-m-d'),
+                	);
+			$servdataflag=$this->sismodel->updaterec('staff_department_exam_perticulars', $udata,'sdep_id', $id) ;
+
+                	if(!$servdataflag)
+                	{
+                    		$this->logger->write_logmessage("error","Error in update staff department_exam record", "Error in update staff department_exam record." );
+                    		$this->logger->write_dblogmessage("error","Error in update staff department_exam  record ", "Error in update staff department_exam record" );
+                    		$this->session->set_flashdata('err_message','Error in update staff department_exam record ');
+                    		redirect('empmgmt/edit_deptexamdata/'.$id);
+                    		return;
+                	}
+                	else{
+                    		$this->roleid=$this->session->userdata('id_role');
+                    		$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$empcode)->emp_id;
+                    		$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    		$this->logger->write_logmessage("update","Update Staff department_exam Data", "Staff department_exam record update successfully." );
+                    		$this->logger->write_dblogmessage("update","Update Staff department_exam  Data", "Staff department_exam record update successfully ." );
+                    		$this->session->set_flashdata('success','department_exam Data record updated successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    		if($this->roleid == 4){
+                        		redirect('empmgmt/viewempprofile');
+                    		}
+                    		else{
+                        		redirect('report/deptexam_profile/'.$empid);
+                    		}
+                	}
+		}
+	}
+}
     /*edit employee promotional detail*/
     
     public function edit_promotdata($id) {
@@ -1238,6 +1304,7 @@ public function disciplin_profile() {
             //form validation
 	    $this->form_validation->set_rules('workingtype','Workingtype','trim|required|xss_clean');
 	    $this->form_validation->set_rules('group','Group','trim|xss_clean');
+	    $this->form_validation->set_rules('empgrade','Grade','trim|xss_clean');
             $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
             $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
 	    $this->form_validation->set_rules('tlevel','Academic Level','trim|xss_clean');
@@ -1305,6 +1372,7 @@ public function disciplin_profile() {
                     'spd_agpdate'          	=>$agpdate,
 		    'spd_level'           	=>$level,
 		    'spd_leveldate'           	=>$ldate,
+                    'spd_grade'           	=>$_POST['empgrade'],
                     'spd_group'           	=>$_POST['group'],
                     'spd_designation'       	=>$_POST['designation'],
                     'spd_dojinpost'        	=>$dojp,
@@ -2251,32 +2319,65 @@ public function disciplin_profile() {
             }// if form 
             else{
                 $techflag=false;
+
+       		$diploma = $this->input->post('diploma', TRUE);
+                $buni = $this->input->post('board', TRUE);
+                $result = $this->input->post('result', TRUE);
+                $ypass = $this->input->post('yopass', TRUE);
+                $dpln = $this->input->post('discipline', TRUE);
+                foreach($diploma as $a => $b){         
+                	$data = array(
+	                    'stq_empid'         =>$this->emp_id,
+        	            'stq_dgree'         =>$diploma[$a],
+                	    'stq_board_univ'    =>$buni[$a],
+	                    'stq_result'        =>$result[$a],
+        	            'stq_dopass'        =>$ypass[$a],
+                	    'stq_discipline'    =>$dlpn[$a],
+	                    'stq_creatorid'     =>$this->session->userdata('username'),
+        	            'stq_creatordate'   =>date('Y-m-d'),
+                	    'stq_modifierid'    =>$this->session->userdata('username'),
+	                    'stq_modifydate'    =>date('Y-m-d'),
+        	        );
+                	if(!empty($diploma[$a])){
+	                    $dupcheck = array(
+        	                'stq_empid'  =>$this->emp_id,
+                	       // 'stq_dgree'  =>$_POST['diploma'],
+				'stq_discipline'    =>$dlpn[$a],
                 
-                $data = array(
-                    'stq_empid'         =>$this->emp_id,
-                    'stq_dgree'         =>$_POST['diploma'],
-                    'stq_board_univ'    =>$_POST['board'],
-                    'stq_result'        =>$_POST['result'],
-                    'stq_dopass'        =>$_POST['yopass'],
-                    'stq_discipline'    =>$_POST['discipline'],
-                    'stq_creatorid'     =>$this->session->userdata('username'),
-                    'stq_creatordate'   =>date('Y-m-d'),
-                    'stq_modifierid'    =>$this->session->userdata('username'),
-                    'stq_modifydate'    =>date('Y-m-d'),
-                );
-                if(!empty($_POST['board'])){
-                    $dupcheck = array(
-                        'stq_empid'  =>$this->emp_id,
-                        'stq_dgree'  =>$_POST['diploma'],
-                
-                    ); 
-                    $dipdup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
-                    if(!$dipdup){
-                        $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data);
-                    }    
-                }
+	                    ); 
+        	            $dipdup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                	    if(!$dipdup){
+                        	$techflag=$this->sismodel->insertrec('staff_technical_qualification', $data);
+	                    }    
+        	        }
+		}
                 /*******************************************************************************/
-                 
+                $iti = $this->input->post('iti', TRUE);
+                $buni1 = $this->input->post('board1', TRUE);
+                $result1 = $this->input->post('result1', TRUE);
+                $ypass1 = $this->input->post('yopass1', TRUE);
+                $dpln1 = $this->input->post('discipline1', TRUE);
+                foreach($iti as $a1 => $b1){
+                        $data2 = array(
+                            'stq_empid'         =>$this->emp_id,
+                            'stq_dgree'         =>$iti[$a1],
+                            'stq_board_univ'    =>$buni1[$a1],
+                            'stq_result'        =>$result1[$a1],
+                            'stq_dopass'        =>$ypass1[$a1],
+                            'stq_discipline'    =>$dlpn1[$a1],
+                            'stq_creatorid'     =>$this->session->userdata('username'),
+                            'stq_creatordate'   =>date('Y-m-d'),
+                            'stq_modifierid'    =>$this->session->userdata('username'),
+                            'stq_modifydate'    =>date('Y-m-d'),
+                        );
+                        if(!empty($iti[$a1])){
+                            $dupcheck = array(
+                                'stq_empid'  =>$this->emp_id,
+                               // 'stq_dgree'  =>$_POST['diploma'],
+                                'stq_discipline'    =>$dlpn1[$a1],
+
+                            );
+/*
                 $data2 = array(
                     'stq_empid'         =>$this->emp_id,
                     'stq_dgree'         =>$_POST['iti'],
@@ -2295,11 +2396,13 @@ public function disciplin_profile() {
                         'stq_dgree'  =>$_POST['iti'],
                 
                     ); 
-                    $itidup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
-                    if(!$itidup){
-                        $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data2);
-                    }    
-                }
+*/
+                    		$itidup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
+                    		if(!$itidup){
+                        		$techflag=$this->sismodel->insertrec('staff_technical_qualification', $data2);
+                    		}    
+               		}
+		}
                 /****************************************************************************************/
                 
                 $data3 = array(
@@ -2332,7 +2435,6 @@ public function disciplin_profile() {
                 $result3 = $this->input->post('result3', TRUE);
                 $ypass3 = $this->input->post('yopass3', TRUE);
                 $dpln3 = $this->input->post('discipline3', TRUE);
-                
                 foreach($shorthand as $a3 => $b3){
                     $data4 = array(
                         'stq_empid'         =>$this->emp_id,
@@ -2358,6 +2460,7 @@ public function disciplin_profile() {
                         }    
                     }
                 }//foreach    
+//			die();
                 
                 /**************************Typing**********************************************************/
                 
@@ -2693,7 +2796,38 @@ public function disciplin_profile() {
         	$this->load->view('report/workorder_profile/'.$this->emp_id);
     	}//closer 
     
-    
+   	  /**This function Delete records */
+        public function delete_promotprofile($id) {
+                $this->roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_promotionals_details', 'spd_empid', 'spd_id',$id)->spd_empid;
+                if( $usrid == 1){
+                        $delflag=$this->sismodel->deleterow('staff_promotionals_details','spd_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_promotionals_details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_promotionals_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_promotionals_details record - ');
+                                redirect('report/promotional_profile/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_promotionals_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_promotionals_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+                                redirect('report/promotional_profile/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_promotionals_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff_promotionals_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee service record.' );
+                        redirect('report/promotional_profile/'.$this->emp_id);
+                }
+                $this->load->view('report/promotional_profile/'.$this->emp_id);
+        }//closer 
+
+ 
 }//classcloser    
     
     

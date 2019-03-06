@@ -32,7 +32,9 @@
 
         <div align="left" style="margin-left:0%;width:90%;">
 
-          <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+          <?php
+//		print_r($this->session->userdata());
+		 echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
               <div class="isa_success"><?php echo $_SESSION['success'];?></div>
               <?php
@@ -52,12 +54,11 @@
         <thead>
         <tr>
         <th>Sr. No</th>
-        <th> Society Name </th>
-	<th> Society Code </th>
-        <th> Society Address </th>
-	<th> Society Purpose </th>
+        <th> Society Details</th> 
+	<th> Society Contact </th>
+        <th> Society Other Info </th>
+	<th> Society Bank Detail </th>
         <th> Society Remark </th>
-        <th> Society Registration Date</th>
         <th> Action </th> 
         </thead>
         <tbody>
@@ -68,16 +69,36 @@
               ?>
                 <tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $row->soc_sname ?></td>
-		    <td><?php echo $row->soc_scode ?> </td>
-                    <td><?php echo $row->soc_address ?> </td>
-                    <td><?php echo $row->soc_purpose ?> </td>
-		    <td><?php echo $row->soc_sremark ?> </td>
-                    <td><?php  echo $row->soc_regdate ?> </td> 
+                    <td><?php echo "<b>Name :</b> ".$row->soc_sname ;
+				echo "<br><b>Code : </b>".$row->soc_scode;
+				echo "<br><b>Registartion No : </b>".$row->soc_regno;
+				echo "<br><b>Registration Date :</b> ".$row->soc_regdate;
+				
+?></td>
+                    <td><?php echo "<b>Address :</b> ".$row->soc_address ;
+			echo "<br><b>Phone :</b> ".$row->soc_phone;
+			echo "<br><b>Mobile :</b> ".$row->soc_mobile;
+			echo "<br><b>Email : </b>".$row->soc_email;
+?> </td>
+                    <td><?php echo "<b>PAN NO :</b> ".$row->soc_pan;
+				echo "<br><b>TAN No :</b> ".$row->soc_tan;
+			echo "<br><b>GST No :</b> ".$row->soc_gst;
+ ?> </td>
+                    <td><?php  echo "<b>Bank Name :</b> ".$row->soc_bname;
+				echo "<br><b>Account No. :</b> ".$row->soc_bacno;
+				echo "<br><b>IFSC COde : </b>".$row->soc_bifsc;
+				echo "<br><b>MICR Code :</b> ".$row->soc_bmicr;
+				echo "<br><b>Branch :</b> ".$row->soc_bbranch;
+				echo "<br><b>A/C Type :</b> ".$row->soc_bactype;
+ ?> </td> 
+		    <td><?php echo $row->soc_remarks ?> </td>
 		   <!-- <td><?php //echo $row->soc_creatordate ?> </td> -->
-                     <?php if($row->soc_id >1){ ?>
+                     <?php 
+			$roleid=$this->session->userdata('id_role');
+			if($roleid == 1){ ?>
 
-		 <td> <?php  //echo anchor("setup/delete_fees/{$row->fm_id}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editsociety/' . $row->soc_id  , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+		 <td> <?php  echo anchor("setup/delete_soc/{$row->soc_id}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?> &nbsp;&nbsp; 
+<?php //echo anchor('setup/editsociety/' . $row->soc_id  , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
                </td>
                 <?php } else {
                         echo "<td> </td>";

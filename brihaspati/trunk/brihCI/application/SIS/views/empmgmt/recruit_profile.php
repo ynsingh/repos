@@ -127,6 +127,7 @@
                                 </td>
 				 <td>
                                     <?php
+				$cempname="";$desig="";$dept="";
                                 if ($record->srp_compassionname != 0) $cempname=$this->commodel->get_listspfic1('employee_master','emp_name','emp_code',$record->srp_compassionname)->emp_name;
                                 if ($record->srp_compassiondesig != 0) $desig=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->srp_compassiondesig)->desig_name;
                                  if ($record->srp_compassiondept != 0) $dept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->srp_compassiondept)->dept_name;

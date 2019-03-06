@@ -90,7 +90,7 @@ public function viewprofile(){
         $this->roleid=$this->session->userdata('id_role');
         $this->currentrole=$this->commodel->get_listspfic1('role','role_name','role_id',$this->roleid);
 	$userid = $this->session->userdata('id_user');
-
+/*
         $this->name=$this->logmodel->get_listspfic1('userprofile','firstname','userid',$this->session->userdata('id_user'));
         $this->lastn=$this->logmodel->get_listspfic1('userprofile','lastname','userid',$this->session->userdata('id_user'));
         $this->address=$this->logmodel->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'));
@@ -101,8 +101,20 @@ public function viewprofile(){
        	$this->campusname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
         $this->orgcode=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
         $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
-
-        $this->load->view('profile/viewprofile');
+	$this->load->view('profile/viewprofile');
+*/
+	$data['deptname']="";
+	$data['name']=$this->logmodel->get_listspfic1('userprofile','firstname','userid',$this->session->userdata('id_user'))->firstname;
+        $data['lastn']=$this->logmodel->get_listspfic1('userprofile','lastname','userid',$this->session->userdata('id_user'))->lastname;
+        $data['address']=$this->logmodel->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'))->address;
+        $data['secmail']=$this->logmodel->get_listspfic1('userprofile','secmail','userid',$this->session->userdata('id_user'))->secmail;
+        $data['mobile']=$this->logmodel->get_listspfic1('userprofile','mobile','userid',$this->session->userdata('id_user'))->mobile;
+        $data['email']=$this->logmodel->get_listspfic1('edrpuser','email','id',$this->session->userdata('id_user'))->email;
+        $this->campusid=$this->sismodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
+        $data['campusname']=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid)->sc_name;
+        $data['orgcode']=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid)->org_code;
+        $data['orgname']=$this->commodel->get_listspfic1('org_profile','org_name','org_code', $data['orgcode'])->org_name;
+        $this->load->view('profile/viewprofile',$data);
 }//end function
 /* this function is used for update user profile */
 	public function editprofile(){

@@ -158,6 +158,7 @@
 				//if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 //                                                echo anchor("empmgmt/edit_workarrangdata/{$record->empsd_id}","Edit",array('title' => ' Edit Working Arrangement Data' , 'class' => 'red-link'));
+//					echo "<br><br>";
 					echo anchor("empmgmt/delete_workorderprofile/{$record->swap_id}", "Delete",array('title' => ' Delete Work Order Data' , 'class' => 'red-link'));
                                 }
                                 ?>

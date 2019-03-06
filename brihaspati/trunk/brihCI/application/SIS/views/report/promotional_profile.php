@@ -92,7 +92,7 @@
                     <thead>
                         <tr>
                             <th>Working Type</th>
-                            <th>Group</th>
+                            <th>Group/Grade</th>
                             <th>Designation</th>
                             <th>Pay Commission</th>
                             <th>Academic Grade Pay/Level </th>
@@ -116,6 +116,8 @@
 				echo "</td>";
 				echo "<td>";
 					echo  $record->spd_group;
+					echo " / ";
+					echo  $record->spd_grade;
 				echo "</td>";
 				echo "<td>";
 					$desig=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->spd_designation)->desig_name;
@@ -169,9 +171,11 @@
                                 <?php 
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 						echo anchor("empmgmt/edit_promotdata/{$record->spd_id}","Edit",array('title' => ' Edit Promotional Data' , 'class' => 'red-link'));
-				//		echo "  | ";
-				//		echo anchor("empmgmt/delete_serviceprofile/{$record->empsd_id}","Delete",array('title' => ' Delete Service Data' , 'class' => 'red-link'));
-					}
+				}
+				if($roleid == 1){
+						echo " <br><br> ";
+						echo anchor("empmgmt/delete_promotprofile/{$record->spd_id}","Delete",array('title' => ' Delete Promotional Data' , 'class' => 'red-link'));
+				}
 				?>
                                 </td> 
                             </tr>

@@ -18,6 +18,53 @@
             $(document).ready(function(){
                
                 var counter = 0;
+
+		$("#addrow").on("click", function () {
+                    var newRow = $("<tr>");
+                    var cols = "";
+          
+                    cols += '<td><input type="text" name="diploma[]" id="diploma" value="Diploma" size="15" readonly>';
+                    cols += '<td><input type="text" name="board[]" id="buniv" placeholder="Board/university.." size="30"></td>';
+                    cols += '<td><select name="result[]" id="result"><option value="">----- Select result ------</option>';
+                    cols += '<option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
+                    cols += '<td><input type="text" name="yopass[]" value="" id="yopass" class="form-control" size="30" /></td>';
+                    cols += '<td><input type="text" name="discipline[]" id="dpln" placeholder="Discipline/Program" size="30"></td>';
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+                    newRow.append(cols);
+                    $("#myTable1").append(newRow);
+                    counter++;
+          
+                });
+    
+                $("#myTable1").on("click", ".ibtnDel", function (event) {
+                    $(this).closest("tr").remove();       
+                    counter -= 1;
+                });
+
+		$("#addrow4").on("click", function () {
+                    var newRow = $("<tr>");
+                    var cols = "";
+          
+                    cols += '<td><input type="text" name="iti[]" id="iti" value="ITI" size="15" readonly>';
+                    cols += '<td><input type="text" name="board1[]" id="buniv1" placeholder="Board/university.." size="30"></td>';
+                    cols += '<td><select name="result1[]" id="result1"><option value="">----- Select result ------</option>';
+                    cols += '<option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
+                    cols += '<td><input type="text" name="yopass1[]" value="" id="yopass1" class="form-control" size="30" /></td>';
+                    cols += '<td><input type="text" name="discipline1[]" id="dpln1" placeholder="Discipline/Program" size="30"></td>';
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+                    newRow.append(cols);
+                    $("#myTable4").append(newRow);
+                    counter++;
+          
+                });
+    
+                $("#myTable4").on("click", ".ibtnDel", function (event) {
+                    $(this).closest("tr").remove();       
+                    counter -= 1;
+                });
+
+
+
                 $("#addrow1").on("click", function () {
                     var newRow = $("<tr>");
                     var cols = "";
@@ -116,7 +163,7 @@
         <form id="myform" action="<?php echo site_url('empmgmt/add_technicalprofile/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="empid" value="<?php echo  $this->emp_id ; ?>">
                 <table style="width:100%; border:1px solid gray;" ><tr><td style="background-color:#0099CC; text-align:left; height:30px;" colspan=8">&nbsp;&nbsp; Add Technical Details</td></tr></table>
-                <table  id="myTable1"  class="TFtable" align="center">
+                <table  id="myTable0"  class="TFtable" align="center">
                 <thead>
                         <tr>
                             <th>Technical</th>
@@ -127,14 +174,16 @@
                             <th></th>
                         </tr>
                     </thead>
+		</table>
+		<table  id="myTable1"  class="TFtable" align="center">
                     <tbody>
                         <tr>
-                            <td><input type="text" name="diploma" id="diploma" value="Diploma" size="30" readonly>
+                            <td><input type="text" name="diploma[]" id="diploma" value="Diploma" size="15" readonly>
                             </td>
                             <td>
-                            <input type="text" name="board" id="buniv" placeholder="Board/university.." size="30">        
+                            <input type="text" name="board[]" id="buniv" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result" id="result">
+                            <td><select name="result[]" id="result">
                                 <option value="">----- Select result ------</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
@@ -142,26 +191,27 @@
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass" value="" class="keyup-numeric" placeholder="Year of passing.."  size="30" />
+                                <input type="text" name="yopass[]" value="" class="keyup-numeric" placeholder="Year of passing.."  size="30" />
                             </td>
                        
                             <td>
-                            <input type="text" name="discipline" id="dpln" placeholder="Discipline/Program" size="30">        
+                            <input type="text" name="discipline[]" id="dpln" placeholder="Discipline/Program" size="30">        
                             </td>
-                           <!-- <td>
+                            <td>
                                 
                            <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
-                            </td> -->
+                            </td> 
                            
                         </tr>
-                        
+			</table>
+                       <table  id="myTable4"  class="TFtable" align="center"> 
                         <tr>
-                            <td><input type="text" name="iti" id="iti" value="ITI" size="30" readonly>
+                            <td><input type="text" name="iti[]" id="iti" value="ITI" size="15" readonly>
                             </td>
                             <td>
-                            <input type="text" name="board1" id="buniv1" placeholder="Board/university.." size="30">        
+                            <input type="text" name="board1[]" id="buniv1" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result1" id="result1">
+                            <td><select name="result1[]" id="result1">
                                 <option value="">----- Select result ------</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
@@ -169,15 +219,21 @@
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass1" value="" class="keyup-numeric" placeholder="Year of passing.." size="30" />
+                                <input type="text" name="yopass1[]" value="" class="keyup-numeric" placeholder="Year of passing.." size="30" />
                             </td>
                        
                             <td>
-                            <input type="text" name="discipline1" id="dpln1" placeholder="Discipline/Program" size="30">        
+                            <input type="text" name="discipline1[]" id="dpln1" placeholder="Discipline/Program" size="30">        
                             </td>
+			<td> <input type="button" class="btn btn-lg btn-block " id="addrow4" value="Add Row" /></td>
                         </tr>
+
+			 </table>
+                       <table  id="myTable"  class="TFtable" align="center">
+
+
                          <tr>
-                            <td><input type="text" name="ccourse" id="ccourse" value="Certified Course" size="30" readonly>
+                            <td><input type="text" name="ccourse" id="ccourse" value="Certified Course" size="15" readonly>
                             </td>
                             <td>
                             <input type="text" name="board2" id="buniv2" placeholder="Board/university.." size="30">        
@@ -196,6 +252,7 @@
                             <td>
                             <input type="text" name="discipline2" id="dpln2" placeholder="Discipline/Program" size="30">        
                             </td>
+			<td>&nbsp;</td>
                         </tr>
                         </tbody>
                     </table>
@@ -274,7 +331,6 @@
                             </td> 
                         </tr>
                         </tbody>
-                    
                     <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="6">
                     <button name="addtechprofile" id="addtechnical">Submit</button>

@@ -295,15 +295,16 @@ class Staffmgmt extends CI_Controller
                         $post="All";
 	    	}
 	    // for string search
-            if(!empty($strin)) {
+	            if(!empty($strin)) {
                         $whdata['emp_name LIKE ' ] ='%'.$strin.'%';
-            }
+        	    }
 		 $this->wtyp = $wtype;
 	         $this->desigm = $post;
 	    	 $this->strin = $strin;
 		if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
 			unset($whdata['emp_dept_code']);
 		}	
+		//print_r($whdata); die();
 	         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
          }
          else{
@@ -367,6 +368,7 @@ class Staffmgmt extends CI_Controller
             //$this->form_validation->set_rules('emppfno','EmployeePFNO','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('empname','EmployeeName','trim|required|xss_clean');
             $this->form_validation->set_rules('specialisation','Specialisation','trim|xss_clean');
+            $this->form_validation->set_rules('splsubo','Specialisation Other','trim|xss_clean');
             $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
             $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
             $this->form_validation->set_rules('department','Department','trim|required|xss_clean');
@@ -388,7 +390,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('empnhisidno','NHisIDno','trim|xss_clean');
             $this->form_validation->set_rules('dateofjoining','Date of Joining','trim|required|xss_clean');
             $this->form_validation->set_rules('dateofjoiningvc','Date of Joining as VC','trim|xss_clean');
-            $this->form_validation->set_rules('pnp','Plan / Non Plan','trim|xss_clean');
+        //    $this->form_validation->set_rules('pnp','Plan / Non Plan','trim|xss_clean');
             $this->form_validation->set_rules('phdstatus','Phd Status','trim|xss_clean');
             
             $this->form_validation->set_rules('Dateofphd','Date of Phd Finish','trim|xss_clean');
@@ -557,13 +559,18 @@ class Staffmgmt extends CI_Controller
                     $vcrregdate=NULL;
                     $vcrregvaliddate=NULL;
                 }
-
+		$splsubo=$_POST['splsubo'];
+		if(empty($splsubo)){
+			$splsubo='';
+		}
+                    //'emp_pnp'                   =>$_POST['pnp'],
                 //-------------------------------------------------------------
                 $data = array(
                     'emp_code'                  =>$_POST['empcode'],
                    // 'emp_pfno'                =>$_POST['emppfno'],
                     'emp_name'                  =>$_POST['empname'],
                     'emp_specialisationid'      =>$_POST['specialisation'],
+                    'emp_splsuboth'     		=>$splsubo,
                     
                     'emp_scid'                  =>$_POST['campus'],
                     'emp_uocid'                 =>$_POST['uocontrol'],
@@ -588,7 +595,7 @@ class Staffmgmt extends CI_Controller
                     'emp_nhisidno'              =>$_POST['empnhisidno'],
                     'emp_doj'                   =>$_POST['dateofjoining'],
                     'emp_dojvc'                 =>$_POST['dateofjoiningvc'],
-                    'emp_pnp'                   =>$_POST['pnp'],
+                    //'emp_pnp'                   =>'',
                     'emp_phd_status'            =>$_POST['phdstatus'],
                         
                     'emp_dateofphd'             =>$_POST['dateofphd'],
@@ -939,6 +946,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('empname','EmployeeName','trim|required|xss_clean');
             $this->form_validation->set_rules('specialisation','Specialisation','trim|xss_clean');
+		 $this->form_validation->set_rules('splsubo','Specialisation Other','trim|xss_clean');
 // enabled by nks
             $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
             $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
@@ -963,7 +971,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
             $this->form_validation->set_rules('empnhisidno','NHisIDno','trim|xss_clean');
             $this->form_validation->set_rules('dateofjoining','Date of Joining','trim|required|xss_clean');
-            $this->form_validation->set_rules('pnp','Paln / Non Plan','trim|xss_clean');
+        //    $this->form_validation->set_rules('pnp','Paln / Non Plan','trim|xss_clean');
             $this->form_validation->set_rules('phdstatus','Phd Status','trim|xss_clean');
             
             $this->form_validation->set_rules('Dateofphd','Date of Phd Finish','trim|xss_clean');
@@ -1122,9 +1130,16 @@ class Staffmgmt extends CI_Controller
 		if(empty($dateofjoiningvc)){
 			$dateofjoiningvc='';
 		} 
+		$splsubo=$_POST['splsubo'];
+                if(empty($splsubo)){
+                        $splsubo='';
+                }
+
+                //'emp_pnp'                        => $this->input->post('pnp'),
             $data = array(
 		'emp_code'			=> $this->input->post('empcode'),
                 'emp_specialisationid'           => $this->input->post('specialisation'),
+		 'emp_splsuboth'              =>$splsubo,
 // enabled by nks start
                 'emp_scid'                       => $this->input->post('campus'),
                 //'emp_uocuserid'                  => $this->input->post('uocontrol'),
@@ -1152,7 +1167,7 @@ class Staffmgmt extends CI_Controller
                 'emp_nhisidno'                   => $this->input->post('empnhisidno'),
                 'emp_doj'                        => $this->input->post('dateofjoining'),
                 
-                'emp_pnp'                        => $this->input->post('pnp'),
+                'emp_pnp'                        => '',
                 'emp_phd_status'                 => $this->input->post('phdstatus'),
                 'emp_dateofphd'                  => $this->input->post('dateofphd'),
                 'emp_AssrExam_status'            => $this->input->post('assrexam'),
@@ -1802,150 +1817,150 @@ class Staffmgmt extends CI_Controller
   public function newstaffposition(){
 	$uname=$this->session->userdata('username');
         if(($uname == "admin")||($uname == "rsection@tanuvas.org.in")){
-        $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id,sc_code', 'sc_name');
-        $this->desigresult = $this->commodel->get_listspfic2('designation','desig_id', 'desig_name');
-        $this->authorty = $this->lgnmodel->get_list('authorities', 'id', 'name');
-        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        	$this->scresult = $this->commodel->get_listspfic2('study_center','sc_id,sc_code', 'sc_name');
+	        $this->desigresult = $this->commodel->get_listspfic2('designation','desig_id', 'desig_name');
+        	$this->authorty = $this->lgnmodel->get_list('authorities', 'id', 'name');
+	        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
 
-        if(isset($_POST['newstaffposition'])) {
-                $this->form_validation->set_rules('campus','Campus Name','xss_clean|required');
-                $this->form_validation->set_rules('uo','U O Control','xss_clean|required');
-                $this->form_validation->set_rules('dept','Department Name','xss_clean|required');
-                $this->form_validation->set_rules('schemecode','Scheme Name','xss_clean|required');
-                $this->form_validation->set_rules('pnp','Plan / Non Plan','xss_clean|required');
-                $this->form_validation->set_rules('group','Group','xss_clean|required');
-                $this->form_validation->set_rules('tnt','Teaching non teaching ','xss_clean|required');
-                $this->form_validation->set_rules('type','Post Type','xss_clean|required');
-                $this->form_validation->set_rules('emppost','Employee Post','xss_clean|required');
-                $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
-                $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
-                $this->form_validation->set_rules('methodrect','Method of Recruitment','xss_clean|required');
-                $this->form_validation->set_rules('ss','Position Sanction Strength','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('p','Position Present','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('v','Position Vacant','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('pper','Position Permanent','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('vper','Vacancy Permanent','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('ptem','Position Temporary ','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('vtem','Vacancy Temporary','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('address1','Address','xss_clean');
-                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean');
-                $this->form_validation->set_rules('remarks','Remarks','xss_clean');
+        	if(isset($_POST['newstaffposition'])) {
+                	$this->form_validation->set_rules('campus','Campus Name','xss_clean|required');
+	                $this->form_validation->set_rules('uo','U O Control','xss_clean|required');
+        	        $this->form_validation->set_rules('dept','Department Name','xss_clean|required');
+                	$this->form_validation->set_rules('schemecode','Scheme Name','xss_clean|required');
+	        //        $this->form_validation->set_rules('pnp','Plan / Non Plan','xss_clean|required');
+        	        $this->form_validation->set_rules('group','Group','xss_clean|required');
+	                $this->form_validation->set_rules('tnt','Teaching non teaching ','xss_clean|required');
+        	        $this->form_validation->set_rules('type','Post Type','xss_clean|required');
+                	$this->form_validation->set_rules('emppost','Employee Post','xss_clean|required');
+	                $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
+        	        $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
+                	$this->form_validation->set_rules('methodrect','Method of Recruitment','xss_clean|required');
+	                $this->form_validation->set_rules('ss','Position Sanction Strength','trim|xss_clean|required|numeric');
+        	        $this->form_validation->set_rules('p','Position Present','trim|xss_clean|required|numeric');
+                	$this->form_validation->set_rules('v','Position Vacant','trim|xss_clean|required|numeric');
+	                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','trim|xss_clean|required|numeric');
+        	        $this->form_validation->set_rules('pper','Position Permanent','trim|xss_clean|required|numeric');
+                	$this->form_validation->set_rules('vper','Vacancy Permanent','trim|xss_clean|required|numeric');
+	                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','trim|xss_clean|required|numeric');
+        	        $this->form_validation->set_rules('ptem','Position Temporary ','trim|xss_clean|required|numeric');
+                	$this->form_validation->set_rules('vtem','Vacancy Temporary','trim|xss_clean|required|numeric');
+	                $this->form_validation->set_rules('address1','Address','xss_clean');
+        	        $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean');
+                	$this->form_validation->set_rules('remarks','Remarks','xss_clean');
 
-       if($this->form_validation->run()==TRUE){
+		       if($this->form_validation->run()==TRUE){
 
-        $sptnt= $this->input->post("tnt");
-        $spemppostid = $this->input->post("emppost");
-        $spemppost = $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $spemppostid)->desig_name ;
-        $spss = $this->input->post("ss");
-        $spp = $this->input->post("p");
-        $spv = $this->input->post("v");
-        $spssper = $this->input->post("ssper");
-        $sppper = $this->input->post("pper");
-        $spvper = $this->input->post("vper");
-        $spsstem = $this->input->post("sstem");
-        $spptem = $this->input->post("ptem");
-        $spvtem = $this->input->post("vtem");
+			        $sptnt= $this->input->post("tnt");
+			        $spemppostid = $this->input->post("emppost");
+			        $spemppost = $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $spemppostid)->desig_name ;
+			        $spss = $this->input->post("ss");
+			        $spp = $this->input->post("p");
+			        $spv = $this->input->post("v");
+			        $spssper = $this->input->post("ssper");
+			        $sppper = $this->input->post("pper");
+			        $spvper = $this->input->post("vper");
+			        $spsstem = $this->input->post("sstem");
+			        $spptem = $this->input->post("ptem");
+			        $spvtem = $this->input->post("vtem");
 
-	if($spss == 0 ) {
-                $this->session->set_flashdata('err_message','The value of Position Sanction Strength should be greater than zero .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
+				if($spss == 0 ) {
+			                $this->session->set_flashdata('err_message','The value of Position Sanction Strength should be greater than zero .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
 
-	if($spss != $spp+$spv) {
-                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Position Present and Position Vacant .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
+				if($spss != $spp+$spv) {
+			                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Position Present and Position Vacant .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
 
-	if($spssper != $sppper+$spvper) {
-                $this->session->set_flashdata('err_message','The value of Sanction Strength Permanent is not equals to sum of Position Permanent and Vacancy Permanent .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
-	if($spsstem != $spptem+$spvtem){
-                $this->session->set_flashdata('err_message','The value of Sanction Strength Temporary is not equals to sum of Position Temporary and Vacancy Temporary .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
-	if($spss != $spssper+$spsstem){
-                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Sanction Strength Permanent and Sanction Strength Temporary .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
-	if($spp != $sppper+$spptem){
-                $this->session->set_flashdata('err_message','The value of Position Present is not equals to sum of Position Permanent and Position Temporary .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
-	if($spv != $spvper+$spvtem){
-                $this->session->set_flashdata('err_message','The value of Position Vacant is not equals to sum of Vacancy Permanent and Vacancy Temporary .');
-                $this->load->view('staffmgmt/newstaffposition');
-		return false; 
-		}
+				if($spssper != $sppper+$spvper) {
+			                $this->session->set_flashdata('err_message','The value of Sanction Strength Permanent is not equals to sum of Position Permanent and Vacancy Permanent .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
+				if($spsstem != $spptem+$spvtem){
+			                $this->session->set_flashdata('err_message','The value of Sanction Strength Temporary is not equals to sum of Position Temporary and Vacancy Temporary .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
+				if($spss != $spssper+$spsstem){
+			                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Sanction Strength Permanent and Sanction Strength Temporary .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
+				if($spp != $sppper+$spptem){
+			                $this->session->set_flashdata('err_message','The value of Position Present is not equals to sum of Position Permanent and Position Temporary .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
+				if($spv != $spvper+$spvtem){
+			                $this->session->set_flashdata('err_message','The value of Position Vacant is not equals to sum of Vacancy Permanent and Vacancy Temporary .');
+			                $this->load->view('staffmgmt/newstaffposition');
+					return false; 
+				}
 
+//			        $datadupposition = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>$_POST['type'], 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_plan_nonplan'=>$_POST['pnp'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
+			        $datadupposition = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>$_POST['type'], 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
 
-        $datadupposition = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>$_POST['type'], 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_plan_nonplan'=>$_POST['pnp'], 'sp_schemecode'=>$_POST['schemecode'],
-        'sp_org_id'=> '1' );
+				//        'sp_plan_nonplan'=>$_POST['pnp'],
+			        $dataposition = array(
+				        'sp_tnt'=>$_POST['tnt'],
+				        'sp_type'=>$_POST['type'],
+				        'sp_emppost'=>$_POST['emppost'],
+				        'sp_grppost'=>$_POST['grouppost'],
+				        'sp_scale'=>$_POST['scale'],
+				        'sp_plan_nonplan'=>'',
+				        'sp_methodRect'=>$_POST['methodrect'],
+				        'sp_group'=>$_POST['group'],
+				        'sp_uo'=>$_POST['uo'],
+				        'sp_dept'=>$_POST['dept'],
+				        'sp_address1'=>$_POST['address1'],
+				        'sp_address2'=>'Null',
+				        'sp_address3'=>'Null',
+				        'sp_campusid'=>$_POST['campus'],
+				        'sp_per_temporary'=>'Null',
+				        'sp_schemecode'=>$_POST['schemecode'],
+				        'sp_sancstrenght'=>$_POST['ss'],
+				        'sp_position'=>$_POST['p'],
+				        'sp_vacant'=>$_POST['v'],
+				        'sp_remarks'=>$_POST['remarks'],
+				        'sp_ssdetail'=>$_POST['ssdetail'],
+				        'sp_sspermanent'=>$_POST['ssper'],
+				        'sp_sstemporary'=>$_POST['sstem'],
+				        'sp_pospermanent'=>$_POST['pper'],
+				        'sp_postemporary'=>$_POST['ptem'],
+				        'sp_vpermanenet'=>$_POST['vper'],
+				        'sp_vtemporary'=>$_POST['vtem'],
+				        'sp_org_id'=> '1'
+			        );
 
-        $dataposition = array(
-        'sp_tnt'=>$_POST['tnt'],
-        'sp_type'=>$_POST['type'],
-        'sp_emppost'=>$_POST['emppost'],
-        'sp_grppost'=>$_POST['grouppost'],
-        'sp_scale'=>$_POST['scale'],
-        'sp_methodRect'=>$_POST['methodrect'],
-        'sp_group'=>$_POST['group'],
-        'sp_uo'=>$_POST['uo'],
-        'sp_dept'=>$_POST['dept'],
-        'sp_address1'=>$_POST['address1'],
-        'sp_address2'=>'Null',
-        'sp_address3'=>'Null',
-        'sp_campusid'=>$_POST['campus'],
-        'sp_per_temporary'=>'Null',
-        'sp_plan_nonplan'=>$_POST['pnp'],
-        'sp_schemecode'=>$_POST['schemecode'],
-        'sp_sancstrenght'=>$_POST['ss'],
-        'sp_position'=>$_POST['p'],
-        'sp_vacant'=>$_POST['v'],
-        'sp_remarks'=>$_POST['remarks'],
-        'sp_ssdetail'=>$_POST['ssdetail'],
-        'sp_sspermanent'=>$_POST['ssper'],
-        'sp_sstemporary'=>$_POST['sstem'],
-        'sp_pospermanent'=>$_POST['pper'],
-        'sp_postemporary'=>$_POST['ptem'],
-        'sp_vpermanenet'=>$_POST['vper'],
-        'sp_vtemporary'=>$_POST['vtem'],
-        'sp_org_id'=> '1'
-        );
-
-	$duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
-	if($duppositionflag == 1)
-	{
-                $this->session->set_flashdata("err_message", "Record is already exist with this combination......... ");
-                redirect('staffmgmt/newstaffposition');
-                return;
-	}
-    else{
-	$positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
-        if(!$positionflag)
-        {
-                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
-                $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
-                $this->session->set_flashdata('err_message','Error in adding Staff Position - ' .  '.', 'error');
-                $this->load->view('staffmgmt/newstaffposition');
-        }
-        else{
-                $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
-                $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
-                $this->session->set_flashdata("success", "Record added successfully...'Teaching /Non Teaching :' = $sptnt, 'Employee_Post : ' = $spemppost ");
-                redirect('staffmgmt/staffposition');
-        }
-      }
-    }
-   }
+				$duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
+				if($duppositionflag == 1)
+				{
+			                $this->session->set_flashdata("err_message", "Record is already exist with this combination......... ");
+			                redirect('staffmgmt/newstaffposition');
+			                return;
+				}
+				else{
+					$positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
+				        if(!$positionflag)
+        				{
+				                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
+				                $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
+				                $this->session->set_flashdata('err_message','Error in adding Staff Position - ' .  '.', 'error');
+				                $this->load->view('staffmgmt/newstaffposition');
+        				}
+				        else{
+				                $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
+				                $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
+				                $this->session->set_flashdata("success", "Record added successfully...'Teaching /Non Teaching :' = $sptnt, 'Employee_Post : ' = $spemppost ");
+				                redirect('staffmgmt/staffposition');
+        				}
+      				}
+    			}
+   		}
    		$this->load->view('staffmgmt/newstaffposition');
 	}
 	else{
@@ -1956,239 +1971,223 @@ class Staffmgmt extends CI_Controller
 
   /*This function has been created for update the staff position record */
   public function editstaffposition($sp_id){
-        $this->authorty = $this->lgnmodel->get_list('authorities', 'id', 'name');
-        $sp_data_q=$this->sismodel->get_listrow('staff_position','sp_id', $sp_id);
-        if ($sp_data_q->num_rows() < 1)
-        {
-           redirect('staffmgmt/editstaffposition');
-        }
-        $editsp_data = $sp_data_q->row();
+	$uname=$this->session->userdata('username');
+        if(($uname == "admin")||($uname == "rsection@tanuvas.org.in")){
+	        $this->authorty = $this->lgnmodel->get_list('authorities', 'id', 'name');
+        	$sp_data_q=$this->sismodel->get_listrow('staff_position','sp_id', $sp_id);
+	        if ($sp_data_q->num_rows() < 1)
+        	{
+	           redirect('staffmgmt/editstaffposition');
+        	}
+	        $editsp_data = $sp_data_q->row();
 
-        /* Form fields */
+        	/* Form fields */
 
-        $data['tnt']= array('name' => 'tnt', 'id' => 'tnt', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_tnt, 'readonly' => 'readonly' );
-
-        $data['type']= array('name' => 'type', 'id' => 'type', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_type, 'readonly' => 'readonly' );
-
-        $data['emppost'] = array('name' => 'emppost', 'id' => 'emppost', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $editsp_data->sp_emppost)->desig_name, 'readonly' => 'readonly' );
-
-        $data['grouppost'] = array('name' => 'grouppost', 'id' => 'grouppost', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_grppost, 'readonly' => 'readonly' );
-
-        $data['scale'] = array('name' => 'scale', 'id' => 'scale', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_scale, 'readonly' => 'readonly' );
-
-        $data['methodrect'] = array('name' => 'methodrect', 'id' => 'methodrect', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_methodRect, 'readonly' => 'readonly' );
-
-        $data['group'] = array('name' => 'group', 'id' => 'group', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_group, 'readonly' => 'readonly' );
-
-        $data['uo'] = array('name' => 'uo', 'id' => 'uo', 'maxlength' => '40', 'size' => '30', 'value' => $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $editsp_data->sp_uo)->name, 'readonly' => 'readonly' );
-
-        $data['dept'] = array('name' => 'dept', 'id' => 'teachername', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $editsp_data->sp_dept)->dept_name, 'readonly' => 'readonly');
-
-        $data['address1'] = array('name' => 'address1', 'id' => 'address1', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_address1, );
-
-        $data['campus'] = array('name' => 'campus', 'id' => 'campus', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editsp_data->sp_campusid)->sc_name, 'readonly' => 'readonly' );
-
-        $data['pnp'] = array('name' => 'pnp', 'id' => 'pnp', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_plan_nonplan, 'readonly' => 'readonly' );
-
-        $data['schemecode'] = array('name' => 'schemecode', 'id' => 'schemecode', 'maxlength' => '40', 'size' => '30', 'value' => $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $editsp_data->sp_schemecode)->sd_name, 'readonly' => 'readonly' );
-
-        $data['ss'] = array('name' => 'ss', 'id' => 'ss', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sancstrenght, );
-
-        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position, );
+	        $data['tnt']= array('name' => 'tnt', 'id' => 'tnt', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_tnt, 'readonly' => 'readonly' );
+        	$data['type']= array('name' => 'type', 'id' => 'type', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_type, 'readonly' => 'readonly' );
+	        $data['emppost'] = array('name' => 'emppost', 'id' => 'emppost', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $editsp_data->sp_emppost)->desig_name, 'readonly' => 'readonly' );
+        	$data['grouppost'] = array('name' => 'grouppost', 'id' => 'grouppost', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_grppost, 'readonly' => 'readonly' );
+	        $data['scale'] = array('name' => 'scale', 'id' => 'scale', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_scale, 'readonly' => 'readonly' );
+        	$data['methodrect'] = array('name' => 'methodrect', 'id' => 'methodrect', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_methodRect, 'readonly' => 'readonly' );
+	        $data['group'] = array('name' => 'group', 'id' => 'group', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_group, 'readonly' => 'readonly' );
+        	$data['uo'] = array('name' => 'uo', 'id' => 'uo', 'maxlength' => '40', 'size' => '30', 'value' => $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $editsp_data->sp_uo)->name, 'readonly' => 'readonly' );
+	        $data['dept'] = array('name' => 'dept', 'id' => 'teachername', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $editsp_data->sp_dept)->dept_name, 'readonly' => 'readonly');
+        	$data['address1'] = array('name' => 'address1', 'id' => 'address1', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_address1, );
+	        $data['campus'] = array('name' => 'campus', 'id' => 'campus', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editsp_data->sp_campusid)->sc_name, 'readonly' => 'readonly' );
+//        $data['pnp'] = array('name' => 'pnp', 'id' => 'pnp', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_plan_nonplan, 'readonly' => 'readonly' );
+        	$data['schemecode'] = array('name' => 'schemecode', 'id' => 'schemecode', 'maxlength' => '40', 'size' => '30', 'value' => $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $editsp_data->sp_schemecode)->sd_name, 'readonly' => 'readonly' );
+	        $data['ss'] = array('name' => 'ss', 'id' => 'ss', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sancstrenght, );
+        	$data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position, );
         //$data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position  );
-
-        $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vacant, 'readonly' => 'readonly' );
-
-        $data['remarks'] = array('name' => 'remarks', 'id' => 'remarks', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_remarks, );
-
-        $data['ssdetail'] = array('name' => 'ssdetail', 'id' => 'ssdetail', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_ssdetail, );
-
-        $data['ssper'] = array('name' => 'ssper', 'id' => 'ssper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sspermanent, 'readonly' => 'readonly' );
-
-        $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sstemporary, 'readonly' => 'readonly' );
-
-        $data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_pospermanent, 'readonly' => 'readonly' );
-
-        $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_postemporary, 'readonly' => 'readonly' );
-
-        $data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vpermanenet, 'readonly' => 'readonly' );
-
-        $data['vtem'] = array('name' => 'vtem', 'id' => 'vtem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vtemporary, 'readonly' => 'readonly' );
-
-        $data['sp_id'] = $sp_id;
-
-                $this->form_validation->set_rules('campus','Campus Name','xss_clean|required');
-                $this->form_validation->set_rules('uo','U O Control','xss_clean|required');
-                $this->form_validation->set_rules('dept','Department Name','xss_clean|required');
-                $this->form_validation->set_rules('schemecode','Scheme Name','xss_clean|required');
-                $this->form_validation->set_rules('pnp','Plan / Non Plan','xss_clean|required');
-                $this->form_validation->set_rules('group','Group','xss_clean|required');
-                $this->form_validation->set_rules('tnt','Teaching non teaching ','xss_clean|required');
-                $this->form_validation->set_rules('type','Post Type','xss_clean|required');
-                $this->form_validation->set_rules('emppost','Employee Post','xss_clean|required');
-                $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
-                $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
-                $this->form_validation->set_rules('methodrect','Method of Recruitment','xss_clean|required');
-                $this->form_validation->set_rules('ss','Position Sanction Strength','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('p','Position Present','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('v','Position Vacant','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('pper','Position Permanent','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('vper','Vacancy Permanent','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('ptem','Position Temporary ','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('vtem','Vacancy Temporary','trim|xss_clean|required|numeric');
-                $this->form_validation->set_rules('address1','Address','xss_clean');
-                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean');
-                $this->form_validation->set_rules('remarks','Remarks','xss_clean');
-        if ($this->form_validation->run() == TRUE)
-	{
-                $tnt = $this->input->post('tnt', TRUE);
-                $type = $this->input->post('type', TRUE);
-                $emppost = $this->input->post('emppost', TRUE);
-                $grppost = $this->input->post('grouppost', TRUE);
-                $scale = $this->input->post('scale', TRUE);
-                $methodRect = $this->input->post('methodrect', TRUE);
-                $group = $this->input->post('group', TRUE);
-                $uo = $this->input->post('uo', TRUE);
-                $dept = $this->input->post('dept', TRUE);
-                $address = $this->input->post('address1', TRUE);
-                $campusid = $this->input->post('campus', TRUE);
-                $plannonplan = $this->input->post('pnp', TRUE);
-                $schemecode = $this->input->post('schemecode', TRUE);
-                $sancstrenght = $this->input->post('ss', TRUE);
-                $position = $this->input->post('p', TRUE);
-                $vacant = $this->input->post('v', TRUE);
-                $remarks = $this->input->post('remarks', TRUE);
-                $ssdetail = $this->input->post('ssdetail', TRUE);
-                $sspermanent = $this->input->post('ssper', TRUE);
-                $sstemporary = $this->input->post('sstem', TRUE);
-                $pospermanent = $this->input->post('pper', TRUE);
-                $postemporary = $this->input->post('ptem', TRUE);
-                $vpermanenet = $this->input->post('vper', TRUE);
-                $vtemporary = $this->input->post('vtem', TRUE);
+	        $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vacant, 'readonly' => 'readonly' );
+        	$data['remarks'] = array('name' => 'remarks', 'id' => 'remarks', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_remarks, );
+	        $data['ssdetail'] = array('name' => 'ssdetail', 'id' => 'ssdetail', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_ssdetail, );
+        	$data['ssper'] = array('name' => 'ssper', 'id' => 'ssper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sspermanent, 'readonly' => 'readonly' );
+	        $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sstemporary, 'readonly' => 'readonly' );
+        	$data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_pospermanent, 'readonly' => 'readonly' );
+	        $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_postemporary, 'readonly' => 'readonly' );
+        	$data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vpermanenet, 'readonly' => 'readonly' );
+	        $data['vtem'] = array('name' => 'vtem', 'id' => 'vtem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vtemporary, 'readonly' => 'readonly' );
+        	$data['sp_id'] = $sp_id;
+		if(isset($_POST['editstaffposition'])) {
+                	$this->form_validation->set_rules('campus','Campus Name','xss_clean|required');
+	                $this->form_validation->set_rules('uo','U O Control','xss_clean|required');
+        	        $this->form_validation->set_rules('dept','Department Name','xss_clean|required');
+                	$this->form_validation->set_rules('schemecode','Scheme Name','xss_clean|required');
+	  //              $this->form_validation->set_rules('pnp','Plan / Non Plan','xss_clean|required');
+        	        $this->form_validation->set_rules('group','Group','xss_clean|required');
+                	$this->form_validation->set_rules('tnt','Teaching non teaching ','xss_clean|required');
+	                $this->form_validation->set_rules('type','Post Type','xss_clean|required');
+        	        $this->form_validation->set_rules('emppost','Employee Post','xss_clean|required');
+                	$this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
+	                $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
+        	        $this->form_validation->set_rules('methodrect','Method of Recruitment','xss_clean|required');
+                	$this->form_validation->set_rules('ss','Position Sanction Strength','trim|xss_clean|required|numeric');
+	                $this->form_validation->set_rules('p','Position Present','trim|xss_clean|required|numeric');
+        	        $this->form_validation->set_rules('v','Position Vacant','trim|xss_clean|required|numeric');
+                	$this->form_validation->set_rules('ssper','Sanction Strength Permanent','trim|xss_clean|required|numeric');
+	                $this->form_validation->set_rules('pper','Position Permanent','trim|xss_clean|required|numeric');
+        	        $this->form_validation->set_rules('vper','Vacancy Permanent','trim|xss_clean|required|numeric');
+                	$this->form_validation->set_rules('sstem','Sanction Strength Temporary','trim|xss_clean|required|numeric');
+	                $this->form_validation->set_rules('ptem','Position Temporary ','trim|xss_clean|required|numeric');
+        	        $this->form_validation->set_rules('vtem','Vacancy Temporary','trim|xss_clean|required|numeric');
+                	$this->form_validation->set_rules('address1','Address','xss_clean');
+	                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean');
+        	        $this->form_validation->set_rules('remarks','Remarks','xss_clean');
+		        if ($this->form_validation->run() == TRUE)
+			{
+		                $tnt = $this->input->post('tnt', TRUE);
+                		$type = $this->input->post('type', TRUE);
+		                $emppost = $this->input->post('emppost', TRUE);
+                		$grppost = $this->input->post('grouppost', TRUE);
+		                $scale = $this->input->post('scale', TRUE);
+                		$methodRect = $this->input->post('methodrect', TRUE);
+		                $group = $this->input->post('group', TRUE);
+                		$uo = $this->input->post('uo', TRUE);
+		                $dept = $this->input->post('dept', TRUE);
+                		$address = $this->input->post('address1', TRUE);
+		                $campusid = $this->input->post('campus', TRUE);
+    //          		  $plannonplan = $this->input->post('pnp', TRUE);
+		                $schemecode = $this->input->post('schemecode', TRUE);
+		                $sancstrenght = $this->input->post('ss', TRUE);
+                		$position = $this->input->post('p', TRUE);
+		                $vacant = $this->input->post('v', TRUE);
+                		$remarks = $this->input->post('remarks', TRUE);
+		                $ssdetail = $this->input->post('ssdetail', TRUE);
+                		$sspermanent = $this->input->post('ssper', TRUE);
+		                $sstemporary = $this->input->post('sstem', TRUE);
+                		$pospermanent = $this->input->post('pper', TRUE);
+		                $postemporary = $this->input->post('ptem', TRUE);
+                		$vpermanenet = $this->input->post('vper', TRUE);
+		                $vtemporary = $this->input->post('vtem', TRUE);
 		
-	if($sancstrenght != $position+$vacant) {
-                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Position Present and Position Vacant .');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-		return false; 
-		}
+				if($sancstrenght != $position+$vacant) {
+			                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Position Present and Position Vacant .');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+					return false; 
+				}
 
-	if($sspermanent != $pospermanent+$vpermanenet) {
-                $this->session->set_flashdata('err_message','The value of Sanction Strength Permanent is not equals to sum of Position Permanent and Vacancy Permanent .');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-		return false; 
-		}
-	if($sstemporary != $postemporary+$vtemporary){
-                $this->session->set_flashdata('err_message','The value of Sanction Strength Temporary is not equals to sum of Position Temporary and Vacancy Temporary .');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-		return false; 
-		}
-	if($sancstrenght != $sspermanent+$sstemporary){
-                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Sanction Strength Permanent and Sanction Strength Temporary .');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-		return false; 
-		}
-	if($position != $pospermanent+$postemporary){
-                $this->session->set_flashdata('err_message','The value of Position Present is not equals to sum of Position Permanent and Position Temporary .');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-		return false; 
-		}
-	if($vacant != $vpermanenet+$vtemporary){
-                $this->session->set_flashdata('err_message','The value of Position Vacant is not equals to sum of Vacancy Permanent and Vacancy Temporary .');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-		return false; 
-		}
+				if($sspermanent != $pospermanent+$vpermanenet) {
+			                $this->session->set_flashdata('err_message','The value of Sanction Strength Permanent is not equals to sum of Position Permanent and Vacancy Permanent .');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+					return false; 
+				}
+				if($sstemporary != $postemporary+$vtemporary){
+			                $this->session->set_flashdata('err_message','The value of Sanction Strength Temporary is not equals to sum of Position Temporary and Vacancy Temporary .');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+					return false; 
+				}
+				if($sancstrenght != $sspermanent+$sstemporary){
+			                $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Sanction Strength Permanent and Sanction Strength Temporary .');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+					return false; 
+				}
+				if($position != $pospermanent+$postemporary){
+			                $this->session->set_flashdata('err_message','The value of Position Present is not equals to sum of Position Permanent and Position Temporary .');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+					return false; 
+				}
+				if($vacant != $vpermanenet+$vtemporary){
+			                $this->session->set_flashdata('err_message','The value of Position Vacant is not equals to sum of Vacancy Permanent and Vacancy Temporary .');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+					return false; 
+				}
 
-        $instdataspa = array(
-	'spa_spid'=>$sp_id,
-        'spa_tnt'=> $editsp_data->sp_tnt,
-        'spa_type'=> $editsp_data->sp_type,
-        'spa_emppost'=> $editsp_data->sp_emppost,
-        'spa_grppost'=> $editsp_data->sp_grppost,
-        'spa_scale'=>$editsp_data->sp_scale,
-        'spa_methodRect'=>$editsp_data->sp_methodRect,
-        'spa_group'=>$editsp_data->sp_group,
-        'spa_uo'=>$editsp_data->sp_uo,
-        'spa_dept'=>$editsp_data->sp_dept,
-        'spa_address1'=>$editsp_data->sp_address1,
-        'spa_address2'=>'Null',
-        'spa_address3'=>'Null',
-        'spa_campusid'=>$editsp_data->sp_campusid,
-        'spa_per_temporary'=>'Null',
-        'spa_plan_nonplan'=>$editsp_data->sp_plan_nonplan,
-        'spa_schemecode'=>$editsp_data->sp_schemecode,
-        'spa_sancstrenght'=>$editsp_data->sp_sancstrenght,
-        'spa_position'=>$editsp_data->sp_position,
-        'spa_vacant'=>$editsp_data->sp_vacant,
-        'spa_remarks'=>$editsp_data->sp_remarks,
-        'spa_ssdetail'=>$editsp_data->sp_ssdetail,
-        'spa_sspermanent'=>$editsp_data->sp_sspermanent,
-        'spa_sstemporary'=>$editsp_data->sp_sstemporary,
-        'spa_pospermanent'=>$editsp_data->sp_pospermanent,
-        'spa_postemporary'=>$editsp_data->sp_postemporary,
-        'spa_vpermanenet'=>$editsp_data->sp_vpermanenet,
-        'spa_vtemporary'=>$editsp_data->sp_vtemporary,
-        'spa_org_id'=> '1',
-	'spa_archuserid'=>$this->session->userdata('id_user'),
-	'spa_archdate'=>date('y-m-d')
-        );
+			        $instdataspa = array(
+					'spa_spid'=>$sp_id,
+				        'spa_tnt'=> $editsp_data->sp_tnt,
+				        'spa_type'=> $editsp_data->sp_type,
+				        'spa_emppost'=> $editsp_data->sp_emppost,
+				        'spa_grppost'=> $editsp_data->sp_grppost,
+				        'spa_scale'=>$editsp_data->sp_scale,
+				        'spa_methodRect'=>$editsp_data->sp_methodRect,
+				        'spa_group'=>$editsp_data->sp_group,
+				        'spa_uo'=>$editsp_data->sp_uo,
+				        'spa_dept'=>$editsp_data->sp_dept,
+				        'spa_address1'=>$editsp_data->sp_address1,
+				        'spa_address2'=>'Null',
+				        'spa_address3'=>'Null',
+				        'spa_campusid'=>$editsp_data->sp_campusid,
+				        'spa_per_temporary'=>'Null',
+				        'spa_plan_nonplan'=>$editsp_data->sp_plan_nonplan,
+				        'spa_schemecode'=>$editsp_data->sp_schemecode,
+				        'spa_sancstrenght'=>$editsp_data->sp_sancstrenght,
+				        'spa_position'=>$editsp_data->sp_position,
+				        'spa_vacant'=>$editsp_data->sp_vacant,
+				        'spa_remarks'=>$editsp_data->sp_remarks,
+				        'spa_ssdetail'=>$editsp_data->sp_ssdetail,
+				        'spa_sspermanent'=>$editsp_data->sp_sspermanent,
+				        'spa_sstemporary'=>$editsp_data->sp_sstemporary,
+				        'spa_pospermanent'=>$editsp_data->sp_pospermanent,
+				        'spa_postemporary'=>$editsp_data->sp_postemporary,
+				        'spa_vpermanenet'=>$editsp_data->sp_vpermanenet,
+				        'spa_vtemporary'=>$editsp_data->sp_vtemporary,
+				        'spa_org_id'=> '1',
+					'spa_archuserid'=>$this->session->userdata('id_user'),
+					'spa_archdate'=>date('y-m-d')
+			        );
 
-        $spflag=$this->sismodel->insertrec('staff_position_archive', $instdataspa);
-        if(!$spflag)
-         {
-              $this->logger->write_dblogmessage("error","Error in insert staff position archive ", "Error in  staff position archive record insert" .$sp_id );
-         }else{
-              $this->logger->write_dblogmessage("insert","Insert staff position archive", "Record inserted in staff position archive successfully.." .$sp_id );
-         }
+			        $spflag=$this->sismodel->insertrec('staff_position_archive', $instdataspa);
+			        if(!$spflag)
+			        {
+			              $this->logger->write_dblogmessage("error","Error in insert staff position archive ", "Error in  staff position archive record insert" .$sp_id );
+			         }else{
+			              $this->logger->write_dblogmessage("insert","Insert staff position archive", "Record inserted in staff position archive successfully.." .$sp_id );
+         			}
 
-      $update_data = array(
-                'sp_tnt'=> $tnt,
-                'sp_type'=> $type,
-                'sp_emppost'=> $this->commodel->get_listspfic1('designation', 'desig_id', 'desig_name', $emppost)->desig_id ,
-                'sp_grppost'=> $grppost,
-                'sp_scale'=> $scale,
-                'sp_methodRect'=> $methodRect,
-                'sp_group'=>$group,
-                'sp_uo'=> $this->lgnmodel->get_listspfic1('authorities', 'id', 'name', $uo)->id,
-                'sp_dept'=> $this->commodel->get_listspfic1('Department', 'dept_id', 'dept_name', $dept)->dept_id, 
-                'sp_address1'=>$address,
-                'sp_address2'=>'Null',
-                'sp_address3'=>'Null',
-                'sp_campusid'=> $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_name', $campusid)->sc_id,
-                'sp_per_temporary'=>'Null',
-                'sp_plan_nonplan'=>$plannonplan,
-                'sp_schemecode'=> $editsp_data->sp_schemecode, 
-                'sp_sancstrenght'=>$sancstrenght,
-                'sp_position'=>$position,
-                'sp_vacant'=>$vacant,
-                'sp_remarks'=>$remarks,
-                'sp_ssdetail'=>$ssdetail,
-                'sp_sspermanent'=>$sspermanent,
-                'sp_sstemporary'=>$sstemporary,
-                'sp_pospermanent'=>$pospermanent,
-                'sp_postemporary'=>$postemporary,
-                'sp_vpermanenet'=>$vpermanenet,
-                'sp_vtemporary'=>$vtemporary,
-                'sp_org_id'=> '1'
-            );
+			        //        'sp_plan_nonplan'=>$plannonplan,
+			      $update_data = array(
+			                'sp_tnt'=> $tnt,
+			                'sp_type'=> $type,
+			                'sp_emppost'=> $this->commodel->get_listspfic1('designation', 'desig_id', 'desig_name', $emppost)->desig_id ,
+			                'sp_grppost'=> $grppost,
+			                'sp_scale'=> $scale,
+			                'sp_methodRect'=> $methodRect,
+			                'sp_group'=>$group,
+			                'sp_uo'=> $this->lgnmodel->get_listspfic1('authorities', 'id', 'name', $uo)->id,
+			                'sp_dept'=> $this->commodel->get_listspfic1('Department', 'dept_id', 'dept_name', $dept)->dept_id, 
+			                'sp_address1'=>$address,
+			                'sp_address2'=>'Null',
+			                'sp_address3'=>'Null',
+			                'sp_campusid'=> $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_name', $campusid)->sc_id,
+			                'sp_per_temporary'=>'Null',
+			                'sp_schemecode'=> $editsp_data->sp_schemecode, 
+			                'sp_sancstrenght'=>$sancstrenght,
+			                'sp_position'=>$position,
+			                'sp_vacant'=>$vacant,
+			                'sp_remarks'=>$remarks,
+			                'sp_ssdetail'=>$ssdetail,
+			                'sp_sspermanent'=>$sspermanent,
+			                'sp_sstemporary'=>$sstemporary,
+			                'sp_pospermanent'=>$pospermanent,
+			                'sp_postemporary'=>$postemporary,
+			                'sp_vpermanenet'=>$vpermanenet,
+			                'sp_vtemporary'=>$vtemporary,
+			                'sp_org_id'=> '1'
+            			);
 
-        $spflag=$this->sismodel->updaterec('staff_position', $update_data, 'sp_id', $sp_id);
-        if(!$spflag)
-            {
-                $this->logger->write_logmessage("error","Error in updating Staff Position ", "Error in record updating. " );
-                $this->logger->write_dblogmessage("error","Error in updating Staff Position ", "Error in record updating. " );
-                $this->session->set_flashdata('err_message','Error in updating Staff Position ' . '.', 'error');
-                $this->load->view('staffmgmt/editstaffposition', $data);
-            }
-            else{
-                $this->logger->write_logmessage("update","Edit Staff Position", " Record updated successfully. " );
-                $this->logger->write_dblogmessage("update","Edit Staff Position", "Record updated successfully. " );
-                $this->session->set_flashdata('success',"Record updated successfully....." );
-                redirect('staffmgmt/staffposition/');
-          } 
-	}
-        $this->load->view('staffmgmt/editstaffposition', $data);
+			        $spflag=$this->sismodel->updaterec('staff_position', $update_data, 'sp_id', $sp_id);
+			        if(!$spflag)
+            			{
+			                $this->logger->write_logmessage("error","Error in updating Staff Position ", "Error in record updating. " );
+			                $this->logger->write_dblogmessage("error","Error in updating Staff Position ", "Error in record updating. " );
+			                $this->session->set_flashdata('err_message','Error in updating Staff Position ' . '.', 'error');
+			                $this->load->view('staffmgmt/editstaffposition', $data);
+			        }		
+			        else{
+			                $this->logger->write_logmessage("update","Edit Staff Position", " Record updated successfully. " );
+		                	$this->logger->write_dblogmessage("update","Edit Staff Position", "Record updated successfully. " );
+                			$this->session->set_flashdata('success',"Record updated successfully....." );
+			                redirect('staffmgmt/staffposition/');
+			        } 
+			}
+		}
+        	$this->load->view('staffmgmt/editstaffposition', $data);
+	}else{
+                $this->session->set_flashdata('err_message','You do not have the right to Modify staff position.' .  '.', 'error');
+                redirect('staffmgmt/staffposition');
+        }
+
     }
 
  /* This function has been created for get list of schemes on the basis of  selected department */

@@ -264,6 +264,36 @@
                         });
                     }
                   });
+ /************************Employee Grade******************************************************************/
+            
+            $('#worktypeid').on('change',function(){
+                var worktype = $(this).val();
+              //  alert("comin ======="+worktype);
+                if(worktype === ''){
+                   $('#empgrade').prop('disabled',true);
+                }
+                else{
+             
+                    $('#empgrade').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
+                        type: "POST",
+                        data: {"wtype" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee Grade******************************************************************/
+
 
 /**********************************************************************************************/
 		 $('#worktypeid').on('change',function(){
@@ -323,7 +353,7 @@
             <form id="myform" action="<?php echo site_url('empmgmt/update_servicedata/'.$id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Service Details</th></thead></tr>
+                <tr><thead><th style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Update Service Details</th></thead></tr>
                 <tr></tr><tr></tr>
                 <tr>
                     <td>Campus Name <font color='Red'>*</font></td>
@@ -398,8 +428,20 @@
                         <option value="Non Teaching">Non Teaching</option>
                         </select>
                 </td>
+	</tr>
+		 <tr>
+                <td><label for="empgrade">  Grade </label>
+                        </td><td>
+                        <div><select name="empgrade" id="empgrade"  style="width:350px;">
+                        <?php if(!empty($servicedata->empsd_grade)):;?>
+                        <option value="<?php echo $servicedata->empsd_grade;?>"><?php echo $servicedata->empsd_grade;?></option>
+                        <?php endif;?>
+                        <option  disabled  >-------- Select Grade --------</option>
+                        </select></div>
+                </td>
+        </tr>
 
-<tr>
+	<tr>
                 <td>Group<font color='Red'>*</font></td>
 		 <td><select name="group" style="width:350px;" id="grpid" required>
                             <?php if(!empty($servicedata->empsd_group)):;?>
@@ -466,6 +508,20 @@
                         <option value="Level-16">Level-16</option>
                         <option value="Level-17">Level-17</option>
                         <option value="Level-18">Level-18</option>
+			<option value="Level-19">Level-19</option>
+                        <option value="Level-20">Level-20</option>
+                        <option value="Level-21">Level-21</option>
+                        <option value="Level-22">Level-22</option>
+                        <option value="Level-23">Level-23</option>
+                        <option value="Level-24">Level-24</option>
+                        <option value="Level-25">Level-25</option>
+                        <option value="Level-26">Level-26</option>
+                        <option value="Level-27">Level-27</option>
+                        <option value="Level-28">Level-28</option>
+                        <option value="Level-29">Level-29</option>
+                        <option value="Level-30">Level-30</option>
+                        <option value="Level-31">Level-31</option>
+                        <option value="Level-32">Level-32</option>
                         </select>
                     </td>
                 </tr>
@@ -481,7 +537,9 @@
                             $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$servicedata->empsd_pbid)->sgm_min;
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$servicedata->empsd_pbid)->sgm_gradepay;
                             ;?>
-                            <?php echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;?></option>
+                            <?php echo $payband."(".$pay_min."-".$pay_max.")";
+				if($gardepay > 0) {echo $gardepay;}
+				?></option>
                         <?php else:?>
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php endif;?>
@@ -557,7 +615,7 @@
                 </tr>
 
 		<tr>
-            <td>Upload Attachment</td>
+            <td>Upload Attachment<br>(Max size 20MB, Allowed Type- pdf)</td>
             <td><input type='file' name='userfile' size='20' style="font-size:15px;"/>
             <?php if(!empty($servicedata->empsd_filename)):;?>
             <td colspan="2">

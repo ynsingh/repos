@@ -5,7 +5,7 @@
     <head>    
         <?php $this->load->view('template/header'); ?>
         
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/tablestyle.css">
         <style type="text/css" media="print">
             @page {
                 size: auto;   /* auto is the initial value */
@@ -37,7 +37,6 @@
         <tr>
             <td>
                 <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
-                
             </td> 
 	 <td align=right>
         <a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a>
@@ -46,7 +45,6 @@
     </table>        
     <div id="printme">   
       
-<table style="width:100%;" border=0>
     <div align="left">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -65,11 +63,13 @@
                   
         </div>
  
+<table style="width:100%;" border=0>
 <tr>
+<td valign="top" width=170>
 <?php
 	include 'empprofiletab.php';
 ?>
-
+</td>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -77,7 +77,7 @@
                         <tr>
 		</table>
 		<table class="TFtable" align="center">
-                        <?php if( !empty($promotionaldata) ):  ?>
+                        <?php if(!empty($promotionaldata)):  ?>
                     <thead>
                         <tr>
                             <th>Working Type</th>
@@ -97,12 +97,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
-                            <?php foreach($promotionaldata as $record){;
-//print_r($record);
-//die;
-?>
-			<?php
+                            <?php foreach($promotionaldata as $record){
 				echo "<tr>";
 				echo "<td>";
 					echo  $record->spd_wtype;
@@ -115,11 +110,9 @@
 					echo $desig;
 				echo "</td>";
 				echo "<td>";
-
 					echo  $record->spd_paycom;
 				echo "</td>";
 				echo "<td>";
-
 					echo  $record->spd_agp;
 					echo  $record->spd_level;
 				echo "</td>";
@@ -138,16 +131,13 @@
 					if(!empty((int)$record->spd_selgradedate)){	
 					echo  $record->spd_selgradedate;
 					}
-
 				echo "</td>";
 				echo "<td>";
-
 					if(!empty((int)$record->spd_specialgrddate)){	
 					echo  $record->spd_specialgrddate;
 					}
 				echo "</td>";
 				echo "<td>";
-
 				echo "</td>";
 					?>
                                 <td>
@@ -159,29 +149,25 @@
 				?>
                                 </td>
                             </tr>
-                        <?php }; ?>
+                        <?php } ?>
                         <?php else : ?>
-                            <td colspan= "13" align="center"> No Records found...!</td>
-                        <?php endif;?>
+	                          <tr>  <td colspan= "13" align="center"> No Records found...!</td></tr>
+                        <?php endif ?>
                     </tbody>    
 		</table>
 		<table style="width:100%;">
         	<tr>
         	<td align=right>
-		<a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a>
+		<a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a> 
         	</td>
         	</tr>
     		</table>
 	<br>
 </td>
 </tr>
-
-
 </table>
-       
    </div>      
  <p> &nbsp; </p>
-<div align="center">  <?php $this->load->view('template/footer');?></div>
+<div align="center">  <?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>
-

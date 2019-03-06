@@ -364,15 +364,15 @@
                </td>
 	</tr>	
 	<tr>
-		<td><label for="pnp" style="font-size:15px;"><font color='blue'> Plan / Non Plan</font><font color='Red'> *</font> </label>
+	<!--	<td><label for="pnp" style="font-size:15px;"><font color='blue'> Plan / Non Plan</font><font color='Red'> *</font> </label>
 		    <div><select name="pnp" id="" class="my_dropdown" style="width:338px;">
-                        <option value="" disabled selected >------Select-----------------</option>
-                        <option value="Plan" <?php echo set_select('pnp', 'Plan'); ?>class="dropdown-item"> Plan </option>
-                        <option value="Non Plan"<?php echo set_select('pnp', 'Non Plan'); ?> class="dropdown-item"> Non Plan </option> 
-                        <option value="GOI"<?php echo set_select('pnp', 'GOI'); ?> class="dropdown-item"> GOI </option> 
-                        <option value="ICAR"<?php echo set_select('pnp', 'ICAR'); ?> class="dropdown-item"> ICAR </option> 
+                        <option value="" disabled selected > -----Select---------------- </option> -->
+             <!--           <option value="Plan" <?php //echo set_select('pnp', 'Plan'); ?>class="dropdown-item"> Plan </option>
+                        <option value="Non Plan"<?php //echo set_select('pnp', 'Non Plan'); ?> class="dropdown-item"> Non Plan </option> 
+                        <option value="GOI"<?php //echo set_select('pnp', 'GOI'); ?> class="dropdown-item"> GOI </option> 
+                        <option value="ICAR"<?php //echo set_select('pnp', 'ICAR'); ?> class="dropdown-item"> ICAR </option> 
 		     </div>	
-		  </td>
+		  </td> -->
 		<td><label for="scale" style="font-size:15px;"><font color='blue'> Pay Band </font><font color='Red'> *</font> </label>
 		<div><select name="scale" id="scale" class="my_dropdown" style="width:338px;">
                   <option selected="selected" disabled selected>--------Select-------------</option>

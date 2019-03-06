@@ -82,14 +82,22 @@
                  </tr>  
 		 <tr>
                     <td >University Name :</td>
-                    <td><?php  echo $this->orgname->org_name ;?></td>
+                    <td><?php if(!empty($this->orgname->org_name)){
+				echo $this->orgname->org_name ;
+				}else{
+				echo $orgname;
+				}
+			?></td>
                  </tr>
                  <tr>
                      <td >Campus Name :</td>
                      <td><?php  
 			if(!empty($this->campusname->sc_name)){
 				echo $this->campusname->sc_name ;
-			}else{
+			}else if (!empty($campusname)){
+				echo $campusname;
+			}
+			else{
 				echo $scname;
 			}
 		?></td>
@@ -152,7 +160,10 @@
                    <?php  
 			if(!empty($this->address->address)){
 				echo $this->address->address ;
-			}else{
+			}else if(!empty($address)){
+				echo $address;
+			}
+			else{
 				echo $deptname;
 			}
 		?></td>
@@ -163,7 +174,8 @@
                    <?php  
 			if(!empty($this->mobile->mobile)){
 			echo $this->mobile->mobile ;
-			}else{
+			}
+			else{
 				echo $mobile;
 			}
 		?></td>
@@ -171,7 +183,12 @@
                <tr>
                    <td>Email :</td> 
                    <td ><?php  //echo //$this->currentlog; 
+
+			if(!empty($this->email->email)){
 			echo $this->email->email ;
+			}else{
+			echo $email;
+			}
 		?></td>
                </tr>
 	    <!--   <tr>

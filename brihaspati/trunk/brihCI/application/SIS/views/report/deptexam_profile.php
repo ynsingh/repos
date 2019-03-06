@@ -111,6 +111,7 @@
                     <thead>
                         <tr>
                             <th>Department Exam</th>
+                            <th>Exam Specification</th>
                             <th>Date of Passing</th>
                             <th ></th>
                         </tr>
@@ -126,6 +127,11 @@
                                 echo $record->sdep_examname;
                                 ?>
                                 </td>
+				<td>
+				 <?php
+                                    echo $record->sdep_specification;
+                                    ?>
+				</td>
                                 <td>
                                     <?php
                                     echo $record->sdep_passdate;
@@ -137,7 +143,7 @@
 				//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
 				//if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                                //              echo anchor("empmgmt/edit_deptexamdata/{$record->empsd_id}","Edit",array('title' => ' Edit Departmental Exam Data' , 'class' => 'red-link'));
+                                              echo anchor("empmgmt/edit_deptexamdata/{$record->sdep_id}","Edit",array('title' => ' Edit Departmental Exam Data' , 'class' => 'red-link'));
                                         }
                                 ?>
                                 </td>

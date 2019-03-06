@@ -4263,24 +4263,47 @@ public function displaysalarygrademaster(){
 public function addsociety(){
 
         if(isset($_POST['addsociety'])) {
-            $this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required|alpha_dash');
-            $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required|alpha_dash');
-            $this->form_validation->set_rules('soc_address','Society Address','trim|xss_clean');
-	    $this->form_validation->set_rules('soc_purpose','Society Purpose','trim|xss_clean');
-	    $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean');
+            $this->form_validation->set_rules('soc_name','Society Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('soc_code','Society Code','trim|xss_clean|required');
             $this->form_validation->set_rules('soc_regdate','Society Registration','trim|xss_clean');
+            $this->form_validation->set_rules('soc_regdate','Society Registration','trim|xss_clean');
+            $this->form_validation->set_rules('soc_address','Society Address','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_phone','Society Phone ','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_mobile','Society Mobile','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_email','Society Email','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_pan','Society PAN NO','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_tan','Society TAN NO','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_gst','Society GST NO','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_bname','Society Bank Name','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_bacno','Society Bank account Number','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_bifsc','Society IFSC Code','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_bmicr','Society bank MICR','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_bbranch','Society bank branch','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_bactype','Society acount type ','trim|xss_clean');
+	    $this->form_validation->set_rules('soc_remark','Society Remark','trim|xss_clean');
             
 
 
             if($this->form_validation->run()==TRUE){
             $data = array(
-                'soc_scode'=>($_POST['soc_code']),    
-                'soc_sname'=>ucfirst(strtolower($_POST['soc_name'])),
-		//'soc_code'=>($_POST['soc_code']),
-                'soc_address'=>ucwords($_POST['soc_address']), 
-		'soc_purpose'=>ucwords($_POST['soc_purpose']),
-		'soc_sremark'=>ucwords($_POST['soc_remark']),
-                'soc_regdate'=>ucwords($_POST['soc_regdate']),
+                'soc_scode'=>$_POST['soc_code'],    
+                'soc_sname'=>ucwords(strtolower($_POST['soc_name'])),
+                'soc_regno'=>$_POST['soc_regno'],
+                'soc_regdate'=>$_POST['soc_regdate'],
+                'soc_address'=>$_POST['soc_address'], 
+		'soc_phone'=>$_POST['soc_phone'],
+		'soc_mobile'=>$_POST['soc_mobile'],
+		'soc_email'=>$_POST['soc_email'],
+		'soc_pan'=>strtoupper($_POST['soc_pan']),
+		'soc_tan'=>strtoupper($_POST['soc_tan']),
+		'soc_gst'=>strtoupper($_POST['soc_gst']),
+		'soc_bname'=>$_POST['soc_bname'],
+		'soc_bacno'=>$_POST['soc_bacno'],
+		'soc_bifsc'=>strtoupper($_POST['soc_bifsc']),
+		'soc_bmicr'=>$_POST['soc_bmicr'],
+		'soc_bbranch'=>$_POST['soc_bbranch'],
+		'soc_bactype'=>$_POST['soc_bactype'],
+		'soc_remarks'=>$_POST['soc_remark'],
                 'soc_creatorid'=>$this->session->userdata('id_user'),
                 'soc_creatordate'=>date('y-m-d'),
                 'soc_modifierid'=>$this->session->userdata('id_user'),
@@ -4323,13 +4346,41 @@ public function addsociety(){
    }
 
 
-public function displaysociety(){
+	public function displaysociety(){
 
-        $this->result = $this->SIS_model->get_list('society_master_list');
-        $this->logger->write_logmessage("view"," View ", "society Master display successfully..." );
-        $this->logger->write_dblogmessage("view"," View society  Master", "Society Master successfully..." );
-        $this->load->view('setup/displaysociety',$this->result);
-    }
+        	$this->result = $this->SIS_model->get_list('society_master_list');
+	        $this->logger->write_logmessage("view"," View ", "society Master display successfully..." );
+        	$this->logger->write_dblogmessage("view"," View society  Master", "Society Master successfully..." );
+	        $this->load->view('setup/displaysociety',$this->result);
+    	}
+
+	public function delete_soc($id){
+		$roleid=$this->session->userdata('id_role');
+		if($roleid==1){
+			$delflag=$this->SIS_model->deleterow('society_master_list','soc_id',$id);
+		        if (! $delflag   )
+        		{
+	            		$this->logger->write_logmessage("delete", "Error in delete society detail  [ society id:" . $id . "]");
+        	    		$this->logger->write_dblogmessage("delete", "Error in delete society detail  [society id:" . $id . "]");
+	            		$this->session->set_flashdata('Error in deleting society details - ' . $id);
+	                	redirect("setup/displaysociety", "refresh");
+	        	}
+        		else {
+
+	            		$this->logger->write_logmessage("delete", " Deleted delete society Record  [society id:" . $id . "]");
+        	    		$this->logger->write_dblogmessage("delete", "Deleted delete society Record  [society id:" . $id . "]");
+	            		$this->session->set_flashdata("success", 'Deleted  society Record successfully by '.$this->session->userdata('username') );
+	                	redirect("setup/displaysociety", "refresh");
+	        	}
+		}
+		else{
+			$this->logger->write_logmessage("delete"," tring to delete society details ", "tring to delete society details record by".$this->session->userdata('username')  );
+                	$this->logger->write_dblogmessage("delete","tring to  delete society details ", "tring to delete society details record by".$this->session->userdata('username') );
+        	        $this->session->set_flashdata("err_message", "You do not have the aright to delete society details. ");
+	                redirect("setup/displaysociety", "refresh");
+		}
+	}
+
 
 /**This function is used for update Society records
      * @param type $id

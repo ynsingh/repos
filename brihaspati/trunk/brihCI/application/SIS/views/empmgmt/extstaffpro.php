@@ -176,7 +176,7 @@
 	<tr><thead><th  style="background-color:gray; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp;H) Attachment Performance File</th></thead></tr>
         <tr></tr><tr></tr>     
         <tr>
-            <td><label for="spd_per_filename">Upload Attachment:</label></td>
+            <td><label for="spd_per_filename">Upload Attachment:<br>(Max size 20MB, Allowed Type- pdf)</label></td>
             <td><input type='file' name='userfile' size='20' style="font-size:15px;"/>
             </td>
         </tr>

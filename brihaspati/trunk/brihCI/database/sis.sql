@@ -243,6 +243,7 @@ CREATE TABLE  employee_servicedetail(
 	empsd_filename varchar(500) default null,
 	empsd_fsession varchar(100) default null,
 	empsd_tsession varchar(100) default null,
+	empsd_grade VARCHAR(255) NULL,
         PRIMARY KEY (empsd_id)
 )ENGINE = InnoDB;
 -- ---------------------------------------------------------
@@ -307,6 +308,7 @@ CREATE TABLE `employee_master` (
   `emp_exp` int(11) default NULL,
   `emp_qual` varchar(100) default NULL,
   `emp_specialisationid` int(11) NOT NULL,
+  `emp_splsuboth` VARCHAR(255) NULL ,
   `emp_phd_status` varchar(100) default NULL,
   `emp_dateofphd` Date default NULL,
   `emp_AssrExam_status` varchar(100) default NULL,
@@ -992,8 +994,20 @@ CREATE TABLE `society_master_list` (
   `soc_scode` varchar(100)  NOT NULL,
   `soc_address` VARCHAR(255) NOT NULL,
   `soc_regdate` DATETIME(6) NOT NULL,
-  `soc_purpose` VARCHAR(100) NOT NULL,
-  `soc_sremark` varchar(100) NOT NULL,
+  `soc_regno` VARCHAR(255)  NULL,
+  `soc_phone` VARCHAR(13) NULL , 
+  `soc_mobile` VARCHAR(13) NULL ,
+  `soc_email` VARCHAR(255) NULL, 
+  `soc_pan` VARCHAR(50) NULL , 
+  `soc_tan` VARCHAR(50) NULL ,
+  `soc_gst` VARCHAR(50) NULL , 
+  `soc_bname` VARCHAR(255) NULL , 
+  `soc_bacno` VARCHAR(255) NULL , 
+  `soc_bifsc` VARCHAR(50) NULL , 
+  `soc_bmicr` VARCHAR(50) NULL ,
+  `soc_bbranch` VARCHAR(255) NULL ,
+  `soc_bactype` VARCHAR(50) NULL ,
+  `soc_remark` varchar(255)  NULL,
   `soc_creatorid` varchar(255) NOT NULL,
   `soc_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `soc_modifierid` varchar(255) NOT NULL,
@@ -1204,7 +1218,8 @@ CREATE TABLE `staff_promotionals_details` (
   `spd_creatordate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `spd_creatorid` varchar(255) NOT NULL,
   `spd_modifierid` varchar(255) NOT NULL,
-  `spd_modifydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `spd_modifydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `spd_grade` VARCHAR(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1242,7 +1257,8 @@ CREATE TABLE `staff_promotionals_details_archive` (
   `spda_creatordate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `spda_creatorid` varchar(255) NOT NULL,
   `spda_modifierid` varchar(255) NOT NULL,
-  `spda_modifydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `spda_modifydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `spda_grade` VARCHAR(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

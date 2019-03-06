@@ -185,6 +185,10 @@
 		if(!empty($splsub)){
 		echo 	$splsub->sub_name;
 		}
+		if(!empty($data->emp_splsuboth)){
+			echo "<br>";
+			echo $data->emp_splsuboth;
+		}
  ?>
                                 </td>
 <td>

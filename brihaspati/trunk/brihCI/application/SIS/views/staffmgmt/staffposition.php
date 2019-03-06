@@ -243,10 +243,11 @@
             <thead>
                 <tr>
 		<th> Sr.No </th>
-		<th> Campus Name </th>
+<!--		<th> Campus Name </th>
 		<th> U O Control </th>
 		<th> Department Name </th>
 		<th> Scheme Name (Scheme Code) </th>
+-->
 		<th> Working Type </th>
 		<th> Post Type </th>
 		<th> Employee Post </th>
@@ -259,17 +260,34 @@
 	</thead>
 	<tbody>
 	<?php $count = 0;
-		 if( count($records) ) {
+		 if(!empty($records) ) {
+			$campid=$uoid=$deptid=$sdid='';
                 foreach ($records as $row)
                 {
 //		print_r($row);die;
+			if(($campid !=$row->sp_campusid)||($uoid !=$row->sp_uo)||($deptid !=$row->sp_dept)||($sdid !=$row->sp_schemecode)){
+		?>
+		<tr>
+			<td colspan=3> <b>Campus Name : </b> <?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->sp_campusid)->sc_name; ?> </td>
+                        <td colspan=2> <b> U O Control  : </b> <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $row->sp_uo)->name ?> </td>
+                        <td colspan=2> <b> Department Name : </b><?php echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $row->sp_dept)->dept_name; ?> </td>
+                        <td colspan=3> <b> Scheme Name (Scheme Code) :</b> <?php echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->sp_schemecode)->sd_name ."<br>( ".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->sp_schemecode)->sd_code . " )";  ?> </td>
+			</tr>
+		<?php
+				$campid = $row->sp_campusid;
+				$uoid = $row->sp_uo;
+				$deptid = $row->sp_dept;
+				$sdid	= $row->sp_schemecode;
+			}
 		?>    
+			
 			<tr>
 			 <td><?php echo ++$count; ?> </td>
-                         <td><?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->sp_campusid)->sc_name; ?> </td>
-			 <td><?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $row->sp_uo)->name ?> </td>
-			 <td><?php echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $row->sp_dept)->dept_name; ?> </td>
-			 <td><?php echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->sp_schemecode)->sd_name ."<br>( ".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->sp_schemecode)->sd_code . " )";  ?> </td>
+   <!--                      <td><?php //echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->sp_campusid)->sc_name; ?> </td>
+			 <td><?php //echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $row->sp_uo)->name ?> </td>
+			 <td><?php //echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $row->sp_dept)->dept_name; ?> </td>
+			 <td><?php //echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->sp_schemecode)->sd_name ."<br>( ".$this->sismodel->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->sp_schemecode)->sd_code . " )";  ?> </td>
+-->
 			 <td><?php echo $row->sp_tnt ?> </td>
 			 <td><?php echo $row->sp_type ?> </td>
 			 <td><?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $row->sp_emppost)->desig_name ?> </td>

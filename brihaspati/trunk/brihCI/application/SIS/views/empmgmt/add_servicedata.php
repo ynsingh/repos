@@ -266,6 +266,37 @@
                     }
                   });
 
+	 /************************Employee Grade******************************************************************/
+            
+            $('#worktypeid').on('change',function(){
+                var worktype = $(this).val();
+              //  alert("comin ======="+worktype);
+                if(worktype === ''){
+                   $('#empgrade').prop('disabled',true);
+                }
+                else{
+             
+                    $('#empgrade').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
+                        type: "POST",
+                        data: {"wtype" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee Grade******************************************************************/
+
+
 /***********************************************************************/
 		$('#worktypeid').on('change',function(){
                         var wtid= $('#worktypeid').val();
@@ -372,6 +403,14 @@
                 </td>
 
 	<tr>
+		<td><label for="empgrade">  Grade </label>
+			</td><td>
+                        <div><select name="empgrade" id="empgrade"  style="width:350px;">
+                        <option selected="selected" disabled selected >-------- Select Grade --------</option>
+                        </select></div>
+                </td>
+	</tr>
+	<tr>
                 <td>Group<font color='Red'>*</font></td>
                 <td colspan=2><select name="group" style="width:350px;" id="grpid" required>
 		<option selected="selected" disabled selected>------------ Select Group ---------</option>
@@ -420,6 +459,20 @@
                         <option value="Level-16">Level-16</option>
 			<option value="Level-17">Level-17</option>
                         <option value="Level-18">Level-18</option>
+                        <option value="Level-19">Level-19</option>
+                        <option value="Level-20">Level-20</option>
+                        <option value="Level-21">Level-21</option>
+                        <option value="Level-22">Level-22</option>
+                        <option value="Level-23">Level-23</option>
+                        <option value="Level-24">Level-24</option>
+                        <option value="Level-25">Level-25</option>
+                        <option value="Level-26">Level-26</option>
+                        <option value="Level-27">Level-27</option>
+                        <option value="Level-28">Level-28</option>
+                        <option value="Level-29">Level-29</option>
+                        <option value="Level-30">Level-30</option>
+                        <option value="Level-31">Level-31</option>
+                        <option value="Level-32">Level-32</option>
                 </select>
                 </td>
         </tr>		
@@ -428,7 +481,9 @@
                     <td colspan=2><select name="payband" id="payband" style="width:350px;" onchange="gradelist(this.value)"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php foreach($this->salgrd as $salgrddata): ?>	
-                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
+                            <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")";
+					 if($salgrddata->sgm_gradepay > 0) {echo $salgrddata->sgm_gradepay;}
+				 ?>
                             </option> 
  			<?php endforeach;?>
                        
@@ -474,7 +529,7 @@
                         </select></td>
                 </tr>
         <tr>
-            <td>Upload Attachment</td>
+            <td>Upload Attachment<br>(Max size 20MB, Allowed Type- pdf)</td>
             <td colspan=2><input type='file' name='userfile' size='20' style="font-size:15px;"/>
             </td>
         </tr>

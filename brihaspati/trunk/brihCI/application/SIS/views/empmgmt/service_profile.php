@@ -143,6 +143,7 @@
                                </td>
 <td> 
                                     <?php
+					if(!empty($record->empsd_pbid)){
                                     $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name; 
                                     $pbmax=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$record->empsd_pbid)->sgm_max;
                                     $pbmin=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$record->empsd_pbid)->sgm_min;
@@ -150,7 +151,9 @@
 				    $dateofagp=implode('-', array_reverse(explode('-', $record->empsd_pbdate))); 
 				    $gradepay=$record->empsd_gradepay;
                                     $level=$record->empsd_level;
-                                    echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; ?>
+                                    echo "<b>Pay Band-: </b>".$pbname."(".$pbmin."-".$pbmax.")".$pbgp."<br>"."<b>Grade Pay-: </b>".$gradepay."<br>"."<b>Level-: </b>" .$level."<br>"."<b>Date of AGP-: </b>".$dateofagp; 
+					}
+?>
                                 </td>
                                 <td>
                                     <?php  $dojoin=implode('-', array_reverse(explode('-', $record->empsd_dojoin))); ?>

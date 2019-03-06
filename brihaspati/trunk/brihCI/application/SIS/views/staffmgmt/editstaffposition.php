@@ -183,12 +183,13 @@
              </div>
 	    </td>	
         </tr>
-        <tr>
+<!--        <tr>
              <td><label for="ss" style="font-size:15px;"><font color='Blue'> Plan / Non Plan</font> </label>
              <div>
-                 <?php echo form_input($pnp); ?>
+                 <?php //echo form_input($pnp); ?>
              </div>
 	     </td>
+-->
              <td><label for="ss" style="font-size:15px;"><font color='Blue'> Pay Band</font> </label>
              <div>
                  <?php echo form_input($scale); ?>
@@ -274,7 +275,7 @@
 	</tr>
 	<tr style="background-color:#2a8fcf;text-align:left;height:40px;">
 	<td colspan="3">
-	     <button name "submit" >Update</button>
+	     <button name="editstaffposition" >Update</button>
 	</form>
 	     <?php echo "<button onclick=\"goBack()\" >Back</button>";?>
 	</td>	

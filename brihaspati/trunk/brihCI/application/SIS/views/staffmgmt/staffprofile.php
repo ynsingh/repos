@@ -16,6 +16,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 		 $("#dojvc").hide();
 		$( "#netqno" ).hide();
 		$("#phdetail").hide();
+		$("#splsubo").hide();
             var today = new Date();
             
             $('#StartDate,#StartDatevc,#Dateofhgp1,#Dateofphd,#Dateofbirth,#allvciregdate,#vciregdate').datepicker({
@@ -339,7 +340,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
              
             /************************closer for shown against the post*****************************************/
 	 /************************Plan NO PLan GOI ICAR******************************************************************/
-            
+    /*        
             $('#emppostid').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
@@ -367,6 +368,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     });
                 }
             }); 
+*/
             /************************ close Plan NON PLAN ICAR GOI******************************************************************/
 
 	 /************************Old payband start******************************************************************/
@@ -645,7 +647,20 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 				$("#dojvc").hide();
 			}
 		  });
-           
+          
+		$('#splsub').on('change',function(){
+                        var desigvcid= $('#splsub').val();
+                        if(desigvcid == "64"){
+                                $("#splsubo").show();
+                        }
+                        else{
+                                $("#splsubo").hide();
+                        }
+                  });
+
+
+
+ 
         
         });
          /*********************************************image preview***************************************************************/
@@ -794,15 +809,11 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <option selected="selected" disabled selected>------------------ Select Post ------------------</option>
                     </select></div>
                 </td>
-                 <td><label for="pnp" style="font-size:15px;"><font color='blue'>Plan / Non Plan</font></label>
+            <!--     <td><label for="pnp" style="font-size:15px;"><font color='blue'>Plan / Non Plan</font></label>
                     <div><select name="pnp" id="pnptypeid" style="width:300px;"> 
-                         <option value="">-------------- Plan/Non Plan ------------</option>
-            <!--            <option value="Plan">Plan</option>
-                        <option value="Non-Paln">Non Plan</option>
-                        <option value="GOI">GOI</option>
-                        <option value="ICAR">ICAR</option>  -->
-                    </select></div>
-                </td>
+                         <option value="">-------------- Plan/Non Plan ------------ </option> -->
+               <!--     </select></div>
+                </td> -->
                 <td><label for="emptype" style="font-size:15px;"><font color='blue'>Post Type</font><font color='Red'>*</font></label>
                     <div><select id="emptypeid" name="emptype" required style="width:300px;"> 
                         <option selected="selected" disabled selected>-------- Select Post Type ------</option>
@@ -810,6 +821,9 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Temporary">Temporary</option>-->
                     </select><div>
                 </td> 
+                <td><label for="secondary emailid" style="font-size:15px;"><font color='blue'>Secondary Email Id</font></label>
+                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
+                </div></td>
                 <td><label for="empcode" style="font-size:15px;"><font color='blue'>Employee PF No</font><font color='Red'>*</font></label>
                     <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo isset($_POST["empcode"]) ? $_POST["empcode"] : ''; ?>" placeholder="employee PF No..." size="33"  required pattern="[a-zA-Z0-9 ]+" required="required">
                 </div></td>
@@ -831,20 +845,24 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div class="tooltip"><input type="text" name="spousename" class="keyup-characters" value="<?php echo isset($_POST["spousename"]) ? $_POST["spousename"] : ''; ?>" placeholder="Teetha S. P. R" size="33" >
 		<span class="tooltiptext">Teetha S. P. R</span>
                 </div></td>
-                <td><label for="orderno" style="font-size:15px;"> <font color='blue'> Appointment Order No</font></label>
+                <td><label for="orderno" style="font-size:15px;"> <font color='blue'>First Appointment Order No</font></label>
                     <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="33">
                 </div></td>
             </tr>
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="specialisation" style="font-size:15px;"><font color='blue'>Specialisation(Major Subject)</font></label>
-                    <div><select name="specialisation" style="width:300px;"> 
+                    <div><select name="specialisation" id="splsub"style="width:300px;"> 
                         <option value="0">----------- Major Subject -----------</option>
                         <?php foreach($this->subject as $subdata): ?>	
    				<option value="<?php echo $subdata->sub_id; ?>"><?php echo $subdata->sub_name; ?></option> 
  			<?php endforeach; ?>
                        
                     </select></div>
+			<div id="splsubo" >
+				
+		<input type="text" name="splsubo"   value="<?php echo isset($_POST["splsubo"]) ? $_POST["splsubo"] : ''; ?>" placeholder="Other subject" size="33" >
+			</div>
                 </td>
                
                  <td><label for="gender" style="font-size:15px;"><font color='blue'>Gender</font></label>
@@ -1067,9 +1085,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="seniorityno" style="font-size:15px;"><font color='blue'>Seniority No</font></label>
                     <div><input type="text" name="seniorityno" class="keyup-characters" value="<?php echo isset($_POST["seniorityno"]) ? $_POST["seniorityno"] : ''; ?>" placeholder="Seniority No...." size="33" >
                 </div></td>
-                <td><label for="secondary emailid" style="font-size:15px;"><font color='blue'>Secondary Email Id</font></label>
-                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
-                </div></td>
+		<td>
+		</td>
 		                         
             </tr>
             <tr>

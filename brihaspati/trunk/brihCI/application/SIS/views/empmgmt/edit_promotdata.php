@@ -72,7 +72,37 @@
   //       			$("#le").show();
                         }
                   });
-           
+ 
+	 /************************Employee Grade******************************************************************/
+            
+            $('#worktypeid').on('change',function(){
+                var worktype = $(this).val();
+              //  alert("comin ======="+worktype);
+                if(worktype === ''){
+                   $('#empgrade').prop('disabled',true);
+                }
+                else{
+             
+                    $('#empgrade').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getgradelist",
+                        type: "POST",
+                        data: {"wtype" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            $('#empgrade').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee Grade******************************************************************/
+          
 
             /************************select Designation on basis of Group*******************/
             $('#grpid').on('change',function(){
@@ -165,6 +195,18 @@
                         <option value="Non Teaching">Non Teaching</option>
                     </select>
                 </td>
+	</tr>
+		 <tr>
+                <td><label for="empgrade">  Grade </label>
+                        </td><td>
+                        <div><select name="empgrade" id="empgrade"  style="width:350px;">
+<?php                   if(!empty($promotdata->spd_grade)) { ?>
+                        <option value="<?php echo $promotdata->spd_grade;?>"><?php echo $promotdata->spd_grade ; ?></option>
+<?php                   } ?>
+                        <option selected="selected" disabled selected >-------- Select Grade --------</option>
+                        </select></div>
+                </td>
+        </tr>
 
 	<tr>
                 <td>Group<font color='Red'>*</font></td>
