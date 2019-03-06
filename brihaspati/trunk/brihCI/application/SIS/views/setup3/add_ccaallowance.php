@@ -135,12 +135,20 @@
                 <tr>
                 	<td><label for="ccagrade" class="control-label">CCA Grade:</label></td>
                         <td>
+				<select name="ccagrade" id="ccagrade" class="my_dropdown" style="width:100%;">
+                                <option value="" disabled selected >------Select CCA Grade -------</option>
+                                <?php foreach($this->ccagrade as $cgcdata): ?>
+                                <option value="<?php echo $cgcdata->cgc_id; ?>"><?php echo $cgcdata->cgc_gradename;?></option>
+                                <?php endforeach; ?>
+                            </select>
+<!--
                             <select name="hragrade" id="hragrade" class="my_dropdown" style="width:100%;">
                 		<option value="" disabled selected >------Select CCA Grade -------</option>
                                 <option value="CCA-Type-I">CCA-Type-I</option>
                                 <option value="CCA-Type-II">CCA-Type-II</option>
                                 <option value="CCA-No">CCA-No</option>
 			    </select>
+-->
                         </td>
 	     	</tr>
 		 <tr>

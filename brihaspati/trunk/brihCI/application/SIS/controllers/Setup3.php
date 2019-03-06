@@ -1563,7 +1563,7 @@ class Setup3 extends CI_Controller
     /*********************  ADD City Compensatory Allowance(CCA) *********************************************************/
     public function add_ccaallowance(){
     //    $this->salgrade= $this->sismodel->get_list('salary_grade_master');
-  //      $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $this->ccagrade= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         if(isset($_POST['add_ccaalowance'])) {
             //form validation
             
@@ -1647,7 +1647,7 @@ class Setup3 extends CI_Controller
     /********************* Edit City Compensatory Allowance(CCA) form  *******************************************/
     public function edit_ccaallowance($id){
      //   $this->salgrade= $this->sismodel->get_list('salary_grade_master');
-//        $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $data['ccagrade']= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         $data['id'] = $id;
         $data['ccadata'] = $this->sismodel->get_listrow('ccaallowance_calculation','cca_id',$id)->row();
         if(isset($_POST['edit_cca'])) {

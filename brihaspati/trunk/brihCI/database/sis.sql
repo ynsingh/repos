@@ -1734,6 +1734,7 @@ CREATE TABLE `cca_grade_city` (
 
 insert into cca_grade_city values (1,'CCA-Type-I','Chennai City','32 Kms','Chennai city and palces around the city at a distance not exceeding 32 kms from city limits. If the radius of 32 Kms. Fall within a part of a Panchayat Union, the entire Panchayat Union shall be taken for the purpose of giving house rent allowance (HRA) as a admissible to Grade-I(a) place.','admin',CURRENT_TIMESTAMP,'admin',CURRENT_TIMESTAMP);
 insert into cca_grade_city values (2,'CCA-Type-II','Coimbatore(UA),Madurai(UA),Salem(UA),Tiruppur(UA),Tiruchirappali(UA),Erode(UA),','16 Kms','Given palces around then at a distance not exceeding 16 kms. from the city limits and if the radius of 16 Kms. falls within a part of a Panchayat Union, the entire Panchayat Union shall be taken for the purpose of giving House rent Allownace (HRA) as a admissible to Grade-I(b) palces.','admin',CURRENT_TIMESTAMP,'admin',CURRENT_TIMESTAMP);
+insert into cca_grade_city values (3,'CCA-Type-No','','','','admin',CURRENT_TIMESTAMP,'admin',CURRENT_TIMESTAMP);
 
 -- -------------------------------------------------------------------
 --

@@ -129,7 +129,6 @@
    				<option value="<?php echo $hgcdata->hgc_id; ?>"><?php echo $hgcdata->hgc_gradename;?></option> 
                                 <?php endforeach; ?>
                             </select>
-			    </select>
                         </td>
 	     	</tr>
 <!--                <tr>

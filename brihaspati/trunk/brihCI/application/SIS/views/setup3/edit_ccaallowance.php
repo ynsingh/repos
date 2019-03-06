@@ -123,14 +123,18 @@
                             <select name="hragrade" id="hragrade" class="my_dropdown" style="width:100%;">
                                  <?php if(!empty($ccadata->cca_gradeid)):;?>
                                 <option value="<?php echo $ccadata->cca_gradeid;?>"><?php 
-					echo $ccadata->cca_gradeid;
+					echo $this->sismodel->get_listspfic1('cca_grade_city','cgc_gradename','cgc_id',$ccadata->cca_gradeid)->cgc_gradename;
 				?></option>      
                                  <?php endif;?>
                 		<option value=""  >------Select CCA Grade -------</option>
-				 <option value="CCA-Type-I">CCA-Type-I</option>
+                                <?php foreach($ccagrade as $cgcdata): ?>
+                                <option value="<?php echo $cgcdata->cgc_id; ?>"><?php echo $cgcdata->cgc_gradename;?></option>
+                                <?php endforeach; ?>
+
+<!--				 <option value="CCA-Type-I">CCA-Type-I</option>
                                 <option value="CCA-Type-II">CCA-Type-II</option>
                                 <option value="CCA-No">CCA-No</option>
-
+-->
 				
 			    </select>
                         </td>

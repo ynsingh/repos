@@ -75,7 +75,7 @@
                                 ?>
           <!--                  <td><?php //echo $fullstr;?></td>     -->
 				<td><?php echo $record->cca_payrange; ?></td>
-                            <td><?php echo $record->cca_gradeid;; ?></td>
+                            <td><?php echo $this->sismodel->get_listspfic1('cca_grade_city','cgc_gradename','cgc_id',$record->cca_gradeid)->cgc_gradename; ?></td>
                             <td><?php echo $record->cca_amount; ?></td>
 <!--                            <td><?php //echo $record->cca_description; ?></td>-->
                             <td> <a href='<?php echo site_url()."/setup3/edit_ccaallowance/".$record->cca_id;?>' title="Edit Details"><img src="<?php echo base_url('assets/sis/images/edit.png');?>"></a>&nbsp; 
