@@ -86,7 +86,7 @@ public function viewprofile(){
         /* get logged user detail from different tables (firstname, lastname, email, address, mobile number, secondary email, campus name, org name)
          * using login model and common model
          */
-        $tihis->currentlog=$this->session->userdata('username');
+        $this->currentlog=$this->session->userdata('username');
         $this->roleid=$this->session->userdata('id_role');
         $this->currentrole=$this->commodel->get_listspfic1('role','role_name','role_id',$this->roleid);
 	$userid = $this->session->userdata('id_user');
@@ -114,6 +114,7 @@ public function viewprofile(){
         $data['campusname']=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid)->sc_name;
         $data['orgcode']=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid)->org_code;
         $data['orgname']=$this->commodel->get_listspfic1('org_profile','org_name','org_code', $data['orgcode'])->org_name;
+//	$data['designame']="";
         $this->load->view('profile/viewprofile',$data);
 }//end function
 /* this function is used for update user profile */

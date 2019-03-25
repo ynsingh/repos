@@ -1412,7 +1412,8 @@ public function disciplinewiselist(){
         $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code,emp_schemeid,emp_email,emp_doj,emp_dor,emp_dob";
         $whorder = "emp_dor desc,emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
-        
+        //$whdata = array ('emp_leaving ' =>NULL ,'emp_dor>=' =>$cdate); 
+        $whdata = array ('emp_leaving !=' =>NULL); 
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype  = $this->input->post('wtype');

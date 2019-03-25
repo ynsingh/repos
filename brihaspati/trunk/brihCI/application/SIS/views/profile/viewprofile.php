@@ -145,11 +145,13 @@
 		<td> Designation : </td>
 		<td>
 		<?php  
-			 if($dexist){
-			 $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id' ,$empid)->emp_desig_code; 
-			echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$desigid)->desig_name;
+			if($dexist){
+				$desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id' ,$empid)->emp_desig_code; 
+				echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$desigid)->desig_name;
 			}else{
-				echo $designame;
+				if(!empty($designame)){
+					echo $designame;
+				}
 			}
 		?>	
 		</td>

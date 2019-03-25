@@ -239,7 +239,7 @@ class Staffmgmt extends CI_Controller
     public function employeelist(){
 	$cdate = date('Y-m-d');
 	// add doris geater than current date and reason is null  in whdata
-	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+	$whdata = array ('emp_leaving ' =>NULL ,'emp_dor>=' =>$cdate);
         //  get role id and user id
         $rlid=$this->session->userdata('id_role');
         if ($rlid == 5){
@@ -894,6 +894,8 @@ class Staffmgmt extends CI_Controller
     }
     /****************************  START OPEN EDIT FORM WITH DATA *************/
     function editempprofile($id){
+	 $emdupl= $this->sismodel->isduplicate('employee_master','emp_id',$id);
+         if($emdupl){
         $this->roleid=$this->session->userdata('id_role');
         /*get detail of selected emplyee by passing id for edit*/
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
@@ -928,7 +930,11 @@ class Staffmgmt extends CI_Controller
         $whorder = 'aa_asigperiodfrom desc';
         $editemp_data['editasign'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,$whorder);
         $this->load->view('staffmgmt/editempprofile',$editemp_data);     
-        
+        }
+	else{
+		$this->session->set_flashdata('err_message', 'You are tring to approach wrong way. Kindly follow the system process');
+		redirect('home/logout');
+	}
     }
     /****************************  START OPEN EDIT FORM WITH DATA *************/
     
@@ -1193,6 +1199,7 @@ class Staffmgmt extends CI_Controller
                // 'emp_ddouserid'                  => $this->input->post('ddo'),
 //// enabled by nks start
                 'emp_ddoid'                      => $this->input->post('ddo'),
+                'emp_ddouserid'                  => $this->input->post('ddo'),
                 'emp_group'                      => $this->input->post('group'),
 // enabled by nks close
                 'emp_apporderno'                 => $this->input->post('orderno'),

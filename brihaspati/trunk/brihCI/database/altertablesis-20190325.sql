@@ -1,0 +1,1 @@
+ALTER TABLE `user_input_transfer` ADD `uit_vactype_from` VARCHAR(255) NULL AFTER `uit_transfertype`, ADD `uit_ddoid_from` INT(8) NULL AFTER `uit_vactype_from`, ADD `uit_group_from` VARCHAR(5) NULL AFTER `uit_ddoid_from`;

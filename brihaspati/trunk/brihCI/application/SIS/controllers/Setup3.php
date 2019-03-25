@@ -1569,9 +1569,9 @@ class Setup3 extends CI_Controller
             
     //        $this->form_validation->set_rules('worktype','Working Type','trim|required|xss_clean');
       //      $this->form_validation->set_rules('payscale','Pay Scale','trim|required|xss_clean');
-		$this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
+	    $this->form_validation->set_rules('paycomm','Pay Commission','trim|xss_clean');
             $this->form_validation->set_rules('payrange','CCA Pay Range','trim|xss_clean');
-            $this->form_validation->set_rules('hragrade','CCA Grade','trim|required|xss_clean');
+            $this->form_validation->set_rules('ccagrade','CCA Grade','trim|required|xss_clean');
             $this->form_validation->set_rules('amount','CCA Amount','trim|required|xss_clean|numeric');
 //            $this->form_validation->set_rules('Description','Description','trim|required|xss_clean');
             if($this->form_validation->run() == FALSE){
@@ -1585,7 +1585,7 @@ class Setup3 extends CI_Controller
         	         'cca_payscaleid'     =>'',
                     	'cca_payrange'     =>$_POST['payrange'],
       //              'cca_payscaleid'     =>$_POST['payscale'],
-                    'cca_gradeid'        =>$_POST['hragrade'],
+                    'cca_gradeid'        =>$_POST['ccagrade'],
     //                'cca_workingtype'    =>$_POST['worktype'],
                     'cca_amount'         =>$_POST['amount'],
   //                  'cca_description'     =>$_POST['Description'],
@@ -1597,7 +1597,7 @@ class Setup3 extends CI_Controller
                 
                 $dupcheck = array(
                     'cca_paycomm'     =>$_POST['paycomm'],
-                    'cca_gradeid'        =>$_POST['hragrade'],
+                    'cca_gradeid'        =>$_POST['ccagrade'],
                     'cca_payrange'    =>$_POST['payrange'],
                     
                 ); 
