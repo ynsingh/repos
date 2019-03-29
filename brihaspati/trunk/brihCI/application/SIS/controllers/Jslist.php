@@ -430,8 +430,11 @@ class Jslist extends CI_Controller
         $pfno= $this->input->post('emplypfno');
 	$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
        // echo "pfno---".$pfno;
-        $emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
-        $empdetail = $emp_data->result();
+	$sel1="emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_name,emp_post,emp_bank_ifsc_code,emp_bankname,emp_bankbranch,emp_bank_accno,emp_phone,emp_address,emp_secndemail,emp_ddoid,emp_dor,emp_doj,emp_dob,emp_salary_grade,emp_aadhaar_no,emp_paycomm,emp_pan_no,emp_nhisidno,emp_worktype,emp_group,emp_type_code";
+	$whdata1= array('emp_code'=>$pfno);
+        //$emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
+       // $empdetail = $emp_data->result();
+        $empdetail=$this->sismodel->get_orderlistspficemore('employee_master',$sel1,$whdata1,'');
         if(count($empdetail)>0){
             
             foreach($empdetail as $detail){
@@ -444,6 +447,9 @@ class Jslist extends CI_Controller
                 $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
                 $desigcd=$this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$detail->emp_desig_code)->desig_code;
                 $empname=$detail->emp_name;
+
+                $postname=$detail->emp_post;
+		$designame=  $designame ."@".$postname;
 
                 $ifcbank=$detail->emp_bank_ifsc_code;
 		$bank=$detail->emp_bankname;
@@ -463,12 +469,16 @@ class Jslist extends CI_Controller
                 $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade)->sgm_max;
                 $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade)->sgm_min;
                 $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
-                $payscale=$payband."(".$pay_min."-".$pay_max.")".$gardepay;
+		$level=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$detail->emp_salary_grade)->sgm_level;
+                $payscale=$payband."(".$pay_min."-".$pay_max.")".$gardepay."-".$level;
                 $aadhaarno=substr($detail->emp_aadhaar_no, -4);
                 $paycomm=$detail->emp_paycomm;
 //		if(empty($paycomm)){
 //			$paycomm ="";
 //		}
+		$panno=$detail->emp_pan_no;
+		$nhisid=$detail->emp_nhisidno;
+		$paycomm=$paycomm."@".$panno ."@".$nhisid;
        // 22 item push                         
                 array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
                 $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor,$payscale,$bank,$ifcbank,$bnkadd,$paycomm);
@@ -479,8 +489,11 @@ class Jslist extends CI_Controller
             }
             
         } 
-        $emp_data2=$this->sismodel->get_listrow('employee_master_support','ems_code',$pfno);
-        $empdetail2 = $emp_data2->result();
+	$sel2="ems_house_type,ems_house_no,ems_pensioncontri,ems_upfno,ems_universityemp,ems_washingallowance,ems_deductupf,ems_hragrade,ems_ccagrade,ems_inclsummary,ems_lic1no,ems_lic1amount,ems_lic2no,ems_lic2amount,ems_lic3no,ems_lic3amount,ems_lic4no,ems_lic4amount,ems_lic5no,ems_lic5amount,ems_prdno1,ems_prdno2,ems_prdno3,ems_plino1,ems_plino2,ems_society,ems_societymember,ems_erfq,ems_erfqhra,ems_qoccupai,ems_rentgrade,ems_spfcgs,ems_spfcgs2000,ems_fsfno";
+	$whdata2=array('ems_code'=>$pfno);
+        //$emp_data2=$this->sismodel->get_listrow('employee_master_support','ems_code',$pfno);
+        //$empdetail2 = $emp_data2->result();
+	$empdetail2 =$this->sismodel->get_orderlistspficemore('employee_master_support',$sel2,$whdata2,'');
         if(count($empdetail2)>0){
             
             foreach($empdetail2 as $detail2){
@@ -511,11 +524,17 @@ class Jslist extends CI_Controller
                 $plino2=$detail2->ems_plino2;
                 $society=$detail2->ems_society;
                 $socmem=$detail2->ems_societymember;
-                
-                // 28 item push
+                $erfq=$detail2->ems_erfq;
+		$erfqhra=$detail2->ems_erfqhra;
+		$qoccupai=$detail2->ems_qoccupai;
+		$rentgrade=$detail2->ems_rentgrade;
+		$spfcgs=$detail2->ems_spfcgs;
+		$spfcgs2000=$detail2->ems_spfcgs2000;
+		$fsfno=$detail2->ems_fsfno;
+                // 28 item push,7 item push
                 array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
                 $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
-                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem,$empid);      
+                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem,$empid,$erfq,$erfqhra,$qoccupai,$rentgrade,$spfcgs,$spfcgs2000,$fsfno);      
 
 //                array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
   //              $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
@@ -534,6 +553,11 @@ class Jslist extends CI_Controller
         $selval = $this->input->post('society');
         $socmember=$this->sismodel->get_listspfic1('societies','society_members','society_id',$selval)->society_members;
         echo json_encode($socmember);
+    }
+    public function getsocietyno(){
+        $selval = $this->input->post('society');
+        $socno=$this->sismodel->get_listspfic1('society_master_list','soc_regno','soc_id',$selval)->soc_regno;
+        echo json_encode($socno);
     }
 }    
 

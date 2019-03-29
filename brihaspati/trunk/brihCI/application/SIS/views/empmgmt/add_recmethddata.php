@@ -106,6 +106,7 @@
                         <option value="Open Advertisement">Open Advertisement</option>
                         <option value="Through Employeement Exchange">Through Employeement Exchange</option>
                         <option value="Compassionate">Compassionate</option>
+                        <option value="Land Acquisition">Land Acquisition</option>
                 </select>
                 </td>
         </tr>

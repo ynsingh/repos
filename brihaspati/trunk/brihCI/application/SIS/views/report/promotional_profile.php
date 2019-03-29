@@ -116,8 +116,10 @@
 				echo "</td>";
 				echo "<td>";
 					echo  $record->spd_group;
-					echo " / ";
-					echo  $record->spd_grade;
+					if(!empty($record->spd_grade)){
+						echo " / ";
+						echo  $record->spd_grade;
+					}
 				echo "</td>";
 				echo "<td>";
 					$desig=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $record->spd_designation)->desig_name;

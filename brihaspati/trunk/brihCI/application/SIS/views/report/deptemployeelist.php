@@ -39,7 +39,8 @@
                     else{
                         $('#uoff').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getuolist",
+				 url: "<?php echo base_url();?>sisindex.php/report/getspuolist",
+//                            url: "<?php echo base_url();?>sisindex.php/report/getuolist",
                             type: "POST",
                             data: {"worktype" : workt},
                             dataType:"html",

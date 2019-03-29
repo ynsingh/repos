@@ -107,7 +107,11 @@ class Report  extends CI_Controller
         $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
         // add doris geater than current date and reason is null  in whdata
-	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+//	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+	$whdata = $this->getprofilefilerdata();
+	$whdata['emp_leaving'] = NULL;
+	$whdata['emp_dor>=']=$cdate;
+
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
@@ -431,7 +435,7 @@ public function promotional_profile() {
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('spd_empid' => $emp_id);
-        $whorder = 'spd_id desc';
+        $whorder = 'spd_dojinpost desc, spd_agpdate desc, spd_id desc';
         $emp_data['promotionaldata'] = $this->sismodel->get_orderlistspficemore('staff_promotionals_details',$selectfield,$whdata,$whorder);
 
         $emp_data['uoempid']=$this->getempuoid();
@@ -633,7 +637,29 @@ public function disciplin_profile() {
         $this->load->view('report/disciplin_profile',$emp_data);
   }
 #############################f Discipline Wise List ##########################################
-
+	public 	function getprofilefilerdata(){
+		$whdata ='';
+		$rlid=$this->session->userdata('id_role');
+                if ($rlid == 5){
+                        $usrid=$this->session->userdata('id_user');
+                        $deptid = '';
+                        $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                        foreach($resu as $rw){
+                                $deptid=$rw->deptid;
+                        }
+                        $whdata=array('emp_dept_code'=> $deptid);
+                }
+                if ($rlid == 10){
+                        $usrname=$this->session->userdata('username');
+                        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
+                        }else{
+                                $uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
+                                $whdata=array('emp_uocid' => $uoid);
+                        }
+               }
+		return $whdata;
+	}
 
 public function disciplinewiselist(){
 	$this->sc=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code','','sc_name asc');
@@ -641,8 +667,34 @@ public function disciplinewiselist(){
 
 	$cdate = date('Y-m-d');
         $selectfield ="emp_dept_code, emp_id,emp_code,emp_name,emp_head, emp_desig_code,emp_specialisationid";
-	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
+	//$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'emp_worktype' => 'Teaching');
+	$whdata = $this->getprofilefilerdata();
+	$whdata['emp_leaving'] = NULL;
+	$whdata['emp_dor>=']=$cdate;;
+	$whdata['emp_worktype'] = 'Teaching';
+/*		$rlid=$this->session->userdata('id_role');
+                if ($rlid == 5){
+                        $usrid=$this->session->userdata('id_user');
+                        $deptid = '';
+                        $whdatad = array('userid' => $usrid,'roleid' => $rlid);
+                        $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+                        foreach($resu as $rw){
+                                $deptid=$rw->deptid;
+                        }
+                        $whdata['emp_dept_code']= $deptid;
+                }
+		if ($rlid == 10){
+                        $usrname=$this->session->userdata('username');
+//                      print_r( $usrname); die; 
+                        if(($usrname === 'vc@tanuvas.org.in')||($usrname === 'registrar@tanuvas.org.in')||($usrname === 'admin')||($usrname === 'asection@tanuvas.org.in')||($usrname === 'rsection@tanuvas.org.in')){
+                        }else{
+                                $uoid=$this->lgnmodel->get_listspfic1('authorities','id','authority_email',$usrname)->id;
+                                $whdata['emp_uocid'] = $uoid;
+                        }
+               }
+*/
         $whorder = "emp_specialisationid asc, emp_desig_code asc ";
+	
 	if(isset($_POST['filter'])) {
 		$camp = $this->input->post('camp');
             	$subj[] = $this->input->post('subj');	
@@ -718,7 +770,10 @@ public function disciplinewiselist(){
         $selectfield ="emp_id,emp_code,emp_desig_code,emp_dept_code,emp_head,emp_name";
         $whorder = "emp_desig_code  asc";
 	$cdate = date('Y-m-d');
-	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+//	$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate);
+	$whdata = $this->getprofilefilerdata();
+	$whdata['emp_leaving'] = NULL;
+	$whdata['emp_dor>=']=$cdate;
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');

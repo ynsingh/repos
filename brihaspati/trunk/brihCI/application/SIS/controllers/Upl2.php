@@ -67,7 +67,7 @@ class Upl2 extends CI_Controller
                         
                         $datal = explode(",", $line);
                         $flag=false;
-                        if (count($datal) == 4){
+                        if (count($datal) >= 4){
                             $email= trim($datal[0]);
                             $pfno= trim($datal[1]);
                             $campus = trim($datal[2]);
@@ -131,7 +131,7 @@ class Upl2 extends CI_Controller
                                                 'hl_empcode'=> $pfno,
                                                 'hl_deptid'=> $deptid,
                                                 'hl_scid'=> $campusid,
-						`hl_uopid` => $uoid,
+						'hl_uopid' => $uoid,
                                                 'hl_datefrom'=> $dfrom,
                                                 'hl_dateto'=> $dto,
                                                 'hl_status'=> $status,

@@ -75,99 +75,114 @@ class Staffmgmt extends CI_Controller
     	}
 */
     	public function addhead($id){
-		$whdata = array ('emp_id' => $id);
-		$idata = array('emp_head' => "HEAD");
-		$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
-
-		$cdate = date("Y-m-d");
-		$cdatetime = date('Y-m-d H:i:s');
+		$uname=$this->session->userdata('username');
+	        if(($uname == "admin")){
+			$whdata = array ('emp_id' => $id);
+			$idata = array('emp_head' => "HEAD");
+			$upflag=$this->sismodel->updaterec('employee_master', $idata,'emp_id',$id);
+	
+			$cdate = date("Y-m-d");
+			$cdatetime = date('Y-m-d H:i:s');
 		
-		//insert record in hod list
-		$empid = $id;
-		$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
-		$uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
-		$hldata = array(
-			'hl_userid' => $this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid,
-			'hl_empcode' => $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code,
-			'hl_deptid' => $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
-			'hl_scid' => $this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
-			'hl_uopid' => $uopid,
-			'hl_datefrom' => $cdatetime,
-			'hl_fromsession' => 'Forenoon',
-			'hl_status' => 'Fulltime',
-			'hl_creatorid' => $this->session->userdata('username'),
-			'hl_creatordate' => $cdatetime,
-			'hl_modifierid' => $this->session->userdata('username'),
-			'hl_modifydate' => $cdatetime,
-		); 
-		$hiflag=$this->sismodel->insertrec('hod_list',$hldata);	
-		$this->logger->write_logmessage("insert", "HEAD data insert in hod table table.".$id);
-                $this->logger->write_dblogmessage("insert", "HEAD data insert in hod table table.".$id );
+			//insert record in hod list
+			$empid = $id;
+			$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+			$uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
+			$hldata = array(
+				'hl_userid' => $this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid,
+				'hl_empcode' => $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code,
+				'hl_deptid' => $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
+				'hl_scid' => $this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
+				'hl_uopid' => $uopid,
+				'hl_datefrom' => $cdatetime,
+				'hl_fromsession' => 'Forenoon',
+				'hl_status' => 'Fulltime',
+				'hl_creatorid' => $this->session->userdata('username'),
+				'hl_creatordate' => $cdatetime,
+				'hl_modifierid' => $this->session->userdata('username'),
+				'hl_modifydate' => $cdatetime,
+			); 
+			$hiflag=$this->sismodel->insertrec('hod_list',$hldata);	
+			$this->logger->write_logmessage("insert", "HEAD data insert in hod table table.".$id);
+	                $this->logger->write_dblogmessage("insert", "HEAD data insert in hod table table.".$id );
 
+			//insert record in service details
+			$emppost =  $this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+			$pstid =$this->commodel->get_listspfic1('designation','desig_id','desig_name',$emppost)->desig_id;
+			$sddata = array(
+				'empsd_empid' => $empid,
+				'empsd_authority' =>'Head',
+				'empsd_campuscode' =>$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
+				'empsd_ucoid' =>$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid,
+				'empsd_deptid' =>$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
+				'empsd_schemeid' =>$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid,
+				'empsd_ddoid' =>$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid,
+				'empsd_worktype' =>$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype,
+				'empsd_group' =>$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group,
+				'empsd_shagpstid' =>$pstid,
+				'empsd_desigcode' =>$this->sismodel->get_listspfic1('employee_master','emp_desig_code ','emp_id',$empid)->emp_desig_code ,
+				'empsd_pbid' =>$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade,
+				'empsd_level' =>'',
+				'empsd_gradepay' =>'',
+				'empsd_pbdate' =>$cdate,
+				'empsd_dojoin' =>$cdate,
+				'empsd_dorelev' =>$cdate,
+				'empsd_filename' =>'',
+				'empsd_fsession' =>'Forenoon',
+				'empsd_tsession' =>'Forenoon',
+			);
+			$sdiflag=$this->sismodel->insertrec('employee_servicedetail',$sddata);
+			$this->logger->write_logmessage("insert", "HEAD data insert in employee_service detail table.".$id);
+        	        $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_service detail table.".$id );
 
-		//insert record in service details
-		$emppost =  $this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
-		$pstid =$this->commodel->get_listspfic1('designation','desig_id','desig_name',$emppost)->desig_id;
-		$sddata = array(
-			'empsd_empid' => $empid,
-			'empsd_authority' =>'Head',
-			'empsd_campuscode' =>$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid,
-			'empsd_ucoid' =>$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid,
-			'empsd_deptid' =>$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code,
-			'empsd_schemeid' =>$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid,
-			'empsd_ddoid' =>$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid,
-			'empsd_worktype' =>$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype,
-			'empsd_group' =>$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group,
-			'empsd_shagpstid' =>$pstid,
-			'empsd_desigcode' =>$this->sismodel->get_listspfic1('employee_master','emp_desig_code ','emp_id',$empid)->emp_desig_code ,
-			'empsd_pbid' =>$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade,
-			'empsd_level' =>'',
-			'empsd_gradepay' =>'',
-			'empsd_pbdate' =>$cdate,
-			'empsd_dojoin' =>$cdate,
-			'empsd_dorelev' =>$cdate,
-			'empsd_filename' =>'',
-			'empsd_fsession' =>'Forenoon',
-			'empsd_tsession' =>'Forenoon',
-		);
-		$sdiflag=$this->sismodel->insertrec('employee_servicedetail',$sddata);
-		$this->logger->write_logmessage("insert", "HEAD data insert in employee_service detail table.".$id);
-                $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_service detail table.".$id );
-
-		$this->logger->write_logmessage("insert", "HEAD data insert in employee_master table.".$id);
-                $this->logger->write_dblogmessage("insert", "HEAD data insert in employee_master table.".$id );
-		$this->employeelist();
+			$this->logger->write_logmessage("insert", "HEAD data insert in employee_master table.".$id);
+                	$this->logger->write_dblogmessage("insert", "HEAD data insert in employee_master table.".$id );
+			$this->employeelist();
+		}
+	        else{
+        		$this->session->set_flashdata('err_message', 'You do not have the right to add as Head.');
+			$this->employeelist();
+         		//redirect('staffmgmt/employeelist');
+        	}
 	}
 
 	public function removehead($id){
-//		$whdata = array ('emp_id' => $id);
-		$cdatetime = date('Y-m-d H:i:s');
-		$rdata = array('emp_head' => "");
-		$upflag=$this->sismodel->updaterec('employee_master', $rdata,'emp_id',$id);
-//		update in hod list 
-		$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$id)->emp_uocid ;
-                $uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
-		$whdata = array(
-                        'hl_userid' => $this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$id)->emp_userid,
-                        'hl_empcode' => $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$id)->emp_code,
-                        'hl_deptid' => $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$id)->emp_dept_code,
-                        'hl_scid' => $this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$id)->emp_scid,
-                        'hl_uopid' => $uopid,
+		$uname=$this->session->userdata('username');
+                if(($uname == "admin")){
+//			$whdata = array ('emp_id' => $id);
+			$cdatetime = date('Y-m-d H:i:s');
+			$rdata = array('emp_head' => "");
+			$upflag=$this->sismodel->updaterec('employee_master', $rdata,'emp_id',$id);
+	//		update in hod list 
+			$uoid = $this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$id)->emp_uocid ;
+        	        $uopid = $this->lgnmodel->get_listspfic1('authorities', 'priority', 'id',$uoid)->priority;
+			$whdata = array(
+                        	'hl_userid' => $this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$id)->emp_userid,
+                	        'hl_empcode' => $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$id)->emp_code,
+        	                'hl_deptid' => $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$id)->emp_dept_code,
+	                        'hl_scid' => $this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$id)->emp_scid,
+                        	'hl_uopid' => $uopid,
+			);
+        	        $hldata = array(
+				'hl_dateto' => $cdatetime,
+                        	'hl_tosession' => 'Forenoon',
+                	        'hl_modifierid' => $this->session->userdata('username'),
+        	                'hl_modifydate' => $cdatetime,
+	                ); 
+                	$hiflag=$this->sismodel->updaterecarry('hod_list',$hldata,$whdata); 
+        	        $this->logger->write_logmessage("insert", "HEAD data insert in hod table table.".$id);
+	                $this->logger->write_dblogmessage("insert", "HEAD data insert in hod table table.".$id );
 
-		);
-                $hldata = array(
-			'hl_dateto' => $cdatetime,
-                        'hl_tosession' => 'Forenoon',
-                        'hl_modifierid' => $this->session->userdata('username'),
-                        'hl_modifydate' => $cdatetime,
-                ); 
-                $hiflag=$this->sismodel->updaterecarry('hod_list',$hldata,$whdata); 
-                $this->logger->write_logmessage("insert", "HEAD data insert in hod table table.".$id);
-                $this->logger->write_dblogmessage("insert", "HEAD data insert in hod table table.".$id );
+			$this->logger->write_logmessage("insert", "HEAD data remove in employee_master table.".$id);
+        	        $this->logger->write_dblogmessage("insert", "HEAD data remove in employee_master table.".$id );
+			$this->employeelist();
+		}
+                else{
+                        $this->session->set_flashdata('err_message', 'You do not have the right to remove as Head.');
+			$this->employeelist();
+                        //redirect('staffmgmt/employeelist');
+                }
 
-		$this->logger->write_logmessage("insert", "HEAD data remove in employee_master table.".$id);
-                $this->logger->write_dblogmessage("insert", "HEAD data remove in employee_master table.".$id );
-		$this->employeelist();
 	}
 /*	
 	public function changepf($empid){

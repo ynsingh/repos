@@ -1029,7 +1029,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>    
                 </td> 
                 <td><label for="empnhisidno" style="font-size:15px;"><font color='Blue'>NHIS ID No</font></label>
-                    <div><input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo $editdata->emp_nhisidno; ?>" placeholder="NHIS ID NO..." size="33">
+                    <div><input type="text" name="empnhisidno" value="<?php echo $editdata->emp_nhisidno; ?>" placeholder="NHIS ID NO..." size="33">
                     </div>    
                 </td>
                 <td><label for="phstatus" style="font-size:15px;"><font color='Blue'>Whether Physically handicapped</font></label>
@@ -1552,6 +1552,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 		 <td><label for="pref1" style="font-size:15px;"><font color='blue'>First Preference</font> <font color='Red'></font></label>
                     <div> <select id="ppwpref1" style="width:300px;" name="ppwpref1" >
 			<option value="<?php echo $pref1;?>"><?php echo $prefloc1;?></option>
+			<option value="<?php echo ''?>"><?php echo 'None';?></option>
                        <?php foreach($this->campus as $camdata): ?>
                                 <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
                         <?php endforeach; ?>
@@ -1561,6 +1562,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="pref2" style="font-size:15px;"><font color='blue'> Second Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref2" style="width:300px;" name="ppwpref2" >
 			<option value="<?php echo $pref2;?>"><?php echo $prefloc2?></option>
+			<option value="<?php echo ''?>"><?php echo 'None';?></option>
                        <?php foreach($this->campus as $camdata): ?>
                                 <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
                         <?php endforeach; ?>
@@ -1570,6 +1572,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="pref3" style="font-size:15px;"><font color='blue'> Third Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref3" style="width:300px;" name="ppwpref3" >
 			<option value="<?php echo $pref3;?>"><?php echo $prefloc3;?></option>
+			<option value="<?php echo ''?>"><?php echo 'None';?></option>
                        <?php foreach($this->campus as $camdata): ?>
                                 <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
                         <?php endforeach; ?>

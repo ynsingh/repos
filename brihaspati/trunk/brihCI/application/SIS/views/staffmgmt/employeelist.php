@@ -56,7 +56,8 @@ $(document).ready(function(){
                     else{
                         $('#dept').prop('disabled',false);
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/report/getdeptlist",
+                           // url: "<?php echo base_url();?>sisindex.php/report/getdeptlist",
+                            url: "<?php echo base_url();?>sisindex.php/report/getdeptlist_sp",
                             type: "POST",
                             data: {"worktypeuo" : wrktypeuo},
                             dataType:"html",
@@ -338,21 +339,20 @@ $(document).ready(function(){
 				$uname = $this->session->userdata('username');
                                 $rest = substr($uname, -21);
 
-
 		        	if($roleid == 5){
+		                        $deptuocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
                 			$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
 //					echo "hodcode ".$hempcode;
 		                	$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-		//			echo " hodid ".$hempid; 
-		                        $deptuocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
+//					echo " hodid ".$hempid; 
         			}
-
 
 				$suocid='';
 				if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
 		                        //$suocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
 		                        $suocid=$deptuocid;
                 		}
+					//echo "Top".$record->emp_dept_code."em".$record->emp_id."hm".$hempid."idus".$this->session->userdata('id_user');
 
 				 $flagffs=false;
 				 $flagcppm=false;
@@ -375,16 +375,20 @@ $(document).ready(function(){
 					$flaghod=true;
 				}
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-						
-					echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
-					echo "<br>";
-					echo "<br>";
-					if($record->emp_worktype === "Teaching"){
+					if(($headflag)||($record->emp_head == "HEAD")||($uoflag)||($record->emp_head == "UO")){
+//						echo "I".$headflag."==".$record->emp_head."==".$uoflag."==".$record->emp_head."I";
+                                	}
+					else{
+						echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
+						echo "<br>";
+						echo "<br>";
+					}
+					if(($record->emp_worktype === "Teaching")&&($roleid == 1)){
 						if(($headflag)||($record->emp_head == "HEAD")){
-        	                        			echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
-							}else{
-        	                                		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
-							}
+        	                        		echo anchor("staffmgmt/removehead/{$record->emp_id}","Remove Head",array('title' => 'Remove Head' , 'class' => 'red-link'));
+						}else{
+        	                               		echo anchor("staffmgmt/addhead/{$record->emp_id}","Add Head",array('title' => 'Add Head' , 'class' => 'red-link'));
+						}
 					}
 				//	echo "<br>";
                               //        echo anchor("staffmgmt/changepf/{$record->emp_id}","Change PF",array('title' => 'Change Temp PF Number' , 'class' => 'red-link'));

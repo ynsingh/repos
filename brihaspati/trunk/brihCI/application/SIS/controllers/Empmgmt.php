@@ -698,8 +698,9 @@ public function disciplin_profile() {
         $this->emp_id = $empid;
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
-	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
+	//$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+	$whdata=array('org_code'=>$this->orgcode);
+        $this->campus=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code',$whdata,'sc_name asc');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
  
 
@@ -1027,6 +1028,8 @@ public function disciplin_profile() {
         $this->emp_id = $empid;*/
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+	$whdata=array('org_code'=>$this->orgcode);
+	$this->campus=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code',$whdata,'sc_name asc');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         $data['id'] = $id;
@@ -1537,9 +1540,10 @@ public function disciplin_profile() {
         $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         //$this->campus=$this->commodel->get_listspfic2('study_center','sc_code','sc_name','org_code',$this->orgcode);
-	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-       //$this->desig= $this->commodel->get_listspfic2('designation','desig_code','desig_name');
-  //      $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+//	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+	$whdata=array('org_code'=>$this->orgcode);
+        $this->campus=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code',$whdata,'sc_name asc');
+
  
 
         if(isset($_POST['addleavedata'])) {	
@@ -1668,7 +1672,10 @@ public function disciplin_profile() {
 
 		$this->leaveresult=$this->sismodel->get_listspfic2('leave_type_master','lt_id', 'lt_name');
 	        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-        	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+//        	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+		$whdata=array('org_code'=>$this->orgcode);
+	        $this->campus=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code',$whdata,'sc_name asc');
+
 	
 		$this->emp_id = $empid;
         	$data['id'] = $id;
@@ -1897,8 +1904,10 @@ public function disciplin_profile() {
         $empuserid=$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id',$empid)->emp_userid;
         $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
- 
+//	$this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+ 	$whdata=array('org_code'=>$this->orgcode);
+        $this->campus=$this->commodel->get_orderlistspficemore('study_center','sc_id,sc_name,sc_code',$whdata,'sc_name asc');
+
 
         if(isset($_POST['addservdata'])) {	
             //form validation

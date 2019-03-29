@@ -99,7 +99,11 @@
 		});
 	</script>
 </form>
+<!--
 	<a href="<?php echo base_url() ;?>sisindex.php/pdfreport/pdfgenerate/disciplinewiselist" style="decoration:none;"><input type="button"  value="PDF" /></a>
+sccess link with data
+-->
+
 <!--		<form name="pform" id="pform" action="<?php echo base_url() ?>/sisindex.php/pdfreport/convertpdf/" method="post">
 			<input type="hidden" name="fname" id="fname" value="report/disciplinewiselist" />
 			<input type="hidden" name="rdata" id="rdata" value="<?php print_r($this->result); ?>" />

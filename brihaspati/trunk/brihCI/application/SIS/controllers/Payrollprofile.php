@@ -31,6 +31,7 @@ class Payrollprofile extends CI_Controller
     public function payprofile(){
                
         $this->hglist= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $this->ccalist= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         $this->society= $this->sismodel->get_listspfic2('society_master_list','soc_id','soc_sname');
         if(isset($_POST['pprofile'])) {
            

@@ -685,7 +685,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
+    width: 170px;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -821,8 +821,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option value="Temporary">Temporary</option>-->
                     </select><div>
                 </td> 
-                <td><label for="secondary emailid" style="font-size:15px;"><font color='blue'>Secondary Email Id</font></label>
-                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
+                <td><label for="emailid" style="font-size:15px;"><font color='blue'>E-Mail ID</font><font color='Red'></font></label>
+                   <div class="tooltip">
+			<input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID(V2345@tanuvas.org.in)" size="33" required="required">
+			<span class="tooltiptext">V2345@tanuvas.org.in</span>
                 </div></td>
                 <td><label for="empcode" style="font-size:15px;"><font color='blue'>Employee PF No</font><font color='Red'>*</font></label>
                     <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo isset($_POST["empcode"]) ? $_POST["empcode"] : ''; ?>" placeholder="employee PF No..." size="33"  required pattern="[a-zA-Z0-9 ]+" required="required">
@@ -934,7 +936,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo isset($_POST["emolution"]) ? $_POST["emolution"] : ''; ?>" placeholder="Emolution..." size="33" >
                 </div></td> 
                 <td><label for="empnhisidno" style="font-size:15px;"><font color='blue'>NHIS ID No</font></label>
-                    <div><input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo isset($_POST["empnhisidno"]) ? $_POST["empnhisidno"] : ''; ?>" placeholder="NHIS ID NO..." size="33">
+                    <div><input type="text" name="empnhisidno" value="<?php echo isset($_POST["empnhisidno"]) ? $_POST["empnhisidno"] : ''; ?>" placeholder="NHIS ID NO..." size="33">
                 </div></td>
                 
                 <td><label for="phstatus" style="font-size:15px;"><font color='blue'>Whether Physically Handicapped</font><font color='Red'>*</font>  </label>
@@ -1043,10 +1045,9 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="Aadharrno" style="font-size:15px;"><font color='blue'>Aadhaar No</font><font color='Red'></font></label>
                     <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="33" >
                 </div></td>
-                            
-                
-                <td><label for="emailid" style="font-size:15px;"><font color='blue'>E-Mail ID</font><font color='Red'></font></label>
-                   <div><input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID..." size="33" required="required">
+                  <!-- email -->          
+                <td><label for="secondary emailid" style="font-size:15px;"><font color='blue'>Secondary Email Id</font></label>
+                <div><input type="text" name="secndemailid" class="keyup-email" value="<?php echo isset($_POST["secndemailid"]) ? $_POST["secndemailid"] : ''; ?>" placeholder="Secondary Email Id........" size="33" >
                 </div></td>
             </tr>
             <tr>
@@ -1283,7 +1284,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 		<tr>
 		<td><label for="pref1" style="font-size:15px;"><font color='blue'> First Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref1" style="width:300px;" name="ppwpref1" >
-                        <option selected="selected" disabled selected>-Preferred Place of Working--</option>
+                        <option selected="selected" >-Preferred Place of Working--</option>
                        <?php foreach($this->campus as $camdata): ?>
                                 <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
                         <?php endforeach; ?>
@@ -1292,7 +1293,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td>
 		<td><label for="pref2" style="font-size:15px;"><font color='blue'> Second Preference</font> <font color='Red'></font></label>
                     <div> <select id="ppwpref2" style="width:300px;" name="ppwpref2" >
-                        <option selected="selected" disabled selected>-Preferred Place of Working--</option>
+                        <option selected="selected" >-Preferred Place of Working--</option>
                        <?php foreach($this->campus as $camdata): ?>
                                 <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
                         <?php endforeach; ?>
@@ -1301,7 +1302,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td>
 		<td><label for="pref3" style="font-size:15px;"><font color='blue'>Third Preference </font> <font color='Red'></font></label>
                     <div> <select id="ppwpref3" style="width:300px;" name="ppwpref3" >
-                        <option selected="selected" disabled selected>-Preferred Place of Working--</option>
+                        <option selected="selected" >-Preferred Place of Working--</option>
                        <?php foreach($this->campus as $camdata): ?>
                                 <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
                         <?php endforeach; ?>

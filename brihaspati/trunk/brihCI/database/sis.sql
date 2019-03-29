@@ -433,6 +433,13 @@ CREATE TABLE employee_master_support (
  ems_pwplace1 INT(11) NULL, 
  ems_pwplace2 INT(11) NULL, 
  ems_pwplace3 INT(11) NULL,
+ ems_erfq VARCHAR(50) default NULL , 
+ ems_erfqhra VARCHAR(10)  default NULL, 
+ ems_qoccupai VARCHAR(10) default NULL, 
+ ems_rentgrade VARCHAR(10) default NULL, 
+ ems_spfcgs VARCHAR(100) default NULL , 
+ ems_spfcgs2000 VARCHAR(100) default NULL ,
+ ems_fsfno VARCHAR(100) default NULL,
  PRIMARY KEY  (ems_id)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
