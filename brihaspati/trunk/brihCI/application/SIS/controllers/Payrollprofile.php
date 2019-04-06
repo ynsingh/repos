@@ -72,6 +72,40 @@ class Payrollprofile extends CI_Controller
             $this->form_validation->set_rules('lic5no','lic5no','trim|xss_clean');
             $this->form_validation->set_rules('lic5amount','lic5amount','trim|xss_clean');
             $this->form_validation->set_rules('plino2','plino2','trim|xss_clean');
+
+            $this->form_validation->set_rules('pcomm','Pay commission','trim|xss_clean');
+            $this->form_validation->set_rules('pscale','Pay Band','trim|xss_clean');
+            $this->form_validation->set_rules('pscale1','Academic Level of Pay','trim|xss_clean');
+            $this->form_validation->set_rules('pscale2','Scale of Pay','trim|xss_clean');
+            $this->form_validation->set_rules('pscale3','Academic Grade Pay','trim|xss_clean');
+
+            $this->form_validation->set_rules('micrcode','MICR Code','trim|xss_clean');
+            $this->form_validation->set_rules('acctype','Account Type','trim|xss_clean');
+            $this->form_validation->set_rules('bbadd','Branch Address','trim|xss_clean');
+            $this->form_validation->set_rules('bbphone','Branch Phone No','trim|xss_clean');
+            $this->form_validation->set_rules('bbemail','Branch Email','trim|xss_clean');
+
+            $this->form_validation->set_rules('rfqemp','Eligible for Rent Free Quarters','trim|xss_clean');
+            $this->form_validation->set_rules('exhra','Rent Free HRA Grade','trim|xss_clean');
+            $this->form_validation->set_rules('qoemp','Quarters Occupied','trim|xss_clean');
+            $this->form_validation->set_rules('rentgrade','Rent Grade','trim|xss_clean');
+
+            $this->form_validation->set_rules('panno','PAN No','trim|xss_clean');
+            $this->form_validation->set_rules('nhisno','NHIS No','trim|xss_clean');
+            $this->form_validation->set_rules('nhisamount','NHIS Amount','trim|xss_clean');
+            $this->form_validation->set_rules('spfcgsno','SPF CGS No','trim|xss_clean');
+            $this->form_validation->set_rules('spfcgsamount','SPF CGS Amount','trim|xss_clean');
+            $this->form_validation->set_rules('spfcgs2no','SPF CGS 2000 No','trim|xss_clean');
+            $this->form_validation->set_rules('spfcgs2amount','SPF CGS 2000 Amount','trim|xss_clean');
+            $this->form_validation->set_rules('prd1amount','PRD1 Amount','trim|xss_clean');
+            $this->form_validation->set_rules('prd2amount','PRD2 Amount','trim|xss_clean');
+            $this->form_validation->set_rules('prd3amount','PRD3 Amount','trim|xss_clean');
+            $this->form_validation->set_rules('pli1amount','PLI 1 Amount','trim|xss_clean');
+            $this->form_validation->set_rules('pli2amount','PLI 2 Amount','trim|xss_clean');
+            $this->form_validation->set_rules('socamount','Society Amount','trim|xss_clean');
+            $this->form_validation->set_rules('fsfno','FSF No','trim|xss_clean');
+            $this->form_validation->set_rules('fsfamount','FSF Amount','trim|xss_clean');
+            //$this->form_validation->set_rules('','','trim|xss_clean');
             
             if($this->form_validation->run() == FALSE){
                 $this->load->view('payrollprofile/payprofile');
@@ -79,22 +113,60 @@ class Payrollprofile extends CI_Controller
             }    
             else{
                 
-                $bankname = $this->input->post('bname', '');
+		$bankname = $this->input->post('bname', '');
                 $ifsccode = $this->input->post('ifsccode', '');
                 $bbranch = $this->input->post('bbranch', '');
-            /*    if(!empty($bankname)|| !empty($ifsccode) ||!empty($bbranch) ){
-                    $bank_ifsc=$bankname."#".$ifsccode."#".$bbranch;
+
+		$panno =$this->input->post('panno', '');
+		$nhisno =$this->input->post('nhisno', '');
+		$paycom=$this->input->post('pcomm', '');
+		$payscle=$this->input->post('pscale', '');
+		$payscle1=$this->input->post('pscale1', '');
+		$payscle2=$this->input->post('pscale2', '');
+		$payscle3=$this->input->post('pscale3', '');
+	// get the sgid  on the basis of paycom payscale and payscale1 from salarygrademaster
+		$salgrdid='';	
+		$sel='sgm_id';
+		$whdata=array('sgm_pc'=>$paycom,'sgm_name'=>$payscle,'sgm_level'=>$payscle1);
+		$salgrres=$this->sismodel->get_orderlistspficemore('salary_grade_master',$sel,$whdata,'');
+		foreach($salgrres as $rw){
+			$salgrdid=$rw->sgm_id;
+		}
+                $bbmicr = $this->input->post('micrcode', '');
+                $acctype = $this->input->post('acctype', '');
+                $bbadd = $this->input->post('bbadd', '');
+                $bbphone = $this->input->post('bbphone', '');
+                $bbemail = $this->input->post('bbemail', '');
+		
+		$rfqemp = $this->input->post('rfqemp', '');
+		$exhra=$this->input->post('exhra', '');
+		$qoemp=$this->input->post('qoemp', '');
+		$rentgrade=$this->input->post('rentgrade', '');
+
+		$nhisamount =$this->input->post('nhisamount', '');
+		$spfcgsno =$this->input->post('spfcgsno', '');
+		$spfcgsamount =$this->input->post('spfcgsamount', '');
+		$spfcgs2no =$this->input->post('spfcgs2no', '');
+		$spfcgs2amount =$this->input->post('spfcgs2amount', '');
+		$prd1amount =$this->input->post('prd1amount', '');
+		$prd2amount =$this->input->post('prd2amount', '');
+		$prd3amount =$this->input->post('prd3amount', '');
+		$pli1amount =$this->input->post('pli1amount', '');
+		$pli2amount =$this->input->post('pli2amount', '');
+		$socamount =$this->input->post('socamount', '');
+		$fsfno =$this->input->post('fsfno', '');
+		$fsfamount =$this->input->post('fsfamount', '');
+//		$ =$this->input->post('', '');
                     
-                }
-                else{
-                    $bank_ifsc='##';
-                }*/
                 $dataems=array(
                     'emp_bank_accno'         =>$_POST['accno'],
                     'emp_bank_ifsc_code'     =>$ifsccode,
                     'emp_bankname'           =>$bankname,
                     'emp_bankbranch'         =>$bbranch,
-                    
+			'emp_pan_no'		=>$panno,
+			'emp_nhisidno'		=>$nhisno,
+			'emp_paycomm'		=>$paycom,
+			'emp_salary_grade'	=> $salgrdid,     
                 );
 		$qtrtype = $this->input->post('qtrtype', '');
 		$society = $this->input->post('society', '');
@@ -127,7 +199,30 @@ class Payrollprofile extends CI_Controller
                     'ems_plino2'               =>$_POST['plino2'],
                     'ems_society'              =>$society,
                     'ems_societymember'        =>$socmem,
+		    'ems_prd1amount'		=> $prd1amount,
+		    'ems_prd2amount'		=>$prd2amount, 
+			'ems_prd3amount'	=>$prd3amount,
+			'ems_pli1amount'	=>$pli1amount,
+			'ems_pli2amount'	=>$pli2amount,
+			'ems_socamount'		=>$socamount,
+			'ems_erfq'		=>$rfqemp,
+			'ems_erfqhra'		=>$exhra,
+			'ems_qoccupai'		=>$qoemp,
+			'ems_rentgrade'		=>$rentgrade,
+			'ems_spfcgs'		=>$spfcgsno,
+			'ems_spfcgsamount'	=>$spfcgsamount,
+			'ems_spfcgs2000'	=>$spfcgs2no,
+			'ems_spfcgs2amount'	=>$spfcgs2amount,
+			'ems_fsfno'		=>$fsfno,
+			'ems_fsfamount'		=>$fsfamount,
+			'ems_bbmicr'		=>$bbmicr,
+			'ems_acctype'		=>$acctype,
+			'ems_bbadd'		=>$bbadd,
+			'ems_bbphone'		=>$bbphone,
+			'ems_bbemail'		=>$bbemail,
+			'ems_nhisamount' 	=>$nhisamount,
                 );
+
               //  $emppfno = $this->input->post('emppfno', '');
 		$empid = $this->input->post('empid', '');
 		//print_r($datapp); echo $emppfno; echo "empid".$empid;die();

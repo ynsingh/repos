@@ -69,19 +69,26 @@ If you make any change in this file then you must change same file in report dir
 				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/service_profile/".$emp_id?>' style="color:white;text-decoration: none">Service Particulars</a></b> </td>
+			<?php if($current == 'addional') { ?>
+				<td class=btn active>
+			<?php }else{ ?>
+				<td class=btn1>
+			<?php } ?>
+			<b>  <a href='<?php echo site_url()."/report/addionalassign_profile/".$emp_id?>' style="color:white;text-decoration: none">Addional Assignment Particulars</a></b> </td>
 			<?php if($current == 'perform') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="color:white;text-decoration: none">Performance Details</a></b> </td>
-			<!--<?php if($current == 'leave') { ?>
+			<?php if($roleid == 1){ ?>
+			<?php if($current == 'leave') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php //echo site_url()."/report/leave_profile/".$emp_id?>' style="color:white;text-decoration: none">Leave Particulars</a></b> </td>
--->
+			<b>  <a href='<?php echo site_url()."/report/leave_profile/".$emp_id?>' style="color:white;text-decoration: none">Leave Particulars</a></b> </td>
+			<?php } ?>
 			<?php if($current == 'deputation') { ?>
 				<td class=btn active>
 			<?php }else{ ?>

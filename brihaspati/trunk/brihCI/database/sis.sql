@@ -424,12 +424,18 @@ CREATE TABLE employee_master_support (
  ems_lic5no varchar(256) default null,
  ems_lic5amount double  DEFAULT 0,
  ems_prdno1 varchar(256) default null,
+ ems_prd1amount VARCHAR(11) NOT NULL,
  ems_prdno2 varchar(256) default null,
+ ems_prd2amount VARCHAR(11) NULL ,
  ems_prdno3 varchar(256) default null,
+ ems_prd3amount VARCHAR(11) NULL ,
  ems_plino1 varchar(256) default null,
+ ems_pli1amount VARCHAR(11) NULL,
  ems_plino2 varchar(256) default null,
+ ems_pli2amount VARCHAR(11) NULL,
  ems_society varchar(256) default null,
  ems_societymember varchar(256) default null, 
+ ems_socamount VARCHAR(11) NULL,
  ems_pwplace1 INT(11) NULL, 
  ems_pwplace2 INT(11) NULL, 
  ems_pwplace3 INT(11) NULL,
@@ -438,11 +444,19 @@ CREATE TABLE employee_master_support (
  ems_qoccupai VARCHAR(10) default NULL, 
  ems_rentgrade VARCHAR(10) default NULL, 
  ems_spfcgs VARCHAR(100) default NULL , 
+ ems_spfcgsamount VARCHAR(11) NULL ,
  ems_spfcgs2000 VARCHAR(100) default NULL ,
+ ems_spfcgs2amount VARCHAR(11) NULL,
  ems_fsfno VARCHAR(100) default NULL,
+ ems_fsfamount VARCHAR(11) NULL,
+ ems_bbmicr VARCHAR(13) NULL ,
+ ems_acctype VARCHAR(25) NULL ,
+ ems_bbadd VARCHAR(255) NULL ,
+ ems_bbphone VARCHAR(255) NULL ,
+ ems_bbemail VARCHAR(255) NULL,
+ ems_nhisamount VARCHAR(11) NULL,
  PRIMARY KEY  (ems_id)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 -- -------------------------------------------------------------------
 --
 -- Table structure for table `hod_list`
@@ -1053,6 +1067,7 @@ CREATE TABLE `staff_academic_qualification` (
   `saq_board_univ` varchar(255)  DEFAULT NULL,
   `saq_result` varchar(255)  DEFAULT NULL,
   `saq_yopass` varchar(255)  DEFAULT NULL,
+  `saq_certtype` VARCHAR(255) NULL, 
   `saq_discipline` varchar(255)  DEFAULT NULL,
   `saq_creatorid` varchar(255) DEFAULT NULL,
   `saq_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -1110,13 +1125,12 @@ CREATE TABLE `staff_department_exam_perticulars` (
   `sdep_empcode` varchar(55)  NOT NULL,
   `sdep_examname` varchar(255)  NOT NULL, 
   `sdep_specification` varchar(50)  Default NULL,
-  `sdep_passdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `sdep_passdate` VARCHAR(25) NULL DEFAULT NULL,
   `sdep_creatorid` varchar(255) NOT NULL,
   `sdep_creatordate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `sdep_modifierid` varchar(255) NOT NULL,
   `sdep_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- -------------------------------------------------------------------
 --

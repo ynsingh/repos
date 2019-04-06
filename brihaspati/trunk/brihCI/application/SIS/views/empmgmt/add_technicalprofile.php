@@ -63,6 +63,28 @@
                     counter -= 1;
                 });
 
+		 $("#addrow5").on("click", function () {
+                    var newRow = $("<tr>");
+                    var cols = "";
+          
+                    cols += '<td><input type="text" name="ccourse[]" id="ccourse" value="Certified Course" size="15" readonly>';
+                    cols += '<td><input type="text" name="board2[]" id="buniv2" placeholder="Board/university.." size="30"></td>';
+                    cols += '<td><select name="result2[]" id="result2"><option value="">----- Select result ------</option>';
+                    cols += '<option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
+                    cols += '<td><input type="text" name="yopass2[]" value="" id="yopass2" class="form-control" size="30" /></td>';
+                    cols += '<td><input type="text" name="discipline2[]" id="dpln2" placeholder="Discipline/Program" size="30"></td>';
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+                    newRow.append(cols);
+                    $("#myTable5").append(newRow);
+                    counter++;
+          
+                });
+    
+                $("#myTable5").on("click", ".ibtnDel", function (event) {
+                    $(this).closest("tr").remove();       
+                    counter -= 1;
+                });
+
 
 
                 $("#addrow1").on("click", function () {
@@ -111,6 +133,9 @@
                     counter -= 1
                 });
                 
+		
+
+
                 $('.keyup-numeric').keyup(function() {
                     $('span.error-keyup-1').hide();
                     var inputVal = $(this).val();
@@ -134,7 +159,7 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/viewfull_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/technical_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
@@ -229,16 +254,16 @@
                         </tr>
 
 			 </table>
-                       <table  id="myTable"  class="TFtable" align="center">
+                       <table  id="myTable5"  class="TFtable" align="center">
 
 
                          <tr>
-                            <td><input type="text" name="ccourse" id="ccourse" value="Certified Course" size="15" readonly>
+                            <td><input type="text" name="ccourse[]" id="ccourse" value="Certified Course" size="15" readonly>
                             </td>
                             <td>
-                            <input type="text" name="board2" id="buniv2" placeholder="Board/university.." size="30">        
+                            <input type="text" name="board2[]" id="buniv2" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result2" id="result2">
+                            <td><select name="result2[]" id="result2">
                                 <option value="">----- Select result ------</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
@@ -246,13 +271,15 @@
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass2" value="" class="keyup-numeric" placeholder="Year of passing.." size="30" />
+                                <input type="text" name="yopass2[]" value="" class="keyup-numeric" placeholder="Year of passing.." size="30" />
                             </td>
                        
                             <td>
-                            <input type="text" name="discipline2" id="dpln2" placeholder="Discipline/Program" size="30">        
+                            <input type="text" name="discipline2[]" id="dpln2" placeholder="Discipline/Program" size="30">        
                             </td>
-			<td>&nbsp;</td>
+			<td>
+				<input type="button" class="btn btn-lg btn-block " id="addrow5" value="Add Row" />
+			</td>
                         </tr>
                         </tbody>
                     </table>

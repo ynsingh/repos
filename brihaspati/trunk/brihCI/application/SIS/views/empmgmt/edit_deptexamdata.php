@@ -9,19 +9,19 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
 	<script>
-            $(document).ready(function(){
-                $('#Datefrom,#Dateto').datepicker({
-                    dateFormat: 'yy/mm/dd',
-                    autoclose:true,
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: 'c-70:c+20',
+//            $(document).ready(function(){
+  //              $('#Datefrom,#Dateto').datepicker({
+    //                dateFormat: 'yy/mm/dd',
+      //              autoclose:true,
+        //            changeMonth: true,
+          //          changeYear: true,
+            //        yearRange: 'c-70:c+20',
                
-                }).on('changeDate', function (ev) {
-                    $(this).datepicker('hide');
-                });
+              //  }).on('changeDate', function (ev) {
+                //    $(this).datepicker('hide');
+              //  });
 
-        });
+//        });
 	</script> 
 
     </head>
@@ -79,6 +79,7 @@
                         <option value="ATS Part II">ATS Part II</option>
                         <option value="Accountancy Lower">Accountancy Lower</option>
                         <option value="Accountancy Higher">Accountancy Higher</option>
+			<option value="Computer on Office Automation">Computer on Office Automation</option>
                         <option value="Others">Others</option>
                     </select>
                 </td>
@@ -90,8 +91,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Date Of Passing<font color='Red'>*</font></td>
-                        <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo $deptexamdata->sdep_passdate; ?>"  size="40" required="required" >
+                    <td>Date Of Passing(YYYY-MM)<font color='Red'>*</font></td>
+                        <td><input type="text" name="Datefrom" id="" value="<?php echo $deptexamdata->sdep_passdate; ?>"  size="40" required="required" >
                     </td>
                 </tr>
                 <tr></tr><tr></tr>

@@ -447,7 +447,7 @@
                             <?php if(!empty($servicedata->empsd_group)):;?>
                             <option value="<?php echo $servicedata->empsd_group;?>"><?php echo $servicedata->empsd_group;?></option>
                             <?php else:?>
-                          <option value="">Select DDO</option>
+                          <option value="">Select Group</option>
                         <?php endif;?>
                         <option value="A">A</option>
                         <option value="B">B</option>
@@ -462,7 +462,7 @@
 		    <td>Designation<font color='Red'>*</font></td>
                         <td><select name="designation" id="desigid" required style="width:350px;"> 
                             <?php if(!empty($servicedata->empsd_desigcode)):;?> 
-                            <option value="<?php echo $servicedata->empsd_desigcode;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$servicedata->empsd_desigcode)->desig_name;?></option>    
+                            <option value="<?php echo $this->commodel->get_listspfic1('designation','desig_id','desig_code',$servicedata->empsd_desigcode)->desig_id;?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_code',$servicedata->empsd_desigcode)->desig_name;?></option>    
                             <?php else:?>
                             <option selected="selected" disabled selected>------- Select Designation ---------</option>
                             <?php endif;?>

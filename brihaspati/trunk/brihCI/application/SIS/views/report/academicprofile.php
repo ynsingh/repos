@@ -67,10 +67,12 @@
                   
             </div>
  
-            <tr>
+            <tr><td>
 		<?php
         include  'ptab.php';
 ?>
+		</td>
+		
   <!--              <td valign="top" width=170>
 
                     <?php //include 'profiletab.php'; ?>
@@ -116,6 +118,7 @@
                                 <th>Board/University</th>
                                 <th>Result</th>
                                 <th>Year of Passing</th>
+                                <th>Certificate Type</th>
                                 <th>Discipline</th>
                             </tr>    
                         </thead>
@@ -134,6 +137,7 @@
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
+                                            <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
                                             <?php endif;?>
                                         </tr>
@@ -155,6 +159,7 @@
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
+                                            <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
                                            
                                         </tr>
@@ -177,6 +182,7 @@
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
+                                            <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
                                             
                                         </tr>
@@ -199,6 +205,7 @@
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
+                                            <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
                                             
                                         </tr>
@@ -221,6 +228,7 @@
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
+                                            <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
                                             <?php };?>
                                             

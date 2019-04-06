@@ -49,7 +49,9 @@
         </tr>
     </table>        
     <div id="printme">   
-      
+     <?php 
+	$roleid=$this->session->userdata('id_role');
+?> 
 <table style="width:100%;" border=0>
     <div align="left">
             
@@ -77,7 +79,6 @@
 </td>
 <?php     
 //	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-	$roleid=$this->session->userdata('id_role');
         if($roleid == 5){
                 $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
                 $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
@@ -477,6 +478,7 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew0; ?>
 </td>
                         </tr>
 -->
+<!--
 <tr><td colspan="4"><label for="PhD Details " style="font-size:17px;color:#0099CC"><b>Additional Assignments:</b></label></td> </tr>
                         <tr style="background:none repeat scroll 0 0 #9D9D9D";>
                             <td><b>Name of the Assignment</b></td>
@@ -484,40 +486,40 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew0; ?>
                             <td><b>Date To</b></td>
                             <td><b>Assignment Place</b></td>
                         </tr>
-<?php if( count($addassign->result()) ):
-   foreach($addassign->result() as $recrd){
-        if(!empty($recrd->aa_asigname)){
+<?php //if( count($addassign->result()) ):
+   //foreach($addassign->result() as $recrd){
+     //   if(!empty($recrd->aa_asigname)){
 
 ?>
 <tr>
                                 <td>
  <?php
-                        if(substr($recrd->aa_asigname, 0, 7) === "Others,"){
-                                $rstr=substr($recrd->aa_asigname, 7, strlen($recrd->aa_asigname));
-                                echo $rstr;
-
-                        }
-                        else{
-                                echo $recrd->aa_asigname;
-                        }
+         //               if(substr($recrd->aa_asigname, 0, 7) === "Others,"){
+           //                     $rstr=substr($recrd->aa_asigname, 7, strlen($recrd->aa_asigname));
+             //                   echo $rstr;
+//
+  //                      }
+    //                    else{
+      //                          echo $recrd->aa_asigname;
+        //                }
                 ?>
 </td>
  <td>
-<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodfrom));?>
+<?php  // echo  date('d-m-Y',strtotime($recrd->aa_asigperiodfrom));?>
 </td>
 <td>
-<?php   echo  date('d-m-Y',strtotime($recrd->aa_asigperiodto));?>
+<?php  // echo  date('d-m-Y',strtotime($recrd->aa_asigperiodto));?>
 </td>
 <td>
-<?php   echo $recrd->aa_place;?>
+<?php  // echo $recrd->aa_place;?>
 </td></tr>
- <?php }}; ?>
+ <?php //}}; ?>
 <tr>
-                        <?php else : ?>
+                        <?php //else : ?>
                             <td colspan= "13" align="center"> No Records found...!</td>
-                        <?php endif;?>
+                        <?php //endif;?>
 </tr>
-
+-->
 <?php
         if(!empty($emsdata)){
 		foreach($emsdata as $ppwdata){

@@ -75,7 +75,7 @@ echo "<ul class=\"sf-menu\" >";
                                         		   echo "<li>";
 		                                                echo anchor('leavemgmt/displayleavetype', 'View Leave Type', array('title' => 'Leave Type'));
                 		                           echo "</li>";
-																/*echo "<li>";
+							/*echo "<li>";
 		                                                echo anchor('leavemgmt/earnedleave', 'View EL', array('title' => 'Leave Type'));
                 		                           echo "</li>";*/
 						echo "</ul>";

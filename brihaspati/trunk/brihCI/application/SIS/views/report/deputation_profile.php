@@ -94,8 +94,8 @@
                             <td align=left colspan=4><b>Deputation Particulars</b></td>
                             <td align="right">
                                 <?php
-					 $uname=$this->session->userdata('username');
-                                $rest = substr($uname, -21);
+					$uname=$this->session->userdata('username');
+                                	$rest = substr($uname, -21);
   //                              if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
 //				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
 //				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
@@ -149,6 +149,11 @@
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
                                 //              echo anchor("empmgmt/edit_deputatdata/{$record->empsd_id}","Edit",array('title' => ' Edit Deputation Data' , 'class' => 'red-link'));
                                         }
+		//		if($roleid == 1){
+                                                echo " <br><br> ";
+                                                echo anchor("empmgmt/delete_deputdata/{$record->sdp_id}","Delete",array('title' => ' Delete Deputation Data' , 'class' => 'red-link'));
+                  //              }
+
                                 ?>
                                 </td>
                             </tr>

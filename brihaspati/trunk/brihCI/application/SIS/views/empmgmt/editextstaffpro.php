@@ -181,7 +181,8 @@
             <td colspan="3">
                 <button name="updateextpro" >Update</button>
             </form>    
-                <button onclick="goBack()" >Back</button>
+		  <button type="button" onclick="history.back();">Back</button>
+<!--                <button onclick="goBack()" >Back</button> -->
             </td>
         </tr>
     </table>

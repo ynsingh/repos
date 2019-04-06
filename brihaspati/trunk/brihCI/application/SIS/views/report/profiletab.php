@@ -95,6 +95,14 @@
 			<b>  <a href='<?php echo site_url()."/report/service_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Service Particulars</a></b> </td>
 		</tr>
                 <tr>
+			<?php if($current == 'addional') { ?>
+				<td class=btn active>
+			<?php }else{ ?>
+				<td class=btn1>
+			<?php } ?>
+			<b>  <a href='<?php echo site_url()."/report/addionalassign_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Addional Assignment Particulars</a></b> </td>
+		</tr>
+                <tr>
 			<?php if($current == 'perform') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
@@ -102,14 +110,16 @@
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
 		</tr>
-<!--                <tr>
+		<?php if($roleid == 1){ ?>
+                <tr>
 			<?php if($current == 'leave') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php //echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
-		</tr> -->
+			<b>  <a href='<?php echo site_url()."/report/leave_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Leave Particulars</a></b> </td>
+		</tr> 
+	<?php }  ?>
                 <tr>
 			<?php if($current == 'deputation') { ?>
 				<td class=btn active>

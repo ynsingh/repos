@@ -39,8 +39,9 @@
                 cols += '<td><b>School Education</b><select name="stdclass[]" id="stdclass" ><option value="">----- Select ------</option><option value="8<sup>th</sup> std">8<sup>th</sup> std</option><option value="10<sup>th</sup> std/SSLC">10<sup>th</sup> std/SSLC</option><option value="Ten Plus Two/12<sup>th</sup>">Ten Plus Two/12<sup>th</sup></option></select></td>';
        
                 cols += '<td><input type="text" name="board[]" id="buniv" placeholder="Board/university.." size="30"></td>';
-                cols += '<td><select name="result[]" id="result"><option value="">----- Select result ------</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
-                cols +='<td><input type="text" name="yopass[]" value="" id="yopass" class="form-control" size="30" /></td>';
+                cols += '<td><select name="result[]" id="result" style="width:150px;"><option value="">-- Select result ---</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
+                cols +='<td><input type="text" name="yopass[]" value="" id="yopass" class="form-control" size="10" /></td>';
+	        cols +='<td><select name="certtype[]" id="certtype" style="width:200px;"><option value="">--Select Certitficate Type --</option><option value="Provisional Degree">Provisional Degree</option><option value="Degree">Degree</option> </select> </td>';
                 cols +='<td><input type="text" name="discipline[]" id="dpln" placeholder="Discipline" size="30"></td>';
                 cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
                 newRow.append(cols);
@@ -67,8 +68,9 @@
                 cols +='<option value="BL">BL</option></select></td>';
             
                 cols += '<td><input type="text" name="board1[]" id="buniv" placeholder="Board/university.." size="30"></td>';
-                cols += '<td><select name="resul1t[]" id="result"><option value="">----- Select result ------</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
-                cols +='<td><input type="text" name="yopass1[]" value="" id="yopass" class="form-control" size="30" /></td>';
+                cols += '<td><select name="resul1t[]" id="result" style="width:150px;"><option value="">-- Select result --</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
+                cols +='<td><input type="text" name="yopass1[]" value="" id="yopass" class="form-control" size="10" /></td>';
+	        cols +='<td><select name="certtype1[]" id="certtype1" style="width:200px;"><option value="">--Select Certitficate Type --</option><option value="Provisional Degree">Provisional Degree</option><option value="Degree">Degree</option> </select> </td>';
                 cols +='<td><input type="text" name="discipline1[]" id="dpln" placeholder="Discipline" size="30"></td>';
                 cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
                 newRow.append(cols);
@@ -92,8 +94,9 @@
                 cols += '<option value="MPEd">MPEd</option><option value="ML">ML</option></select></td>';
             
                 cols += '<td><input type="text" name="board3[]" id="buniv" placeholder="Board/university.." size="30"></td>';
-                cols += '<td><select name="result3[]" id="result"><option value="">----- Select result ------</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
-                cols +='<td><input type="text" name="yopass3[]" value="" id="yopass" class="form-control" size="30" /></td>';
+                cols += '<td><select name="result3[]" id="result" style="width:150px;"><option value="">-- Select result --</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
+                cols +='<td><input type="text" name="yopass3[]" value="" id="yopass" class="form-control" size="10" /></td>';
+	        cols +='<td><select name="certtype3[]" id="certtype3" style="width:200px;"><option value="">--Select Certitficate Type --</option><option value="Provisional Degree">Provisional Degree</option><option value="Degree">Degree</option> </select> </td>';
                 cols +='<td><input type="text" name="discipline3[]" id="dpln" placeholder="Discipline" size="30"></td>';
                 cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
                 newRow.append(cols);
@@ -124,7 +127,7 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/viewfull_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/academic_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
@@ -160,6 +163,7 @@
                             <th>Board/University</th>
                             <th>Result</th>
                             <th>Year of Passing</th>
+                            <th>Certificate Type</th>
                             <th>Discipline</th>
                             <th></th>
                         </tr>
@@ -177,17 +181,23 @@
                             <td>
                             <input type="text" name="board[]" id="buniv" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result[]" id="result">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result[]" id="result" style="width:150px;">
+                                <option value="">--Select result --</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass[]" value="" id="yopass" class="form-control" size="30" />
+                                <input type="text" name="yopass[]" value="" id="yopass" class="form-control" size="10" />
                             </td>
-                       
+                       	    <td><select name="certtype[]" id="certtype" style="width:200px;">
+                                <option value="">--Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
+                            </td>
+
                             <td>
                             <input type="text" name="discipline[]" id="dpln" placeholder="Discipline" size="30">        
                             </td>
@@ -223,15 +233,21 @@
                             <td>
                             <input type="text" name="board1[]" id="buniv1" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result1[]" id="result1">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result1[]" id="result1" style="width:150px;">
+                                <option value="">--Select result--</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass1[]" value="" id="yopass1" class="form-control" size="30" />
+                                <input type="text" name="yopass1[]" value="" id="yopass1" class="form-control" size="10" />
+                            </td>
+                       	    <td><select name="certtype1[]" id="certtype1" style="width:200px;">
+                                <option value="">-- Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                             </td>
                             <td>
                             <input type="text" name="discipline1[]" id="dpln1" placeholder="Discipline" size="30">        
@@ -270,15 +286,21 @@
                             <td>
                             <input type="text" name="board3[]" id="buniv3" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result3[]" id="result3">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result3[]" id="result3" style="width:150px;">
+                                <option value="">-- Select result --</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass3[]" value="" id="yopass3" class="form-control" size="30" />
+                                <input type="text" name="yopass3[]" value="" id="yopass3" class="form-control" size="10" />
+                            </td>
+                       	    <td><select name="certtype3[]" id="certtype3" style="width:200px;">
+                                <option value="">-- Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                             </td>
                             <td>
                             <input type="text" name="discipline3[]" id="dpln3" placeholder="Discipline" size="30">        
@@ -294,20 +316,26 @@
                         <tbody>
                         <tr>
                             <td>
-                                <input type="text" name="pgdiploma" value="P.G.Diploma" id="pgdip" class="form-control" readonly />
+                                <input type="text" name="pgdiploma" value="P.G.Diploma" id="pgdip" class="form-control" readonly size="15" />
                             </td>
                             <td>
                             <input type="text" name="board2" id="buniv2" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result2" id="result2">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result2" id="result2" style="width:150px;">
+                                <option value="">-- Select result --</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass2" value="" id="yopass2" class="form-control" size="30" />
+                                <input type="text" name="yopass2" value="" id="yopass2" class="form-control" size="10" />
+                            </td>
+                       	    <td><select name="certtype2[]" id="certtype2" style="width:200px;">
+                                <option value="">-- Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                             </td>
                             <td>
                             <input type="text" name="discipline2" id="dpln2" placeholder="Discipline" size="30">        
@@ -315,20 +343,26 @@
                         </tr>    
                         <tr>
                             <td>
-                                <input type="text" name="MPhil" value="MPhil" id="mphil" class="form-control" readonly/>
+                                <input type="text" name="MPhil" value="MPhil" id="mphil" class="form-control" size="15" readonly/>
                             </td>
                             <td>
                             <input type="text" name="board4" id="buniv4" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result4" id="result4">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result4" id="result4" style="width:150px;">
+                                <option value="">-- Select result --</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass4" value="" id="yopass4" class="form-control" size="30" />
+                                <input type="text" name="yopass4" value="" id="yopass4" class="form-control" size="10" />
+                            </td>
+                       	    <td><select name="certtype4[]" id="certtype4" style="width:200px;">
+                                <option value="">-- Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                             </td>
                             <td>
                             <input type="text" name="discipline4" id="dpln4" placeholder="Discipline" size="30">        
@@ -337,20 +371,26 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" name="PhD" value="PhD" id="phd" class="form-control" readonly/>
+                                <input type="text" name="PhD" value="PhD" id="phd" class="form-control" size="15" readonly/>
                             </td>
                             <td>
                             <input type="text" name="board5" id="buniv5" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result5" id="resul5t">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result5" id="resul5t" style="width:150px;">
+                                <option value="">-- Select result --</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass5" value="" id="yopass5" class="form-control" size="30" />
+                                <input type="text" name="yopass5" value="" id="yopass5" class="form-control" size="10" />
+                            </td>
+                       	    <td><select name="certtype5[]" id="certtype5" style="width:200px;">
+                                <option value="">-- Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                             </td>
                             <td>
                             <input type="text" name="discipline5" id="dpln5" placeholder="Discipline" size="30">        
@@ -360,20 +400,26 @@
                         <!------------------------------------------------------------------------------------>
                          <tr>
                             <td>
-                                <input type="text" name="PDF" value="PDF" id="pdf" class="form-control" readonly/>
+                                <input type="text" name="PDF" value="PDF" id="pdf" class="form-control" size="15" readonly/>
                             </td>
                             <td>
                             <input type="text" name="board6" id="buniv6" placeholder="Board/university.." size="30">        
                             </td>
-                            <td><select name="result6" id="result6">
-                                <option value="">----- Select result ------</option>
+                            <td><select name="result6" id="result6" style="width:150px;">
+                                <option value="">-- Select result --</option>
                                 <option value="Pass">Pass</option>
                                 <option value="Fail">Fail</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
                             </td>
                             <td>
-                                <input type="text" name="yopass6" value="" id="yopass6" class="form-control" size="30" />
+                                <input type="text" name="yopass6" value="" id="yopass6" class="form-control" size="10" />
+                            </td>
+                       	    <td><select name="certtype6[]" id="certtype6" style="width:200px;">
+                                <option value="">-- Select Certitficate Type --</option>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                             </td>
                             <td>
                             <input type="text" name="discipline6" id="dpln6" placeholder="Discipline" size="30">        

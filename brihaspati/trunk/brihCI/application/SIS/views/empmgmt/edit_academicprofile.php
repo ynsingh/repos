@@ -52,6 +52,7 @@
                             <th>Board/University</th>
                             <th>Result</th>
                             <th>Year of Passing</th>
+                            <th>Certificate Type</th>
                             <th>Discipline</th>
                             <th>Action</th>
                         </tr>
@@ -83,7 +84,18 @@
                             <td>
                                 <input type="text" name="yopass<?php echo $i;?>" value="<?php echo $record->saq_yopass;?>" id="yopass" />
                             </td>
-                       
+
+                    <td><select name="certtype<?php echo $i;?>" id="certtype" style="width:200px;">
+				 <?php if(!empty($record->saq_certtype)):;?>
+                                 <option value="<?php echo $record->saq_certtype;?>"><?php echo $record->saq_certtype;?></option>
+                                <?php else:?>
+                                <option value="">--Select Certitficate Type --</option>
+                                <?php endif;?>
+                                <option value="Provisional Degree">Provisional Degree</option>
+                                <option value="Degree">Degree</option>
+                            </select>
+                            </td>
+   
                             <td>
                             <input type="text" name="discipline<?php echo $i;?>" id="dpln" value="<?php echo $record->saq_discipline;?>">        
                             </td>
@@ -100,7 +112,7 @@
                         </tbody>
                                     
                     <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
-                    <td colspan="6">
+                    <td colspan="7">
                     <button name="updateacadrofile" id="update">Update</button>
 		    <button type="button" onclick="history.back();">Back</button>
                     </tr>    

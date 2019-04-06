@@ -149,7 +149,8 @@
 			</td>
                 </tr> 
                 <tr>
-                    <td><label for="percentage" class="control-label">Rent Percentage(in %):</label></td>
+                    <td><label for="percentage" class="control-label">Rent Percentage(in decimal)
+                        <br>(ex. 3% written as 0.03 ):</label></td>
                     <td><input type="text" name="percentage" value="<?php echo $rrdata->rr_percentage; ?>" placeholder="Rent Recovery Percentage..." size="30" /></td>
                 </tr>
 <!--                <tr>

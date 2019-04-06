@@ -32,6 +32,7 @@
                             $('#dept').val(empinput[2].replace(/"|"/g,""));
                             $('#schm').val(empinput[3].replace(/"|"/g,""));
                             $('#ddo').val(empinput[4].replace(/"|"/g,""));
+				var wrktype=empinput[5].replace(/"|"/g,"");
                             $('#wtype').val(empinput[5].replace(/"|"/g,""));
                             $('#group').val(empinput[6].replace(/"|"/g,""));
 			    var dsaf=empinput[7].replace(/"|"/g,"");
@@ -129,6 +130,22 @@
    	     		    $('#spfcgsno').val(empinput[54].replace(/[[\]"|"]/g,""));                            
    	     		    $('#spfcgs2no').val(empinput[55].replace(/[[\]"|"]/g,""));                            
    	     		    $('#fsfno').val(empinput[56].replace(/[[\]"|"]/g,""));                            
+//$ems_nhisamt,$ems_bbemail,$ems_bbphone,$ems_bbadd,$ems_acctype,$ems_bbmicr,$ems_socamt,$ems_pli2amt, $ems_pli1amt,$ems_prd3amt,$ems_prd2amt,$ems_prd1amt, $fsfamt,$spfcgs2amt,$spfcgsamt
+   	     		    $('#nhisamount').val(empinput[57].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#bbemail').val(empinput[58].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#bbphone').val(empinput[59].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#bbadd').val(empinput[60].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#acctype').val(empinput[61].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#micrcode').val(empinput[62].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#socamount').val(empinput[63].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#pli2amount').val(empinput[64].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#pli1amount').val(empinput[65].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#prd3amount').val(empinput[66].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#prd2amount').val(empinput[67].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#prd1amount').val(empinput[68].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#fsfamount').val(empinput[69].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#spfcgs2amount').val(empinput[70].replace(/[[\]"|"]/g,""));                            
+   	     		    $('#spfcgsamount').val(empinput[71].replace(/[[\]"|"]/g,""));                            
                         },
                         error:function(data){
                             alert("error occur..!!");
@@ -176,7 +193,41 @@
             
             });
             
-                      
+		function levelofpay(val){
+                         var wt= $('#wtype').val();
+//                      alert(wt);
+//                       var val=val;
+                         $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpay",
+                                data: {"wt" : wt},
+                                dataType:"html",
+                                success: function(data){
+//              alert(data);
+                                        $('#pscale1').html(data.replace(/^"|"$/g, ''));
+                                }
+                        });
+                }
+
+                function payband(val){
+			levelofpay(val);
+                        var pc= $('#pcomm').val();
+                        var wt=$('#wtype').val();
+                        var val = wt+","+pc;
+//      alert(val);
+                        $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url();?>sisindex.php/jslist/getpayband",
+                                data: {"pcwt" : val},
+                                dataType:"html",
+                                success: function(data){
+  //            alert(data);
+                                        $('#pscale').html(data.replace(/^"|"$/g, ''));
+                                }
+                        });
+                }
+   
+                   
     </script>    
     </head>
     <body>
@@ -256,16 +307,33 @@
                         <tr>
                             <td> <b>Pay Commision:</b><br>
 				<div>
-					<select name="pcomm" id="pcomm" style="width:300px;">
+					<select name="pcomm" id="pcomm" style="width:300px;" onchange="payband(this.value)">
         		                        <option value="null" >------Select--------</option>
 	                        	        <option value="6th">6th</option>
                                 		<option value="7th">7th</option>
 	                            	</select>
 				</div>
-				<input type="text" id="pcomm" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
-                            <td> <b>Pay Band:</b><br><input type="text" id="pscale" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
-                            <td> <b>Academic Level of Pay:</b><br><input type="text" id="pscale1" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
-                            <td> <b>Scale of Pay:</b><br><input type="text" id="pscale2" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
+			<!--	<input type="text" id="pcomm" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly> -->
+			</td>
+                            <td> <b>Pay Band:</b><br>
+				<div>
+	                        <select name="pscale" id="pscale" style="width:300px;" >
+        	                <option disabled selected >------Select----------------</option>
+                	        </select>
+                        	</div>
+
+		<!--		<input type="text" id="pscale" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>-->
+				</td>
+                            <td> <b>Academic Level of Pay:</b><br>
+				<div>
+                                <select name="pscale1" id="pscale1" style="width:300px;" >
+                                <option disabled selected >------Select----------------</option>
+                                </select>
+                                </div>
+
+<!--				<input type="text" id="pscale1" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>-->
+				</td>
+                            <td> <b>Scale of Pay:</b><br><input type="text" id="pscale2" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly ></td>
                         </tr> 
                         <tr>
                             <td colspan=4> <b>Academic Grade Pay :</b><br><input type="text" id="pscale3" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
@@ -277,6 +345,22 @@
                             <td> <b>Bank Name:</b><br><input type="text" name="bname" id="bname" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
                             <td> <b>Bank Branch:</b><br><input type="text" name="bbranch" id="branch" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
                             <td> <b>IFSC Code:</b><br><input type="text" name="ifsccode" id="ifsccode" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
+			</tr><tr>
+                            <td> <b>MICR Code:</b><br><input type="text" name="micrcode" id="micrcode" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
+                            <td> <b>Account Type:</b><br>
+				 <div>
+                                        <select name="acctype" id="acctype" style="width:300px;" onchange="payband(this.value)">
+                                                <option value="null" >------Select--------</option>
+                                                <option value="Saving">Saving</option>
+                                                <option value="Current">Current</option>
+                                        </select>
+                                </div>
+			<!--	<input type="text" name="acctype" id="acctype" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;">-->
+				</td>
+                            <td> <b>Branch Address:</b><br><input type="text" name="bbadd" id="bbadd" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
+                            <td> <b>Branch Phone No.:</b><br><input type="text" name="bbphone" id="bbphone" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
+			</tr><tr>
+                            <td> <b>Branch Email:</b><br><input type="text" name="bbemail" id="bbemail" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;"></td>
                         </tr> 
                          
                         <tr><td colspan="5"><b> <hr/> <span style="color:#0099CC;">HRA | CCA | Rent Grade</span></b></td></tr> 
@@ -303,7 +387,16 @@
                                 <input type="radio" name="rfqemp" id="rfqemp" value="yes">Yes &nbsp;&nbsp;&nbsp;
                                 <input type="radio" name="rfqemp" id="rfqemp" checked  value="no">No
                             </td>
-                            <td> <b> HRA :</b><br><input type="text" name="exhra" id="exhra" value="" style="width:300px;"></td>
+                            <td> <b> Rent Free HRA Grade :</b><br>
+				 <div><select name="exhra" id="exhra" style="width:300px;">
+                                    <option value="" >------------ Rent Free HRA GRADE ---------</option>
+                                    <?php foreach($this->hglist as $hgdata): ?>
+                                    <option value="<?php echo $hgdata->hgc_id; ?>"><?php echo $hgdata->hgc_gradename;?>
+                                    </option>
+                                    <?php endforeach; ?>
+                            </select></div>
+<!--					<input type="text" name="exhra" id="exhra" value="" style="width:300px;">-->
+				</td>
                         </tr>
                         <tr>
                             <td style="width:300px;"><b> Quarters Occupied:</b><br>
@@ -348,21 +441,53 @@
                         <!--<tr><td colspan="5"><b>  <hr/><span style="color:#0099CC;">LIC/PRD/PLI/Society Entry</span></b></td></tr> -->
                         <tr>
                             <td><b> PAN No:</b><br><input type="text" name="panno" id="panno" value="" style="width:300px;"></td>
+                            <td style="width:300px;"> <b>Washing Allowance:</b><br>
+                                <input type="radio" name="washallw" id="washallw"  value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="washallw"  id="washallw" checked value="no">No
+                            </td>
                             <td><b> NHIS No:</b><br> <input type="text" name="nhisno" id="nhisno" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="nhisamount" id="nhisamount" value="" style="width:300px;"></td>
+                        </tr>
+                        <tr>
                             <td><b> SPF CGS No:</b><br><input type="text" name="spfcgsno" id="spfcgsno" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="spfcgsamount" id="spfcgsamount" value="" style="width:300px;"></td>
                             <td><b> SPF CGS 2000 No:</b><br><input type="text" name="spfcgs2no" id="spfcgs2no" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="spfcgs2amount" id="spfcgs2amount" value="" style="width:300px;"></td>
                         </tr>
                         <tr>
                             <td><b> LIC1 No:</b><br><input type="text" name="lic1no" id="lic1no" value="" style="width:300px;"></td>
                             <td><b>Amount:</b><br><input type="text" name="lic1amount" id="lic1amount" value="" style="width:300px;"></td>
                             <td><b> PRD1 No :</b><br><input type="text" name="prdno1" id="prdno1" value="" style="width:300px;"></td>
-                            <td><b> FSF No:</b><br><input type="text" name="fsfno" id="fsfno" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="prd1amount" id="prd1amount" value="" style="width:300px;"></td>
                             
                         </tr>
                         <tr>
                             <td><b> LIC2 No:</b><br><input type="text" name="lic2no" id="lic2no" value="" style="width:300px;"></td>
                             <td><b>Amount:</b><br><input type="text" name="lic2amount" id="lic2amount" value="" style="width:300px;"></td>
                             <td><b> PRD2 No :</b><br><input type="text" name="prdno2" id="prdno2" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="prd2amount" id="prd2amount" value="" style="width:300px;"></td>
+                        </tr>
+                        <tr>
+                            <td><b> LIC3 No:</b><br><input type="text" name="lic3no" id="lic3no" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="lic3amount" id="lic3amount" value="" style="width:300px;"></td>
+                            <td colspan="1"><b> PRD3 No :</b><br><input type="text" name="prdno3" id="prdno3" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="prd3amount" id="prd3amount" value="" style="width:300px;"></td>
+                          
+                        </tr>
+                        <tr>
+                            <td ><b> LIC4 No:</b><br><input type="text" name="lic4no" id="lic4no" value="" style="width:300px;"></td>
+                            <td ><b>Amount:</b><br><input type="text" name="lic4amount" id="lic4amount" value="" style="width:300px;"></td>
+                            <td colspan="1"><b> PLI1 No :</b><br><input type="text" name="plino1" id="plino1" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="pli1amount" id="pli1amount" value="" style="width:300px;"></td>
+                          
+                        </tr>
+                        <tr>
+                            <td><b> LIC5 No:</b><br><input type="text" name="lic5no" id="lic5no" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="lic5amount" id="lic5amount" value="" style="width:300px;"></td>
+                            <td  colspan="1"><b> PLI2 No :</b><br><input type="text" name="plino2" id="plino2" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="pli2amount" id="pli2amount" value="" style="width:300px;"></td>
+                        </tr>
+                        <tr>
                             <td><b> Society:</b><br>
                                 <div><select name="society" id="society" style="width:300px;"> 
                                     <option value="">------------ Society ---------</option>
@@ -372,33 +497,16 @@
                                     <?php endforeach; ?>
                                 </select></div>
                                 </td>
-                        </tr>
-                        <tr>
-                            <td><b> LIC3 No:</b><br><input type="text" name="lic3no" id="lic3no" value="" style="width:300px;"></td>
-                            <td><b>Amount:</b><br><input type="text" name="lic3amount" id="lic3amount" value="" style="width:300px;"></td>
-                            <td colspan="1"><b> PRD3 No :</b><br><input type="text" name="prdno3" id="prdno3" value="" style="width:300px;"></td>
                             <td><b> Society No:</b><br> <input type="text" name="societymember" id="socmem" value="" style="width:300px;"></td>
-                          
-                        </tr>
-                        <tr>
-                            <td ><b> LIC4 No:</b><br><input type="text" name="lic4no" id="lic4no" value="" style="width:300px;"></td>
-                            <td ><b>Amount:</b><br><input type="text" name="lic4amount" id="lic4amount" value="" style="width:300px;"></td>
-                            <td colspan="1"><b> PLI1 No :</b><br><input type="text" name="plino1" id="plino1" value="" style="width:300px;"></td>
-                            <td style="width:300px;"> <b>Washing Allowance:</b><br>
-                                <input type="radio" name="washallw" id="washallw"  value="yes">Yes &nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="washallw"  id="washallw" checked value="no">No
-                            </td>
-                          
-                        </tr>
-                        <tr>
-                            <td><b> LIC5 No:</b><br><input type="text" name="lic5no" id="lic5no" value="" style="width:300px;"></td>
-                            <td><b>Amount:</b><br><input type="text" name="lic5amount" id="lic5amount" value="" style="width:300px;"></td>
-                            <td  colspan="1"><b> PLI2 No :</b><br><input type="text" name="plino2" id="plino2" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="socamount" id="socamount" value="" style="width:300px;"></td>
                             <td style="width:300px;"> <b>Deduct UPF:</b><br>
                                 <input type="radio" name="dedupf" id="dedupf" value="yes">Yes &nbsp;&nbsp;&nbsp;
                                 <input type="radio" name="dedupf" id="dedupf"  checked value="no">No
-                                <!--<input type="checkbox" name="dedupf" id="dedupf"  value="">-->
                             </td>
+                        </tr>
+                        <tr>
+                            <td><b> FSF No:</b><br><input type="text" name="fsfno" id="fsfno" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="fsfamount" id="fsfamount" value="" style="width:300px;"></td>
                         </tr>
                         <tr>
                             <td colspan="6">   

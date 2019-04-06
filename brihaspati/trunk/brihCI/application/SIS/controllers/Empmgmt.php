@@ -1978,6 +1978,90 @@ public function disciplin_profile() {
         }//ifpost button
         $this->load->view('empmgmt/add_workarrangdata');
     }//function close
+
+
+public function add_addionalassigndata($empid) {
+        $this->roleid=$this->session->userdata('id_role');
+        $this->emp_id = $empid;
+        $empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+
+        if(isset($_POST['adaddnldata'])) {	
+            	//form validation
+		$this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
+	        $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
+            	$this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
+            	$this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
+            	$this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
+		
+            	if($this->form_validation->run() == FALSE){
+                	redirect('empmgmt/add_addionalassigndata');
+            	}//formvalidation
+            	else{
+		 	if(!empty($_POST['asignname'])){
+                        	if($_POST['asignname'] == 'Others'){
+                            		$asignname=$_POST['asignname'].",".$_POST['asignother'];
+                        	}
+                        	else{
+                            		$asignname=$_POST['asignname'];
+                        	}
+                    	}
+                    	else{
+                        	$asignname=NULL;
+                    	}
+                    	$dataasign=array(
+                        	'aa_empid'              =>$empid,
+	                        'aa_asigname'           =>$asignname,
+        	                'aa_asigperiodfrom'     =>$_POST['asigndatefrom'],
+                	        'aa_asigperiodto'       =>$_POST['asigndateto'],
+                        	'aa_place'              =>$_POST['asignplace'],
+	                        'aa_creatorid'          =>$this->session->userdata('username'),
+        	                'aa_creatordate'        =>date('y-m-d'),
+                	        'aa_modifierid'         =>$this->session->userdata('username'),
+                        	'aa_modifydate'         =>date('y-m-d'),
+
+                    	);
+                    	/* insert record in  additional assignments */
+			$dupcheck =array('aa_empid'              =>$empid,
+                                'aa_asigname'           =>$asignname,
+                                'aa_asigperiodfrom'     =>$_POST['asigndatefrom'],
+                                'aa_asigperiodto'       =>$_POST['asigndateto'],
+                                'aa_place'              =>$_POST['asignplace'],
+			);
+			$stddup = $this->sismodel->isduplicatemore('additional_assignments', $dupcheck);
+                        if(!$stddup){
+	                    	$servdataflag=$this->sismodel->insertrec('additional_assignments', $dataasign);
+	                	if(!$servdataflag)
+        	        	{
+                	    		$this->logger->write_logmessage("error","Error in insert staff_additional_assignments_perticulars  record", "Error in insert  staff_additional_assignments_perticulars record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert   staff_additional_assignments_perticulars record ", "Error in insert  staff_additional_assignments_perticulars record" );
+                    			$this->session->set_flashdata('err_message','Error in insert  staff_additional_assignments_perticulars record ');
+	                    //		$this->load->view('empmgmt/add_addionalassigndata',$data);
+        	        	}
+                		else{
+                    			$this->logger->write_logmessage("insert","Add  staff_additional_assignments_perticulars Data", "Staff  staff_additional_assignments_perticulars insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add  staff_additional_assignments_perticulars Data", "Staff_additional_assignments_perticulars record insert successfully ." );
+	                    		$this->session->set_flashdata('success','Staff_additional_assignments_perticulars record insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+        	            		if($this->roleid == 4){
+                	        		redirect('empmgmt/viewempprofile');
+                    			}
+                			else{
+		                        	redirect('report/addionalassign_profile/'.$empid);
+                    			}
+                                      
+                		}
+			}//end of duplicate
+			else{
+				$this->session->set_flashdata('err_message','Record already exist in staff_additional_assignments_perticulars record ');
+                           //     $this->load->view('empmgmt/add_addionalassigndata',$data);
+
+			}//else end in duplicate
+
+            	}//else
+           
+        }//ifpost button
+        $this->load->view('empmgmt/add_addionalassigndata');
+}//function close
     /***********************************Start Add academic qualification******************************************/
     
     public function add_academicqualification($empid){
@@ -1989,12 +2073,14 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('board','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
             /*******************************sec2*******************************************/
             $this->form_validation->set_rules('degree1','Degree1','trim|xss_clean');
 	    $this->form_validation->set_rules('board1','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result1','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass1','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype1','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline1','Discipline1','trim|xss_clean');
             
             /*******************************sec3*******************************************/
@@ -2002,36 +2088,42 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('board1','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result1','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass1','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline1','Discipline1','trim|xss_clean');
             /*******************************sec4*******************************************/
             $this->form_validation->set_rules('pgdiploma','PGDiploma','trim|xss_clean');
 	    $this->form_validation->set_rules('board2','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result2','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass2','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype2','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline2','Discipline1','trim|xss_clean');
             /*******************************sec5*******************************************/
             $this->form_validation->set_rules('pgdegree','PGDegree','trim|xss_clean');
 	    $this->form_validation->set_rules('board3','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result3','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass3','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype3','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline3','Discipline1','trim|xss_clean');
             /*****************************sec6************************************************/
             $this->form_validation->set_rules('MPhil','MPhil','trim|xss_clean');
 	    $this->form_validation->set_rules('board4','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result4','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass4','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype4','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline4','Discipline1','trim|xss_clean');
             /*****************************sec7************************************************/
             $this->form_validation->set_rules('PhD','PhD','trim|xss_clean');
 	    $this->form_validation->set_rules('board5','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result5','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass5','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype5','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline5','Discipline1','trim|xss_clean');
             /*****************************sec8************************************************/
             $this->form_validation->set_rules('PDF','PDF','trim|xss_clean');
 	    $this->form_validation->set_rules('board6','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result6','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass6','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype6','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline6','Discipline1','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
             
@@ -2045,6 +2137,7 @@ public function disciplin_profile() {
                 $buni = $this->input->post('board', TRUE);
                 $result = $this->input->post('result', TRUE);
                 $ypass = $this->input->post('yopass', TRUE);
+                $certtype = $this->input->post('certtype', TRUE);
                 $dpln = $this->input->post('discipline', TRUE);
                 
                 foreach($stdc as $a => $b){
@@ -2056,6 +2149,7 @@ public function disciplin_profile() {
                         'saq_board_univ'    =>$buni[$a],
                         'saq_result'        =>$result[$a],
                         'saq_yopass'        =>$ypass[$a],
+                        'saq_certtype'      =>$certtype[$a],
                         'saq_discipline'    =>$dpln[$a],
                         'saq_creatorid'     =>$this->session->userdata('username'),
                         'saq_creatordate'   =>date('Y-m-d'),
@@ -2082,6 +2176,7 @@ public function disciplin_profile() {
                 $buni1 = $this->input->post('board1', TRUE);
                 $result1 = $this->input->post('result1', TRUE);
                 $ypass1 = $this->input->post('yopass1', TRUE);
+                $certtype1 = $this->input->post('certtype1', TRUE);
                 $dpln1 = $this->input->post('discipline1', TRUE);
                 
                 foreach($degree as $c => $b1){
@@ -2092,6 +2187,7 @@ public function disciplin_profile() {
                         'saq_board_univ'    =>$buni1[$c],
                         'saq_result'        =>$result1[$c],
                         'saq_yopass'        =>$ypass1[$c],
+                        'saq_certtype'      =>$certtype1[$c],
                         'saq_discipline'    =>$dpln1[$c],
                         'saq_creatorid'     =>$this->session->userdata('username'),
                         'saq_creatordate'   =>date('Y-m-d'),
@@ -2118,6 +2214,7 @@ public function disciplin_profile() {
                     'saq_board_univ'    =>$_POST['board2'],
                     'saq_result'        =>$_POST['result2'],
                     'saq_yopass'        =>$_POST['yopass2'],
+                    'saq_certtype'      =>$_POST['certtype2'],
                     'saq_discipline'    =>$_POST['discipline2'],
 		    'saq_creatorid'     =>$this->session->userdata('username'),
                     'saq_creatordate'   =>date('Y-m-d'),
@@ -2140,6 +2237,7 @@ public function disciplin_profile() {
                 $buni3 = $this->input->post('board3', TRUE);
                 $result3 = $this->input->post('result3', TRUE);
                 $ypass3 = $this->input->post('yopass3', TRUE);
+                $certtype3 = $this->input->post('certtype3', TRUE);
                 $dpln3 = $this->input->post('discipline3', TRUE);
                 
                 foreach($pgdegree as $a3 => $b3){
@@ -2149,7 +2247,8 @@ public function disciplin_profile() {
                         'saq_dgree'         =>$pgdegree[$a3],
                         'saq_board_univ'    =>$buni3[$a3],
                         'saq_result'        =>$result3[$a3],
-                        'saq_yopass'        =>$ypass3[$a3],
+                        'saq_yopass'        =>$ypass3[$a3],  
+                        'saq_certtype'      =>$certtype3[$a3],
                         'saq_discipline'    =>$dpln3[$a3],
                         'saq_creatorid'     =>$this->session->userdata('username'),
                         'saq_creatordate'   =>date('Y-m-d'),
@@ -2176,6 +2275,7 @@ public function disciplin_profile() {
                     'saq_board_univ'    =>$_POST['board4'],
                     'saq_result'        =>$_POST['result4'],
                     'saq_yopass'        =>$_POST['yopass4'],
+                    'saq_certtype'      =>$_POST['certtype4'],
                     'saq_discipline'    =>$_POST['discipline4'],
 		    'saq_creatorid'     =>$this->session->userdata('username'),
                     'saq_creatordate'   =>date('Y-m-d'),
@@ -2201,6 +2301,7 @@ public function disciplin_profile() {
                     'saq_board_univ'    =>$_POST['board5'],
                     'saq_result'        =>$_POST['result5'],
                     'saq_yopass'        =>$_POST['yopass5'],
+                    'saq_certtype'      =>$_POST['certtype5'],
                     'saq_discipline'    =>$_POST['discipline5'],
 		    'saq_creatorid'     =>$this->session->userdata('username'),
                     'saq_creatordate'   =>date('Y-m-d'),
@@ -2227,6 +2328,7 @@ public function disciplin_profile() {
                     'saq_board_univ'    =>$_POST['board6'],
                     'saq_result'        =>$_POST['result6'],
                     'saq_yopass'        =>$_POST['yopass6'],
+                    'saq_certtype'      =>$_POST['certtype6'],
                     'saq_discipline'    =>$_POST['discipline6'],
 		    'saq_creatorid'     =>$this->session->userdata('username'),
                     'saq_creatordate'   =>date('Y-m-d'),
@@ -2413,8 +2515,33 @@ public function disciplin_profile() {
                		}
 		}
                 /****************************************************************************************/
-                
-                $data3 = array(
+               $ccourse = $this->input->post('ccourse', TRUE);
+                $buni2 = $this->input->post('board2', TRUE);
+                $result2 = $this->input->post('result2', TRUE);
+                $ypass2 = $this->input->post('yopass2', TRUE);
+                $dpln2 = $this->input->post('discipline2', TRUE);
+                foreach($ccourse as $a2 => $b2){
+                        $data3 = array(
+                            'stq_empid'         =>$this->emp_id,
+                            'stq_dgree'         =>$ccourse[$a2],
+                            'stq_board_univ'    =>$buni2[$a2],
+                            'stq_result'        =>$result2[$a2],
+                            'stq_dopass'        =>$ypass2[$a2],
+                            'stq_discipline'    =>$dlpn2[$a2],
+                            'stq_creatorid'     =>$this->session->userdata('username'),
+                            'stq_creatordate'   =>date('Y-m-d'),
+                            'stq_modifierid'    =>$this->session->userdata('username'),
+                            'stq_modifydate'    =>date('Y-m-d'),
+                        );
+                        if(!empty($ccourse[$a2])){
+                            $dupcheck = array(
+                                'stq_empid'  =>$this->emp_id,
+                               // 'stq_dgree'  =>$_POST['diploma'],
+                                'stq_discipline'    =>$dlpn2[$a2],
+
+                            );
+ 
+  /*              $data3 = array(
                     'stq_empid'         =>$this->emp_id,
                     'stq_dgree'         =>$_POST['ccourse'],
                     'stq_board_univ'    =>$_POST['board2'],
@@ -2432,11 +2559,13 @@ public function disciplin_profile() {
                         'stq_dgree'  =>$_POST['ccourse'],
                 
                     ); 
+*/
                     $ccoursedup = $this->sismodel->isduplicatemore('staff_technical_qualification', $dupcheck);
                     if(!$ccoursedup){
                         $techflag=$this->sismodel->insertrec('staff_technical_qualification', $data3);
                     }    
                 }
+                }//foreach    
                 
                 /***************************shorthand*********************************************************/
                 $shorthand = $this->input->post('shorthand', TRUE);
@@ -2548,6 +2677,7 @@ public function disciplin_profile() {
 	    $this->form_validation->set_rules('board','Board University','trim|xss_clean');
 	    $this->form_validation->set_rules('result','result','trim|xss_clean');
             $this->form_validation->set_rules('yopass','Year of Passing','trim|xss_clean');
+            $this->form_validation->set_rules('certtype','Certificate Type','trim|xss_clean');
 	    $this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
             
             $tsize = $this->input->post('totalsize', TRUE);
@@ -2557,8 +2687,9 @@ public function disciplin_profile() {
                 $board = $this->input->post('board'.$i, TRUE);
                 $result = $this->input->post('result'.$i, TRUE);
                 $yopass = $this->input->post('yopass'.$i, TRUE);
+                $certtype = $this->input->post('certtype'.$i, TRUE);
                 $dspln = $this->input->post('discipline'.$i, TRUE);
-                echo "entryid===".$entryid."class===".$stdclass."board==".$board."tsize==".$tsize;
+    //            echo "entryid===".$entryid."class===".$stdclass."board==".$board."tsize==".$tsize;
                // die;
                 $updata=array(
                     'saq_empid'         =>$this->emp_id,
@@ -2566,6 +2697,7 @@ public function disciplin_profile() {
                     'saq_board_univ'    =>$board,
                     'saq_result'        =>$result,
                     'saq_yopass'        =>$yopass,
+                    'saq_certtype'        =>$certtype,
                     'saq_discipline'    =>$dspln,
 		   // 'saq_creatorid'     =>$this->session->userdata('username'),
                     //'saq_creatordate'   =>date('Y-m-d'),
@@ -2656,7 +2788,19 @@ public function disciplin_profile() {
     
     public function delete_academicprofile($id) {
         $this->roleid=$this->session->userdata('id_role');
+	$usrid=$this->session->userdata('id_user');
         $this->emp_id=$this->sismodel->get_listspfic1('staff_academic_qualification', 'saq_empid', 'saq_id',$id)->saq_empid;
+	$hflag=false;
+        if($roleid == 5){
+                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                $empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+                if($hdept == $empdeptid){
+                        $hflag=true;
+                }
+        }
+
+        if(( $usrid == 1)||($hflag)){
+
         /* Deleting academicprofile Record */
         $delflag=$this->sismodel->deleterow('staff_academic_qualification','saq_id',$id);
         if (! delflag   )
@@ -2673,14 +2817,35 @@ public function disciplin_profile() {
             $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
             redirect('empmgmt/edit_academicprofile/'.$this->emp_id);
         }
+	}
+        else{
+            $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+            $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete employee_acad detail Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete employee_acad detail Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee acad record.' );
+            redirect('empmgmt/edit_academicprofile/'.$this->emp_id);
+        }
+
         $this->load->view('empmgmt/edit_academicprofile');
         
     }
 
     /**This function Delete records */
     public function delete_techprofile($id) {
-        $this->roleid=$this->session->userdata('id_role');
+        $roleid=$this->session->userdata('id_role');
+	$usrid=$this->session->userdata('id_user');
         $this->emp_id=$this->sismodel->get_listspfic1('staff_technical_qualification', 'stq_empid', 'stq_id',$id)->stq_empid;
+
+	$hflag=false;
+        if($roleid == 5){
+                $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                $empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+                if($hdept == $empdeptid){
+                        $hflag=true;
+                }
+        }
+
+        if(( $usrid == 1)||($hflag)){
         /* Deleting academicprofile Record */
         $delflag=$this->sismodel->deleterow('staff_technical_qualification','stq_id',$id);
         if (! delflag   )
@@ -2697,6 +2862,15 @@ public function disciplin_profile() {
             $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
             redirect('empmgmt/edit_technicalprofile/'.$this->emp_id);
         }
+	}
+        else{
+            $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+            $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete employee_tech detail Record  ". " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete employee_tech detail Record  " . " [id:" . $id . "]");
+            $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee tech record.' );
+            redirect('empmgmt/edit_technicalprofile/'.$this->emp_id);
+        }
+
         $this->load->view('empmgmt/edit_technicalprofile');
         
     }//closer
@@ -2707,7 +2881,18 @@ public function disciplin_profile() {
         $this->roleid=$roleid;
         $usrid=$this->session->userdata('id_user');
         $this->emp_id=$this->sismodel->get_listspfic1('employee_servicedetail', 'empsd_empid', 'empsd_id',$id)->empsd_empid;
-	if(($roleid == 1)||($roleid == 5)){
+
+	$hflag=false;
+        if($roleid == 5){
+               $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+               $empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+               if($hdept == $empdeptid){
+                        $hflag=true;
+                }
+        }
+
+        if(( $usrid == 1)||($hflag)){
+//	if(($roleid == 1)||($roleid == 5)){
         /* Deleting academicprofile Record */
         $delflag=$this->sismodel->deleterow('employee_servicedetail','empsd_id',$id);
         if (! delflag   )
@@ -2778,7 +2963,18 @@ public function disciplin_profile() {
 		$empcode=$this->sismodel->get_listspfic1('staff_working_arrangements_perticulars', 'swap_empcode', 'swap_id',$id)->swap_empcode;
 		$this->emp_id=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$empcode)->emp_id;
 //        	$this->emp_id=$this->sismodel->get_listspfic1('staff_working_arrangements_perticulars', 'swap_userid', 'swap_id',$id)->swap_userid;
-	        if( $usrid == 1){
+
+		$hflag=false;
+                if($roleid == 5){
+                        $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                        $empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+                        if($hdept == $empdeptid){
+                                $hflag=true;
+                        }
+                }
+
+                if(( $usrid == 1)||($hflag)){
+//	        if( $usrid == 1){
         		/* Deleting academicprofile Record */
 		        $delflag=$this->sismodel->deleterow('staff_working_arrangements_perticulars','swap_id',$id);
 		        if (! delflag   )
@@ -2810,7 +3006,18 @@ public function disciplin_profile() {
                 $this->roleid=$this->session->userdata('id_role');
                 $usrid=$this->session->userdata('id_user');
                 $this->emp_id=$this->sismodel->get_listspfic1('staff_promotionals_details', 'spd_empid', 'spd_id',$id)->spd_empid;
-                if( $usrid == 1){
+		
+		$hflag=false;
+                if($roleid == 5){
+                        $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                        $empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+                        if($hdept == $empdeptid){
+                                $hflag=true;
+                        }
+                }
+
+                if(( $usrid == 1)||($hflag)){
+//                if( $usrid == 1){
                         $delflag=$this->sismodel->deleterow('staff_promotionals_details','spd_id',$id);
                         if (! delflag   )
                         {
@@ -2830,13 +3037,177 @@ public function disciplin_profile() {
                         $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
                         $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_promotionals_details Record  ". " [id:" . $id . "]");
                         $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff_promotionals_details Record  " . " [id:" . $id . "]");
-                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee service record.' );
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee promotional record.' );
                         redirect('report/promotional_profile/'.$this->emp_id);
                 }
                 $this->load->view('report/promotional_profile/'.$this->emp_id);
         }//closer 
 
+   	  /**This function Delete records */
+        public function delete_deptexamprofile($id) {
+                $this->roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $empuserid=$this->sismodel->get_listspfic1('staff_department_exam_perticulars', 'sdep_userid', 'sdep_id',$id)->sdep_userid;
+                $this->emp_id=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_userid',$empuserid)->emp_id;
+		$hflag=false;
+                if($roleid == 5){
+                        $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+                        $empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_userid',$empuserid)->emp_dept_code;
+                        if($hdept == $empdeptid){
+                                $hflag=true;
+                        }
+                }
+
+                if(( $usrid == 1)||($hflag)){
+//                if( $usrid == 1){
+                        $delflag=$this->sismodel->deleterow('staff_department_exam_perticulars','sdep_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_departmental_exam_details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_departmental_exam_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_departmental_exam_details record - ');
+                                redirect('report/deptexam_profile/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_departmental_exam_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_departmental_exam_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+                                redirect('report/deptexam_profile/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_departmental_exam_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff_departmental_exam_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee departmental_exam record.' );
+                        redirect('report/deptexam_profile/'.$this->emp_id);
+                }
+                $this->load->view('report/deptexam_profile/'.$this->emp_id);
+        }//closer 
  
+   	  /**This function Delete records */
+        public function delete_deputdata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $empuserid=$this->sismodel->get_listspfic1('staff_deputation_perticulars', 'sdp_userid', 'sdp_id',$id)->sdp_userid;
+                $this->emp_id=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_userid',$empuserid)->emp_id;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_userid',$empuserid)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $usrid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_deputation_perticulars','sdp_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_deputation_details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_deputation_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_deputation_details record - ');
+                                redirect('report/deputation_profile/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_deputation_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_deputation_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+                                redirect('report/deputation_profile/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_deputation_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff deputation_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee deputation record.' );
+                        redirect('report/deputation_profile/'.$this->emp_id);
+                }
+                $this->load->view('report/deputation_profile/'.$this->emp_id);
+        }//closer 
+
+   	  /**This function Delete records */
+        public function delete_recruitdata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $empuserid=$this->sismodel->get_listspfic1('staff_recruitment_perticulars', 'srp_userid', 'srp_id',$id)->sdp_userid;
+                $this->emp_id=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_userid',$empuserid)->emp_id;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_userid',$empuserid)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $usrid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_recruitment_perticulars','srp_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_recruitment_details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_recruitment_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_recruitment_details record - ');
+                                redirect('report/recruit_profile/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_recruitment_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_recruitment_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+                                redirect('report/recruit_profile/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_recruitment_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff recruitment_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee recruitment record.' );
+                        redirect('report/recruit_profile/'.$this->emp_id);
+                }
+                $this->load->view('report/recruit_profile/'.$this->emp_id);
+        }//closer 
+
+   	  /**This function Delete records */
+        public function delete_addionalassignprofile($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('additional_assignments', 'aa_empid', 'aa_id',$id)->aa_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $usrid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('additional_assignments','aa_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_additional_assignments_details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_additional_assignments_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_additional_assignments_details record - ');
+                                redirect('report/addionalassign_profile/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_additional_assignments_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_additional_assignments_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Record  Deleted successfully ...' );
+                                redirect('report/addionalassign_profile/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_additional_assignments_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff additional_assignments_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee additional_assignments record.' );
+                                redirect('report/addionalassign_profile/'.$this->emp_id);
+                }
+                $this->load->view('report/addionalassign_profile/'.$this->emp_id);
+        }//closer 
+
+
 }//classcloser    
     
     

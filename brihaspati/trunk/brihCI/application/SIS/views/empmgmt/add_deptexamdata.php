@@ -10,7 +10,7 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
-            $(document).ready(function(){
+/*            $(document).ready(function(){
                 $('#Datefrom,#Dateto').datepicker({
                     dateFormat: 'yy/mm/dd',
                     autoclose:true,
@@ -23,6 +23,7 @@
                 });
 
 	});
+*/
 </script> 
     </head>
     <body>
@@ -34,7 +35,7 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/viewfull_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/deptexam_profile/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
@@ -74,6 +75,7 @@
                         <option value="ATS Part II">ATS Part II</option>
                         <option value="Accountancy Lower">Accountancy Lower</option>
                         <option value="Accountancy Higher">Accountancy Higher</option>
+                        <option value="Computer on Office Automation">Computer on Office Automation</option>
                         <option value="Others">Others</option>
                     </select>
                 </td>
@@ -87,8 +89,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Date Of Passing<font color='Red'>*</font></td>
-                        <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" required="required" >
+                    <td>Date Of Passing(YYYY-MM)<font color='Red'>*</font></td>
+                        <td><input type="text" name="Datefrom" id="" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" required="required" >
                     </td>
                 </tr>
                 <tr></tr><tr></tr>

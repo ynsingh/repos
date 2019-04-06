@@ -423,7 +423,7 @@ class Jslist extends CI_Controller
     
     
     
-     /***** This function has been created for get the employee detail by pf no ********************************/
+     /***** This function has been created for get the employee detail by pf no for payroll profile ********************************/
     
     public function getempdata2(){
         $values=array();
@@ -489,7 +489,7 @@ class Jslist extends CI_Controller
             }
             
         } 
-	$sel2="ems_house_type,ems_house_no,ems_pensioncontri,ems_upfno,ems_universityemp,ems_washingallowance,ems_deductupf,ems_hragrade,ems_ccagrade,ems_inclsummary,ems_lic1no,ems_lic1amount,ems_lic2no,ems_lic2amount,ems_lic3no,ems_lic3amount,ems_lic4no,ems_lic4amount,ems_lic5no,ems_lic5amount,ems_prdno1,ems_prdno2,ems_prdno3,ems_plino1,ems_plino2,ems_society,ems_societymember,ems_erfq,ems_erfqhra,ems_qoccupai,ems_rentgrade,ems_spfcgs,ems_spfcgs2000,ems_fsfno";
+	$sel2="ems_house_type,ems_house_no,ems_pensioncontri,ems_upfno,ems_universityemp,ems_washingallowance,ems_deductupf,ems_hragrade,ems_ccagrade,ems_inclsummary,ems_lic1no,ems_lic1amount,ems_lic2no,ems_lic2amount,ems_lic3no,ems_lic3amount,ems_lic4no,ems_lic4amount,ems_lic5no,ems_lic5amount,ems_prdno1,ems_prdno2,ems_prdno3,ems_plino1,ems_plino2,ems_society,ems_societymember,ems_erfq,ems_erfqhra,ems_qoccupai,ems_rentgrade,ems_spfcgs,ems_spfcgs2000,ems_fsfno,ems_fsfamount,ems_bbmicr,ems_acctype,ems_bbadd,ems_bbphone,ems_bbemail,ems_nhisamount";
 	$whdata2=array('ems_code'=>$pfno);
         //$emp_data2=$this->sismodel->get_listrow('employee_master_support','ems_code',$pfno);
         //$empdetail2 = $emp_data2->result();
@@ -531,10 +531,27 @@ class Jslist extends CI_Controller
 		$spfcgs=$detail2->ems_spfcgs;
 		$spfcgs2000=$detail2->ems_spfcgs2000;
 		$fsfno=$detail2->ems_fsfno;
-                // 28 item push,7 item push
+		$ems_nhisamt=$detail2->ems_nhisamount;
+		$ems_bbemail=$detail2->ems_bbemail;
+		$ems_bbphone=$detail2->ems_bbphone;
+		$ems_bbadd =$detail2->ems_bbadd;
+		$ems_acctype =$detail2->ems_acctype;
+		$ems_bbmicr =$detail2->ems_bbmicr;
+		$ems_socamt =$detail2->ems_socamount;
+		$ems_pli2amt =$detail2->ems_pli2amount;
+		$ems_pli1amt =$detail2->ems_pli1amount;
+		$ems_prd3amt =$detail2->ems_prd3amount;
+		$ems_prd2amt =$detail2->ems_prd2amount;
+		$ems_prd1amt =$detail2->ems_prd1amount;
+		$fsfamt=$detail2->ems_fsfamount;
+		$spfcgs2amt=$detail2->ems_spfcgs2amount;
+		$spfcgsamt=$detail2->ems_spfcgsamount;
+                // 28 item push,7 item push,15 item push
                 array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
                 $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
-                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem,$empid,$erfq,$erfqhra,$qoccupai,$rentgrade,$spfcgs,$spfcgs2000,$fsfno);      
+                $prdno2,$prdno3,$plino1,$plino2,$society, $socmem,$empid,$erfq,$erfqhra,$qoccupai,$rentgrade,$spfcgs,$spfcgs2000,$fsfno,
+		$ems_nhisamt,$ems_bbemail,$ems_bbphone,$ems_bbadd,$ems_acctype,$ems_bbmicr,$ems_socamt,$ems_pli2amt, $ems_pli1amt,$ems_prd3amt,
+		$ems_prd2amt,$ems_prd1amt, $fsfamt,$spfcgs2amt,$spfcgsamt);      
 
 //                array_push($values,$pensioncontri,$upfno,$houseno,$housetype,$univemp,$washallowance,$dedtupf,$hragrade,$ccagrade,
   //              $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,

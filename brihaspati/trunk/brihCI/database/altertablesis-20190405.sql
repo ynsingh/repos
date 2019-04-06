@@ -1,0 +1,13 @@
+ALTER TABLE `staff_department_exam_perticulars` CHANGE `sdep_passdate` `sdep_passdate` VARCHAR(25) NULL DEFAULT NULL;
+ALTER TABLE `staff_academic_qualification` ADD `saq_certtype` VARCHAR(255) NULL AFTER `saq_yopass`;
+ALTER TABLE `employee_master_support` ADD `ems_bbmicr` VARCHAR(13) NULL AFTER `ems_fsfno`, ADD `ems_acctype` VARCHAR(25) NULL AFTER `ems_bbmicr`, ADD `ems_bbadd` VARCHAR(255) NULL AFTER `ems_acctype`, ADD `ems_bbphone` VARCHAR(255) NULL AFTER `ems_bbadd`, ADD `ems_bbemail` VARCHAR(255) NULL AFTER `ems_bbphone`;
+ALTER TABLE `employee_master_support` ADD `ems_prd1amount` VARCHAR(11) NOT NULL AFTER `ems_prdno1`;
+ALTER TABLE `employee_master_support` ADD `ems_prd2amount` VARCHAR(11) NULL AFTER `ems_prdno2`;
+ALTER TABLE `employee_master_support` ADD `ems_prd3amount` VARCHAR(11) NULL AFTER `ems_prdno3`;
+ALTER TABLE `employee_master_support` ADD `ems_pli1amount` VARCHAR(11) NULL AFTER `ems_plino1`;
+ALTER TABLE `employee_master_support` ADD `ems_pli2amount` VARCHAR(11) NULL AFTER `ems_plino2`;
+ALTER TABLE `employee_master_support` ADD `ems_socamount` VARCHAR(11) NULL AFTER `ems_societymember`;
+ALTER TABLE `employee_master_support` ADD `ems_spfcgsamount` VARCHAR(11) NULL AFTER `ems_spfcgs`;
+ALTER TABLE `employee_master_support` ADD `ems_spfcgs2amount` VARCHAR(11) NULL AFTER `ems_spfcgs2000`;
+ALTER TABLE `employee_master_support` ADD `ems_fsfamount` VARCHAR(11) NULL AFTER `ems_fsfno`;
+ALTER TABLE `employee_master_support` ADD `ems_nhisamount` VARCHAR(11) NULL AFTER `ems_bbemail`;

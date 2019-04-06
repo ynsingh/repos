@@ -369,7 +369,7 @@ class Report  extends CI_Controller
 	$whdata = array ('empsd_empid' => $emp_id);
 	$whorder = 'empsd_dojoin desc';
 	$emp_data['servicedata'] = $this->sismodel->get_orderlistspficemore('employee_servicedetail',$selectfield,$whdata,$whorder);
-	$emp_data['addassign'] = $this->sismodel->get_listrow('additional_assignments','aa_empid',$emp_id);
+//	$emp_data['addassign'] = $this->sismodel->get_listrow('additional_assignments','aa_empid',$emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
 	$whdata = array ('sdp_empcode' => $empcode);
 	$emp_data['deputdata'] = $this->sismodel->get_orderlistspficemore('staff_deputation_perticulars',$selectfield,$whdata,'');
@@ -586,6 +586,31 @@ public function workorder_profile() {
 	$emp_data['hodempid']=$this->getemphodid();
 
         $this->load->view('report/workorder_profile',$emp_data);
+  }
+
+public function addionalassign_profile() {
+
+        //get id for employee to show data      
+        $emp_id = $this->uri->segment(3);
+        $emp_data['emp_id']=$emp_id;
+
+        //for adding head next to designation
+        $cdate=date('Y-m-d');
+        $this->headflag="false";
+        $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto >=' =>$cdate );
+        $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
+
+        //get all profile and service data
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+        $selectfield="aa_id,aa_asigname,aa_asigperiodfrom,aa_asigperiodto,aa_place";
+        $whdata = array ('aa_empid' => $emp_id);
+        $emp_data['addionaldata'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,'');
+
+        $emp_data['uoempid']=$this->getempuoid();
+        $emp_data['hodempid']=$this->getemphodid();
+
+        $this->load->view('report/addionalassign_profile',$emp_data);
   }
 
 public function recruit_profile() {

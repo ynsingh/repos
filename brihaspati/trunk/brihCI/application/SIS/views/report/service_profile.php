@@ -168,14 +168,12 @@
                     </thead>
                     <tbody>
                         
-                        <?php if( !empty($servicedata) ):  ?>
-                            <?php foreach($servicedata as $record){;
-//print_r($record);
-//die;
+                        <?php if( !empty($servicedata) ): 
+				$yr=0;$mnth=0;$day=0; 
+                            foreach($servicedata as $record){
 ?>
                             <tr>
                                 <td>
-                                    
                                     <!--?php
                                     $cname=$this->commodel->get_listspfic1('study_center','sc_name','sc_code',$record->empsd_campuscode)->sc_name;
                                     echo $cname."&nbsp;"."(".$record->empsd_campuscode.")";
@@ -235,9 +233,18 @@
                                 <td>
                                     <?php 
                                     $date1 = new DateTime($record->empsd_dojoin);
-                                    $date2 = new DateTime($record->empsd_dorelev);
+					if((strcasecmp($record->empsd_dorelev,"0000-00-00" )) == 0){
+						$date2= new DateTime(date('Y-m-d'));
+					}else{
+	                                    $date2 = new DateTime($record->empsd_dorelev);
+					}
                                     $diff = $date1->diff($date2);
-                                    echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d." ";
+//					$yr=$yr+$diff->y;
+//					$mnth=$mnth+$diff->m;
+//					$day=$day+$diff->d;
+//					$day=$day-1;
+                                    echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d ." ";
+//                                    echo "<b>&nbsp;&nbsp;".$yr . "&nbsp;&nbsp;&nbsp; " . $mnth."&nbsp;&nbsp;&nbsp; ".$day ." ";
 				?>
                                 </td>
                                 <td>
@@ -257,8 +264,9 @@
                                 </td> 
                             </tr>
                         <?php }; ?>
+				<tr><td align="right" colspan=6 > <b>Transit period is included in the service period </b></td></tr>
                         <?php else : ?>
-                            <td colspan= "13" align="center"> No Records found...!</td>
+                            <tr><td colspan= "10" align="center"> No Records found...!</td></tr>
                         <?php endif;?>
                     </tbody>    
 		</table>

@@ -1278,6 +1278,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="asignplace" style="font-size:15px;"><font color='blue'>Assignment Place</font></label>
                 <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="33" >
                 </div></td>
+		</tr>
 		<tr>
             <td><label for="pref" style="font-size:15px;"><b>Preferred Place of Working: </b></label></td>
             </tr>

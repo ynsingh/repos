@@ -312,7 +312,6 @@ $(document).ready(function(){
                                 $headflag="false";
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'0000-00-00 00:00:00' );
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
-
                                 if(($headflag)||($record->emp_head == "HEAD")){
                                         echo " ( <font color=Red> Head </font>)";
                                 }
@@ -377,6 +376,11 @@ $(document).ready(function(){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 					if(($headflag)||($record->emp_head == "HEAD")||($uoflag)||($record->emp_head == "UO")){
 //						echo "I".$headflag."==".$record->emp_head."==".$uoflag."==".$record->emp_head."I";
+						if($roleid == 1){
+							echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
+							echo "<br>";
+							echo "<br>";
+						}
                                 	}
 					else{
 						echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
@@ -444,9 +448,10 @@ $(document).ready(function(){
                                        echo "<br/><b>Shown Against Post-:</b>".$record->emp_post; 
                                 $cdate = date('Y-m-d');
                                 $headflag="false";
-                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto >=' =>$cdate );
+                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'0000-00-00 00:00:00');
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
+			//	 echo "empcode ".$record->emp_code." and flag ". $headflag;
 				if(($headflag)||($record->emp_head == "HEAD")){
                                         echo " ( <font color=Red> Head </font>)";
                                 }
