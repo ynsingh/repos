@@ -489,7 +489,7 @@ class Jslist extends CI_Controller
             }
             
         } 
-	$sel2="ems_house_type,ems_house_no,ems_pensioncontri,ems_upfno,ems_universityemp,ems_washingallowance,ems_deductupf,ems_hragrade,ems_ccagrade,ems_inclsummary,ems_lic1no,ems_lic1amount,ems_lic2no,ems_lic2amount,ems_lic3no,ems_lic3amount,ems_lic4no,ems_lic4amount,ems_lic5no,ems_lic5amount,ems_prdno1,ems_prdno2,ems_prdno3,ems_plino1,ems_plino2,ems_society,ems_societymember,ems_erfq,ems_erfqhra,ems_qoccupai,ems_rentgrade,ems_spfcgs,ems_spfcgs2000,ems_fsfno,ems_fsfamount,ems_bbmicr,ems_acctype,ems_bbadd,ems_bbphone,ems_bbemail,ems_nhisamount";
+	$sel2="ems_house_type,ems_house_no,ems_pensioncontri,ems_upfno,ems_universityemp,ems_washingallowance,ems_deductupf,ems_hragrade,ems_ccagrade,ems_inclsummary,ems_lic1no,ems_lic1amount,ems_lic2no,ems_lic2amount,ems_lic3no,ems_lic3amount,ems_lic4no,ems_lic4amount,ems_lic5no,ems_lic5amount,ems_prdno1,ems_prdno2,ems_prdno3,ems_plino1,ems_plino2,ems_society,ems_societymember,ems_erfq,ems_erfqhra,ems_qoccupai,ems_rentgrade,ems_spfcgs,ems_spfcgs2000,ems_fsfno,ems_fsfamount,ems_bbmicr,ems_acctype,ems_bbadd,ems_bbphone,ems_bbemail,ems_nhisamount,ems_socamount,ems_pli2amount,ems_pli1amount,ems_prd3amount,ems_prd2amount,ems_prd1amount,ems_fsfamount,ems_spfcgs2amount,ems_spfcgsamount";
 	$whdata2=array('ems_code'=>$pfno);
         //$emp_data2=$this->sismodel->get_listrow('employee_master_support','ems_code',$pfno);
         //$empdetail2 = $emp_data2->result();
