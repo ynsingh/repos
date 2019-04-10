@@ -622,7 +622,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
            
             /****************************************Additional Assignments************************************************************ */
             
-            $('#asignname').on('change',function(){
+      /*      $('#asignname').on('change',function(){
                 var asignval = $(this).val();
               //  alert("asignval===="+asignval);
                 if(asignval === 'Others'){
@@ -635,7 +635,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     
                     
                 }
-            }); 
+            }); */
             
            /**************** Additional Assignments closer*************************************************************************/
 		 $('#desigid').on('change',function(){
@@ -1244,7 +1244,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <div><input type="text" name="allvcrvaliddate" id="allvcrvaliddate" value="<?php echo isset($_POST["allvcrvaliddate"]) ? $_POST["allvcrvaliddate"] : ''; ?>" placeholder="VCI Validity Date........" size="33" >
                 </div></td>
             </tr>
-            <tr>
+     <!--       <tr>
                 <td><label for="addasign" style="font-size:15px;"><b>Additional Assignments:</b></label></td>
             </tr>
             <tr>
@@ -1263,22 +1263,20 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select>   
                 </div></td> 
                 <td><label for="asignother" style="font-size:15px;"><font color='blue'>Others</font></label>
-                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php echo isset($_POST["asignother"]) ? $_POST["asignother"] : ''; ?>" placeholder="Others........" size="33" >
-            <!--</tr>
-            <tr>-->
-                
+                <div><input type="text" name="asignother" id="asignother" class="keyup-characters" value="<?php //echo isset($_POST["asignother"]) ? $_POST["asignother"] : ''; ?>" placeholder="Others........" size="33" >
                 <td><label for="asigndatefrom" style="font-size:15px;"><font color='blue'>Date From</font></label>
-                <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php echo isset($_POST["vasigndatefrom"]) ? $_POST["asigndatefrom"] : ''; ?>" placeholder="Date From........" size="33" >
+                <div><input type="text" name="asigndatefrom" id="asigndatefrom" value="<?php //echo isset($_POST["vasigndatefrom"]) ? $_POST["asigndatefrom"] : ''; ?>" placeholder="Date From........" size="33" >
                 </div></td>
                 <td><label for="asigndateto" style="font-size:15px;"><font color='blue'>Date To</font></label>
-                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php echo isset($_POST["asigndateto"]) ? $_POST["asigndateto"] : ''; ?>" placeholder="Date To ........" size="33" >
+                <div><input type="text" name="asigndateto" id="asigndateto" value="<?php //echo isset($_POST["asigndateto"]) ? $_POST["asigndateto"] : ''; ?>" placeholder="Date To ........" size="33" >
                 </div></td>
             </tr>
             <tr>
                 <td><label for="asignplace" style="font-size:15px;"><font color='blue'>Assignment Place</font></label>
-                <div><input type="text" name="asignplace" class="keyup-characters" value="<?php echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="33" >
+                <div><input type="text" name="asignplace" class="keyup-characters" value="<?php //echo isset($_POST["asignplace"]) ? $_POST["asignplace"] : ''; ?>" placeholder="Place........" size="33" >
                 </div></td>
 		</tr>
+-->
 		<tr>
             <td><label for="pref" style="font-size:15px;"><b>Preferred Place of Working: </b></label></td>
             </tr>

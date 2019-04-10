@@ -471,11 +471,11 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('allvcrvaliddate','allvcrvaliddate','trim|xss_clean');
             
             /********************************************************************************/
-            $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
-            $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
-            $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
-            $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
-            $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
+        //    $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
+          //  $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
+            //$this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
+//            $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
+  //          $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
             $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
             $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean|numeric');
             $this->form_validation->set_rules('maritalstatus','Marital Status','trim|xss_clean');
@@ -725,7 +725,7 @@ class Staffmgmt extends CI_Controller
                     //$shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emp_post'])->desig_id;
                     $this->sismodel->insertsdetail($empid,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,$_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','',$_POST['orderno']);    
                                        
-                    
+      /*              
                     if(!empty($_POST['asignname'])){
                         if($_POST['asignname'] == 'Others'){
                             $asignname=$_POST['asignname'].",".$_POST['asignother'];
@@ -749,11 +749,11 @@ class Staffmgmt extends CI_Controller
                         'aa_modifydate'         =>date('y-m-d'),
                         
                     );
-                    /* insert record in  additional assignments */
+                    /* insert record in  additional assignments *
                     $this->sismodel->insertrec('additional_assignments', $dataasign);
                     $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
                     $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
-                    
+    */                
                     $dataems = array(
                         'ems_empid'                 =>$empid,
                         'ems_code'                  =>$_POST['empcode'],

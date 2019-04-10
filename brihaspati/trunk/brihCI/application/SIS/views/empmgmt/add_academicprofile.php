@@ -331,7 +331,7 @@
                             <td>
                                 <input type="text" name="yopass2" value="" id="yopass2" class="form-control" size="10" />
                             </td>
-                       	    <td><select name="certtype2[]" id="certtype2" style="width:200px;">
+                       	    <td><select name="certtype2" id="certtype2" style="width:200px;">
                                 <option value="">-- Select Certitficate Type --</option>
                                 <option value="Provisional Degree">Provisional Degree</option>
                                 <option value="Degree">Degree</option>
@@ -358,7 +358,7 @@
                             <td>
                                 <input type="text" name="yopass4" value="" id="yopass4" class="form-control" size="10" />
                             </td>
-                       	    <td><select name="certtype4[]" id="certtype4" style="width:200px;">
+                       	    <td><select name="certtype4" id="certtype4" style="width:200px;">
                                 <option value="">-- Select Certitficate Type --</option>
                                 <option value="Provisional Degree">Provisional Degree</option>
                                 <option value="Degree">Degree</option>
@@ -386,7 +386,7 @@
                             <td>
                                 <input type="text" name="yopass5" value="" id="yopass5" class="form-control" size="10" />
                             </td>
-                       	    <td><select name="certtype5[]" id="certtype5" style="width:200px;">
+                       	    <td><select name="certtype5" id="certtype5" style="width:200px;">
                                 <option value="">-- Select Certitficate Type --</option>
                                 <option value="Provisional Degree">Provisional Degree</option>
                                 <option value="Degree">Degree</option>
@@ -415,7 +415,7 @@
                             <td>
                                 <input type="text" name="yopass6" value="" id="yopass6" class="form-control" size="10" />
                             </td>
-                       	    <td><select name="certtype6[]" id="certtype6" style="width:200px;">
+                       	    <td><select name="certtype6" id="certtype6" style="width:200px;">
                                 <option value="">-- Select Certitficate Type --</option>
                                 <option value="Provisional Degree">Provisional Degree</option>
                                 <option value="Degree">Degree</option>

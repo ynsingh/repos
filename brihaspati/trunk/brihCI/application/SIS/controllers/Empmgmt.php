@@ -2443,7 +2443,7 @@ public function add_addionalassigndata($empid) {
                 	    'stq_board_univ'    =>$buni[$a],
 	                    'stq_result'        =>$result[$a],
         	            'stq_dopass'        =>$ypass[$a],
-                	    'stq_discipline'    =>$dlpn[$a],
+                	    'stq_discipline'    =>$dpln[$a],
 	                    'stq_creatorid'     =>$this->session->userdata('username'),
         	            'stq_creatordate'   =>date('Y-m-d'),
                 	    'stq_modifierid'    =>$this->session->userdata('username'),
@@ -2475,7 +2475,7 @@ public function add_addionalassigndata($empid) {
                             'stq_board_univ'    =>$buni1[$a1],
                             'stq_result'        =>$result1[$a1],
                             'stq_dopass'        =>$ypass1[$a1],
-                            'stq_discipline'    =>$dlpn1[$a1],
+                            'stq_discipline'    =>$dpln1[$a1],
                             'stq_creatorid'     =>$this->session->userdata('username'),
                             'stq_creatordate'   =>date('Y-m-d'),
                             'stq_modifierid'    =>$this->session->userdata('username'),
@@ -2485,7 +2485,7 @@ public function add_addionalassigndata($empid) {
                             $dupcheck = array(
                                 'stq_empid'  =>$this->emp_id,
                                // 'stq_dgree'  =>$_POST['diploma'],
-                                'stq_discipline'    =>$dlpn1[$a1],
+                                'stq_discipline'    =>$dpln1[$a1],
 
                             );
 /*
@@ -2527,7 +2527,7 @@ public function add_addionalassigndata($empid) {
                             'stq_board_univ'    =>$buni2[$a2],
                             'stq_result'        =>$result2[$a2],
                             'stq_dopass'        =>$ypass2[$a2],
-                            'stq_discipline'    =>$dlpn2[$a2],
+                            'stq_discipline'    =>$dpln2[$a2],
                             'stq_creatorid'     =>$this->session->userdata('username'),
                             'stq_creatordate'   =>date('Y-m-d'),
                             'stq_modifierid'    =>$this->session->userdata('username'),
@@ -2537,7 +2537,7 @@ public function add_addionalassigndata($empid) {
                             $dupcheck = array(
                                 'stq_empid'  =>$this->emp_id,
                                // 'stq_dgree'  =>$_POST['diploma'],
-                                'stq_discipline'    =>$dlpn2[$a2],
+                                'stq_discipline'    =>$dpln2[$a2],
 
                             );
  
