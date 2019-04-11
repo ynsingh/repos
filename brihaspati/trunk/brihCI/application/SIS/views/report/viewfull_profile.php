@@ -349,7 +349,8 @@
 <?php   echo    "<b>ASRR Exam </b> <br>".$data->emp_AssrExam_status?>
                                 </td>
                                 <td>
-<?php   echo    "<b>ASRR Passed</b> <br>".substr( (implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam)))),3,10) ;?>
+<?php  // echo    "<b>ASRR Passed</b> <br>".substr( (implode('-', array_reverse(explode('-', $data->emp_dateofAssrExam)))),3,10) ;?>
+<?php   echo    "<b>ASRR Passed</b> <br>".$data->emp_dateofAssrExam;?>
                                 </td>
 <td>
 <?php   echo    "<b>Grade</b> <br>".$data->emp_grade;?>

@@ -65,7 +65,12 @@
 			 <td><?php echo $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $row->spa_dept)->dept_name; ?> </td>
 			 <td><?php echo $row->spa_tnt ?> </td>
 			 <td><?php echo $row->spa_type ?> </td>
-			 <td><?php echo $this->common_model->get_listspfic1('designation', 'desig_name', 'desig_id', $row->spa_emppost)->desig_name ?> </td>
+			 <td><?php 
+			$desnme=$this->common_model->get_listspfic1('designation', 'desig_name', 'desig_id', $row->spa_emppost); 
+			if(!empty($desnme)){
+                                echo $desnme->desig_name;
+                        }
+			?> </td>
 			 <td><?php echo $row->spa_scale ?> </td>
 			 <td><?php echo $row->spa_methodRect ?> </td>
 			 <td><?php echo $row->spa_sancstrenght ?> </td>

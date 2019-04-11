@@ -66,6 +66,15 @@ If you make any change in this file then you must change same file in report dir
 				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/service_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Service Particulars</a></b> </td>
+
+			<?php if($current == 'addional') { ?>
+                                <td class=btn active>
+                        <?php }else{ ?>
+                                <td class=btn1>
+                        <?php } ?>
+                        <b>  <a href='<?php echo site_url()."/report/addionalassign_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Addional Assignment Particulars</a></b> </td>
+
+
 			<?php if($current == 'perform') { ?>
 				<td class=btn active>
 			<?php }else{ ?>

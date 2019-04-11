@@ -27,14 +27,14 @@ class Audittr extends CI_Controller
 	public function logdetail() {
 		$whorder="date desc";
 		$whdata1=array('level' => 1);
-        	$this->logdresult1 = $this->SIS_model->get_orderlistspficemore('logs','date,user,host_ip,message_title,message_desc',$whdata1,$whorder);
+        	$data['logdresult1'] = $this->SIS_model->get_orderlistspficemore('logs','date,user,host_ip,message_title,message_desc',$whdata1,$whorder);
 		$whdata2=array('level' => 2);
-        	$this->logdresult2 = $this->SIS_model->get_orderlistspficemore('logs','date,user,host_ip,message_title,message_desc',$whdata2,$whorder);
+        	$data['logdresult2'] = $this->SIS_model->get_orderlistspficemore('logs','date,user,host_ip,message_title,message_desc',$whdata2,$whorder);
 		$whdata3=array('level' => 3);
-        	$this->logdresult3 = $this->SIS_model->get_orderlistspficemore('logs','date,user,host_ip,message_title,message_desc',$whdata3,$whorder);
+        	$data['logdresult3'] = $this->SIS_model->get_orderlistspficemore('logs','date,user,host_ip,message_title,message_desc',$whdata3,$whorder);
 //	        $this->logger->write_logmessage("view"," View log details", "log details details...");
   //      	$this->logger->write_dblogmessage("view"," View log details", "log details...");
-	        $this->load->view('audittr/logdetail');
+	        $this->load->view('audittr/logdetail',$data);
         }
 }
 

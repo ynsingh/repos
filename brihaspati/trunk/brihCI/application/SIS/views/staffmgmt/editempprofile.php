@@ -1095,7 +1095,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             <tr>
 
                 <td ><label for="dateofretirement" style="font-size:15px;"><font color='Blue'>Date of Retirement</font></label>
-                    <div><input type="text" name="dateofretirement" value="<?php echo $editdata->emp_dor; ?>" id="Dateofretir" class="form-control" size="33" />
+                    <div><input type="text" name="dateofretirement" value="<?php echo $editdata->emp_dor; ?>" id="Dateofretir" class="form-control" size="33" readonly/>
                     </div>    
                 </td>
                 <td><label for="dateofprob" style="font-size:15px;"><font color='Blue'>Date of Probation</font></label>

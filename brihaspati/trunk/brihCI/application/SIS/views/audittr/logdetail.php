@@ -70,9 +70,11 @@
 	echo "</table>";
 	echo "<div style=\"overflow:scroll; height:550px;\">";			
 	echo "<table>";
-	foreach($this->logdresult3 as $row){
-		$hip =trim($row->host_ip);
-		echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $row->date </td><td style=\"padding: 8px 8px 8px 20px;\">$row->user</td><td style=\"padding: 8px 8px 8px 20px;\">$hip</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->message_title $row->message_desc</td></tr>";
+	if(!empty($logdresult3)){
+		foreach($logdresult3 as $row){
+			$hip =trim($row->host_ip);
+			echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $row->date </td><td style=\"padding: 8px 8px 8px 20px;\">$row->user</td><td style=\"padding: 8px 8px 8px 20px;\">$hip</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->message_title $row->message_desc</td></tr>";
+		}
 	}
 	echo "</table>";
 	echo "</div>";
@@ -89,8 +91,10 @@
 	echo "</table>";
 	echo "<div style=\"overflow:scroll; height:550px;\">";			
 	echo "<table>";
-	foreach($this->logdresult1 as $row){
-		echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $row->date </td><td style=\"padding: 8px 8px 8px 20px;\">$row->user</td><td style=\"padding: 8px 8px 8px 20px;\">$row->host_ip</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->message_title $row->message_desc</td></tr>";
+	if(!empty($logdresult1)){
+		foreach($logdresult1 as $row){
+			echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $row->date </td><td style=\"padding: 8px 8px 8px 20px;\">$row->user</td><td style=\"padding: 8px 8px 8px 20px;\">$row->host_ip</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->message_title $row->message_desc</td></tr>";
+		}
 	}
 	echo "</table>";
 	echo "</div>";
@@ -107,8 +111,10 @@
 	echo "</table>";
 	echo "<div style=\"overflow:scroll; height:550px;\">";			
 	echo "<table>";
-	foreach($this->logdresult2 as $row){
-		echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $row->date </td><td style=\"padding: 8px 8px 8px 20px;\">$row->user</td><td style=\"padding: 8px 8px 8px 20px;\">$row->host_ip</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->message_title $row->message_desc</td></tr>";
+	if(!empty($logdresult2)){
+		foreach($logdresult2 as $row){
+			echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $row->date </td><td style=\"padding: 8px 8px 8px 20px;\">$row->user</td><td style=\"padding: 8px 8px 8px 20px;\">$row->host_ip</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->message_title $row->message_desc</td></tr>";
+		}
 	}
 	echo "</table>";
 	echo "</div>";

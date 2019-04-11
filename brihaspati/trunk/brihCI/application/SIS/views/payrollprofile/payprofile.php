@@ -27,6 +27,7 @@
                             success:function(data){
 //                            alert("datat==="+data);
                             var empinput=data.split(",");
+//				alert(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
                             $('#dept').val(empinput[2].replace(/"|"/g,""));

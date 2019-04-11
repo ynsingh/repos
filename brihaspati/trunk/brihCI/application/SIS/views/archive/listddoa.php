@@ -54,9 +54,24 @@
 	 ?>    
 	   <tr>
 	        <td><?php echo ++$count; ?> </td>
-	        <td><?php echo $this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->ddoa_scid)->sc_name; ?> </td>
-	        <td><?php echo $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $row->ddoa_deptid)->dept_name; ?> </td>
-		<td><?php echo $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->ddoa_schid)->sd_name; ?> </td>
+	        <td><?php 
+			$scnme=$this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->ddoa_scid);
+			if(!empty($scnme)){
+				echo $scnme->sc_name;
+			}
+		 ?> </td>
+	        <td><?php 
+			$deptnme=$this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $row->ddoa_deptid);
+			if(!empty($deptnme)){
+                                echo $deptnme->dept_name;
+                        }
+		 ?> </td>
+		<td><?php 
+			$sdnme=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->ddoa_schid);	
+			if(!empty($sdnme)){
+                                echo $sdnme->sd_name;
+                        }
+		 ?> </td>
 		<td><?php echo $row->ddoa_code ?> </td>
 		<td><?php echo $row->ddoa_name ?> </td>
 		<td><?php echo $this->logmodel->get_listspfic1('edrpuser', 'username', 'id', $row->ddoa_archuserid)->username ?> </td>

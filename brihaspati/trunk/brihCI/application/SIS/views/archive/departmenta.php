@@ -58,7 +58,14 @@
 			{ 
 		        echo "<tr>";
                         echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->depta_orgcode)->org_name. "</td>";
-                        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->depta_sccode)->sc_name . "</td>";
+                        echo "<td>" ;
+		//	if(!empty($row->depta_sccode)){
+				$res= $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->depta_sccode);
+				if(!empty($res)){
+echo					$res->sc_name;
+				}
+		//	}
+			echo "</td>";
                         echo "<td>". $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name . "</td>";
                         echo "<td>" . $row->depta_schoolcode. "</td>";
                         echo "<td>" . $row->depta_schoolname . "</td>";
