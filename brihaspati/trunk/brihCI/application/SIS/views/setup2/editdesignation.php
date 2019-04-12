@@ -151,8 +151,9 @@
                 echo "<td><select name=\"desig_payscale\" class=\"my_dropdown\" style=\"width:100%;\">";
           
                 echo "<option value=\"$desig_payscale[value]\">$desig_payscale[value]</option>"; ?>
+		<!--<option><?php //echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?><?php //echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>-->
 		<?php foreach($this->payresult as $datas): ?>
-		<option><?php echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
+		<option value="<?php echo $datas->sgm_id;?>"><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
                           </option>
                   <?php endforeach; ?>
                 </select></td>
