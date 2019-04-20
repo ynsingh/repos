@@ -406,7 +406,35 @@ class Report  extends CI_Controller
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid,emp_doj,emp_dor,emp_jsession,emp_leaving';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+// total service period
+	$service=0;
+	$startdate = new DateTime( $emp_data['data']->emp_doj);
+//	echo $startdate->format('Y-m-d H:i:s');
+	$joinsess=$emp_data['data']->emp_jsession;
+	if((strcasecmp($joinsess,"Afternoon" )) == 0){
+		$service=-1;
+	}
+	$dol=$emp_data['data']->emp_leaving;
+	$dore=new DateTime($emp_data['data']->emp_dor);
+	$currdate = new DateTime("now");
+//echo $dol->format('Y-m-d H:i:s');
+//echo "==";
+	if((!empty($dol)) && (!((strcasecmp($dol,"0000-00-00" )) == 0))){
+		$enddate = $dol;
+	}else{
+		if($dore >= $currdate){
+			$enddate =$currdate;
+		}else{
+			$enddate = $dore;
+		}
+	}
+//echo $enddate->format('Y-m-d H:i:s');
+	$diff = $startdate->diff($enddate);
+	$totser= "<b>Total Service : ".$diff->y . " Year -  " . $diff->m." Month -  ".($diff->d - $service)  ." Days </b>";
+	$emp_data['totalser'] = $totser;
+
         $selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
         $whorder = 'empsd_dojoin desc,empsd_id desc';
@@ -432,7 +460,9 @@ public function promotional_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('spd_empid' => $emp_id);
         $whorder = 'spd_dojinpost desc, spd_agpdate desc, spd_id desc';
@@ -459,7 +489,9 @@ public function promotional_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
@@ -485,7 +517,9 @@ public function promotional_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
      //   $empuserid =$this->sismodel->get_listspfic1('employee_master','emp_userid','emp_id', $emp_id)->emp_userid;
         $selectfield="la_id,la_type,granted_la_from_date,granted_la_to_date,la_taken,la_year,la_upfile";
         $whdata = array ('la_userid' => $emp_id,'la_status' =>'1');
@@ -525,7 +559,9 @@ public function promotional_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('sdp_empcode' => $empcode);
         $emp_data['deputdata'] = $this->sismodel->get_orderlistspficemore('staff_deputation_perticulars',$selectfield,$whdata,'');
@@ -551,7 +587,9 @@ public function deptexam_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('sdep_empcode' => $empcode);
         $emp_data['deptexamdata'] = $this->sismodel->get_orderlistspficemore('staff_department_exam_perticulars',$selectfield,$whdata,'');
@@ -577,7 +615,9 @@ public function workorder_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('swap_empcode' => $empcode);
         $emp_data['workarrangdata'] = $this->sismodel->get_orderlistspficemore('staff_working_arrangements_perticulars',$selectfield,$whdata,'');
@@ -602,7 +642,9 @@ public function addionalassign_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="aa_id,aa_asigname,aa_asigperiodfrom,aa_asigperiodto,aa_place";
         $whdata = array ('aa_empid' => $emp_id);
         $emp_data['addionaldata'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,'');
@@ -627,7 +669,9 @@ public function recruit_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('srp_empcode' => $empcode);
         $emp_data['recruitdata'] = $this->sismodel->get_orderlistspficemore('staff_recruitment_perticulars',$selectfield,$whdata,'');
@@ -651,7 +695,9 @@ public function disciplin_profile() {
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
         //get all profile and service data
-        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
+	$selempfield='emp_photoname,emp_desig_code,emp_name,emp_phone,emp_secndemail,emp_dept_code,emp_uocid';
+        $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
+        //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
         $whdata = array ('sdap_empcode' => $empcode);
         $emp_data['disciplinactdata'] = $this->sismodel->get_orderlistspficemore('staff_disciplinary_actions_perticulars',$selectfield,$whdata,'');

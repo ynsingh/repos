@@ -149,8 +149,18 @@
 	        echo "<tr>";
                 echo "<td>Designation Payscale</td>";
                 echo "<td><select name=\"desig_payscale\" class=\"my_dropdown\" style=\"width:100%;\">";
+
+		$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$desig_payscale[value])->sgm_name;
+                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$desig_payscale[value])->sgm_max;
+                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$desig_payscale[value])->sgm_min;
+                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$desig_payscale[value])->sgm_gradepay;
+		$gardepayn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$desig_payscale[value])->sgm_level;
+                $pb=$payband."(".$pay_min."-".$pay_max.")".$gardepay." ".$gardepayn;
+
+
           
-                echo "<option value=\"$desig_payscale[value]\">$desig_payscale[value]</option>"; ?>
+            //    echo "<option value=\"$desig_payscale[value]\">$desig_payscale[value]</option>"; 
+                echo "<option value=\"$desig_payscale[value]\">$pb</option>"; ?>
 		<!--<option><?php //echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?><?php //echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>-->
 		<?php foreach($this->payresult as $datas): ?>
 		<option value="<?php echo $datas->sgm_id;?>"><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>

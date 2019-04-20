@@ -74,7 +74,11 @@ echo "<body>";
         <table class="TFtable" >
     <thead>
 	<tr>
- <thead><tr><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>
+ <thead><tr><th>Sr. No </th><th>Subject Name (Code)</th>
+<!--<th>Subject Code </th> -->
+<th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th>
+<!--<th>Subject Extention</th>-->
+<th>Action</th></tr></thead>
             <tbody>
 <?php
 	$srno = 0;
@@ -83,12 +87,14 @@ echo "<body>";
 		$srno = $srno + 1;
 	echo "<tr>";
 	echo "<td>"; echo $srno; echo"</td>";
-	echo "<td>"; echo $subjectlist->sub_name; echo"</td>";
-	echo "<td>"; echo $subjectlist->sub_code; echo"</td>";
+	echo "<td>"; echo $subjectlist->sub_name; 
+	//	echo"</td>";
+	//	echo "<td>"; 
+	echo " ( ".$subjectlist->sub_code ." ) "; echo"</td>";
 	echo "<td>"; echo $subjectlist->sub_short; echo"</td>";
 	echo "<td>"; echo $subjectlist->sub_desc; echo"</td>";
 	echo "<td>"; echo $subjectlist->sub_ext1; echo"</td>";
-	echo "<td>"; echo $subjectlist->sub_ext2; echo"</td>";
+//	echo "<td>"; echo $subjectlist->sub_ext2; echo"</td>";
 	echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; //echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete", array('title' => 'Delete Subject', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")); echo"</td>";
 //        echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete"); echo"</td>";
 

@@ -80,7 +80,17 @@
             <td> <?php echo $row->desig_code  ?></td>
             <td> <?php echo $row->desig_type  ?></td>
             <td> <?php echo $row->desig_subtype  ?></td>
-            <td> <?php echo $row->desig_payscale ?></td>
+	<?php
+
+		$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$row->desig_payscale)->sgm_name;
+                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$row->desig_payscale)->sgm_max;
+                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$row->desig_payscale)->sgm_min;
+                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$row->desig_payscale)->sgm_gradepay;
+                $gardepayn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$row->desig_payscale)->sgm_level;
+                $pb=$payband."(".$pay_min."-".$pay_max.")".$gardepay." ".$gardepayn;
+
+		?>
+            <td> <?php echo $pb; ?></td>
             <td> <?php echo $row->desig_name ?></td>
             <td> <?php echo $row->desig_group ?></td>
             <td> <?php echo $row->desig_short  ?></td>

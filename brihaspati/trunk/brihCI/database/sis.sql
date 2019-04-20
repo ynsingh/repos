@@ -359,6 +359,8 @@ CREATE TABLE `employee_master` (
   `emp_salary_gradenew` int(11) default NULL ,
   `emp_maritalstatus` varchar(100) default NULL,
   `emp_seniortyid` int(10) default NULL,
+  `emp_entrylevelpost` VARCHAR(255) NULL ,
+  `emp_entrylevelpayscle` VARCHAR(255) NULL,
    PRIMARY KEY  (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

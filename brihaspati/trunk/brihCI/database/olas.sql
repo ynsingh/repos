@@ -631,7 +631,8 @@ CREATE TABLE `Department` (
   `dept_schoolname` varchar(255) DEFAULT NULL,
   `dept_schoolcode` varchar(255) DEFAULT NULL,
   `dept_sccode` varchar(255) NOT NULL,
-  `dept_orgcode` varchar(255) NOT NULL
+  `dept_orgcode` varchar(255) NOT NULL,
+  `dept_email` VARCHAR(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --
 -- Indexes for table `Department`
@@ -661,6 +662,7 @@ CREATE TABLE `Department_archive` (
   `depta_schoolcode` varchar(255) DEFAULT NULL,
   `depta_sccode` varchar(255) NOT NULL,
   `depta_orgcode` varchar(255) NOT NULL,
+  `depta_email` VARCHAR(255) NULL,
   `creatorid` varchar(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

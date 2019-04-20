@@ -1530,6 +1530,89 @@ public function disciplin_profile() {
         }//ifpost button
         $this->load->view('empmgmt/add_recmethddata');
     }//function close
+
+/*edit employee edit_recmethddata  detail*/
+
+    	public function edit_recmethddata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+	        $data['id'] = $id;
+        	$data['recmthdata'] = $this->sismodel->get_listrow('staff_recruitment_perticulars','srp_id',$id)->row();
+	        $this->load->view('empmgmt/edit_recmethddata',$data);
+    	}
+	public function update_recmethdedata($id){
+        	$this->roleid=$this->session->userdata('id_role');
+	        $sperf_dataquery=$this->sismodel->get_listrow('staff_recruitment_perticulars','srp_id', $id);
+        	$eds_data['recmthdata'] = $sperf_dataquery->row();
+	        $empcode = $sperf_dataquery->row()->srp_empcode;
+             	$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$empcode)->emp_id;
+        	$data['id'] = $id;
+	        if(isset($_POST['editrecmthdata'])) {
+			 //form validation
+		            $this->form_validation->set_rules('recmthd','Method Of Recruitment','trim|required|xss_clean');
+			    $this->form_validation->set_rules('dsubgrp','Sub Group','trim|xss_clean');
+		            $this->form_validation->set_rules('grpdetails','Sub Group Details','trim|xss_clean');
+			    $this->form_validation->set_rules('compname','Compassion Name','trim|xss_clean');
+			    $this->form_validation->set_rules('desig','Designation','trim|xss_clean');
+			    $this->form_validation->set_rules('dept','Department','trim|xss_clean');
+            		if($this->form_validation->run() == FALSE){
+        	        	redirect('empmgmt/edit_recmethddata/'.$id);
+	            	}//formvalidation
+            		else{
+               // 	        $deput=$_POST['deputation'];
+		//		$spefy=$_POST['specify'];
+                		$udata = array(
+                		    'srp_methodrecrtmnt'           =>$_POST['recmthd'],
+		                    'srp_subcategory'          =>$_POST['dsubgrp'],
+                		    'srp_detail'        =>$_POST['grpdetails'],
+		                    'srp_compassionname'           =>$_POST['compname'],
+                		    'srp_compassiondesig'        =>$_POST['desig'],
+		                    'srp_compassiondept'           =>$_POST['dept'],
+                		    'srp_modifierid'           =>$this->session->userdata('username'),
+		                    'srp_modifydate'            =>date('Y-m-d'),
+	                	);
+
+				$logmessage = "";
+	        		if($eds_data['recmthdata']->srp_methodrecrtmnt != ($_POST['recmthd']))
+        		            $logmessage =  $logmessage ."Add Staff recruitment_profile data " .$eds_data['recmthdata']->srp_methodrecrtmnt. " changed by " .$_POST['recmthd'];
+		        	if($eds_data['recmthdata']->srp_subcategory != ($_POST['dsubgrp']))
+        	        	    $logmessage = $logmessage . "Add Staff recruitment_profile Data " .$eds_data['recmthdata']->srp_subcategory. " changed by " .$_POST['dsubgrp'];
+		        	if($eds_data['recmthdata']->srp_detail != ($_POST['grpdetails']))
+        	        	    $logmessage = $logmessage . "Add Staff recruitment_profile Data " .$eds_data['recmthdata']->srp_detail. " changed by " .$_POST['grpdetails'];
+		        	if($eds_data['recmthdata']->srp_compassionname != ($_POST['compname']))
+        	        	    $logmessage = $logmessage . "Add Staff recruitment_profile Data " .$eds_data['recmthdata']->srp_compassionname. " changed by " .$_POST['compname'];
+		        	if($eds_data['recmthdata']->srp_compassiondesig != ($_POST['desig']))
+        	        	    $logmessage = $logmessage . "Add Staff recruitment_profile Data " .$eds_data['recmthdata']->srp_compassiondesig. " changed by " .$_POST['desig'];
+		        	if($eds_data['recmthdata']->srp_compassiondept != ($_POST['dept']))
+        	        	    $logmessage = $logmessage . "Add Staff recruitment_profile Data " .$eds_data['recmthdata']->srp_compassiondept. " changed by " .$_POST['dept'];
+				$logmessage = $logmessage . " made by ". $this->session->userdata('username');
+
+				$servdataflag=$this->sismodel->updaterec('staff_recruitment_perticulars', $udata,'srp_id', $id) ;
+
+	                	if(!$servdataflag)
+                		{
+                	    		$this->logger->write_logmessage("error","Error in update staff recruitment_profile record", "Error in update staff recruitment_profile record." );
+        	            		$this->logger->write_dblogmessage("error","Error in update staff recruitment_profile  record ", "Error in update staff recruitment_profile record" );
+	                    		$this->session->set_flashdata('err_message','Error in update staff recruitment_profile record ');
+                    			redirect('empmgmt/edit_recmethddata/'.$id);
+                    			return;
+                		}
+        	        	else{
+	                    		$this->roleid=$this->session->userdata('id_role');
+             //       			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_code',$empcode)->emp_email;
+                	    		$this->logger->write_logmessage("update","Update Staff recruitment_profile Data", "Staff recruitment_profile record update successfully.".$logmessage );
+        	            		$this->logger->write_dblogmessage("update","Update Staff recruitment_profile  Data", "Staff recruitment_profile record update successfully .".$logmessage );
+	                    		$this->session->set_flashdata('success','recruitment_profile Data record updated successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/recruit_profile/'.$empid);
+                    			}
+                		}
+			}
+		}
+	}
     /***********************************Start Add service detail******************************************/
     public function add_leavepertdata($empid) {
         $this->roleid=$this->session->userdata('id_role');
@@ -1843,6 +1926,76 @@ public function disciplin_profile() {
         }//ifpost button
         $this->load->view('empmgmt/add_deputatdata');
     }//function close
+
+/*edit employee edit_deputatdata  detail*/
+
+    	public function edit_deputatdata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+	        $data['id'] = $id;
+        	$data['deputatdata'] = $this->sismodel->get_listrow('staff_deputation_perticulars','sdp_id',$id)->row();
+	        $this->load->view('empmgmt/edit_deputatdata',$data);
+    	}
+	public function update_deputedata($id){
+        	$this->roleid=$this->session->userdata('id_role');
+	        $sperf_dataquery=$this->sismodel->get_listrow('staff_deputation_perticulars','sdp_id', $id);
+        	$eds_data['deputedata'] = $sperf_dataquery->row();
+	        $empcode = $sperf_dataquery->row()->sdp_empcode;
+             	$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$empcode)->emp_id;
+        	$data['id'] = $id;
+	        if(isset($_POST['editdeputedata'])) {
+			 //form validation
+            		$this->form_validation->set_rules('deputation','Deputation','trim|required|xss_clean');
+	    		$this->form_validation->set_rules('specify','Specification','trim|xss_clean');
+            		$this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
+		    	$this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            		if($this->form_validation->run() == FALSE){
+        	        	redirect('empmgmt/edit_deputatdata/'.$id);
+	            	}//formvalidation
+            		else{
+                	        $deput=$_POST['deputation'];
+				$spefy=$_POST['specify'];
+                		$udata = array(
+		                    'sdp_deputation'       =>$deput,
+				    'sdp_specification'    =>$spefy,
+		                    'sdp_fromdate'         =>$_POST['Datefrom'],
+                		    'sdp_todate'           =>$_POST['Dateto'],
+		                    'sdp_modifierid'       =>$this->session->userdata('username'),
+				    'sdp_modifydate'       =>date('Y-m-d'),
+	                	);
+				$logmessage = "";
+	        		if($eds_data['deputedata']->sdp_deputation != $deput)
+        		            $logmessage =  $logmessage ."Add Staff deputation_profile data " .$eds_data['deputedata']->sdp_deputation. " changed by " .$deput;
+		        	if($eds_data['deputedata']->sdp_specification != $spefy)
+        	        	    $logmessage = $logmessage . "Add Staff deputation_profile Data " .$eds_data['deputedata']->sdp_specification. " changed by " .$spefy;
+				$logmessage = $logmessage . " made by ". $this->session->userdata('username');
+
+				$servdataflag=$this->sismodel->updaterec('staff_deputation_perticulars', $udata,'sdp_id', $id) ;
+
+	                	if(!$servdataflag)
+                		{
+                	    		$this->logger->write_logmessage("error","Error in update staff deputation_profile record", "Error in update staff deputation_profile record." );
+        	            		$this->logger->write_dblogmessage("error","Error in update staff deputation_profile  record ", "Error in update staff deputation_profile record" );
+	                    		$this->session->set_flashdata('err_message','Error in update staff deputation_profile record ');
+                    			redirect('empmgmt/edit_deputatdata/'.$id);
+                    			return;
+                		}
+        	        	else{
+	                    		$this->roleid=$this->session->userdata('id_role');
+             //       			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_code',$empcode)->emp_email;
+                	    		$this->logger->write_logmessage("update","Update Staff deputation_profile Data", "Staff deputation_profile record update successfully.".$logmessage );
+        	            		$this->logger->write_dblogmessage("update","Update Staff deputation_profile  Data", "Staff deputation_profile record update successfully .".$logmessage );
+	                    		$this->session->set_flashdata('success','deputation_profile Data record updated successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/deputation_profile/'.$empid);
+                    			}
+                		}
+			}
+		}
+	}
     /***********************************Start Add service detail******************************************/
     public function add_deptexamdata($empid) {
         $this->roleid=$this->session->userdata('id_role');
@@ -2062,6 +2215,88 @@ public function add_addionalassigndata($empid) {
         }//ifpost button
         $this->load->view('empmgmt/add_addionalassigndata');
 }//function close
+
+/*edit employee addional assignment  detail*/
+
+    public function edit_addionalassigndata($id) {
+        $this->roleid=$this->session->userdata('id_role');
+        $data['id'] = $id;
+        $data['addassigndata'] = $this->sismodel->get_listrow('additional_assignments','aa_id',$id)->row();
+        $this->load->view('empmgmt/edit_addionalassigndata',$data);
+
+    }
+    public function update_addionalassign($id){
+        $this->roleid=$this->session->userdata('id_role');
+        $sperf_dataquery=$this->sismodel->get_listrow('additional_assignments','aa_id', $id);
+        $eds_data['addnldata'] = $sperf_dataquery->row();
+        $empid = $sperf_dataquery->row()->aa_empid;
+        $data['id'] = $id;
+        if(isset($_POST['editaddionaldata'])) {
+		 //form validation
+		$this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
+	        $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
+            	$this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
+            	$this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
+            	$this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
+            	if($this->form_validation->run() == FALSE){
+                	redirect('empmgmt/edit_addionalassigndata/'.$id);
+            	}//formvalidation
+            	else{
+		 	if(!empty($_POST['asignname'])){
+                        	if($_POST['asignname'] == 'Others'){
+                            		$asignname=$_POST['asignname'].",".$_POST['asignother'];
+                        	}
+                        	else{
+                            		$asignname=$_POST['asignname'];
+                        	}
+                    	}
+                    	else{
+                        	$asignname=NULL;
+                    	}
+			$aaplace=$_POST['asignplace'];
+                	$udata = array(
+                        	'aa_empid'              =>$empid,
+	                        'aa_asigname'           =>$asignname,
+        	                'aa_asigperiodfrom'     =>$_POST['asigndatefrom'],
+                	        'aa_asigperiodto'       =>$_POST['asigndateto'],
+                        	'aa_place'              =>$aaplace,
+                	        'aa_modifierid'         =>$this->session->userdata('username'),
+                        	'aa_modifydate'         =>date('y-m-d'),
+                	);
+			$logmessage = "";
+	        	if($eds_data['addnldata']->aa_asigname != $asignname)
+        	            $logmessage =  $logmessage ."Add Staff additional_assignments data " .$eds_data['addnldata']->aa_asigname. " changed by " .$asignname;
+	        	if($eds_data['addnldata']->aa_place != $aaplace)
+        	            $logmessage = $logmessage . "Add Staff additional_assignments Data " .$eds_data['addnldata']->aa_place. " changed by " .$aaplace;
+			$logmessage = $logmessage . " made by ". $this->session->userdata('username');
+
+			$servdataflag=$this->sismodel->updaterec('additional_assignments', $udata,'aa_id', $id) ;
+
+                	if(!$servdataflag)
+                	{
+                    		$this->logger->write_logmessage("error","Error in update staff additional_assignments record", "Error in update staff additional_assignments record." );
+                    		$this->logger->write_dblogmessage("error","Error in update staff additional_assignments  record ", "Error in update staff additional_assignments record" );
+                    		$this->session->set_flashdata('err_message','Error in update staff additional_assignments record ');
+                    		redirect('empmgmt/edit_addionalassigndata/'.$id);
+                    		return;
+                	}
+                	else{
+                    		$this->roleid=$this->session->userdata('id_role');
+                    		$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    		$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    		$this->logger->write_logmessage("update","Update Staff additional_assignments Data", "Staff additional_assignments record update successfully.".$logmessage );
+                    		$this->logger->write_dblogmessage("update","Update Staff additional_assignments  Data", "Staff additional_assignments record update successfully .".$logmessage );
+                    		$this->session->set_flashdata('success','additional_assignments Data record updated successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    		if($this->roleid == 4){
+                        		redirect('empmgmt/viewempprofile');
+                    		}
+                    		else{
+                        		redirect('report/addionalassign_profile/'.$empid);
+                    		}
+                	}
+		}
+	}
+}
     /***********************************Start Add academic qualification******************************************/
     
     public function add_academicqualification($empid){

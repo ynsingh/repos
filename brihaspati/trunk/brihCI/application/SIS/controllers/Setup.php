@@ -1040,65 +1040,141 @@ class Setup extends CI_Controller
 
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
- 	  public function dept(){
+	public function dept(){
         	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
                 $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
 	        $this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
 
             
-	   if(isset($_POST['dept'])) { 
-                $this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('orgprofile','University Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('studycenter','Campus Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
-                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
-                $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required|callback_value_existsDept');
-                $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean');
+	   	if(isset($_POST['dept'])) { 
+                	$this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
+	                $this->form_validation->set_rules('orgprofile','University Name','trim|xss_clean|required');
+        	        $this->form_validation->set_rules('studycenter','Campus Name','trim|xss_clean|required');
+                	$this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
+	                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
+        	        $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required|callback_value_existsDept');
+                	$this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
+	                $this->form_validation->set_rules('dept_mail','Department Email','trim|xss_clean|valid_email');
+        	        $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required');
+                	$this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean');
                        
-                if($this->form_validation->run()==TRUE){
+	                if($this->form_validation->run()==TRUE){
 
-		$campcode = $this->input->post("studycenter");
-		$campname = $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$campcode)->sc_name;
-		$authid = $this->input->post("authorities");
-		$authname = $this->login_model->get_listspfic1('authorities','name','id',$authid)-> name;
- 		$deptbame = $this->input->post("dept_name");
+				$campcode = $this->input->post("studycenter");
+				$campname = $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$campcode)->sc_name;
+				$authid = $this->input->post("authorities");
+				$authname = $this->login_model->get_listspfic1('authorities','name','id',$authid)-> name;
+		 		$deptbame = $this->input->post("dept_name");
+				$deptcode = strtoupper($this->input->post("dept_name"));
 
-                if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
+                		if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
                
-		$ddatacheck = array('dept_uoid'=>strtoupper($_POST['authorities']), 'dept_orgcode'=>strtoupper($_POST['orgprofile']), 'dept_sccode'=>strtoupper($_POST['studycenter']), 'dept_code'=>strtoupper($_POST['dept_code']), 'dept_name'=>ucwords(strtolower($_POST['dept_name'])) );
+					$ddatacheck = array('dept_uoid'=>strtoupper($_POST['authorities']), 'dept_orgcode'=>strtoupper($_POST['orgprofile']), 'dept_sccode'=>strtoupper($_POST['studycenter']), 'dept_code'=>strtoupper($_POST['dept_code']), 'dept_name'=>ucwords(strtolower($_POST['dept_name'])) );
                
-		     $data = array(
-                                'dept_uoid'=>strtoupper($_POST['authorities']),
-                                'dept_orgcode'=>strtoupper($_POST['orgprofile']),
-                                'dept_sccode'=>strtoupper($_POST['studycenter']),
-                                'dept_schoolcode'=>strtoupper($_POST['dept_schoolcode']),
-                                'dept_schoolname'=>ucwords(strtolower($_POST['dept_schoolname'])),
-                                'dept_code'=>strtoupper($_POST['dept_code']),
-                                'dept_name'=>ucwords(strtolower($_POST['dept_name'])),
-                                'dept_short'=>strtoupper($_POST['dept_short']),
-                                'dept_description'=>$_POST['dept_descripation'],
-                        );
-		   $deptdatadup = $this->common_model->isduplicatemore('Department', $ddatacheck);
+				     	$data = array(
+		                                'dept_uoid'=>strtoupper($_POST['authorities']),
+                		                'dept_orgcode'=>strtoupper($_POST['orgprofile']),
+                                		'dept_sccode'=>strtoupper($_POST['studycenter']),
+		                                'dept_schoolcode'=>strtoupper($_POST['dept_schoolcode']),
+                		                'dept_schoolname'=>ucwords(strtolower($_POST['dept_schoolname'])),
+                                		'dept_code'=>strtoupper($_POST['dept_code']),
+		                                'dept_name'=>ucwords(strtolower($_POST['dept_name'])),
+                		                'dept_short'=>strtoupper($_POST['dept_short']),
+                                		'dept_description'=>$_POST['dept_descripation'],
+		                                'dept_email'=>strtolower($_POST['dept_mail']),
+		                        );
+		   			$deptdatadup = $this->common_model->isduplicatemore('Department', $ddatacheck);
+			                if($deptdatadup == 1 ){
 
-                   if($deptdatadup == 1 ){
+                                  		$this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname , 'Authorities Name' = $authname , 'Department Name' =$deptbame .");
+                                  		redirect('setup/dept');
+                                  		return;
+                       			}
+                   			else{
 
-                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campname , 'Authorities Name' = $authname , 'Department Name' =$deptbame .");
-                                  redirect('setup/dept');
-                                  return;
-                       }
-                   else{
+                        			$deptflag=$this->common_model->insertrec('Department', $data) ;
+                        			if(!$deptflag)
+                        			{
+                                			$this->logger->write_logmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name  );
+                                			$this->logger->write_dblogmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name );
+                              	  			$this->session->set_flashdata('err_message','Error in adding Department - ' . $dept_name . '.', 'error');
+			                                redirect('setup/dispdepartment');
+                        			}
+                        			else{
+							$deptemail = $this->input->post("dept_mail");
+							if(!empty( $deptemail)){
+								$isdup= $this->lgnmodel->isduplicate('edrpuser','username',$deptemail);
+				                                $parts = explode("@", $deptemail);
+                                				$ename = $parts[0];
+				                                $passwd=md5($ename);
+                                				if(!$isdup){
+				                                    	$dataeu = array(
+					                                        'username'=> $deptemail,
+                                        					'password'=> $passwd,
+					                                        'email'=> $deptemail,
+                                        					'componentreg'=> '*',
+					                                        'mobile'=>'',
+                                        					'status'=>1,
+					                                        'category_type'=>'HOD',
+                                        					'is_verified'=>1
+					                                );
+                                    						/*insert record in edrpuser table*/
+					                                $userflageu=$this->lgnmodel->insertrec('edrpuser', $dataeu);
+                                    					$userid=$this->lgnmodel->get_listspfic1('edrpuser','id','username',$deptemail)->id;
+					                                if($userflageu){
 
-                        $deptflag=$this->common_model->insertrec('Department', $data) ;
-                        if(!$deptflag)
-                        {
-                                $this->logger->write_logmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name  );
-                                $this->logger->write_dblogmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name );
-                                $this->session->set_flashdata('err_message','Error in adding Department - ' . $dept_name . '.', 'error');
-                                redirect('setup/dispdepartment');
-                        }
-                        else{
+					                                       // insert into  user profile db1
+                                        					$dataup = array(
+					                                        	'userid' => $userid,
+						                                        'firstname' => 'Head of the Department',
+                                            						'lang' => 'english',
+                                            						'mobile' => '',
+                                            						'status' => 1
+                                        					);
+                                        					$userflagup=$this->lgnmodel->insertrec('userprofile', $dataup);
+									}
+								}//isdup email
+								else{
+                                        				$userid=$this->lgnmodel->get_listspfic1('edrpuser','id','username',$deptemail)->id;
+                                				}
+                                        			// check for duplicate in hod list table
+								$campusid = $this->common_model->get_listspfic1('study_center','sc_id','sc_code',$campcode)->sc_id;
+								$deptid = $this->common_model->get_listspfic1('Department','dept_id','dept_code',$deptcode)->dept_id;
+                                        			$duphod = array('hl_userid' => $userid, 'hl_scid' => $campusid,'hl_deptid'=> $deptid);
+                                        			$isduphod= $this->sismodel->isduplicatemore('hod_list',$duphod);
+                                        			if(!$isduphod){
+                                            				$usr =$this->session->userdata('username');
+                                            				$datahod = array(
+				                                                'hl_userid'=> $userid,
+                                                				'hl_empcode'=> '',
+                                                				'hl_deptid'=> $deptid,
+                                                				'hl_scid'=> $campusid,
+                                                				'hl_uopid' => $authid,
+                                                				'hl_datefrom'=> date('y-m-d'),
+                                                				'hl_dateto'=> '',
+                                                				'hl_status'=> 'full time',
+                                                				'hl_creatorid'=> $usr,
+				                                                'hl_creatordate'=> date('y-m-d'),
+                                				                'hl_modifierid'=> $usr,
+				                                                'hl_modifydate'=> date('y-m-d'),
+                                			            	);
+                                            				$hodlistflag=$this->sismodel->insertrec('hod_list', $datahod) ;
+                                            				if($hodlistflag){
+				                                                /* insert into user_role_type */
+                                				                $dataurt = array(
+                                                    					'userid'=> $userid,
+                                                    					'roleid'=> 5,
+                                                    					'deptid'=> $deptid,
+                                                    					'scid'=>  $campusid,
+                                                   					'usertype'=>'HoD'
+                                                				);
+                                                				$userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
+                                                		//		if($userflagurt){
+								//		}
+									}
+								}// end dup hod
+							} //end check for empty email
+                                //'dept_mail'=>strtolower($_POST['dept_mail']),
                                 $this->logger->write_logmessage("insert"," add Department ", "Department record added successfully.".$dept_name  );
                                 $this->logger->write_dblogmessage("insert"," add Department ", "Department record added successfully.".$dept_name );
                                 $this->session->set_flashdata("success", "Department added successfully...");
@@ -1115,10 +1191,10 @@ class Setup extends CI_Controller
      * @return type
      */
     public function dispdepartment() {
-        $this->deptresult = $this->common_model->get_list('Department');
+        $data['deptresult'] = $this->common_model->get_list('Department');
         $this->logger->write_logmessage("view"," View Department list", "department list display");
         $this->logger->write_dblogmessage("view"," View Department list", "department list display");
-       $this->load->view('setup/dispdepartment');
+       $this->load->view('setup/dispdepartment',$data);
        }
     /* this function is used for delete department record */
     public function deletedept($deptid) {
@@ -1222,6 +1298,14 @@ class Setup extends CI_Controller
            'maxlength' => '255',
            'size' => '40',
            'value' => $dept_data->dept_description,
+        );
+	$data['deptmail'] = array(
+           'name' => 'deptemail',
+           'id' => 'deptemail',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $dept_data->dept_email,
+		'readonly' => 'readonly',
         );
         $data['id'] = $id;
 

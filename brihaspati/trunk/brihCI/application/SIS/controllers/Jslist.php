@@ -89,7 +89,15 @@ class Jslist extends CI_Controller
                 $desig_select_box ='';
                 $desig_select_box.='<option value="">--Select Payscale--';
                 foreach($grp_data as $grprecord){
-                        $desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_payscale.'' ;
+			$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$grprecord->desig_payscale)->sgm_name;
+        	        $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$grprecord->desig_payscale)->sgm_max;
+	                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$grprecord->desig_payscale)->sgm_min;
+                	$gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$grprecord->desig_payscale)->sgm_gradepay;
+	                $gardepayn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$grprecord->desig_payscale)->sgm_level;
+        	        $pb=$payband."(".$pay_min."-".$pay_max.")".$gardepay." ".$gardepayn;
+
+                        //$desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_payscale.'' ;
+                        $desig_select_box.='<option value='.$grprecord->desig_payscale.'>'.$pb.'' ;
                 }
                 echo json_encode($desig_select_box);
         }

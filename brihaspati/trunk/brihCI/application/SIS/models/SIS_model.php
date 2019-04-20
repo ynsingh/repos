@@ -267,9 +267,10 @@ class SIS_model extends CI_Model
     }
     
     //get the complete of record for specific value
-    public function get_listrow($tbname,$fieldname,$fieldvalue){
+    public function get_listrow($tbname,$fieldname,$fieldvalue,$selectfield='*'){
          $this->db2->from($tbname);
-	 		$this->db2->where($fieldname, $fieldvalue);
+	 $this->db2->select($selectfield);
+	 $this->db2->where($fieldname, $fieldvalue);
          return $this->db2->get();
     }
 

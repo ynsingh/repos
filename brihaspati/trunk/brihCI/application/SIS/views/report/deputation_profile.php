@@ -147,7 +147,7 @@
 //				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
 //				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                                //              echo anchor("empmgmt/edit_deputatdata/{$record->empsd_id}","Edit",array('title' => ' Edit Deputation Data' , 'class' => 'red-link'));
+                                              echo anchor("empmgmt/edit_deputatdata/{$record->sdp_id}","Edit",array('title' => ' Edit Deputation Data' , 'class' => 'red-link'));
                                         }
 		//		if($roleid == 1){
                                                 echo " <br><br> ";

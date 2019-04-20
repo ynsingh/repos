@@ -199,7 +199,11 @@
 				    $worktype=$record->empsd_worktype;
 				    echo "<b>Designation-: </b>".$desig;
 					if(!empty($record->empsd_authority)){
-						echo " ( ".$record->empsd_authority." )";
+				                if((strcasecmp($record->empsd_authority,"None" )) == 0){
+						
+						}else{
+							echo " ( ".$record->empsd_authority." )";
+						}
 					}
 				    echo "<br/> "."<b>Show Again Post-: </b>".$showagpost;
 					echo "<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
@@ -264,7 +268,7 @@
                                 </td> 
                             </tr>
                         <?php }; ?>
-				<tr><td align="right" colspan=6 > <b>Transit period is included in the service period </b></td></tr>
+				<tr><td align="left" colspan=3 > <b>Transit period is included in the service period </b></td><td colspan=3 style="text-align: right;"><?php echo $totalser; ?> </td></tr>
                         <?php else : ?>
                             <tr><td colspan= "10" align="center"> No Records found...!</td></tr>
                         <?php endif;?>

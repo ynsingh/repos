@@ -124,8 +124,8 @@
                                 	echo "</td>";
                                 	echo "<td>";
 					if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-//                                              echo anchor("empmgmt/edit_addionalassigndata/{$record->aa_id}","Edit",array('title' => ' Edit Addional Assignment Data' , 'class' => 'red-link'));
-//						echo "<br><br>";
+                                              echo anchor("empmgmt/edit_addionalassigndata/{$record->aa_id}","Edit",array('title' => ' Edit Addional Assignment Data' , 'class' => 'red-link'));
+						echo "<br><br>";
 						echo anchor("empmgmt/delete_addionalassignprofile/{$record->aa_id}", "Delete",array('title' => ' Delete addional assignment Data' , 'class' => 'red-link'));
                                 	}
                                 	echo "</td>";

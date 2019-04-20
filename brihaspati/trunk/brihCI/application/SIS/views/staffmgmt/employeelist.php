@@ -445,7 +445,6 @@ $(document).ready(function(){
                                             ."<b>scheme-: </b>".$schm . "( " .$schmcode." )"."<br/>"."<b>subject-: </b>".$sub;
                             ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
-                                       echo "<br/><b>Shown Against Post-:</b>".$record->emp_post; 
                                 $cdate = date('Y-m-d');
                                 $headflag="false";
                                 $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'0000-00-00 00:00:00');
@@ -455,6 +454,7 @@ $(document).ready(function(){
 				if(($headflag)||($record->emp_head == "HEAD")){
                                         echo " ( <font color=Red> Head </font>)";
                                 }
+                                       echo "<br/><b>Shown Against Post-:</b>".$record->emp_post; 
 
                                 ?></td>
                             <td>

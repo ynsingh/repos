@@ -282,6 +282,7 @@
 	</tr>
 	     <?php echo form_hidden( 'sp_id', $sp_id );?>
      </table>
+<br><br><br><br>
    </body>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

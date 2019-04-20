@@ -299,7 +299,6 @@ class Staffmgmt extends CI_Controller
                                 $whdata['emp_desig_code'] = $desigid;
                         }
                 }
-
 	    	if((!empty($post)) && ($post != 'null') && ($post != ' ')){
                         if($post != 'All'){
 				$emppostname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$post)->desig_name;
@@ -363,7 +362,8 @@ class Staffmgmt extends CI_Controller
         /*In future this code may be replace when either campusid added in the 
          authority or authority added in campus.*/
         //$this->uoc=$this->lgnmodel->get_list('authority_map');
-        $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
+	$desigorder='desig_name asc';
+        $this->desig= $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name','',$desigorder);
 	$whdata=array('sgm_pc'=> "6th");
         $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
 	$whdata=array('sgm_pc'=> "7th");
@@ -485,6 +485,8 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('ppwpref2','Preferred Place of Working - Second ','trim|xss_clean');
             $this->form_validation->set_rules('ppwpref3','Preferred Place of Working - Third ','trim|xss_clean');
             
+            $this->form_validation->set_rules('elpost','Entry level Post','trim|xss_clean');
+            $this->form_validation->set_rules('elps','Entry level Pay Scale','trim|xss_clean');
             
             //Repopulate forms value
             /* if($_POST){
@@ -665,7 +667,8 @@ class Staffmgmt extends CI_Controller
 		    'emp_seniortyid'		=>$_POST['seniorityno'],	    
 		    'emp_spousename'		=>$_POST['spousename'],	    
 		    'emp_jsession'		=>$_POST['jsession'],	    
-                        
+                    'emp_entrylevelpost'	=> $_POST['elpost'],    
+                    'emp_entrylevelpayscle' 	=> $_POST['elps'],    
                 );
 		if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
                        	$passwd = $empcode;
@@ -919,13 +922,13 @@ class Staffmgmt extends CI_Controller
         //$this->uoc=$this->lgnmodel->get_list('authorities');
         $this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->ddo=$this->sismodel->get_list('ddo');
-        $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
-//        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+	$desigorder='desig_name asc';
+        $editemp_data['desig']= $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name','',$desigorder);
 	$whdata=array('sgm_pc'=> "6th");
-        $this->salgrd=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
+        $editemp_data['salgrd']=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
         //$whdata=array('sgm_gradepay'=> "");
 	$whdata=array('sgm_pc'=> "7th");
-        $this->salgrdn=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
+        $editemp_data['salgrdn']=$this->sismodel->get_orderlistspficemore('salary_grade_master','*',$whdata,'');
 
         $this->states=$this->commodel->get_listspficarry('states','id,name','country_id',101); 
         /*********************select category/community list*****************************************/
@@ -940,10 +943,10 @@ class Staffmgmt extends CI_Controller
         $whorderems = '';
         $editemp_data['editems'] = $this->sismodel->get_orderlistspficemore('employee_master_support',$fieldems,$whdataems,$whorderems);
         /*********************************select additional assignments***********************************/
-	$selectfield="*";
-        $whdata = array ('aa_empid' => $id);
-        $whorder = 'aa_asigperiodfrom desc';
-        $editemp_data['editasign'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,$whorder);
+//	$selectfield="*";
+  //      $whdata = array ('aa_empid' => $id);
+    //    $whorder = 'aa_asigperiodfrom desc';
+      //  $editemp_data['editasign'] = $this->sismodel->get_orderlistspficemore('additional_assignments',$selectfield,$whdata,$whorder);
         $this->load->view('staffmgmt/editempprofile',$editemp_data);     
         }
 	else{
@@ -1076,6 +1079,8 @@ class Staffmgmt extends CI_Controller
 	    $this->form_validation->set_rules('ppwpref1','Preferred Place of Working - First ','trim|xss_clean');
             $this->form_validation->set_rules('ppwpref2','Preferred Place of Working - Second ','trim|xss_clean');
             $this->form_validation->set_rules('ppwpref3','Preferred Place of Working - Third ','trim|xss_clean');
+            $this->form_validation->set_rules('elpost','Entry level Post','trim|xss_clean');
+            $this->form_validation->set_rules('elps','Entry level Pay Scale','trim|xss_clean');
 
 
             if($this->form_validation->run() == FALSE){
@@ -1243,6 +1248,9 @@ class Staffmgmt extends CI_Controller
                 'emp_seniortyid'            	 =>$_POST['seniorityno'],
                 'emp_spousename'            	 =>$_POST['spousename'],
                 'emp_jsession'            	 =>$this->input->post('jsession'),
+		    'emp_entrylevelpost'        => $_POST['elpost'],
+                    'emp_entrylevelpayscle'     => $_POST['elps'],
+
             );
 //print_r($data);
             /* upload photo*/

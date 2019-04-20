@@ -63,7 +63,7 @@
       		<table> 
 		<tr><td>
                           
-        		University Name:</td><td>
+        		<label>University Name:</label></td><td>
     			<select name="orgprofile" style="width:100%;">
     			<option value=""disabled selected>--------------------Select university------------------</option>
 			<?php foreach($this->uresult as $datas): ?>	
@@ -71,7 +71,7 @@
  			<?php endforeach; ?>
    			</select>          
    			</td></tr><tr><td>    
- 			Campus Name: </td><td>         
+ 			<label>Campus Name:</label> </td><td>         
  			<select name="studycenter" style="width:100%;">
  			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
@@ -82,7 +82,7 @@
 			</td></tr>
                          
                          <tr><td>
-                        Authorities Name: </td><td>
+                        <label>Authorities Name:</label> </td><td>
                         <select name="authorities" style="width:100%;">
                         <option value=""disabled selected>-------------------Select authorities-----------------</option>
 			<?php foreach($this->authresult as $datas): ?>
@@ -112,7 +112,11 @@
                                 <td><label>Department Name:</label></td>
                                 <td><input type="text"placeholder="Department Name" name="dept_name"  size="43" value="<?php echo isset($_POST["dept_name"]) ? $_POST["dept_name"] : ''; ?>" /></td>
                                <td>Example:Physics Department </td>                               
-                
+                            </tr>
+                            <tr>
+                                <td><label>Department Email:</label></td>
+                                <td><input type="text" placeholder="Department Mail" name="dept_mail"  size="43" value="<?php echo isset($_POST["dept_mail"]) ? $_POST["dept_mail"] : ''; ?>" /></td>
+                               <td>Example:ee@iitk.ac.in </td>                               
                             </tr>
                             <tr>
                                 <td><label>Department Nick Name:</label></td>

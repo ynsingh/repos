@@ -233,14 +233,20 @@
 		}
 ?>
                                 </td>
+				<td>
+<?php   echo    "<b>Entry Level Post </b> <br>".$data->emp_entrylevelpost;?>
+				 </td>
+				<td>
+<?php   echo    "<b>Entry Level Pay Scale </b> <br>".$data->emp_entrylevelpayscle;?>
+				 </td>
+</tr>
+<tr>
                                 <td>
 <?php   echo    "<b>Date of Retirement</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dor)));?>
                                 </td>
  <td>
 <?php   echo    "<b>Date of Probation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doprobation)));?>
                                 </td>
-</tr>
-<tr>
   <td>
 <?php   echo    "<b>Date of Regularisation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doregular)));?>
                                 </td>
@@ -248,10 +254,12 @@
 <?php  // echo    "<b>Date of HGP</b> <br>".date('d-m-Y', strtotime($data->emp_dateofHGP ));?>
 <?php   echo    "<b>Date of HGP</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dateofHGP)));?>
                                </td>
+</tr>
+<tr>
 <td>
 <?php   echo    "<b>Seniority No</b> <br>".$data->emp_seniortyid;?>
 </td>
-<td>
+<td colspan=3>
 </td>
 </tr>
 
