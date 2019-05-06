@@ -149,6 +149,53 @@ class Report  extends CI_Controller
         $this->load->view('report/deptemployeelist',$data);
     }
 
+   public function profilecompleteness(){
+
+	$selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code";
+        $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
+        $cdate = date('Y-m-d');
+        // add doris geater than current date and reason is null  in whdata
+        $whdata = $this->getprofilefilerdata();
+        $whdata['emp_leaving'] = NULL;
+        $whdata['emp_dor>=']=$cdate;
+
+        if(isset($_POST['filter'])) {
+            	$wtype = $this->input->post('wtype');
+            	$uoff  = $this->input->post('uoff');
+            	$dept  = $this->input->post('dept');
+
+            	if((!empty($dept))&&($dept != "null")){
+                	$data['deptmt'] = $dept;
+            	}else{
+                	$data['deptmt']= "All";
+            	}
+
+		if(!empty($wtype)){
+			$whdata['emp_worktype']=$wtype;
+		 	$data['wtyp'] = $wtype;
+		}
+           	if(($dept != "null") && ($dept != "All") && (!empty($dept))){
+                	$whdata['emp_dept_code']= $dept;
+           	}
+           	if(($uoff != "null") && ($uoff != "All")&& (!empty($uoff))){
+                	$whdata['emp_uocid'] = $uoff;
+            		$data['uolt'] = $uoff;
+           	}
+//print_r($whdata);die();
+         	$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
+        }
+        else{
+            //echo "else case of filter";
+           // $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
+		$data['records'] ='';
+            	$this->logger->write_logmessage("view"," view profilecompleteness list" );
+            	$this->logger->write_dblogmessage("view"," view profilecompleteness list");
+        }
+            	$this->logger->write_logmessage("view"," view profilecompleteness list" );
+            	$this->logger->write_dblogmessage("view"," view profilecompleteness list");
+            	$this->load->view('report/profilecompleteness',$data);
+    }
+
     public function staffstrengthlist(){
         $selectfield ="sp_uo, sp_dept,sp_emppost, sp_schemecode,sp_sancstrenght , sp_position , sp_vacant,sp_type";
         $whorder = "sp_uo asc, sp_dept  asc, sp_schemecode  asc";
@@ -175,43 +222,13 @@ class Report  extends CI_Controller
 	   if(($uoff != "null") && ($uoff != "All")){	
 		$whdata['sp_uo'] = $uoff;
 	   }
-	  /* if($dept != "null" && $dept != "All"){
-                //echo "if case dept of filter";
-                if($uoff != "All"){
-            //        $whdata['sp_tnt'] = $wtype;
-                    $whdata['sp_dept']= $dept;
-		    if($this->session->userdata('id_role') != 10){
-                    	$whdata['sp_uo'] = $uoff;
-		    }
-                }
-                else{
-         //           $whdata['sp_tnt'] = $wtype;
-                    $whdata['sp_dept']= $dept;
-                }
-
-            }
-            else{
-
-                if($uoff != "All"){
-
-           //         $whdata['sp_tnt'] = $wtype;
-		    if($this->session->userdata('id_role') != 10){
-                    	$whdata['sp_uo'] = $uoff;
-		    }
-                }
-                else{
-
-             //       $whdata['sp_tnt'] = $wtype;
-                }
-            }
-	*/
 	 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
-        
         }
         else{
             //echo "else case of filter";
             $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
-
+            $this->logger->write_logmessage("view"," view staff strength list" );
+            $this->logger->write_dblogmessage("view"," view staff strength list");
         }
             $this->logger->write_logmessage("view"," view staff strength list" );
             $this->logger->write_dblogmessage("view"," view staff strength list");
@@ -797,6 +814,7 @@ public function disciplinewiselist(){
 //	$whorder = "sp_uo asc, sp_dept asc";
         $whdata = '';
 	$whdata = $this->getwhdata();       
+
 //print_r($whdata); die();
         $selectfield ="sp_uo,sp_dept,sp_schemecode,sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
         //$selectfield ="sp_uo,sp_dept";
@@ -1079,11 +1097,19 @@ public function disciplinewiselist(){
     } 
     public function hodlist(){
 	// get list of uo form authority table priority wise
+	$data['uoc']=$this->lgnmodel->get_orderlistspficemore('authorities','priority,name,code','','name ASC');
         $today= date("Y-m-d H:i:s"); 
+	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
 //        $whdata=array('hl_dateto >='=> $today);
+	 if(isset($_POST['filter'])) {
+            $uoff  = $this->input->post('uoff');
+		if(!empty($uoff)){
+			$whdata['hl_uopid']=$uoff;
+			$data['uolt'] = $uoff;
+		}
+	}
         $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid,hl_uopid";
 	$whorder = "hl_uopid asc";
-	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
         $data['allsc']=$this->sismodel->get_orderlistspficemore('hod_list',$selectfield,$whdata,$whorder);
         $this->logger->write_logmessage("view"," view list of HOD in report " );
         $this->logger->write_dblogmessage("view"," view list of HOD in report");

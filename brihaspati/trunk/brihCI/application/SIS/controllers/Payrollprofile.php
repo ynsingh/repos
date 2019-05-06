@@ -158,34 +158,42 @@ class Payrollprofile extends CI_Controller
 		$fsfamount =$this->input->post('fsfamount', '');
 //		$ =$this->input->post('', '');
                     
-                $dataems=array(
-                    'emp_bank_accno'         =>$_POST['accno'],
-                    'emp_bank_ifsc_code'     =>$ifsccode,
-                    'emp_bankname'           =>$bankname,
-                    'emp_bankbranch'         =>$bbranch,
-			'emp_pan_no'		=>$panno,
-			'emp_nhisidno'		=>$nhisno,
-			'emp_paycomm'		=>$paycom,
-			'emp_salary_grade'	=> $salgrdid,     
-                );
+                $dataems=array();
+		if(!empty($_POST['accno']))	
+	               	$dataems['emp_bank_accno']      =$_POST['accno'];
+		if(!empty($ifsccode))
+	               	$dataems['emp_bank_ifsc_code']  =$ifsccode;
+		if(!empty($bankname))
+        	       	$dataems['emp_bankname']        =$bankname;
+		if(!empty($bbranch))
+                	$dataems['emp_bankbranch']      =$bbranch;
+		if(!empty($panno))
+			$dataems['emp_pan_no']		=$panno;
+		if(!empty($nhisno))
+			$dataems['emp_nhisidno']	=$nhisno;
+		if(!empty($paycom))
+			$dataems['emp_paycomm']		=$paycom;
+		if(!empty($salgrdid))
+			$dataems['emp_salary_grade']	= $salgrdid;
+               
 		$qtrtype = $this->input->post('qtrtype', '');
 		$society = $this->input->post('society', '');
 		$socmem = $this->input->post('societymember', '');
                 $datapp = array(
-                    'ems_house_type'          =>$qtrtype,
-                    'ems_house_no'            =>$_POST['qtrno'],
-                    'ems_pensioncontri'        =>$_POST['pcontri'],
-                    'ems_upfno'                =>$_POST['upfno'], 
-                    'ems_universityemp'        =>$_POST['uniemp'],
-                    'ems_washingallowance'     =>$_POST['washallw'],
-                    'ems_deductupf'            =>$_POST['dedupf'],
-                    'ems_hragrade'             =>$_POST['hragrade'], 
-                    'ems_ccagrade'             =>$_POST['ccagrade'], 
-                    'ems_inclsummary'          =>$_POST['incsumm'], 
-                    'ems_lic1no'               =>$_POST['lic1no'], 
-                    'ems_lic1amount'           =>$_POST['lic1amount'],
-                    'ems_lic2no'               =>$_POST['lic2no'],
-                    'ems_lic2amount'           =>$_POST['lic2amount'], 
+                    	'ems_house_type'          =>$qtrtype,
+                    	'ems_house_no'            =>$_POST['qtrno'],
+                    	'ems_pensioncontri'        =>$_POST['pcontri'],
+                    	'ems_upfno'                =>$_POST['upfno'], 
+                    	'ems_universityemp'        =>$_POST['uniemp'],
+                    	'ems_washingallowance'     =>$_POST['washallw'],
+                    	'ems_deductupf'            =>$_POST['dedupf'],
+                    	'ems_hragrade'             =>$_POST['hragrade'], 
+                    	'ems_ccagrade'             =>$_POST['ccagrade'], 
+                    	'ems_inclsummary'          =>$_POST['incsumm'], 
+                    	'ems_lic1no'               =>$_POST['lic1no'], 
+                    	'ems_lic1amount'           =>$_POST['lic1amount'],
+                    	'ems_lic2no'               =>$_POST['lic2no'],
+                    	'ems_lic2amount'           =>$_POST['lic2amount'], 
                     'ems_lic3no'               =>$_POST['lic3no'], 
                     'ems_lic3amount'           =>$_POST['lic3amount'],
                     'ems_lic4no'               =>$_POST['lic4no'], 
@@ -427,10 +435,12 @@ class Payrollprofile extends CI_Controller
         }
 
        	public function paytransentry(){
-		$whorder='hg_gradeid';
-		$data['hragrade'] =$this->sismodel->get_orderlistspficemore('hra_grade','hg_gradeid,hg_amount','',$whorder);
-		$whorder='cca_gradeid';
-		$data['ccagrade'] =$this->sismodel->get_orderlistspficemore('ccaallowance_calculation','cca_gradeid,cca_amount','',$whorder);
+		$data['hragrade']= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        	$data['ccagrade']= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
+//		$whorder='hg_gradeid';
+//		$data['hragrade'] =$this->sismodel->get_orderlistspficemore('hra_grade','hg_gradeid,hg_amount','',$whorder);
+//		$whorder='cca_gradeid';
+//		$data['ccagrade'] =$this->sismodel->get_orderlistspficemore('ccaallowance_calculation','cca_gradeid,cca_amount','',$whorder);
 	        if(isset($_POST['ptransent'])) {
             		$this->form_validation->set_rules('emppfno','Employee PF Number','trim|xss_clean');
 	            	$this->form_validation->set_rules('days','Days','trim|xss_clean');

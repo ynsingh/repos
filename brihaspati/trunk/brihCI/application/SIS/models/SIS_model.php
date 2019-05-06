@@ -381,7 +381,7 @@ class SIS_model extends CI_Model
                 }
                
             } //foreach   
-            if(!upempdata_flag){
+            if(!$upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
                 $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
             
@@ -409,10 +409,14 @@ class SIS_model extends CI_Model
         return $data;
     }
     public function emplist($uo,$dept,$post,$scheme){
+	$cdate = date('Y-m-d');
 	$post1 = $this->commodel->get_listspfic1('designation','desig_name','desig_id', $post)->desig_name;
         $selectfield ="emp_id,emp_code,emp_name,emp_desig_code,emp_post,emp_email";
         //$whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_desig_code' => $post );
         $whdata = array ('emp_uocid' => $uo,'emp_dept_code' => $dept ,'emp_post' => $post1,'emp_schemeid'=>$scheme );
+	$whdata['emp_leaving'] = NULL;
+        $whdata['emp_dor>=']=$cdate;
+
         $whorder = "emp_post asc";
         $data = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         return $data;
@@ -479,7 +483,7 @@ class SIS_model extends CI_Model
                     );
                     //echo "vacacny=per==".$position.$vacant.$pospermanent.$vpermanenet;
                     $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
-                    if(!upempdata_flag){
+                    if(!$upempdata_flag){
                         $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
                         $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
             
@@ -505,7 +509,7 @@ class SIS_model extends CI_Model
                     );
                    // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
                     $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
-                    if(!upempdata_flag){
+                    if(!$upempdata_flag){
                         $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
                         $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
             

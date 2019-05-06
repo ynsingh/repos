@@ -74,7 +74,8 @@ class Uohome extends CI_Controller
 	        $this->mobile=$this->logmodel->get_listspfic1('userprofile','mobile','userid',$this->session->userdata('id_user'));
         	$this->address=$this->logmodel->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'));
 	}
-        	$this->campusid=$this->sismodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
+//        	$this->campusid=$this->sismodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
+		$this->campusid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_userid',$this->session->userdata('id_user'))->emp_scid;
 	        $this->campusname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
         $this->orgcode=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
         $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);

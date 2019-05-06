@@ -28,6 +28,27 @@
     </head>
     <body>
     <?php $this->load->view('template/header'); ?>
+<form action="<?php echo site_url('report/hodlist');?>" id="myForm" method="POST" class="form-inline">
+         <table width="100%" border="0">
+            <tr style="font-weight:bold;width:100%;">
+                <td>   University Officer
+                    <select name="uoff" id="uoff" style="width:600px;">
+                        <?php if  ((!empty($uolt))&&($uolt != 'All')){ ?>
+                        <option value="<?php echo $uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'priority',$uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'priority',$uolt)->code ." )"; ?></option>
+                        <?php  } ?>
+                      <option value=""  >- Select University officer -</option>
+                      <option value="" >All</option> 
+			<?php foreach($uoc as $camdata): ?>
+                                <option class="test" value="<?php echo $camdata->priority; ?>"><?php echo $camdata->name ."( ".$camdata->code ." )"; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td valign="center">
+                    <input type="submit" name="filter" id="crits" value="Search"  />
+                </td>
+            </tr>
+        </table>
+</form>
     <table width="100%">
        <tr colspan="2"><td>
         <td>

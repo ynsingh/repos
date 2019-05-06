@@ -25,10 +25,10 @@ table tr td a{text-decoration:none;font-size:20px;color:black;}
 
 </br>
 <?php
-//$dir = opendir('SLCMS');
-//while(($file = readdir($dir)) !== FALSE ){
-//	echo $file."</br>";
-//}
+//	$dir = opendir('SLCMS');
+//	while(($file = readdir($dir)) !== FALSE ){
+//	echo $file;
+//	} 
 ?>
 <table style="width:50%;" align="center" border=1>
 	<tr align="center">

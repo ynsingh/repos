@@ -8,7 +8,7 @@
         }
         $uname=$this->session->userdata('username');
         $rest = substr($uname, -21);
-	
+//print_r($data);	
 	$flagffs=false;
                                  $flagcppm=false;
                                  $flagro=false;

@@ -1062,11 +1062,11 @@ class Staffmgmt extends CI_Controller
             //$this->form_validation->set_rules('vciregno','VCIregno','trim|xss_clean');
             //$this->form_validation->set_rules('vciregdate','VCIregdate','trim|xss_clean');
             
-            $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
-            $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
-            $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
-            $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
-            $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
+        //    $this->form_validation->set_rules('asignname','Assignment Name','trim|xss_clean');
+      //      $this->form_validation->set_rules('asignother','Assignment Others','trim|xss_clean');
+  //          $this->form_validation->set_rules('asigndatefrom','Assignment datefrom','trim|xss_clean');
+    //        $this->form_validation->set_rules('asigndateto','Assignment dateto','trim|xss_clean');
+//            $this->form_validation->set_rules('asignplace','Assignment place','trim|xss_clean');
             $this->form_validation->set_rules('secndemailid','secondary emailid','trim|xss_clean|valid_email');
 
 	    $this->form_validation->set_rules('seniorityno','Seniority No','trim|xss_clean|numeric');
@@ -1248,11 +1248,12 @@ class Staffmgmt extends CI_Controller
                 'emp_seniortyid'            	 =>$_POST['seniorityno'],
                 'emp_spousename'            	 =>$_POST['spousename'],
                 'emp_jsession'            	 =>$this->input->post('jsession'),
-		    'emp_entrylevelpost'        => $_POST['elpost'],
-                    'emp_entrylevelpayscle'     => $_POST['elps'],
+		'emp_entrylevelpost'        => $this->input->post('elpost'),
+                'emp_entrylevelpayscle'     => $this->input->post('elps'),
 
             );
 //print_r($data);
+		$msgphoto="";
             /* upload photo*/
             $msg='';
             if(!empty($_FILES['userfile']['name'])){
@@ -1336,7 +1337,7 @@ class Staffmgmt extends CI_Controller
                 'ems_pwplace3'                  =>$_POST['ppwpref3'],
             );
             $upempdata_flag=$this->sismodel->updaterec('employee_master_support', $dataems,'ems_empid',$id);
-            
+        /*    
 	    if(!empty($_POST['asignname'])){
                 if($_POST['asignname'] == 'Others'){
                     $asignname=$_POST['asignname'].",".$_POST['asignother'];
@@ -1349,9 +1350,9 @@ class Staffmgmt extends CI_Controller
                 $asignname=NULL;
             }
             
-            
+          */  
             /* update record in  additional assignments */
-             $dupcheck = array(
+  /*           $dupcheck = array(
                 'aa_empid'     =>$id,   
                 'aa_asigname'  =>$asignname,
                 'aa_place'    =>$_POST['asignplace']      
@@ -1371,8 +1372,9 @@ class Staffmgmt extends CI_Controller
                'aa_modifydate'         =>date('y-m-d'),
                         
             );
+*/
                 /* insert record in  additional assignments */
-                    $this->sismodel->insertrec('additional_assignments', $dataasign);
+  /*                  $this->sismodel->insertrec('additional_assignments', $dataasign);
                     $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
                     $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
             }
@@ -1393,6 +1395,7 @@ class Staffmgmt extends CI_Controller
                 $this->logger->write_logmessage("insert", "data insert in additional_assignments table.");
                 $this->logger->write_dblogmessage("insert", "data insert in additional_assignments table." );
             }
+*/
        //    $emailid= 
             $mess = 'Your Employee data updated Successfully.';
             $sub = 'Employee Profile Updated';
@@ -1405,7 +1408,7 @@ class Staffmgmt extends CI_Controller
            // $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['designation'])->desig_code;
            // $this->sismodel->insertsdetail($id,$_POST['campus'],$_POST['uocontrol'],$_POST['department'],$desigcode,$_POST['schemecode'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['emppost'],'','','',$this->input->post('orderno'));
 
-            if(!upempdata_flag){
+            if(!$upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
                 $this->logger->write_dblogmessage("error","Error in update staff profile", "Error in staff profile record update");
                 $this->session->set_flashdata('err_message','Error in updating staff profile - ', 'error');

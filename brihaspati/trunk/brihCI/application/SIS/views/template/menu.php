@@ -315,6 +315,9 @@ echo "<ul class=\"sf-menu\" >";
 						echo anchor('staffmgmt/employeelist', 'Staff List', array('title' => 'Staff List'));
 					echo "</li>";	*/
                                         echo "<li>";
+						echo anchor('report/profilecompleteness', 'Profile Completeness List', array('title' => 'View Employee Profile Completeness List'));
+					echo "</li>";
+                                        echo "<li>";
 						echo anchor('report/viewprofile', 'Employee List', array('title' => 'View Employee List'));
 					echo "</li>";
                                         
