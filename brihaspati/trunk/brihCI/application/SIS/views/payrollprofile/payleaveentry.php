@@ -32,6 +32,7 @@
                                 }
                                 else{
                             $('#error').val("");
+                            
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
                                 
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
@@ -41,7 +42,8 @@
                             $('#wtype').val(empinput[5].replace(/"|"/g,""));
                             $('#desig').val(empinput[6].replace(/"|"/g,""));
                             $('#empname').val(empinput[7].replace(/"|"/g,""));
-                            $('#empid').val(empinput[8].replace(/[[\]"|"]/g,""));
+                            $('#empid').val(empinput[10].replace(/[[\]"|"]/g,""));
+                            
 
 				 } 				
                         },

@@ -152,7 +152,8 @@
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$pbid)->sgm_max;
                             $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$pbid)->sgm_min;
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$pbid)->sgm_gradepay;
-                            echo $payband."(".$pay_min."-".$pay_max.")".$gardepay;
+                            $paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+                            echo $payband."(".$pay_min."-".$pay_max.")".$gardepay."/".$paycomm;
                             ;?>
                             
                     </td>
@@ -193,9 +194,9 @@
                     $selyear=$year;
                     $selmonyear=$selyear.$selmonth; //echo "both=3=".$selmonyear."==".$month;
                     if(!$dupexists){
-                       // echo "if dupexists";
+                       // echo "case 1 if dupexists";
                         if($selmonyear < $currentyd){
-                           // echo "if selmonyear currentyd";
+                          //  echo " case 2 if selmonyear currentyd";
                             echo "<font color=\"red\"><font size=\"4\">Salary data does not exists....for the month ".( $month )."</font>";
                         }
                     else{
@@ -212,7 +213,7 @@
                 <?php 
                 
                         
-                      //  echo "else selmonyear not currentyd===";
+                      //  echo " case 3 else selmonyear not currentyd===";
                         $nodata=array(
                                 'sald_empid'                =>$empid,
                                 //'sald_month'                =>$month,
@@ -221,7 +222,7 @@
                             $empnodata=$this->sismodel->isduplicatemore('salary_data',$nodata);
                             
                             if(!$empnodata){
-                              //  echo "if empnodata";
+                             //   echo " case 4  if empnodata";
                         
                         ?>
                
@@ -260,7 +261,7 @@
                            // echo "formula inside===".$formula.$incomedata->sh_id.$incomedata->sh_name;
                             preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
                             //echo "in parenthesis inside: " . $match[2];
-                            //echo "before and after inside: " . $match[1] . $match[3] . "\n";
+                          //  echo "before and after inside: " . $match[1] . $match[3] . "\n";
                             
                             $strfmla=explode("+",$match[2]);
                             $strfmla2=explode("*",$match[3]);
@@ -291,15 +292,26 @@
                             }
                             else{
                                 
+                                $sfbp="shdv_defaultvalue";
+                                $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
+                                $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
+                                $bpamt=$headbp[0]->shdv_defaultvalue;
+                                                              
+                                
                                 $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
                                 $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
                                 if($incomedata->sh_id == $ccaid || $incomedata->sh_id == $hraid){
                                     if($incomedata->sh_id == $ccaid){
+                                        $ccaamt=$this->sismodel->getcca_amount($bpamt,$paycomm);
+                                     //   echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$ccaamt[0];
+                                        
                                         $ccagrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid);
                                         if(!empty($ccagrade)){
+                                            
                                             $ccagrade= $ccagrade->ems_ccagrade;
                                             $sfield="cca_amount";
-                                            $wdata = array('cca_payscaleid' =>$pbid,'cca_workingtype' =>$worktype,'cca_gradeid' =>$ccagrade);
+                                            $wdata = array('cca_payrange'=>$ccaamt[0],'cca_paycomm' =>$paycomm,'cca_gradeid' =>$ccagrade);
+                                           // $wdata = array('cca_payscaleid' =>$pbid,'cca_workingtype' =>$worktype,'cca_gradeid' =>$ccagrade);
                                            // echo $pbid,$worktype,$ccagrade;
                                             $headvalc= $this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$sfield,$wdata,'');  
                                             if(!empty($headvalc)){
@@ -319,21 +331,51 @@
                                         }
                                     }
                                     if($incomedata->sh_id == $hraid){
-                                        $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);
-                                        if(!empty($hragrade)){
-                                            $hragrade= $hragrade->ems_hragrade;
-                                            $sfield="hg_amount";
-                                            $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
-                                            $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
-                                            if(!empty($headvalh)){
-                                            $headvalhra=$headvalh[0]->hg_amount;
-                                   //get cca grade from payrollprofile
-                                    //$ccgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid)->ems_ccagrade;
-                                            $finalval=$headvalhra; 
+                                        $rfhragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_erfq','ems_empid',$empid);
+                                        if(!empty($rfhragrade)&&($rfhragrade->ems_erfq == 'yes')){
+                                            
+                                            $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_erfqhra','ems_empid',$empid);
+                                        }
+                                        else{
+                                            $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);                     
+                                        }
+                                        $hraamt=$this->sismodel->gethra_amount($bpamt,$paycomm);
+                                       // echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$hraamt[0];
+                                        
+                                        if(!empty($hragrade) || !empty($rfhragrade)){
+                                            if($rfhragrade->ems_erfq == 'yes'){
+                                                $hragrade= $hragrade->ems_erfqhra;   
+                                                
+                                                $sfield="rfh_amount";
+                                                $wdata = array('rfh_payrange'=>$hraamt[0],'rfh_paycomm' =>$paycomm,'rfh_gradeid' =>$hragrade);
+                                                // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
+                                                $headvalh= $this->sismodel->get_orderlistspficemore('rent_free_hra',$sfield,$wdata,'');  
+                                                if(!empty($headvalh)){
+                                                    $headvalhra=$headvalh[0]->rfh_amount;
+                                                    $finalval=$headvalhra; 
+                                                  //  echo "seemain hra". $finalval;
+                                                }
+                                                else{
+                                                    $finalval=0;    
+                                                }
                                             }
                                             else{
-                                                $finalval=0;    
+                                                $hragrade= $hragrade->ems_hragrade;
+                                                
+                                                $sfield="hg_amount";
+                                                $wdata = array('hg_payrange'=>$hraamt[0],'hg_paycomm' =>$paycomm,'hg_gradeid' =>$hragrade);
+                                                // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
+                                                $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
+                                                if(!empty($headvalh)){
+                                                    $headvalhra=$headvalh[0]->hg_amount;
+                                                    $finalval=$headvalhra; 
+                                                   // echo "seemain hra". $finalval;
+                                                }
+                                                else{
+                                                    $finalval=0;    
+                                                }
                                             }
+                                           
                                         }
                                         else{
                                             $finalval=0;
@@ -392,7 +434,7 @@
                    
                         <tr>
                          <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
-                        <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/ ;
+                        <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/;
                             if(in_array($deductdata->sh_id,$allowedhead)){
                             echo "<font color=\"red\">*</font>" ;
                         }
@@ -402,10 +444,12 @@
                             <?php 
                            
                             ?>
-                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
-                            <?php  if($deductdata->sh_calc_type == 'Y'):
+                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)): //echo "in allowed case";?>
+                            
+                            <?php  if($deductdata->sh_calc_type == 'Y'): 
                             $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$deductdata->sh_id);
                             if(!empty($formula1)){
+                               // echo "in formula case";
                             $formula=$formula1->sf_formula;
                           //  echo "formula inside===".$formula.$deductdata->sh_id.$deductdata->sh_name;
                             preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
@@ -445,7 +489,56 @@
                            // echo "finalval==".$finalval;
                             }
                             else{
-                                $finalval=0;
+                                //echo "==in  without formula==";
+                                /********write code for the rent recovery if occupied quarter*************/
+                                $rentid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','Rent')->sh_id; 
+                               // echo "rentid==".$rentid; 
+                                if($deductdata->sh_id == $rentid){
+                                    //echo "in yes 1part==";
+                                    $qtrocc=$this->sismodel->get_listspfic1('employee_master_support','ems_qoccupai','ems_empid',$empid);
+                                    if(!empty($qtrocc) && $qtrocc->ems_qoccupai == 'yes'){
+                                       // echo "in yes part=2=";
+                                        $rentgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_rentgrade','ems_empid',$empid);
+                                        if(!empty($rentgrade)){ 
+                                           // echo "in yes part=3=";
+                                            $rentgradeid=$rentgrade->ems_rentgrade;
+                                        
+                                            $sfbp="shdv_defaultvalue";
+                                            $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
+                                            $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
+                                            $bpamt=$headbp[0]->shdv_defaultvalue;
+                                            $hraamt=$this->sismodel->gethraper_amount($bpamt,$paycomm);
+                                        
+                                            $sfield="rr_percentage";
+                                            $wdata = array('rr_payrange'=>$hraamt[0],'rr_paycomm' =>$paycomm,'rr_gradeid' =>$rentgradeid);
+                                            $headvalh= $this->sismodel->get_orderlistspficemore('rent_recovery',$sfield,$wdata,'');  
+                                            if(!empty($headvalh)){
+                                                $rentrper=$headvalh[0]->rr_percentage;
+                                            
+                                            
+                                                $rawrrcal=$bpamt*$rentrper;
+                                                $headvalhra=$rawrrcal;
+                                                //get cca grade from payrollprofile
+                                                $finalval=$headvalhra; 
+                                            }
+                                            else{
+                                                $finalval=0;  
+                                            }
+                                        }
+                                        else{
+                                            $finalval=0;   
+                                        }
+                                    }
+                                    else{
+                                        $finalval=0;
+                                    }
+                                                                        
+                                } //ifrentrecoveery    
+                                /**************************************************************************/
+                                else{
+                                   // echo "==in  without formula== last part";
+                                    $finalval=0;
+                                }
                             }
                             
                             
@@ -453,12 +546,12 @@
                         
                         <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
                         <?php  $sumdeduction+=$finalval; // endif;?> 
-                        <?php else :?>
+                        <?php else : //echo "in  without dowm11 formula=="?>
                             <?php $finalval=$headval[0]->shdv_defaultvalue;;?>
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
                             <?php $sumdeduction+=$finalval; //$sumdeduction+=$headval[0]->shdv_defaultvalue;?>
                         <?php endif;?>    
-                            <?php else : ?>
+                            <?php else : //secho "in  without dowm12 formula=not allowed case="?>
                             
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" >
                             
@@ -492,7 +585,7 @@
                  <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>"> 
                 <?php }  //closer if employee not exists in that year -->
                     else{ ?>
-                        <?php //echo "else empnodata"; //max value part ;?>
+                        <?php echo " case 5 else empnodata"; //max value part ;?>
                         <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
                     
                         foreach($incomes as $incomedata){ ?>

@@ -3,7 +3,8 @@
 
 /* 
  * @name Setup3.php
- * @author Manorama Pal(palseema30@gmail.com) Salary head
+ * @author Manorama Pal(palseema30@gmail.com) Salary heads, Salary formula, Salary head configuration
+ * Salalry head default value, CCa grade, HRA grade, Salary policies,SalaryCopy, SalarySlip, Transfer salary slip
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -827,7 +828,7 @@ class Setup3 extends CI_Controller
                     'sald_sheadid'  =>$headidin,
                     'sald_shamount' =>$headval,
                     'sald_month'    =>$month,
-                    'sald_year'     =>'2018',
+                    'sald_year'     =>$year,
                 
                 
                 
@@ -847,7 +848,7 @@ class Setup3 extends CI_Controller
                     'sald_sheadid'  =>$headidD,
                     'sald_shamount' => $headvald,
                     'sald_month'    =>$month,
-                    'sald_year'     =>'2018',
+                    'sald_year'     =>$year,
                 
                 
                 
@@ -886,7 +887,7 @@ class Setup3 extends CI_Controller
                'sal_emptype'           =>$emptype,
                'sal_group'             =>$group,
                'sal_month'             =>$month,
-               'sal_year'              =>'2018',
+               'sal_year'              =>$year,
                'sal_totalincome'       =>$totalincome,
                'sal_totaldeduction'    =>$totaldeduction,
                'sal_netsalary'         =>$netpay,
@@ -1774,17 +1775,36 @@ class Setup3 extends CI_Controller
     
     /*********************  Salary Processing *******************************************/
     public function salaryprocess(){
-        $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no";
-        $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
-        $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
-        $data['emplist'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);
         $month = $this->input->post('month', TRUE);
         $year = $this->input->post('year', TRUE);
-       // echo "999==".$month."--------".$year;
         $cmonth= date('M');
         $cyear= date("Y"); 
+       // echo "999==".$month."--------".$year;
+        if($month=='' && $year==''){
+            $month=$cmonth;
+            $year=$cyear;
+        }
+       
         $data['selmonth']=$cmonth;
         $data['selyear']=$cyear;
+                
+        $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_email,"
+          . "emp_phone,emp_aadhaar_no,";
+        $whdata = array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'));
+        $orfield='employee_master.emp_name ASC';
+        $spl='emp_id NOT IN' ;  //AND salary_transfer_entry.ste_month='.$month.' AND salary_transfer_entry.ste_year='.$year;
+       // $data['emplist']=$this->sismodel->get_rundualquery('ste_empid','salary_transfer_entry',$selectfield,'employee_master',$spl,$whdata,$orfield);
+        $data['emplist']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$orfield);
+        
+        $selectfield2 ="salary_transfer_entry.ste_empid,salary_transfer_entry.ste_year, salary_transfer_entry.ste_month,employee_master.emp_id,employee_master.emp_code,employee_master.emp_name,employee_master.emp_scid,"
+          . "employee_master.emp_uocid,employee_master.emp_dept_code,employee_master.emp_schemeid,employee_master.emp_desig_code,employee_master.emp_email,"
+          . "employee_master.emp_phone,employee_master.emp_aadhaar_no";
+        $joincond = 'salary_transfer_entry.ste_empid = employee_master.emp_id';
+        $whdata =array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'),'salary_transfer_entry.ste_month'=>$month,'salary_transfer_entry.ste_year'=>$year);
+        $whorder ="emp_name asc,emp_dept_code asc,emp_desig_code asc";
+        $data['etranlist'] = $this->sismodel->get_jointbrecord('salary_transfer_entry',$selectfield2,'employee_master',$joincond,'left',$whdata);
+             
+       
         if(isset($_POST['salpro'])){
             $data['selmonth']=$month;
             $data['selyear']=$year;
@@ -1844,7 +1864,7 @@ class Setup3 extends CI_Controller
     /*********************************************closer ******************************************************/
     
     /************get formula value **********************************************************************/
-    public function getformulaval($shid,$empid,$pbid,$worktype){
+    public function getformulaval($shid,$empid,$pbid,$wtype){
         $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$shid);
         if(!empty($formula1)){
             $formula=$formula1->sf_formula;
@@ -1875,58 +1895,36 @@ class Setup3 extends CI_Controller
             }
             $rawfor=$headval1 + $headval2 ;
             //$rawfor=$headval1[0]->shdv_defaultvalue + $headval2[0]->shdv_defaultvalue ;
-            $finalval=$rawfor * $strfmla2[1];
+            $this->finalval=$rawfor * $strfmla2[1];
                             
         }//emptyformulacheck  
         else{
             $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
             $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
-            if($shid == $ccaid || $shid == $hraid){
+            $rentid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','Rent')->sh_id;
+            if($shid == $ccaid || $shid == $hraid || $shid == $rentid){
+                //echo "ccaidrecord in else part=both check cca and hra or==".$record1->sh_id."salhead===".$ccaid."\n";
                 if($shid == $ccaid){
-                    $ccagrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid);
-                    if(!empty($ccagrade)){
-                        $ccagrade= $ccagrade->ems_ccagrade;
-                        $sfield="cca_amount";
-                        $wdata = array('cca_payscaleid' =>$pbid,'cca_workingtype' =>$worktype,'cca_gradeid' =>$ccagrade);
-                       // echo $pbid,$worktype,$ccagrade;
-                        $headvalc= $this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$sfield,$wdata,'');  
-                        if(!empty($headvalc)){
-                            $headvalcca=$headvalc[0]->cca_amount;
-                            $finalval=$headvalcca;
-                        }
-                        else{
-                            $finalval=0;
-                        }
-                    }
-                    else{
-                        $finalval=0;
-                    }
+                    $this->finalval=$this->cal_CCAgrade($empid);
+                
                 }
                 if($shid == $hraid){
-                    $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);
-                    if(!empty($hragrade)){
-                        $hragrade= $hragrade->ems_hragrade;
-                        $sfield="hg_amount";
-                        $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
-                        $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
-                        if(!empty($headvalh)){
-                            $headvalhra=$headvalh[0]->hg_amount;
-                            $finalval=$headvalhra; 
-                        }
-                        else{
-                            $finalval=0;    
-                        }
-                    }
-                    else{
-                        $finalval=0;
-                    }
+                    $this->finalval=$this->cal_HRAgrade($empid);
                 }
+                if($shid == $rentid){
+                    $qtrocc=$this->sismodel->get_listspfic1('employee_master_support','ems_qoccupai','ems_empid',$empid);
+                    if(!empty($qtrocc) && $qtrocc->ems_qoccupai == 'yes'){
+                        $this->finalval=$this->cal_RentRecvory($empid);
+               
+                    }
+                }   
+            
             }
             else{
-                $finalval=0;
+                $this->finalval=0;
             }    
         }
-        return $finalval;
+        return $this->finalval;
         
     }
     /************closer formula value *******************************************************************/
@@ -2039,7 +2037,7 @@ class Setup3 extends CI_Controller
                 'sal_totaldeduction'    =>$tdeduction,
                 'sal_netsalary'         =>$netsal,
                 'sal_status'            =>$status,
-                'sal_paiddate'          =>$paiddate,
+              //  'sal_paiddate'          =>$paiddate,
                 'sal_updatedate'        =>date('y-m-d'),
                 'sal_modifierid'        =>$this->session->userdata('username'),
             );
@@ -2074,14 +2072,31 @@ class Setup3 extends CI_Controller
         $cyear= date("Y"); 
         $data['selmonth']=$cmonth;
         $data['selyear']=$cyear;
+        $cnomonth= date("m",strtotime($cmonth));
         if(isset($_POST['salcopy'])){
             foreach($data['emplist'] as $record){
                 
                 $empexist=$this->sismodel->isduplicate('salary_data','sald_empid',$record->emp_id);
-               
+                
+                $transdata=array(
+                   'ste_empid'                =>$record->emp_id,
+                   'ste_month'                =>$cmonth,
+                   'ste_year'                 =>$cyear,   
+                );
+                $emptrans=$this->sismodel->isduplicatemore('salary_transfer_entry',$transdata);
+                
                 if(!$empexist){
                     /*********************************Default Salary***************************************************/
-                    $this->DefalutSalaryPro($record->emp_id,$cmonth,$cyear);
+                    if(!$emptrans){
+                      //  echo "with default values salary generate without transfer case";
+                        $this->DefalutSalaryPro($record->emp_id,$cmonth,$cyear);
+                    }
+                    else{
+                       // echo "with default values salary generate with transfer case";
+                        $this->Defaluttranfr_days($record->emp_id,$cmonth,$cyear);
+                        $this->Defaluttranfr_transit($record->emp_id, $cmonth, $cyear);
+                        $this->Defaluttranfr_dayto($record->emp_id, $cmonth, $cyear);
+                    }        
                 }
                 else{
                     
@@ -2104,9 +2119,34 @@ class Setup3 extends CI_Controller
                     
                   //  die;
                     foreach($headvalues as $saldata){
-                        /******************insert in salary data******************/
-                        $this->getInsertSalarydata($record->emp_id,$saldata->sald_sheadid,$saldata->sald_shamount,$cmonth,$cyear);
-                         
+                        /*********************check entry existst in transfer case*****/
+                       
+                        if(!$emptrans){
+                            //echo"head id===".$saldata->sald_sheadid; 
+                            /******************insert in salary data******************/
+                            $this->getInsertSalarydata($record->emp_id,$saldata->sald_sheadid,$saldata->sald_shamount,$cmonth,$cyear);
+                        }
+                        else{
+                           
+                            //echo "in else case insert heads with values no default case=====with==transfer case====="; 
+                            
+                            $stffield ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+                            $wstf = array ('ste_empid'=>$record->emp_id,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+                            $stfvalues = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffield,$wstf,'');
+                            
+                            $hamttday=$this->transferfmlahead($record->emp_id,$cyear,$cnomonth,$saldata->sald_sheadid,$stfvalues[0]->ste_days);
+                            $this->Salarydata_lt($record->emp_id,$saldata->sald_sheadid,$hamttday,$cmonth,$cyear,'from');
+                            
+                            $hamttransit=$this->transferfmlahead($record->emp_id,$cyear,$cnomonth,$saldata->sald_sheadid,$stfvalues[0]->ste_transit);
+                            $this->Salarydata_lt($record->emp_id,$saldata->sald_sheadid,$hamttransit,$cmonth,$cyear,'transit');
+                            
+                            $totaldt=$stfvalues[0]->ste_days + $stfvalues[0]->ste_transit; 
+                            $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$cnomonth,$cyear);
+                            $todays= $nodaysmonth - $totaldt; 
+                           
+                            $hamtto=$this->transferfmlahead($record->emp_id,$cyear,$cnomonth,$saldata->sald_sheadid,$todays);
+                            $this->Salarydata_lt($record->emp_id,$saldata->sald_sheadid,$hamtto,$cmonth,$cyear,'to');
+                        }
                     }
                     //die;
                     /**************************insert in salary *********************/
@@ -2123,9 +2163,71 @@ class Setup3 extends CI_Controller
                    // print_r("valuesof max=yyyy===".$headvalues1->sal_totalincome."\n"."===am---".$headvalues1->sal_totaldeduction); 
                    // die;
                     foreach($headvalues1 as $saldata2){
-                        $this->getInsertSalary($record->emp_id,$saldata2->sal_scid,$saldata2->sal_uoid,$saldata2->sal_deptid,$saldata2->sal_desigid,
-                        $saldata2->sal_sapost,$saldata2->sal_ddoid,$saldata2->sal_schemeid,$saldata2->sal_payscaleid,$saldata2->sal_bankaccno,$saldata2->sal_worktype,
-                        $saldata2->sal_emptype,$saldata2->sal_group,$cmonth,$cyear,$saldata2->sal_totalincome,$saldata2->sal_totaldeduction,$saldata2->sal_netsalary,'process');
+                        
+                       /* $transsal=array(
+                            'ste_empid'                =>$empid,
+                            'ste_month'                =>$month,
+                            'ste_year'                 =>$year,   
+                        );
+                        $emptranssal=$this->sismodel->isduplicatemore('salary_transfer_entry',$transsal);*/
+                        if(!$emptrans){
+                            $this->getInsertSalary($record->emp_id,$saldata2->sal_scid,$saldata2->sal_uoid,$saldata2->sal_deptid,$saldata2->sal_desigid,
+                            $saldata2->sal_sapost,$saldata2->sal_ddoid,$saldata2->sal_schemeid,$saldata2->sal_payscaleid,$saldata2->sal_bankaccno,$saldata2->sal_worktype,
+                            $saldata2->sal_emptype,$saldata2->sal_group,$cmonth,$cyear,$saldata2->sal_totalincome,$saldata2->sal_totaldeduction,$saldata2->sal_netsalary,'process');
+                        }
+                        else{
+                            /*******************detail of transfer table ************************************/
+                            $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+                            $wstfsal = array ('ste_empid'=>$record->emp_id,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+                            $stfvalsal = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffieldsal,$wstfsal,'');
+                            
+                            /***************************total income, deduction, netincome according to days***************************/
+                            $titday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$stfvalsal[0]->ste_days);
+                            $tdedtday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totaldeduction,$stfvalsal[0]->ste_days);
+                            $tnettday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_netsalary,$stfvalsal[0]->ste_days);
+                            
+                            /************************from employee uit details***********************/
+                            $input=$cnomonth.'-'.$cmonth.'-'.'00'.'00:00:00';
+                            $date = strtotime($input);
+                            $cdate=date('Y-M-D h:i:s', $date); 
+                           // echo "cdddd===".$cdate;
+                            $stempdsal ="uit_emptype,uit_uoc_from,uit_workdept_from,uit_desig_from,uit_workingpost_from,uit_scid_from,
+                                uit_schm_from,uit_ddoid_from,uit_paybandid_to,uit_vactype_from,uit_group_from";
+                            //$wempsal = array ('uit_staffname'=>$record->emp_id, ' uit_date'=>$cdate);
+                            $wempsal = array ('uit_staffname'=>$record->emp_id);
+                            //$stvalemp = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stempdsal,$wempsal,'');
+                            $stvalemp = $this->sismodel->get_orderlistspficemore('user_input_transfer',$stempdsal,$wempsal,'');
+                          //  echo "print===".$stvalemp[0]->uit_scid_from."==".$stvalemp[0]->uit_uoc_from."===".$cdate;
+                            $this->Salary_lt($record->emp_id,$stvalemp[0]->uit_scid_from,$stvalemp[0]->uit_uoc_from,$stvalemp[0]->uit_workdept_from,
+                                $stvalemp[0]->uit_desig_from,$stvalemp[0]->uit_workingpost_from,$stvalemp[0]->uit_ddoid_from,$stvalemp[0]->uit_schm_from,
+                                $stvalemp[0]->uit_paybandid_to,$saldata2->sal_bankaccno,$stvalemp[0]->uit_emptype,$stvalemp[0]->uit_vactype_from,
+                                $stvalemp[0]->uit_group_from,$cmonth,$cyear,$titday,$tdedtday,$tnettday,'process','from');
+                            
+                            /***************************total income, deduction, netincome according to transit***************************/
+                            $titran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$stfvalsal[0]->ste_transit);
+                            $tdedtran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totaldeduction,$stfvalsal[0]->ste_transit);
+                            $tnetttran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_netsalary,$stfvalsal[0]->ste_transit);
+                            
+                            $this->Salary_lt($record->emp_id,$stvalemp[0]->uit_scid_from,$stvalemp[0]->uit_uoc_from,$stvalemp[0]->uit_workdept_from,
+                                $stvalemp[0]->uit_desig_from,$stvalemp[0]->uit_workingpost_from,$stvalemp[0]->uit_ddoid_from,$stvalemp[0]->uit_schm_from,
+                                $stvalemp[0]->uit_paybandid_to,$saldata2->sal_bankaccno,$stvalemp[0]->uit_emptype,$stvalemp[0]->uit_vactype_from,
+                                $stvalemp[0]->uit_group_from,$cmonth,$cyear,$titran,$tdedtran,$tnetttran,'process','transit');
+                            
+                            /***************************getting total income, deduction, netincome of new study center(days - transit )********************/
+                            $totaldt=$stfvalsal[0]->ste_days + $stfvalsal[0]->ste_transit; 
+                            $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$cnomonth,$cyear);
+                            $todays= $nodaysmonth - $totaldt; 
+                            
+                            $tito=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$todays);
+                            $tdedto=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totaldeduction,$todays);
+                            $tnetto=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_netsalary,$todays);
+                                                       
+                            $this->Salary_lt($record->emp_id,$saldata2->sal_scid,$saldata2->sal_uoid,$saldata2->sal_deptid,$saldata2->sal_desigid,
+                                $saldata2->sal_sapost,$saldata2->sal_ddoid,$saldata2->sal_schemeid,$saldata2->sal_payscaleid,$saldata2->sal_bankaccno,$saldata2->sal_worktype,
+                                $saldata2->sal_emptype,$saldata2->sal_group,$cmonth,$cyear,$tito,$tdedto,$tnetto,'process','to');
+                            
+                            
+                        }
                     }
                 }    
             
@@ -2146,22 +2248,29 @@ class Setup3 extends CI_Controller
         $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
         $whdata = array('sh_type' =>'D');
         $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        
         $emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
         $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$emptype)->empt_id;
+        
         $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
         $allowedhead=explode(", ",$strarray);
+        
         $wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
         $payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        
         foreach($data['incomes'] as $record1){
-            if($record1->sh_tnt == $wtype || $record1->sh_tnt == NULL){
+            if($record1->sh_tnt == $wtype || $record1->sh_tnt == 'Common'){
                 if(in_array($record1->sh_id,$allowedhead)){
                     if($record1->sh_calc_type == 'Y'){
                         $this->dheadval=$this->getformulaval($record1->sh_id,$empid,$payscaleid,$wtype);
                     }
                     else{
+                       
+                        // echo "ccaidrecord in else partof cca and hra===".$record1->sh_id;
                         $this->dheadval=$this->getDefaultheadval($empid,$record1->sh_id);
-                    }
-                }
+                      
+                    } // main else condition if not formula
+                }//allowed heads
                 else{
                     $this->dheadval=0;   
                 }
@@ -2171,15 +2280,16 @@ class Setup3 extends CI_Controller
             }
         }
         foreach($data['deduction'] as $record2){
-            if($record2->sh_tnt == $wtype || $record2->sh_tnt == NULL){
+            if($record2->sh_tnt == $wtype || $record2->sh_tnt == 'Common'){
                 if(in_array($record2->sh_id,$allowedhead)){
                     if($record2->sh_calc_type == 'Y'){
                         $this->dheadval=$this->getformulaval($record2->sh_id,$empid,$payscaleid,$wtype);
                     }
                     else{
-                    
+                       
                         $this->dheadval=$this->getDefaultheadval($empid,$record2->sh_id);
-                    }
+                        
+                    }//closer of else if not formula
                 } 
                 else{
                     $this->dheadval=0; 
@@ -2225,4 +2335,806 @@ class Setup3 extends CI_Controller
             $this->getInsertSalarydata($empid,$lpdpi,0,$cmonth,$cyear);
         }
     }
+    
+    public function transferfmlahead($empid,$year,$month,$headid,$nodays){
+       
+            $nodaysmonth=cal_days_in_month(CAL_GREGORIAN, $month ,$year);
+            $ttheadamt=$this->sismodel->get_listspfic1('salary_data','sald_shamount','sald_sheadid',$headid)->sald_shamount;
+            $calamt=$ttheadamt*$nodays/$nodaysmonth;
+        
+        //}
+        return $calamt;
+    }
+    public function transferfmlatotal($empid,$year,$month,$tamount,$nodays){
+      
+            $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$month,$year);
+            $calamt=$tamount*$nodays/$nodaysmonth;
+        
+        //}
+        return $calamt;
+    }
+    
+    public function Salarydata_lt($empid,$salheadid,$salamnt,$month,$year,$sdtype){
+        $saldata = array(
+            'saldlt_empid'       =>$empid,   
+            'saldlt_sheadid'     =>$salheadid,
+            'saldlt_shamount'    =>$salamnt, 
+            'saldlt_month'       =>$month,
+            'saldlt_year'        =>$year,
+            'saldlt_type'        =>$sdtype,
+        );
+        
+        $dupcheck = array(
+            'saldlt_empid'       =>$empid,   
+            'saldlt_sheadid'     =>$salheadid,
+            'saldlt_month'       =>$month,
+            'saldlt_year'        =>$year,
+            'saldlt_type'        =>$sdtype,
+        ); 
+        
+        $emidexits= $this->sismodel->isduplicatemore('salarydata_lt',$dupcheck);
+        if(!$emidexits){
+            //echo "empid not exists in salarydatalt table";
+            
+            /* insert record in  salary data */
+            $this->sismodel->insertrec('salarydata_lt', $saldata);
+            $this->logger->write_logmessage("insert", "data insert in salarydata_lt table.");
+            $this->logger->write_dblogmessage("insert", "data insert in salarydata_lt table." );
+            
+        }
+        else{
+            
+           // echo "empid exists in salarydatalt table in else case";
+            /* update record in  salary data */
+            $selectfield ="saldlt_id";
+            $whdata = array('saldlt_empid' =>$empid,'saldlt_sheadid' =>$salheadid,'saldlt_month' =>$month,'saldlt_year' =>$year);
+            $saldataid= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selectfield,$whdata,'');
+            
+            $this->sismodel->updaterec('salarydata_lt', $saldata,'saldlt_id',$saldataid[0]->saldlt_id);
+            $this->logger->write_logmessage("update", "data update in salarydata_lt table.");
+            $this->logger->write_dblogmessage("update", "data update in salarydata_lt table." ); 
+            
+        }
+        
+    }
+    /************closer insert Salarydata *******************************************************************/
+    
+    /************ InsertSalary ******************************************************************************/
+    public function Salary_lt($empid,$scid,$uoid,$deptid,$desigid,$sapost,$ddoid,$schemeid,$payscaleid,
+                    $bankaccno,$worktype,$emptype,$group,$month,$year,$tincome,$tdeduction,$netsal,$status,$saltype){
+       
+        $salinst=array(
+            'sallt_empid'             =>$empid,
+            'sallt_scid'              =>$scid,
+            'sallt_uoid'              =>$uoid,
+            'sallt_deptid'            =>$deptid,
+            'sallt_desigid'           =>$desigid,
+            'sallt_sapost'            =>$sapost,
+            'sallt_ddoid'             =>$ddoid,
+            'sallt_schemeid'          =>$schemeid,
+            'sallt_payscaleid'        =>$payscaleid,
+            'sallt_bankaccno'         =>$bankaccno,
+            'sallt_worktype'          =>$worktype,
+            'sallt_emptype'           =>$emptype,
+            'sallt_group'             =>$group,
+            'sallt_month'             =>$month,
+            'sallt_year'              =>$year,
+            'sallt_totalincome'       =>$tincome,
+            'sallt_totaldeduction'    =>$tdeduction,
+            'sallt_netsalary'         =>$netsal,
+            'sallt_status'            =>$status,
+            'sallt_type'              =>$saltype,   
+            'sallt_paiddate'          =>date('y-m-d'),
+            'sallt_creationdate'      =>date('y-m-d'),
+            'sallt_creatorid'         =>$this->session->userdata('username'),
+            'sallt_updatedate'        =>date('y-m-d'),
+            'sallt_modifierid'        =>$this->session->userdata('username'),
+        );
+        
+        $dupcheck = array(
+            'sallt_empid'             =>$empid,
+            'sallt_month'             =>$month,
+            'sallt_year'              =>$year,
+            'sallt_type'              =>$saltype 
+        );  
+        
+        $emidexits= $this->sismodel->isduplicatemore('salary_lt',$dupcheck);
+        
+        if(!$emidexits){
+           // echo "empid not exists in salarylt table";
+            /* insert record in  salary detail */
+           $this->sismodel->insertrec('salary_lt',  $salinst);
+            $this->logger->write_logmessage("insert", "data insert in salary table.");
+            $this->logger->write_dblogmessage("insert", "data insert in salary table." );
+            
+        }
+        else{
+            
+            //echo "empid  exists in salarylt table else case";
+            $salinst=array(
+                'sallt_empid'             =>$empid,
+                'sallt_scid'              =>$scid,
+                'sallt_uoid'              =>$uoid,
+                'sallt_deptid'            =>$deptid,
+                'sallt_desigid'           =>$desigid,
+                'sallt_sapost'            =>$sapost,
+                'sallt_ddoid'             =>$ddoid,
+                'sallt_schemeid'          =>$schemeid,
+                'sallt_payscaleid'        =>$payscaleid,
+                'sallt_bankaccno'         =>$bankaccno,
+                'sallt_worktype'          =>$worktype,
+                'sallt_emptype'           =>$emptype,
+                'sallt_group'             =>$group,
+                'sallt_month'             =>$month,
+                'sallt_year'              =>$year,
+                'sallt_totalincome'       =>$tincome,
+                'sallt_totaldeduction'    =>$tdeduction,
+                'sallt_netsalary'         =>$netsal,
+                'sallt_status'            =>$status,
+                'sallt_type'              =>$saltype,  
+                //'sallt_paiddate'          =>$paiddate,
+                'sallt_updatedate'        =>date('y-m-d'),
+                'sallt_modifierid'        =>$this->session->userdata('username'),
+            );
+            
+            /* update record in  salary detail */
+            
+            $selectfield ="sallt_id";
+            $whdata = array('sallt_empid' =>$empid,'sallt_month' =>$month,'sallt_year' =>$year);
+            $saldataid= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
+            $this->sismodel->updaterec('salary_lt',  $salinst,'sallt_id',$saldataid[0]->sallt_id);
+            $this->logger->write_logmessage("update", "data update in salary table.");
+            $this->logger->write_dblogmessage("update", "data update in salary table." ); 
+        }   
+        
+    }
+    
+    
+    public function Defaluttranfr_days($empid,$cmonth,$cyear){
+        $sumincome=0;$sumdeduct=0;
+        $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+       // $whorder = " sh_name asc";
+        $whdata = array('sh_type' =>'I');
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        $whdata = array('sh_type' =>'D');
+        $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        
+        $stempdsal ="uit_emptype,uit_uoc_from,uit_workdept_from,uit_desig_from,uit_workingpost_from,uit_scid_from,
+        uit_schm_from,uit_ddoid_from,uit_paybandid_to,uit_vactype_from,uit_group_from";
+       // $wempsal = array ('ste_empid'=>$record->emp_id,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+        $wempsal = array ('uit_staffname'=>$empid);
+        $stvalemp = $this->sismodel->get_orderlistspficemore('user_input_transfer',$stempdsal,$wempsal,'');
+        //$emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
+        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$stvalemp[0]->uit_vactype_from)->empt_id;
+        
+        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+        $allowedhead=explode(", ",$strarray);
+        
+        //$wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        //$payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        $wtype=$stvalemp[0]->uit_emptype;
+        $payscaleid=$stvalemp[0]->uit_paybandid_to;
+        
+        $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+        $wstfsal = array ('ste_empid'=>$empid,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+        $stfvalsal = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffieldsal,$wstfsal,'');
+        
+        $cnomonth= date("m",strtotime($cmonth));
+        
+        foreach($data['incomes'] as $record1){
+            if($record1->sh_tnt == $wtype || $record1->sh_tnt == 'Common'){
+                if(in_array($record1->sh_id,$allowedhead)){
+                    if($record1->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record1->sh_id,$empid,$payscaleid,$wtype);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_days);
+                        
+                    }
+                    else{
+                       
+                        $this->dheadval=$this->getDefaultheadval($empid,$record1->sh_id);
+                                            
+                        //$this->dheadval=$this->getDefaultheadval($empid,$record1->sh_id);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_days);
+                       
+                    }//main else without formula
+                }
+                else{
+                    $finalhval=0;   
+                }
+            
+           // $this->getInsertSalarydata($empid,$record1->sh_id,$this->dheadval,$cmonth,$cyear);
+            $this->Salarydata_lt($empid,$record1->sh_id,$finalhval,$cmonth,$cyear,'from');
+            $sumincome+=$finalhval;
+            }
+        }
+        foreach($data['deduction'] as $record2){
+            if($record2->sh_tnt == $wtype || $record2->sh_tnt == 'Common'){
+                if(in_array($record2->sh_id,$allowedhead)){
+                    if($record2->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record2->sh_id,$empid,$payscaleid,$wtype);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_days);
+                    }
+                    else{
+                        
+                        $this->dheadval=$this->getDefaultheadval($empid,$record2->sh_id);
+                            
+                        //$this->dheadval=$this->getDefaultheadval($empid,$record2->sh_id);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_days);
+                    }
+                } 
+                else{
+                    $finalhval=0; 
+                }
+            //}
+            $this->Salarydata_lt($empid,$record2->sh_id,$finalhval,$cmonth,$cyear,'from');    
+          //  $this->getInsertSalarydata($empid,$record2->sh_id,$this->dheadval,$cmonth,$cyear);
+            $sumdeduct+=$finalhval;
+            
+            }
+            
+        }
+        $this->SalPolicies_tranfer($empid,$cmonth,$cyear,'from');
+        //$this->SalaryPolicies($empid,$cmonth,$cyear);
+        $netsalary=$sumincome - $sumdeduct;
+        
+        $scid=$stvalemp[0]->uit_scid_from;
+        $uoccid=$stvalemp[0]->uit_uoc_from;
+        $deptid=$stvalemp[0]->uit_workdept_from;
+        $desigid=$stvalemp[0]->uit_desig_from;
+        $sopost=$stvalemp[0]->uit_workingpost_from;
+        $ddoid=$stvalemp[0]->uit_ddoid_from;
+       // $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+        $schmid=$stvalemp[0]->uit_scid_from;
+        $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+       // $group=$stvalemp[0]->uit_group_to;
+        $group=$stvalemp[0]->uit_group_from;
+        $vcawtype=$stvalemp[0]->uit_vactype_from;
+        /*************************************insert in salary *********************************************/
+        $this->Salary_lt($empid,$scid,$uoccid,$deptid,$desigid,$sopost,$ddoid,$schmid,$payscaleid,$bankaccno,$wtype,
+        $vcawtype,$group,$cmonth,$cyear,$sumincome,$sumdeduct,$netsalary,'process','from');
+        
+              
+    }
+    
+    /*********************Deafult salary transit days**************/
+    
+    public function Defaluttranfr_transit($empid,$cmonth,$cyear){
+        $sumincome=0;$sumdeduct=0;
+        $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+       // $whorder = " sh_name asc";
+        $whdata = array('sh_type' =>'I');
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        $whdata = array('sh_type' =>'D');
+        $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        
+        $stempdsal ="uit_emptype,uit_uoc_from,uit_workdept_from,uit_desig_from,uit_workingpost_from,uit_scid_from,
+        uit_schm_from,uit_ddoid_from,uit_paybandid_to,uit_vactype_from,uit_group_from";
+       // $wempsal = array ('ste_empid'=>$record->emp_id,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+        $wempsal = array ('uit_staffname'=>$empid);
+        $stvalemp = $this->sismodel->get_orderlistspficemore('user_input_transfer',$stempdsal,$wempsal,'');
+        ///$stvalemp = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stempdsal,$wempsal,'');
+        //$emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
+        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$stvalemp[0]->uit_vactype_from)->empt_id;
+        
+        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+        $allowedhead=explode(", ",$strarray);
+        
+        //$wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        //$payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        $wtype=$stvalemp[0]->uit_emptype;                                                                                                                                                   
+        $payscaleid=$stvalemp[0]->uit_paybandid_to;
+        
+        $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+        $wstfsal = array ('ste_empid'=>$empid,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+        $stfvalsal = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffieldsal,$wstfsal,'');
+        
+        $cnomonth= date("m",strtotime($cmonth));
+        
+        foreach($data['incomes'] as $record1){
+            if($record1->sh_tnt == $wtype || $record1->sh_tnt == 'Common'){
+                if(in_array($record1->sh_id,$allowedhead)){
+                    if($record1->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record1->sh_id,$empid,$payscaleid,$wtype);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_transit);
+                        
+                    }
+                    else{
+                        
+                        $this->dheadval=$this->getDefaultheadval($empid,$record1->sh_id);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_transit);
+                       
+                    }
+                }
+                else{
+                    $finalhval=0;   
+                }
+            
+           // $this->getInsertSalarydata($empid,$record1->sh_id,$this->dheadval,$cmonth,$cyear);
+            $this->Salarydata_lt($empid,$record1->sh_id,$finalhval,$cmonth,$cyear,'transit');
+            $sumincome+=$finalhval;
+            }
+        }
+        foreach($data['deduction'] as $record2){
+            if($record2->sh_tnt == $wtype || $record2->sh_tnt == 'Common'){
+                if(in_array($record2->sh_id,$allowedhead)){
+                    if($record2->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record2->sh_id,$empid,$payscaleid,$wtype);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_transit);
+                    }
+                    else{
+                        
+                        $this->dheadval=$this->getDefaultheadval($empid,$record2->sh_id);
+                        
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$stfvalsal[0]->ste_transit);
+                    }
+                } 
+                else{
+                    $finalhval=0; 
+                }
+            //}
+            $this->Salarydata_lt($empid,$record2->sh_id,$finalhval,$cmonth,$cyear,'transit');    
+          //  $this->getInsertSalarydata($empid,$record2->sh_id,$this->dheadval,$cmonth,$cyear);
+            $sumdeduct+=$finalhval;
+            
+            }
+            
+        }
+        $this->SalPolicies_tranfer($empid,$cmonth,$cyear,'transit');
+        //$this->SalaryPolicies($empid,$cmonth,$cyear);
+        $netsalary=$sumincome - $sumdeduct;
+        
+        $scid=$stvalemp[0]->uit_scid_from;
+        $uoccid=$stvalemp[0]->uit_uoc_from;
+        $deptid=$stvalemp[0]->uit_workdept_from;
+        $desigid=$stvalemp[0]->uit_desig_from;
+        $sopost=$stvalemp[0]->uit_workingpost_from;
+        $ddoid=$stvalemp[0]->uit_ddoid_from; 
+        //$ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+        $schmid=$stvalemp[0]->uit_scid_from;
+        $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+        $group=$stvalemp[0]->uit_group_from;
+        $vcawtype=$stvalemp[0]->uit_vactype_from;
+        
+        /*************************************insert in salary ********************************************************/
+        $this->Salary_lt($empid,$scid,$uoccid,$deptid,$desigid,$sopost,$ddoid,$schmid,$payscaleid,$bankaccno,$wtype,
+        $vcawtype,$group,$cmonth,$cyear,$sumincome,$sumdeduct,$netsalary,'process','transit');
+        
+    } 
+    
+    
+    public function Defaluttranfr_dayto($empid,$cmonth,$cyear){
+        $sumincome=0;$sumdeduct=0;
+        $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+       // $whorder = " sh_name asc";
+        $whdata = array('sh_type' =>'I');
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        $whdata = array('sh_type' =>'D');
+        $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        
+        $emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
+        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$emptype)->empt_id;
+        
+        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+        $allowedhead=explode(", ",$strarray);
+        
+        $wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+       
+        $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+        $wstfsal = array ('ste_empid'=>$empid,'ste_month'=>$cmonth,'ste_year'=>$cyear);
+        $stfvalsal = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffieldsal,$wstfsal,'');
+        
+        $cnomonth= date("m",strtotime($cmonth));
+        
+        $totaldt=$stfvalsal[0]->ste_days + $stfvalsal[0]->ste_transit; 
+        $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$cnomonth,$cyear);
+        $todays= $nodaysmonth - $totaldt; 
+        
+        foreach($data['incomes'] as $record1){
+            if($record1->sh_tnt == $wtype || $record1->sh_tnt == 'Common'){
+                if(in_array($record1->sh_id,$allowedhead)){
+                    if($record1->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record1->sh_id,$empid,$payscaleid,$wtype);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$todays);
+                        
+                    }
+                    else{
+                        
+                        $this->dheadval=$this->getDefaultheadval($empid,$record1->sh_id);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$todays);
+                       
+                    }
+                }
+                else{
+                    $finalhval=0;   
+                }
+            
+           // $this->getInsertSalarydata($empid,$record1->sh_id,$this->dheadval,$cmonth,$cyear);
+            $this->Salarydata_lt($empid,$record1->sh_id,$finalhval,$cmonth,$cyear,'to');
+            $sumincome+=$finalhval;
+            }
+        }
+        foreach($data['deduction'] as $record2){
+            if($record2->sh_tnt == $wtype || $record2->sh_tnt == 'Common'){
+                if(in_array($record2->sh_id,$allowedhead)){
+                    if($record2->sh_calc_type == 'Y'){
+                        $this->dheadval=$this->getformulaval($record2->sh_id,$empid,$payscaleid,$wtype);
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$todays);
+                    }
+                    else{
+                       
+                        $this->dheadval=$this->getDefaultheadval($empid,$record2->sh_id);
+                           
+                        $finalhval=$this->transferfmlatotal($empid,$cyear,$cnomonth,$this->dheadval,$todays);
+                    }
+                } 
+                else{
+                    $finalhval=0; 
+                }
+            //}
+            $this->Salarydata_lt($empid,$record2->sh_id,$finalhval,$cmonth,$cyear,'to');    
+          //  $this->getInsertSalarydata($empid,$record2->sh_id,$this->dheadval,$cmonth,$cyear);
+            $sumdeduct+=$finalhval;
+            
+            }
+            
+        }
+        $this->SalPolicies_tranfer($empid,$cmonth,$cyear,'to');
+        //$this->SalaryPolicies($empid,$cmonth,$cyear);
+        $netsalary=$sumincome - $sumdeduct;
+        
+        $scid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+        $uoccid=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+        $deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+        $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
+        $sopost=$this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+        $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+        $schmid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
+        $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+        $group=$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group;
+        
+        /*************************************insert in salary ********************************************************/
+        $this->Salary_lt($empid,$scid,$uoccid,$deptid,$desigid,$sopost,$ddoid,$schmid,$payscaleid,$bankaccno,$wtype,
+        $emptype,$group,$cmonth,$cyear,$sumincome,$sumdeduct,$netsalary,'process','to');
+   
+    } 
+    
+    
+    
+    
+    public function transfersalaryslip(){
+        
+        $empid=$this->uri->segment(3);
+        $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+        $whorder = " sh_name asc";
+       
+	$whdata = array('sh_type' =>'I');// 'sh_tnt' => $this->emptnt,'sh_tnt' => NULL);
+        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        $whdata = array('sh_type' =>'D');
+        $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        
+        $this->emppfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+        $this->emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code ','emp_id',$empid)->emp_type_code;
+        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$this->emptype)->empt_id;
+//       echo $this->emptypeid; die(); 
+        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+//	print_r($strarray); die();
+        $data['allowedhead']=explode(", ",$strarray);
+       // print_r($data['allowedhead']);
+        if(isset($_POST['upsalhdval'])){
+          //  $checklist=$this->input->post('check_list', TRUE);
+            $ttcase=$this->input->post('tcase', TRUE);
+            //echo "checlistsize===".(count($checklist))."\n=count==".(count($ttcaselist))."\n--value--".$ttcaselist[0].$ttcaselist[1].$ttcaselist[2];
+            //die;
+            //die;
+           // $clist=(count($checklist));
+            
+          //  echo "checkbox value===".$clist; 
+            //die; 
+            //for ($k=0; $k<=$clist ;$k++){
+                
+            // echo "checkbox value===".$clist; 
+            
+          //  foreach($ttcaselist as $tcaserecord){
+                
+          //  if($tcaserecord=="from" || $tcaserecord=="transit" || $tcaserecord=="to"){ 
+                
+            $tcount = $this->input->post('totalcount', TRUE);
+            $tded = $this->input->post('totalded', TRUE);
+           
+          //  $totalincome = $this->input->post('incometotal', TRUE);
+           // $totaldeduction = $this->input->post('deductiontotal', TRUE);
+            //$netpay = $this->input->post('netpay', TRUE);
+            $month=$this->uri->segment(4);
+            $year=$this->uri->segment(5);
+            $totalincome=0;
+            $totaldeduction = 0;
+            $netpay = 0;
+            /***************************Incomes for the all three parts(from, transit and to)************************************/
+            
+            
+            for ($i=0; $i<$tcount ;$i++){
+                $headidin = $this->input->post('sheadidin'.$i, TRUE);
+               // $headid = $this->input->post('sheadid'.$i, TRUE);
+                $headval = $this->input->post('headamtI'.$i, TRUE);
+               // $headval = $this->input->post('headamt'.$i, TRUE);
+               
+              //  echo "totalcc===".$tcount;
+              //  echo "===print===".$headidin."====".$headval;
+               // echo"\n====="."ttincome===".$totalincome."tdeduction==--".$totaldeduction."=netpay===".$netpay;
+              //  echo "\n====".$LIC1."===".$LIC2."===".$LIC3."===".$LIC4."====".$LIC5."===".$LIC5."====".$PRD1."===".$PRD2."====".$PRD3."====".$PLI1."===".$PLI2;
+               // die;
+                $saldata = array(
+                
+                    'saldlt_empid'      =>$empid,
+                    'saldlt_sheadid'    =>$headidin,
+                    'saldlt_shamount'   =>$headval,
+                    'saldlt_month'      =>$month,
+                    'saldlt_year'       =>$year,
+                    'saldlt_type'       =>$ttcase,   
+                
+                );
+                $upsaldataflag = $this->sismodel->insertrec('salarydata_lt', $saldata);
+                $totalincome+=$headval;
+            } //tcount
+            /*******************************Deductions***********************************/
+            for ($j=0; $j<$tded ;$j++){
+                
+                $headidD = $this->input->post('sheadidded'.$j, TRUE);
+                
+                $headvald = $this->input->post('headamtD'.$j, TRUE);
+                $saldata = array(
+                
+                    'saldlt_empid'      =>$empid,
+                    'saldlt_sheadid'    =>$headidD,
+                    'saldlt_shamount'   => $headvald,
+                    'saldlt_month'      =>$month,
+                    'saldlt_year'       =>$year,
+                    'saldlt_type'       =>$ttcase,   
+                
+                );
+                $upsaldataflag = $this->sismodel->insertrec('salarydata_lt', $saldata);
+               
+                $totaldeduction+=$headvald;
+                
+            }//totalcount 
+            
+            $netpay=$totalincome - $totaldeduction;
+            if($ttcase == 'from'|| $ttcase == 'transit'){
+            
+                $stempdsal ="uit_emptype,uit_uoc_from,uit_workdept_from,uit_desig_from,uit_workingpost_from,uit_scid_from,
+                    uit_schm_from,uit_ddoid_from,uit_paybandid_to,uit_vactype_from,uit_group_from";
+                $wempsal = array ('uit_staffname'=>$record->emp_id);
+                $stvalemp = $this->sismodel->get_orderlistspficemore('user_input_transfer',$stempdsal,$wempsal,'');
+                
+                $scid=$stvalemp[0]->uit_scid_from;
+                $uoccid=$stvalemp[0]->uit_uoc_from;
+                $deptid=$stvalemp[0]->uit_workdept_from;
+                $desigid=$stvalemp[0]->uit_desig_from;
+                $sopost=$stvalemp[0]->uit_workingpost_from;
+                $ddoid=$stvalemp[0]->uit_ddoid_from;
+               // $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+                $schmid=$stvalemp[0]->uit_scid_from;
+                $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+                $group=$stvalemp[0]->uit_group_from;
+                $payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+                $wtype=$stvalemp[0]->uit_emptype; 
+                $emptype=$stvalemp[0]->uit_vactype_from;
+                
+            }
+            else{
+            
+                $scid=$this->sismodel->get_listspfic1('employee_master','emp_scid','emp_id',$empid)->emp_scid;
+                $uoccid=$this->sismodel->get_listspfic1('employee_master','emp_uocid','emp_id',$empid)->emp_uocid;
+                $deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+                $desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
+                $sopost=$this->sismodel->get_listspfic1('employee_master','emp_post','emp_id',$empid)->emp_post;
+                $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+                $schmid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
+                $payscaleid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+                $bankaccno=$this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;
+                $wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+                $emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code','emp_id',$empid)->emp_type_code;
+                $group=$this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$empid)->emp_group;
+            }
+            
+            $saldata1 = array(
+               'sallt_empid'             =>$empid,
+               'sallt_scid'              =>$scid,
+               'sallt_uoid'              =>$uoccid,
+               'sallt_deptid'            =>$deptid,
+               'sallt_desigid'           =>$desigid,
+               'sallt_sapost'            =>$sopost,
+               'sallt_ddoid'             =>$ddoid,
+               'sallt_schemeid'          =>$schmid,
+               'sallt_payscaleid'        =>$payscaleid,
+               'sallt_bankaccno'         =>$bankaccno,
+               'sallt_worktype'          =>$wtype,
+               'sallt_emptype'           =>$emptype,
+               'sallt_group'             =>$group,
+               'sallt_month'             =>$month,
+               'sallt_year'              =>$year,
+               'sallt_totalincome'       =>$totalincome,
+               'sallt_totaldeduction'    =>$totaldeduction,
+               'sallt_netsalary'         =>$netpay,
+               'sallt_status'            =>'paid',
+               'sallt_type'              =>$ttcase,
+               'sallt_paiddate'          =>date('y-m-d'),
+               'sallt_creatorid'         =>$this->session->userdata('username'),
+               'sallt_creationdate'       =>date('y-m-d'),
+               'sallt_updatedate'        =>date('y-m-d'),    
+               'sallt_modifierid'        =>$this->session->userdata('username'),
+           
+            );
+              
+            if (!$upsaldataflag)
+            {
+                $this->logger->write_logmessage("insert","Trying to add  salary data head wise", "  salary data head wise value is not added ".$this->emppfno);
+                $this->logger->write_dblogmessage("insert","Trying to add salary data head wise ", " salary data head wise value is not added ".$this->emppfno);
+                $this->session->set_flashdata('err_message','Error in  salary data head wise value - '  , 'error');
+                redirect('setup3/salaryslip',$data);
+            }
+            else{
+            
+                $upsalaryflag = $this->sismodel->insertrec('salary_lt', $saldata1);
+                $this->logger->write_logmessage("insert"," salary data head wise value  ", " salary data head wise value added  successfully...");
+                $this->logger->write_dblogmessage("insert"," salary data head wise value ", "salary data head wise value added  successfully...");
+                $this->session->set_flashdata("success", "   salary data head wise value updated successfully... PF NO [ " .$this->emppfno. " ]");
+                redirect("setup3/salaryslip",$data);
+            }
+            //$k++;
+           // }//checklistcloser  
+          //  }//foreach
+            
+        }//for button
+        
+        $this->load->view('setup3/transfersalaryslip',$data);   
+    }
+    
+    public function cal_CCAgrade($empid) {
+       // $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
+       // $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
+        $pbid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        $paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+       // if($record1->sh_id == $ccaid || $record1->sh_id == $hraid){
+        $sfbp="shdv_defaultvalue";
+        $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
+        $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
+        $bpamt=$headbp[0]->shdv_defaultvalue;
+       // if($record1->sh_id == $ccaid){
+        $ccaamt=$this->sismodel->getcca_amount($bpamt,$paycomm);
+        $ccagrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid);
+        if(!empty($ccagrade)){
+            $ccagrade= $ccagrade->ems_ccagrade;
+            $sfield="cca_amount";
+            $wdata = array('cca_payrange'=>$ccaamt[0],'cca_paycomm' =>$paycomm,'cca_gradeid' =>$ccagrade);
+            // $wdata = array('cca_payscaleid' =>$pbid,'cca_workingtype' =>$worktype,'cca_gradeid' =>$ccagrade);
+            // echo $pbid,$worktype,$ccagrade;
+            $headvalc= $this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$sfield,$wdata,'');  
+            if(!empty($headvalc)){
+                $headvalcca=$headvalc[0]->cca_amount;
+                $this->dheadval=$headvalcca;
+            }
+            else{
+                $this->dheadval=0;
+            }
+        }
+        else{
+            $this->dheadval=0;
+        }
+        return $this->dheadval; 
+       // }//closer of cca    
+    }//function closer
+    public function cal_HRAgrade($empid) {
+       // $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
+        $pbid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        $paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm; 
+        
+        $sfbp="shdv_defaultvalue";
+        $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
+        $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
+        $bpamt=$headbp[0]->shdv_defaultvalue;
+        //if($record1->sh_id == $hraid){
+        $rfhragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_erfq','ems_empid',$empid);
+        if(!empty($rfhragrade)&&($rfhragrade->ems_erfq == 'yes')){
+            $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_erfqhra','ems_empid',$empid);
+        }
+        else{
+            $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);                     
+        }
+        $hraamt=$this->sismodel->gethra_amount($bpamt,$paycomm);
+        //echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$hraamt[0];
+        if(!empty($hragrade) || !empty($rfhragrade)){
+            if($rfhragrade->ems_erfq == 'yes'){
+                $hragrade= $hragrade->ems_erfqhra;   
+                $sfield="rfh_amount";
+                $wdata = array('rfh_payrange'=>$hraamt[0],'rfh_paycomm' =>$paycomm,'rfh_gradeid' =>$hragrade);
+               // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
+                $headvalh= $this->sismodel->get_orderlistspficemore('rent_free_hra',$sfield,$wdata,'');  
+                if(!empty($headvalh)){
+                    $headvalhra=$headvalh[0]->rfh_amount;
+                    $this->dheadval=$headvalhra; 
+                }
+                else{
+                    $this->dheadval=0;    
+                    }
+            }//closer of rfg
+            else{
+                $hragrade= $hragrade->ems_hragrade;
+                $sfield="hg_amount";
+                $wdata = array('hg_payrange'=>$hraamt[0],'hg_paycomm' =>$paycomm,'hg_gradeid' =>$hragrade);
+                // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
+                $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
+                if(!empty($headvalh)){
+                    $headvalhra=$headvalh[0]->hg_amount;
+                    $this->dheadval=$headvalhra; 
+                    //    echo "seemain hra". $finalval;
+                }
+                else{
+                    $this->dheadval=0;    
+                }
+            }//close of normal hra
+        }
+        else{
+            $this->dheadval=0;
+        }
+        return $this->dheadval; 
+    }//closer of function
+    public function cal_RentRecvory($empid) {
+       // $qtrocc=$this->sismodel->get_listspfic1('employee_master_support','ems_qoccupai','ems_empid',$empid);
+       // if(!empty($qtrocc) && $qtrocc->ems_qoccupai == 'yes'){
+        $pbid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+        $paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm; 
+        
+        $rentgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_rentgrade','ems_empid',$empid);
+        if(!empty($rentgrade)){ 
+            $rentgradeid=$rentgrade->ems_rentgrade;
+            
+            $sfbp="shdv_defaultvalue";
+            $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
+            $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
+            $bpamt=$headbp[0]->shdv_defaultvalue;
+            
+            $hraamt=$this->sismodel->gethraper_amount($bpamt,$paycomm);
+                                        
+            $sfield="rr_percentage";
+            $wdata = array('rr_payrange'=>$hraamt[0],'rr_paycomm' =>$paycomm,'rr_gradeid' =>$rentgradeid);
+            $headvalh= $this->sismodel->get_orderlistspficemore('rent_recovery',$sfield,$wdata,'');  
+            if(!empty($headvalh)){
+                $rentrper=$headvalh[0]->rr_percentage;
+                $rawrrcal=$bpamt*$rentrper;
+                $headvalhra=$rawrrcal;
+                //get cca grade from payrollprofile
+                $this->dheadval=$headvalhra; 
+            }
+            else{
+                $this->dheadval=0;  
+            }
+        }
+        else{
+            $this->dheadval=0;   
+        } 
+        return $this->dheadval; 
+    }//function close
+    
+    public function SalPolicies_tranfer($empid,$cmonth,$cyear,$sdtype){
+        $licprdpli = array(
+            "LIC1" => "LIC1",
+            "LIC2" => "LIC2",
+            "LIC3" => "LIC3",
+            "LIC4" => "LIC4",
+            "LIC5" => "LIC5",
+            "PRD1" => "PRD1",
+            "PRD2" => "PRD2",
+            "PRD3" => "PRD3",
+            "PLI1" => "PLI1",
+            "PLI2" => "PLI2",
+        );
+        foreach ($licprdpli as $lpdpi) {
+            $this->Salarydata_lt($empid,$lpdpi,0,$cmonth,$cyear,$sdtype);
+        }
+    }   
+    
+         
 }//class    

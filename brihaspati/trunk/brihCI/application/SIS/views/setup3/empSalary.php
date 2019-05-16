@@ -140,7 +140,7 @@
                     
                 </tr></thead>
                 <tbody>
-                    
+                  
                     <?php $serial_no = 1;?>
                     <?php if( count($emplist) ):  ?>
                         <?php foreach($emplist as $record){ ?>
@@ -186,9 +186,63 @@
                                 </td>    
                             </tr>
                         <?php }; ?>
+                            
                     <?php else : ?>
                         <td colspan= "13" align="center"> No Records found...!</td>
-                    <?php endif;?>    
+                    <?php endif;?> 
+                        
+                   <!--*****Records from ste************************************************** -->     
+                     <?php // echo count($etranlist); ?>  
+                    <?php if( !empty(($etranlist)) && count($etranlist)  ):   ?>
+                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of Transfer cases</b>"; ?></td></tr>
+                        <?php foreach($etranlist as $recordste){ ?>
+                            <tr>
+                                
+                                
+                                
+                                <td><?php  echo $serial_no++; ?>&nbsp;
+                                <?php echo $recordste->emp_name."<br/>" ."("."<b>PF No: </b>".$recordste->emp_code.")"; ?></td>
+                                <td><?php
+                                    $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$recordste->emp_scid)->sc_name;
+                                    $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$recordste->emp_uocid)->name;
+                                    $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$recordste->emp_dept_code)->dept_name;
+                                    if(!empty($record->emp_schemeid)){
+                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$recordste->emp_schemeid)->sd_name;
+                                        
+                                    }
+                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+                                ?>
+                                </td>
+                                <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$recordste->emp_desig_code)->desig_name; ?>
+                                </td>
+                                <td><?php 
+                                        $selectfield ="sallt_netsalary";
+                                        $whdata = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear);
+                                        $salval= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
+                                        if(!empty($salval)){
+                                            $netval=$salval[0]->sallt_netsalary;
+                                            echo (round($netval,2));
+                                        }
+                                        else{
+                                            echo 0.0;
+                                        }
+                                    ;?>
+                                </td>
+                               <td></td>
+                               <td><?php echo anchor("setup3/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear,"salary slip",array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php 
+                                        echo "<b>email Id-: </b>".$recordste->emp_email."<br/>"."<b>contact no-: </b>".$recordste->emp_phone."<br/>"."<b> aadhaar no-: </b>".$recordste->emp_aadhaar_no;
+                                        
+                                    ?>
+                                    
+                                </td>    
+                            </tr>
+                        <?php }; ?>
+                            
+                    <?php else : ?>
+                        <td colspan= "13" align="center"> No Records found...!</td>
+                    <?php endif;?>   
+                        
                 </tbody>    
             </table>
         

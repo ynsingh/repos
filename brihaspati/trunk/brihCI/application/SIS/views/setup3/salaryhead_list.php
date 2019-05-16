@@ -56,7 +56,7 @@
                     <th>Deduction</th>
                     <th>Formula</th>
                     <th>Taxable</th>
-                    <th>Head Description</th>
+                    <!-- <th>Head Description</th> -->
                     <th>Action</th>
                     
                 </tr>
@@ -135,10 +135,10 @@
                                 <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
                                 <?php endif;?>
                             </td>
-                            <td><?php  $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                            <!--<td><?php /* $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
                                 if(!empty($shdesc)){
                                     $description=$shdesc->sh_description;
-                                echo $description; }?></td>
+                                echo $description; } */ ?></td> -->
                             <td> <?php echo anchor("setup3/edit_salaryhead/{$record}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
                             </td>
                             <input type="hidden" name="item_id" value="<?php echo $record;?>"/>
@@ -221,10 +221,10 @@
                                 <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
                                 <?php endif;?>
                             </td>
-                            <td><?php  $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                           <!-- <td><?php /* $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
                                 if(!empty($shdesc)){
                                     $description=$shdesc->sh_description;
-                                echo $description; }?></td>
+                                echo $description; } */?></td> -->
                             <td> <?php echo anchor("setup3/edit_salaryhead/{$record}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
                             </td>
                             <input type="hidden" name="item_id" value="<?php echo $record;?>"/>
@@ -308,10 +308,10 @@
                                 <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
                                 <?php endif;?>
                             </td>
-                            <td><?php  $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                           <!-- <td><?php /* $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
                                 if(!empty($shdesc)){
                                     $description=$shdesc->sh_description;
-                                echo $description; }?></td>
+                                echo $description; } */?></td> -->
                             <td> <?php echo anchor("setup3/edit_salaryhead/{$record}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?><br/>
                             </td>
                             <input type="hidden" name="item_id" value="<?php echo $record;?>"/>
