@@ -585,7 +585,7 @@
                  <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>"> 
                 <?php }  //closer if employee not exists in that year -->
                     else{ ?>
-                        <?php echo " case 5 else empnodata"; //max value part ;?>
+                        <?php //echo " case 5 else empnodata"; //max value part ;?>
                         <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
                     
                         foreach($incomes as $incomedata){ ?>

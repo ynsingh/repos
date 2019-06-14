@@ -81,6 +81,14 @@ class Cronjob extends CI_Controller
 		//get the shown against post
 		//if both are same then no change
 		//else post value  copy to desig
+		 //get the shown against post
+                $post=$this->sismodel->get_listspfic1('employee_master', 'emp_post', 'emp_id',$combdata->emp_id)->emp_post;
+		$postid=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_name',$post)->desig_id;
+                //if both are same then no change
+		if ($desig != $postid){
+			$desig = $postid;
+		}
+                //else post value  copy to desig
                 $worktype=$this->sismodel->get_listspfic1('employee_master', 'emp_worktype', 'emp_id',$combdata->emp_id)->emp_worktype;
                 $emptype=$this->sismodel->get_listspfic1('employee_master', 'emp_type_code', 'emp_id',$combdata->emp_id)->emp_type_code;
                 $empscid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$combdata->emp_id)->emp_scid;

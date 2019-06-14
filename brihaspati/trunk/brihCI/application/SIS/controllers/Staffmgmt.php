@@ -279,7 +279,7 @@ class Staffmgmt extends CI_Controller
 	    	$desigid  = $this->input->post('desig');
 	    	$strin = $this->input->post('strin');
             	$uoid = $this->input->post('uoff');
-            	$deptid = $this->input->post('dept');
+            	$deptid1 = $this->input->post('dept');
 
 	    	if((!empty($wtype)) && ($wtype != 'null') && ($wtype != ' ')){
                        $whdata['emp_worktype'] = $wtype;
@@ -289,9 +289,9 @@ class Staffmgmt extends CI_Controller
                                $whdata['emp_uocid']=$uoid;
                         }
             	}
-	    	if((!empty($deptid)) && ($deptid != 'null') && ($deptid != ' ')){
-                         if($deptid != 'All'){
-                                $whdata['emp_dept_code'] = $deptid;
+	    	if((!empty($deptid1)) && ($deptid1 != 'null') && ($deptid1 != ' ')){
+                         if($deptid1 != 'All'){
+                                $whdata['emp_dept_code'] = $deptid1;
                         }
             	}
 		if((!empty($desigid)) && ($desigid != 'null') && ($desigid != ' ')){
@@ -317,6 +317,7 @@ class Staffmgmt extends CI_Controller
 	    	 $this->strin = $strin;
 		if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
 			unset($whdata['emp_dept_code']);
+			$whdata['emp_uocid']=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$deptid)->dept_uoid;
 		}	
 		//print_r($whdata); die();
 	         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield, $whdata,$whorder);

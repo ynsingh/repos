@@ -286,7 +286,7 @@
         </tr>
 -->
                 <tr id=dojp>
-                    <td>Date of Joing in the Post <font color='Red'></font></td>
+                    <td>Date of Joining in the Post <font color='Red'></font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" >
                         </td>
                 </tr>

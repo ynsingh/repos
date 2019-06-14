@@ -874,7 +874,13 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td ><label for="empcode" style="font-size:15px;"><font color='Blue'>Employee PF No</font><font color='Red'>*</font></label>
-                    <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo $editdata->emp_code;?>" size="33"  required pattern="[a-zA-Z0-9 ]+" required="required" >
+                    <div>
+			<?php 
+				$empcde=$editdata->emp_code;
+				$fc=$empcde[0];
+			?>
+			<input type="text" name="empcode" class="keyup-characters" value="<?php echo $editdata->emp_code;?>" size="33"  required pattern="[a-zA-Z0-9 ]+" required="required" 
+				<?php  if(($fc == "V")||($fc == "C")){ ?>readonly <?php } ?> >
                     </div>
                 </td>
             </tr>

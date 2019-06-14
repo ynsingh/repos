@@ -75,7 +75,12 @@
                 <?php foreach($this->result as $record){ ?>
                     <tr>
                     <td><?php echo $serial_no++; ?></td>                     
-                    <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td> 
+                    <td><?php 
+				$obj=$this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid);
+				if(!empty($obj)){
+					echo  $obj->username;
+//echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username;
+				}  ?></td> 
                     <td><?php echo $record->usertype; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?></td>

@@ -277,7 +277,7 @@ class Payrollprofile extends CI_Controller
             		}    
             		else{
                 
-  //              		$emppfno = $this->input->post('emppfno', '');
+//                		$emppfno = $this->input->post('emppfno', '');
                 		$empid = $this->input->post('empid', '');
 //				echo "I".$emppfno."and id is ".$empid ; die();
                 		$emppal = $this->input->post('pal', '');

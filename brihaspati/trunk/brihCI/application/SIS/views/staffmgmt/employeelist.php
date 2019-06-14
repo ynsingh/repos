@@ -381,6 +381,13 @@ $(document).ready(function(){
 							echo "<br>";
 							echo "<br>";
 						}
+						if(($flagffs)||($flagcppm)){
+							if(($headflag)||($record->emp_head == "HEAD")){
+								echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link'));
+	                                                        echo "<br>";
+        	                                                echo "<br>";
+							}
+						}
                                 	}
 					else{
 						echo anchor("staffmgmt/editempprofile/{$record->emp_id}","View/Edit",array('title' => 'View/Edit Details' , 'class' => 'red-link')); 
