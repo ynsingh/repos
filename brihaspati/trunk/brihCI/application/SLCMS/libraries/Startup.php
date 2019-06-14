@@ -10,7 +10,7 @@
 
 class Startup
 {
-	function Startup()
+	function __construct()
 	{
 		$CI =& get_instance();
 //		$CI->db->trans_strict(FALSE);

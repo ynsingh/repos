@@ -51,29 +51,44 @@
                 <th>User Type</th>
                 <th>Role Name</th>
                 <th>Department Name</th>
-                <th>Campus Name</th>
+              
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
 		
-                <?php $serial_no = 1;?>
+                <?php $serial_no = 1;
+				$pre1="p";?>
                 <?php foreach($this->result as $record){ ?>
-                    <tr>
+                    
+					<tr>
+					<?php $record1= $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid);
+					$record2=$this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid);
+					$record3=$this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid);?>
+					
+					<tr>	<td colspan=11 style="text-align:center; font-weight:bold;"><?php
+							if(!empty($record1)){
+							if(!($record1->sc_name==$pre1)){
+								
+								echo $record1->sc_name;
+							}
+							$pre1=$record1->sc_name;}
+							//else $pre1="";
+							?>
+							</td>
+					</tr>
                     <td><?php echo $serial_no++; ?></td>   
-                    <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td>
+                    <td><?php 
+						if(!empty($record3)){
+						echo $record3->username;} ?></td>
                     <td><?php echo $record->usertype; ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name; ?></td>
-		    <td><?php 
-				if(!empty( $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid))){
-					echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;
-	    			}
-		?></td>
-			<td><?php 
-				if(!empty($this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid))){
-					echo $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid)->sc_name; 
-				}
-			?></td>
+                    <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name;?></td>
+                    <td><?php 
+						if(!empty($record2)){
+						echo $record2->dept_name;} ?></td>
+                    <?php 
+						//if(!empty($record1)){
+						//echo $record1->sc_name;} ?>
                     <?php if($record->userid==1 && $record->roleid ==1): ?> 
                     <td> <?php  //echo anchor(current_url().'/#', "Delete",array('title' => 'Details' , 'class' => 'tag_color')); ?>&nbsp;
                     &nbsp;<?php  //echo anchor(current_url().'/#',"Edit",array('title' => 'Details' , 'class' => 'tag_color')); ?></td>

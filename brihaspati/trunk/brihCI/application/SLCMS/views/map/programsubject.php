@@ -91,20 +91,28 @@ echo "</center>";
 <div class="scroller_sub_page">
 <?php
     echo "<table border=0  style=\"padding: 8px 8px 8px 20px;\" class=\"TFTable\">";
-    echo "<thead><tr align=\"left\"><th>Sr. No </th><th>Paper Category</th><th>Degree</th><th>Branch </th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
+    echo "<thead><tr align=\"left\"><th>Sr.No.</th><th>Degree</th><th>Branch </th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
 $this->load->model('Map_model',"mapmodel");
 $srno = 0;
 
 if( count($paperrecords) ) {
+	$pre="p";
 foreach($paperrecords as $row)
 {
     $subject_name = $this->mapmodel->get_subjectname($row->subp_sub_id);
     $program_name = $this->mapmodel->get_programname($row->subp_degree);
       
     $srno = $srno + 1;
-    echo "<tr align=\"center\">";
+  
+	?>
+	<?php
+	if(!($pre==$row->subp_subtype)){
+		echo "<tr><td colspan=10 style=\"text-align:center; font-weight:bold;\">"; echo $row->subp_subtype; echo"</td></tr>";
+	} 
+	$pre=$row->subp_subtype;
+	  echo "<tr align=\"center\">";
     echo "<td>"; echo $srno; echo"</td>";
-    echo "<td>"; echo $row->subp_prgcat; echo"</td>";
+    //echo "<td>"; echo $row->subp_prgcat; echo"</td>";
     echo "<td>"; echo $program_name; echo"</td>";
     echo "<td>"; echo $this->commodel->get_listspfic1('program','prg_branch ','prg_id',$row->subp_degree)->prg_branch ; echo"</td>";
     echo "<td>"; echo $row->subp_acadyear; echo"</td>";

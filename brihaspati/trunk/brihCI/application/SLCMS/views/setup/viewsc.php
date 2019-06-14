@@ -47,8 +47,8 @@
         <table class="TFtable" >
                <thead>
                         <tr>
-                        <th>University Name</th>
-                        <th>Campus Name</th>
+                        
+             <th>Campus Name</th>
 			<th>Address</th>
 			<th>Phone</th>
 			<th>Fax</th>
@@ -61,12 +61,24 @@
             </thead>
             <tbody>
               <?php if( count($this->result) ): ?>
-                    <?php foreach($this->result as $row){ ?>
+                    <?php 
+					$pre="k";
+					foreach($this->result as $row){ ?>
                         <tr>
-                        <td>
+						<td>
                         <?php
                         $this->uresult = $this->common_model-> get_listspfic1('org_profile','org_name','org_code',$row->org_code);
-                         echo $this->uresult->org_name;?></td>
+                        $new1= $this->uresult->org_name;
+						 $new1=strtoupper($new1);
+						 if(!($new1==$pre)){
+							 echo "<br>";
+							 
+							 echo " <td  style=\"text-align:center; font-weight: bold;\"colspan=\"8\"> $new1";
+							 //echo "<br>";
+						 }
+						 $pre=$new1;?></td></tr>
+						 <tr>
+						
                         <td><?php echo $row->sc_name .", &nbsp;" . "&nbsp;(". $row->sc_code .", &nbsp; " . "&nbsp;". $row->sc_nickname .") "?></td>
                         <td><?php echo $row->sc_address . ", &nbsp;"." &nbsp;" . "&nbsp;". $this->common_model->get_listspfic1('cities','name','id',$row->sc_city)->name.","
                          . $row->sc_district .", &nbsp;". "&nbsp;". $this->common_model->get_listspfic1('states','name','id',$row->sc_state)->name. ", &nbsp;" ."&nbsp;". $this->common_model->get_listspfic1('countries','name','id',$row->sc_country)->name;?>

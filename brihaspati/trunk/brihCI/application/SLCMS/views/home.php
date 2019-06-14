@@ -6,6 +6,13 @@
 	<title>IGNTU:offline payment</title>
 <style>
 body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-serif;}
+
+.light {
+  background: #99B89D;
+}
+.light2{
+	background: #FFFFFF;
+}
 </style>
 
 
@@ -61,7 +68,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 
 <?php
 	//echo "</br>";
-	echo "<table width='100%'><tr ><td valign=\"top\">";
+	echo "<table width=\"100%\"><tr ><td valign=\"top\">";
 	echo "<table border=\"1\" style=\"text-align:center;color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; font-size:17px;\">";
@@ -123,10 +130,17 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;text-align:center;\">";
         echo "<tbody align=\"left\">";
-	echo "<tr><td> <b>Campus Name</b></td><td><b>Program Category</b></td><td><b>Program Name</b></td><td><b>Program Branch</b></td> <td><b>Seat</b></td></tr>";
+	echo "<tr><td><b>Program Category</b></td><td><b>Program Name</b></td><td><b>Program Branch</b></td> <td><b>Seat</b></td></tr>";
+	$flag=0;
+	$pre="";
+	
 	foreach($this->prgseat as $row){
 		$scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;
-		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"> $scname </td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_category</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
+		if(!($scname==$pre))
+		{ echo " <td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px; text-align:center;\">$scname <br>";
+	}
+		$pre=$scname;
+		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_category</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
 	}
         echo "</tbody>";
         echo "</table>";
@@ -136,7 +150,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 
 	echo "</td><td valign=\"top\">";
 
-        echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;font-size:17px;\">";
         echo "University Program and Fees";
@@ -147,15 +161,61 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
-	echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"> <b>Program Name</b></td><td style=\"padding: 8px 8px 8px 0px;\"><b>Semester</b></td><td style=\"padding: 8px 8px 8px 0px;\"><b>Category</b></td> <td style=\"padding: 8px 8px 8px 0px;\"><b>Gender</b></td> <td style=\"padding: 8px 8px 8px 0px;\"><b> Fees</b></td></tr>";
+	echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>Category</b></td> <td style=\"padding: 8px 8px 8px 0px;\"><b>Gender</b></td> <td style=\"padding: 8px 8px 8px 0px;\"><b> Fees</b></td></tr>";
 	if(!empty($frecord)){
+		$pre1="2";
+		$pre2="z";
+		$flag=0;
 		foreach($frecord as $ta){
+				//echo "<tr>";
+			$flag=0;
+			$h=$ta["prgname"];
+			$z=$ta["prgsem"];
+			if(!($ta["prgname"]==$pre1)){
+				$flag=1;
+				$h=$ta["prgname"];
+				$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
+				$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
+				echo "<tr>";
+			echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$hname." ( ".$hbranch. " )  <br>";
+			echo "</tr>";
+			
+			}
+			
+			if(!($ta["prgsem"]==$pre2)|| $flag==1){
+				echo "<tr>";
+				echo "<td class=\"light2\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px; text-align:center;\"> Semester $z<br>";
+				echo "</tr>";
+				
+			}
+			$pre2=$ta["prgsem"];
+			//echo "<br>";}
+			//echo $pre1;
+			$pre1=$h;
 			echo "<tr>";
-			foreach($ta as $ta1){
-				echo "<td style=\"padding: 8px 8px 0px 0px;\">";
-				echo $ta1;
-				echo "</td>";
- 			}
+			//echo "<br>";
+			$array = array_slice($ta,2,4);
+			$pre3="l";
+			foreach($array as $ta1){
+				
+				$y=$array["prgcat"];
+				//echo $pre3;
+				//if(!($y==$pre3)){
+					echo "<td style=\"padding: 8px 8px 0px 0px;\">";
+					echo $ta1;
+					echo "</td>";
+					
+				//}
+				//else{
+			//for( $i =0;$i<=0;$i++){
+				//$array1 = array_slice($array,3,4);
+				//echo "hi";
+				//echo "<td style=\"padding: 8px 8px 0px 0px;\">";
+				//echo $array1["prgfee"];
+			//echo "</td>";	//}
+ 			//}
+			$pre3=$y;
+			}
 			echo "</tr>";
 		}
 	}

@@ -13,7 +13,13 @@
     </head>    
     <body>
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
-
+<style>
+	.light{
+	background-color:#99B89D;
+	padding-left:20px
+	
+}
+</style>
 
        <!-- <?//php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -63,12 +69,21 @@
          <div class="scroller_sub_page">
           <table  class="TFtable">
           <thead>
-          <th>University Name</th><th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
+          <th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
                  <?php
+				  $pre="l";
                     foreach ($this->deptresult as $row)
                     {
                         echo "<tr>";
-			echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->dept_orgcode)->org_name. "</td>";
+			$org=$this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->dept_orgcode)->org_name;
+					 $org=strtoupper($org);
+					if(!($org==$pre)){
+							echo "<td style=\"text-align:center;\" class=\"light\" colspan=\"11\"> $org  </td>";
+						
+					}
+					echo "<tr>";
+					$pre=$org;
+					echo "<tr>";					
 	      	        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name . "</td>";
                         echo "<td>";
 			if(!empty($row->dept_uoid)){ 

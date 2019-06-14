@@ -48,7 +48,7 @@
        <table class="TFtable">
 	<thead>
 		<th>Sr.No</th>
-		<th> Campus </th>
+		
 		<th> Department </th>
 		<th> Academic Year </th>
 		<th> Program </th>
@@ -62,20 +62,43 @@
 	<tbody>
 	<?php $count = 0;
 	 if( count($this->result) ) {
+		 $pre="l";
 		 foreach ($this->result as $row)
 		 {
 	?>    
 			<tr>
+			    
+			    <?php 
+				$y=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->pstp_scid)->sc_name;
+				if(!($pre==$y)){
+				echo "<tr><td colspan=10 style=\"text-align:center; font-weight:bold \">";
+				echo $y;
+				echo "</tr></td>";
+				} 
+				$pre=$y;
+				
+				?>
 			    <td><?php echo ++$count; ?> </td>
-			    <td><?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->pstp_scid)->sc_name; ?> </td>
-			    <td><?php echo $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $row->pstp_teachid)->deptid)->dept_name; ?> </td>
+				<td><?php $z=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $row->pstp_teachid)->deptid);
+							if(!empty($this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $row->pstp_teachid)->deptid))){
+								
+							
+				
+							echo $z->dept_name;} ?> </td>
 			    <td><?php echo $row->pstp_acadyear ?> </td>
 			    <td><?php echo $this->commodel->get_listspfic1('program', 'prg_name', 'prg_id', $row->pstp_prgid)->prg_name; ?> </td>
 			    <td><?php echo $this->commodel->get_listspfic1('program', 'prg_branch', 'prg_id', $row->pstp_prgid)->prg_branch; ?> </td>
 			    <td><?php echo $row->pstp_sem ?> </td>
 			    <td><?php echo $this->commodel->get_listspfic1('subject', 'sub_name', 'sub_id', $row->pstp_subid)->sub_name; ?> </td>
 			    <td><?php echo $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $row->pstp_papid)->subp_name; ?> </td>
-			    <td><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->pstp_teachid)->firstname; ?> <?php echo $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->pstp_teachid)->lastname; ?> </td>
+			    <td><?php 
+				$f=$this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->pstp_teachid);
+				$l=$this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->pstp_teachid);
+				if(!empty($f)&&!empty($l)){
+				echo $f->firstname; 
+				echo $l->lastname; }?>
+
+				</td>
 			    <td><?php //echo anchor('map/deletepsteacher/' . $row->pstp_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this program subject teacher record... ')")) ?> &nbsp;&nbsp; <?php echo anchor('map/editsubjectteacher/' . $row->pstp_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ." " ?> </td>	
 			</tr>
 	<?php } 

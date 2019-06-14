@@ -70,7 +70,7 @@
             <table  class="TFtable">
             <thead>
                 <th>Sr.No</th>
-                <th>Deptt. Name</th>
+                
                 <th>Prog Name</th>
                 <th>Prog Branch</th>
                 <th>Prog Pattern</th>
@@ -88,11 +88,21 @@
         <tbody>
            <?php $serial_no = 1;?>
             <?php if( count($subsemrec) ): ?>
-                <?php foreach($subsemrec as $row){ ?>
+                <?php 
+				$pre="p";
+				foreach($subsemrec as $row){ ?>
                     <tr>
-                    <td><?php echo $serial_no++; ?></td>   
-                    <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_dept)->dept_name ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->subp_degree)->prg_name ?></td>
+                   
+                    <?php 	$z=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_id)->dept_name;
+								if(!($pre==$z)){
+									echo "<tr><td colspan=8 style=\"text-align:center; font-weight:bold\">";
+									echo $z;
+									echo "</tr></td>";
+								}
+								$pre=$z;
+								//echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_dept)->dept_name ?></td>
+                     <td><?php echo $serial_no++; ?></td>   
+					<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->subp_degree)->prg_name ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->subp_degree)->prg_branch ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('program','prg_pattern','prg_id',$row->subp_degree)->prg_pattern ?></td>
                     <td><?php echo $row->subp_sem; ?></td>

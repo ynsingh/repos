@@ -57,31 +57,61 @@
        </table>
        <div class="scroller_sub_page">
          <table class="TFtable">
-            <thead>
+             <thead>
                 <th>Sr.No</th>
 		<th> Designation Code</th>
-                <th> Designation Type</th>
-		<th> Designation Sub Type</th>
-		<th> Designation Payscale</th>
+                
+				<th> Designation Payscale</th>
                 <th> Designation Name</th>
-                <th> Designation Group </th>  
+                  
                 <th> Designation Short</th>
                 <th> Designation Description</th>
                 <th>Action</th></tr></thead>
  <?php
         $count =0;
         if( count($this->result) ):
-        foreach ($this->result as $row)
+        $pre="l";
+		$pre2="g";
+		$pre3="z";
+		
+		foreach ($this->result as $row)
         {
+        
          ?>
+			<tr> <td colspan=11 style="text-align:center; font-weight:bold;">
+			<?php 
+					if(!($pre==$row->desig_type)){
+						echo "Designation Type - $row->desig_type";
+					}
+					$pre=$row->desig_type;
+			?>
+			</td>
+		 </tr>
+			
+			<tr>
+				<td colspan=11 style="text-align:center;">
+				<?php
+					if(!($pre2==$row->desig_subtype)||!($pre3==$row->desig_group)){
+						echo " $row->desig_subtype (group $row->desig_group)";					
+					}
+					$pre2=$row->desig_subtype;
+					$pre3=$row->desig_group;
+					?>
+				
+				</td>
+			</tr>
+		 
             <tr>
             <td> <?php echo ++$count; ?> </td>
+			
+			
+			
             <td> <?php echo $row->desig_code  ?></td>
-            <td> <?php echo $row->desig_type  ?></td>
-            <td> <?php echo $row->desig_subtype  ?></td>
+             <?php //echo $row->desig_type  ?>
+            <?php //echo $row->desig_subtype  ?>
             <td> <?php echo $row->desig_payscale ?></td>
             <td> <?php echo $row->desig_name ?></td>
-            <td> <?php echo $row->desig_group ?></td>
+           <?php //echo $row->desig_group ?>
             <td> <?php echo $row->desig_short  ?></td>
             <td> <?php echo $row->desig_desc ?></td>
             <td>
