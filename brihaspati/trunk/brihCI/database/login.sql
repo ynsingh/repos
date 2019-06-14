@@ -137,9 +137,12 @@ insert into bgasuserrolegroup values (2,2,'guest','*','');
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `batchyear` varchar(200) NOT NULL,
   `dbname` varchar(200) NOT NULL,
+  `dbuname` varchar(255) DEFAULT NULL,
+  `dbpass` varchar(255) DEFAULT NULL,
+  `dbhostname` varchar(255) DEFAULT NULL,
   `fstatus` varchar(200) DEFAULT NULL,
-  `setupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `fsetupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `setupdate` datetime NOT NULL DEFAULT '2018-01-22 00:00:00',
+  `fsetupdate` datetime NOT NULL DEFAULT '2019-06-01 00:00:00',
    PRIMARY KEY  (`id`),
    UNIQUE KEY `dbname` (`dbname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1; 
@@ -152,7 +155,7 @@ insert into bgasuserrolegroup values (2,2,'guest','*','');
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `userid` int(20) NOT NULL,
   `batchyear` varchar(200) NOT NULL,
-  `createdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `createdate` datetime NOT NULL DEFAULT '2018-01-22 00:00:00',
     PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --

@@ -321,7 +321,10 @@ echo "<tr>";
 
 	echo "<table>";
 	echo "<tr>";
-	if(!$print_preview)
+//	$pagename = $this->uri->segment(2);
+//	echo 	$pagename; die();
+	//if((!$print_preview)||(!($pagename == "view_file")))
+	if((!$print_preview)&&(!$save_report))
 	{
 		echo form_submit('submit', 'Edit');
 	}

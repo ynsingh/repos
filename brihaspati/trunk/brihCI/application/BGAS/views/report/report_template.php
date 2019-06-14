@@ -107,6 +107,9 @@
 	</div>
 	</div>
 </div>
+<?php
+//echo $report; die();
+?>
 <div id="middle">
 	<div id="table">
 	<?php 
@@ -120,7 +123,8 @@
 <div id="bottom">
 <?php
 if($title == "Balance Sheet As At ".$curr_date){
-echo "Balance Sheet Prepared By Brihaspati General Accounting System (BGAS)"."</br>";
+//echo "Balance Sheet Prepared By Brihaspati General Accounting System (BGAS)"."</br>";
+echo "Balance Sheet Prepared By " .ADDRESSHEAD ." (GAS)"."</br>";
 }
 ?>
 

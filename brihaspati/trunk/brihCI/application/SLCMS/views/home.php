@@ -13,7 +13,30 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 <body>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 <?php 
-	$this->load->view('template/header');
+	$this->load->view('template/header'); ?>
+<table style="width:100%;" >
+            <tr>
+                <td>
+                    <div align="left" style="">
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                   <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php
+                    if(!empty($_SESSION['success'])){
+                        if(isset($_SESSION['success'])){?>
+                    <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+                    <?php
+                    } };
+                    ?>
+                    <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error" style="font-size:18px;"><?php echo $_SESSION['err_message'];?></div>
+                    <?php
+                    };
+                ?>
+                </div>
+            </td>
+     </tr>
+</table>
+<?php
 
 		 echo "<table width=\"100%\">";
 		 echo "<tr>";

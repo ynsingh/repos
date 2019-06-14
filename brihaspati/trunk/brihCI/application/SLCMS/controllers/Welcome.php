@@ -33,7 +33,7 @@ class Welcome extends CI_Controller {
                 //}
             	//	redirect('home');
     	}
-	public function work_underprocess(){
+/*	public function work_underprocess(){
 		$this->load->view('template/work_under');
 	}	
 		
@@ -43,7 +43,7 @@ class Welcome extends CI_Controller {
 	   $data['prg_id']=$prg_id;		
        	   $this->load->view('enterence/declaration',$data);
 	 }
-
+ */
 
 	public function welcome_login(){
 		$cdate = date('Y-m-d');
@@ -81,7 +81,7 @@ class Welcome extends CI_Controller {
 	public function index() {
 		
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
-		$cdate = date('Y-m-d H:i:s');
+//		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
 		$prgcat = $this->commodel->get_listmore('programcategory',$field);
 		$data['prgcat'] = $prgcat;

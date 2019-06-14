@@ -228,6 +228,22 @@ class Common_model extends CI_Model
        
         return $this->db->get()->result();
     }
+    //    getting different field from table - $selectfield ('a,b,c');
+    //    $whdata = array('name' => $name, 'title' => $title, 'status' => $status);
+    //    $whorder = ("column1 asc,column2 desc");
+    public function get_orderlistspficemore($tbname,$selectfield,$whdata,$whorder){
+        $this->db->flush_cache();
+        $this->db->from($tbname);
+        $this->db->select($selectfield);
+        if($whdata != ''){
+                $this->db->where($whdata);
+        }
+        if($whorder != ''){
+                $this->db->order_by($whorder);
+        }
+        return $this->db->get()->result();
+    }
+
 //    getting different field from table - $selectfield ('a,b,c');
     public function get_listmore($tbname,$selectfield){
         $this->db->flush_cache();
@@ -292,9 +308,6 @@ class Common_model extends CI_Model
     return $c;
      }   	
 
-    function __destruct() {
-        $this->db->close();
-    }
     //PDF Generate Code
     public function genpdf($content,$path){
 	$this->load->library('pdf');
@@ -308,6 +321,9 @@ class Common_model extends CI_Model
 	file_put_contents($path, $pdf); 
    }
 
+    function __destruct() {
+        $this->db->close();
+    }
 
 }
 

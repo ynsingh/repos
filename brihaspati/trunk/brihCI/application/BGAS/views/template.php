@@ -200,7 +200,8 @@ $(document).ready(function() {
 		<div id="logo1">
 		<?php $end_uri = site_url();?>
 		<?php //echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
-		<?php echo "<a class=\"chcol1\" href=$end_uri>Brihaspati General Accounting System</a>";?>
+		<?php //echo "<a class=\"chcol1\" href=$end_uri>Brihaspati General Accounting System</a>";?>
+		<?php echo "<a class=\"chcol1\" href=$end_uri>". ADDRESSHEAD." </a>";?>
 		</div>
 
 		<div id="info">

@@ -1,0 +1,3 @@
+0 0 1 * * /usr/bin/php -o /home/nksingh/autoretirement.txt  /home/nksingh/public_html/brihCI/application/SIS/controllers/Cronjob.php  autoretirement
+
+0 0 1 1 * /usr/bin/php -o /home/nksingh/earnedleave.txt  /home/nksingh/public_html/brihCI/application/SIS/controllers/Cronjob.php  earnedleave

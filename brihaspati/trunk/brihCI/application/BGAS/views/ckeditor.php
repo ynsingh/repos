@@ -84,7 +84,8 @@ $(document).ready(function() {
 
 
                 <div id="logo">
-                <?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
+                <?php echo anchor('', ADDRESSHEAD , array('class' => 'anchor-link-b'));?>
+                <?php //echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
 
                 </div>
 		

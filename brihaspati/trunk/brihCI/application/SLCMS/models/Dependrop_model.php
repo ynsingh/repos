@@ -117,14 +117,21 @@ class Dependrop_model extends CI_Model
                  
    /*This function has been created for display subject on the basis of program and branch */
     public function get_subjectlist($branchid){
-        $subid=$this->commodel->get_listspfic1('subject_paper', 'subp_sub_id', 'subp_degree', $branchid)->subp_sub_id;
-        $subject = $this->commodel->get_listrow('subject','sub_id', $subid);
-        $subject_data = $subject->result();
+//        $subid=$this->commodel->get_listspfic1('subject_paper', 'subp_sub_id', 'subp_degree', $branchid)->subp_sub_id;
+	    //$subject = $this->commodel->get_listrow('subject_semester','subsem_prgid', $branchid);
+	    echo 'nks'.$branchid;
+	   // die;
+	    $wharray = array('subsem_prgid' => $branchid);
+	    $subject = $this->commodel->get_listarray('subject_semester','subsem_subid', $wharray);
+	   // 	    print_r($subject);
+	    //	    die;
+       // $subject_data = $subject->result();
+        $subject_data = $subject;
         if(count($subject_data)>0){
                 $sub_select_box ='';
                 $sub_select_box.='<option value="">-------Select Subject Name --------';
                 foreach($subject_data as $subj){
-                        $sub_select_box.='<option value='.$subj->sub_id.'>'.$subj->sub_name.' ';
+                        $sub_select_box.='<option value='.$subj->subsem_subid.'>'.$this->commodel->get_listspfic1('subject','sub_name','sub_id',$subj->subsem_subid)->sub_name;
                 }
                 echo json_encode($sub_select_box);
         }

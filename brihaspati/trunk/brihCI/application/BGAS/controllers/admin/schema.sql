@@ -49,6 +49,24 @@ CREATE TABLE IF NOT EXISTS budget_allocate(
   PRIMARY KEY(id)
 )ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
+CREATE TABLE `budgetdept` ( 
+	`id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`deptid` INT(11) NULL , 
+	`deptname` VARCHAR(255) NULL , 
+	`headid` INT(11) NULL , 
+	`headname` VARCHAR(255) NULL , 
+	`budgettype` VARCHAR(255) NULL , 
+	`demandamt` DOUBLE NULL , 
+	`actualamt` DOUBLE NULL , 
+	`consumeamt` DOUBLE NULL , 
+	`description` VARCHAR(255) NULL , 
+	`creatorid` VARCHAR(255) NULL , 
+	`creatordate` DATETIME NULL , 
+	`modifierid` VARCHAR(255) NULL , 
+	`modifierdate` DATETIME NULL , 
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS entry_types (
   id int(5) NOT NULL,
   label varchar(15) NOT NULL,

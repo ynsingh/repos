@@ -52,7 +52,8 @@ $lngt=strlen($aggact);
 <div id="container">
 	<div id="header">
 		<div id="logo">
-		<?php echo anchor('admin', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?>  <span id="admin-area">Admin area</span>
+		<?php //echo anchor('admin', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?> <!-- <span id="admin-area">Admin area</span> -->
+		<?php echo anchor('admin', ADDRESSHEAD , array('class' => 'anchor-link-b')); ?>  <span id="admin-area">Admin area</span>
 		</div>
 		<?php
 			if ($this->session->userdata('user_name')) {

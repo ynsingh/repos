@@ -98,7 +98,8 @@
 
 		<div id="logo1">
 			<?php //echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?>
-			<a class="chcol" href=''>Brihaspati General Accounting System</a>
+			<!--<a class="chcol" href=''>Brihaspati General Accounting System</a>-->
+				<a class="chcol" href=''><?php echo ADDRESSHEAD ;?></a>
 		</div>
 		<?php
 			 /* Check applist table exists in brihaspati database*/

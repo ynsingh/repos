@@ -77,7 +77,10 @@ class Cronjob extends CI_Controller
                 }    
            	/*update staff position table on staff retirement*/
                 $dept=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$combdata->emp_id)->emp_dept_code;
-                $desig=$this->sismodel->get_listspfic1('employee_master', 'emp_desig_code', 'emp_id',$combdata->emp_id)->emp_desig_code;
+		$desig=$this->sismodel->get_listspfic1('employee_master', 'emp_desig_code', 'emp_id',$combdata->emp_id)->emp_desig_code;
+		//get the shown against post
+		//if both are same then no change
+		//else post value  copy to desig
                 $worktype=$this->sismodel->get_listspfic1('employee_master', 'emp_worktype', 'emp_id',$combdata->emp_id)->emp_worktype;
                 $emptype=$this->sismodel->get_listspfic1('employee_master', 'emp_type_code', 'emp_id',$combdata->emp_id)->emp_type_code;
                 $empscid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$combdata->emp_id)->emp_scid;

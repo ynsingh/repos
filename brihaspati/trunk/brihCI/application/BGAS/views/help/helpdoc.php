@@ -6,12 +6,13 @@
 </head>
 <body>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
-	<div class="head">Brihaspati General Accounting System</div>
+	<!--<div class="head">Brihaspati General Accounting System</div> -->
+	<div class="head"><?php echo  ADDRESSHEAD ; ?></div>
 	<div class="content">
 	<div class="sideleft">
         <div id="cssmenu">
         	<ul>
-	             <li><a href="#AboutBrihaspatiGeneralAccontingSystem">About Brihaspati General Acconting System</a></li>
+	             <li><a href="#AboutBrihaspatiGeneralAccontingSystem">About General Acconting System</a></li>
 	             <li class='has-sub'><a href="#Administrator(Home)">Administrator(Home)</a>
 	        	<ul>
 				<li><a href="#ChangeAccount">Change Account</a></li>
@@ -140,7 +141,7 @@
                 <div style="display:none;" class="scroll_down" id="scroll_down"></div>
 					<section id="AboutBrihaspatiGeneralAccontingSystem">
 					<div class="row-fluid">
-						<h2>About Brihaspati General Acconting System</h2>
+						<h2>About General Acconting System</h2>
 					</div>
 					<div class="row-fluid">
 						<font size="4">

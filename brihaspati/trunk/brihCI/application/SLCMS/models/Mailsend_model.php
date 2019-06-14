@@ -40,6 +40,8 @@ class Mailsend_model extends CI_Model
 		$this->load->library('email', $config);
 		$sender_email=$this->emresult->username;
 		$username=$this->emresult->sendername;
+		//clear message data 
+		$this->email->clear();
 		// Sender email address
 		$this->email->from($sender_email, $username);
 		//add html content
