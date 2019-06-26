@@ -19,9 +19,9 @@ function akash1(printme1)
         doc.setTextColor(40);
         doc.setFontStyle('normal');
         doc.addImage(imgdata, 'JPEG', 40, 15, 520, 70);
-        if(title2=="Designation Wise Teaching Staff List")
+        if(title2=="Designation Wise Staff List")
         {
-            doc.text(50,109, title2+'  Position-Summary' );
+            doc.text(180,109, title2 );
         }
         else
         {
@@ -77,7 +77,7 @@ function akash1(printme1)
     var res = doc.autoTableHtmlToJson(elem);
     
 
-        if(title2=="Designation Wise Teaching Staff List")
+        if(title2=="Designation Wise Staff List")
         {
            
             doc.autoTable(res.columns, res.data,options1);
@@ -90,7 +90,7 @@ function akash1(printme1)
 
 	
 	//doc.addImage(imgdata2,'JPEG',45,500,500,15);
-    doc.save("table.pdf");
+    doc.save("Report.pdf");
 	
 	 //console.log(elem);
 				
