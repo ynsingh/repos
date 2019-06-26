@@ -1,6 +1,7 @@
 
 <!--@filename desigemployeelist.php  @author Manorama Pal(palseema30@gmail.com) 
     @filename desigemployeelist.php  @author Neha Khullar(nehukhullar@gmail.com)
+    @author Akash Rathi(akash92y@gmail.com) Genrate pdf report 
 -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
@@ -9,6 +10,10 @@
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.plugin.autotable.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/pdfps.js" ></script>
+        
 	
 <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap-multiselect.css">
@@ -141,7 +146,6 @@
                     };
                     
             }
-
         </script>        
                
     </head>
@@ -221,20 +225,25 @@
     <table width="100%">
        <tr style=" background-color: graytext;"> 
         <td valign="top">
-            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;float: right;padding:5px; margin-right:10px;' title="Click for print" >  
+            <img src='<?php echo base_url(); ?>assets/sis/images/pdf.jpeg' alt='pdf'  onclick="javascript:akash1('printme1')" style='width:30px;height:30px;float: right;padding:5px;' title="Click for pdf" >  
             <div style="margin-left:500px;valign:top"><b>Designation Wise Teaching Staff List Details</b></div>
-        </td>      
-      
+        </td>
+       
        <!--<//?php
        //echo "<td align=\"center\" width=\"100%\">";
        //echo "<b>Designation Wise Teaching Staff List Details</b>";
        //echo "</td>";
        ?> -->
-      
+    
         </tr></table>
+        
+         <div >
+            <input type="hidden" id="title" name="title" value="Designation Wise Teaching Staff List" >
+         </div>
         <div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
-            <table class="TFtable" >
+            <table class="TFtable" id="printme1" >
                 <thead>
                 <tr>
                     <th>Sr.No</th>

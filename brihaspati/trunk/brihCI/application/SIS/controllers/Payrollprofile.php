@@ -233,7 +233,8 @@ class Payrollprofile extends CI_Controller
 
               //  $emppfno = $this->input->post('emppfno', '');
 		$empid = $this->input->post('empid', '');
-		//print_r($datapp); echo $emppfno; echo "empid".$empid;die();
+		//print_r($datapp);
+                // echo $emppfno; echo "empid".$empid;die();
                 //$getid= $this->sismodel->get_listspfic1('employee_master_support','ems_id','ems_code',$emppfno)->ems_id;
                 $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
                // if(!empty($getid)){
@@ -279,12 +280,12 @@ class Payrollprofile extends CI_Controller
                 
 //                		$emppfno = $this->input->post('emppfno', '');
                 		$empid = $this->input->post('empid', '');
-//				echo "I".$emppfno."and id is ".$empid ; die();
+	//			echo "I".$emppfno."and id is ".$empid ; die();
                 		$emppal = $this->input->post('pal', '');
                 		$empeol = $this->input->post('eol', '');
                 		$empmonth = $this->input->post('month', '');
                 		$empyear = $this->input->post('year', '');
-//				$empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$emppfno)->emp_id;
+	//			$empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$emppfno)->emp_id;
 				$empldata = array(
 					'sle_empid' => $empid,
 					'sle_year' => $empyear,
@@ -632,5 +633,56 @@ class Payrollprofile extends CI_Controller
 			redirect('payrollprofile/viewpaytransentry');
 		}
 	}
+        public function empsalslip(){
+            $currentuser=$this->session->userdata('username');
+            $empid = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
+            
+            $month = $this->input->post('month', TRUE);
+            $year = $this->input->post('year', TRUE);
+            
+            $cmonth= date('M');
+            $cyear= date("Y"); 
+       // echo "999==".$month."--------".$year;
+            if($month=='' && $year==''){
+                $month=$cmonth;
+                $year=$cyear;
+            }
+            $spec_data['empid'] = $empid;
+            $spec_data['month']=$cmonth;
+            $spec_data['year']=$cyear;
+            
+            if(isset($_POST['salpro'])){
+                $spec_data['month']=$month;
+                $spec_data['year']=$year;
+                
+                $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+                // $whorder = " sh_name asc";
+                $whdata = array('sh_type' =>'I');
+                $spec_data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+                $whdata = array('sh_type' =>'D');
+                $spec_data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,''); 
+                
+                $dupdata=array(
+                    'ste_empid'                =>$empid,
+                    'ste_month'                =>$month,
+                    'ste_year'                 =>$year,   
+                );
+                $dupexists=$this->sismodel->isduplicatemore('salary_transfer_entry',$dupdata);
+                
+                $this->load->library('pdf');
+                $this->pdf->set_paper("A4", "portrait");
+                if(!$dupexists){
+                    $this->pdf->load_view('setup3/salaryslipcopy',$spec_data);
+                }
+                else{
+                    $this->pdf->load_view('setup3/salaryslipcopy2',$spec_data);  
+                }
+                $this->pdf->render();
+                $this->pdf->stream("salaryslipcopy.pdf");
+                
+            } //if
+            
+            $this->load->view('payrollprofile/empsalaryslip',$spec_data);
+        }
  }
 ?>

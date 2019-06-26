@@ -1,4 +1,5 @@
-    <!--@filename empSalary.php  @author Manorama Pal(palseema30@gmail.com) -->
+    <!--@filename empSalary.php  @author Manorama Pal(palseema30@gmail.com)
+    -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -134,9 +135,11 @@
                     <th>Details</th>
                     <th>Designation</th>
                     <th>Total Salary</th>
-                    <th>Status</th>
+                    <!--<th>Status</th> -->
                     <th></th>
                     <th>Contact Details</th>
+                    <th></th>
+                    <th></th>
                     
                 </tr></thead>
                 <tbody>
@@ -176,14 +179,16 @@
                                     ;?>
                                 </td>
                                <td></td>
-                               <td><?php echo anchor("setup3/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,"salary slip",array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
+                               
                                 <td><?php
 					$adhaar=$record->emp_aadhaar_no; 
                                         echo "<b>email Id-: </b>".$record->emp_email."<br/>"."<b>contact no-: </b>".$record->emp_phone."<br/>"."<b> aadhaar no-: </b>".$this->sismodel->mask($adhaar,null,strlen($adhaar)-4);
                                         
                                     ?>
                                     
-                                </td>    
+                                </td> 
+                                <td><?php echo anchor("setup3/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
                             </tr>
                         <?php }; ?>
                             
@@ -194,14 +199,14 @@
                    <!--*****Records from ste************************************************** -->     
                      <?php // echo count($etranlist); ?>  
                     <?php if( !empty(($etranlist)) && count($etranlist)  ):   ?>
-                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of Transfer cases</b>"; ?></td></tr>
+                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of Transfer and Leave cases</b>"; ?></td></tr>
                         <?php foreach($etranlist as $recordste){ ?>
                             <tr>
                                 
                                 
                                 
                                 <td><?php  echo $serial_no++; ?>&nbsp;
-                                <?php echo $recordste->emp_name."<br/>" ."("."<b>PF No: </b>".$recordste->emp_code.")"; ?></td>
+                                <?php echo "". $recordste->emp_name."<br/>" ."("."<b>PF No: </b>".$recordste->emp_code.")"; ?></td>
                                 <td><?php
                                     $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$recordste->emp_scid)->sc_name;
                                     $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$recordste->emp_uocid)->name;
@@ -229,16 +234,61 @@
                                     ;?>
                                 </td>
                                <td></td>
-                               <td><?php echo anchor("setup3/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear,"salary slip",array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
+                               
                                 <td><?php 
                                         echo "<b>email Id-: </b>".$recordste->emp_email."<br/>"."<b>contact no-: </b>".$recordste->emp_phone."<br/>"."<b> aadhaar no-: </b>".$recordste->emp_aadhaar_no;
                                         
                                     ?>
                                     
-                                </td>    
+                                </td> 
+                                <td><?php echo anchor("setup3/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
                         <?php }; ?>
+                        <?php foreach($empleavelist as $recordsle){ ?> 
+                            <tr>
+                             
+                                <td><?php  echo $serial_no++; ?>&nbsp;
+                                <?php echo $recordsle->emp_name."<br/>" ."("."<b>PF No: </b>".$recordsle->emp_code.")"; ?></td>
+                                <td><?php
+                                    $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$recordsle->emp_scid)->sc_name;
+                                    $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$recordsle->emp_uocid)->name;
+                                    $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$recordsle->emp_dept_code)->dept_name;
+                                    if(!empty($record->emp_schemeid)){
+                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$recordsle->emp_schemeid)->sd_name;
+                                        
+                                    }
+                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+                                ?>
+                                </td>
+                                <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$recordsle->emp_desig_code)->desig_name; ?>
+                                </td>
+                                <td><?php 
+                                        $selectfield ="sallt_netsalary";
+                                        $whdata = array('sallt_empid' =>$recordsle->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear);
+                                        $salval= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
+                                        if(!empty($salval)){
+                                            $netval=$salval[0]->sallt_netsalary;
+                                            echo (round($netval,2));
+                                        }
+                                        else{
+                                            echo 0.0;
+                                        }
+                                    ;?>
+                                </td>
+                               <td></td>
+                               
+                                <td><?php 
+                                        echo "<b>email Id-: </b>".$recordsle->emp_email."<br/>"."<b>contact no-: </b>".$recordsle->emp_phone."<br/>"."<b> aadhaar no-: </b>".$recordsle->emp_aadhaar_no;
+                                        
+                                    ?>
+                                    
+                                </td> 
+                                <td><?php echo anchor("setup3/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
+                            </tr>
                             
+                        <?php }; ?>   
                     <?php else : ?>
                         <td colspan= "13" align="center"> No Records found...!</td>
                     <?php endif;?>   

@@ -199,6 +199,14 @@ echo "<ul class=\"sf-menu\">";
 				*/
 				echo "</ul>";
 			echo "</li>";
+                        echo "<li>";
+                            echo "<a href=" . ">Payroll</a>";
+                            echo "<ul>";
+                                echo "<li>";
+                                    echo anchor('payrollprofile/empsalslip', ' View Salary Slip', array('title' => 'View Salaryslip'));
+				echo "</li>";
+                            echo "</ul>";
+			echo "</li>";
 			echo "<li>";
                                 echo "<a href=" . ">Help</a>";
                         echo "<ul>";

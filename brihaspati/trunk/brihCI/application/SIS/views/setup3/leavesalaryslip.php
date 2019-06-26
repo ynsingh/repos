@@ -1,4 +1,4 @@
- <!--@filename empSalary.php  @author Manorama Pal(palseema30@gmail.com) -->
+<!--@filename leavesalaryslip.php  @author Manorama Pal(palseema30@gmail.com) -->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -8,14 +8,15 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
-       <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+        <!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js " ></script --> 
+        
         <style>
             /* Create two equal columns that floats next to each other */
             .column {
                 //float: left;
-            width: 50%;
-            //  padding: 10px;
-            // height: 300px; /* Should be removed. Only for demonstration */
+                width: 50%;
+                //  padding: 10px;
+                // height: 300px; ss
             }
 
             /* Clear floats after the columns */
@@ -74,20 +75,18 @@
     <body>
         <?php $this->load->view('template/header'); ?>
         
-        <table width="100%">
-            <tr>
-                <?php
-                    echo "<td align=\"left\" width=\"33%\">";
-                    echo anchor('setup3/salaryprocess/', "View Salary Processing Staff List" ,array('title' => 'View View Salary Processing Staff List' , 'class' => 'top_parent'));
-                    echo "</td>";
-                    echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Salary Slip</b>";
-                    echo "</td>";
-                    echo "<td align=\"right\" width=\"33%\">";
+        <table width="100%"><tr>
+            <?php
+            echo "<td align=\"left\" width=\"33%\">";
+            echo anchor('setup3/salaryprocess/', "View Salary Processing Staff List" ,array('title' => 'View View Salary Processing Staff List' , 'class' => 'top_parent'));
+            echo "</td>";
+            echo "<td align=\"center\" width=\"34%\">";
+            echo "<b>Salary Slip</b>";
+            echo "</td>";
+            echo "<td align=\"right\" width=\"33%\">";
 
-                ?>
-            </tr>
-        </table>
+            ?>
+        </tr></table>
         <table width="100%">
            <tr><td>
            <div>
@@ -109,16 +108,33 @@
             </div>
             </td></tr>
         </table>
-         <?php $empid=$this->uri->segment(3);
-               $month=$this->uri->segment(4);
-               $year=$this->uri->segment(5);
-         
-          
-         ?>
+        <?php
+            $empid=$this->uri->segment(3);
+            $month=$this->uri->segment(4);
+            $year=$this->uri->segment(5);
+                           
+            $cnomonth= date("m",strtotime($month));
+            $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$cnomonth,$year);
+            $paldays=''; $eoldays=''; 
+            /************** no leave days **********************/
+            $stffieldsal ="sle_pal,sle_eol";
+            $wstfsal = array ('sle_empid'=>$empid,'sle_month'=>$month,'sle_year'=>$year);
+            $slevalsal = $this->sismodel->get_orderlistspficemore('salary_leave_entry',$stffieldsal,$wstfsal,'');
+                if(!empty($slevalsal)){
+                    $paldays= $slevalsal[0]->sle_pal;
+                    $eoldays= $slevalsal[0]->sle_eol;
+                    $totaldl= $paldays +  $eoldays; 
+                    $leftdays= $nodaysmonth - $totaldl; 
+                
+                   // echo "left days for slalry===".$leftdays;
+               }            
+            
+           
+        ;?>
        
-            <table border="1" cellpadding=10 width="100%" bgcolor="#95a5a6"><tr><td>  
+        <table border="1" cellpadding=10 width="100%" bgcolor="#95a5a6"><tr><td>  
             <table  cellspacing="10" width="100%" bgcolor="#d5dbdb"> 
-                <form action="<?php echo site_url('setup3/salaryslip/'.$empid.'/'.$month."/".$year);?>" method="POST" enctype="multipart/form-data"> 
+               
                 <input type="hidden" name="empid" value="<?php $empid; ?>">
                 <input type="hidden" name="month" value="<?php $month; ?>">
                 <input type="hidden" name="year" value="<?php echo $year; ?>">
@@ -171,35 +187,29 @@
                 </tr>
                       
             </table>
-            </td></tr>
-              <?php
-                            $dupdata=array(
-                                'sald_empid'                =>$empid,
-                                'sald_month'                =>$month,
-                                'sald_year'                 =>$year,   
-                            );
-                            $dupexists=$this->sismodel->isduplicatemore('salary_data',$dupdata);
-                    ;?>  
-                
-            <tr><td>  
-               
-            <table class="dggh" width="50%" border="1"  heignt="50%" cellpadding=10 style="float:left;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor="#95a5a6"> 
-               <?php  $cmonth = date('M');
-                    $cmthnum=date("m", strtotime($cmonth));
-                    $cyear= date("Y"); 
-                    $currentyd=$cyear.$cmthnum;// echo "both==".$currentyd;
+            <?php
+                if($totaldl > $nodaysmonth ){
+                    //case for leave days greter than no of days in a  month.
                     
-                    $selmonth = date("m",strtotime($month));
-                    $selyear=$year;
-                    $selmonyear=$selyear.$selmonth; //echo "both=3=".$selmonyear."==".$month;
-                    if(!$dupexists){
-                       // echo "case 1 if dupexists";
-                        if($selmonyear < $currentyd){
-                          //  echo " case 2 if selmonyear currentyd";
-                            echo "<font color=\"red\"><font size=\"4\">Salary data does not exists....for the month ".( $month )."</font>";
-                        }
-                    else{
-                        ?>
+                    echo "<br/><b><font color=\"0033FF\">Paid Annual Leave : ".$paldays."</style></font></b>";
+                    echo "<br/><b><font color=\"0033FF\">Extra Ordinary Leave : ".$eoldays."</style></font></b>";
+                    echo "<br/><b><font color=\"0033FF\">Total Leave Days : ".$totaldl."</style></font></b>";
+                    echo "<br/><b><font color=\"0033FF\"><style=\"text-align:right\">Total No.of working days : 0 </style></font></b>";
+                    echo "<br/><br/><font color=\"red\"><font size=\"4\"> Number of leave days should not be greater than the number of days in a month.</font>" ;
+                }
+                else{   //case for leave days not greter than no of days in a  month.
+            ?>  
+                    
+            <form action="<?php echo site_url('setup3/leavesalaryslip/'.$empid.'/'.$month."/".$year);?>" method="POST" enctype="multipart/form-data">           
+                <tr bgcolor="lightgrey"><td colspan="3">
+                <?php echo "<b><font color=\"teal\">Paid Annual Leave : (".$paldays.")</style></font></b>"; ?>
+                <?php echo "<b><font color=\"teal\">Extra Ordinary Leave : (".$eoldays.")</style></font></b>"; ?>
+                <?php echo "<b><font color=\"teal\"><style=\"text-align:right\">Total no. of working days : (".$leftdays.")</style></font></b>"; ?>    
+                </td></tr>             
+            <tr><td>            
+              
+            <table class="dggh" width="50%" border="1"  heignt="50%" cellpadding=10 style="float:left;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor="#95a5a6"> 
+              
                  <tr>
                     <th colspan="2">Earnings</th>
                     
@@ -209,21 +219,7 @@
                     <th>Amount</th>
                    
                 </tr>
-                <?php 
-                
-                        
-                      //  echo " case 3 else selmonyear not currentyd===";
-                        $nodata=array(
-                                'sald_empid'                =>$empid,
-                                //'sald_month'                =>$month,
-                                'sald_year'                 =>$year,   
-                            );
-                            $empnodata=$this->sismodel->isduplicatemore('salary_data',$nodata);
-                            
-                            if(!$empnodata){
-                             //   echo " case 4  if empnodata";
-                        
-                        ?>
+              
                
                 <tr>
                     
@@ -260,7 +256,7 @@
                            // echo "formula inside===".$formula.$incomedata->sh_id.$incomedata->sh_name;
                             preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
                             //echo "in parenthesis inside: " . $match[2];
-                          //  echo "before and after inside: " . $match[1] . $match[3] . "\n";
+                            //echo "before and after inside: " . $match[1] . $match[3] . "\n";
                             
                             $strfmla=explode("+",$match[2]);
                             $strfmla2=explode("*",$match[3]);
@@ -287,31 +283,34 @@
                             
                             $rawfor=$headval1 + $headval2 ;
                             //$rawfor=$headval1[0]->shdv_defaultvalue + $headval2[0]->shdv_defaultvalue ;
-                            $finalval=$rawfor * $strfmla2[1];
+                            $finalvalP=$rawfor * $strfmla2[1];
+                            
+                            $finalval=$finalvalP * $leftdays/$nodaysmonth;
+                            
                             }
                             else{
                                 
+                                $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
+                                $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
+                              
                                 $sfbp="shdv_defaultvalue";
                                 $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
                                 $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
                                 $bpamt=$headbp[0]->shdv_defaultvalue;
-                                                              
+                               
                                 
-                                $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
-                                $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
                                 if($incomedata->sh_id == $ccaid || $incomedata->sh_id == $hraid){
                                     if($incomedata->sh_id == $ccaid){
-                                        $ccaamt=$this->sismodel->getcca_amount($bpamt,$paycomm);
-                                     //   echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$ccaamt[0];
-                                        
                                         $ccagrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid);
+                                        
+                                        $ccaamt=$this->sismodel->getcca_amount($bpamt,$paycomm);
+                                        //echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$ccaamt[0];
+                                        
                                         if(!empty($ccagrade)){
-                                            
                                             $ccagrade= $ccagrade->ems_ccagrade;
                                             $sfield="cca_amount";
                                             $wdata = array('cca_payrange'=>$ccaamt[0],'cca_paycomm' =>$paycomm,'cca_gradeid' =>$ccagrade);
-                                           // $wdata = array('cca_payscaleid' =>$pbid,'cca_workingtype' =>$worktype,'cca_gradeid' =>$ccagrade);
-                                           // echo $pbid,$worktype,$ccagrade;
+                                          //  echo $pbid,$worktype,$ccagrade;
                                             $headvalc= $this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$sfield,$wdata,'');  
                                             if(!empty($headvalc)){
                                                 $headvalcca=$headvalc[0]->cca_amount;
@@ -319,7 +318,8 @@
                                             //echo"seema==".$headvalcca;
                                             //get cca grade from payrollprofile
                                                 //$ccgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid)->ems_ccagrade;
-                                            $finalval=$headvalcca;
+                                            $finalval=$headvalcca * $leftdays/$nodaysmonth;
+                                            
                                             }
                                             else{
                                                 $finalval=0;
@@ -336,11 +336,11 @@
                                             $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_erfqhra','ems_empid',$empid);
                                         }
                                         else{
-                                            $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);                     
+                                            $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);
                                         }
-                                        $hraamt=$this->sismodel->gethra_amount($bpamt,$paycomm);
-                                       // echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$hraamt[0];
-                                        
+                                        $hraamt=$this->sismodel-> gethra_amount($bpamt,$paycomm);
+                                      //  echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$hraamt[0];
+                                                                                
                                         if(!empty($hragrade) || !empty($rfhragrade)){
                                             if($rfhragrade->ems_erfq == 'yes'){
                                                 $hragrade= $hragrade->ems_erfqhra;   
@@ -351,30 +351,29 @@
                                                 $headvalh= $this->sismodel->get_orderlistspficemore('rent_free_hra',$sfield,$wdata,'');  
                                                 if(!empty($headvalh)){
                                                     $headvalhra=$headvalh[0]->rfh_amount;
-                                                    $finalval=$headvalhra; 
-                                                  //  echo "seemain hra". $finalval;
-                                                }
-                                                else{
-                                                    $finalval=0;    
-                                                }
-                                            }
-                                            else{
-                                                $hragrade= $hragrade->ems_hragrade;
-                                                
-                                                $sfield="hg_amount";
-                                                $wdata = array('hg_payrange'=>$hraamt[0],'hg_paycomm' =>$paycomm,'hg_gradeid' =>$hragrade);
-                                                // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
-                                                $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
-                                                if(!empty($headvalh)){
-                                                    $headvalhra=$headvalh[0]->hg_amount;
-                                                    $finalval=$headvalhra; 
+                                                    $finalval=$headvalhra * $leftdays/$nodaysmonth; 
                                                    // echo "seemain hra". $finalval;
                                                 }
                                                 else{
                                                     $finalval=0;    
                                                 }
                                             }
-                                           
+                                            else{
+                                                                                      
+                                                $hragrade= $hragrade->ems_hragrade;
+                                                $sfield="hg_amount";
+                                                // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
+                                                $wdata = array('hg_payrange'=>$hraamt[0],'hg_paycomm' =>$paycomm,'hg_gradeid' =>$hragrade);
+                                                $headvalh= $this->sismodel->get_orderlistspficemore('hra_grade',$sfield,$wdata,'');  
+                                                if(!empty($headvalh)){
+                                                    $headvalhra=$headvalh[0]->hg_amount;
+                                                    //echo $hragrade,$ccaamt[0],$headvalh,$headvalhra;
+                                                    $finalval=$headvalhra * $leftdays/$nodaysmonth; 
+                                                }
+                                                else{
+                                                    $finalval=0;    
+                                                }
+                                            }    
                                         }
                                         else{
                                             $finalval=0;
@@ -390,12 +389,12 @@
                             
                         ?>
                         
-                        <input type="text"  class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo $finalval;  ?>" >
+                        <input type="text"  class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo (round($finalval,2));  ?>" >
                         <?php  $sumincome+=$finalval; // endif;?> 
                         <?php else :?>
                         <?php // endif; ?>
-                        <?php $finalval=$headval[0]->shdv_defaultvalue; // if($incomedata->sh_calc_type == 'N' && $headval[0]->shdv_defaultvalue != 0):?>
-                        <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo $finalval;  ?>" >
+                        <?php $finalval=$headval[0]->shdv_defaultvalue* $leftdays/$nodaysmonth; // if($incomedata->sh_calc_type == 'N' && $headval[0]->shdv_defaultvalue != 0):?>
+                        <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,2));  ?>" >
                         <?php // $sumincome+=$headval[0]->shdv_defaultvalue;
                              $sumincome+=$finalval;
                         ?>
@@ -413,7 +412,7 @@
                       <?php  //$sumincome+=$finalval; // endif;?> 
                     <?php  $i++; }?>
                     
-                    <tr><td><b>Total Earning </b></td><td> <input type="text" id="Tincome" value="<?php echo $sumincome;?>" size="10" readonly></span></td></tr> 
+                    <tr><td><b>Total Earning </b></td><td> <input type="text" id="Tincome" value="<?php echo (round($sumincome,2));?>" size="10" readonly></span></td></tr> 
                 </table>
                 
                 <table class="dggh" border=1 width="50%" heignt="50%" cellpadding=10 style="float:right;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor="#95a5a6">     
@@ -433,7 +432,7 @@
                    
                         <tr>
                          <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
-                        <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/;
+                        <td><?php echo $deductdata->sh_name /*."=for==".$deductdata->sh_id*/ ;
                             if(in_array($deductdata->sh_id,$allowedhead)){
                             echo "<font color=\"red\">*</font>" ;
                         }
@@ -443,12 +442,10 @@
                             <?php 
                            
                             ?>
-                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)): //echo "in allowed case";?>
-                            
-                            <?php  if($deductdata->sh_calc_type == 'Y'): 
+                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
+                            <?php  if($deductdata->sh_calc_type == 'Y'):
                             $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$deductdata->sh_id);
                             if(!empty($formula1)){
-                               // echo "in formula case";
                             $formula=$formula1->sf_formula;
                           //  echo "formula inside===".$formula.$deductdata->sh_id.$deductdata->sh_name;
                             preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
@@ -484,24 +481,21 @@
                             $rawfor=$headval1 + $headval2 ;
                            // echo "rawval===".$rawfor. "\n";
                             //echo "==val1===".$headval1."==val2===".$headval2. "\n";
-                            $finalval=$rawfor * $strfmla2[1]. "\n";
+                            $finalvalP=$rawfor * $strfmla2[1]. "\n";
+                           $finalval=$finalvalP * $leftdays/$nodaysmonth;
                            // echo "finalval==".$finalval;
                             }
                             else{
-                                //echo "==in  without formula==";
-                                /********write code for the rent recovery if occupied quarter*************/
+                                
                                 $rentid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','Rent')->sh_id; 
-                               // echo "rentid==".$rentid; 
                                 if($deductdata->sh_id == $rentid){
-                                    //echo "in yes 1part==";
+                                    /********write code for the rent recovery if occupied quarter*************/
                                     $qtrocc=$this->sismodel->get_listspfic1('employee_master_support','ems_qoccupai','ems_empid',$empid);
                                     if(!empty($qtrocc) && $qtrocc->ems_qoccupai == 'yes'){
-                                       // echo "in yes part=2=";
                                         $rentgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_rentgrade','ems_empid',$empid);
                                         if(!empty($rentgrade)){ 
-                                           // echo "in yes part=3=";
                                             $rentgradeid=$rentgrade->ems_rentgrade;
-                                        
+                                    
                                             $sfbp="shdv_defaultvalue";
                                             $wdatabp = array('shdv_paybandid'=>$pbid,'shdv_salheadid' =>1);
                                             $headbp= $this->sismodel->get_orderlistspficemore('salaryhead_defaultvalue',$sfbp,$wdatabp,'');
@@ -513,12 +507,10 @@
                                             $headvalh= $this->sismodel->get_orderlistspficemore('rent_recovery',$sfield,$wdata,'');  
                                             if(!empty($headvalh)){
                                                 $rentrper=$headvalh[0]->rr_percentage;
-                                            
-                                            
+                                                
                                                 $rawrrcal=$bpamt*$rentrper;
                                                 $headvalhra=$rawrrcal;
-                                                //get cca grade from payrollprofile
-                                                $finalval=$headvalhra; 
+                                                $finalval=$headvalhra * $leftdays/$nodaysmonth; 
                                             }
                                             else{
                                                 $finalval=0;  
@@ -534,8 +526,9 @@
                                                                         
                                 } //ifrentrecoveery    
                                 /**************************************************************************/
+                                     
                                 else{
-                                   // echo "==in  without formula== last part";
+                                
                                     $finalval=0;
                                 }
                             }
@@ -543,14 +536,14 @@
                             
                         ?>
                         
-                        <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
+                        <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,2));  ?>" >
                         <?php  $sumdeduction+=$finalval; // endif;?> 
-                        <?php else : //echo "in  without dowm11 formula=="?>
-                            <?php $finalval=$headval[0]->shdv_defaultvalue;;?>
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
+                        <?php else :?>
+                            <?php $finalval=$headval[0]->shdv_defaultvalue * $leftdays/$nodaysmonth;?>
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,2));  ?>" >
                             <?php $sumdeduction+=$finalval; //$sumdeduction+=$headval[0]->shdv_defaultvalue;?>
                         <?php endif;?>    
-                            <?php else : //secho "in  without dowm12 formula=not allowed case="?>
+                            <?php else : ?>
                             
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" >
                             
@@ -572,264 +565,22 @@
                                 <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $lpdpi; ?>">   
                           <?php $j++; };?>
                                      
-                        <tr><td><b>Total Deduction:</b></td><td><input type="text" id="Tdeduction" value="<?php echo $sumdeduction;?>" size="10" readonly></td></tr>  
+                        <tr><td><b>Total Deduction:</b></td><td><input type="text" id="Tdeduction" value="<?php echo (round($sumdeduction,2));?>" size="10" readonly></td></tr>  
                 </tr> 
                 </table>
-                <!--<tr><td><b>Net Pay:</b><span id="netPay"> <?php // echo $sum_total = $sumincome - $sumdeduction;?></span> -->
-                <tr><td><b>Net Pay:</b><input type="text" id="netPay" value="<?php echo $sum_total = $sumincome - $sumdeduction;?>" readonly >
-                        <input type="hidden" name="incometotal" value="<?php echo $sumincome;?>">  
-                        <input type="hidden" name="deductiontotal" value="<?php echo $sumdeduction;?>">
-                        <input type="hidden" name="netpay" value="<?php echo $sum_total;?>" >
+                <tr><td><b>Net Pay:</b><input type="text" id="netPay" value="<?php $sum_total = $sumincome - $sumdeduction; echo (round($sum_total,2))?>" readonly >
+                        <input type="hidden" name="incometotal" value="<?php echo (round($sumincome,2));?>">  
+                        <input type="hidden" name="deductiontotal" value="<?php echo (round($sumdeduction,2));?>">
+                        <input type="hidden" name="netpay" value="<?php echo (round($sum_total,2));?>" >
                  <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
-                 <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>"> 
-                <?php }  //closer if employee not exists in that year -->
-                    else{ ?>
-                        <?php //echo " case 5 else empnodata"; //max value part ;?>
-                        <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
-                    
-                        foreach($incomes as $incomedata){ ?>
-                        <tr>
-                            <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == 'Common') :?>    
-                            <td>
-                        
-                                <?php  echo $incomedata->sh_name/*."==id==".$incomedata->sh_id*/ ;
-                                    if(in_array($incomedata->sh_id,$allowedhead)){
-                                    echo "<font color=\"red\">*</font>";
-                                }
-                     
-                                ?>
-                            </td>
-                            <td><?php 
-                          
-                                $selectfield ="sald_shamount";
-                                //$whorder = "shc_id asc";
-                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id);
-                                $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);  
-                               // $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
-                                //$headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,''); 
-                          
-                                ?>
-                                <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
-                                <?php $finalval=$headval[0]->sald_shamount;?>      
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo $finalval;  ?>" >
-                                <?php $sumincome+=$finalval;?>
-                                
-                                <?php else : ?>
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI"  value="<?php echo 0; ?>" >    
-                                <?php endif;?>
-                            </td>
-                            <?php endif;?> 
-                     </tr> 
-                    <input type="hidden" name="sheadidin<?php echo $i;?>" value="<?php echo $incomedata->sh_id ; ?>">
-                    <?php  $i++; };?>
-                    <tr><td><b>Total Earning </b></td><td> <input type="text" id="Tincome" value="<?php echo $sumincome;?>" size="10" readonly></span></td></tr>    
-                    <table class="dggh" border=1 width="50%" heignt="50%" cellpadding=10 style="float:right;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor=" #95a5a6">     
-                    
-                   <tr>
-                    <th colspan="2">Deductions</th>
-                    </tr>
-                <tr>
-                    <th>Head</th>
-                    <th>Amount</th>
-                   
-                </tr>
-                <tr>
-                    
-                    
-                     <?php foreach($deduction as $deductdata){ ?>
-                   
-                        <tr>
-                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
-                        <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/ ;
-                            if(in_array($deductdata->sh_id,$allowedhead)){
-                            echo "<font color=\"red\">*</font>" ;
-                        }
-                        ?>
-                        </td>
-                        <td>
-                            <?php 
-                                $selectfield ="sald_shamount";
-                                //$whorder = "shc_id asc";
-                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id);
-                                $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);        
-                            ?>
-                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
-                            <?php $finalval=$headval[0]->sald_shamount;?>   
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
-                            <?php $sumdeduction+=$finalval; ?>
-                            <?php else : ?>
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" >
-                            <?php endif;?>
-                        </td>
-                        <?php endif;?>
-                        </tr>
-                          <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $deductdata->sh_id ; ?>">   
-                    <?php $j++; };?>
-                        
-                            <?php  $licprdpli = array(
-                            "LIC1" => "LIC1", "LIC2" => "LIC2", "LIC3" => "LIC3", "LIC4" => "LIC4",
-                            "LIC5" => "LIC5", "PRD1" => "PRD1", "PRD2" => "PRD2", "PRD3" => "PRD3",
-                            "PLI1" => "PLI1", "PLI2" => "PLI2",);?>
-                        
-                            <?php foreach ($licprdpli as $lpdpi) {?>
-                                <tr><td><?php echo $lpdpi ?></td>
-                                <?php 
-                                    $selectfield ="sald_shamount";
-                                    $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$lpdpi);
-                                    $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);
-                                    $finalval=$headval[0]->sald_shamount;
-                                                                   
-                                ;?>    
-                                <td><input type="text"  class="headamtD" name="headamtD<?php echo $j;?>"  id="headamtD"value="<?php echo $finalval ?>" ></td></tr>   
-                                <?php $sumdeduction+=$finalval; ?>
-                                <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $lpdpi; ?>">   
-                          <?php $j++; };?>
-                                     
-                        <tr><td><b>Total Deduction:</b></td><td><input type="text" id="Tdeduction" value="<?php echo $sumdeduction;?>" size="10" readonly></td></tr>  
-                </tr> 
-                </table>
-                <!--<tr><td><b>Net Pay:</b><span id="netPay"> <?php // echo $sum_total = $sumincome - $sumdeduction;?></span> -->
-                <tr><td><b>Net Pay:</b><input type="text" id="netPay" value="<?php echo $sum_total = $sumincome - $sumdeduction;?>" readonly >
-                        <input type="hidden" name="incometotal" value="<?php echo $sumincome;?>">  
-                        <input type="hidden" name="deductiontotal" value="<?php echo $sumdeduction;?>">
-                        <input type="hidden" name="netpay" value="<?php echo $sum_total;?>" >
-                 <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
-                 <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>"> 
-                 
-                    <?php };?>
-                 <?php  //closer max value part ;?>
-                <?php  } /*closer of else year compare(<>) */ ;?> 
-                <?php } //closer of if dup not exists  -->
-                else{ //echo "else dupexistss" ?>
-                             
-                 <tr>
-                    <th colspan="2">Earnings </th>
-                   
-                </tr>
-                
-                <tr>
-                    <th>Head</th>
-                    <th>Amount</th>
-                   
-                </tr>
-                
-                   
-                        <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
-                    
-                        foreach($incomes as $incomedata){ ?>
-                        <tr>
-                            <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == 'Common') :?>    
-                            <td>
-                        
-                                <?php  echo $incomedata->sh_name/*."==id==".$incomedata->sh_id*/ ;
-                                    if(in_array($incomedata->sh_id,$allowedhead)){
-                                    echo "<font color=\"red\">*</font>";
-                                }
-                     
-                                ?>
-                            </td>
-                            <td><?php 
-                          
-                                $selectfield ="sald_shamount";
-                                //$whorder = "shc_id asc";
-                                //$whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id);
-                               // $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);  
-                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
-                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,''); 
-                          
-                                ?>
-                                <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
-                                <?php $finalval=$headval[0]->sald_shamount;?>      
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo $finalval;  ?>" readonly >
-                                <?php $sumincome+=$finalval;?>
-                                
-                                <?php else : ?>
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI"  value="<?php echo 0; ?>" readonly>    
-                                <?php endif;?>
-                            </td>
-                            <?php endif;?> 
-                     </tr> 
-                    <input type="hidden" name="sheadidin<?php echo $i;?>" value="<?php echo $incomedata->sh_id ; ?>">
-                    <?php  $i++; };?>
-                    <tr><td><b>Total Earning </b></td><td> <input type="text" id="Tincome" value="<?php echo $sumincome;?>" size="10" readonly></span></td></tr>    
-                    <table  class="dggh" border=1 width="50%" heignt="50%" cellpadding=10 style="float:right;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor=" #95a5a6">     
-                    
-                   <tr>
-                    <th colspan="2">Deductions</th>
-                    </tr>
-                <tr>
-                    <th>Head</th>
-                    <th>Amount</th>
-                   
-                </tr>
-                <tr>
-                    
-                    
-                     <?php foreach($deduction as $deductdata){ ?>
-                   
-                        <tr>
-                         <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common') :?>       
-                        <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/ ;
-                            if(in_array($deductdata->sh_id,$allowedhead)){
-                            echo "<font color=\"red\">*</font>" ;
-                        }
-                        ?>
-                        </td>
-                        <td>
-                            <?php 
-                                $selectfield ="sald_shamount";
-                                //$whorder = "shc_id asc";
-                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
-                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,'');        
-                            ?>
-                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
-                            <?php $finalval=$headval[0]->sald_shamount;?>   
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" readonly>
-                            <?php $sumdeduction+=$finalval; ?>
-                            <?php else : ?>
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" readonly>
-                            <?php endif;?>
-                        </td>
-                        <?php endif;?>
-                        </tr>
-                          <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $deductdata->sh_id ; ?>">   
-                    <?php $j++; };?>
-                        
-                            <?php  $licprdpli = array(
-                            "LIC1" => "LIC1", "LIC2" => "LIC2", "LIC3" => "LIC3", "LIC4" => "LIC4",
-                            "LIC5" => "LIC5", "PRD1" => "PRD1", "PRD2" => "PRD2", "PRD3" => "PRD3",
-                            "PLI1" => "PLI1", "PLI2" => "PLI2",);?>
-                        
-                            <?php foreach ($licprdpli as $lpdpi) {?>
-                                <tr><td><?php echo $lpdpi ?></td>
-                                <?php 
-                                    $selectfield ="sald_shamount";
-                                    $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$lpdpi,'sald_month'=>$month,'sald_year'=>$year);
-                                    $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,'');
-                                    $finalval=$headval[0]->sald_shamount;
-                                                                   
-                                ;?>    
-                                <td><input type="text"  class="headamtD" name="headamtD<?php echo $j;?>"  id="headamtD"value="<?php echo $finalval ?>" readonly></td></tr>   
-                                <?php $sumdeduction+=$finalval; ?>
-                                <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $lpdpi; ?>">   
-                          <?php $j++; };?>
-                                     
-                        <tr><td><b>Total Deduction:</b></td><td><input type="text" id="Tdeduction" value="<?php echo $sumdeduction;?>" size="10" readonly></td></tr>  
-                </tr> 
-                </table>
-                <!--<tr><td><b>Net Pay:</b><span id="netPay"> <?php // echo $sum_total = $sumincome - $sumdeduction;?></span> -->
-                <tr><td><b>Net Pay:</b><input type="text" id="netPay" value="<?php echo $sum_total = $sumincome - $sumdeduction;?>" readonly >
-                        <input type="hidden" name="incometotal" value="<?php echo $sumincome;?>">  
-                        <input type="hidden" name="deductiontotal" value="<?php echo $sumdeduction;?>">
-                        <input type="hidden" name="netpay" value="<?php echo $sum_total;?>" >
-                 <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
-                 <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>">    
-                <?php } ;?>
-               
-                <button name="upsalhdval" id="btnUpload" style="align:right" onclick="return confirm('Are you sure you want to process salary?');">Update</button></span></td>   
-                </tr> 
+                 <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>">
+                 &nbsp;
+                <button name="upsalhdval" id="btnUpload" style="align:right" onclick="return confirm('Are you sure you want to process salary?');">Update</button></span> 
                 </td></tr>
-            </table>                      
-        </form>    
+            </td></tr> 
+            <?php };?>
+            <!--<input type="hidden" name="tcase" id="tcase" value="<?php echo $tcase;?>"> -->
+        </td></tr></table>            
     </body>    
-</html>
+</html>    
+

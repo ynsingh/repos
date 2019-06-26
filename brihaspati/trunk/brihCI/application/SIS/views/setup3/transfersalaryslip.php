@@ -8,7 +8,7 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
         <style>
             /* Create two equal columns that floats next to each other */
             .column {
@@ -25,8 +25,8 @@
                 clear: both;
             }
            .dggh td, th {
-    border: 1px solid grey;
-}
+                border: 1px solid grey;
+            }
         </style>
         <script>
         
