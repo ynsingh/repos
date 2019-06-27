@@ -1,0 +1,119 @@
+ 
+%PDF-1.3
+1 0 obj
+<< /Type /Catalog
+/Outlines 2 0 R
+/Pages 3 0 R >>
+endobj
+2 0 obj
+<< /Type /Outlines /Count 0 >>
+endobj
+3 0 obj
+<< /Type /Pages
+/Kids [6 0 R
+]
+/Count 1
+/Resources <<
+/ProcSet 4 0 R
+/Font << 
+/F1 8 0 R
+/F2 9 0 R
+>>
+>>
+/MediaBox [0.000 0.000 612.000 792.000]
+ >>
+endobj
+4 0 obj
+[/PDF /Text ]
+endobj
+5 0 obj
+<<
+/Creator (DOMPDF)
+/CreationDate (D:20170818152256+05'30')
+/ModDate (D:20170818152256+05'30')
+/Title (Codeigniter 3 - Generate PDF from view using dompdf library with example)
+>>
+endobj
+6 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Contents 7 0 R
+>>
+endobj
+7 0 obj
+<<
+/Length 1220 >>
+stream
+
+0.000 0.000 0.000 rg
+BT 34.016 719.095 Td /F2 24.0 Tf  [(Codeigniter 3 - Generate PDF from view using )] TJ ET
+BT 34.016 690.583 Td /F2 24.0 Tf  [(dompdf library with example)] TJ ET
+1.000 0.000 0.000 RG
+0.75 w 0 J [  ] 0 d
+34.391 609.907 543.219 58.518 re S
+0.75 w 0 J [  ] 0 d
+36.641 649.669 54.297 16.506 re S
+BT 58.119 653.948 Td /F2 12.0 Tf  [(Id)] TJ ET
+0.75 w 0 J [  ] 0 d
+93.188 649.669 132.778 16.506 re S
+BT 144.583 653.948 Td /F2 12.0 Tf  [(Name)] TJ ET
+0.75 w 0 J [  ] 0 d
+228.216 649.669 347.143 16.506 re S
+BT 386.452 653.948 Td /F2 12.0 Tf  [(Email)] TJ ET
+0.75 w 0 J [  ] 0 d
+36.641 630.913 54.297 16.506 re S
+BT 37.766 635.192 Td /F1 12.0 Tf  [(1)] TJ ET
+0.75 w 0 J [  ] 0 d
+93.188 630.913 132.778 16.506 re S
+BT 94.313 635.192 Td /F1 12.0 Tf  [(Hardik)] TJ ET
+0.75 w 0 J [  ] 0 d
+228.216 630.913 347.143 16.506 re S
+BT 229.341 635.192 Td /F1 12.0 Tf  [(hardik@gmail.com)] TJ ET
+0.75 w 0 J [  ] 0 d
+36.641 612.157 54.297 16.506 re S
+BT 37.766 616.436 Td /F1 12.0 Tf  [(2)] TJ ET
+0.75 w 0 J [  ] 0 d
+93.188 612.157 132.778 16.506 re S
+BT 94.313 616.436 Td /F1 12.0 Tf  [(Paresh)] TJ ET
+0.75 w 0 J [  ] 0 d
+228.216 612.157 347.143 16.506 re S
+BT 229.341 616.436 Td /F1 12.0 Tf  [(paresh@gmail.com)] TJ ET
+endstream
+endobj
+8 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Times-Roman
+/Encoding /WinAnsiEncoding
+>>
+endobj
+9 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F2
+/BaseFont /Times-Bold
+/Encoding /WinAnsiEncoding
+>>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000074 00000 n 
+0000000120 00000 n 
+0000000284 00000 n 
+0000000313 00000 n 
+0000000509 00000 n 
+0000000572 00000 n 
+0000001844 00000 n 
+0000001953 00000 n 
+trailer
+<<
+/Size 10
+/Root 1 0 R
+/Info 5 0 R
+>>
+startxref
+2061
+%%EO
