@@ -556,7 +556,7 @@ class Adminstuexam extends CI_Controller
 		$currentacadyear = $this->datesemmodel->getcurrentAcadYear();
 		$data['currentacadyear'] = $currentacadyear;
                 $semester = $this->datesemmodel->getcurrentSemester();
-		$getsem = sizeof($semester);
+		$getsem = strlen($semester);
 		
 		$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem);
 		$sdata = 'sp_smid,sp_deptid,sp_programid';		
@@ -657,7 +657,7 @@ class Adminstuexam extends CI_Controller
 		$currentacadyear = $this->datesemmodel->getcurrentAcadYear();
 		$data['currentacadyear'] = $currentacadyear;
                 $semester = $this->datesemmodel->getcurrentSemester();
-		$getsem = sizeof($semester);
+		$getsem = strlen($semester);
 		$data['getsem'] = $getsem;	
 		$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem);
 		$sdata = 'sp_deptid';		
@@ -788,7 +788,8 @@ class Adminstuexam extends CI_Controller
 		$currentacadyear = $this->datesemmodel->getcurrentAcadYear();
 		$data['currentacadyear'] = $currentacadyear;
                 $semester = $this->datesemmodel->getcurrentSemester();
-		$getsem = sizeof($semester);
+//                echo($semester);
+		$getsem = strlen($semester);
 		
 		$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem);
 		$sdata = 'sp_programid';		

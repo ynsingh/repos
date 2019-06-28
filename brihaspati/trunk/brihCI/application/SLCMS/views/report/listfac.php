@@ -49,15 +49,19 @@
    				if(!empty($row->userid)){
                                         echo "<tr>";
 					echo "<td align=\"center\">";
-					echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
+                    if(!empty($this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname))
+					{echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;}    
 					echo "&nbsp; ";
-					echo $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;
+                    if(!empty($this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname))
+					{echo $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;}
 					echo "</td>";
 					echo " <td align=\"center\">";
-					echo $this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)->username;
+                    if(!empty($this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)->username))
+					{echo $this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)->username;}
 					echo " </td>";
 					echo " <td align=\"center\"> ";
-					echo $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;
+                    if(!empty($this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile))
+					{echo $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;}
 					echo "</td>";
 					echo " <td align=\"center\">";
 					echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;

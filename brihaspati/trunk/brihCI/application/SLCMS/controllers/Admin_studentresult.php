@@ -1,3 +1,4 @@
+
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -7,20 +8,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author Sumit saxena(sumitsesaxena@gmail.com)
  */
 
+   
 class Admin_studentresult extends CI_Controller
 {
  
     function __construct() {
         parent::__construct();
         $this->load->model("Login_model", "login");
+                $this->load->model('Dependrop_model',"depmodel");
+
         $this->load->model("Common_model", "commodel");
         $this->load->model("User_model", "usermodel");
+
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
         }
     }
- 
+    public function tabulationchart(){
+
+        $tabulate['degree']=$this->commodel->get_list("program");
+        $this->load->view('result/tabulationchart',$tabulate);
+
+    }
+
+    public function branchlist(){
+            //echo "hi";
+            //$semprg = $this->input->post('programname');
+            //echo $semprg;
+            //return $data['h1'];
+            //echo "<option> jhp </option> ";
+           $semprg = $this->input->post('programname');
+           //$brlist = $this->commodel->get_listrow('program','prg_name', $semprg);
+           $brlist=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$semprg);
+           foreach ($brlist as $br) {
+               # code...
+           
+           echo "<option> $br</option>";
+        }
+       
+
+    }
+
     public function studentmarks() {
        
 	$array_items = array('success' => '', 'error' => '', 'warning' =>'');
@@ -29,7 +58,7 @@ class Admin_studentresult extends CI_Controller
         $username = $this->session->userdata('username');
 	//get current semester
 	$currsem = $this->usermodel->getcurrentSemester();
-	$semsize = sizeof($currsem);
+	$semsize = strlen($currsem);
         //get current academic year
         $acadyear = $this->usermodel->getcurrentAcadYear();
 	$facultydata['academicyear']=$acadyear;
@@ -211,7 +240,7 @@ class Admin_studentresult extends CI_Controller
 
 	//current semester
 	$currsem = $this->usermodel->getcurrentSemester();
-	$semsize = sizeof($currsem);
+	$semsize = strlen($currsem);
 
 	//get programme and semester
 	$selectfield=array('sp_programid','sp_semester');
@@ -564,4 +593,4 @@ class Admin_studentresult extends CI_Controller
 
 
 }
-
+?>

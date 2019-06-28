@@ -42,19 +42,27 @@
                 <?php
                         if( count($this->tresult) ):
                                 foreach($this->tresult as $row){
-					
-						$stufname = $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
-					
+					   if(!empty($this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)))
+						{$stufname = $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;}
+					   if(!empty( $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)))
 						$stulname = $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;
-						$smid=$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$row->userid)->sm_id;
-						$stu_fathername=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$smid)->spar_fathername;
-						$stu_add = $this->logmodel->get_listspfic1('userprofile','address','userid',$row->userid)->address;
-						$username = $this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)->username;
-						$stu_mobile = $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;
-					
-						$stu_center = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
-						$stu_dept = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
-						$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
+                        $smid=NULL;
+                        if(!empty($this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$row->userid)))
+						{$smid=$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$row->userid)->sm_id;}
+                        if(!empty($this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$smid)))
+						{$stu_fathername=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$smid)->spar_fathername;}
+                        if(!empty($this->logmodel->get_listspfic1('userprofile','address','userid',$row->userid)))
+						{$stu_add = $this->logmodel->get_listspfic1('userprofile','address','userid',$row->userid)->address;}
+                    if(!empty($this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)))
+						{$username = $this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)->username;}
+                    if(!empty($this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)))
+						{$stu_mobile = $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;}
+					if(!empty($this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)))
+						{$stu_center = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;}
+                    if(!empty($this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)))
+						{$stu_dept = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;}
+                    if(!empty($this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)))
+						{$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;}
                                         	$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
 						$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;	
 					

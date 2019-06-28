@@ -88,19 +88,22 @@
         <tbody>
            <?php $serial_no = 1;?>
             <?php if( count($subsemrec) ): ?>
-                <?php 
+<?php 
+		//	print_r($subsemrec);
 				$pre="p";
 				foreach($subsemrec as $row){ ?>
-                    <tr>
                    
-                    <?php 	$z=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_id)->dept_name;
+                    <?php 	
+                    	//$y=$this->commodel->get_listspfic1('Subject','sub_semester','sub_id',$row->subp_id)->sub_semester;
+                    	$z=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_id)->dept_name;
 								if(!($pre==$z)){
 									echo "<tr><td colspan=8 style=\"text-align:center; font-weight:bold\">";
-									echo $z;
+									echo "Department : ".$z;
 									echo "</tr></td>";
 								}
 								$pre=$z;
-								//echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_dept)->dept_name ?></td>
+								//echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_dept)->dept_name ?>
+                    <tr>
                      <td><?php echo $serial_no++; ?></td>   
 					<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->subp_degree)->prg_name ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->subp_degree)->prg_branch ?></td>

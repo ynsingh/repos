@@ -169,7 +169,6 @@ $unique3 = array_unique($unique2);
 				<?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgdata->sp_programid)->prg_name."&nbsp;"."(".
                                 $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgdata->sp_programid)->prg_branch.")" ;?></option> 
  			<?php endforeach; ?>
-		
 		    </select>
                 </td>
                 <td align=left><span style="color:white;">Semester :</span></br>
@@ -214,7 +213,7 @@ $unique3 = array_unique($unique2);
 		<td width = "20%" align=left>
     <span style="color:white;" >Exam Type: &nbsp;</span>
             <select name="examtype">
-		<option selected="selected" disabled selected>Selecet Exam Type</option>
+		<option selected="selected" disabled selected>Select Exam Type</option>
             <?php
                 foreach($exmtype as $exm_type): ?>
                     <option value="<?php echo $exm_type->exty_id; ?>"><?php

@@ -86,7 +86,7 @@
 					echo "<tr>";					
 	      	        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name . "</td>";
                         echo "<td>";
-			if(!empty($row->dept_uoid)){ 
+			if(!empty($this->login_model->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name)){ 
 			echo $this->login_model->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name;
 			} 
 			echo "</td>";

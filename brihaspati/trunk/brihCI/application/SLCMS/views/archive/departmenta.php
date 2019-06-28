@@ -72,7 +72,10 @@
 		        echo "<tr align=\"center\">";
                         echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->depta_orgcode)->org_name. "</td>";
                         echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->depta_sccode)->sc_name . "</td>";
-                        echo "<td>". $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name . "</td>";
+                        echo "<td>";
+                        if(!empty($this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name)){
+                        echo  $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name;}
+                        echo "</td>";
                         echo "<td>" . $row->depta_schoolcode. "</td>";
                         echo "<td>" . $row->depta_schoolname . "</td>";
                         echo "<td>" . $row->depta_code . "</td>";
@@ -95,6 +98,3 @@
 </html>
 
                                                                      
- 
-
-

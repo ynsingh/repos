@@ -25,6 +25,8 @@ class Setup extends CI_Controller
         	$this->load->model('dependrop_model','depmodel');
         	$this->load->model('university_model','unimodel');
         	$this->load->model("Mailsend_model","mailmodel");
+           // $this->load->model('common_model');
+
 	 	$this->load->model("DateSem_model","datemodel");
 		$this->load->model('SIS_model');	
         	if(empty($this->session->userdata('id_user'))) {
@@ -1480,12 +1482,12 @@ class Setup extends CI_Controller
 		
 	//Fees Program set up
 
-     public function fees() {
+     public function fees() {   
                
         	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
        	$this->prgresult = $this->common_model->get_distinctrecord('program','prg_name','');
                 $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');
-
+               // echo "hi";
 
     		if(isset($_POST['fees'])) {
                         $this->form_validation->set_rules('program','Program Name','trim|xss_clean|required');
@@ -1502,28 +1504,41 @@ class Setup extends CI_Controller
 		}
 
                 //if form validation true
-
                 if($this->form_validation->run()==TRUE){
-			
-			$datawh = array('fm_programid' => $_POST['program'], 'fm_semester' => $_POST['semester'], 'fm_category' => $_POST['category'], 'fm_gender'=> $_POST['gender'], 'fm_head'=>ucwords(strtolower($_POST['head'])));
+          //  $z=$this->common_model->get_listspfic2('program','prg_id','prg_name',$_POST['program']);
+         //   foreach($z as $y):
+          //      if($_POST['program']==$y->prg_name){
+           //         $s=$y->prg_id;
+           //     }
+           // endforeach;
+			$datawh = array('fm_programid' => $_POST['program'], 'fm_semester' => $_POST['semester'], 'fm_category' => $_POST['category'], 
+                'fm_gender'=> $_POST['gender'], 'fm_head'=>ucwords(strtolower($_POST['head'])));
 			$is_exist = $this->common_model->isduplicatemore('fees_master',$datawh);
+            //$this->load->view('setup/displayfees',$datawh);
 			if(!$is_exist){
         	      		$data = array(
 	                        	'fm_programid'=>$_POST['program'],
+                                 'fm_head'=>ucwords(strtolower($_POST['head'])),
                 	                'fm_acadyear'=>$_POST['acadyear'],
                         	        'fm_semester'=>$_POST['semester'],
-                                	'fm_category'=>$_POST['category'],
-	                                'fm_gender'=>$_POST['gender'],
-        	                        'fm_head'=>ucwords(strtolower($_POST['head'])),
-                	                'fm_amount'=>$_POST['amount'],
+                                	'fm_gender'=>$_POST['gender'],
+                                    'fm_category'=>$_POST['category'],
+	                                'fm_amount'=>$_POST['amount'],
+        	                       'fm_frmdate'=>NULL,
+                                   'fm_todate'=>NULL,
+                                    'fm_ext1'=>'',fm_ext2=>'',
+                	                
                         	        //'fm_installment'=>ucwords(strtolower($_POST['installment'])),
                                 	'fm_desc'=>$_POST['description'],
 	                             // 'fm_frmdate'=>$_POST['frmdate'],
         	                      //'fm_todate'=>$_POST['todate'],
                 	        );
+                     //   print_r($data);
+//die();
                         	$fmflag=$this->common_model->insertrec('fees_master', $data);
 	                	if (!$fmflag)
         	        	{
+                           // $this->load->view('setup/displayfees');
                 	    		$this->logger->write_logmessage("insert","Trying to add fees with head  ", "fees is not added ".$_POST['head']);
                     			$this->logger->write_dblogmessage("insert","Trying to add fees with head", "Fees is not added ".$_POST['head']);
                     			$this->session->set_flashdata('err_message','Error in adding fees with head - '.$_POST['head']  , 'error');
@@ -1544,7 +1559,8 @@ class Setup extends CI_Controller
                                 redirect('setup/fees');
 			}
 		}
-  		$this->load->view('setup/fees');  
+        $tabler['subject']=$this->common_model->get_list("subject");
+  		$this->load->view('setup/fees',$tabler);  
 		
 	}  
        /** This function check for duplicate fees master
@@ -1566,10 +1582,11 @@ class Setup extends CI_Controller
 
 	/** This function Display the fees with headwise list records */
         public function displayfees() {
-        	$this->fmresult = $this->common_model->get_list('fees_master');
+            $whorder ='fm_acadyear desc,fm_programid asc, fm_gender asc';
+        	$data['fmresult'] = $this->common_model->get_orderlistspficemore('fees_master','*','',$whorder);
 	        $this->logger->write_logmessage("view"," View fees list head wise", "Fees setting details...");
         	$this->logger->write_dblogmessage("view"," View fees list head wise", "Fees setting details...");
-	        $this->load->view('setup/displayfees');
+	        $this->load->view('setup/displayfees',$data);
         }
 	/* this function is used for delete fees with headwise record */
         public function delete_fees($id) { 
@@ -1599,7 +1616,8 @@ class Setup extends CI_Controller
 
  
 	public function editfees($id) {
-
+       
+        
 	$fmrow=$this->common_model->get_listrow('fees_master','fm_id', $id);
         if ($fmrow->num_rows() < 1)
         {
@@ -1611,13 +1629,14 @@ class Setup extends CI_Controller
         /* Form fields */
 //	$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id',$fm_data->fm_programid)->prg_branch.' )';
 	$prgname = $fm_data->fm_programid;
-
+       $prgnmbr= $this->common_model->get_listspfic1('program','prg_name','prg_id',$prgname)->prg_name ." ( ".
+        $this->common_model->get_listspfic1('program','prg_branch','prg_id',$prgname)->prg_branch." ) ";
           $data['fm_programid'] = array(
             'name' => 'fm_programid',
             'id' => 'prgcode',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $prgname,
+            'value' => $prgnmbr,
 	    'readonly' => 'readonly'
           );
 		
@@ -1719,6 +1738,7 @@ class Setup extends CI_Controller
         if ($this->form_validation->run() ==FALSE )
         {
                 $this->session->set_flashdata(validation_errors(), 'error');
+                $data['tb']=$this->common_model->get_list('program','prg_name',$id);
                 $this->load->view('setup/editfees', $data);
         }
         else{
@@ -1788,7 +1808,9 @@ class Setup extends CI_Controller
                'fm_head' => $head,
                'fm_amount' => $amount,
               // 'fm_installment' => $installment,
-               'fm_desc' => $description
+               'fm_desc' => $description,
+               'fm_ext1'=>'',
+               'fm_ext2'=>''
              );
            $fmflag=$this->common_model->updaterec('fees_master', $update_data, 'fm_id', $id);
            if(!$fmflag)

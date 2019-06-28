@@ -10,6 +10,17 @@
         <?php //$this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
+    <style>
+        .col{
+            background: #99B89D;
+            font-weight: bold;
+
+        }
+        .col2{
+            background:#D6DDBF;
+            font-style: italic;
+        }
+    </style>
     <body>
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
@@ -47,8 +58,8 @@
         <table  class="TFtable" >
             <thead>
                <th>Sr.No</th>
-		<th>Program Name</th>
-		<th>Academic Year</th>
+		<!--<th>Program Name</th>-->
+		<!--<th>Academic Year</th>-->
 		<th>Semester</th>
 		<th>Category</th>
 		<th>Gender</th>
@@ -61,21 +72,55 @@
             <tbody>
                     <?php 
 		     $count =0;
-              	     if( count($this->fmresult) ): 
-                     foreach($this->fmresult as $row){ ?>
+             $pre="l";
+             $pre2="p";
+             $pre3="z";
+              	     if( count($fmresult) ): 
+                     foreach($fmresult as $row){ $flag=0;?>
                      <tr>
-		     <td> <?php echo ++$count; ?> </td>
+                          
+                         <?php
+
+                         if(!($pre==$row->fm_acadyear))
+                        {?>
+                         <td  class="col"  colspan="8" style="text-align: center;"> <?php 
+                           
+                                       $flag=1;
+                                    echo "Academic Year- ";   
+                                    echo $row->fm_acadyear; }
+                            $pre=$row->fm_acadyear;
+                           // echo $pre;
+                        ?></td>
+                     </tr>
+                    
+		     
 			<?php  
-			echo "<td>";
+			
 //			$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id', $row->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id', $row->fm_programid)->prg_branch.' )';
 //			echo  $prgname;
-			echo $row->fm_programid;
-			//echo  $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
-			echo "</td>";
+			//echo $row->fm_programid;
+            //print_r($datawh);
+            $p_name=$this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
+            $p_branch=$this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->fm_programid)->prg_branch;
+            echo "<tr>";?>
+           
+            <?php if(!($pre2==$p_name && $pre3==$p_branch)||$flag==1){
+			     ?>  <td class ="col2" colspan="8" style="text-align:center;">
+                    <?php
+            echo  $p_name;
+            echo " ( ";
+            echo  $p_branch;
+            echo " ) ";
+			echo "</td></tr>";}
+            $pre2=$p_name;
+            $pre3=$p_branch;
 			?>
-			 <td> <?php echo $row->fm_acadyear ?></td>
+			<tr>
+                <td> <?php echo ++$count; ?> </td>
             		 <td> <?php echo $row->fm_semester ?></td>
-                         <?php  echo "<td>" . $this->common_model->get_listspfic1('category','cat_name','cat_id',$row->fm_category)->cat_name  . "</td>";?>
+                         <?php 
+                         	if(!empty( $this->common_model->get_listspfic1('category','cat_name','cat_id',$row->fm_category))){
+                          echo "<td>" . $this->common_model->get_listspfic1('category','cat_name','cat_id',$row->fm_category)->cat_name  . "</td>";}?>
             		 <td> <?php echo $row->fm_gender ?></td>
            		 <td> <?php echo $row->fm_head ?></td>
             		 <td> <?php echo $row->fm_amount ?></td>

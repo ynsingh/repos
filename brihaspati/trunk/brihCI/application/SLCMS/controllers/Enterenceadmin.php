@@ -613,8 +613,12 @@ class Enterenceadmin extends CI_Controller
         // get application start and end date of current academic year
 
         $acadyear = $this->usermodel->getcurrentAcadYear();
-        $startdate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_startdate;
-        $enddate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate;
+        $startdate=NULL;
+        $enddate=NULL;
+        if(!empty($this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()))
+        {$startdate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_startdate;}
+        if(!empty($this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate))
+        {$enddate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate;}
         $enddate = date("Y-m-d",strtotime($enddate));
 
         if ($enddate < $currdate)
@@ -916,8 +920,12 @@ class Enterenceadmin extends CI_Controller
         // get application start and end date of current academic year
 
         $acadyear = $this->usermodel->getcurrentAcadYear();
-        $startdate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_startdate;
-        $enddate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate;
+        $startdate=NULL;
+        $enddate=NULL;
+        if(!empty($this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()))
+        {$startdate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_startdate;}
+        if(!empty($this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()))
+        {$enddate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate;}
         $enddate = date("Y-m-d",strtotime($enddate));
 
         if ($enddate < $currdate)
