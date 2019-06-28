@@ -107,7 +107,7 @@
                         </select> 
                     <!--</td>
                     <td> -->                      
-                    <input type="submit" name="salpro" id="salpro" value="Load" onclick="verify();"/> 
+                    <input type="submit" name="salpro" id="salpro" value="Download Salary Slip" onclick="verify();"/> 
                     </td>
                 </tr>    
             </form>

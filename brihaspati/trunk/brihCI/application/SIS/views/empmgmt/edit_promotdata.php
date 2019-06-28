@@ -273,6 +273,18 @@
     <!--            <tr id="dlevel"> -->
                     <td>Date of Academic Level<font color='Red'></font></td>
                         <td colspan=2><input type="text" name="DateofAL" id="DateofAL" value="<?php echo $promotdata->spd_leveldate; ?>"  size="40" >
+			 <select name="lsession" style="width:110px;" id="lsession" >
+			<?php 
+			if(!empty($promotdata->spd_levelsession)){
+			?>
+			<option value="<?php echo $promotdata->spd_levelsession;?>"><?php echo $promotdata->spd_levelsession ; ?></option>
+			<?php }else{ ?>
+                         <option selected="selected" disabled selected>Select Session</option>
+			<?php } ?>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>
                 </tr>
                 <tr>
@@ -303,6 +315,18 @@
               <!--  <tr id="dagp">-->
                     <td>Date of AGP<font color='Red'></font></td>
                         <td colspan=2><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo $promotdata->spd_agpdate; ?>"  size="40" >
+			 <select name="agpsession" style="width:110px;" id="agpsession" >
+			<?php 
+			if(!empty($promotdata->spd_agpsession)){
+			?>
+			<option value="<?php echo $promotdata->spd_agpsession;?>"><?php echo $promotdata->spd_agpsession ; ?></option>
+			<?php }else{ ?>
+                         <option selected="selected" disabled selected>Select Session</option>
+			<?php } ?>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
+
                     </td>
                 </tr>
 <?php }else{ ?>
@@ -327,6 +351,18 @@
 <!--                <tr id=dojp> -->
                     <td>Date of Joing in the Post <font color='Red'></font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo $promotdata->spd_dojinpost; ?>"  size="40" >
+				 <select name="jsession" style="width:110px;" id="jsession" >
+			<?php 
+			if(!empty($promotdata->spd_dojinsession)){
+			?>
+			<option value="<?php echo $promotdata->spd_dojinsession;?>"><?php echo $promotdata->spd_dojinsession ; ?></option>
+			<?php }else{ ?>
+                         <option selected="selected" disabled selected>Select Session</option>
+			<?php } ?>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
+
                         </td>
                 </tr>
                 <tr>

@@ -176,8 +176,7 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
-
-
+    // get the join  table result value
     public function get_orderlistspficemoreorwh($tbname,$selectfield,$whdata,$orfield,$orwhin,$whorder){
         $this->db2->flush_cache();
         $this->db2->from($tbname);
@@ -195,6 +194,26 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
+
+    // get the join  table result value
+    public function get_orderlistspficemoreorwh2($tbname,$selectfield,$whdata,$orfield,$orwhin,$orfield1,$orwhin1,$whorder){
+        $this->db2->flush_cache();
+        $this->db2->from($tbname);
+        $this->db2->select($selectfield);
+        if($whdata != ''){
+                $this->db2->where($whdata);
+        }
+	if($orwhin != ''){
+		$this->db2->where_in($orfield, $orwhin);
+	}
+	if($orwhin1 != ''){
+		$this->db2->where_in($orfield1, $orwhin1);
+	}
+        if($whorder != ''){
+                $this->db2->order_by($whorder);
+        }
+        return $this->db2->get()->result();
+    }
 
     // get the join  table result value
     public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$jtype,$whdata){

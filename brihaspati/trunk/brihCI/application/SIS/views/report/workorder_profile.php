@@ -149,7 +149,7 @@
                                     ?>
                                </td>
 				<td>
-<?php					echo $record->swap_fromdate ." - ".$record->swap_todate ?>
+<?php					echo $record->swap_fromdate ."&nbsp;&nbsp;".$record->swap_fsession." - ".$record->swap_todate."&nbsp;&nbsp;".$record->swap_tsession ?>
 				</td>
                                 <td>
                                 <?php

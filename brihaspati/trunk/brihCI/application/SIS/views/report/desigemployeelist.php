@@ -10,17 +10,16 @@
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap-multiselect.css">
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap-multiselect.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.plugin.autotable.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/pdfps.js" ></script>
         
 	
-<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/multiselect/bootstrap-multiselect.css">
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap-multiselect.js" ></script>
--->
         <style type="text/css" media="print">
             @page {
                 size: auto;   /* auto is the initial value */
@@ -38,27 +37,30 @@
             }
             
             $(document).ready(function(){
-                
                 /****************************************** start of designation********************************/
                 $('#wtype').on('change',function(){
                     var workt = $(this).val();
+                           // alert("data==0="+workt);
                     if(workt == ''){
                         $('#desig').prop('disabled',true);
                    
                     }
                     else{
+                           // alert("data==1="+workt);
                         $('#desig').prop('disabled',false);
 			 $('#desig').html('');
-                 //       $('#desig').multiselect('rebuild');
+                        $('#desig').multiselect('rebuild');
+                           // alert("data==1=");
                         $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist",
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist_mulsel",
                             type: "POST",
                             data: {"wtype" : workt},
                             dataType:"html",
                             success:function(data){
-                           // alert("data==1="+data);
-                                $('#desig').html(data.replace(/^"|"$/g, ''));
-                   //               $('#desig').multiselect('rebuild')                
+                            //alert("data==1="+data);
+                                $('#desig').html(data.replace(/^"|"$/g, ' '));
+                                $('#desig').html(data);
+                                $('#desig').multiselect('rebuild');                
                             },
                             error:function(data){
                                 //alert("data in error==="+data);
@@ -113,6 +115,8 @@
                     }
                     else{
                         $('#dept').prop('disabled',false);
+			$('#dept').html('');
+                        $('#dept').multiselect('rebuild');
                         $.ajax({
                             url: "<?php echo base_url();?>sisindex.php/report/getdeptuodesiglist",
                             type: "POST",
@@ -121,6 +125,8 @@
                             success:function(data){
                             //alert("data==1="+data);
                                 $('#dept').html(data.replace(/^"|"$/g, ' '));
+				$('#dept').html(data);
+                                $('#dept').multiselect('rebuild'); 
                             },
                             error:function(data){
                                 //alert("data in error==="+data);
@@ -168,11 +174,11 @@
                 </td> 
 
                 <td> Designation<br>
-                    <select name="desig" id="desig"  style="width:200px;"> 
+                    <select name="desig[]" id="desig"  multiple style="width:200px;"> 
 			 <?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
-                        <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
+                        <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option> 
                         <?php  }else{ ?>
-                      <option value="" disabled selected>- Select Designation--</option>
+                      <option value="" > Select Designation </option>
 			 <?php  } ?>
                       <!--<option value="All" >All</option> -->
                     </select> 
@@ -195,7 +201,7 @@
 			 <?php if ( (!empty($this->deptmt))&&($this->deptmt != 'All')){ ?>
                         <option value="<?php echo $this->deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$this->deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$this->deptmt)->dept_code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="">- Select Department -</option>
+                      <option value=""> Select Department </option>
 			  <?php  } ?>
                       <!--<option value="All" >All</option> -->
                     </select> 
@@ -219,6 +225,15 @@
                                 search: true,
                                 selectAll: true
                         });
+
+			$('#desig').multiselect({
+	           //        nonSelectedText: '----Select Designation---',
+        	    //        buttonWidth:'200px'
+                	    columns:1,
+	                    placeholder: 'Select Designation',
+        	            search: true,
+                	    selectAll: true
+	                });
                 });
         </script>
 
@@ -227,7 +242,7 @@
         <td valign="top">
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;float: right;padding:5px; margin-right:10px;' title="Click for print" >  
             <img src='<?php echo base_url(); ?>assets/sis/images/pdf.jpeg' alt='pdf'  onclick="javascript:akash1('printme1')" style='width:30px;height:30px;float: right;padding:5px;' title="Click for pdf" >  
-            <div style="margin-left:500px;valign:top"><b>Designation Wise Teaching Staff List Details</b></div>
+            <div style="margin-left:500px;valign:top"><b>Designation Wise Staff List Details</b></div>
         </td>
        
        <!--<//?php
@@ -239,7 +254,7 @@
         </tr></table>
         
          <div >
-            <input type="hidden" id="title" name="title" value="Designation Wise Teaching Staff List" >
+            <input type="hidden" id="title" name="title" value="Designation Wise Staff List" >
          </div>
         <div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">

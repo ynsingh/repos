@@ -863,6 +863,10 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
             $this->form_validation->set_rules('Datesg','Date Selection Grade','trim|xss_clean');
             $this->form_validation->set_rules('Datesp','Date Sepecial Grade','trim|xss_clean');
+            $this->form_validation->set_rules('lsession','level session','trim|xss_clean');
+            $this->form_validation->set_rules('agpsession','AGP session','trim|xss_clean');
+            $this->form_validation->set_rules('jsession','join session','trim|xss_clean');
+
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/add_promotionaldata');
@@ -917,12 +921,15 @@ public function disciplin_profile() {
                     'spd_paycom'      		=>$pc,
                     'spd_agp'           	=>$agp,
                     'spd_agpdate'          	=>$agpdate,
+                    'spd_agpsession'          	=>$_POST['agpsession'],
 		    'spd_level'           	=>$level,
 		    'spd_leveldate'           	=>$ldate,
+		    'spd_levelsession'           	=>$_POST['lsession'],
                     'spd_group'           	=>$_POST['group'],
                     'spd_grade'           	=>$_POST['empgrade'],
                     'spd_designation'       	=>$_POST['designation'],
                     'spd_dojinpost'        	=>$dojp,
+                    'spd_dojinsession'        	=>$_POST['jsession'],
                     'spd_selgradedate'          =>$datesg,
 		    'spd_specialgrddate'       	=>$datesp,
                     'spd_creatordate'           =>date('Y-m-d H:i:s'),
@@ -1318,6 +1325,9 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
             $this->form_validation->set_rules('Datesg','Date Selection Grade','trim|xss_clean');
             $this->form_validation->set_rules('Datesp','Date Sepecial Grade','trim|xss_clean');
+            $this->form_validation->set_rules('lsession','level session','trim|xss_clean');
+            $this->form_validation->set_rules('agpsession','AGP session','trim|xss_clean');
+            $this->form_validation->set_rules('jsession','join session','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
 //               $this->load->view('empmgmt/edit_promotdata/',$data);
                 redirect('empmgmt/edit_promotdata/'.$id);
@@ -1343,18 +1353,24 @@ public function disciplin_profile() {
 		}
 		if(empty($_POST['DateofAGP'])){
                         $agpdate='';
+                        $agpsess='';
                 }else{
                         $agpdate=$_POST['DateofAGP'];
+                        $agpsess=$_POST['agpsession'];
                 }
 		if(empty($_POST['DateofAL'])){
                         $ldate='';
+                        $lsess='';
                 }else{
                         $ldate=$_POST['DateofAL'];
+                        $lsess=$_POST['lsession'];
                 }
 		if(empty($_POST['Datefrom'])){
                         $dojp='';
+                        $dojpsess='';
                 }else{
                         $dojp=$_POST['Datefrom'];
+                        $dojpsess=$_POST['jsession'];
                 }
 		if(empty($_POST['Datesg'])){
                         $datesg='';
@@ -1373,12 +1389,15 @@ public function disciplin_profile() {
                     'spd_paycom'      		=>$pc,
                     'spd_agp'           	=>$agp,
                     'spd_agpdate'          	=>$agpdate,
+                    'spd_agpsession'          	=>$agpsess,
 		    'spd_level'           	=>$level,
 		    'spd_leveldate'           	=>$ldate,
+		    'spd_levelsession'           	=>$lsess,
                     'spd_grade'           	=>$_POST['empgrade'],
                     'spd_group'           	=>$_POST['group'],
                     'spd_designation'       	=>$_POST['designation'],
                     'spd_dojinpost'        	=>$dojp,
+                    'spd_dojinsession'        	=>$dojpsess,
                     'spd_selgradedate'          =>$datesg,
 		    'spd_specialgrddate'       	=>$datesp,
                     'spd_modifierid'        	=>$this->session->userdata('username'),
@@ -2070,6 +2089,8 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('department','Department','trim|xss_clean');
 	    $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
+            $this->form_validation->set_rules('fsession','from session','trim|xss_clean');
+            $this->form_validation->set_rules('tsession','to session','trim|xss_clean');
 
 /*	    $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
 	    $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean'); */
@@ -2100,7 +2121,9 @@ public function disciplin_profile() {
 		    'swap_wuo'        	=>$wuo,
                     'swap_wdept'        =>$wdept,
                     'swap_fromdate'     =>$_POST['Datefrom'],
+                    'swap_fsession'     =>$_POST['fsession'],
                     'swap_todate'       =>$_POST['Dateto'],
+                    'swap_tsession'       =>$_POST['tsession'],
                     'swap_creatorid'    =>$this->session->userdata('username'),
 		    'swap_creatordate'  =>date('Y-m-d'),
 		    'swap_modifierid'   =>$this->session->userdata('username'),

@@ -41,7 +41,11 @@
     <body id="pbody">
 <div id="html-2-pdfwrapper" style=' overflow: auto;'>
 <div id="content">
-    <?php $this->load->view('template/header'); ?>
+    <?php $this->load->view('template/header'); 
+		$uname=$this->session->userdata('username');
+                $rest = substr($uname, -21);
+                if((strcasecmp($rest,"office@tanuvas.org.in")) != 0){
+?>
 	<form action="<?php echo site_url('report/disciplinewiselist');?>" id="myForm" method="POST" class="form-inline">
  	<table width="100%" border="0">
             <tr style="font-weight:bold;">
@@ -99,6 +103,7 @@
 		});
 	</script>
 </form>
+<?  }  ?>
 <!--
 	<a href="<?php echo base_url() ;?>sisindex.php/pdfreport/pdfgenerate/disciplinewiselist" style="decoration:none;"><input type="button"  value="PDF" /></a>
 sccess link with data

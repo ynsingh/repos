@@ -245,6 +245,11 @@
                 <tr id="dlevel">
                     <td>Date of Academic Level<font color='Red'></font></td>
                         <td colspan=2><input type="text" name="DateofAL" id="DateofAL" value="<?php echo isset($_POST["DateofAL"]) ? $_POST["DateofAL"] : ''; ?>"  size="40" >
+			 <select name="lsession" style="width:110px;" id="lsession" >
+                         <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
                     </td>
                 </tr>
 	<tr id=sgpay>
@@ -269,6 +274,11 @@
                 <tr id="dagp">
                     <td>Date of AGP<font color='Red'></font></td>
                         <td colspan=2><input type="text" name="DateofAGP" id="DateofAGP" value="<?php echo isset($_POST["DateofAGP"]) ? $_POST["DateofAGP"] : ''; ?>"  size="40" >
+				 <select name="agpsession" style="width:110px;" id="agpsession" >
+                         <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
                     </td>
                 </tr>
 <!--
@@ -288,6 +298,11 @@
                 <tr id=dojp>
                     <td>Date of Joining in the Post <font color='Red'></font></td>
                         <td><input type="text" name="Datefrom" id="Datefrom" value="<?php echo isset($_POST["Datefrom"]) ? $_POST["Datefrom"] : ''; ?>"  size="40" >
+				 <select name="jsession" style="width:110px;" id="jsession" >
+                         <option selected="selected" disabled selected>Select Session</option>
+                        <option value="Forenoon">Forenoon</option>
+                        <option value="Afternoon">Afternon</option>
+                        </select>
                         </td>
                 </tr>
                 <tr id=dosg>

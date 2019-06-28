@@ -137,12 +137,18 @@
 				echo "<td>";
 					if(!empty((int)$record->spd_agpdate)){
 					echo  $record->spd_agpdate;
+					echo "&nbsp;&nbsp;";
+					echo  $record->spd_agpsession;
 					}
 					if(!empty((int)$record->spd_leveldate)){	
 					echo  $record->spd_leveldate;
+					echo "&nbsp;&nbsp;";
+					echo  $record->spd_levelsession;
 					}
 					if(!empty((int)$record->spd_dojinpost)){	
 					echo  $record->spd_dojinpost;
+					echo "&nbsp;&nbsp;";
+					echo  $record->spd_dojinsession;
 					}
 				echo "</td>";
 				echo "<td>";

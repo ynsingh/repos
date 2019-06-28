@@ -868,7 +868,7 @@ public function disciplinewiselist(){
             $wtype = $this->input->post('wtype');
             $uoff  = $this->input->post('uoff');
             $dept[]  = $this->input->post('dept');
-            $desig  = $this->input->post('desig');
+            $desig[]  = $this->input->post('desig');
 
       	    $this->wtyp = $wtype;
             $this->desigm= $desig;
@@ -885,7 +885,13 @@ public function disciplinewiselist(){
                         }
 		}
 		if($desig != "null" && $desig != "All" && $desig != ""){
-			 $whdata['emp_desig_code'] = $desig;
+			$j=0;
+			foreach($desig as $row1){
+				$this->desigm = $row1[$j];
+				$desigid=$row1;
+				$j++;
+			}
+	//		 $whdata['emp_desig_code'] = $desigid;
 		}
 //	    if((!empty($dept))&&($dept != "null")){
   //              $this->deptmt = $dept;
@@ -957,9 +963,12 @@ public function disciplinewiselist(){
 	// add doris geater than current date and reason is null  in whdata
           //  $whdata['emp_leaving'] = NULL;
           //  $whdata['emp_dor>='] = date('y-m-d');
-		if(!empty($names)){
+		if((!empty($names)) && (!empty($desigid))){
+                        $data['records']= $this->sismodel->get_orderlistspficemoreorwh2('employee_master',$selectfield,$whdata,'emp_desig_code',$desigid,'emp_dept_code',$names,$whorder);
+		}elseif(!empty($names)){
                         $data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
-
+                }elseif(!empty($desigid)){
+                        $data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_desig_code',$desigid,$whorder);
                 }else{
                         $data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
 		}
