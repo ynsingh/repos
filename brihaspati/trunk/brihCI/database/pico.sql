@@ -330,7 +330,7 @@ CREATE TABLE `required_item_details` (
   `rid_itemqtyreq` int(20) NOT NULL,
   `rid_itemunitp` int(20) NOT NULL,
   `rid_itemgstapply` int(20) NOT NULL,
-  `rid_gst` int(20) NOT NULL,
+  `rid_gst` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `rid_itemtotcost` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -341,7 +341,7 @@ CREATE TABLE `required_item_details` (
 --
 
 CREATE TABLE `tender_apply` (
-  `ta_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_id` int(11) NOT NULL,
   `ta_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_vendorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_baseprice` int(20) NOT NULL,
@@ -365,7 +365,7 @@ CREATE TABLE `tender_apply` (
 --
 
 CREATE TABLE `tender_bid_openers_selection` (
-  `tbos_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tbos_id` int(11) NOT NULL,
   `tbos_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tbos_bono` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tbos_boname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -384,14 +384,14 @@ CREATE TABLE `tender_bid_openers_selection` (
 --
 
 CREATE TABLE `tender_create` (
-  `tc_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_id` int(255) NOT NULL,
   `tc_refno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_tentype` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_contractform` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_coverid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_category` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_allowresub` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tc_allowithdra` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_allowwithdra` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_allowoffline` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_paymode` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_offlineinstrumentid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -443,10 +443,10 @@ CREATE TABLE `tender_create` (
   `tc_bidopeningdate` date NOT NULL,
   `tc_tenderprepby` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_prepbydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tc_prepbydate` date NOT NULL,
+  `tc_prepbydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tc_approvedbyname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_approvedbydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tc_approvedbydate` date NOT NULL,
+  `tc_approvedbydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tc_creatorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_creationdate` date NOT NULL,
   `tc_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -456,11 +456,37 @@ CREATE TABLE `tender_create` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tender_type`
+--
+
+CREATE TABLE `tender_type` (
+  `tt_id` int(11) NOT NULL,
+  `tt_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tt_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `tender_type`
+--
+
+INSERT INTO `tender_type` (`tt_id`, `tt_name`, `tt_desc`) VALUES
+(1, 'single bidd', 'a'),
+(2, 'double bid with emmd', 'www'),
+(3, 'single tender quotation', 'a'),
+(4, 'repeat order timesheet 180', 'aaa'),
+(5, 'on rate control with d', 'aaa'),
+(6, 'on rate control with dgs and d', 'aaaa'),
+(7, 'purchase under buyback scheme', 'aaaaa');
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tender_upload_doc`
 --
 
 CREATE TABLE `tender_upload_doc` (
-  `tud_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tud_id` int(11) NOT NULL,
   `tud_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tud_filename` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tud_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -471,7 +497,6 @@ CREATE TABLE `tender_upload_doc` (
   `tud_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tud_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 -- --------------------------------------------------------
 
 --
@@ -545,6 +570,36 @@ ALTER TABLE `required_item_details`
   ADD PRIMARY KEY (`rid_id`);
 
 --
+-- Indexes for table `tender_apply`
+--
+ALTER TABLE `tender_apply`
+  ADD PRIMARY KEY (`ta_id`);
+
+--
+-- Indexes for table `tender_bid_openers_selection`
+--
+ALTER TABLE `tender_bid_openers_selection`
+  ADD PRIMARY KEY (`tbos_id`);
+
+--
+-- Indexes for table `tender_create`
+--
+ALTER TABLE `tender_create`
+  ADD PRIMARY KEY (`tc_id`);
+
+--
+-- Indexes for table `tender_type`
+--
+ALTER TABLE `tender_type`
+  ADD PRIMARY KEY (`tt_id`);
+
+--
+-- Indexes for table `tender_upload_doc`
+--
+ALTER TABLE `tender_upload_doc`
+  ADD PRIMARY KEY (`tud_id`);
+
+--
 -- Indexes for table `vendor`
 --
 ALTER TABLE `vendor`
@@ -595,7 +650,45 @@ ALTER TABLE `purchase_type`
 --
 ALTER TABLE `required_item_details`
   MODIFY `rid_id` int(20) NOT NULL AUTO_INCREMENT;
+
+
+--
+-- AUTO_INCREMENT for table `tender_apply`
+--
+ALTER TABLE `tender_apply`
+  MODIFY `ta_id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tender_bid_openers_selection`
+--
+ALTER TABLE `tender_bid_openers_selection`
+  MODIFY `tbos_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tender_create`
+--
+ALTER TABLE `tender_create`
+  MODIFY `tc_id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tender_type`
+--
+ALTER TABLE `tender_type`
+  MODIFY `tt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tender_upload_doc`
+--
+ALTER TABLE `tender_upload_doc`
+  MODIFY `tud_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vendor`
+--
+ALTER TABLE `vendor`
+  MODIFY `vendor_id` int(100) NOT NULL AUTO_INCREMENT;
 COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

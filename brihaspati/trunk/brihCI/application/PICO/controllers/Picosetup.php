@@ -1522,4 +1522,773 @@ class Picosetup extends CI_Controller
         $this->load->view('setup/purchaseproposalform',$typeofmat);
     }
 
+
+
+/************************************************************************************************************************/
+
+
+	//work started from here by (abhay831877@gmail.com)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function tender_type()
+                {
+                 if(isset($_POST['tender_type'])) {
+                 $this->form_validation->set_rules('tt_name','tt Name','trim|xss_clean|required|alpha_numeric_spaces|callback_istender_typeExist');
+                 $this->form_validation->set_rules('tt_desc','tt Desc','trim|xss_clean|required|alpha_numeric_spaces');
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+
+                 $data = array(
+                'tt_name'=>$_POST['tt_name'],
+                'tt_desc'=>$_POST['tt_desc'],
+                 );
+               
+                $rflag=$this->PICO_model->insertrec('tender_type', $data);
+                if (!$rflag)
+                {
+                    $this->logger->write_logmessage("insert","Trying to add tender", "tender_type is not added ".$tt_name);
+                    $this->logger->write_dblogmessage("insert","Trying to add tender", "tender_type is not added ".$tt_name);
+                    $this->session->set_flashdata('err_message','Error in adding tender type setting - '  , 'error');
+                    redirect('picosetup/tender_type');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add tender type Setting", "tender_type".$_POST['tt_name']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add tender type Setting", "tender_type ".$_POST['tt_name']."added  successfully...");
+                    $this->session->set_flashdata("success", "tender add successfully...");
+                    redirect("picosetup/displaytypeoftender");
+        }
+        }
+        }
+        $this->load->view('setup/tender_type');
+    }
+
+    /** This function check for duplicate tender
+     * @return type
+    */
+
+    public function istender_typeExist($tt_name) {
+
+        $is_exist = $this->PICO_model->isduplicate('tender_type','tt_name',$tt_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('istender_typeExist', 'tender type is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+        }
+	
+	
+	
+	     public function displaytypeoftender() {
+        $data['result']= $this->PICO_model->get_list('tender_type');
+        $this->logger->write_logmessage("view"," View tender type setting", "tender type setting details...");
+        $this->logger->write_dblogmessage("view"," View tender type setting", "tender type setting details...");
+        $this->load->view('setup/displaytypeoftender',$data);
+        }
+
+    /**This function Delete the tender records
+     * @param type $id
+     * @return type
+     */
+
+        public function deletetypeoftender($id) {
+          $suname=$this->session->userdata['username'];
+	      if((strcasecmp($suname,"admin"))==0)	
+{
+          $roledflag=$this->PICO_model->deleterow('tender_type','tt_id', $id);
+          if(!$roledflag)
+          {
+          	$this->logger->write_message("error", "Error  in deleting tender type " ."[tt_id:" . $id . "]");
+            $this->logger->write_dbmessage("error", "Error  in deleting tender type "." [tt_id:" . $id . "]");
+            $this->session->set_flashdata('err_message', 'Error in Deleting tender type - ', 'error');
+            redirect('picosetup/displaytypeoftender');
+           return;
+          }
+          else{
+          $this->logger->write_logmessage("delete", "Deleted   tender type " . "[tt_id:" . $id . "] deleted successfully.. " );
+           $this->logger->write_dblogmessage("delete", "Deleted tender type" ." [tt_id:" . $id . "] deleted successfully.. " );
+            $this->session->set_flashdata("success", 'tender type Deleted successfully...' );
+            redirect('picosetup/displaytypeoftender');
+          }       
+ 
+          $this->load->view('setup/displaytypeoftender',$data);
 }
+else  redirect('picosetup/displaytypeoftender');
+  }
+
+    /**This function is used for update tender records
+     * @param type $id
+     * @return type
+     */
+
+    public function edittypeoftender($id) {
+
+      $suname=$this->session->userdata['username'];
+	   if((strcasecmp($suname,"admin"))==0)
+			{	   
+        $this->db4->from('tender_type')->where('tt_id', $id);
+        $eset_data_q = $this->db4->get();
+    
+        $editeset_data = $eset_data_q->row();
+        /* Form fields */
+
+        $data['tt_name'] = array('name' => 'tt_name','id' => 'tt_name','size' => '40','value' => $editeset_data->tt_name,);
+        $data['tt_desc'] = array('name' => 'tt_desc','id' => 'tt_desc','size' => '40','value' => $editeset_data->tt_desc,);
+        $data['id'] = $id;
+        
+        /*Form Validation*/
+        
+        $this->form_validation->set_rules('tt_name','tt name','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('tt_desc','tt Desc','trim|xss_clean|required|alpha_numeric_spaces');
+	
+	    /* Re-populating form */
+        if ($_POST)
+        {
+            $data['tt_name']['value'] = $this->input->post('tt_name', TRUE);
+            $data['tt_desc']['value'] = $this->input->post('tt_desc', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/edittypeoftender', $data);
+            return;
+        }
+        else{
+
+            $data_erole = $this->input->post('tt_name', TRUE);
+            $data_eroledesc = $this->input->post('tt_desc', TRUE);
+            $data_eid = $id;
+            $logmessage = "";
+            if($editeset_data->tt_name != $data_erole)
+                $logmessage = "Add tender " .$editeset_data->tt_name. " changed by " .$data_erole;
+            if($editeset_data->tt_desc != $data_eroledesc)
+                $logmessage = "Add tender " .$editeset_data->tt_desc. " changed by " .$data_eroledesc;
+
+            $update_data = array(
+               'tt_name' => $data_erole,
+               'tt_desc' => $data_eroledesc,
+            );
+
+        $roledflag=$this->PICO_model->updaterec('tender_type', $update_data,' tt_id', $data_eid);
+        if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit tender Setting error", "Edit tender Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit tender Setting error", "Edit tender Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating tender - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/edittypeoftender', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit tender Setting", "Edit tender Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit tender Setting", "Edit tender Setting details. $logmessage ");
+                $this->session->set_flashdata('success','tender  detail updated successfully..');
+                redirect('picosetup/displaytypeoftender/');
+                }
+        }
+		}
+		else {
+		redirect('picosetup/displaytypeoftender');
+			}
+    }//Add tender function end
+
+
+
+
+
+
+
+
+
+
+
+//for vendor controller code is this......
+
+    public function vendor() {
+
+
+                 if(isset($_POST['vendor'])) {
+                 	
+               
+                 $this->form_validation->set_rules('vendor_companyname','vendor company name','trim|xss_clean|required|alpha_numeric_spaces|callback_isvendorExist');
+                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_city','vendor city','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_pincode','vendor pincode','required|exact_length[6]');
+                 $this->form_validation->set_rules('vendor_phone','vendor phone','required|numeric');
+                 $this->form_validation->set_rules('vendor_type','vendor type','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_blackliststatus','vendor blacklist status','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_blacklistdate','vendor blacklist date','required');
+                
+                  	
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+
+                 $data = array(
+                'vendor_companyname'=>$_POST['vendor_companyname'],
+                'vendor_address'=>$_POST['vendor_address'],
+                'vendor_city'=>$_POST['vendor_city'],
+                'vendor_pincode'=>$_POST['vendor_pincode'],
+                'vendor_phone'=>$_POST['vendor_phone'],
+                'vendor_type'=>$_POST['vendor_type'],
+                'vendor_blackliststatus'=>$_POST['vendor_blackliststatus'],
+                'vendor_blacklistdate'=>$_POST['vendor_blacklistdate'],
+                 );
+                $rflag=$this->PICO_model->insertrec('vendor', $data);
+                if (!$rflag)
+                {
+                    $this->logger->write_logmessage("insert","Trying to add vendor", "vendor is not added ".$vendor_companyname);
+                    $this->logger->write_dblogmessage("insert","Trying to add vendor", "vendor is not added ".$vendor_companyname);
+                    $this->session->set_flashdata('err_message','Error in adding vendor setting - '  , 'error');
+                    redirect('picosetup/vendor');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']."added  successfully...");
+                    $this->session->set_flashdata("success", "vendor add successfully...");
+                    redirect("picosetup/displayvendor");
+                }
+
+            }
+        }
+        $this->load->view('setup/vendor');
+    }
+
+    /** This function check for duplicate vendor
+     * @return type
+    */
+
+    public function isvendorExist($vendor_companyname) {
+
+        $is_exist = $this->PICO_model->isduplicate('vendor','vendor_companyname',$vendor_companyname);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isvendorExist', 'vendor is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+	
+	
+	
+	   public function displayvendor() {
+	   	
+	   	
+        $data['result'] = $this->PICO_model->get_list('vendor');
+        $this->logger->write_logmessage("view"," View vendor setting", "vendor setting details...");
+        $this->logger->write_dblogmessage("view"," View vendor setting", "vendor setting details...");
+        $this->load->view('setup/displayvendor',$data);
+       }
+
+    /**This function Delete the vendor records
+     * @param type $id
+     * @return type
+     */
+
+         public function deletevendor($id) {
+
+
+	   $suname=$this->session->userdata['username'];
+	   if((strcasecmp($suname,"admin"))==0)
+      
+      
+        {  $roledflag=$this->PICO_model->deleterow('vendor','vendor_id', $id);
+          if(!$roledflag)
+          {
+          	$this->logger->write_message("error", "Error  in deleting vendor " ."[vendor_id:" . $id . "]");
+            $this->logger->write_dbmessage("error", "Error  in deleting vendor "." [vendor_id:" . $id . "]");
+            $this->session->set_flashdata('err_message', 'Error in Deleting vendor - ', 'error');
+            redirect('picosetup/displayvendor');
+           return;
+          }
+        else{
+          $this->logger->write_logmessage("delete", "Deleted   vendor_type " . "[vendor_id:" . $id . "] deleted successfully.. " );
+           $this->logger->write_dblogmessage("delete", "Deleted vendor_type" ." [vendor_id:" . $id . "] deleted successfully.. " );
+            $this->session->set_flashdata("success", 'vendor type Deleted successfully...' );
+            redirect('picosetup/displayvendor');
+        }
+        $this->load->view('setup/displayvendor',$data);
+			}
+else {
+   redirect('picosetup/displayvendor');
+}
+	
+        }
+
+    /**This function is used for update vendor records
+     * @param type $id
+     * @return type
+     */
+
+    public function editvendor($id) {
+          
+         $suname=$this->session->userdata['username'];
+	      if((strcasecmp($suname,"admin"))==0)  
+        {  
+        $this->db4->from('vendor')->where('vendor_id', $id);
+        $eset_data_q = $this->db4->get();
+     
+        $editeset_data = $eset_data_q->row();
+       
+       /* Form fields */
+   
+   
+   
+            $data['vendor_companyname'] = array('name' => 'vendor_companyname','id' => 'vendor_companyname','size' => '40','value' => $editeset_data->vendor_companyname,);
+            $data['vendor_address'] = array('name' => 'vendor_address','id' => 'vendor_address','size' => '40','value' => $editeset_data->vendor_address,);
+            $data['vendor_city'] = array('name' => 'vendor_city','id' => 'vendor_city','size' => '40','value' => $editeset_data->vendor_city,);
+            $data['vendor_pincode'] = array('name' => 'vendor_pincode','id' => 'vendor_pincode','size' => '40','value' => $editeset_data->vendor_pincode,);
+            $data['vendor_phone'] = array('name' => 'vendor_phone','id' => 'vendor_phone','size' => '40','value' => $editeset_data->vendor_phone,);
+            $data['vendor_type'] = array('name' => 'vendor_type','id' => 'vendor_type','size' => '40','value' => $editeset_data->vendor_type,);
+            $data['vendor_blackliststatus'] = array('name' => 'vendor_blackliststatus','id' => 'vendor_blackliststatus','size' => '40','value' => $editeset_data->vendor_blackliststatus,);
+            $data['vendor_blacklistdate'] = array('name' => 'vendor_blacklistdate','id' => 'vendor_blacklistdate','size' => '40','value' => $editeset_data->vendor_blacklistdate,);
+                
+                
+                
+                
+                
+     
+     
+      $data['id'] = $id;
+        /*Form Validation*/
+                 
+                 $this->form_validation->set_rules('vendor_companyname','vendor company name','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_city','vendor city','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_pincode','vendor pincode','required');
+                 $this->form_validation->set_rules('vendor_phone','vendor phone','required|numeric');
+                 $this->form_validation->set_rules('vendor_type','vendor type','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_blackliststatus','vendor blacklist status','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_blacklistdate','vendor blacklist date','required');
+                
+                
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    /* Re-populating form */
+        if ($_POST)
+        {
+        	
+        	
+            $data['vendor_companyname']['value'] = $this->input->post('vendor_companyname', TRUE);
+            $data['vendor_address']['value'] = $this->input->post('vendor_address', TRUE);
+       
+            $data['vendor_city']['value'] = $this->input->post('vendor_city', TRUE);
+            $data['vendor_pincode']['value'] = $this->input->post('vendor_pincode', TRUE);
+            $data['vendor_phone']['value'] = $this->input->post('vendor_phone', TRUE);
+            $data['vendor_type']['value'] = $this->input->post('vendor_type', TRUE);
+            $data['vendor_blackliststatus']['value'] = $this->input->post('vendor_blackliststatus', TRUE);
+            $data['vendor_blacklistdate']['value'] = $this->input->post('vendor_blacklistdate', TRUE);
+       
+       
+       
+       
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editvendor', $data);
+            return;
+        }
+        else{
+
+            $data_a = $this->input->post('vendor_companyname', TRUE);
+            $data_b = $this->input->post('vendor_address', TRUE);
+            $data_c = $this->input->post('vendor_city', TRUE);
+            $data_d = $this->input->post('vendor_pincode', TRUE);
+            $data_e = $this->input->post('vendor_phone', TRUE);
+            $data_f = $this->input->post('vendor_type', TRUE);
+            $data_g = $this->input->post('vendor_blackliststatus', TRUE);
+            $data_h = $this->input->post('vendor_blacklistdate', TRUE);
+            
+            
+            $data_eid = $id;
+           
+            $logmessage = "";
+           
+            if($editeset_data->vendor_companyname != $data_a)
+                $logmessage = "Add vendor " .$editeset_data->vendor_companyname. " changed by " .$data_a;
+            if($editeset_data->vendor_address != $data_b)
+                $logmessage = "Add vendor " .$editeset_data->vendor_address. " changed by " .$data_b;
+            if($editeset_data->vendor_city != $data_c)
+                $logmessage = "Add vendor " .$editeset_data->vendor_city. " changed by " .$data_c;
+            if($editeset_data->vendor_pincode != $data_d)
+                $logmessage = "Add vendor " .$editeset_data->vendor_pincode. " changed by " .$data_d;
+            if($editeset_data->vendor_phone != $data_e)
+                $logmessage = "Add vendor " .$editeset_data->vendor_phone. " changed by " .$data_e;
+            if($editeset_data->vendor_type != $data_f)
+                $logmessage = "Add vendor " .$editeset_data->vendor_type. " changed by " .$data_f;
+            if($editeset_data->vendor_blackliststatus != $data_g)
+                $logmessage = "Add vendor " .$editeset_data->vendor_blackliststatus. " changed by " .$data_g;
+            if($editeset_data->vendor_blacklistdate != $data_h)
+                $logmessage = "Add vendor " .$editeset_data->vendor_blacklistdate. " changed by " .$data_h;
+
+           
+           
+           
+           
+            $update_data = array(
+              'vendor_companyname' => $data_a,
+              'vendor_address' => $data_b,
+              'vendor_city' => $data_c,
+              'vendor_pincode' => $data_d,
+              'vendor_phone' => $data_e,
+              'vendor_type' => $data_f,
+              'vendor_blackliststatus' => $data_g,
+              'vendor_blacklistdate' => $data_h,
+            );
+
+        
+        
+        
+        
+        $roledflag=$this->PICO_model->updaterec('vendor', $update_data,'vendor_id', $data_eid);
+        if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit vendor Setting error", "Edit vendor Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit vendor Setting error", "Edit vendor Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating vendor - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editvendor', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit vendor Setting", "Edit vendor Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit vendor Setting", "Edit vendor Setting details. $logmessage ");
+                $this->session->set_flashdata('success','vendor  detail updated successfully..');
+                redirect('picosetup/displayvendor/');
+              
+                }
+        }
+		}
+   else redirect('picosetup/displayvendor');
+  
+  
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //for rid controller code is this......
+
+    public function rid() {
+
+
+                 if(isset($_POST['rid'])) {
+                 	
+               
+                 $this->form_validation->set_rules('rid_ppid','rid co name','trim|xss_clean|required|callback_isridExist');
+                 $this->form_validation->set_rules('rid_itemdes','rid itemdes','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('rid_itemstock','rid itemstock','required');
+                 $this->form_validation->set_rules('rid_itemqtyreq','rid itemqtyreq','required');
+                 $this->form_validation->set_rules('rid_itemunitp','rid itemunitp','required|numeric');
+                 $this->form_validation->set_rules('rid_itemgstapply','rid itemgstapply','required');
+                 $this->form_validation->set_rules('rid_gst','rid gst','required|alpha_numeric|exact_length[15]');
+                 $this->form_validation->set_rules('rid_itemtotcost','rid tt cost','required');
+                
+                  	
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+
+                 $data = array(
+                'rid_ppid'=>$_POST['rid_ppid'],
+                'rid_itemdes'=>$_POST['rid_itemdes'],
+                'rid_itemstock'=>$_POST['rid_itemstock'],
+                'rid_itemqtyreq'=>$_POST['rid_itemqtyreq'],
+                'rid_itemunitp'=>$_POST['rid_itemunitp'],
+                'rid_itemgstapply'=>$_POST['rid_itemgstapply'],
+                'rid_gst'=>$_POST['rid_gst'],
+                'rid_itemtotcost'=>$_POST['rid_itemtotcost'],
+                 );
+                $rflag=$this->PICO_model->insertrec('required_item_details', $data);
+                if (!$rflag)
+                {
+                    $this->logger->write_logmessage("insert","Trying to add rid", "rid is not added ".$rid_ppid);
+                    $this->logger->write_dblogmessage("insert","Trying to add rid", "rid is not added ".$rid_ppid);
+                    $this->session->set_flashdata('err_message','Error in adding rid setting - '  , 'error');
+                    redirect('picosetup/rid');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add rid Setting", "rid".$_POST['rid_ppid']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add rid Setting", "rid".$_POST['rid_ppid']."added  successfully...");
+                    $this->session->set_flashdata("success", "rid add successfully...");
+                    redirect("picosetup/displayrid");
+                }
+
+            }
+        }
+        $this->load->view('setup/rid');
+    }
+
+    /** This function check for duplicate rid
+     * @return itemgstapply
+    */
+
+    public function isridExist($rid_ppid) {
+
+        $is_exist = $this->PICO_model->isduplicate('required_item_details','rid_ppid',$rid_ppid);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isridExist', 'rid is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+	
+	
+	
+	   public function displayrid() {
+	   	
+	   	
+        $data['result'] = $this->PICO_model->get_list('required_item_details');
+        $this->logger->write_logmessage("view"," View rid setting", "rid setting details...");
+        $this->logger->write_dblogmessage("view"," View rid setting", "rid setting details...");
+        $this->load->view('setup/displayrid',$data);
+       }
+
+    /**This function Delete the rid records
+     * @param itemgstapply $id
+     * @return itemgstapply
+     */
+
+         public function deleterid($id) {
+
+
+	   $suname=$this->session->userdata['username'];
+	   if((strcasecmp($suname,"admin"))==0)
+      
+      
+        {  $roledflag=$this->PICO_model->deleterow('required_item_details','rid_id',$id);//required_item_details
+          if(!$roledflag)
+          {
+          	$this->logger->write_message("error", "Error  in deleting rid " ."[rid_id:" . $id . "]");
+            $this->logger->write_dbmessage("error", "Error  in deleting rid "." [rid_id:" . $id . "]");
+            $this->session->set_flashdata('err_message', 'Error in Deleting rid - ', 'error');
+            redirect('picosetup/displayrid');
+           return;
+          }
+        else{
+          $this->logger->write_logmessage("delete", "Deleted   rid  " . "[rid_id:" . $id . "] deleted successfully.. " );
+           $this->logger->write_dblogmessage("delete", "Deleted rid " ." [rid_id:" . $id . "] deleted successfully.. " );
+            $this->session->set_flashdata("success", 'required items details Deleted successfully...' );
+            redirect('picosetup/displayrid');
+        }
+        $this->load->view('setup/displayrid',$data);
+			}
+else {
+   redirect('picosetup/displayrid');
+}
+	
+        }
+
+    /**This function is used for update rid records
+     * @param itemgstapply $id
+     * @return itemgstapply
+     */
+
+    public function editrid($id) {
+          
+         $suname=$this->session->userdata['username'];
+	      if((strcasecmp($suname,"admin"))==0)  
+        {  
+        $this->db4->from('required_item_details')->where('rid_id', $id);
+        $eset_data_q = $this->db4->get();
+     
+        $editeset_data = $eset_data_q->row();
+       
+       /* Form fields... */
+   
+   
+   
+            $data['rid_ppid'] = array('name' => 'rid_ppid','id' => 'rid_ppid','size' => '40','value' => $editeset_data->rid_ppid,);
+            $data['rid_itemdes'] = array('name' => 'rid_itemdes','id' => 'rid_itemdes','size' => '40','value' => $editeset_data->rid_itemdes,);
+            $data['rid_itemstock'] = array('name' => 'rid_itemstock','id' => 'rid_itemstock','size' => '40','value' => $editeset_data->rid_itemstock,);
+            $data['rid_itemqtyreq'] = array('name' => 'rid_itemqtyreq','id' => 'rid_itemqtyreq','size' => '40','value' => $editeset_data->rid_itemqtyreq,);
+            $data['rid_itemunitp'] = array('name' => 'rid_itemunitp','id' => 'rid_itemunitp','size' => '40','value' => $editeset_data->rid_itemunitp,);
+            $data['rid_itemgstapply'] = array('name' => 'rid_itemgstapply','id' => 'rid_itemgstapply','size' => '40','value' => $editeset_data->rid_itemgstapply,);
+            $data['rid_gst'] = array('name' => 'rid_gst','id' => 'rid_gst','size' => '40','value' => $editeset_data->rid_gst,);
+            $data['rid_itemtotcost'] = array('name' => 'rid_itemtotcost','id' => 'rid_itemtotcost','size' => '40','value' => $editeset_data->rid_itemtotcost,);
+                
+                
+                 
+                
+                
+     
+     
+      $data['id'] = $id;
+        /*Form Validation*/
+                 
+               $this->form_validation->set_rules('rid_ppid','rid company ','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_itemdes','rid itemdes','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('rid_itemstock','rid itemstock','required');
+                 $this->form_validation->set_rules('rid_itemqtyreq','rid itemqtyreq','required');
+                 $this->form_validation->set_rules('rid_itemunitp','rid itemunitp','required|numeric');
+                 $this->form_validation->set_rules('rid_itemgstapply','rid itemgstapply','required');
+                 $this->form_validation->set_rules('rid_gst','rid gst','required|alpha_numeric|exact_length[15]');
+                 $this->form_validation->set_rules('rid_itemtotcost','rid tt cost','required');
+                
+                
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    /* Re-populating form */
+        if ($_POST)
+        {
+        	
+        	
+            $data['rid_ppid']['value'] = $this->input->post('rid_ppid', TRUE);
+            $data['rid_itemdes']['value'] = $this->input->post('rid_itemdes', TRUE);
+       
+            $data['rid_itemstock']['value'] = $this->input->post('rid_itemstock', TRUE);
+            $data['rid_itemqtyreq']['value'] = $this->input->post('rid_itemqtyreq', TRUE);
+            $data['rid_itemunitp']['value'] = $this->input->post('rid_itemunitp', TRUE);
+            $data['rid_itemgstapply']['value'] = $this->input->post('rid_itemgstapply', TRUE);
+            $data['rid_gst']['value'] = $this->input->post('rid_gst', TRUE);
+            $data['rid_itemtotcost']['value'] = $this->input->post('rid_itemtotcost', TRUE);
+       
+       
+       
+       
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editrid', $data);
+            return;
+        }
+        else{
+
+            $data_a= $this->input->post('rid_ppid', TRUE);
+            $data_b= $this->input->post('rid_itemdes', TRUE);
+            $data_c= $this->input->post('rid_itemstock', TRUE);
+            $data_d= $this->input->post('rid_itemqtyreq', TRUE);
+            $data_e= $this->input->post('rid_itemunitp', TRUE);
+            $data_f= $this->input->post('rid_itemgstapply', TRUE);
+            $data_g= $this->input->post('rid_gst', TRUE);
+            $data_h= $this->input->post('rid_itemtotcost', TRUE);
+            
+            
+            $data_eid = $id;
+           
+            $logmessage = "";
+           
+            if($editeset_data->rid_ppid != $data_a)
+                $logmessage = "Add rid " .$editeset_data->rid_ppid. " changed by " .$data_a;
+            if($editeset_data->rid_itemdes != $data_b)
+                $logmessage = "Add rid " .$editeset_data->rid_itemdes. " changed by " .$data_b;
+            if($editeset_data->rid_itemstock != $data_c)
+                $logmessage = "Add rid " .$editeset_data->rid_itemstock. " changed by " .$data_c;
+            if($editeset_data->rid_itemqtyreq != $data_d)
+                $logmessage = "Add rid " .$editeset_data->rid_itemqtyreq. " changed by " .$data_d;
+            if($editeset_data->rid_itemunitp != $data_e)
+                $logmessage = "Add rid " .$editeset_data->rid_itemunitp. " changed by " .$data_e;
+            if($editeset_data->rid_itemgstapply != $data_f)
+                $logmessage = "Add rid " .$editeset_data->rid_itemgstapply. " changed by " .$data_f;
+            if($editeset_data->rid_gst != $data_g)
+                $logmessage = "Add rid " .$editeset_data->rid_gst. " changed by " .$data_g;
+            if($editeset_data->rid_itemtotcost != $data_h)
+                $logmessage = "Add rid " .$editeset_data->rid_itemtotcost. " changed by " .$data_h;
+
+           
+           
+           
+           
+            $update_data = array(
+              'rid_ppid' => $data_a,
+              'rid_itemdes' => $data_b,
+              'rid_itemstock' => $data_c,
+              'rid_itemqtyreq' => $data_d,
+              'rid_itemunitp' => $data_e,
+              'rid_itemgstapply' => $data_f,
+              'rid_gst' => $data_g,
+              'rid_itemtotcost' => $data_h,
+            );
+
+        
+        
+        
+        
+        $roledflag=$this->PICO_model->updaterec('required_item_details', $update_data,'rid_id', $data_eid);
+        if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit rid Setting error", "Edit rid Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit rid Setting error", "Edit rid Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating required items details - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editrid', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit rid Setting", "Edit rid Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit rid Setting", "Edit rid Setting details. $logmessage ");
+                $this->session->set_flashdata('success','required item details updated successfully..');
+                redirect('picosetup/displayrid/');
+              
+                }
+        }
+		}
+   else redirect('picosetup/displayrid');
+  
+  
+    }
+    
+  
+    public function tenderform()
+    {
+     
+        $this->logger->write_logmessage("view"," View tender form ", " tender form details...");
+        
+        $this->load->view('setup/tenderform');
+    }	
+
+ 
+
+    
+  
+    
+    
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

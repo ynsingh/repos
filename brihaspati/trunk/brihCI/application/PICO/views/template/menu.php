@@ -239,38 +239,61 @@ echo "<ul class=\"sf-menu\" >";
 
 /*Mode of Tender*/
 
+                                
+
+
+
+
+                                      
+
+                                         echo "<li>";
+                                                echo anchor('picosetup/displayvendor','Vendor', array('title' => 'vendor '));
                                         echo "<li>";
-                                                echo anchor('picosetup/tender', 'Mode of Tender', array('title' => 'Payroll Leave Entry'));
-/*
-                                                echo "<ul>";
-                                                       echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Single Bid', array('title' => 'Payroll Profile'));
-                                                        echo "</li>";
-                                                        echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Double Bid with EMD', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Single Tender(Quotation)', array('title' => 'Payroll Profile'));
-                                                        echo "<li>";
-                                                        echo "<li>"; 
- /*...................*/  
-/*                                                        echo anchor('payrollprofile/payprofile', 'Repeat Order ', array('title'=> 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Purchase on Rate Contract', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Purchase on Rate Contract with DGS&D', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Purchase Under Buyback Scheme', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                        echo anchor('payrollprofile/payprofile', 'Upgradation', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                echo "</ul>";                                           
-                                        echo "</li>";
-*/
+                                                echo anchor('picosetup/displaytypeoftender','Mode of Tender', array('title' => 'Mode of Tender'));
+													//testing
+													 echo "<li>";
+                                                echo anchor('','test here...', array('title' => 'tender create'));
+                                        
+                                        echo "<li>";
+                                                echo anchor('picosetup/displayrid', 'Required Item', array('title' => 'req item'));
+                                         
+                                   
+                                        echo "<li>";
+                                                echo anchor('tender/tenderbiddoc', 'Tender|Form ', array('title' => 'Tender'));
+                                        echo "<li>";
+                                                echo anchor('tender/tenderform', 'Tender|Form (steps) ', array('title' => 'Tender'));       
+                                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         echo "<li>";
                                                 echo anchor('picosetup/displaybankdetails', 'Bank List', array('title' => 'Bank List'));
                                         echo "</li>";
