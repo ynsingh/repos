@@ -1488,10 +1488,10 @@ public function schemedept(){
 
 
  public function viewauthuser() {
-        $this->authuser=$this->loginmodel->get_list('authority_map');
+        $data['authuser']=$this->loginmodel->get_list('authority_map');
         $this->logger->write_logmessage("view"," View map authority and user setting", "authority map setting details...");
         $this->logger->write_dblogmessage("view"," View map authority and user setting", "User setting details...");
-        $this->load->view('map/viewauthuser',$this->authuser);
+        $this->load->view('map/viewauthuser', $data);
      }
 
 

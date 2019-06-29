@@ -20,7 +20,7 @@
 
           <tr><td>
             <?php
-              echo anchor('picosetup/purchasetype/',"Go Back", array('title' =>'Purchase Type Form', 'class'=>'top_parent' ));
+              echo anchor('picosetup/purchasetype/',"Add Purchase Type", array('title' =>'Purchase Type Form', 'class'=>'top_parent' ));
             ?>
           </td></tr>
 

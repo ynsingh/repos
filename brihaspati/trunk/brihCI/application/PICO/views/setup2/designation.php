@@ -11,7 +11,7 @@
   </head>
  <body>
 
-    <!--<//?php
+   <!--  <//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
         echo "<td style=\"padding: 8px 8px 8px 20px; decoration:none;\">";
@@ -19,7 +19,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-        ?>--!>
+    ?> -->
 <table width="100%">
             <tr colspan="2">
                 <?php  
@@ -29,8 +29,8 @@
                 echo "<b>Designation Details</b>";
                 echo "</td>";
                 echo "<td align=\"right\" width=\"33%\">";
-		$help_uri = site_url()."/help/helpdoc#ViewDesignation";
-           	echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		          $help_uri = site_url()."/help/helpdoc#ViewDesignation";
+           	        echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                 echo "</td>";
                 ?>
                 <div>
@@ -55,24 +55,26 @@
              </tr>
        </table>
         <div class="scroller_sub_page">
-        <table  class="TFtable" >
-            <thead>
-                <tr>
+<table  class="TFtable" >
+        <thead>
+            <tr>
                 <th>Sr.No</th>
-		<th> Designation Code</th>
-                <th> Designation Type</th>
-		<th> Designation Sub Type</th>
-		<th> Designation Payscale</th>
-                <th> Designation Name</th>
-                <th> Designation Group </th>  
-                <th> Designation Short</th>
-                <th> Designation Description</th>
-                <th>Action</th></tr></thead>
+                <th>Designation Code</th>
+                <th>Designation Type</th>
+		        <th>Designation Sub Type</th>
+		        <th>Designation Payscale</th>
+                <th>Designation Name</th>
+                <th>Designation Group </th>  
+                <th>Designation Short</th>
+                <th>Designation Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 <tbody>
  <?php
         $count =0;
-        if( count($this->result) ):
-        foreach ($this->result as $row)
+        if( count($result) ):
+        foreach ($result as $row)
         {
          ?>
              <tr>
@@ -80,7 +82,7 @@
             <td> <?php echo $row->desig_code  ?></td>
             <td> <?php echo $row->desig_type  ?></td>
             <td> <?php echo $row->desig_subtype  ?></td>
-	<?php
+	<!-- <//?php
 
 		$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$row->desig_payscale)->sgm_name;
                 $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$row->desig_payscale)->sgm_max;
@@ -90,7 +92,8 @@
                 $pb=$payband."(".$pay_min."-".$pay_max.")".$gardepay." ".$gardepayn;
 
 		?>
-            <td> <?php echo $pb; ?></td>
+            --> 
+            
             <td> <?php echo $row->desig_name ?></td>
             <td> <?php echo $row->desig_group ?></td>
             <td> <?php echo $row->desig_short  ?></td>

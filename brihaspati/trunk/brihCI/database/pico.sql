@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cover_type` (
-  `ct_id` int(20) NOT NULL,
-  `ct_coverno` int(20) NOT NULL,
+  `ct_id` int(11) NOT NULL,
+  `ct_coverno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ct_coverfixed` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ct_coveroptional` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ct_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
@@ -48,7 +48,7 @@ CREATE TABLE `cover_type` (
 --
 
 CREATE TABLE `depart_indent` (
-  `di_id` int(100) NOT NULL,
+  `di_id` int(11) NOT NULL,
   `di_date` date NOT NULL,
   `di_indenterid` int(100) NOT NULL,
   `di_itemid` int(100) NOT NULL
@@ -67,10 +67,10 @@ CREATE TABLE `financial_power` (
   `fp_authority` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `fp_limit` int(100) NOT NULL,
   `fp_desc` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-  `fp_creatorid` int(100) NOT NULL,
-  `fp_creatordate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fp_modifierid` int(100) NOT NULL,
-  `fp_modifierdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `fp_creatorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `fp_creatordate` date NOT NULL,
+  `fp_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `fp_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -85,7 +85,7 @@ CREATE TABLE `financial_power` (
 --
 
 CREATE TABLE `items` (
-  `item_id` int(15) NOT NULL,
+  `item_id` int(11) NOT NULL,
   `item_mtid` int(15) NOT NULL,
   `item_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `item_price` int(15) NOT NULL,
@@ -115,9 +115,9 @@ CREATE TABLE `material_type` (
 --
 
 INSERT INTO `material_type` (`mt_id`, `mt_name`, `mt_desc`) VALUES
-(1, 'Limited Time Asset Stores(LTAS)', 'sdafafasfsaasdsaf'),
-(2, 'Non-Consumable Store(NCS)', 'sdafafasfsaasdsaf'),
-(3, 'Consumable Stores(CS)', 'sdafafasfsaasdsaf');
+(1, 'Non-Consumable Store(NCS)', 'Stores satisfying any one of the\r\nfollowing conditions shall be classified as non-consumable stores :\r\n(a) stores which are intended to be used over prolonged periods before\r\nbecoming unusable, or obsolete,\r\n(b) stores having a significant disposal value,\r\n(c) stores which are sub-systems, or parts of an equipment, which can be\r\npotentially repaired and reused, and\r\n(d) stores which are either fabricated, or assembled equipment, and which\r\nif bought as a single item would have been classified Non-Consumable\r\nStores.\r\nAll non-consumable stores have to be entered into the Asset Register of the\r\nInstitute and the NCS Stock register of the appropriate Department.\r\nExamples :(examples are indicative and not exhaustive) plant machinery,\r\nequipment, fabricated equipment, instruments, assembled instruments,\r\nmotors, gas cylinder, workshop machines, furniture and books etc.'),
+(2, 'Limited Time Asset Stores(LTAS)', 'Stores satisfying any one of the\r\nfollowing conditions shall be classified as LTAS.\r\n(a) stores which have significant value when purchased but rapidly lose\r\ntheir value/relevance with the lapse of time and have very little or\r\nnegligible disposal value, and/or\r\n(b) stores which can be upgraded either by replacing components/parts or\r\nwhich can be rendered obsolete by the release of new versions or\r\neditions.\r\nAll LTAS shall be entered into the Limited Time Asset Stores Register of the\r\nInstitute and in a separate Limited Time Asset Stock Register in the\r\nappropriate Department.\r\nExamples: (examples are indicative and not exhaustive) Computers, disk and\r\nother peripherals drives which are computer accessories, software, printers,\r\nmonitors, UPS, telephones, mobile, etc.'),
+(3, 'Consumable Stores(CS)', 'Stores satisfying any one of the following\r\nconditions shall be classified as CS:\r\n(a) stores which exhaust with lapse of time,\r\n(b) stores which are rendered unusable due to normal wear and tear,\r\n(c) stores which do not have significant disposal value, and\r\n(d) spares of equipment which do not fall either in the NCS or LTAS\r\ncategory.Examples: (examples are indicative and not exhaustive) chemicals, medicines,\r\nstationery items, printer ribbons and cartridges, pen drive, floppies, CD\r\nROMs, magnetic tapes, chips and electronic components like resistors,\r\ncapacitors, connectors etc, electrical components like wire switches, plugs,\r\nbulbs, cells, tool-bits and hand tools etc.');
 
 -- --------------------------------------------------------
 
@@ -152,7 +152,7 @@ CREATE TABLE `online_bank` (
 --
 
 CREATE TABLE `product_category` (
-  `pc_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `pc_id` int(11)  NOT NULL,
   `pc_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pc_shortname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pc_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
@@ -165,7 +165,7 @@ CREATE TABLE `product_category` (
 --
 
 CREATE TABLE `purchase_committee` (
-  `pc_id` int(15) NOT NULL,
+  `pc_id` int(11) NOT NULL,
   `pc_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pc_dept` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pc_purchpricelimit` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -223,14 +223,14 @@ INSERT INTO `purchase_com_form_rule` (`pcfr_id`, `pcfr_purchasethrough`, `pcfr_e
 --
 
 CREATE TABLE `purchase_order` (
-  `po_id` int(20) NOT NULL,
-  `po_ppid` int(20) NOT NULL,
-  `po_tcid` int(20) NOT NULL,
-  `po_taid` int(20) NOT NULL,
-  `po_no` int(20) NOT NULL,
+  `po_id` int(11) NOT NULL,
+  `po_ppid` int(11) NOT NULL,
+  `po_tcid` int(11) NOT NULL,
+  `po_taid` int(11) NOT NULL,
+  `po_no` int(1) NOT NULL,
   `po_requisition` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `po_vendorid` int(20) NOT NULL,
-  `po_itemid` int(20) NOT NULL,
+  `po_vendorid` int(11) NOT NULL,
+  `po_itemid` int(11) NOT NULL,
   `po_date` date NOT NULL,
   `po_orderqty` int(20) NOT NULL,
   `po_term` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -245,7 +245,7 @@ CREATE TABLE `purchase_order` (
 --
 
 CREATE TABLE `purchase_proposal` (
-  `pp_id` int(20) NOT NULL,
+  `pp_id` int(11) NOT NULL,
   `pp_tcid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_taid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_gemrefno` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -323,7 +323,7 @@ INSERT INTO `purchase_type` (`pt_id`, `purch_type`, `sub_purch_type`, `amt_above
 --
 
 CREATE TABLE `required_item_details` (
-  `rid_id` int(20) NOT NULL,
+  `rid_id` int(11) NOT NULL,
   `rid_ppid` int(20) NOT NULL,
   `rid_itemdes` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `rid_itemstock` int(20) NOT NULL,
@@ -504,7 +504,7 @@ CREATE TABLE `tender_upload_doc` (
 --
 
 CREATE TABLE `vendor` (
-  `vendor_id` int(100) NOT NULL,
+  `vendor_id` int(11) NOT NULL,
   `vendor_companyname` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_address` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_city` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
@@ -525,13 +525,19 @@ CREATE TABLE `vendor` (
 ALTER TABLE `cover_type`
   ADD PRIMARY KEY (`ct_id`);
 
+ALTER TABLE `depart_indent`
+	 ADD PRIMARY KEY (`di_id`);
 --
 -- Indexes for table `financial_power`
 --
 ALTER TABLE `financial_power`
   ADD PRIMARY KEY (`fp_id`);
 
---
+ALTER TABLE `product_category`
+ ADD PRIMARY KEY (`pc_id`);
+
+
+--`purchase_order`
 -- Indexes for table `items`
 --
 ALTER TABLE `items`
@@ -563,6 +569,11 @@ ALTER TABLE `purchase_type`
   ADD PRIMARY KEY (`pt_id`),
   ADD UNIQUE KEY `sub_purch_type` (`sub_purch_type`);
 
+ALTER TABLE  `purchase_order`
+	ADD PRIMARY KEY (`po_id`);
+
+ALTER TABLE `purchase_proposal`
+	ADD PRIMARY KEY (`pp_id`);
 --
 -- Indexes for table `required_item_details`
 --
@@ -613,7 +624,10 @@ ALTER TABLE `vendor`
 -- AUTO_INCREMENT for table `cover_type`
 --
 ALTER TABLE `cover_type`
-  MODIFY `ct_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `depart_indent`
+	MODIFY `di_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `financial_power`
@@ -621,17 +635,22 @@ ALTER TABLE `cover_type`
 ALTER TABLE `financial_power`
   MODIFY `fp_id` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `items`
+	MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `material_type`
 --
 ALTER TABLE `material_type`
   MODIFY `mt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
+ALTER TABLE `product_category`
+	MODIFY `pc_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `purchase_committee`
 --
 ALTER TABLE `purchase_committee`
-  MODIFY `pc_id` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `pc_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `purchase_com_form_rule`
@@ -645,18 +664,23 @@ ALTER TABLE `purchase_com_form_rule`
 ALTER TABLE `purchase_type`
   MODIFY `pt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
+ALTER TABLE `purchase_order`
+	MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `purchase_proposal`
+	MODIFY `pp_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `required_item_details`
 --
 ALTER TABLE `required_item_details`
-  MODIFY `rid_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `rid_id` int(11) NOT NULL AUTO_INCREMENT;
 
 
 --
 -- AUTO_INCREMENT for table `tender_apply`
 --
 ALTER TABLE `tender_apply`
-  MODIFY `ta_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tender_bid_openers_selection`
@@ -668,7 +692,7 @@ ALTER TABLE `tender_bid_openers_selection`
 -- AUTO_INCREMENT for table `tender_create`
 --
 ALTER TABLE `tender_create`
-  MODIFY `tc_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `tc_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tender_type`
@@ -686,7 +710,7 @@ ALTER TABLE `tender_upload_doc`
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `vendor_id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 

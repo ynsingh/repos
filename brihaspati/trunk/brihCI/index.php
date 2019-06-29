@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
 <title>Brihaspati</title>
 
@@ -42,6 +42,9 @@ table tr td a{text-decoration:none;font-size:20px;color:black;}
 	</tr>
 	 <tr align="center">
                 <td><a href="bgasindex.php">Brihaspati General Accounting System (BGAS)</a></td>
+         </tr>
+	 <tr align="center">
+                <td><a href="picoindex.php">Purchase and Inventory Control System (PICO)</a></td>
          </tr>
 
 </table>

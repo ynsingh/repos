@@ -104,6 +104,8 @@ public function viewprofile(){
 	$this->load->view('profile/viewprofile');
 */
 	$data['deptname']="";
+    if(!empty($data))
+    {
 	$data['name']=$this->logmodel->get_listspfic1('userprofile','firstname','userid',$this->session->userdata('id_user'))->firstname;
         $data['lastn']=$this->logmodel->get_listspfic1('userprofile','lastname','userid',$this->session->userdata('id_user'))->lastname;
         $data['address']=$this->logmodel->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'))->address;
@@ -114,6 +116,7 @@ public function viewprofile(){
         $data['campusname']=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid)->sc_name;
         $data['orgcode']=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid)->org_code;
         $data['orgname']=$this->commodel->get_listspfic1('org_profile','org_name','org_code', $data['orgcode'])->org_name;
+    }
 //	$data['designame']="";
         $this->load->view('profile/viewprofile',$data);
 }//end function

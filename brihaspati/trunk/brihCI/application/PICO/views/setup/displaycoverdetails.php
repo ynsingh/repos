@@ -19,7 +19,7 @@
             <tr>
                 <?php 
                     echo "<td align=\"left\"width=\"33%\">";
-                    echo anchor('picosetup/opencovertypeform/', "Go Back", array('title' => 'Item Type Form','class' =>'top_parent'));
+                    echo anchor('picosetup/opencovertypeform/', "Add Cover Type", array('title' => 'Item Type Form','class' =>'top_parent'));
                     echo "</td>";
                   ?>
                  <?php

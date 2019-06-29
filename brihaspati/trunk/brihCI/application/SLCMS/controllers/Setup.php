@@ -28,7 +28,9 @@ class Setup extends CI_Controller
            // $this->load->model('common_model');
 
 	 	$this->load->model("DateSem_model","datemodel");
-		$this->load->model('SIS_model');	
+		$this->load->model('SIS_model');
+        $this->load->model('PICO_model');
+
         	if(empty($this->session->userdata('id_user'))) {
             		$this->session->set_flashdata('flash_data', 'You don\'t have access!');
 			redirect('welcome');
@@ -3015,13 +3017,13 @@ class Setup extends CI_Controller
 		$data['currentacadyear'] = $this->datemodel->getcurrentAcadYear();
 		 if(isset($_POST['adddates'])) {
 			$this->form_validation->set_rules('acad_year','Academeic year','trim|xss_clean|required');
-                        $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
-                        $this->form_validation->set_rules('campus_code','Campus Name','trim|xss_clean|required');
-                        $this->form_validation->set_rules('session_sdate','Session Start Date','trim|xss_clean|required');
-                        $this->form_validation->set_rules('session_edate','Session End Date','trim|xss_clean|required');
-                        $this->form_validation->set_rules('exam_startdate','Exam Start Date','trim|xss_clean|required'); 
+            $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
+            $this->form_validation->set_rules('campus_code','Campus Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('session_sdate','Session Start Date','trim|xss_clean|required');
+            $this->form_validation->set_rules('session_edate','Session End Date','trim|xss_clean|required');
+            $this->form_validation->set_rules('exam_startdate','Exam Start Date','trim|xss_clean|required'); 
 			$this->form_validation->set_rules('exam_enddate','Exam End Date','trim|xss_clean|required');
-                        $this->form_validation->set_rules('form_sdate','Marks-Submission Start Date','trim|xss_clean|required'); 
+            $this->form_validation->set_rules('form_sdate','Marks-Submission Start Date','trim|xss_clean|required'); 
 			$this->form_validation->set_rules('form_edate','Marks-Submission End Date','trim|xss_clean|required');
                 }
                 //if form validation true
@@ -3030,16 +3032,16 @@ class Setup extends CI_Controller
 		$cid = $this->session->userdata('id_user');
 		$cname = $this->common_model->get_listspfic1('role','role_name','role_id',$cid)->role_name;
                   $addsetdate = array(
-		       'sed_acadyear'		=>	$_POST['acad_year'],
-                       'sed_sem'		=>	$_POST['semester'],
+		               'sed_acadyear'		=>	$_POST['acad_year'],
+                       'sed_sem'		    =>	$_POST['semester'],
                        'sed_campuscode'		=>	$_POST['campus_code'],
                        'sed_sessionsdate'	=>	$_POST['session_sdate'],
                        'sed_sessionedate'	=>	$_POST['session_edate'],
                        'sed_examsdate'		=>	$_POST['exam_startdate'],
                        'sed_examedate'		=>	$_POST['exam_enddate'],
-                       'sed_formsubmitsdate'	=>	$_POST['form_sdate'],
-                       'sed_formsubmitedate'	=>	$_POST['form_edate'],   
-		       'sed_creatorid'		=>	$cname,
+                       'sed_formsubmitsdate'=>	$_POST['form_sdate'],
+                       'sed_formsubmitedate'=>	$_POST['form_edate'],   
+		               'sed_creatorid'		=>	$cname,
                        'sed_createdate'		=>	$cdata,
                               
                         );

@@ -28,9 +28,9 @@
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
              <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-             <?php
+          <?php
              };
-             ?>
+          ?>
       <?php if (isset($_SESSION['err_message'])){?>
            <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 	<?php
@@ -51,7 +51,7 @@
 		<th> DDO Name </th>
 		<th> Action </th> 
      </thead>
-     <tbody>
+  <tbody>
 	<?php $count = 0;
 	if( count($this->result) ) {
 	      foreach ($this->result as $row)
@@ -70,9 +70,9 @@
 	   }else{
   	   ?>  
            <tr><td colspan= "12" align="center"> No Records found...!</td></tr>
-           <?php }?> 
+           <?php }?>  
 	</tbody>
-        </table>
+</table>
         </div><!------scroller div------>
    </body>
 <p>&nbsp;</p>

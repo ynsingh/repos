@@ -1,7 +1,7 @@
  
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Add Purchase Committee Rule
+ * @name: Display Purchase Committee Formation Rule
  * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
   */
@@ -16,13 +16,13 @@
   </head>
  <body>
       <table width="100%">
-            <tr><td>
+          <tr><td>
                <?php
                     echo anchor('picosetup/openpurchasecommitteeformrule','Add Purchase Committee Rule', array('title' =>'Item List','class'=>'top_parent'));
                 ?>
                  <?php
                    echo "<td align=\"center\" width=\"34%\">";
-                   //echo "<b>Item Type Details</b>";
+                   echo "<b><u>Purchase Committee Rules</u></b>";
                    echo "</td>";
                    echo "<td align=\"right\" width=\"33%\">";
                    $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
@@ -31,7 +31,7 @@
                  ?>
                </td>
     
-      <div>
+            <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,8 +43,8 @@
                 <?php
                 };
                ?>
-              </div>
-             </tr>
+            </div>
+          </tr>
       </table>
 <div class="scroller_sub_page">
   <br>

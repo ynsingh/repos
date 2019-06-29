@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * @name: Financial Power Form
+ * @name: Cover Type Form
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  */

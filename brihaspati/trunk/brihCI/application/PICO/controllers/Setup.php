@@ -26,7 +26,8 @@ class Setup extends CI_Controller
     function __construct() {
         parent::__construct();
         $this->load->model('login_model'); 
-  	$this->load->model('common_model'); 
+  	$this->load->model('common_model');
+    $this->load->model('SIS_model'); 
         $this->load->model('PICO_model');   //changed to PICO insted of 
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');

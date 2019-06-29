@@ -1,11 +1,12 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
  
 
 
- <!--  @name typeofstore.php 
-  @author: Shivam Kumar Singh(shivam.iitk1@gmail.com) -->
-
-
+/** 
+    @name typeofstore.php 
+ *   @author: Shivam Kumar Singh(shivam.iitk1@gmail.com)
+*/
+?>
 
 <html>
 <title>Type of Store | Form</title>
@@ -36,40 +37,43 @@
 
  	<form  action="<?php echo site_url('picosetup/insertstore');?>" method="POST" class="form-inline">
             <?php echo form_error('store')?>
- 		 <table>
+
+ 		 <table class="TFtable">
  		 	<!-- <caption>Type of Store</caption> -->
- 		 	<thead>
+ 		 	<!-- <thead>
  		 		<tr>
  		 			<th>Type of Store</th>
  		 			<th>Store Description<th>
 
  		 		</th>
  		 		</tr>	
- 		 	</thead>
+ 		 	</thead> -->
  		 	<tbody>
  		 		<tr>
+                    <td><label for="mt_name" class="control-label">Type of Store: </label></td>
  		 			<td >
- 		 				<select name="store">
- 		 				<option name="select" value="disabled" selected="selected" disabled selected>----Select----</option>
+ 		 				<select name="mt_name">
+ 		 				<option name="" disabled selected>----Select Category----</option>
  		 				<option value="Non-Consumable Store(NCS)">Non-Consumable Store(NCS)</option>
  		 				<option value="Limited Time Asset Stores(LTAS)">Limited Time Asset Stores(LTAS)</option>
  		 				<option value="Consumable Stores(CS)">Consumable Stores(CS)</option>	
  		 				</select>
 
  		 			</td>
-                  	
+                </tr>
+                  
+                <tr>
+                    <td><label for="mt_desc" class="control-label">Store Description : </label></td>  	
  		 			<td>
- 		 				<input type="text" name="mt_desc" placeholder="Give Description..." size="60"> 
- 		 			</td>
- 		 			
+                        <textarea name="mt_desc" style="width:500px;height:100px;" placeholder="Give Description..." ></textarea>
+ 		 				<!-- <input type="text" name="mt_desc" placeholder="Give Description..." size="60">  -->
+ 		 			</td>	
  		 		</tr>
- 		 		<br>
- 		 		<br>
- 		 		<br>
- 		 		<tr>	
+ 		 			
  		 		<tr>
+                    <td></td>
  		 			<td>
- 				 		<button name="submitstore">Submit</button>
+ 				 		<button name="submitstore">Submit Details</button>
  				 	<td> 
  		 		</tr>
  		 		

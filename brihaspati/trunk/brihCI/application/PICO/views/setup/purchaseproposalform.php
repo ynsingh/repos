@@ -33,8 +33,8 @@
                 changeMonth: true,
                 changeYear: true,
                 yearRange: 'c-30:c+10',
-               // endDate: "today",
-                //maxDate: today
+                // endDate: "today",
+                // maxDate: today
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });

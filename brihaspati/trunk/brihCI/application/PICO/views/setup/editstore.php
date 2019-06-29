@@ -1,9 +1,13 @@
 <!--@name editrole.php
     @author kishore kr shukla (kishore.shukla@gmail.com)
  -->
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+/**
+* @author Shivam Kumar Singh (shivam.iitk1@gmail.com)
+*/
+?>
 <html>
-<title>Edit Store</title>
+<title>Type of Store | Edit</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         
@@ -50,52 +54,46 @@
                 </div> </br> 
         </td></tr>  
         </table>
-    
-        <table> 
+
+        <table class="TFtable"> 
  
-         <?php
-            
+        <?php
+
             echo form_open('picosetup/editstore/' . $id);
 
        
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Store Type', 'mt_name');
+                    echo form_label('Store Type','mt_name');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($mt_name);
                 echo "</td>";
-                echo "<td>";
-                    echo "Example: Admin, System Administrator ";
-                echo "</td>";
+               
             echo "</tr>";
 
-            //echo "<p>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Store Description', 'mt_desc');
-                    //echo "<br />";
+                    echo form_label('Store Description','mt_desc');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($mt_desc);
                 echo "</td>";
-                echo "<td>";
-                    echo "Example :System Admin a person who manages the operation of a computer system";
-                echo "</td>";
+               
             echo "</tr>";
         
                 echo "<td>";
-                    echo form_hidden('mt_id', $id);
-                   echo"<td>";
-                    echo form_submit('submit', 'Update');
-                   echo " ";
+                    echo form_hidden('mt_id',$id);
+                echo"<td>";
+                    echo form_submit('submit','Update');
+                echo " ";
        
             echo form_close();
             echo "<button onclick=\"goBack()\" >Back</button>";
             echo "</td>";
             echo "</tr>";
             echo"</td>";
- ?>
+        ?>
  
        </table> 
           

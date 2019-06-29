@@ -1,4 +1,7 @@
-<!---@name viewauthuser.php @author Neha Khullar (nehukhullar@gmail.com) -->
+<!---@name viewauthuser.php 
+@author Neha Khullar (nehukhullar@gmail.com)
+@author: Shivam Kumar Singh(shivam.iitk1@gmail.com)
+         -->
  
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
@@ -56,27 +59,27 @@
         <table class="TFtable" >
             <thead>
                 <tr>
-                <th>Sr.No</th>
-                <th>Authority Name</th>
-                <th>User Name</th>
-                <th>From Date</th>
-                <th>Till Date</th>
-		<th>Authority Type</th>
-                <th>Action</th>
-            </tr>
+                    <th>Sr.No</th>
+                    <th>Authority Name</th>
+                    <th>User Name</th>
+                    <th>From Date</th>
+                    <th>Till Date</th>
+		            <th>Authority Type</th>
+                    <th>Action</th>
+                </tr>
         </thead>
         <tbody>
 <?php
-                     $count =0;
-                     if( count($this->authuser) ):
-                     foreach($this->authuser as $row){ ?>
+                     $count =0; 
+                     if( count($authuser) ):
+                     foreach($authuser as $row){ ?>
                      <tr>
                      <td> <?php echo ++$count; ?> </td>
 		       <td><?php echo $this->loginmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name ?></td>
                 <?php  echo "<td>";
-		$uname = $this->loginmodel->get_listspfic1('edrpuser','username','id',$row->user_id)->username;
-		$fname = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->user_id)->firstname;
-		$lname = $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->user_id)->lastname;
+		          $uname = $this->loginmodel->get_listspfic1('edrpuser','username','id',$row->user_id)->username;
+		          $fname = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->user_id)->firstname;
+		          $lname = $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->user_id)->lastname;
 		if (empty($fname)){
 			echo $uname;
 		}

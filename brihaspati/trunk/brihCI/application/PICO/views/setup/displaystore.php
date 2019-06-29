@@ -30,16 +30,16 @@
                     echo "</td>";
 		              ?>
                  <?php
-		 echo "<td align=\"center\" width=\"34%\">";
+		             echo "<td align=\"center\" width=\"34%\">";
                  echo "<b>Store Details</b>";
                  echo "</td>";
                  echo "<td align=\"right\" width=\"33%\">";
-                 $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
-		 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-		 echo "</td>";
+                      $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
+		             echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		            echo "</td>";
                  ?>
     
-		<div>
+		          <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -52,7 +52,7 @@
                 };
                ?>
               </div>
-             </tr>
+            </tr>
        </table>
         <div class="scroller_sub_page">
         <table class="TFtable" >
@@ -62,9 +62,10 @@
    <?php
         $count =0;
         //foreach ($query->result() as $row)
-        foreach ($this->result as $row)
+        foreach ($result as $row)
         {  
          ?>
+         
              <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->mt_name ?></td>
@@ -75,6 +76,8 @@
 	    		
 	    		echo "&nbsp; ";
             		echo anchor('picosetup/deletestore/' . $row->mt_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
+                echo "<br>";
+                //echo anchor('picosetup/editstore/' . $row->mt_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
 		    }
             echo "</td>";
             echo "</tr>";

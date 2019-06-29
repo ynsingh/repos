@@ -43,10 +43,12 @@ echo "<ul class=\"sf-menu\" >";
                                         */
 					echo "<li>";
 						echo anchor('setup2/designation', 'Designation', array('title' => 'Designation'));
-					echo "</li>";				
-                                        echo "<li>";
-                                                echo anchor('setup/displayscheme', 'Scheme', array('title' => 'Scheme'));
-                                        echo "</li>";
+					echo "</li>";
+
+                    echo "<li>";
+                        echo anchor('setup/displayscheme', 'Scheme', array('title' => 'Scheme'));
+                    echo "</li>";
+
 					echo "<li>";
 						echo anchor('setup/listddo', 'DDO', array('title' => 'ddo'));
 					echo "</li>";				
@@ -183,7 +185,7 @@ echo "<ul class=\"sf-menu\" >";
                                             echo "</li>";
 /*Purchase Type*/
                                     echo "<li>";
-                                     echo anchor('picosetup/purchasetype', 'Purchase Type', array('title' => 'Purchase Type'));
+                                     echo anchor('picosetup/purchasetypedetails', 'Purchase Type', array('title' => 'Purchase Type'));
                                                
 
                                                 
@@ -248,62 +250,35 @@ echo "<ul class=\"sf-menu\" >";
 
                                          echo "<li>";
                                                 echo anchor('picosetup/displayvendor','Vendor', array('title' => 'vendor '));
+                                        echo "</li>";
                                         echo "<li>";
                                                 echo anchor('picosetup/displaytypeoftender','Mode of Tender', array('title' => 'Mode of Tender'));
+                                        echo "</li>";
 													//testing
-													 echo "<li>";
-                                                echo anchor('','test here...', array('title' => 'tender create'));
-                                        
+									//	echo "<li>";
+                                      //          echo anchor('','test here...', array('title' => 'tender create'));
+                                        //echo "</li>";
+                                        echo "<li>";
+
+                                                echo anchor('setup/displaybankdetails', 'Bank List', array('title' => 'Bank List'));
+                                        echo "</li>";
                                         echo "<li>";
                                                 echo anchor('picosetup/displayrid', 'Required Item', array('title' => 'req item'));
-                                         
+                                        echo "</li>"; 
                                    
+                  //                      echo "<li>";
+                      //                          echo anchor('tender/tenderbiddoc', 'Tender|Form ', array('title' => 'Tender'));
+                    //                    echo "</li>";
                                         echo "<li>";
-                                                echo anchor('tender/tenderbiddoc', 'Tender|Form ', array('title' => 'Tender'));
-                                        echo "<li>";
-                                                echo anchor('tender/tenderform', 'Tender|Form (steps) ', array('title' => 'Tender'));       
-                                        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                        echo "<li>";
-                                                echo anchor('picosetup/displaybankdetails', 'Bank List', array('title' => 'Bank List'));
+                                                echo anchor('tender/tenderform', 'Tender Form', array('title' => 'Tender'));       
                                         echo "</li>";
 
                                         echo "<li>";
-                                                echo anchor('picosetup/opencovertypeform', 'Cover Type', array('title' => 'Cover Type'));
+                                                echo anchor('picosetup/displaycovertypedetails', 'Cover Type', array('title' => 'Cover Type'));
                                         echo "</li>";
 
                                         echo "<li>";
-                                                echo anchor('picosetup/openitemtype', 'Item List', array('title' => 'Item Type'));
+                                                echo anchor('picosetup/itemtypedetails', 'Item List', array('title' => 'Item Type'));
                                         echo "</li>";  
 
                                         echo "<li>";
@@ -363,7 +338,7 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "</li>";
 					                    
                                         echo "<li>";
-                                                echo anchor('#', 'Purchase Approval via GeM', array('title' => 'Purchase Approval'));
+                                                echo anchor('picosetup/', 'Purchase Approval via GeM', array('title' => 'Purchase Approval via GeM'));
                                         echo "</li>";
 /*Purchase Process*/
                                         echo "<li>";
