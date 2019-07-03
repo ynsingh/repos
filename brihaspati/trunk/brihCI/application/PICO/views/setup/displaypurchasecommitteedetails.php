@@ -8,7 +8,7 @@
 ?>
 
 <html>
-<title>Purchase Committee | Details</title>
+<title>Purchase Committee | Rules</title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>

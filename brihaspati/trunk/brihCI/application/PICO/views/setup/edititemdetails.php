@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Edit Financial Power
+ * @name: Edit Item List
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  */
@@ -8,7 +8,7 @@
 
 
 <html>
-<title>Financial Power | Edit </title>
+<title>Item List | Edit</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
@@ -42,64 +42,50 @@
  
          <?php
 
-            echo form_open('picosetup/editfinancialpower/' . $id);
+            echo form_open('picosetup/edititemdetails/' . $id);
 
        
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Type of Purchase', 'fp_typeofpurch');
+                    echo form_label('Material ID','item_mtid');
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($fp_typeofpurch);
+                    echo form_input($item_mtid);
                 echo "</td>";
                
             echo "</tr>";
 
             echo "<tr>";
                 echo "<td>";
-                    echo form_label(' Sub Type of Purchase', 'fp_subtypepurch');
+                    echo form_label('Item Name','item_name');
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($fp_subtypepurch);
+                    echo form_input($item_name);
                 echo "</td>";
                
             echo "</tr>";
 
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Authority', 'authority');
+                    echo form_label('Item Price', 'item_price');
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($authority);
+                    echo form_input($item_price);
                 echo "</td>";
                
             echo "</tr>";
 
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Financial Limit', 'fp_limit');
+                    echo form_label('Item Stock', 'item_stock');
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($fp_limit);
-                echo "</td>";
-                
-            echo "</tr>";
-
-
-           
-            echo "<tr>";
-                echo "<td>";
-                    echo form_label('Item Description', 'fp_desc');
-                    //echo "<br />";
-                echo "</td>";
-                echo "<td>";
-                    echo form_input($fp_desc);
-                echo "</td>";
-               
+                    echo form_input($item_stock);
+                echo "</td>";       
             echo "</tr>";
         
                 echo "<td>";
-                    echo form_hidden('fp_id', $id);
+                    echo form_hidden('item_id', $id);
                    echo"<td>";
                     echo form_submit('submit', 'Update');
                    echo " ";

@@ -1,7 +1,7 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Display Financial Power
+ * @name: Display Purchase Type
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  */
@@ -22,6 +22,15 @@
             <?php
               echo anchor('picosetup/purchasetype/',"Add Purchase Type", array('title' =>'Purchase Type Form', 'class'=>'top_parent' ));
             ?>
+             <?php
+                   echo "<td align=\"center\" width=\"34%\">";
+                   //echo "<b>Purchase Type Details</b>";
+                   echo "</td>";
+                   echo "<td align=\"right\" width=\"33%\">";
+                   $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
+                   echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                   echo "</td>";
+                 ?>
           </td></tr>
 
           <tr>
@@ -40,21 +49,31 @@
             </div>
           </tr>
       </table>
-      <div class="scroller_sub_page">
-      <table class="TFtable" >
-      <tr>
-<thead><th>Sr.No</th><th>Type of Purchase</th><th>Sub Purchase Type</th><th>Amount Above<br>(Rs)</th><th>Amount Below<br>(Rs)</th><th>Item Description</th><th>Action</th></tr></thead>
-<tbody>
+
+<div class="scroller_sub_page">
+  <table class="TFtable" >
+    <caption><b>Purchase Type Details</b></caption>  
+  <thead>
+    <tr>
+      <th>Sr.No</th>
+      <th>Type of Purchase</th>
+      <th>Sub Purchase Type</th>
+      <th>Amount Above<br>(Rs)</th>
+      <th>Amount Below<br>(Rs)</th>
+      <th>Item Description</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
    <?php
         $count =0;
-        //foreach ($query->result() as $row)
+
         foreach ($result as $row)
         {  
          ?>
              <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->purch_type ?></td>
-            <td> <?php echo $row->sub_purch_type ?></td>
+            <td> <?php echo  str_replace('_', ' ', $row->sub_purch_type); ?></td>
             <td> <?php echo $row->amt_above ?></td>
             <td> <?php echo $row->amt_below ?></td>
             <td> <?php echo $row->pt_desc ?></td>
@@ -65,14 +84,15 @@
           
           echo "&nbsp; ";
                 echo anchor('picosetup/deletepurchasetype/' . $row->pt_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
-               // echo anchor('picosetup/editfinancialpower/' . $row->pt_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
+                echo "<br>";
+               //echo anchor('picosetup/editpurchasetype/' . $row->pt_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
         }
             echo "</td>";
             echo "</tr>";
           
         }
           ?>  
-</tbody>
+  </tbody>
 </table>
 <br><br>
 </div><!------scroller div------>

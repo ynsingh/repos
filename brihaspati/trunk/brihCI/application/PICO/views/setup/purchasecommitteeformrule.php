@@ -8,7 +8,7 @@
 
 ?>
 <html>
-<title>Purchase Committee | Rule</title>
+<title>Purchase Committee Rule| Form</title>
  <head>    
         <?php $this->load->view('template/header'); ?>
 

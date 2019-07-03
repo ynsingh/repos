@@ -1,7 +1,7 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>Add Vendor</title>
+<title>Vendor | Form</title>
 
  <head>
      <?php $this->load->view('template/header'); ?>

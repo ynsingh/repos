@@ -40,14 +40,21 @@
 <body>
 
 		<form action="<?php echo site_url('picosetup/insertfpform');?>" method="POST" class="form-inline">
-			<table class="">
+			<table class="TFtable">
 			    <tr>
 					<td><label for="fp_typeofpurch" class="control-label">Type of Purchase: </label></td>
                 	<td>
-                	<input type="text" name="fp_typeofpurch"  class="form-control" size="30" placeholder="Type of Purchase" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
+                	<!-- <input type="text" name="fp_typeofpurch"  class="form-control" size="30" placeholder="Type of Purchase" /> -->
+                    <select name="fp_typeofpurch" class="my_dropdown" style="width:63%;">
+                        <option selected="" disabled="" value="" style="width: 100% ;">--------------Select Option--------------</option>
+                        <?php
+                           foreach ($material as $row) {      
+                        ?>
+                        <option value="<?php echo $row->mt_name ?>"><?php echo $row->mt_name ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
                 	</td>
                 	<td>
                 	   Example: Category of Purchase
@@ -57,10 +64,7 @@
                 <tr>
 					<td><label for="fp_subtypepurch" class="control-label">Sub Purchase Type: </label></td>
                 	<td>
-                	<input type="text" name="fp_subtypepurch"  class="form-control" size="30" placeholder="Sub Purchase Type" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
+                	<input type="text" name="fp_subtypepurch"  class="form-control" size="30" placeholder="Sub Purchase Type" />
                 	</td>
                 	<td>
                 	   Example: Sub category of Purchase
@@ -69,10 +73,10 @@
                 <tr>
 					<td><label for="fp_authority" class="control-label">Authority:<font color='Red'>*</font> </label></td>
                 	<td>
-                	<!-- <input type="text" name="fp_authority"  class="form-control" size="30" placeholder="Authority" /> --><br>
+                	
                   
-                    <select name="authority" class="my_dropdown">
-                        <option selected="" disabled="" value="" style="width: 100% ;">-------------------Select Authorities-----------------</option>
+                    <select name="authority" class="my_dropdown" style="width:63%;">
+                        <option selected="" disabled="" value="" style="width: 100% ;">--------------Select Authorities--------------</option>
                         <?php
                            foreach ($authresult as $row) {      
                         ?>
@@ -83,19 +87,13 @@
                     </select>
                 	</td>
                 	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
                 	   Example: Administrator, Head of Department etc.
                 	</td>
                 </tr>
                 <tr>
 					<td><label for="fp_limit" class="control-label">Financial Limit: </label></td>
                 	<td>
-                	<input type="text" name="fp_limit"  class="form-control" size="30" placeholder="Financial Limit" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
+                	<input type="text" name="fp_limit"  class="form-control" size="30" placeholder="Financial Limit" />
                 	</td>
                 	<td>
                 	   Example: 50500.00
@@ -104,24 +102,18 @@
                 <tr>
 					<td><label for="fp_desc" class="control-label">Item Description: </label></td>
                 	<td>
-                	<input type="text" name="fp_desc"  class="form-control" size="30"  placeholder="Item Description" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
+                	<input type="text" name="fp_desc"  class="form-control" size="30"  placeholder="Item Description" />
                 	<td>
                 	   Example: Describe the type of item
                 	</td>
                 </tr>
-                <tr>
-                </tr>
-                <tr>
+                
+               <tr>
                 <td></td>
-                <td>
-                <button name="fp_power">Submit Form</button>
-                </td>
-           		</tr>
-
+                <td> <button name="fp_power">Submit Details</button></td>
+               </tr>
+               
+               
 
             
 			</table>

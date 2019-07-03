@@ -237,11 +237,12 @@ class Picosetup extends CI_Controller
     **/
 
     public function openfinancialpower(){
+        $data['material']= $this->PICO_model->get_list('material_type');
         $data['authresult'] = $this->login_model->get_listspfic2('authorities','id','name');
         $this->load->view('setup/financialpowerform',$data);
     }
 
-     /*Display Financial Power Details */
+    /* Display Financial Power Details */
 
     public function financialpowerdetails(){
         $this->result = $this->PICO_model->get_list('financial_power');
@@ -254,11 +255,11 @@ class Picosetup extends CI_Controller
     public function insertfpform()
         {
             if(isset($_POST['fp_power'])) {
-            $this->form_validation->set_rules('fp_typeofpurch','Type of Purchase','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('fp_typeofpurch','Type of Purchase','trim|xss_clean|required');
             $this->form_validation->set_rules('fp_subtypepurch','Sub Purchase Type','trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('authority','Authority','required|alpha_numeric_spaces|callback_isAuthorityExist');
+            $this->form_validation->set_rules('authority','Authority','required|callback_isAuthorityExist');
             $this->form_validation->set_rules('fp_limit','Limit','trim|required');
-            $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required');
                 if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
                  
@@ -399,11 +400,11 @@ class Picosetup extends CI_Controller
         );
         $data['id'] = $id;
         /*Form Validation*/
-        $this->form_validation->set_rules('fp_typeofpurch','Type of Purchase','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('fp_typeofpurch','Type of Purchase','trim|xss_clean|required');
         $this->form_validation->set_rules('fp_subtypepurch','Sub Purchase Type','trim|xss_clean|required|alpha_numeric_spaces');
-        $this->form_validation->set_rules('fp_authority','Authority','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('fp_authority','Authority','trim|xss_clean|required');
         $this->form_validation->set_rules('fp_limit','Limit','trim|required');
-        $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required');
 
         /* Re-populating form */
         if ($_POST)
@@ -430,7 +431,7 @@ class Picosetup extends CI_Controller
             $data_eid = $id;
             $logmessage = "";
             if($editeset_data->fp_typeofpurch != $data_typeofpurch)
-                $logmessage = "Type of Purchase " .$editeset_data->fp_subtypepurch. " changed by " .$data_subtypepurch;
+                $logmessage = "Type of Purchase " .$editeset_data->fp_typeofpurch. " changed by " .$data_typeofpurch;
 
             if($editeset_data->fp_subtypepurch!= $data_subtypepurch)
                 $logmessage = "Sub Purchase Type" .$editeset_data->fp_subtypepurch. " changed by " .$data_subtypepurch;
@@ -489,7 +490,6 @@ class Picosetup extends CI_Controller
 
         $this->load->view('setup/purchasetypeform');
 
-
     }
 
     /* This funtion fetch list of sub purchase type****/
@@ -500,16 +500,16 @@ class Picosetup extends CI_Controller
      if ($ptype=='Minor'){
             $select_box ='';
             $select_box.='<option selected disabled value=>-------Select Purchase Category--------';
-            $select_box.='<option value=Without_Quotation> Without Quotation';
-            $select_box.='<option value=Without_Quotation_Purchase_Committee> Without Quotation Purchase Committee';
-            $select_box.='<option value=With_Quotation_Purchase_Committee> With Quotation Purchase Committee';
+            $select_box.='<option value=Without_Quotations>Purchase of Goods Without Quotations';
+            $select_box.='<option value=Without_Quotation_Purchase_Committee>Purchase of Goods Through Purchase Committee Without Quotations';
+            $select_box.='<option value=With_Quotation_Purchase_Committee>Through Purchase Committee With Quotation(s)';
             
         }
      else if($ptype=='Medium'){
             $select_box ='';
             $select_box.='<option selected disabled value= >-------Select Purchase Category--------';
-            $select_box.='<option value=Memberlimit_Purchase_Committee_With_Quotation> Memberlimit Purchase Committee With Quotation ';
-            $select_box.='<option value=Purchase_Committee(CA_approved)>Purchase Committee(CA approved)';
+            $select_box.='<option value=Memberlimit_Purchase_Committee_With_Quotation>Purchases Through Limited Tender Enquiry(CFA approved)';
+            $select_box.='<option value=Purchase_Committee(CA_approved)>Purchase Committee(CFA approved)';
            
             
         }
@@ -534,8 +534,8 @@ class Picosetup extends CI_Controller
                  
                  $this->form_validation->set_rules('purchtype','Purchase Type','required');
                  $this->form_validation->set_rules('subpurchtype','Sub Purchase Type','required|callback_isPurchasetypeExist');
-                 $this->form_validation->set_rules('amt_above','Amount Above','trim|alpha_numeric_spaces|xss_clean|required');
-                 $this->form_validation->set_rules('amt_below','Amount Above','trim|alpha_numeric_spaces|xss_clean|required');
+                 $this->form_validation->set_rules('amt_above','Amount Above','trim|numeric|xss_clean|required');
+                 $this->form_validation->set_rules('amt_below','Amount Above','trim|numeric|xss_clean|required');
                  $this->form_validation->set_rules('desc','Designation Description','trim|xss_clean');
             if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
@@ -653,432 +653,6 @@ class Picosetup extends CI_Controller
           $this->load->view('setup/displaypurchasetypedetails',$data);
     }
 
-//     /****************************************** bankdetails Module ********************************************/
-
-//  public function addbank(){
-    
-//     $this->orgcode=$this->common_model->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
-//     $this->campus=$this->common_model->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-
-//         if(isset($_POST['addbank'])) {
-//             //$this->form_validation->set_rules('bank_name','Org Code','trim|xss_clean|required|alpha_numeric_spaces|callback_isBankdetailsExist');
-//     $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
-//             $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|xss_clean');
-//             $this->form_validation->set_rules('department','Department','trim|xss_clean');
-//             $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean');
-
-//             $this->form_validation->set_rules('bank_name','Bank Name','trim|xss_clean|required');
-//             $this->form_validation->set_rules('bank_address','Bank Address','trim|xss_clean|required');
-//             $this->form_validation->set_rules('branch_name','Branch Name','trim|xss_clean|required');
-//             $this->form_validation->set_rules('account_number','Account Number','trim|xss_clean|numeric|required');
-//             $this->form_validation->set_rules('account_name','Account Name','trim|xss_clean|required');
-//             $this->form_validation->set_rules('account_type','Account Type','trim|xss_clean|alpha_numeric_spaces|required');
-//             $this->form_validation->set_rules('ifsc_code','Ifsc Code','trim|xss_clean|alpha_numeric_spaces|required');
-//             $this->form_validation->set_rules('pan_number','Pan Number','trim|xss_clean|alpha_numeric_spaces|required');
-//             $this->form_validation->set_rules('tan_number','Tan Number','trim|xss_clean|alpha_numeric_spaces|required');
-//             $this->form_validation->set_rules('gst_number','Gst Number','trim|xss_clean|alpha_numeric_spaces|required');
-//             $this->form_validation->set_rules('aadhar_number','Aadhar Number','trim|xss_clean|numeric');
-//             $this->form_validation->set_rules('org_id','Org Id','trim|xss_clean|alpha_numeric_spaces');
-//             $this->form_validation->set_rules('remark','Remark','trim|xss_clean');
-
-//             if($this->form_validation->run()==TRUE){
-//         $orgid=$_POST['org_id'];
-//         if($orgid == ""){
-//             $orgid =1;
-//         }
-            
-//             $data = array( 
-//                // 'org_code'=>ucwords(strtolower($_POST['org_code'])),
-//         'campusid'      =>$_POST['campus'],
-//                 'ucoid'         =>$_POST['uocontrol'],
-//                 'deptid'        =>$_POST['department'],
-//                 'schemeid'      =>$_POST['schemecode'],
-//                 'bank_name' =>$_POST['bank_name'],
-//                 'bank_address'  =>$_POST['bank_address'],
-//                 'branch_name'   =>$_POST['branch_name'],
-//                 'account_number'=>$_POST['account_number'],
-//                 'account_name'  =>$_POST['account_name'],
-//                 'account_type'  =>$_POST['account_type'],
-//                 'ifsc_code' =>strtoupper($_POST['ifsc_code']),
-//                 'pan_number'    =>strtoupper($_POST['pan_number']),
-//                 'tan_number'    =>strtoupper($_POST['tan_number']),
-//                 'gst_number'    =>strtoupper($_POST['gst_number']),
-//                 'aadhar_number' =>$_POST['aadhar_number'],
-//                 'org_id'    =>$orgid,
-//                 'remark'    =>$_POST['remark'] 
-//            );
-        
-//            $bpflag=$this->SIS_model->insertrec('bankprofile', $data) ;
-//            if(!$bpflag)
-
-//            {
-//                 $this->logger->write_logmessage("insert"," Error in adding bankdetails ", " BankDetails data insert error . "  );
-//                 $this->logger->write_dblogmessage("insert"," Error in adding bankdetails  ", " BankDetails data insert error . " );
-//                 $this->session->set_flashdata('err_message','Error in adding bankdetails - ' . $_POST['bnkname'] , 'error');
-//                 $this->load->view('setup/addbank');
-//            }
-//          else{
-//                 $this->logger->write_logmessage("insert"," add bankdetails ", "bankdetails record added successfully..."  );
-//                 $this->logger->write_dblogmessage("insert"," add bankdetails ", "bankdetails record added successfully..." );
-//                 $this->session->set_flashdata("success", "bankdetails added successfully...");
-//                 redirect("setup/displaybankdetails", "refresh");
-//               }
-//            }
-
-//         }        
-//       $this->load->view('setup/addbank');
-//    }
-
-
-// /** This function check for duplicate bankdetails
-//      * @return type
-//     */
-
-//     public function isbankdetailsExist($bank_name) { 
-
-         
-//         $is_exist = $this->SIS_model->isduplicate('bankdetails','bd_name',$bd_name);
-//         if ($is_exist)
-//         {
-//             $this->form_validation->set_message('isBankdetailsExist', 'Bankdetails is already exist.');
-//             return false;
-//         }
-//         else {
-//             return true;
-//         }
-    
-//       }
-     
-
-//   /* Display Bankdetails record */ 
-
-//     public function displaybankdetails(){
-
-//         $this->result = $this->SIS_model->get_list('bankprofile');
-//         $this->logger->write_logmessage("view"," View ", "Bankdetails record display successfully..." );
-//         $this->logger->write_dblogmessage("view"," View Bankdetails", "Bankdetails record display successfully..." );
-//         $this->load->view('setup/bankdetails',$this->result);
-//     }
-
-//     /**This function is used for update bankdetails details
-//      * @param type $bank_id
-//      * @return type
-//     */ 
-//     public function editbankdetails($id) {
-//         $bank_data_q=$this->SIS_model->get_listrow('bankprofile','id', $id);
-//         if ($bank_data_q->num_rows() < 1)
-//         {
-//         redirect('setup/editbankdetails');
-//         }
-//         $bankprofile_data = $bank_data_q->row();
-
-//         /* Form fields */
-         
-//             if ($bankprofile_data->campusid != 0) {      
-//                     $sc=$this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $bankprofile_data->campusid)->sc_name.
-//                     " "."(".$this->common_model->get_listspfic1('study_center', 'sc_code', 'sc_id', $bankprofile_data->campusid)->sc_code.")";
-//             }else{$sc="";}
-//         if ($bankprofile_data->ucoid != 0) {
-//             $uo=$this->login_model->get_listspfic1('authorities', 'name', 'id', $bankprofile_data->ucoid)->name; 
-//         }else{ $uo='';}
-
-//         if ($bankprofile_data->deptid != 0) {
-//             $dept=$this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $bankprofile_data->deptid)->dept_name;
-//         }else{$dept='';}
-//                 if ( $bankprofile_data->schemeid != 0) {
-//             $schme=$this->SIS_model->get_listspfic1('scheme_department','sd_name','sd_id',$bankprofile_data->schemeid)->sd_name.
-//             " "."(".$this->SIS_model->get_listspfic1('scheme_department','sd_code','sd_id',$bankprofile_data->schemeid)->sd_code.")";
-//         }else{ $schme='';}
- 
-//         $data['campus_name'] = array(
-//             'name' => 'campus_name',
-//             'id' => 'campus_name',
-//             'maxlength' => '50',
-//             'size' => '40',
-//             'value' => $sc,
-//             'readonly' => 'readonly'
-//         );
-//         $data['UCO'] = array(
-//             'name' => 'UCO',
-//             'id' => 'UCO',
-//             'maxlength' => '50',
-//             'size' => '40',
-//             'value' => $uo,
-//             'readonly' => 'readonly'
-//         );
-//         $data['dept_name'] = array(
-//             'name' => 'dept_name',
-//             'id' => 'dept_name',
-//             'maxlength' => '50',
-//             'size' => '40',
-//             'value' => $dept,
-//             'readonly' => 'readonly'
-//         );
-//         $data['scheme_name'] = array(
-//             'name' => 'scheme_name',
-//             'id' => 'scheme_name',
-//             'maxlength' => '50',
-//             'size' => '40',
-//             'value' => $schme,
-//             'readonly' => 'readonly'
-//         );
-//         $data['bank_name'] = array(
-//             'name' => 'bank_name',
-//             'id' => 'bank_name',
-//             'maxlength' => '50',
-//             'size' => '40',
-//             'value' => $bankprofile_data->bank_name,
-//         );
-//         $data['bank_address'] = array(
-//            'name' => 'bank_address',
-//            'id' => 'bank_address',
-//            'maxlength' => '50',
-//            'size' => '40',
-//            'value' => $bankprofile_data->bank_address,
-
-//         );
-
-//         $data['branch_name'] = array(
-//            'name' => 'branch_name',
-//            'id' => 'branch_name',
-//            'maxlength' => '50',
-//            'size' => '40',
-//            'value' => $bankprofile_data->branch_name,
-
-//         );
-
-//         $data['account_number'] = array(
-//            'name' => 'account_number',
-//            'id' => 'account_number',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->account_number,
-
-//         );
-
-//         $data['account_name'] = array(
-//            'name' => 'account_name',
-//            'id' => 'account_name',
-//            'maxlength' => '6',
-//            'size' => '40',
-//            'value' => $bankprofile_data->account_name,
-
-    
-//         );
-
-//         $data['account_type'] = array(
-//            'name' => 'account_type',
-//            'id' => 'account_type',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->account_type,
-
-
-//         );
-
-//         $data['ifsc_code'] = array(
-//            'name' => 'ifsc_code',
-//            'id' => 'ifsc_code',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->ifsc_code,
-
-
-//         );
-
-//         $data['pan_number'] = array(
-//            'name' => 'pan_number',
-//            'id' => 'pan_number',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->pan_number,
-
-//         );
-
-//         $data['tan_number'] = array(
-//            'name' => 'tan_number',
-//            'id' => 'tan_number',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->tan_number,
-
-//         );
-        
-//       $data['gst_number'] = array(
-//            'name' => 'gst_number',
-//            'id' => 'gst_number',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->gst_number,
-
-
-//          );
-
-//           $data['aadhar_number'] = array(
-//            'name' => 'aadhar_number',
-//            'id' => 'aadhar_number',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->aadhar_number,
-
-      
-//          );
-
-//           $data['org_id'] = array(
-//            'name' => 'org_id',
-//            'id' => 'org_id',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->org_id,
-//            'readonly' => 'readonly'
-
-
-//           );
-
-//           $data['remark'] = array(
-//            'name' => 'remark',
-//            'id' => 'remark',
-//            'maxlength' => '255',
-//            'size' => '40',
-//            'value' => $bankprofile_data->remark,
-           
-
-
-//         );
-
-
-//         $data['id'] = $id;
-
-//         $this->form_validation->set_rules('bank_name','Bankdetails BankName ','trim|xss_clean|required');
-//         $this->form_validation->set_rules('bank_address','Bankdetails BankAddress ','trim|xss_clean|required');
-//         $this->form_validation->set_rules('branch_name','Bankdetails BankBranch ','trim|xss_clean|required');
-//         $this->form_validation->set_rules('account_number','Bankdetails AccountNumber ','trim|xss_clean|numeric|required');
-//         $this->form_validation->set_rules('account_name','Bankdetails AccountName ','trim|xss_clean');
-//         $this->form_validation->set_rules('account_type','Bankdetails AccountType ','trim|xss_clean|alpha_numeric_spaces|required');
-//         $this->form_validation->set_rules('ifsc_code','Bankdetails ifscCode ','trim|xss_clean|alpha_numeric_spaces|required');
-//         $this->form_validation->set_rules('pan_number','Bankdetails PanNumber ','trim|xss_clean|alpha_numeric_spaces|required');
-//         $this->form_validation->set_rules('tan_number','Bankdetails TanNumber ','trim|xss_clean|required|alpha_dash');
-//         $this->form_validation->set_rules('gst_number','Bankdetails GstNumber ','trim|xss_clean|alpha_numeric_spaces|required');
-//         $this->form_validation->set_rules('aadhar_number','Bankdetails AadharNumber ','trim|xss_clean|numeric');
-//         $this->form_validation->set_rules('org_id','Bankdetails OrgId ','trim|xss_clean|alpha_numeric_spaces');
-//         $this->form_validation->set_rules('remark','Bankdetails Remark ','trim|xss_clean');
-
-//         if ($_POST)
-//         {
-//             $data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
-//             $data['bank_address']['value'] = $this->input->post('bank_address', TRUE);
-//             $data['branch_name']['value'] = $this->input->post('branch_name', TRUE);
-//             $data['account_number']['value'] = $this->input->post('account_number', TRUE);
-//             $data['account_name']['value'] = $this->input->post('account_name', TRUE);
-//             $data['account_type']['value'] = $this->input->post('account_type', TRUE);
-//             $data['ifsc_code']['value'] = $this->input->post('ifsc_code', TRUE);
-//             $data['pan_number']['value'] = $this->input->post('pan_number', TRUE);
-//             $data['tan_number']['value'] = $this->input->post('tan_number', TRUE);
-//             $data['gst_number']['value'] = $this->input->post('gst_number', TRUE); 
-//             $data['aadhar_number']['value'] = $this->input->post('aadhar_number', TRUE);
-//             $data['org_id']['value'] = $this->input->post('org_id', TRUE);
-//             $data['remark']['value'] = $this->input->post('remark', TRUE);
-//         }
-//         if ($this->form_validation->run() == FALSE)
-//         {
-//             $this->load->view('setup/editbankdetails', $data);
-//             return;
-//         }
-//         else
-//         {
-
-//             $data_bankname = ucwords(strtolower($this->input->post('bank_name', TRUE)));
-//             $data_bankaddress = $this->input->post('bank_address', TRUE);
-//             $data_bankbranch = $this->input->post('bank_branch', TRUE);
-//             $data_accountnumber = $this->input->post('account_number', TRUE);
-//             $data_accountname = $this->input->post('account_name', TRUE);
-//             $data_accounttype = $this->input->post('account_type', TRUE);
-//             $data_ifsccode = strtoupper($this->input->post('ifsc_code', TRUE));
-//             $data_pannumber = strtoupper($this->input->post('pan_number', TRUE));
-//             $data_tannumber = strtoupper($this->input->post('tan_number', TRUE));
-//             $data_bankid = $id;
-//             $logmessage = "";
-//             if($bankprofile_data->bank_name != $data_bankname)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->bank_name. " changed by " .$data_bankname;
-//             if($bankprofile_data->bank_address != $data_bankaddress)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->bank_address. " changed by " .$data_bankaddress;
-//             if($bankprofile_data->branch_name != $data_bankbranch)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->branch_name. " changed by " .$data_bankbranch;
-//             if($bankprofile_data->account_number != $data_accountnumber)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->account_number. " changed by " .$data_accountnumber;
-//             if($bankprofile_data->account_name != $data_accountname)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->account_name. " changed by " .$data_accountname;
-//             if($bankprofile_data->account_type != $data_accounttype)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->account_type. " changed by " .$data_accounttype;
-//             if($bankprofile_data->ifsc_code != $data_ifsccode)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->ifsc_code. " changed by " .$data_ifsccode;
-//             if($bankprofile_data->pan_number != $data_pannumber)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->pan_number. " changed by " .$data_pannumber;
-//             if($bankprofile_data->tan_number != $data_tannumber)
-//                 $logmessage = "Add Bankdetails " .$bankprofile_data->tan_number. " changed by " .$data_tanumber;
-        
-//         $update_baarchive = array(
-//             'bpa_bpid'=>$id,
-//                     'bpa_bank_name' =>$bankprofile_data->bank_name,
-//             'bpa_branch_name' =>$bankprofile_data->branch_name,
-//                     'bpa_bank_address'=>$bankprofile_data->bank_address,
-//                //'bpa_branch_name '=>$bankprofile_data->bank_branch,
-//             'bpa_account_number'  =>$bankprofile_data->account_number,
-//                     'bpa_account_name'=>$bankprofile_data->account_name,
-//             'bpa_account_type'=>$bankprofile_data->account_type,
-//                     'bpa_ifsc_code'=>$bankprofile_data->ifsc_code,
-//                     'bpa_pan_number'  =>$bankprofile_data->pan_number, 
-//                     'bpa_tan_number'  =>$bankprofile_data->tan_number,
-//             'bpa_gst_number' =>$bankprofile_data->gst_number,
-//             'bpa_creatorid' => $this->session->userdata('id_user'),
-//                     'bpa_date' => date('y-m-d')
-//             );
-//      $baflag=$this->SIS_model->insertrec('bankprofile_archive', $update_baarchive);
-//          if(!$baflag)
-//          {
-//               $this->logger->write_dblogmessage("error","Error in insert bank profile archive ", "Error in  bank profile archive record insert" .$logmessage );
-//          }else{
-//               $this->logger->write_dblogmessage("insert","Insert bank profile archive", "Record inserted in bank profile archive successfully.." .$logmessage );
-//          }  
-
-//          $update_data = array(
-//                'bank_name' =>$this->input->post('bank_name'),
-//                'bank_address' =>$this->input->post('bank_address'),
-//                'branch_name' =>$this->input->post('branch_name'),
-//                'account_number'  =>$this->input->post('account_number'),
-//                'account_name'  =>$this->input->post('account_name'),
-//                'account_type'  =>$this->input->post('account_type'), 
-//                'ifsc_code'  =>strtoupper($this->input->post('ifsc_code')),
-//                'pan_number'  =>strtoupper($this->input->post('pan_number')), 
-//                'tan_number'  =>strtoupper($this->input->post('tan_number')),
-//                'gst_number'=>strtoupper($this->input->post('gst_number')),
-//                'aadhar_number'=>$this->input->post('aadhar_number'),
-//                'org_id'=>$this->input->post('org_id'),
-//                'remark'=>$this->input->post('remark')
-//               );                
-
-           
-//            $bpflag=$this->SIS_model->updaterec('bankprofile', $update_data, 'id', $id); 
-//            if(!$bpflag) 
-//             {
-//                 $this->logger->write_logmessage("error","Error in update bankdetails", "Error in BankDetails record update. $logmessage . " );
-//                 $this->logger->write_dblogmessage("error","Error in update bankdetails", "Error in BankDetails record update. $logmessage ." );
-//                 $this->session->set_flashdata('err_message','Error updating bankdetails - ' . $logmessage . '.', 'error');
-//                 $this->load->view('setup/editbankdetails', $data);
-//             }
-//            else{
-//                 $this->logger->write_logmessage("insert","Edit bankdetails", "BankDetails record inserted successfully... $logmessage . " );
-//                 $this->logger->write_dblogmessage("insert","Edit BankDetails", "BankDetails record inserted successfully... $logmessage ." );
-//                 $this->session->set_flashdata('success','BankDetails record updating successfully...');
-//                 redirect('setup/displaybankdetails/');
-//                 }
-//         }//else
-        
-    
-//         redirect('setup/editbankdetails/');
-//    }
-
-
    /********************* Cover Type *************************************************************************/
 
    /*** This funtion opens cover type form ************/
@@ -1193,7 +767,7 @@ class Picosetup extends CI_Controller
           $this->load->view('setup/displaycoverdetails',$data);
     }
 
-    /************* Item Type ******************************************************************************/
+    /********************************** Item Details ********************************************************************************************/
 
     public function openitemtype(){
 
@@ -1206,17 +780,17 @@ class Picosetup extends CI_Controller
 
         if(isset($_POST['item_type'])){
 
-            $this->form_validation->set_rules('item_id','Item ID','trim|xss_clean|required|alpha_numeric_spaces|callback_isItemIdExist');
-            $this->form_validation->set_rules('item_mtid','Material ID','trim|xss_clean|required|alpha_numeric_spaces|callback_isMaterialIdExist');
-            $this->form_validation->set_rules('item_name','Item Name','trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('item_price','Item Price','trim|xss_clean|required|alpha_numeric_spaces');
+           // $this->form_validation->set_rules('item_id','Item ID','trim|xss_clean|required|alpha_numeric_spaces|callback_isItemIdExist');
+            $this->form_validation->set_rules('item_mtid','Material ID','trim|xss_clean|required|callback_isMaterialIdExist');
+            $this->form_validation->set_rules('item_name','Item Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('item_price','Item Price','trim|xss_clean|required');
             $this->form_validation->set_rules('item_stock','Item Stock','trim|xss_clean|required|alpha_numeric_spaces');
 
 
         if($this->form_validation->run() ==TRUE){
 
                 $data = array(
-                    'item_id'=>$_POST['item_id'],
+                    //'item_id'=>$_POST['item_id'],
                     'item_mtid'=>$_POST['item_mtid'],
                     'item_name'=>$_POST['item_name'],
                     'item_price'=>$_POST['item_price'],
@@ -1225,7 +799,7 @@ class Picosetup extends CI_Controller
 
                 $rflag= $this->PICO_model->insertrec('items',$data);
                 if(!$rflag){
-                    $this->logger->write_logmessage("insert","Trying to Add Item ID", "Item ID is not added ".$_POST['item_id']);
+                    //$this->logger->write_logmessage("insert","Trying to Add Item ID", "Item ID is not added ".$_POST['item_id']);
                     $this->logger->write_logmessage("insert","Trying to Add Material ID", "Material ID is not added ".$_POST['item_mtid']);
                     $this->logger->write_logmessage("insert","Trying to Add Item Name", "Item Name is not added ".$_POST['item_name']);
                     $this->logger->write_logmessage("insert","Trying to Add Item Price", "Item Price is not added ".$_POST['item_price']);
@@ -1236,8 +810,8 @@ class Picosetup extends CI_Controller
 
                 }
                 else{
-                    $this->logger->write_logmessage("insert","Add Item ID", "Item ID".$_POST['item_id']." added  successfully...");
-                    $this->logger->write_dblogmessage("insert","Add Item ID", "Item ID".$_POST['item_id']." added  successfully...");
+                   // $this->logger->write_logmessage("insert","Add Item ID", "Item ID".$_POST['item_id']." added  successfully...");
+                    //$this->logger->write_dblogmessage("insert","Add Item ID", "Item ID".$_POST['item_id']." added  successfully...");
 
                     $this->logger->write_logmessage("insert","Add Material ID", "Material ID".$_POST['item_mtid']." added  successfully...");
                     $this->logger->write_dblogmessage("insert","Add Material ID", "Material ID".$_POST['item_mtid']." added  successfully...");
@@ -1254,13 +828,8 @@ class Picosetup extends CI_Controller
 
                     $this->session->set_flashdata("success", "Item added successfully...");
                     redirect("picosetup/itemtypedetails"); 
-
                 }
-
-
-
-
-           }
+            }
         }
         $this->load->view('setup/itemtypeform');
 
@@ -1269,20 +838,20 @@ class Picosetup extends CI_Controller
     /** This function check for duplicate Item ID entry
      * @return type
     */
-    public function isItemIdExist($item_id) {
+    // public function isItemIdExist($item_id) {
 
-        $is_exist = $this->PICO_model->isduplicate('items','item_id',$item_id);
-        if ($is_exist)
-        {
-            $this->form_validation->set_message('isItemIdExist', 'This Item ID already exist.');
+    //     $is_exist = $this->PICO_model->isduplicate('items','item_id',$item_id);
+    //     if ($is_exist)
+    //     {
+    //         $this->form_validation->set_message('isItemIdExist', 'This Item ID already exist.');
 
-            return false;
-        }
-        else 
-        {
-            return true;
-        }
-    }
+    //         return false;
+    //     }
+    //     else 
+    //     {
+    //         return true;
+    //     }
+    // }
 
     /** This function check for duplicate Material ID entry
      * @return type
@@ -1302,17 +871,136 @@ class Picosetup extends CI_Controller
         }
     }
 
-    /** This function check for display Item type entries
+    /** This function is used to modify Item detail entries
      * @return type
     */
     public function itemtypedetails(){
         $data['result'] = $this->PICO_model->get_list('items');
-        $this->logger->write_logmessage("view"," View Item Type setting", "Item Type setting details...");
-        $this->logger->write_dblogmessage("view"," View Item Type setting", "Item Type setting details...");
+        $this->logger->write_logmessage("view"," View Item List setting", "Item List setting details...");
+        $this->logger->write_dblogmessage("view"," View Item List setting", "Item List setting details...");
         $this->load->view('setup/displayitemdetails',$data);
-    } 
+    }
 
-     /* this function is used for item record */
+    /*This function modify the Item Details*/
+    public function edititemdetails($id) {
+
+        $this->db4->from('items')->where('item_id',$id);
+        $eset_data_q = $this->db4->get();
+        if ($eset_data_q->num_rows() < 1)
+        {
+            redirect('picosetup/openitemtype');
+        }
+        $editeset_data = $eset_data_q->row();
+        /* Form fields */
+
+                $data['item_mtid'] = array(
+                'name' => 'item_mtid',
+                'id' => 'item_mtid',
+                'size' => '40',
+                'value' => $editeset_data->item_mtid,
+                );
+
+                $data['item_name'] = array(
+                'name' => 'item_name',
+                'id' => 'item_name',
+                'size' => '40',
+                'value' => $editeset_data->item_name,
+                );
+
+                $data['item_price'] = array(
+                'name' => 'item_price',
+                'id' => 'item_price',
+                'size' => '40',
+                'value' => $editeset_data->item_price,
+                );
+
+                $data['item_stock'] = array(
+                'name' => 'item_stock',
+                'id' => 'item_stock',
+                'size' => '40',
+                'value' => $editeset_data->item_stock,
+                );
+        
+        $data['id'] = $id;
+        /*Form Validation*/
+            $this->form_validation->set_rules('item_mtid','Material ID','trim|xss_clean|required');
+            $this->form_validation->set_rules('item_name','Item Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('item_price','Item Price','trim|xss_clean|required');
+            $this->form_validation->set_rules('item_stock','Item Stock','trim|xss_clean|required|alpha_numeric_spaces');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['item_mtid']['value'] = $this->input->post('item_mtid', TRUE);
+            $data['item_name']['value'] = $this->input->post('item_name', TRUE);
+            $data['item_price']['value'] = $this->input->post('item_price', TRUE);
+            $data['item_stock']['value'] = $this->input->post('item_stock', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/edititemdetails',$data);
+            return;
+        }
+
+        else{
+
+            $data_item_mtid = $this->input->post('item_mtid', TRUE);
+            $data_item_name = $this->input->post('item_name', TRUE);
+            $data_item_price = $this->input->post('item_price', TRUE);
+            $data_item_stock = $this->input->post('item_stock', TRUE);
+            $data_eid = $id;
+
+            $logmessage = "";
+            if($editeset_data->item_mtid != $data_item_mtid)
+                $logmessage = "Material ID" .$editeset_data->item_mtid. " changed by " .$data_item_mtid;
+
+            if($editeset_data->item_name!= $data_item_name)
+                $logmessage = "Item Name" .$editeset_data->item_name. " changed by " .$data_item_name;
+
+            if($editeset_data->item_price != $data_item_price)
+                $logmessage = "Item Price" .$editeset_data->item_price. " changed by " .$data_item_price;
+
+            if($editeset_data->item_stock != $data_item_stock)
+                $logmessage = "Item Stock" .$editeset_data->item_stock. " changed by " .$data_item_stock;
+
+            $update_data = array(
+               'item_mtid' => $data_item_mtid,
+               'item_name'=> $data_item_name,
+               'item_price' => $data_item_price,
+               'item_stock' => $data_item_stock,
+            );
+
+            $duplicate= $this->PICO_model->isduplicatemore('items',$update_data);
+            if(!$duplicate){
+                $roledflag=$this->PICO_model->updaterec('items', $update_data,'item_id', $data_eid);
+                if(!$roledflag)
+                {
+                $this->logger->write_logmessage("error","Edit Item details error", "Edit Item details . $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit Item details error", "Edit Item details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating Item details' . $logmessage . '.', 'error');
+                $this->load->view('setup/displayitemdetails', $data);
+                }
+                else{
+                $this->logger->write_logmessage("update","Edit Item details  Setting", "Edit Item details  Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit Item details  Setting", "Edit Item details  Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Selected Item details updated successfully..');
+                redirect('picosetup/itemtypedetails');
+                }
+            }
+            else{
+                $this->logger->write_logmessage("delete", "duplicate   Item details  record " . "[item_id:" .$id. "] deleted successfully.. ");
+                $this->logger->write_dblogmessage("delete", "duplicate Item details  record" ." [item_id:" .$id. "] deleted successfully.. " );
+                $this->session->set_flashdata("success", "Selected Item details already exists..." );
+                redirect('picosetup/itemtypedetails');
+
+            }
+            
+        }
+
+    }
+
+     /* This function is used to delete item record */
     public function deleteitemtype($id) { 
 
         $mt_data=$this->PICO_model->get_listrow('items','item_id', $id);
@@ -1330,8 +1018,8 @@ class Picosetup extends CI_Controller
                 //return;
               }
               else{
-                    $this->logger->write_logmessage("delete", "Deleted   Item record " . "[mt_id:" . $id . "] deleted successfully.. " );
-                    $this->logger->write_dblogmessage("delete", "Deleted Item record" ." [mt_id:" . $id . "] deleted successfully.. " );
+                    $this->logger->write_logmessage("delete", "Deleted   Item record " . "[item_id:" . $id . "] deleted successfully.. " );
+                    $this->logger->write_dblogmessage("delete", "Deleted Item record" ." [item_id:" . $id . "] deleted successfully.. " );
                     $this->session->set_flashdata("success", "Specific Item deleted successfully..." );
                     redirect('picosetup/itemtypedetails');
             }
@@ -1810,7 +1498,7 @@ else  redirect('picosetup/displaytypeoftender');
                  	
                
                  $this->form_validation->set_rules('vendor_companyname','vendor company name','trim|xss_clean|required|alpha_numeric_spaces|callback_isvendorExist');
-                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required');
                  $this->form_validation->set_rules('vendor_city','vendor city','trim|xss_clean|required|alpha_numeric_spaces');
                  $this->form_validation->set_rules('vendor_pincode','vendor pincode','required|exact_length[6]');
                  $this->form_validation->set_rules('vendor_phone','vendor phone','required|numeric');
@@ -1954,7 +1642,7 @@ else {
         /*Form Validation*/
                  
                  $this->form_validation->set_rules('vendor_companyname','vendor company name','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required');
                  $this->form_validation->set_rules('vendor_city','vendor city','trim|xss_clean|required|alpha_numeric_spaces');
                  $this->form_validation->set_rules('vendor_pincode','vendor pincode','required');
                  $this->form_validation->set_rules('vendor_phone','vendor phone','required|numeric');
@@ -2354,15 +2042,325 @@ else {
         $this->logger->write_logmessage("view"," View tender form ", " tender form details...");
         
         $this->load->view('setup/tenderform');
+    }
+
+
+
+    /************************************* Purchase Committee Selection *****************************************************/
+
+
+    /*** This Function is used to open form ***/
+    public function opencommitteeselection(){
+        $data['dept']= $this->common_model->get_list('department');
+        $data['result']= $this->PICO_model->get_list('purchase_com_form_rule');
+        $this->load->view('setup/committeeselectionform',$data);
     }	
 
+    /*** This Function is used to insert details ***/
+    public function insertpurchselectioncomm(){
+
+    if(isset($_POST['purch_selection'])){
+
+            $this->form_validation->set_rules('pc_purchasethrough','Purchase Through','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_purchpricelimit','Estimated Price','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_dept','Department','required');
+            $this->form_validation->set_rules('pc_convener','Convener','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_rep1','1st Representative','required');
+            $this->form_validation->set_rules('pc_rep2','2nd Representative');
+            $this->form_validation->set_rules('pc_rep3','3rd Representative');
+            $this->form_validation->set_rules('pc_rep4','4th Representative');
+            $this->form_validation->set_rules('pc_rep5','5th Representative');
+            $this->form_validation->set_rules('pc_appauth','Authority','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_desc','Description','trim|xss_clean|required');
+
+            if($this->form_validation->run()==TRUE){
+
+                $data = array(
+                'pc_purchasethrough'=>$_POST['pc_purchasethrough'],
+                'pc_purchpricelimit'=>$_POST['pc_purchpricelimit'],
+                'pc_dept'=>$_POST['pc_dept'],
+                'pc_convener'=>$_POST['pc_convener'],
+                'pc_rep1'=>$_POST['pc_rep1'],
+                'pc_rep2'=>$_POST['pc_rep2'],
+                'pc_rep3'=>$_POST['pc_rep3'],
+                'pc_rep4'=>$_POST['pc_rep4'],
+                'pc_rep5'=>$_POST['pc_rep5'],
+                'pc_appauth'=>$_POST['pc_appauth'],
+                'pc_desc'=>$_POST['pc_desc'],
+                'pc_createdby'=>$this->session->userdata('username'),
+                'pc_creationdate'=>date('Y-m-d')
+
+                 );
+
+                $rflag=$this->PICO_model->insertrec('purchase_committee', $data);
+                if(!$rflag){
+                    $this->logger->write_logmessage("insert","Trying to add purchase committee", "purchase committee is not added ".$pc_id);
+                    $this->logger->write_dblogmessage("insert","Trying to add purchase committee", "purchase committee is not added ".$pc_id);
+                    $this->session->set_flashdata('err_message','Error in adding purchase committee'  , 'error');
+                    redirect('picosetup/opencommitteeselection');
+                }
+                else
+                {
+                    $this->logger->write_logmessage("insert","Add Purchase Committee Setting", "Purchase Committee".$_POST['pc_id']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add Purchase Committee Setting", "Purchase Committee".$_POST['pc_id']."added  successfully...");
+                    $this->session->set_flashdata("success", "Purchase Committee Added successfully...");
+                    redirect("picosetup/displaycommitteeselection");
+                }
+            }
+          
+        }
+    }
+
+    /*** This Function is used to open detailed table ***/
+    public function displaycommitteeselection(){
+        $data['committee'] = $this->PICO_model->get_list('purchase_committee');
+        $this->logger->write_logmessage("view"," View store setting", "Store setting details...");
+        $this->logger->write_dblogmessage("view"," View store setting", "Store setting details...");
+        $this->load->view('setup/displaycommitteeselection',$data);
+    }
+
+    /* this function is used for delete record */
+    public function deletecommitteeselection($id) { 
+
+        $mt_data=$this->PICO_model->get_listrow('purchase_committee','pc_id', $id);
+        if ($mt_data->num_rows() < 1)
+        {   
+
+            redirect('setup/committeeselectionform');
+        }
+            $fmdflag=$this->PICO_model->deleterow('purchase_committee','pc_id', $id);
+            if(!$fmdflag)
+            {
+                $this->logger->write_message("error", "Error  in deleting this record " ."[pc_id:" . $id . "]");
+                    $this->logger->write_dbmessage("error", "Error  in deleting this record "." [pc_id:" . $id . "]");
+                    $this->session->set_flashdata('err_message', 'Error in Deleting this record - ', 'error');
+                    redirect('picosetup/displaycommitteeselection');
+                //return;
+              }
+              else{
+                    $this->logger->write_logmessage("delete", "Deleted   selected record " . "[pc_id:" . $id . "] successfully.. " );
+                    $this->logger->write_dblogmessage("delete", "Deleted selected record" ." [pc_id:" . $id . "] successfully.. " );
+                    $this->session->set_flashdata("success", "Selected record deleted successfully..." );
+                    redirect('picosetup/displaycommitteeselection');
+            }
+          $this->load->view('setup/displaycommitteeselection',$data);
+    }
+
+     /**** This function is used to modify committee selection **********/   
+     public function editcommitteeselection($id) {
+
+        $this->db4->from('purchase_committee')->where('pc_id', $id);
+        $eset_data_q = $this->db4->get();
+        if ($eset_data_q->num_rows() < 1)
+        {
+            redirect('setup/editcommitteeselection');
+        }
+
+        $editeset_data = $eset_data_q->row();
+        /* Form fields */
+
+                $data['pc_purchasethrough'] = array(
+                'name' => 'pc_purchasethrough',
+                'id' => 'pc_purchasethrough',
+                'size' => '40',
+                'value' => $editeset_data->pc_purchasethrough,
+                );
+
+                $data['pc_purchpricelimit'] = array(
+                'name' => 'pc_purchpricelimit',
+                'id' => 'pc_purchpricelimit',
+                'size' => '40',
+                'value' => $editeset_data->pc_purchpricelimit,
+                );
+
+                $data['pc_dept'] = array(
+                'name' => 'pc_dept',
+                'id' => 'pc_dept',
+                'size' => '40',
+                'value' => $editeset_data->pc_dept,
+                );
+
+                $data['pc_convener'] = array(
+                'name' => 'pc_convener',
+                'id' => 'pc_convener',
+                'size' => '20',
+                'value' => $editeset_data->pc_convener,
+                );
+
+                $data['pc_rep1'] = array(
+                'name' => 'pc_rep1',
+                'id' => 'pc_rep1',
+                'size' => '40',
+                'value' => $editeset_data->pc_rep1,
+                );
+
+                $data['pc_rep2'] = array(
+                'name' => 'pc_rep2',
+                'id' => 'pc_rep2',
+                'size' => '40',
+                'value' => $editeset_data->pc_rep2,
+                );
+
+                $data['pc_rep3'] = array(
+                'name' => 'pc_rep3',
+                'id' => 'pc_rep3',
+                'size' => '40',
+                'value' => $editeset_data->pc_rep3,
+                );
+
+                $data['pc_rep4'] = array(
+                'name' => 'pc_rep4',
+                'id' => 'pc_rep4',
+                'size' => '40',
+                'value' => $editeset_data->pc_rep4,
+                );
+
+                $data['pc_rep5'] = array(
+                'name' => 'pc_rep5',
+                'id' => 'pc_rep5',
+                'size' => '40',
+                'value' => $editeset_data->pc_rep5,
+                );
+
+                 $data['pc_appauth'] = array(
+                'name' => 'pc_appauth',
+                'id' => 'pc_appauth',
+                'size' => '40',
+                'value' => $editeset_data->pc_appauth,
+                );
+
+                $data['pc_desc'] = array(
+                'name' => 'pc_desc',
+                'id' => 'pc_desc',
+                'size' => '40',
+                'value' => $editeset_data->pc_desc,
+                );
+
+        $data['id'] = $id;
+        /*Form Validation*/
+            $this->form_validation->set_rules('pc_purchasethrough','Purchase Through','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_purchpricelimit','Estimated Price','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_dept','Department','required');
+            $this->form_validation->set_rules('pc_convener','Convener','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_rep1','1st Representative','required');
+            $this->form_validation->set_rules('pc_rep2','2nd Representative');
+            $this->form_validation->set_rules('pc_rep3','3rd Representative');
+            $this->form_validation->set_rules('pc_rep4','4th Representative');
+            $this->form_validation->set_rules('pc_rep5','5th Representative');
+            $this->form_validation->set_rules('pc_appauth','Authority','trim|xss_clean|required');
+            $this->form_validation->set_rules('pc_desc','Description','trim|xss_clean|required');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['pc_purchasethrough']['value'] = $this->input->post('pc_purchasethrough', TRUE);
+            $data['pc_purchpricelimit']['value'] = $this->input->post('pc_purchpricelimit', TRUE);
+            $data['pc_dept']['value'] = $this->input->post('pc_dept', TRUE);
+            $data['pc_convener']['value'] = $this->input->post('pc_convener', TRUE);
+            $data['pc_rep1']['value'] = $this->input->post('pc_rep1', TRUE);
+            $data['pc_rep2']['value'] = $this->input->post('pc_rep2', TRUE);
+            $data['pc_rep3']['value'] = $this->input->post('pc_rep3', TRUE);
+            $data['pc_rep4']['value'] = $this->input->post('pc_rep4', TRUE);
+            $data['pc_rep5']['value'] = $this->input->post('pc_rep5', TRUE);
+            $data['pc_appauth']['value'] = $this->input->post('pc_appauth', TRUE);
+            $data['pc_desc']['value'] = $this->input->post('pc_desc', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editcommitteeselection', $data);
+            return;
+        }
+        else{
+
+            $data_purchasethrough = $this->input->post('pc_purchasethrough', TRUE);
+            $data_purchpricelimit = $this->input->post('pc_purchpricelimit', TRUE);
+            $data_dept = $this->input->post('pc_dept', TRUE);
+            $data_convener = $this->input->post('pc_convener', TRUE);
+            $data_rep1 = $this->input->post('pc_rep1', TRUE);
+            $data_rep2 = $this->input->post('pc_rep2', TRUE);
+            $data_rep3 = $this->input->post('pc_rep3', TRUE);
+            $data_rep4 = $this->input->post('pc_rep4', TRUE);
+            $data_rep5 = $this->input->post('pc_rep5', TRUE);
+            $data_appauth = $this->input->post('pc_appauth', TRUE);
+            $data_desc = $this->input->post('pc_desc', TRUE);
+            $data_eid = $id;
+
+            $logmessage = "";
+            if($editeset_data->pc_purchasethrough != $data_purchasethrough)
+                $logmessage = "Purchase Through" .$editeset_data->pc_purchasethrough. " changed by " .$data_purchasethrough;
+
+            if($editeset_data->pc_purchpricelimit!= $data_purchpricelimit)
+                $logmessage = "Estimated Price" .$editeset_data->pc_purchpricelimit. " changed by " .$data_purchpricelimit;
+
+            if($editeset_data->pc_dept != $data_dept)
+                $logmessage = "Department " .$editeset_data->pc_dept. " changed by " .$data_dept;
+
+            if($editeset_data->pc_convener != $data_convener)
+                $logmessage = "Convener" .$editeset_data->pc_convener. " changed by " .$data_convener;
+
+            if($editeset_data->pc_rep1 != $data_rep1)
+                $logmessage = "Representative 1" .$editeset_data->pc_rep1. " changed by " .$data_rep1;
+
+            if($editeset_data->pc_rep2 != $data_rep2)
+                $logmessage = "Representative 2" .$editeset_data->pc_rep2. " changed by " .$data_rep2;
+
+            if($editeset_data->pc_rep3 != $data_rep3)
+                $logmessage = "Representative 3" .$editeset_data->pc_rep3. " changed by " .$data_rep3;
+
+            if($editeset_data->pc_rep4 != $data_rep4)
+                $logmessage = "Representative 4" .$editeset_data->pc_rep4. " changed by " .$data_rep4;
+
+            if($editeset_data->pc_rep5 != $data_rep5)
+                $logmessage = "Representative 5" .$editeset_data->pc_rep5. " changed by " .$data_rep5;
+
+            if($editeset_data->pc_appauth != $data_appauth)
+                $logmessage = "Authority" .$editeset_data->pc_appauth. " changed by " .$data_appauth;
+
+            if($editeset_data->pc_desc != $data_desc)
+                $logmessage = "Description" .$editeset_data->pc_desc. " changed by " .$data_desc;
+
+            $update_data = array(
+               'pc_purchasethrough' => $data_purchasethrough,
+               'pc_purchpricelimit'=> $data_purchpricelimit,
+               'pc_dept' => $data_dept,
+               'pc_convener' => $data_convener,
+               'pc_rep1' => $data_rep1,
+               'pc_rep2' => $data_rep2,
+               'pc_rep3' => $data_rep3,
+               'pc_rep4' => $data_rep4,
+               'pc_rep5' => $data_rep5,
+               'pc_appauth' => $data_appauth,
+               'pc_desc' => $data_desc,
+               'pc_modifiedby'=> $this->session->userdata('username'),
+               'pc_modifieddate'=>date('Y-m-d')
+            );
+
+                $roledflag=$this->PICO_model->updaterec('purchase_committee', $update_data,' pc_id', $data_eid);
+                if(!$roledflag)
+                {
+                $this->logger->write_logmessage("error","Edit Committee Selection Setting error", "Edit Committee Selection Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit Committee Selection Setting error", "Edit Committee Selection Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating Committee Selection' . $logmessage . '.', 'error');
+                $this->load->view('setup/displaycommitteeselection', $data);
+                }
+                else{
+                $this->logger->write_logmessage("update","Edit Committee Selection Setting", "Edit Committee Selection Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit Committee SelectionSetting", "Edit Committee Selection Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Committee Selection details updated successfully..');
+                redirect('picosetup/displaycommitteeselection');
+                }
+            
+        }
+
+    }
  
 
-    
+        
   
     
     
-    }
+}
 
 
 

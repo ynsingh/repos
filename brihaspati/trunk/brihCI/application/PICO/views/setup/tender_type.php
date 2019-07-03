@@ -1,16 +1,15 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+
 <html>
 <title>Add Tender</title>
 
  <head>
      <?php $this->load->view('template/header'); ?>
-   
+     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
  </head>    
  <body> 
-<!--<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>-->
-
-
      <table width="100%">
             <tr><td>
                 <?php echo anchor('picosetup/displaytypeoftender/', "View tender Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
@@ -37,7 +36,7 @@
         </table>
  
     <form action="<?php echo site_url('picosetup/tender_type');?>" method="POST" class="form-inline">
-            <table>
+            <table class="TFtable">
             <tr>
                 <td><label for="tt_name" class="control-label">Tender Name:</label></td>
                 <td>
@@ -62,11 +61,12 @@
                     <?php echo form_error('tt_desc')?>
                 </td>
                 <td>
-                    Example : Tender details like DOS & D control.
+                    Example :Tender details like DOS & D control.
                 </td>
             </tr>
             <tr>
-                <td></td><td>
+                <td></td>
+                <td colspan="3">
                 <button name="tender_type" >Add Tender</button>
                 <button name="reset" >Clear</button>
                 </td>

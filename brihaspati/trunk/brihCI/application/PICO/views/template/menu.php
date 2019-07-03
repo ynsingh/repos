@@ -285,30 +285,7 @@ echo "<ul class=\"sf-menu\" >";
                                                 echo anchor('picosetup/purchasecommitteedetails', 'Purchase Committee Formation Rules', array('title' => 'Formation Rules'));
                                         echo "</li>"; 
 /*Fees*/
-                                        echo "<li>";
-                                               echo anchor('payrollprofile/viewpaytransentry', 'Fees', array('title' => 'Fees'));
-/*                                                    echo "<ul>";
-                                                        echo "<li>";
-                                                            echo anchor('payrollprofile/payprofile', 'Tender Fees', array('title' => 'Payroll Profile'));
-                                                        echo "</li>";
-                                                        echo "<li>";
-                                                             echo anchor('payrollprofile/payprofile', 'Amount Cut', array('title' => 'Payroll Profile'));
-                                                        echo "</li>";
-                                                        echo "<li>";
-                                                            echo anchor('payrollprofile/payprofile', '_______________', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                            echo anchor('payrollprofile/payprofile', 'Refund', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                            echo anchor('payrollprofile/payprofile', 'EMD Fees', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                        echo "<li>";
-                                                            echo anchor('payrollprofile/payprofile', 'Performance Back  Guarantee', array('title' => 'Payroll Profile'));
-                                                        echo "</li>"; 
-                                                echo "</ul>";
-*/    
-                                        echo "</li>";
+                                      
 
 
  /*Setup close tag*/echo "</ul>";   
@@ -316,23 +293,27 @@ echo "<ul class=\"sf-menu\" >";
 
                                        
 /*Supplier Registration*/
-                                        echo "<li>";
-                                                echo anchor('setup3/shdefaultvalue', 'Supplier Registration', array('title' => 'Salary Head Default Values'));
-                                               // echo "<ul>";
-                                               //          echo "<li>";
-                                               //              echo anchor('setup3/salhead_config', 'Local Registered Firms', array('title' => 'Salary Head Configuration'));
-                                               //          echo "</li>";
-                                               //          echo "<li>";
-                                               //              echo anchor('setup3/salhead_config', 'Outside Firms', array('title' => 'Salary Head Configuration'));
-                                               //          echo "</li>";
-                                               //          echo "<li>";
-                                               //              echo anchor('setup3/salhead_config', 'Blacklist', array('title' => 'Salary Head Configuration'));
-                                               //          echo "</li>";
+                                        // echo "<li>";
+                                        //         echo anchor('setup3/shdefaultvalue', 'Supplier Registration', array('title' => 'Salary Head Default Values'));
+                                        //        // echo "<ul>";
+                                        //        //          echo "<li>";
+                                        //        //              echo anchor('setup3/salhead_config', 'Local Registered Firms', array('title' => 'Salary Head Configuration'));
+                                        //        //          echo "</li>";
+                                        //        //          echo "<li>";
+                                        //        //              echo anchor('setup3/salhead_config', 'Outside Firms', array('title' => 'Salary Head Configuration'));
+                                        //        //          echo "</li>";
+                                        //        //          echo "<li>";
+                                        //        //              echo anchor('setup3/salhead_config', 'Blacklist', array('title' => 'Salary Head Configuration'));
+                                        //        //          echo "</li>";
 
-                                               // echo "</ul>";
+                                        //        // echo "</ul>";
+                                        // echo "</li>";
+
+/*Purchase Type*/                       
+                                        echo "<li>";
+                                                echo anchor('picosetup/displaycommitteeselection', 'Purchase Committee Selection', array('title' => 'Purchase Committee Selection'));
                                         echo "</li>";
 
-/*Purchase Type*/
                                         echo "<li>";
                                                 echo anchor('picosetup/openpurchaseproposalform', 'Purchase Proposal', array('title' => 'Purchase Proposal'));
                                         echo "</li>";

@@ -49,75 +49,56 @@
 <body>
 
 		<form action="<?php echo site_url('picosetup/insertitemtype');?>" method="POST" class="form-inline">
-			<table class="">
-			    <tr>
-					<td><label for="item_id" class="control-label">Item ID :<font color='Red'>*</font></label></td>
-                	<td>
-                	<input type="text" name="item_id"  class="form-control" size="30" placeholder="Item ID" /><br>
+			<table class="TFtable">
+			   <!--  <tr>
+					<td>
+                        <label for="item_id" class="control-label">Item ID :<font color='Red'>*</font></label>
                 	</td>
-                	<td>
-                    <?php echo form_error()?>
+                    <td>
+                	<input type="text" name="item_id"  class="form-control" size="30" placeholder="Item ID" />
+                	</td>	
+                </tr> -->
+
+                <tr>
+					<td>
+                        <label for="item_mtid" class="control-label">Material ID :<font color='Red'>*</font></label>
                 	</td>
-                	<td>
-                	  Example:
+                    <td>
+                	   <input type="text" name="item_mtid"  class="form-control" size="30" placeholder="Material ID" />
                 	</td>
                 </tr>
 
                 <tr>
-					<td><label for="item_mtid" class="control-label">Material ID :<font color='Red'>*</font></label></td>
-                	<td>
-                	<input type="text" name="item_mtid"  class="form-control" size="30" placeholder="Material ID" /><br>
+					<td>
+                        <label for="item_name" class="control-label">Item Name :<font color='Red'>*</font></label>
                 	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	   Example: 
-                	</td>
-                </tr>
-                <tr>
-					<td><label for="item_name" class="control-label">Item Name :<font color='Red'>*</font></label></td>
-                	<td>
-                	<input type="text" name="item_name"  class="form-control" size="30" placeholder="Item Name" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	   Example: 
-                	</td>
-                </tr>
-                <tr>
-                    <td><label for="item_price" class="control-label">Item Price :<font color='Red'>*</font></label></td>
                     <td>
-                    <input type="text" name="item_price"  class="form-control" size="30" placeholder="Item Price" /><br>
-                    </td>
-                    <td>
-                    <?php echo form_error()?>
-                    </td>
-                    <td>
-                       Example: 
-                    </td>
-                </tr>
-                <tr>
-					<td><label for="item_stock" class="control-label">Item Stock: <font color='Red'>*</font> </label></td>
-                	<td>
-                	<input type="text" name="item_stock"  class="form-control" size="30"  placeholder="Item Stock" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	   Example: 
-                	</td>
-                </tr>
-                <tr>
-                </tr>
-                <tr>
-                <td></td>
-                <td>
-                <button name="item_type">Submit Form</button>
+                	   <input type="text" name="item_name"  class="form-control" size="30" placeholder="Item Name" />
                 </td>
+                	
+                <tr>
+                    <td>
+                        <label for="item_price" class="control-label">Item Price :<font color='Red'>*</font></label>
+                    </td>
+                    <td>
+                        <input type="text" name="item_price"  class="form-control" size="30" placeholder="Item Price" />
+                    </td>  
+                </tr>
+
+                <tr>
+					<td>
+                        <label for="item_stock" class="control-label">Item Stock: <font color='Red'>*</font> </label>
+                	</td>
+                    <td>
+                	   <input type="text" name="item_stock"  class="form-control" size="30"  placeholder="Item Stock" />
+                	</td>
+                </tr>
+               
+                <tr>
+                    <td></td>
+                    <td>
+                    <button name="item_type">Submit Form</button>
+                    </td>
            		</tr>
 
 			</table>

@@ -1,14 +1,14 @@
  
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Display Item Type
+ * @name: Display Item List
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  */
 ?>
 
 <html>
-<title>Item List | Details</title>
+<title>Item List | Display</title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
@@ -50,17 +50,18 @@
 <div class="scroller_sub_page">
       <table class="TFtable" >
                 <tr>
-<thead><th>Sr.No</th><th>Item ID</th><th>Material ID</th><th>Item Name</th><th>Item Price<br>(Rs)</th><th>Item Stock</th><th>Action</th></tr></thead>
-<tbody>
+<thead><th>Sr.No</th>
+  <!-- <th>Item ID</th> -->
+  <th>Material ID</th><th>Item Name</th><th>Item Price<br>(Rs)</th><th>Item Stock</th><th>Action</th></tr></thead>
+  <tbody>
    <?php
         $count =0;
-        
-        foreach ($result as $row)
+
+        foreach($result as $row)
         {  
          ?>
-             <tr>
+          <tr>
             <td> <?php echo ++$count; ?> </td> 
-            <td> <?php echo $row->item_id ?></td>
             <td> <?php echo $row->item_mtid ?></td>
             <td> <?php echo $row->item_name ?></td>
             <td> <?php echo $row->item_price ?></td>
@@ -68,18 +69,20 @@
 
       <td>
          <?php  
-    if ($row->item_id){
-          
-          echo "&nbsp; ";
-                echo anchor('picosetup/deleteitemtype/' . $row->item_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
-               // echo anchor('picosetup/editfinancialpower/' . $row->item_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
+      if ($row->item_id){
+            
+            echo "&nbsp; ";
+            echo anchor('picosetup/deleteitemtype/' . $row->item_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
+            echo "<br>";
+            echo anchor('picosetup/edititemdetails/' . $row->item_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
+            
         }
             echo "</td>";
-            echo "</tr>";
+          echo "</tr>";
           
         }
           ?>  
-</tbody>
+  </tbody>
 </table>
 <br><br>
 </div><!------scroller div------>

@@ -1,11 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
- 
-
-
-/** 
-    @name typeofstore.php 
- *   @author: Shivam Kumar Singh(shivam.iitk1@gmail.com)
-*/
+ /**
+ * @name: Type of Store Form
+ * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
+ * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
+ */
 ?>
 
 <html>
