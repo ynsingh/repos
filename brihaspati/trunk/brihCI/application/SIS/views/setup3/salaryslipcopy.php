@@ -4,38 +4,51 @@
     <head>
         <title> </title>
 	<style>
+            /* {
+                box-sizing: border-box;
+            }*/
+         
             .TFtable tr td{border:0px solid black;}	
                 .table2 th,td {
                     border: 1px solid black;
                     border-collapse:separate;
                     border-spacing: 1px; 
-            }
-            .blue{
-                float: right;
-                width: 45%;
-              //  background-color: #1faadb;
                     
             }
-            .green {
-                float: left;
-                width: 35%;
-             //   background-color: #8ebf42;
-            }
+           
             
             /** 
             * Define the width, height, margins and position of the watermark.
             **/
             
             #watermark {
-                position:   fixed;
+                position:fixed;
                 
-                bottom:    8cm;
-                left:      4cm;
+                bottom:8cm;
+                left:4cm;
                 
-                width:      10cm;
-                height:     10cm;
+                width:10cm;
+                height:10cm;
                 
-                opacity:    .1;
+                opacity:.1;
+                
+            }
+            
+            .column {
+                float: left;
+                // width:300pt;
+                //padding: 10px;
+                position:absolute;
+                // left:5pt;
+                display:inline-block;
+            //  height: 275px; /* Should be removed. Only for demonstration */
+            }
+        
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
             }
             
 	</style>
@@ -131,15 +144,29 @@
             <hr>
             </table>
             <div style="clear:both; position:relative;">
-                <div style="position:absolute; left:5pt; width:230pt; display:inline-block;" >
-                    <table width="100%" class="TFtable" >
+                
+            
+                <?php 
+                    $countin=count($incomes);
+                    $halfin = $countin / 2; 
+                   // print_r("partoooo===".$half."count==".$count);
+                          
+                    $partin1 = array_slice($incomes, 0, $halfin); 
+                    $partin2 = array_slice($incomes, $halfin); 
+                             
+                 ?>
+               <!--<div style="position:absolute; left:5pt;width:33%;display:inline-block;background-color:red " > -->
+               <div class="column" style="left:5pt;width:33%;" >
+                
+                    <table width="100%" class="TFtable">
+                       
                         <tr>
                             <td style="font-size:9;" width="30%"><b>Earnings</b></td>
                             <td style="font-size:9;left:20px;" width="20%"><b>Amount(in Rs.)</b></td>
                         </tr>    
                         <?php foreach($incomes as $inrecord){ ?>
-                        <tr>
-                            <td style="font-size:9;"><?php echo $inrecord->sh_name;?></td> 
+                       <tr>
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($inrecord->sh_name);?></td> 
                             <td style="font-size:9; left:20px;"><?php 
                                                                 
                                 if($case == "leavcase" || $dupexists == 1){
@@ -171,20 +198,82 @@
                                    
                                 ?>
                                 </td>
-                        </tr>
+                        </tr> 
                         <?php };?>
-                    </table>    
+                    </table> 
+                    
                 </div>
+               <!--<div style="position:absolute; left:5pt;width:33%;display:inline-block;background-color:red " > -->
+               <!--<div class="column" style="margin-left:200pt;width:30%;background-color:yellowgreen;" >
                 
-                <div style="margin-left:250pt; display:inline-block;" >
-                    <table width="100%" class="TFtable"> 
+                    <table width="100%" class="TFtable">
+                       
+                        <tr>
+                            <td style="font-size:9;" width="30%"><b>Earnings</b></td>
+                            <td style="font-size:9;left:20px;" width="20%"><b>Amount(in Rs.)</b></td>
+                        </tr>    
+                        <?php foreach($partin2 as $inrecord){ ?>
+                       <tr>
+                            <td style="font-size:9;width:130px; word-break:break-all; word-wrap:break-word;"><?php echo nl2br($inrecord->sh_name);?></td> 
+                            <td style="font-size:9; left:20px;"><?php 
+                                                                
+                                if($case == "leavcase" || $dupexists == 1){
+                                    $selsaldata ="saldlt_shamount";
+                                    $whdata = array('saldlt_sheadid'=>$inrecord->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year);
+                                    $spec_data= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
+                                    if(!empty($spec_data)){
+                                        $headamt=$spec_data[0]->saldlt_shamount;
+                                        echo $headamt;
+                                    }    
+                                    else{
+                                        echo "0";       
+                                    }
+                                    
+                                }
+                                else{
+                                    $selsaldata ="sald_shamount";
+                                    $whdata = array('sald_sheadid'=>$inrecord->sh_id,'sald_empid' =>$empid,'sald_month' =>$month,'sald_year' =>$year);
+                                    $spec_data= $this->sismodel->get_orderlistspficemore('salary_data',$selsaldata,$whdata,'');
+                                    if(!empty($spec_data)){
+                                        $headamt=$spec_data[0]->sald_shamount;
+                                        echo $headamt;
+                                    }    
+                                    else{
+                                        echo "0";       
+                                    }
+                                }
+                                
+                                   
+                                ?>
+                                </td>
+                        </tr> 
+                        <?php };?>
+                    </table> 
+                </div>  -->   
+                
+               
+                <?php 
+                    $count=count($deduction);
+                    $half = $count / 2; 
+                   // print_r("partoooo===".$half."count==".$count);
+                          
+                    $part1 = array_slice($deduction, 0, $half); 
+                    $part2 = array_slice($deduction, $half); 
+                             
+                 ?>             
+                <!--<div style="margin-left:180pt;width:200pt;display:inline-block;background-color:green;" > -->
+                  <div class="column" style="margin-left:180pt;width:33%;" >
+                   <table width="100%" class="TFtable"> 
                         <tr> 
                             <td style="font-size:9;" width="30%"><b>Deductions</b></td>
-                            <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
+                            <td style="font-size:9;" width="30%"><b>Amount(in Rs.)</b></td> 
                         </tr> 
-                        <?php foreach($deduction as $dedrecord){ ?>
+                        <?php 
+                            foreach($part1 as $dedrecord){
+                             
+                        ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $dedrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord->sh_name) ;?></td> 
                             <td style="font-size:9;"><?php 
                                  if($case == "leavcase" || $dupexists == 1){
                                     $selsaldata ="saldlt_shamount";
@@ -203,6 +292,55 @@
                             
                                     $selsaldata ="sald_shamount,";
                                     $whdata = array('sald_sheadid'=>$dedrecord->sh_id,'sald_empid' =>$empid,'sald_month' =>$month,'sald_year' =>$year);
+                                    $spec_data= $this->sismodel->get_orderlistspficemore('salary_data',$selsaldata,$whdata,'');
+                                    if(!empty($spec_data)){
+                                        $headamt=$spec_data[0]->sald_shamount;
+                                        echo $headamt;
+                                    }    
+                                    else{
+                                        echo "0";       
+                                    }
+                                }    
+                                ?>
+                            </td>
+                        </tr>
+                        <?php };?>
+                       
+                    </table>   
+                </div>
+                <!--<div style="margin-left:550pt;display:inline-block;background-color:blue; " > -->
+                <div class="column" style="margin-left:350pt;width:33%;">
+                  
+                   <table width="100%" class="TFtable"> 
+                        <tr> 
+                            <td style="font-size:9;" width="30%"><b>Deductions</b></td>
+                            <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
+                        </tr> 
+                        <?php foreach($part2 as $dedrecord1){
+                            
+                          //  $part=array_chunk($dedrecord,20,true);
+                            
+                        ?>
+                        <tr>
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord1->sh_name) ;?></td> 
+                            <td style="font-size:9;"><?php 
+                                 if($case == "leavcase" || $dupexists == 1){
+                                    $selsaldata ="saldlt_shamount";
+                                    $whdata = array('saldlt_sheadid'=>$dedrecord1->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year);
+                                    $spec_data= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
+                                    if(!empty($spec_data)){
+                                        $headamt=$spec_data[0]->saldlt_shamount;
+                                        echo $headamt;
+                                    }    
+                                    else{
+                                        echo "0";       
+                                    }
+                                    
+                                }
+                                else{
+                            
+                                    $selsaldata ="sald_shamount,";
+                                    $whdata = array('sald_sheadid'=>$dedrecord1->sh_id,'sald_empid' =>$empid,'sald_month' =>$month,'sald_year' =>$year);
                                     $spec_data= $this->sismodel->get_orderlistspficemore('salary_data',$selsaldata,$whdata,'');
                                     if(!empty($spec_data)){
                                         $headamt=$spec_data[0]->sald_shamount;
@@ -255,11 +393,11 @@
                             </td></tr>   
                                    
                           <?php };?>
-                    </table>     
+                    </table>    
                 </div>
               
             </div>
-            <div style="position: fixed; left: 5px; bottom:100px; right: 0px; height: 70px;">
+            <div style="position: fixed; left: 5px; bottom:50px; right: 0px; height: 70px;">
                 <hr>
                 <table width="100%" class="TFtable">
                     
@@ -313,7 +451,7 @@
             </div>
         
           <!-- style="position: fixed; left: 0px; bottom: -180px; right: 0px; height: 150px; -->
-            <div style="position: fixed; left: 5px; bottom:50px; right: 0px; height: 30px;">
+            <div style="position: fixed; left: 5px; bottom:30px; right: 0px; height: 30px;">
              <p>As it is computer generated slip, signature is not required. </p>  
             </div>
           

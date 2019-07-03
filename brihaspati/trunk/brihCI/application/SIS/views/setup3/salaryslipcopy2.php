@@ -11,17 +11,6 @@
                     border-collapse:separate;
                     border-spacing: 1px; 
             }
-            .blue{
-                float: right;
-                width: 45%;
-              //  background-color: #1faadb;
-                    
-            }
-            .green {
-                float: left;
-                width: 35%;
-             //   background-color: #8ebf42;
-            }
             
             /** 
             * Define the width, height, margins and position of the watermark.
@@ -39,6 +28,23 @@
                 opacity:    .1;
             }
             
+            
+            .column {
+                float: left;
+                // width:300pt;
+                //padding: 10px;
+                position:absolute;
+                // left:5pt;
+                display:inline-block;
+            //  height: 275px; /* Should be removed. Only for demonstration */
+            }
+        
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
 	</style>
     </head>
     <body style="border:1px solid black;margin-top:5px;">
@@ -143,7 +149,7 @@
             <!-- ************************************************* from ******************************************************* -->
            
             <div style="clear:both; position:relative;">
-                <div style="position:absolute; left:5pt; width:230pt; display:inline-block;" >
+                <div class="column" style="left:5pt;width:33%;" >
                     <table width="100%" class="TFtable" >
                         <tr>
                             <td style="font-size:9;" width="30%"><b>Earnings</b></td>
@@ -151,7 +157,7 @@
                         </tr>    
                         <?php foreach($incomes as $inrecord){ ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $inrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($inrecord->sh_name);?></td> 
                             <td style="font-size:9; left:20px;"><?php 
                                 $case=$this->uri->segment(6);
                                 $selsaldata ="saldlt_shamount";
@@ -172,15 +178,25 @@
                     </table>    
                 </div>
                 
-                <div style="margin-left:250pt; display:inline-block;" >
+                <?php 
+                    $count=count($deduction);
+                    $half = $count / 2; 
+                   // print_r("partoooo===".$half."count==".$count);
+                          
+                    $part1 = array_slice($deduction, 0, $half); 
+                    $part2 = array_slice($deduction, $half); 
+                             
+                 ?>
+                
+                <div class="column" style="margin-left:180pt;width:33%;" >
                     <table width="100%" class="TFtable"> 
                         <tr> 
                             <td style="font-size:9;" width="30%"><b>Deductions</b></td>
                             <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
                         </tr> 
-                        <?php foreach($deduction as $dedrecord){ ?>
+                        <?php foreach($part1 as $dedrecord){ ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $dedrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord->sh_name);?></td> 
                             <td style="font-size:9;"><?php 
                                 $selsaldata ="saldlt_shamount";
                                 $whdata = array('saldlt_sheadid'=>$dedrecord->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"from");
@@ -197,6 +213,36 @@
                             </td>
                         </tr>
                         <?php };?>
+                       
+                    </table>     
+                </div>
+                <div class="column" style="margin-left:350pt;width:33%;" >
+                  
+                   <table width="100%" class="TFtable"> 
+                        <tr> 
+                            <td style="font-size:9;" width="30%"><b>Deductions</b></td>
+                            <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
+                        </tr> 
+                        <?php foreach($part2 as $dedrecord1){?>
+                        <tr>
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord1->sh_name) ;?></td> 
+                            <td style="font-size:9;"><?php 
+                                $selsaldata ="saldlt_shamount";
+                                $whdata = array('saldlt_sheadid'=>$dedrecord1->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"from");
+                                $spec_data2= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
+                                if(!empty($spec_data2)){
+                                    $headamt=$spec_data2[0]->saldlt_shamount;
+                                    echo $headamt;
+                                }    
+                                else{
+                                    echo "0";       
+                                }
+                              
+                                ?>
+                            </td>
+                        </tr>
+                        <?php };?>
+                        
                         <?php  $licprdpli = array(
                             "LIC1" => "LIC1", "LIC2" => "LIC2", "LIC3" => "LIC3", "LIC4" => "LIC4",
                             "LIC5" => "LIC5", "PRD1" => "PRD1", "PRD2" => "PRD2", "PRD3" => "PRD3",
@@ -204,10 +250,12 @@
                         
                         <?php foreach ($licprdpli as $lpdpi) {?>
                             <tr><td style="font-size:9;"><?php echo $lpdpi ?></td>
+                            
                             <td style="font-size:9;">
                                 <?php 
+                                
                                     $selsaldata ="saldlt_shamount";
-                                    $whdata = array('saldlt_sheadid'=>$lpdpi,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"from");
+                                    $whdata = array('saldlt_sheadid'=>$lpdpi,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"transit");
                                     $spec_data3= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
                                     if(!empty($spec_data3)){
                                         $headamt=$spec_data3[0]->saldlt_shamount;
@@ -219,13 +267,13 @@
                                     
                                
                                 ?>
-                            </td></tr>   
-                                   
+                            </td></tr>       
                           <?php };?>
-                    </table>     
+                    </table>    
                 </div>
               
             </div>
+            
             <div style="position: fixed; left: 5px; bottom:100px; right: 0px; height: 70px;">
                 <hr>
                 <table width="100%" class="TFtable">
@@ -265,6 +313,8 @@
             <!-- ****************************************************************** from end *********************************** -->   
             </div>
     </body>
+    
+    
     <body>
         <div >
 	<img src="uploads/logo/logotanuvas.jpeg" alt="logo" style="width:100%;height:70px;"><br/>
@@ -277,7 +327,9 @@
             </tr>
         </table>
         </div>
-        <div>
+        
+        
+        <div> 
             
             <!-- *************************************************transit case******************************************************* -->
             <?php $tcase="transit";if($tcase =="transit"){ ;?>
@@ -357,7 +409,7 @@
             <hr>
             </table>
             <div style="clear:both; position:relative;">
-                <div style="position:absolute; left:5pt; width:230pt; display:inline-block;" >
+                <div class="column" style="left:5pt; width:33%;" >
                     <table width="100%" class="TFtable" >
                         <tr>
                             <td style="font-size:9;" width="30%"><b>Earnings</b></td>
@@ -365,7 +417,7 @@
                         </tr>    
                         <?php foreach($incomes as $inrecord){ ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $inrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo  nl2br($inrecord->sh_name);?></td> 
                             <td style="font-size:9; left:20px;"><?php 
                                 $selsaldata ="saldlt_shamount";
                                 $whdata = array('saldlt_sheadid'=>$inrecord->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"transit");  
@@ -385,19 +437,55 @@
                         <?php };?>
                     </table>    
                 </div>
-                
-                <div style="margin-left:250pt; display:inline-block;" >
+                 <?php 
+                    $count=count($deduction);
+                    $half = $count / 2; 
+                   // print_r("partoooo===".$half."count==".$count);
+                          
+                    $part1 = array_slice($deduction, 0, $half); 
+                    $part2 = array_slice($deduction, $half); 
+                             
+                 ?>             
+                <div class="column" style="margin-left:180pt;width:33%;" >
                     <table width="100%" class="TFtable"> 
                         <tr> 
                             <td style="font-size:9;" width="30%"><b>Deductions</b></td>
                             <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
                         </tr> 
-                        <?php foreach($deduction as $dedrecord){ ?>
+                        <?php foreach($part1 as $dedrecord){ ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $dedrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord->sh_name);?></td> 
                             <td style="font-size:9;"><?php 
                                 $selsaldata ="saldlt_shamount";
                                 $whdata = array('saldlt_sheadid'=>$dedrecord->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"transit");
+                                $spec_data2= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
+                                if(!empty($spec_data2)){
+                                    $headamt=$spec_data2[0]->saldlt_shamount;
+                                    echo $headamt;
+                                }    
+                                else{
+                                    echo "0";       
+                                }
+                                    
+                                ?>
+                            </td>
+                        </tr>
+                        <?php };?>
+                        
+                    </table>   
+                </div>        
+                <div class="column" style="margin-left:350pt;width:33%;">
+                    <table width="100%" class="TFtable"> 
+                        <tr> 
+                            <td style="font-size:9;" width="30%"><b>Deductions</b></td>
+                            <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
+                        </tr> 
+                        <?php foreach($part2 as $dedrecord1){ ?>
+                        <tr>
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord1->sh_name);?></td> 
+                            <td style="font-size:9;"><?php 
+                                $selsaldata ="saldlt_shamount";
+                                $whdata = array('saldlt_sheadid'=>$dedrecord1->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"transit");
                                 $spec_data2= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
                                 if(!empty($spec_data2)){
                                     $headamt=$spec_data2[0]->saldlt_shamount;
@@ -472,12 +560,16 @@
                    
                 </table>     
             </div>
+            
             <div style="position: fixed; left: 5px; bottom:50px; right: 0px; height: 30px;">
+                
              <p>As it is computer generated slip, signature is not required. </p>  
             </div>
             <?php } ;?>
             </div>
+        
         </body>
+        
         <body>
             <div >
 	<img src="uploads/logo/logotanuvas.jpeg" alt="logo" style="width:100%;height:70px;"><br/>
@@ -490,7 +582,7 @@
             </tr>
         </table>
         </div>
-            <div>
+            <div> 
             <!-- *************************************************to******************************************************* -->
             <?php $tcase="to"; if($tcase =="to"){ ;?>
             <table style="width:100%;" class="TFtable">
@@ -569,7 +661,7 @@
             <hr>
             </table>
             <div style="clear:both; position:relative;">
-                <div style="position:absolute; left:5pt; width:230pt; display:inline-block;" >
+                <div class="column"style="left:5pt;width:33%;" >
                     <table width="100%" class="TFtable" >
                         <tr>
                             <td style="font-size:9;" width="30%"><b>Earnings</b></td>
@@ -577,7 +669,7 @@
                         </tr>    
                         <?php foreach($incomes as $inrecord){ ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $inrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;""><?php echo nl2br($inrecord->sh_name);?></td> 
                             <td style="font-size:9; left:20px;"><?php 
                                 $case=$this->uri->segment(6);
                                 $selsaldata ="saldlt_shamount";
@@ -597,16 +689,24 @@
                         <?php };?>
                     </table>    
                 </div>
-                
-                <div style="margin-left:250pt; display:inline-block;" >
+                 <?php 
+                    $count=count($deduction);
+                    $half = $count / 2; 
+                   // print_r("partoooo===".$half."count==".$count);
+                          
+                    $part1 = array_slice($deduction, 0, $half); 
+                    $part2 = array_slice($deduction, $half); 
+                             
+                 ?>      
+                <div class="column" style="margin-left:180pt;width:33%;" >
                     <table width="100%" class="TFtable"> 
                         <tr> 
                             <td style="font-size:9;" width="30%"><b>Deductions</b></td>
                             <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
                         </tr> 
-                        <?php foreach($deduction as $dedrecord){ ?>
+                        <?php foreach($part1 as $dedrecord){ ?>
                         <tr>
-                            <td style="font-size:9;"><?php echo $dedrecord->sh_name;?></td> 
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord->sh_name);?></td> 
                             <td style="font-size:9;"><?php 
                                
                                 $selsaldata ="saldlt_shamount";
@@ -623,6 +723,37 @@
                                 ?>
                             </td>
                         </tr>
+                        
+                        <?php };?>
+                        
+                    </table>
+                </div>
+                <div class="column" style="margin-left:350pt;width:33%;" >
+                    <table width="100%" class="TFtable"> 
+                        <tr> 
+                            <td style="font-size:9;" width="30%"><b>Deductions</b></td>
+                            <td style="font-size:9;" width="20%"><b>Amount(in Rs.)</b></td> 
+                        </tr> 
+                        <?php foreach($part2 as $dedrecord1){ ?>
+                        <tr>
+                            <td style="font-size:9;word-break:break-all; word-wrap:break-word;"><?php echo nl2br($dedrecord1->sh_name);?></td> 
+                            <td style="font-size:9;"><?php 
+                               
+                                $selsaldata ="saldlt_shamount";
+                                $whdata = array('saldlt_sheadid'=>$dedrecord1->sh_id,'saldlt_empid' =>$empid,'saldlt_month' =>$month,'saldlt_year' =>$year,'saldlt_type'=>"to");
+                                $spec_data2= $this->sismodel->get_orderlistspficemore('salarydata_lt',$selsaldata,$whdata,'');   
+                                if(!empty($spec_data2)){
+                                    $headamt=$spec_data2[0]->saldlt_shamount;
+                                    echo $headamt;
+                                }    
+                                else{
+                                    echo "0";       
+                                }
+                              
+                                ?>
+                            </td>
+                        </tr>
+                        
                         <?php };?>
                         <?php  $licprdpli = array(
                             "LIC1" => "LIC1", "LIC2" => "LIC2", "LIC3" => "LIC3", "LIC4" => "LIC4",
@@ -689,15 +820,12 @@
             
             <div style="position: fixed; left: 5px; bottom:50px; right: 0px; height: 30px;">
              <p>As it is computer generated slip, signature is not required. </p>  
-            </div>
+            </div> 
             <?php } ;?>
             <!-- ******************************************************************from end *********************************** -->     
-            
-            <div style="position: fixed; left: 5px; bottom:50px; right: 0px; height: 30px;">
-             <p>As it is computer generated slip, signature is not required. </p>  
-            </div>
-          
+                   
         </div>
     </body>
+    
 </html>    
 
