@@ -24,10 +24,10 @@
                     echo anchor('picosetup/displaycovertypedetails/','View Cover Details', array('title'=>'Cover Details'));
                 ?>
                 <?php
-                   echo "<td align=\"right\" width=\"33%\">";
+                  /* echo "<td align=\"right\" width=\"33%\">";
                    $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
                    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-                   echo "</td>";
+                   echo "</td>";*/
                  ?>
             </td></tr>    
             <tr><td>   
@@ -48,61 +48,58 @@
 <body>
 
 		<form action="<?php echo site_url('picosetup/insertcoverform');?>" method="POST" class="form-inline">
-			<table class="">
+			<table class="TFtable">
 			    <tr>
 					<td><label for="ct_coverno" class="control-label">Cover Number:<font color='Red'>*</font></label></td>
                 	<td>
                 	<input type="text" name="ct_coverno"  class="form-control" size="30" placeholder="Cover Number" /><br>
                 	</td>
                 	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	  Example:
-                	</td>
+                    <td><label for="ct_coverfixed" class="control-label">Fixed Cover :<font color='Red'>*</font></label></td>
+                    <td >
+                    <input type="text" name="ct_coverfixed"  class="form-control" size="30" placeholder="Fixed Cover " /><br>
+                    </td>
+                </tr>
+
+              
+                 <tr>
+                    <td><label for="ct_cover1" class="control-label">Cover Type 1 :<font color='Red'>*</font></label></td>
+                    <td>
+                    <input type="text" name="ct_cover1"  class="form-control" size="30" placeholder="" /><br>
+                    </td>
+                     <td><label for="ct_cover2" class="control-label">Cover Type 2 :</label></td>
+                    <td>
+                    <input type="text" name="ct_cover2"  class="form-control" size="30" placeholder="" /><br>
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td><label for="ct_cover3" class="control-label">Cover Type 3:</label></td>
+                    <td>
+                    <input type="text" name="ct_cover3"  class="form-control" size="30" placeholder=" " /><br>
+                    </td>
+                     <td><label for="ct_cover4" class="control-label">Cover Type 4:</label></td>
+                    <td>
+                    <input type="text" name="ct_cover4"  class="form-control" size="30" placeholder=" " /><br>
+                    </td>
                 </tr>
 
                 <tr>
-					<td><label for="ct_coverfixed" class="control-label">Fixed Cover :<font color='Red'>*</font></label></td>
-                	<td>
-                	<input type="text" name="ct_coverfixed"  class="form-control" size="30" placeholder="Fixed Cover " /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	   Example: 
-                	</td>
-                </tr>
-                <tr>
 					<td><label for="ct_coveroptional" class="control-label">Optional Cover : </label></td>
-                	<td>
+                	<td colspan="">
                 	<input type="text" name="ct_coveroptional"  class="form-control" size="30" placeholder="Optional Cover " /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	   Example: 
-                	</td>
+                	</td>    
+
+                        <td><label for="ct_desc" class="control-label">Cover Description: </label></td>
+                    <td colspan="">
+                    <input type="text" name="ct_desc"  class="form-control" size="30"  placeholder="Cover Description" /><br>
+                    </td>            	
                 </tr>
-                <tr>
-					<td><label for="ct_desc" class="control-label">Cover Description: </label></td>
-                	<td>
-                	<input type="text" name="ct_desc"  class="form-control" size="30"  placeholder="Cover Description" /><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
-                	<td>
-                	   Example: 
-                	</td>
-                </tr>
-                <tr>
-                </tr>
+
+                
                 <tr>
                 <td></td>
-                <td>
+                <td colspan="3">
                 <button name="cov_type">Submit Form</button>
                 </td>
            		</tr>

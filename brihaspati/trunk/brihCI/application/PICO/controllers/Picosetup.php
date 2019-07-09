@@ -668,15 +668,23 @@ class Picosetup extends CI_Controller
 
         if(isset($_POST['cov_type'])){
 
-            $this->form_validation->set_rules('ct_coverno','Cover Number','trim|xss_clean|required|alpha_numeric_spaces|callback_isCovertypeExist');
-            $this->form_validation->set_rules('ct_coverfixed','Fixed Cover','trim|xss_clean|required');
-            $this->form_validation->set_rules('ct_coveroptional','Optional Cover','trim|xss_clean|required');
-            $this->form_validation->set_rules('ct_desc','Cover Description','trim|xss_clean|required');
-
+                        $this->form_validation->set_rules('ct_coverno','Cover Number','trim|xss_clean|required|alpha_numeric_spaces|callback_isCovertypeExist');
+						$this->form_validation->set_rules('ct_cover1','Cover Type 1','trim|xss_clean|required');
+						$this->form_validation->set_rules('ct_cover2','Cover Type 2','trim|xss_clean');
+						$this->form_validation->set_rules('ct_cover3','Cover Type 3','trim|xss_clean');
+						$this->form_validation->set_rules('ct_cover4','Cover Type 4','trim|xss_clean');
+						$this->form_validation->set_rules('ct_coverfixed','Fixed Cover','trim|xss_clean');
+						$this->form_validation->set_rules('ct_coveroptional','Optional Cover','trim|xss_clean');
+						$this->form_validation->set_rules('ct_desc','Cover Description','trim|xss_clean');
+			
             if($this->form_validation->run()==TRUE){
 
                 $data = array(   
                 'ct_coverno'=>$_POST['ct_coverno'],
+                'ct_cover1'=>$_POST['ct_cover1'],
+                'ct_cover2'=>$_POST['ct_cover2'],
+                'ct_cover3'=>$_POST['ct_cover3'],
+                'ct_cover4'=>$_POST['ct_cover4'],
                 'ct_coverfixed'=>$_POST['ct_coverfixed'],
                 'ct_coveroptional'=>$_POST['ct_coveroptional'],
                 'ct_desc'=>$_POST['ct_desc']
@@ -740,8 +748,174 @@ class Picosetup extends CI_Controller
         $this->logger->write_dblogmessage("view"," View Cover Type setting", "Cover Type setting details...");
         $this->load->view('setup/displaycoverdetails',$data);
     } 
+	
+	/*** This function updates cover details ****/
+    public function editcoverdetails($id)
+    {
 
-    /***** Delete Cover type ****/
+        $this->db4->from('cover_type')->where('ct_id',$id);
+        $eset_data_q = $this->db4->get();
+        if ($eset_data_q->num_rows() < 1)
+        {
+            redirect('picosetup/opencovertypeform');
+        }
+        $editeset_data = $eset_data_q->row();
+        /* Form fields */
+
+                $data['ct_coverno'] = array(
+                'name' => 'ct_coverno',
+                'id' => 'ct_coverno',
+                'size' => '40',
+                'value' => $editeset_data->ct_coverno,
+                );
+
+                $data['ct_coverfixed'] = array(
+                'name' => 'ct_coverfixed',
+                'id' => 'ct_coverfixed',
+                'size' => '40',
+                'value' => $editeset_data->ct_coverfixed,
+                );
+
+                $data['ct_cover1'] = array(
+                'name' => 'ct_cover1',
+                'id' => 'ct_cover1',
+                'size' => '40',
+                'value' => $editeset_data->ct_cover1,
+                );
+
+                $data['ct_cover2'] = array(
+                'name' => 'ct_cover2',
+                'id' => 'ct_cover2',
+                'size' => '40',
+                'value' => $editeset_data->ct_cover2,
+                );
+
+                $data['ct_cover3'] = array(
+                'name' => 'ct_cover3',
+                'id' => 'ct_cover3',
+                'size' => '40',
+                'value' => $editeset_data->ct_cover3,
+                );
+
+                $data['ct_cover4'] = array(
+                'name' => 'ct_cover4',
+                'id' => 'ct_cover4',
+                'size' => '40',
+                'value' => $editeset_data->ct_cover4,
+                );
+
+                $data['ct_coveroptional'] = array(
+                'name' => 'ct_coveroptional',
+                'id' => 'ct_coveroptional',
+                'size' => '40',
+                'value' => $editeset_data->ct_coveroptional,
+                );
+
+                $data['ct_desc'] = array(
+                'name' => 'ct_desc',
+                'id' => 'ct_desc',
+                'size' => '40',
+                'value' => $editeset_data->ct_desc,
+                );
+
+
+        
+        $data['id'] = $id;
+        /*Form Validation*/
+           $this->form_validation->set_rules('ct_coverno','Cover Number','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('ct_cover1','Cover Type 1','trim|xss_clean|required');
+            $this->form_validation->set_rules('ct_cover2','Cover Type 2','trim|xss_clean');
+            $this->form_validation->set_rules('ct_cover3','Cover Type 3','trim|xss_clean');
+            $this->form_validation->set_rules('ct_cover4','Cover Type 4','trim|xss_clean');
+            $this->form_validation->set_rules('ct_coverfixed','Fixed Cover','trim|xss_clean');
+            $this->form_validation->set_rules('ct_coveroptional','Optional Cover','trim|xss_clean');
+            $this->form_validation->set_rules('ct_desc','Cover Description','trim|xss_clean');
+
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['ct_coverno']['value'] = $this->input->post('ct_coverno', TRUE);
+            $data['ct_cover1']['value'] = $this->input->post('ct_cover1', TRUE);
+            $data['ct_cover2']['value'] = $this->input->post('ct_cover2', TRUE);
+            $data['ct_cover3']['value'] = $this->input->post('ct_cover3', TRUE);
+            $data['ct_cover4']['value'] = $this->input->post('ct_cover4', TRUE);
+            $data['ct_coverfixed']['value'] = $this->input->post('ct_coverfixed', TRUE);
+            $data['ct_coveroptional']['value'] = $this->input->post('ct_coveroptional', TRUE);
+            $data['ct_desc']['value'] = $this->input->post('ct_desc', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editcoverdetails',$data);
+            return;
+        }
+
+        else{
+
+            $data_coverno = $this->input->post('ct_coverno', TRUE);
+            $data_cover1 = $this->input->post('ct_cover1', TRUE);
+            $data_cover2 = $this->input->post('ct_cover2', TRUE);
+            $data_cover3 = $this->input->post('ct_cover3', TRUE);
+            $data_cover4 = $this->input->post('ct_cover4', TRUE);
+            $data_coverfixed = $this->input->post('ct_coverfixed', TRUE);
+            $data_coveroptional = $this->input->post('ct_coveroptional', TRUE);
+            $data_desc = $this->input->post('ct_desc', TRUE);
+            $data_eid = $id;
+
+            $logmessage = "";
+            if($editeset_data->ct_coverno != $data_coverno)
+                $logmessage = "Cover Number" .$editeset_data->ct_coverno. " changed by " .$data_coverno;
+
+            if($editeset_data->ct_cover1!= $data_cover1)
+                $logmessage = "Cover Type 1" .$editeset_data->ct_cover1. " changed by " .$data_cover1;
+            if($editeset_data->ct_cover2!= $data_cover2)
+                $logmessage = "Cover Type 2" .$editeset_data->ct_cover2. " changed by " .$data_cover2;
+            if($editeset_data->ct_cover3!= $data_cover3)
+                $logmessage = "Cover Type 3" .$editeset_data->ct_cover3. " changed by " .$data_cover3;
+            if($editeset_data->ct_cover4!= $data_cover4)
+                $logmessage = "Cover Type 4" .$editeset_data->ct_cover4. " changed by " .$data_cover4;
+
+            if($editeset_data->ct_coverfixed != $data_coverfixed)
+                $logmessage = "Fixed Cover" .$editeset_data->ct_coverfixed. " changed by " .$data_coverfixed;
+
+            if($editeset_data->ct_coveroptional != $data_coveroptional)
+                $logmessage = "Optional Cover" .$editeset_data->ct_coveroptional. " changed by " .$data_coveroptional;
+
+            if($editeset_data->ct_desc != $data_desc)
+                $logmessage = "Cover Description" .$editeset_data->ct_desc. " changed by " .$data_desc;
+
+            $update_data = array(
+               'ct_coverno' => $data_coverno,
+               'ct_cover1'=> $data_cover1,
+               'ct_cover2'=> $data_cover2,
+               'ct_cover3'=> $data_cover3,
+               'ct_cover4'=> $data_cover4,
+               'ct_coverfixed' => $data_coverfixed,
+               'ct_coveroptional' => $data_coveroptional,
+               'ct_desc' => $data_desc,
+            );
+
+                $roledflag=$this->PICO_model->updaterec('cover_type', $update_data,'ct_id', $data_eid);
+                if(!$roledflag)
+                {
+                $this->logger->write_logmessage("error","Edit Cover details error", "Edit Cover details . $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit Cover details error", "Edit Cover details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating Cover details' . $logmessage . '.', 'error');
+                $this->load->view('setup/editcoverdetails', $data);
+                }
+                else{
+                $this->logger->write_logmessage("update","Edit Cover details  Setting", "Edit Cover details  Setting ". $logmessage );
+                $this->logger->write_dblogmessage("update","Edit Cover details  Setting", "Edit Cover details  Setting" . $logmessage );
+                $this->session->set_flashdata('success','Selected Cover details updated successfully..');
+                redirect('picosetup/displaycovertypedetails');
+                }
+            }        
+    }
+
+    
+	/***** Delete Cover type ****/
+	
     public function deletcovertype($id) { 
 
         $mt_data=$this->PICO_model->get_listrow('cover_type','ct_id', $id);

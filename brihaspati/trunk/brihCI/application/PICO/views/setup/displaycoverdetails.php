@@ -52,7 +52,7 @@
                 <tr>
 <thead><th>Sr.No</th><th>Cover No.</th><th>Fixed Cover</th><th>Optional Cover</th><th>Cover Description</th><th>Action</th></tr></thead>
 <tbody>
-   <?php
+<?php
         $count =0;
         
         foreach ($result as $row)
@@ -60,8 +60,23 @@
          ?>
              <tr>
             <td> <?php echo ++$count; ?> </td> 
-            <!-- <td> <//?php echo $row->ct_id ?></td> -->
             <td> <?php echo $row->ct_coverno ?></td>
+            <td>
+                (a)<?php echo $row->ct_cover1 ?><br>
+
+                 <?php if(!empty($row->ct_cover2)){ ?>
+                    (b)<?php echo $row->ct_cover2 ?><br>
+                <?php } ?>
+
+                 <?php if(!empty($row->ct_cover3)){ ?>
+                    (c)<?php echo $row->ct_cover3 ?><br>
+                <?php } ?>
+
+                 <?php if(!empty($row->ct_cover4)){ ?>
+                    (d)<?php echo $row->ct_cover4 ?><br>
+                <?php } ?>
+            </td>
+
             <td> <?php echo $row->ct_coverfixed ?></td>
             <td> <?php echo $row->ct_coveroptional ?></td>
             <td> <?php echo $row->ct_desc ?></td>
@@ -72,14 +87,15 @@
           
           echo "&nbsp; ";
                 echo anchor('picosetup/deletcovertype/' . $row->ct_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
-               // echo anchor('picosetup/editfinancialpower/' . $row->item_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
+                echo "<br>";
+               echo anchor('picosetup/editcoverdetails/' . $row->ct_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
         }
             echo "</td>";
             echo "</tr>";
           
         }
-          ?>  
-</tbody>
+          ?> 
+  </tbody>
 </table>
 <br><br>
 </div><!------scroller div------>

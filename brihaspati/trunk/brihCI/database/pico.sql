@@ -32,7 +32,11 @@ CREATE TABLE `cover_type` (
   `ct_id` int(11) NOT NULL,
   `ct_coverno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ct_coverfixed` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ct_coveroptional` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+   `ct_cover1` VARCHAR(255) NOT NULL,
+  `ct_cover2` VARCHAR(255) NULL,
+  `ct_cover3` VARCHAR(255) NULL,
+  `ct_cover4` VARCHAR(255) NULL,
+  `ct_coveroptional` varchar(255) COLLATE utf8_unicode_ci  NULL,
   `ct_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -538,7 +542,7 @@ ALTER TABLE `product_category`
  ADD PRIMARY KEY (`pc_id`);
 
 
---`purchase_order`
+--
 -- Indexes for table `items`
 --
 ALTER TABLE `items`

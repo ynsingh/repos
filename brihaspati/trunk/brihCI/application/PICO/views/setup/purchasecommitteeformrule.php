@@ -43,11 +43,11 @@
 <body>
 
 		<form action="<?php echo site_url('picosetup/insertpurchasecommitteerule');?>" method="POST" class="form-inline">
-			<table class="">
+			<table class="TFtable">
                 <tr>
                     <td><label for="pcfr_purchasethrough" class="control-label">Purchase Through: </label></td>
                     <td>
-                    <select name="pcfr_purchasethrough" style="width: 100%;align: center;background-color:lightgrey;">
+                    <select name="pcfr_purchasethrough" style="width: 73%;align: center;background-color:white;">
                         <option value="" disabled selected>---Option---</option>
                         <option value="Purchase Committee">Purchase Committee</option>
                         <option value="GeM">GeM</option>
@@ -55,7 +55,7 @@
                     </select>
                     </td>
                     <td>
-                    <?php echo form_error()?>
+                    <i>Select from Dropdown</i>  
                     </td>
                    
                 </tr>
@@ -64,9 +64,6 @@
 					<td><label for="pcfr_estpurchaseprice" class="control-label">Estimated Purchase Price:</label></td>
                 	<td>
                 	<input type="text" name="pcfr_estpurchaseprice"  class="form-control" size="30" placeholder="Estimated Purchase Price"/><br>
-                	</td>
-                	<td>
-                    <?php echo form_error()?>
                 	</td>
                 	<td>
                 	  Example: Above 2 Lakh  
@@ -79,8 +76,8 @@
                 	<input type="text" name="pcfr_rep1"  class="form-control" size="30" placeholder="1st Representative Designation" /><br>
                 	</td>
                 	<td>
-                    <?php echo form_error()?>
-                	</td>
+                      Example: Director/ Financial Officer 
+                    </td>
                 </tr>
 
                 <tr>
@@ -89,7 +86,7 @@
                     <input type="text" name="pcfr_rep2"  class="form-control" size="30" placeholder="2nd Representative Designation" /><br>
                     </td>
                     <td>
-                    <?php echo form_error()?>
+                      Example: Deputy Director  
                     </td>
                 </tr>
 
@@ -98,9 +95,10 @@
                     <td>
                     <input type="text" name="pcfr_rep3"  class="form-control" size="30" placeholder="3rd Representative Designation" /><br>
                     </td>
-                    <td>
-                    <?php echo form_error()?>
+                     <td>
+                      Example: S&P Officer/ HOD   
                     </td>
+                   
                 </tr>
                 
 
@@ -109,9 +107,7 @@
                 	<td>
                 	<input type="text" name="pcfr_reference"  class="form-control" size="30" placeholder="Reference No" /><br>
                 	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
+
                     <td>
                        Example: As per ABCD (4.5.2)
                     </td>
@@ -122,9 +118,7 @@
                 	<td>
                 	<input type="text" name="pcfr_appauth"  class="form-control" size="30"  placeholder="Approving Authority" /><br>
                 	</td>
-                	<td>
-                    <?php echo form_error()?>
-                	</td>
+                	
                 	<td>
                 	   Example: Finance Officer, Deputy Director
                 	</td>
@@ -132,7 +126,7 @@
                 
                 <tr>
                 <td></td>
-                <td>
+                <td colspan="2">
                 <button name="committee_rule">Submit Form</button>
                 </td>
            		</tr>
