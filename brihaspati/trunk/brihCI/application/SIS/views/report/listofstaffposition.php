@@ -167,13 +167,20 @@
                     <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
                 </td>
             </tr>    
-        </table>             
+        </table>
+        </form>
         <table width="100%"><tr style=" background-color: graytext;">
-            <td>
-                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
-                <div style="margin-left:500px;"><b>List of Staff Position with Staff Name</b></div>
-            </td>           
-		
+                
+                <td>
+                    <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')"  style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >  
+                
+                     <form action="<?php echo site_url('Pdfgen/lsf/'.$this->wtyp.'/'.$this->uolt.'/'.$this->deptmt) ?>">
+                    <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+                    </form>
+                    <div style="margin-left:500px;"><b>List of Staff Position with Staff Name</b></div>
+
+                </td>
+           
 	<!--<//?php
             echo "<td style=\"text-align:center;\" width=\"100%\">";
             echo "<b>List of Staff Position Details</b>";
@@ -254,7 +261,7 @@
                                 }
 
 			echo "<tr>";
-			echo "<td colspan=10 style=\"text-align:center;\">";
+			echo "<td colspan=\"10\" style=\"text-align:center;\">";
 			echo " <b> UO CONTROL : ";
 			echo "&nbsp;&nbsp;";
 			echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->sp_uo)->name;
@@ -291,7 +298,7 @@
 		}
       		 if($oschid !=$record->sp_schemecode){               
 			echo "<tr>";
-			echo "<td colspan=10 style=\"text-align:center;\">";
+			echo "<td colspan=10 style=\"text-align:center\">";
 			echo " <b> Scheme : ";
 			echo "&nbsp;&nbsp;";
 			echo strtoupper($this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->sp_schemecode)->sd_name);

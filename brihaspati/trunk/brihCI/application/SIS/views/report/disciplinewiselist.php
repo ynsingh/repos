@@ -3,10 +3,6 @@
   @author Manorama Pal(palseema30@gmail.com)
  -->
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<?php
-//$content = ob_get_clean();
-//ob_start();
-?>
  <html>
     <head>
         <title>Welcome to TANUVAS</title>
@@ -53,9 +49,9 @@
                     <select name="camp" id="camp" style="width:250px;">
 			<? if  (!empty($this->camp)){ ?>
 			<option value="<?php echo $this->camp; ?>" > <?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name ." ( ". $this->commodel->get_listspfic1('study_center','sc_code','sc_id' ,$this->camp)->sc_code ." )"; ?></option>
-			<?  }else{ ?>
+			<?php  }else{ ?>
                       <option value="" disabled selected>-------- Select Campus name------</option>
-			<?  } ?>
+			<?php  } ?>
                       <?php
                       foreach( $this->sc as $row ){
  ?>
@@ -67,16 +63,16 @@
                  <td><div> Select Subject<br>
 			
                     <select name="subj[]" id="subj" style="width:350px;" title="You have to choose multiple subject by pressing Ctrl "  multiple>
-			<? if  (!empty($this->subj)){ ?>
+			<?php if  (!empty($this->subj)){ ?>
 			<option value="<?php echo $this->subj; ?>" > <?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name ." ( ".$this->commodel->get_listspfic1('subject','sub_code','sub_id' ,$this->subj)->sub_code ." )"; ?></option>
-			<?  }else{ ?>
+			<?php  }else{ ?>
                       <option value="" disabled selected>-------------Select Subject name-----------</option>
-			<?  } ?>
+			<?php  } ?>
 			 <?php
                       foreach( $this->sub as $row ){
  ?>
                       <option value="<?php echo $row->sub_id; ?>" > <?php echo $row->sub_name ." ( ".$row->sub_code ." )"; ?></option>
-<?php }?>
+<?php } ?>
 
                     </select>
 		</td>
@@ -88,7 +84,7 @@
 
                 <td><input type="submit" name="filter" id="crits" value="Search" /></td>
 		<td>
-            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+            <!--<img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  -->
         </td>
             </tr>
         </table>
@@ -105,13 +101,13 @@
 </form>
 <?  }  ?>
 <!--
-	<a href="<?php echo base_url() ;?>sisindex.php/pdfreport/pdfgenerate/disciplinewiselist" style="decoration:none;"><input type="button"  value="PDF" /></a>
+	<a href="<?php //echo base_url() ;?>sisindex.php/pdfreport/pdfgenerate/disciplinewiselist" style="decoration:none;"><input type="button"  value="PDF" /></a>
 sccess link with data
 -->
 
-<!--		<form name="pform" id="pform" action="<?php echo base_url() ?>/sisindex.php/pdfreport/convertpdf/" method="post">
+<!--		<form name="pform" id="pform" action="<?php //echo base_url() ?>/sisindex.php/pdfreport/convertpdf/" method="post">
 			<input type="hidden" name="fname" id="fname" value="report/disciplinewiselist" />
-			<input type="hidden" name="rdata" id="rdata" value="<?php print_r($this->result); ?>" />
+			<input type="hidden" name="rdata" id="rdata" value="<?php //print_r($this->result); ?>" />
 			<input type="submit" value="GPDF" />
 		</form>			-->
     <table width="100%">
@@ -135,19 +131,28 @@ sccess link with data
  </table>
 
         <div id="printme" align="left" style="width:100%;"> 
-	 <table width="100%">
+	<table width="100%">
 
-       <tr colspan="2">
-	<?php
+        <tr style=" background-color: graytext;">
+            <td valign="top" >
+            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >     
+            <form action="<?php echo site_url('Pdfgen/dwel/'.$this->camp.'/'.$this->subj);?>">
+                <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+            </form>
+            <div style="margin-left:500px;"><b>Discipline Wise List Details</b></div>
+                       
+	<?php /*
         echo "<td align=\"center\" width=\"100%\">";
         echo "<b>Discipline Wise List Details</b>";
         if((!empty($this->camp)) && (!empty($this->subj))){
         echo  " ( ".$this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name."  -  ".$this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$this->subj)->sub_name." ) ";
         }
-        echo "</td>";
+       echo "</td>"; */
 ?>
-</tr>
- </table>
+          
+         </td>
+        </tr>
+    </table>
 
         <div class="scroller_sub_page">
         <table class="TFtable"> 
@@ -188,7 +193,7 @@ sccess link with data
 			 <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->emp_dept_code)->dept_name; ?> 
 			( <?php echo $this->commodel->get_listspfic1('Department','dept_code','dept_id',$row->emp_dept_code)->dept_code; ?> ) </td>
 		     </tr>
-	<?php  }; 
+	<?php  } 
 	}else{
   	?>  
         <tr><td colspan= "13" align="center"> No Records found...!</td></tr>
@@ -202,10 +207,5 @@ sccess link with data
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </div>
 </div> <!-- pdf wrapper -->
-
- </script>
-
     </body>
 </html>
-
- 

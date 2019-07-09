@@ -1,137 +1,21 @@
-<!--@filename positionvacancy.php  @author Manorama Pal(palseema30@gmail.com) 
-    @filename positionvacancy.php  @author Neha Khullar(nehukhullar@gmail.com)
+<!--
+    @author Manorama Pal(palseema30@gmail.com) pdf report
+    @author Akash Rathi(akash92y@gmail.com) html part  
+
 -->
 
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-    <head>
-        <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
-        <style type="text/css" media="print">
-        @page {
-                size: auto;   /* auto is the initial value */
-                margin:0;  /* this affects the margin in the printer settings */
-            }
-        </style>
-        <script>
-            function printDiv(printme) {
-                var printContents = document.getElementById(printme).innerHTML; 
-                //alert("printContents==="+printContents);
-                var originalContents = document.body.innerHTML;      
-                document.body.innerHTML = "<html><head><title></title></head><body style='width:100%;' ><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' style='width:100%;height:100px;' >"+" <div style='width:100%;height:100px;'>  " + printContents + "</div>"+"</body>";
-                window.print();     
-                document.body.innerHTML = originalContents;
-            }
-             $(document).ready(function(){
-                
-                /****************************************** start post********************************/
-                $('#wtype').on('change',function(){
-                    var workt = $(this).val();
-                   // alert("post====="+workt);
-                    if(workt == ''){
-                        $('#post').prop('disabled',true);
-                   
-                    }
-                    else{
-                        $('#post').prop('disabled',false);
-                        $.ajax({
-                            url: "<?php echo base_url();?>sisindex.php/jslist/getwdesiglist",
-                            //url: "<?php echo base_url();?>sisindex.php/report/getpostlist_sp",
-                            type: "POST",
-                            data: {"wtype" : workt},
-                            //data: {"worktype" : workt},
-                            dataType:"html",
-                            success:function(data){
-                            //alert("data==1="+data);
-                                $('#post').html(data.replace(/^"|"$/g, ''));
-                                                 
-                            },
-                            error:function(data){
-                                //alert("data in error==="+data);
-                                alert("error occur..!!");
-                 
-                            }
-                        });
-                    }
-                }); 
-            });  
-            
-            function verify(){
-                var x=document.getElementById("wtype").value;
-                var y=document.getElementById("post").value;
-                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
-                    alert("please select at least any two combination for search !!");
-                    return false;
-                };
-                   
-
-            }
-
-        </script>     
-       
     
-    </head>
-    <body>
-        <?php $this->load->view('template/header'); ?> 
-        <form action="<?php echo site_url('report/positionvacancy');?>" id="myForm" method="POST" class="form-inline">
-          <table width="100%" border="0">
-            <tr style="font-weight:bold;width:100%;">
-                <td>  Select Working Type
-                    <select name="wtype" id="wtype"> 
-			<?php if  (!empty($this->wtyp)){ ?>
-                        <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
-                        <?php  }else{ ?>
-                      <option value="" disabled selected>------- Select Working Type -------</option>
-                          <?php  } ?>
-
-                      <option value="Teaching">Teaching</option>
-                      <option value="Non Teaching"> Non Teaching</option>
-                       
-                    </select> 
-                                    
-                <!--</td> 
-                <td> -->  Select Post
-                    <select name="post" id="post"> 
-			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
-                        <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
-                        <?php  }else{ ?>
-                      <option value="" disabled selected>----------- Select Post------</option>
-                         <?php  } ?>
-
-                     <!-- <option value="All" >All</option> -->
-                    </select> 
-               <!-- </td>
-                <td>-->
-                    <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
-                </td>
-            </tr>    
-        </table>  
-        </form>
+    <head>
         
-    <table width="100%">
-       <tr style=" background-color: graytext;">
-           
-           <td>
-                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >  
-                <form action="<?php echo site_url('Pdfgen/pv/'.$this->wtyp.'/'.$this->desigm) ?>">
-                    <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
-                </form>
-                <div style="margin-left:500px;"><b>Vacancy Position</b></div>
-           </td>
-            
-      <!-- <div>
-       <//?php
-       echo "<td align=\"center\" width=\"100%\">";
-       echo "<b>Vacancy Position</b>";
-       echo "</td>";
-       ?>
-       
-        </div> -->
-        </tr></table>
-        <div id="printme" align="left" style="width:100%;">
+    </head>
+        
+    <body>
+        
+         <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/>
+        
         <div class="scroller_sub_page">
-            <table class="TFtable" >
+            <table class="TFtable"width="100 %" border=1 frame=void rules=rows >
                 <thead>
                 <tr>
                     <th>SS</th>
@@ -272,11 +156,10 @@
                 <?php endif;?>
             </tbody>
         </table>
-        </div><!------scroller div------>  
-        </div><!------print div------>
-        </form>
-        <p> &nbsp; </p> 
-        <div align="center">  <?php $this->load->view('template/footer');?></div>
-     </body>
+        </div>
+        
+        
+         <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>
+    </body>
+    
 </html>
-

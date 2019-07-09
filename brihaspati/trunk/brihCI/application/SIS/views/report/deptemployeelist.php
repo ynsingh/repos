@@ -116,9 +116,13 @@
     
     </head>
     <body>
+        
+        
         <?php $this->load->view('template/header'); ?>
         
         <form action="<?php echo site_url('report/deptemployeelist');?>" id="myForm" method="POST" class="form-inline">
+          <?php //echo "seema===".$this->wtyp.$this->uolt.$this->deptmt;?>   
+            
          <table width="100%" border="0">
             <tr style="font-weight:bold;">
                 <td>  Select Type<br>
@@ -163,7 +167,8 @@
 -->
                 <td><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
             </tr>    
-        </table>    
+        </table>
+        </form>
 	<script>
                 $('document').ready(function(){
                         $('#dept').multiselect({
@@ -174,14 +179,19 @@
                         });
                 });
         </script>
-        <table width="100%"><tr style=" background-color: graytext;" colspan="2">
-            <td> 
-                    
-                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >
+        <table width="100%"><tr style=" background-color: graytext;">
+            <td valign="top"> 
+                <?php //$this->wtyp='';$this->uolt.='';$this->deptmt='';?>  
+                
+                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >
+                <form action="<?php echo site_url('Pdfgen/del/'.$this->wtyp.'/'.$this->uolt.'/'.$this->deptmt) ?>">
+                    <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+                </form>
+              
                 <div style="margin-left:500px;"><b>Department Wise Staff List Details</b></div>
                    
-            </td>        
-	
+            </td>
+           
             <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -277,7 +287,7 @@
 
         </div><!------scroller div------>
         </div><!------print div------>
-        </form>
+       
 	<p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
 

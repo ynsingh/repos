@@ -11,6 +11,11 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap3.3.6/bootstrap-multiselect.js" ></script>
             
+         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.plugin.autotable.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/pdfps.js" ></script>
+        
+        
         <style type="text/css" media="print">
         </style>
         <script>
@@ -185,11 +190,19 @@
                     <td><br><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
                 </tr>    
             </table>
-            <table width="100%"><tr style=" background-color: graytext;">   
-                <td align="center"><b>Retired Staff List</b> </td>  
-                </tr></table>
+        </form>
+        
+        
+            <table width="100%"><tr style=" background-color: graytext;"> 
+               <td valign="top">
+                <form action="<?php echo site_url('Pdfgen/rel/'.$this->wtyp.'/'.$this->uolt.'/'.$this->deptmt.'/'.$this->year.'/'.$this->month) ?>">
+                
+                <input type="submit" value="" style="width:30px; height:30px;float:right;padding:5px; margin-right:30px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+                </form>    
+                <div style="margin-left:600px;"><b>Retired Staff List</b></div>   
+                </td></tr></table>
                 <div class="scroller_sub_page">
-                    <table class="TFtable" >
+                    <table class="TFtable" id="printme" >
                         <thead><tr>
                             <th>Sr.No</th>
                             <th></th>

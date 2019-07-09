@@ -1,3 +1,5 @@
+
+
 <!--@filename staffstrengthlist.php  @author Nagendra Kumar Singh(nksinghiitk@gmail.com) 
     @filename staffstrengthlist.php  @author Neha Khullar(nehukhullar@gmail.com)
     @author Manorama Pal(palseema30@gmail.com)
@@ -15,6 +17,7 @@
                 size: auto;   /* auto is the initial value */
                 margin:0;  /* this affects the margin in the printer settings */
             }
+            
         </style>
         <script>
             function printDiv(printme) {
@@ -126,10 +129,11 @@
 			<?php if  ((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
                         <option value="<?php echo $this->uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$this->uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$this->uolt)->code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>------ Select University officer -----</option>
+                        <option value="" disabled selected>------ Select University officer -----</option>
+                        <!--<option value="All" >All</option> -->
                           <?php  } ?>
 
-                     <!-- <option value="All" >All</option> -->
+                     
                     </select> 
                 </td>
                 <td> Select Post
@@ -137,23 +141,32 @@
 			<?php if  ((!empty($this->desigm))&&($this->desigm != 'All')){ ?>
                         <option value="<?php echo $this->desigm; ?>" > <?php echo $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$this->desigm)->desig_name ." ( ". $this->commodel->get_listspfic1('designation', 'desig_code', 'desig_id',$this->desigm)->desig_code ." )"; ?></option>
                         <?php  }else{ ?>
-                      <option value="" disabled selected>----------- Select Post------</option>
+                        <option value="" disabled selected>----------- Select Post------</option>
+                        <!--<option value="All" >All</option> -->
                          <?php  } ?>
 
-                      <!--<option value="All" >All</option> -->
+                      
                     </select> 
                 </td>
                 <td valign="bottom">
                     <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
                 </td>
-            </tr>    
-    </table>          
+            </tr>
+
+        </table>
+    </form>
     <table width="100%">
         <tr style=" background-color: graytext;">
-            <td>
-                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
-                <div style="margin-left:500px;"><b>View Staff Vacancy Position Details</b></div>
-            </td>      
+        <td valign="top">
+            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >
+            <form action="<?php echo site_url('Pdfgen/svp/'.$this->wtyp.'/'.$this->uolt.'/'.$this->desigm) ?>">
+            <input type="submit" value="" title="Click for pdf" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px; background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')"> 
+            </form>
+            
+            <div style="margin-left:500px;"><b>View Staff Vacancy Position Details</b></div>
+        </td>
+        
+        
       <!-- <div>
        <//?php
        echo "<td align=\"center\" width=\"100%\">";

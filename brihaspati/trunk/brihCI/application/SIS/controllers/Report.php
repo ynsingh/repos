@@ -112,6 +112,10 @@ class Report  extends CI_Controller
 	$whdata['emp_leaving'] = NULL;
 	$whdata['emp_dor>=']=$cdate;
 
+        $this->wtyp = '';
+        $this->uolt = '';
+        $this->deptmt='';
+        
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
@@ -141,6 +145,7 @@ class Report  extends CI_Controller
             //$data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         }
         else{
+           // echo "seema=in ccc==".$this->wtyp.$this->uolt.$this->deptmt;
             $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
         }
         
@@ -158,7 +163,17 @@ class Report  extends CI_Controller
         $whdata = $this->getprofilefilerdata();
         $whdata['emp_leaving'] = NULL;
         $whdata['emp_dor>=']=$cdate;
-
+        
+        $data['wtyp']='';
+        $data['uolt']='';
+        $data['deptmt']='';
+               
+        $wtype='';
+        $uoff='';
+        $dept='';
+        
+                        
+        
         if(isset($_POST['filter'])) {
             	$wtype = $this->input->post('wtype');
             	$uoff  = $this->input->post('uoff');
@@ -201,6 +216,11 @@ class Report  extends CI_Controller
         $whorder = "sp_uo asc, sp_dept  asc, sp_schemecode  asc";
 	$whdata= '';
 	$whdata = $this->getwhdata();
+        $this->wtyp ='All';
+        $this->uolt = 'All';
+        $this->deptmt= 'All';
+        
+        
 	if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
@@ -240,6 +260,9 @@ class Report  extends CI_Controller
         $whorder = "sp_emppost asc, sp_uo asc, sp_dept asc";
 	$whdata = '';
 	$whdata = $this->getwhdata();
+         $this->wtyp = '';
+            $this->uolt = '';
+        $this->desigm='';
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype = $this->input->post('wtype');
@@ -316,7 +339,7 @@ class Report  extends CI_Controller
                 }
                 $datawh['emp_dept_code'] = $deptid;
         }
-/*	$roleid=$this->session->userdata('id_role');
+        /*$roleid=$this->session->userdata('id_role');
         $userid=$this->session->userdata('id_user');
         $deptid = '';
         $whdatad = array('userid' => $userid,'roleid' => $roleid);
@@ -782,7 +805,9 @@ public function disciplinewiselist(){
                }
 */
         $whorder = "emp_specialisationid asc, emp_desig_code asc ";
-	
+
+        	$this->camp ='';
+                $this->subj='';
 	if(isset($_POST['filter'])) {
 		$camp = $this->input->post('camp');
             	$subj[] = $this->input->post('subj');	
@@ -813,8 +838,10 @@ public function disciplinewiselist(){
 	$whorder = "sp_uo asc, sp_dept asc, sp_schemecode  asc,sp_emppost asc";
 //	$whorder = "sp_uo asc, sp_dept asc";
         $whdata = '';
-	$whdata = $this->getwhdata();       
-
+	$whdata = $this->getwhdata();     
+        $this->wtyp='';
+        $this->uolt='';
+        $this->deptmt='';
 //print_r($whdata); die();
         $selectfield ="sp_uo,sp_dept,sp_schemecode,sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
         //$selectfield ="sp_uo,sp_dept";
@@ -1049,7 +1076,8 @@ public function disciplinewiselist(){
         $selectfield ="sp_emppost";
 	$whdata ='';
 	$whdata = $this->getwhdata();
-     
+     $this->wtyp='';
+     $this->desigm='All';
         $data['tnttype']='';
         if(isset($_POST['filter'])) {
         	$wtype = $this->input->post('wtype');
@@ -1076,8 +1104,12 @@ public function disciplinewiselist(){
         $selectfield ="emp_id,emp_code,emp_name,emp_dor,emp_specialisationid,emp_dept_code,emp_doj";        
 	$whorder = "emp_doj asc";
 	$desig=null;
+        
         $whdata=array('emp_leaving' => NULL,'emp_dor>='=>$cdate);
-	 if(isset($_POST['filter'])) {
+	
+         $this->wtyp='';
+     $this->desigm='';
+        if(isset($_POST['filter'])) {
 		$wtype = $this->input->post('wtype');
 		$desig  = $this->input->post('desig');
 		$dosc  = $this->input->post('dateofservcalc');
@@ -1110,7 +1142,8 @@ public function disciplinewiselist(){
         $today= date("Y-m-d H:i:s"); 
 	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
 //        $whdata=array('hl_dateto >='=> $today);
-	 if(isset($_POST['filter'])) {
+	$data['uolt']=''; 
+        if(isset($_POST['filter'])) {
             $uoff  = $this->input->post('uoff');
 		if(!empty($uoff)){
 			$whdata['hl_uopid']=$uoff;
@@ -1131,11 +1164,13 @@ public function disciplinewiselist(){
         //$selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
-	$whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+	$whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
 //	$grpby="ul_authuoid";
 //	get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
         //$data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
         $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,$whdata,$whorder);
+       // print_r("seema===".$data['allsc']);
+       // die();
   //      $data['allsc']=$this->sismodel->get_orderdistinctrecordgrpby('uo_list',$selectfield,$whdata,$whorder,$grpby);
         //$data['allsc']=$this->sismodel->get_orderlistspficemore('uo_list',$selectfield,$whdata,$whorder);
         $this->logger->write_logmessage("view"," view list of UO in report " );
@@ -1575,6 +1610,19 @@ public function disciplinewiselist(){
 	$cdate = date('Y-m-d');
         //$whdata = array ('emp_leaving ' =>NULL ,'emp_dor>=' =>$cdate); 
         $whdata = array ('emp_leaving !=' =>NULL); 
+        
+        $this->wtyp='';
+        $this->uolt='';
+        $this->deptmt='';
+        $this->year='';
+        $this->month='';
+        
+        $wtype='';
+        $uoff='';
+        $dept='';
+        $year='';
+        $month='';
+        
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
             $wtype  = $this->input->post('wtype');

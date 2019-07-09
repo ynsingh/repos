@@ -26,15 +26,19 @@
     <body>
     <?php $this->load->view('template/header'); ?>
     <table width="100%">
-       <tr colspan="2"><td>
+       <tr style=" background-color: graytext;">
         <td>
-            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >  
+            <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;'  title="Click for print" >  
+            <form action="<?php echo site_url('Pdfgen/uolist/') ?>">
+                <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+            </form>
+            <div style="margin-left:700px;"><b>List of UO</b> </div>
         </td>      
-       <div>
-       <?php
+       
+       <?php /*
        echo "<td align=\"center\" width=\"100%\">";
        echo "<b>List of UO</b>";
-       echo "</td>";
+       echo "</td>"; */
        ?>
                 
       
@@ -52,8 +56,12 @@
         };
         ?>
         </div>
+           
+           
+        
 
-        </td></tr></table>
+        </tr></table>
+          
         <div id="printme" align="left" style="width:100%;">
         <div class="scroller_sub_page">
             <table class="TFtable" >

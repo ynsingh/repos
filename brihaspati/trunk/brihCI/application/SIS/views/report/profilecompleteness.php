@@ -115,7 +115,7 @@ table {
                         <option value="<?php echo $wtyp; ?>" > <?php echo $wtyp; ?></option>
                         <?php  }else{ ?>
 
-                      <option value="" disabled selected>--------Select Working Type-------</option>
+                      <option value="" >--------Select Working Type-------</option>
                        <?php  } ?> 
                       <option value="Teaching">Teaching</option>
                       <option value="Non Teaching"> Non Teaching</option>
@@ -128,7 +128,7 @@ table {
                         <option value="<?php echo $uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$uolt)->code ." )"; ?></option>
                         <?php  }else{ ?>
 
-                      <option value="" disabled selected>-------- Select University officer------</option>  
+                      <option value="">-------- Select University officer------</option>  
 		 <?php  } ?>
                     </select> 
                 </td> 
@@ -139,7 +139,7 @@ table {
                         <option value="<?php echo $deptmt; ?>" > <?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id' ,$deptmt)->dept_name ." ( ". $this->commodel->get_listspfic1('Department','dept_code','dept_id' ,$deptmt)->dept_code ." )"; ?></option>
                         <?php  }else{ ?>
 
-                      <option selected="selected" disabled selected>-------------Select Department-----------</option>  
+                      <option value="">-------------Select Department-----------</option>  
 			 <?php  } ?>
 
                     </select> 
@@ -150,7 +150,9 @@ table {
 			<input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
 		</td>
             </tr>    
-        </table>    
+        </table>
+            
+        </form>
 	<script>
                 $('document').ready(function(){
                         $('#dept').multiselect({
@@ -161,14 +163,19 @@ table {
                         });
                 });
         </script>
-        <table width="100%"><tr style=" background-color: graytext;" colspan="2">
-            <td> 
-                    
-                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >
+        <table width="100%"><tr style=" background-color: graytext;">
+            <td valign='top'> 
+                <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;'  title="Click for print" >
+                <?php // if(!empty($wtype)||(!empty($uolt))||(!empty($deptmt))):?>
+                 <form action="<?php echo site_url('Pdfgen/rpc/'.$wtyp.'/'.$uolt.'/'.$deptmt) ?>"> 
+                  
+                  <input type="submit" value="" style="width:30px; height:30px;float:right;padding:5px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+                  <?php //endif ;?>
+                </form>
                 <div style="margin-left:500px;"><b> Profile Completeness Details</b></div>
                    
-            </td>        
-	
+            </td> 
+           
             <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -209,7 +216,7 @@ table {
 		
                if( !empty($records) ):  ?>
                     <?php foreach($records as $record){
-//                        print_r($record);
+//                       print_r($record);
 			if($ouoid !=$record->emp_uocid){
 			echo "<tr>";
 			echo "<td colspan=15 style=\"text-align:center;border-width:2px;\">";
@@ -308,7 +315,7 @@ table {
         </div> <!------scroller div------>
 
         </div><!------print div------>
-        </form>
+        
 	<p> &nbsp; </p>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
 

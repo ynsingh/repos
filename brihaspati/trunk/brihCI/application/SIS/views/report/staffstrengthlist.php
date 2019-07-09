@@ -10,6 +10,8 @@
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script> 
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jspdf.plugin.autotable.js" ></script>
         <style type="text/css" media="print">
             @page {
                 size: auto;   /* auto is the initial value */
@@ -99,6 +101,9 @@
                 };
 
             }
+            
+           
+            
         </script> 
     </head>
     <body>
@@ -147,12 +152,17 @@
                 </td>
             </tr>
         </table>
- <table width="100%"><tr style=" background-color: graytext;">
-                <td>
-                    <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px;height:30px;' title="Click for print" >
+            </form>
+        
+        <table width="100%"><tr style=" background-color: graytext;">
+            <td>
+                 <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;'  title="Click for print" >     
+                <form action="<?php echo site_url('Pdfgen/ssl/'.$this->wtyp.'/'.$this->uolt.'/'.$this->deptmt) ?>">
+                <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
+                </form>
                 <div style="margin-left:542px;"><b>Staff Strength List Details</b></div>
-                </td>
-                <!--?php
+            
+               <!--?php
                     echo "<td align=\"center\" width=\"100%\">";
                     echo "<b>Staff Strength List Details</b>";
                     echo "</td>";
