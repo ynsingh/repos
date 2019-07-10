@@ -1775,6 +1775,7 @@ class Staffmgmt extends CI_Controller
         //print_r($whdata); die;
 	$selectfield ="sp_emppost,sp_campusid,sp_uo,sp_dept,sp_schemecode,sp_tnt,sp_type,sp_emppost,sp_scale,sp_methodRect,sp_sancstrenght,sp_position,sp_vacant,sp_id";
         $whorder = "sp_dept asc,sp_emppost asc";
+	$whdata['sp_sancstrenght >']=0;
         //$whdata = array('sp_uo'=> $uo);
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";

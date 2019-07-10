@@ -1095,12 +1095,15 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 </td>
 		<td><label for="entrylevelpost" style="font-size:15px;"><font color='blue'>Entry Level Post</font></label>
                     <div><select name="elpost"  id="elpost" style="width:300px;">
+<?php			if(!empty($editdata->emp_entrylevelpost)){ ?>
+			<option value="<?php echo $editdata->emp_entrylevelpost; ?>"><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$editdata->emp_entrylevelpost)->desig_name; ?></option>
+<?php }else{ ?>
                         <option selected="selected" disabled selected>--Select Entry Level Post--</option>
                         <?php foreach($desig as $desigdata): ?>
                             <option value="<?php echo $desigdata->desig_id; ?>"><?php echo $desigdata->desig_name; ?>
                             </option>
                         <?php endforeach; ?>
-
+<?php } ?>
                     </select></div>
                 </td>
 

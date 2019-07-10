@@ -337,13 +337,15 @@ $(document).ready(function(){
                             <td> <?php 
 				$uname = $this->session->userdata('username');
                                 $rest = substr($uname, -21);
-
+				$hempid='';
 		        	if($roleid == 5){
 		                        $deptuocid=$this->commodel->get_listspfic1('Department','dept_uoid','dept_id',$hdeptid)->dept_uoid;
-                			$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-//					echo "hodcode ".$hempcode;
-		                	$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-//					echo " hodid ".$hempid; 
+					if(!empty($this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user')))){
+	                			$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
+//						echo "hodcode ".$hempcode;
+			                	$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
+//						echo " hodid ".$hempid; 
+					}
         			}
 
 				$suocid='';

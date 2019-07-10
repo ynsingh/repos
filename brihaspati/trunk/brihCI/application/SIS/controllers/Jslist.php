@@ -170,7 +170,36 @@ class Jslist extends CI_Controller
                 echo json_encode($ps_select_box);
         }
 
-	
+	/* For payscale dispaly in payroll profile */
+	public function getpayscleagp(){
+		$values=array();
+                $combid= $this->input->post('wtpcl');
+                $parts = explode(',',$combid);
+//		print_r($parts); die();
+                $datawh=array();
+		$datawh['sgm_wt']=$parts[0];	
+                if($parts[1] == '6th'){
+                        $datawh['sgm_pc'] = "6th";
+                }else{
+                        $datawh['sgm_pc'] = "7th";
+                }
+		$datawh['sgm_level']=$parts[2];	
+//		print_r($datawh);die();
+                $psdata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_max,sgm_min,sgm_gradepay',$datawh);
+		if(count($psdata)>0){
+	        	foreach($psdata as $detail){
+				$range=$detail->sgm_min." - ".$detail->sgm_max;
+				$agp=$detail->sgm_gradepay;
+				array_push($values,$range,$agp);
+			}
+		}else{
+                        $mess="Please select the valid values";
+                        array_push($values,$mess);
+                }
+                echo json_encode($values);
+        }
+
+
     /* This function has been created for get the plan, non plan, ugc, ICAR, GOI shown against position */
     public function getemppnp(){
         $combval = $this->input->post('combfive');
@@ -493,7 +522,11 @@ class Jslist extends CI_Controller
         if(count($empdetail)>0){
             
             foreach($empdetail as $detail){
-                $campus=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$detail->emp_scid)->sc_name;
+		if(!empty($this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$detail->emp_scid))){
+                	$campus=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$detail->emp_scid)->sc_name;
+		}else{
+			$campus='';
+		}
                 $uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
                 $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
                 $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
@@ -520,11 +553,31 @@ class Jslist extends CI_Controller
                 $dor=date('d-m-Y',strtotime($detail->emp_dor));
                 $doj=date('d-m-Y',strtotime($detail->emp_doj));
                 $dob=date('d-m-Y',strtotime($detail->emp_dob));
-                $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$detail->emp_salary_grade)->sgm_name;
-                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade)->sgm_max;
-                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade)->sgm_min;
-                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
-		$level=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$detail->emp_salary_grade)->sgm_level;
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$detail->emp_salary_grade))){
+        	        $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$detail->emp_salary_grade)->sgm_name;
+		}else{
+			$payband='';
+		}
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade))){
+	                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade)->sgm_max;
+		}else{
+			$pay_max='';
+		}
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade))){
+                	$pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade)->sgm_min;
+		}else{
+			$pay_min='';
+		}
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade))){
+        	        $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
+		}else{
+			$gardepay='';
+		}
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$detail->emp_salary_grade))){
+			$level=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$detail->emp_salary_grade)->sgm_level;
+		}else{
+			$level='';
+		}
                 $payscale=$payband."(".$pay_min."-".$pay_max.")".$gardepay."-".$level;
                 $aadhaarno=substr($detail->emp_aadhaar_no, -4);
                 $paycomm=$detail->emp_paycomm;
@@ -556,6 +609,9 @@ class Jslist extends CI_Controller
                 $houseno=$detail2->ems_house_no;
                 $pensioncontri=$detail2->ems_pensioncontri;
                 $upfno=$detail2->ems_upfno;
+		if((strncmp($upfno, "V", 1) !== 0)||(strncmp($upfno, "C", 1) !== 0)){
+			$upfno=$pfno;
+		}
                 $univemp=$detail2->ems_universityemp;
                 $washallowance=$detail2->ems_washingallowance;
                 $dedtupf=$detail2->ems_deductupf;

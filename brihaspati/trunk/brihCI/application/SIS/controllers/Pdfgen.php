@@ -27,7 +27,6 @@
 
         function ssl()
         {
-
             $selectfield ="sp_uo, sp_dept,sp_emppost, sp_schemecode,sp_sancstrenght , sp_position , sp_vacant,sp_type";
             $whorder = "sp_uo asc, sp_dept  asc, sp_schemecode  asc";
             $whdata= '';
@@ -57,21 +56,13 @@
             $this->pdf->load_view('report/tempstaffstrengthlist',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-       
-
-
-
-
         }
 
         function svp()
         {
-    
             $selectfield ="sp_uo, sp_dept,sp_schemecode, sp_emppost,sp_sancstrenght , sp_position , sp_vacant, sp_remarks";
             $whorder = "sp_emppost asc, sp_uo asc, sp_dept asc";
             $whdata = '';
-        
-        
         
             $wid=$this->uri->segment(3,0);
             $uolt1=$this->uri->segment(4,0);
@@ -85,8 +76,6 @@
                 if(($uolt1 != "null") && ($uolt1 != "All")){
                     $whdata['sp_uo'] = $uolt1;
                 }
-
-    
                 $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,$whdata,$whorder);
             }
             else{
@@ -98,12 +87,10 @@
             $this->pdf->load_view('report/tempstaffvacancy',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-            
         }
 
         function pv()
         {
-    
             $selectfield ="sp_emppost";
             $whdata ='';
 
@@ -111,8 +98,6 @@
             $desig=  $this->uri->segment(4,0);
 
             if($wid !=0 || $desig!=0){
-                
-            
                 $whdata['sp_tnt']=$wid;
                 if(!empty($post) && ($post!="All")){
                     $whdata['sp_emppost']=$desig;
@@ -129,13 +114,11 @@
             $this->pdf->load_view('report/temppositionvancy',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-   
         }
 
 
         function lsf()
         {
-    
             $selectfield ="sp_uo,sp_dept,sp_schemecode,sp_emppost,sp_sancstrenght,sp_position,sp_vacant";
             $whorder = "sp_uo asc, sp_dept asc, sp_schemecode  asc,sp_emppost asc";
             //	$whorder = "sp_uo asc, sp_dept asc";
@@ -162,24 +145,17 @@
             else{
                 $data['records'] = $this->sismodel->get_distinctrecord('staff_position',$selectfield, $whdata);
             }
-//
-                 
             $this->load->library('pdf');
-            
             $this->pdf->set_paper("A4", "portrait");
             $this->pdf->set_option('enable_html5_parser', true);
             $this->pdf->load_view('report/templistofstaffposition',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-   
-    
-    
         }
 
 
         function del()
         {
-    
             $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code,emp_schemeid";
             $whorder = "emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
             $cdate = date('Y-m-d');
@@ -187,7 +163,6 @@
             $whdata = $this->getprofilefilerdata();
             $whdata['emp_leaving'] = NULL;
             $whdata['emp_dor>=']=$cdate;
-            
         
             echo $wid=$this->uri->segment(3,0);
             echo $uolt1=$this->uri->segment(4,0);
@@ -227,7 +202,6 @@
             $this->pdf->load_view('report/tempdeptemplist',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-   
         }
 
 
@@ -239,7 +213,6 @@
             $cdate = date('Y-m-d');
             $selectfield ="emp_dept_code, emp_id,emp_code,emp_name,emp_head, emp_desig_code,emp_specialisationid";
             $whorder = "emp_specialisationid asc, emp_desig_code asc ";
-            
             
             $whdata = $this->getprofilefilerdata();
             $whdata['emp_leaving'] = NULL;
@@ -284,7 +257,6 @@
             $this->pdf->load_view('report/tempdisciplinewiselist',$this->result);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-   
         }
 
         function proflist()
@@ -294,8 +266,6 @@
             $whorder = "emp_doj asc";
             $desig=null;
             $whdata=array('emp_leaving' => NULL,'emp_dor>='=>$cdate);
-        
-        
            
             $wid=$this->uri->segment(3,0);
             $desig=$this->uri->segment(4,0);
@@ -319,7 +289,6 @@
             $this->pdf->load_view('report/tempproflist',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
- 
         }
 
 
@@ -357,8 +326,6 @@
                     $whdata['emp_uocid'] = $uoff;
                     $data['uolt'] = $uoff;
                 }
-                    
-                   
                 $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
             }
             else{
@@ -371,8 +338,6 @@
             $this->pdf->load_view('report/tempreportprofile',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-   
-    
         }
 
 
@@ -400,13 +365,10 @@
             $this->pdf->load_view('report/temphodlist',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-   
-
         }
 
         function uolist()
         {
-     
             $today= date("Y-m-d H:i:s");
             $selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
             $whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
@@ -420,18 +382,15 @@
             $this->pdf->load_view('report/tempuolist',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-       
         }
 
 
         function rel(){
-            
             $selectfield ="emp_id,emp_code,emp_uocid, emp_dept_code,emp_name,emp_head, emp_post,emp_desig_code,emp_schemeid,emp_email,emp_doj,emp_dor,emp_dob";
             $whorder = "emp_dor desc,emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
             $cdate = date('Y-m-d');
             //$whdata = array ('emp_leaving ' =>NULL ,'emp_dor>=' =>$cdate); 
             $whdata = array ('emp_leaving !=' =>NULL); 
-                
                     
             $wtyp=$this->uri->segment(3,0);
             $uoff=$this->uri->segment(4,0);        
@@ -485,7 +444,6 @@
             $this->pdf->load_view('report/tempretired',$data);
             $this->pdf->render();
             $this->pdf->stream("report.pdf");
-
         }
         public 	function getprofilefilerdata(){
             $whdata ='';
@@ -510,7 +468,5 @@
             }
             return $whdata;
 	}
-
-
     }
 ?>

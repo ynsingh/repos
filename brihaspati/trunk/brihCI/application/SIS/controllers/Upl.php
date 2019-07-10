@@ -1450,6 +1450,265 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploaddepartlist');
     }//method close
     /***********************closer of department csv file****************************************************/
-       
+   public function getpcatlist(){
+        $combid = $this->input->post('groupp');
+		$grade_select_box ='';
+        $grade_select_box.='<option value>------- Select Sub Profile Category -----------------';
+        if($combid == 'Basic_Profile'){
+            $grade_select_box.='<option value='.'First_Appointment_Order_No.'.'>'.'First Appointment Order No';
+            $grade_select_box.='<option value='.'Date_Of_Probation'.'>'.'Date Of Probation';    
+            $grade_select_box.='<option value='.'Whether_Physically_Handicapped'.'>'.'Whether Physically Handicapped';     
+			$grade_select_box.='<option value='.'Whether_NET_Qualified'.'>'.'Whether NET Qualified'; 
+			$grade_select_box.='<option value='.'Veterinory_Council_Registration'.'>'.'Veterinory Council Registration';   
+        }
+        else if($combid == 'Academic_Qualification'){
+            $grade_select_box.='<option value='.'Undergraduate'.'>'.'Undergraduate'.'';
+            $grade_select_box.='<option value='.'Postgraduate'.'>'.'Postgraduate'.'';  
+			$grade_select_box.='<option value='.'MPhil'.'>'.'MPhil'.'';  
+			$grade_select_box.='<option value='.'Phd'.'>'.'Phd'.'';  
+			 }
+		else if($combid == 'Technical_Qualification'){
+            $grade_select_box.='<option value='.'Diploma'.'>'.'Diploma'.'';
+            $grade_select_box.='<option value='.'ITI'.'>'.'ITI'.'';  
+			$grade_select_box.='<option value='.'Certificate_Course'.'>'.'Certificate Course';  
+			$grade_select_box.='<option value='.'Shorthand'.'>'.'Shorthand'.'';  
+			$grade_select_box.='<option value='.'Typing'.'>'.'Typing'.'';
+			 }
+		else{
+            $grade_select_box.='<option value='.'Selection_Grade(SG)'.'>'.'Selection Grade(SG)'.'';
+            $grade_select_box.='<option value='.'Special_Grade(SplG)'.'>'.'Special Grade(SplG)'.''; 
+            $grade_select_box.='<option value='.'Career_Advance(CA)'.'>'.'Career Advance(CA)'.'';
+            $grade_select_box.='<option value='.'Regular(R)'.'>'.'Regular(R)'.'';                			
+        }
+       echo json_encode($grade_select_box);
+       // $grade_select_box ='';
+	}
+	public function getctglist(){
+		 $combid = $this->input->post('groupp');
+		$grade_select_box ='';
+        $grade_select_box.='<option value>------- Select Category Name-----------------';
+        if($combid == 'Undergraduate'){
+            $grade_select_box.='<option value='.'BA'.'>'.'BA'.'';
+            $grade_select_box.='<option value='.'BSc'.'>'.'BSc'.'';  
+			$grade_select_box.='<option value='.'BCom'.'>'.'BCom'.'';  
+			$grade_select_box.='<option value='.'BCA'.'>'.'BCA'.'';  
+			$grade_select_box.='<option value='.'BTech'.'>'.'BTech'.'';  
+			$grade_select_box.='<option value='.'BE'.'>'.'BE'.'';  
+			$grade_select_box.='<option value='.'BVsc'.'>'.'BVsc'.'';  
+			$grade_select_box.='<option value='.'BLit'.'>'.'BLit'.'';  
+			$grade_select_box.='<option value='.'BLIS'.'>'.'BLIS'.'';  
+			$grade_select_box.='<option value='.'BBA'.'>'.'BBA'.'';  
+			$grade_select_box.='<option value='.'BFSc'.'>'.'BFSc'.'';  
+			$grade_select_box.='<option value='.'BEd'.'>'.'BEd'.'';  
+			$grade_select_box.='<option value='.'BPED'.'>'.'BPED'.'';  
+			$grade_select_box.='<option value='.'BC'.'>'.'BC'.'';  
+			 }
+			else if($combid == 'Postgraduate'){
+			$grade_select_box.='<option value='.'MA'.'>'.'MA'.'';
+            		$grade_select_box.='<option value='.'MSc'.'>'.'MSc'.'';  
+			$grade_select_box.='<option value='.'MCom'.'>'.'MCom'.'';  
+			$grade_select_box.='<option value='.'MCA'.'>'.'MCA'.'';  
+			$grade_select_box.='<option value='.'MTech'.'>'.'MTech'.'';  
+			$grade_select_box.='<option value='.'ME'.'>'.'ME'.'';  
+			$grade_select_box.='<option value='.'MVsc'.'>'.'MVsc'.'';  
+			$grade_select_box.='<option value='.'MLit'.'>'.'MLit'.'';  
+			$grade_select_box.='<option value='.'MLIS'.'>'.'MLIS'.'';  
+			$grade_select_box.='<option value='.'MBA'.'>'.'MBA'.'';  
+			$grade_select_box.='<option value='.'MFSc'.'>'.'MFSc'.'';  
+			$grade_select_box.='<option value='.'MEd'.'>'.'MEd'.'';  
+			$grade_select_box.='<option value='.'MPED'.'>'.'MPED'.'';  
+			$grade_select_box.='<option value='.'MC'.'>'.'MC'.'';  
+			 }
+			 else if($combid == 'MPhil'){
+			  $grade_select_box.='<option value='.'Science'.'>'.'Science'.''; 
+			     $grade_select_box.='<option value='.'Arts'.'>'.'Arts'.''; 
+			 $grade_select_box.='<option value='.'Accounts'.'>'.'Accounts'.'';
+			 $grade_select_box.='<option value='.'hindi'.'>'.'hindi'.''; 
+			 $grade_select_box.='<option value='.'RDBMS'.'>'.'RDBMS'.'';
+			 $grade_select_box.='<option value='.'Chemistry'.'>'.'Chemistry'.''; 
+			 $grade_select_box.='<option value='.'Animal Biotechnology'.'>'.'Animal Biotechnology'.''; 
+			 $grade_select_box.='<option value='.'Animal Genetics and Breeding'.'>'.'Animal Genetics and Breeding'.''; 
+			 $grade_select_box.='<option value='.'Animal Neutrition'.'>'.'Animal Neutrition'.''; 
+			 $grade_select_box.='<option value='.'Biochemistry'.'>'.'Biochemistry'.''; 
+			
+			  }
+			  else if($combid == 'Phd'){
+			 $grade_select_box.='<option value='.'Science'.'>'.'Science'.''; 
+		     $grade_select_box.='<option value='.'Arts'.'>'.'Arts'.''; 
+			 $grade_select_box.='<option value='.'Accounts'.'>'.'Accounts'.'';
+			 $grade_select_box.='<option value='.'hindi'.'>'.'hindi'.''; 
+			 $grade_select_box.='<option value='.'RDBMS'.'>'.'RDBMS'.'';
+			 $grade_select_box.='<option value='.'Chemistry'.'>'.'Chemistry'.''; 
+			 $grade_select_box.='<option value='.'Animal Biotechnology'.'>'.'Animal Biotechnology'.''; 
+			 $grade_select_box.='<option value='.'Animal Genetics and Breeding'.'>'.'Animal Genetics and Breeding'.''; 
+			 $grade_select_box.='<option value='.'Animal Neutrition'.'>'.'Animal Neutrition'.''; 
+			 $grade_select_box.='<option value='.'Biochemistry'.'>'.'Biochemistry'.''; 
+			
+			  }
+			 echo json_encode($grade_select_box);
+       // $grade_select_box ='';
+	}
+	public function viewuploaddocument(){
+		$selectfield = 'ud_proflname,ud_subproflnme,ud_degreename,ud_pfno,ud_filename,ud_filelocation';
+		$whorder = 'ud_id DESC';
+		$data['record'] = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,'',$whorder);
+		$this->load->view('upl/viewupldocument',$data);
+	}
+    public function uploaddocumentlist(){
+        if(isset($_POST['adddocumentlist']))
+        {
+		$this->form_validation->set_rules('profilename', 'Profile Name', 'trim|xss_clean|required');
+		$this->form_validation->set_rules('subprofile', 'Sub Profile Name', 'trim|xss_clean|required'); 
+		$this->form_validation->set_rules('categoryname', 'Category Name', 'trim|xss_clean'); 
+		$this->form_validation->set_rules('pfno', 'PF NO', 'trim|xss_clean|required'); 
+		$this->form_validation->set_rules('userfile', 'Select File', 'trim|xss_clean'); 
+		if($this->form_validation->run() == FALSE){
+                    	$this->load->view('upl/uploaddocumentlist');
+                    	return;
+                }else{
+			$pname=$this->input->post('profilename');
+			$spname=$this->input->post('subprofile');
+			$catname=$this->input->post('categoryname');
+			$pfno=$this->input->post('pfno');
+	//		$filename=$this->input->post('userfile');
+            		$ferror='';
+		        if (isset($_FILES["userfile"]))
+            		{
+                		$errors= array();
+                		$file_name = $_FILES['userfile']['name'];
+				$flestring = explode('.',$file_name);
+                		$file_ext=strtolower(end($flestring));
+                		$expensions= array("pdf","png");
+                		if(in_array($file_ext,$expensions)=== false)
+                		{
+                    			$ferror="extension not allowed, please choose a png or pdf file.";
+                    			$this->session->set_flashdata('error', $ferror);
+			                $this->load->view('upl/uploaddocumentlist');
+                    			return;
+				}
+				else{
+                    			$flag=true;
+					$desired_dir = "uploads/SIS/";
+
+					if(strcasecmp($pname,"Basic_Profile")==0){
+						$desired_dir = $desired_dir ."Basic_Profile/";
+					}
+					if(strcasecmp($pname,"Academic_Qualification")==0){
+						$desired_dir = $desired_dir ."Academic_Qualification/";
+					}
+					if(strcasecmp($pname,"Technical_Qualification")==0){
+						$desired_dir = $desired_dir ."Technical_Qualification/";
+					}
+					if(strcasecmp($pname,"Promotional_Details")==0){
+						$desired_dir = $desired_dir ."Promotional_Details/";
+					}
+					//Check if the directory already exists.
+					if(!is_dir($desired_dir)){
+					    //Directory does not exist, so lets create it.
+					    mkdir($desired_dir, 0777, true);
+					}
+                                        $config['upload_path'] = $desired_dir ;
+                                        $config['remove_spaces'] = TRUE;
+                                        $config['max_size'] = '800000000000';
+                                        $config['overwrite'] = TRUE;
+					
+					$name = $pfno;
+//					$_FILES['userFile']['name'] = $_FILES['userfile']['name'];
+					if(!empty($spname)){
+						$name=$name.'_'.$spname;
+					}
+					if(!empty($catpname)){
+						$name=$name.'_'.$catname;
+					}
+					$name = $name.$file_ext;
+					$name = str_replace(" ", "_",$name);
+					if(strpos($name, '.') === false){
+						$name='';
+					}
+//			echo $pname.":".$spname.":".$catname.":".$pfno.":".$name.":".$desired_dir; 
+//			die();
+					if(!empty($name)){
+	                                	$_FILES['userFile']['name'] = $_FILES['userfile']['name'];
+                   			        $_FILES['userFile']['type'] = $_FILES['userfile']['type'];
+	                                        $_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
+         	        			$_FILES['userFile']['size'] = $_FILES['userfile']['size'];
+	                                        if($_FILES['userfile']['size'] > 800000000000) {
+                        				$errors[]='file size must be less 8 MB';
+							$this->session->set_flashdata('error', "file size must be less 8 MB");
+                		                        $this->load->view('upl/uploaddocumentlist');
+		                                        return;
+                                        	}
+                        		        $config['file_name'] = $name;
+						$config['allowed_types'] = "gif|jpg|png|jpeg|pdf";
+                                        //	$config['allowed_types'] = "gif|jpg|png|jpeg|pdf";
+			                        $this->load->library('upload',$config);
+						$this->upload->initialize($config);
+				                if($this->upload->do_upload('userfile')){
+                	        			$uploadData = $this->upload->data();
+                        	                       	$file = $uploadData['file_name'];
+							$cdate = date('Y-m-d');
+							$ddatacheck = array(
+								'ud_proflname'	=>$pname,
+								'ud_subproflnme'	=>$spname,
+								'ud_degreename'	=>$catname,
+								'ud_pfno'	=>$pfno,
+                            				);
+				                            // check for duplicate
+                            				$isdup= $this->sismodel->isduplicatemore('uploaddocuments',$ddatacheck);
+			                            	if(!$isdup){
+								$dataurt=array(
+									'ud_proflname'	=>$pname,
+									'ud_subproflnme'	=>$spname,
+									'ud_degreename'	=>$catname,
+									'ud_pfno'	=>$pfno,
+									'ud_filename' =>$name,
+									'ud_filelocation' =>$desired_dir,
+									'ud_creator' =>$this->session->userdata('username'),
+									'ud_creationdate' =>$cdate,
+									'ud_modifier' =>$this->session->userdata('username'),
+									'ud_modifydate' =>$cdate
+								);
+                                				$userflagurt=$this->sismodel->insertrec('uploaddocuments', $dataurt) ;
+	                    					$ferror= $ferror.'Document file uploaded and inserted successfully.';
+							}else{
+								//file updated
+								$selectfield = 'ud_id';
+						                $whorder = 'ud_id DESC';
+						                $record = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,'',$whorder);
+								foreach($record as $row){
+									$udid= $row->ud_id;
+								}
+								$dataurt=array(
+									'ud_filename' =>$name,
+									'ud_modifier' =>$this->session->userdata('username'),
+	                                                                'ud_modifydate' =>$cdate
+								);
+                                                                $userflagurt=$this->sismodel->updaterec('uploaddocuments', $dataurt,'ud_id',$udid) ;
+                                                                $ferror= $ferror.'Document file uploaded and updated successfully.';
+							}
+				                }else{
+							$file = '';
+                  	                  		$error =  array('err_message' => $this->upload->display_errors());
+			                                foreach ($error as $item => $value):
+                        			        	$ferror = $ferror.$value;
+                                           		endforeach;
+							$ferror=str_replace("\r\n","",$ferror);
+						}
+					}//file name set
+					else{
+						$ferror= $ferror.'file name is not defined proper';
+					}
+				}//file type
+			}//file set
+			else{
+				$ferror= $ferror.'File is not choosen for upload.';
+			}
+			$this->session->set_flashdata('success', $ferror);
+                        $this->load->view('upl/uploaddocumentlist');
+                        return;
+            }//end validation 
+        }//button pressed
+        $this->load->view('upl/uploaddocumentlist');
+    }//method close    
 }
 

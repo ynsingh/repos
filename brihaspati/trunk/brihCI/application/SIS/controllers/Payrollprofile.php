@@ -179,6 +179,11 @@ class Payrollprofile extends CI_Controller
 		$qtrtype = $this->input->post('qtrtype', '');
 		$society = $this->input->post('society', '');
 		$socmem = $this->input->post('societymember', '');
+		$upfno = $this->input->post('upfno', '');
+		if(empty($upfno)){
+			$cpsno = $this->input->post('cpsno', '');
+			$upfno = $cpsno;
+		}
                 $datapp = array(
                     	'ems_house_type'          =>$qtrtype,
                     	'ems_house_no'            =>$_POST['qtrno'],

@@ -25,7 +25,7 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-//                            alert("datat==="+data);
+   //                         alert("datat==="+data);
                             var empinput=data.split(",");
 //				alert(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
@@ -76,7 +76,15 @@
                                // $('#pcontri1').is(':checked');
                             } 
                             //$('#pcontri').val(empinput[21].replace(/[[\]"|"]/g,""));
-                            $('#upfno').val(empinput[23].replace(/[[\]"|"]/g,""));
+                            //$('#upfno').val(empinput[23].replace(/[[\]"|"]/g,""));
+                            var pfno=empinput[23].replace(/[[\]"|"]/g,"");
+//	alert(pfno);
+				if(pfno.indexOf("V") === 0){
+					$('#upfno').val(pfno);
+				}
+				else if(pfno.indexOf("C") === 0){
+					$('#cpsno').val(pfno);
+				}
                             $('#qtrno').val(empinput[24].replace(/[[\]"|"]/g,""));
                             $('#qtrtype').val(empinput[25].replace(/[[\]"|"]/g,""));
                             var univemp=empinput[26].replace(/[[\]"|"]/g,"");
@@ -168,7 +176,6 @@
                         $('#socmem').prop('disabled',true);
                     }
                     else{
-             
                         $('#socmem').prop('disabled',false);
                         $.ajax({
                             url: "<?php echo base_url();?>sisindex.php/jslist/getsocietyno",
@@ -176,22 +183,48 @@
                             data: {"society" : soc},
                             dataType:"html",
                             success:function(data){
-                                alert("data==="+data);
+                            //    alert("data==="+data);
                                 $('#socmem').val(data.replace(/"|"/g,""));
-                       
                             },
                             error:function(data){
                             //alert("data in error==="+data);
                                 alert("error occur..!!");
-                 
                             }
-                                            
                         });
                     }
                 }); 
-            
                 /*********************closer of scheme**************************************************/
-            
+           	$('#pscale1').on('change',function(){
+			var wty=$('#wtype').val();
+			var pc= $('#pcomm').val();
+			var levl= $('#pscale1').val();
+			var val = wty+","+pc+","+levl;
+//			alert(val);
+			if(levl == ''){
+                        	$('#pscale2').prop('disabled',true);
+                    	}else{
+                        $('#pscale2').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getpayscleagp",
+                            type: "POST",
+                            data: {"wtpcl" : val},
+                            dataType:"html",
+                            success:function(data){
+  //                              alert("data==="+data);
+				var sginput=data.split(",");
+//                              alert(sginput[0].replace(/[[\]"|"]/g,""));
+                            $('#pscale2').val(sginput[0].replace(/[[\]"|"]/g,""));
+                            $('#pscale3').val(sginput[1].replace(/[[\]"|"]/g,""));
+                            },
+                            error:function(data){
+                            //alert("data in error==="+data);
+                                alert("error occur..!!");
+                            }
+                        });
+                    }
+		}); 
+
+
             });
             
 		function levelofpay(val){
@@ -296,12 +329,26 @@
                         </tr>
                         <tr>
                             <td colspan=2> <b>Address:</b><br><input type="text" id="add" value="" style="text-decoration:none;border:0; word-break: break-all;width:600px;" readonly></td>
-                            <td> <b>UPF No :</b><br><input type="text" name="upfno" id="upfno" value="" style="width:300px;"></td>
-                            <td colspan="1" style="width:300px;"> <b>Pension Contribution:</b><br>
+                            <td> <b>UPF No :</b><br><input type="text" name="upfno" id="upfno" value="" style="width:300px;" readonly></td>
+                            <td colspan="1" style="width:300px;"> <b>CPS No:</b><br>
+				<input type="text" name="cpsno" id="cpsno" value="" style="width:300px;" readonly>
+                            </td>
+                        </tr>
+			<tr>
+				 <td style="width:300px;"> <b>Deduct UPF:</b><br>
+                                <input type="radio" name="dedupf" id="dedupf" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="dedupf" id="dedupf"  checked value="no">No
+                            </td>
+                            <td colspan="1" style="width:300px;"> <b>Deduct CPS:</b><br>
                                 <input type="radio" name="pcontri" id="pcontri" value="yes">Yes &nbsp;&nbsp;&nbsp;
                                 <input type="radio" name="pcontri" id="pcontri" checked value="no">No
                             </td>
-                        </tr>
+				<td style="width:300px;"> <b>Washing Allowance:</b><br>
+                                <input type="radio" name="washallw" id="washallw"  value="yes">Yes &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="washallw"  id="washallw" checked value="no">No
+                            </td>
+
+			</tr>
                         <!--<tr><td colspan="5"><b> <hr/> <span style="color:#0099CC;">Work Details</span></b></td></tr> -->
                         <tr><td colspan="5"><b> <hr/> <span style="color:#0099CC;">Employee Scale of Pay</span></b></td></tr> 
                         
@@ -441,11 +488,12 @@
                         <tr><td colspan="5"><b> <hr/> <span style="color:#0099CC;">PAN | LIC | PRD | ETC</span></b></td></tr> 
                         <!--<tr><td colspan="5"><b>  <hr/><span style="color:#0099CC;">LIC/PRD/PLI/Society Entry</span></b></td></tr> -->
                         <tr>
-                            <td><b> PAN No:</b><br><input type="text" name="panno" id="panno" value="" style="width:300px;"></td>
-                            <td style="width:300px;"> <b>Washing Allowance:</b><br>
+                            <td><b> FSF No:</b><br><input type="text" name="fsfno" id="fsfno" value="" style="width:300px;"></td>
+                            <td><b>Amount:</b><br><input type="text" name="fsfamount" id="fsfamount" value="" style="width:300px;"></td>
+                            <!--<td style="width:300px;"> <b>Washing Allowance:</b><br>
                                 <input type="radio" name="washallw" id="washallw"  value="yes">Yes &nbsp;&nbsp;&nbsp;
                                 <input type="radio" name="washallw"  id="washallw" checked value="no">No
-                            </td>
+                            </td>-->
                             <td><b> NHIS No:</b><br> <input type="text" name="nhisno" id="nhisno" value="" style="width:300px;"></td>
                             <td><b>Amount:</b><br><input type="text" name="nhisamount" id="nhisamount" value="" style="width:300px;"></td>
                         </tr>
@@ -489,6 +537,7 @@
                             <td><b>Amount:</b><br><input type="text" name="pli2amount" id="pli2amount" value="" style="width:300px;"></td>
                         </tr>
                         <tr>
+                            <td><b> PAN No:</b><br><input type="text" name="panno" id="panno" value="" style="width:300px;"></td>
                             <td><b> Society:</b><br>
                                 <div><select name="society" id="society" style="width:300px;"> 
                                     <option value="">------------ Society ---------</option>
@@ -500,14 +549,10 @@
                                 </td>
                             <td><b> Society No:</b><br> <input type="text" name="societymember" id="socmem" value="" style="width:300px;"></td>
                             <td><b>Amount:</b><br><input type="text" name="socamount" id="socamount" value="" style="width:300px;"></td>
-                            <td style="width:300px;"> <b>Deduct UPF:</b><br>
+                       <!--     <td style="width:300px;"> <b>Deduct UPF:</b><br>
                                 <input type="radio" name="dedupf" id="dedupf" value="yes">Yes &nbsp;&nbsp;&nbsp;
                                 <input type="radio" name="dedupf" id="dedupf"  checked value="no">No
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b> FSF No:</b><br><input type="text" name="fsfno" id="fsfno" value="" style="width:300px;"></td>
-                            <td><b>Amount:</b><br><input type="text" name="fsfamount" id="fsfamount" value="" style="width:300px;"></td>
+                            </td>-->
                         </tr>
                         <tr>
                             <td colspan="6">   
