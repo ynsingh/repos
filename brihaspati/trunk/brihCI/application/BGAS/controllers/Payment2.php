@@ -307,7 +307,8 @@ function __construct() {
 				}
                         }
 			$message2 = base_url()."bgasindex.php/user/login";
- 			$message1 = "<b>Please login to your account in Brihaspati General Accounting System and take actions on Bill Number $billid</b>";
+ 			//$message1 = "<b>Please login to your account in ". ADDRESSHEAD . Brihaspati General Accounting System " and take actions on Bill Number $billid</b>";
+ 			$message1 = "<b>Please login to your account in ". ADDRESSHEAD . " and take actions on Bill Number $billid</b>";
 			$message = $message1."<br>".$message2;
                         $subject = 'Bill Approval in BGAS ';
                         if($this->paymentreceipt->send_mail($forward_to2, $subject, $message))
@@ -985,7 +986,8 @@ function __construct() {
 					}
 				}
 				$message2 = base_url()."bgasindex.php/user/login";
-                        	$message1 = "<b>Please login to your account in Brihaspati General Accounting System and take actions on Bill Number $bill_no</b>";
+                        	//$message1 = "<b>Please login to your account in Brihaspati General Accounting System and take actions on Bill Number $bill_no</b>";
+                        	$message1 = "<b>Please login to your account in ". ADDRESSHEAD ." and take actions on Bill Number $bill_no</b>";
                         	$message = $message1."<br>".$message2;
                         	$subject = 'Bill Approval in BGAS ';
                         	if($this->paymentreceipt->send_mail($forward_to2, $subject, $message))

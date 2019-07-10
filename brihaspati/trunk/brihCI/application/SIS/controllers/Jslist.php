@@ -62,6 +62,7 @@ class Jslist extends CI_Controller
 		$whorder = "desig_name asc";
         	$grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
                 //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+                $desig_select_box =array();
                 $desig_select_box ='';
                 $desig_select_box.='<option value=null>--Select Designation--';
 		$desig_select_box.='<option value='.All.'>'.All. ' ';
@@ -70,6 +71,28 @@ class Jslist extends CI_Controller
                         	$desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_name.'('. $grprecord->desig_code .')'.' ';
                 	}
         	}
+                echo json_encode($desig_select_box);
+	}
+
+	/* This function has been created for get list of Designation on the basis of  selected Working type */
+	public function getwdesiglist(){
+                $groups = $this->input->post('wtype');
+
+                $datawh=array('desig_type' => $groups);
+                $rlid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+
+                $whorder = "desig_name asc";
+                $grp_data = $this->commodel->get_orderlistspficemore('designation','desig_id,desig_name,desig_code',$datawh,$whorder);
+                //$grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+                $desig_select_box ='';
+                $desig_select_box.='<option value=null>--Select Designation--';
+                $desig_select_box.='<option value='.All.'>'.All. ' ';
+                if(count($grp_data)>0){
+                        foreach($grp_data as $grprecord){
+                                $desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_name.'('. $grprecord->desig_code .')'.' ';
+                        }
+                }
                 echo json_encode($desig_select_box);
         }
 
