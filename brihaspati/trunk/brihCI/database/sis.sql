@@ -6,9 +6,9 @@
 --
 
 -- --------------------------------------------------------
--- DROP DATABASE IF EXISTS `payroll`;
--- CREATE DATABASE `payroll`;
--- USE `payroll`;
+ DROP DATABASE IF EXISTS `payroll`;
+ CREATE DATABASE `payroll`;
+ USE `payroll`;
 
 -- --------------------------------------------------------
 --
@@ -1233,7 +1233,7 @@ CREATE TABLE `staff_promotionals_details` (
   `spd_paycom` varchar(11) DEFAULT NULL,
   `spd_agp` varchar(255) DEFAULT NULL,
   `spd_agpdate` date DEFAULT NULL,
-  `spd_agpsession VARCHAR(50) DEFAULT NULL,
+  `spd_agpsession` VARCHAR(50) DEFAULT NULL,
   `spd_level` varchar(255) DEFAULT NULL,
   `spd_leveldate` date DEFAULT NULL,
   `spd_levelsession` varchar(50) DEFAULT NULL,
@@ -1275,7 +1275,7 @@ CREATE TABLE `staff_promotionals_details_archive` (
   `spda_paycom` varchar(11) DEFAULT NULL,
   `spda_agp` varchar(255) DEFAULT NULL,
   `spda_agpdate` date DEFAULT NULL,
-  `spda_agpsession VARCHAR(50) DEFAULT NULL,
+  `spda_agpsession` VARCHAR(50) DEFAULT NULL,
   `spda_level` varchar(255) DEFAULT NULL,
   `spda_leveldate` date DEFAULT NULL,
   `spda_levelsession` varchar(50) DEFAULT NULL,

@@ -11,8 +11,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>assets/css/message.css">
 
 <div id="header">
-<!--<img src="<?php echo base_url(); ?>uploads/logo/logo1.png" alt="logo">-->
-<h1 style="font-size:60px;font-family:verdana serif;"> Purchase and Inventory Control System </h1>
+<img src="<?php echo base_url(); ?>uploads/logo/logo1.png" alt="logo">
+<!--<h1 style="font-size:60px;font-family:verdana serif;"> Purchase and Inventory Control System </h1>-->
 </div> 
 
 <?php
