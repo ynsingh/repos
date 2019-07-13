@@ -236,7 +236,7 @@ $(document).ready(function() {
 		echo "<ul class=\"sf-menu\">";
 			echo "<li class=\"current\">";
 				//echo "<a href=" . base_url() . "title=\"Dashboard\">Dashboard</a>";
-				echo anchor(base_url().'/bgasindex.php', 'Dashboard', array('title' => 'Dashboard'));
+				echo anchor(base_url().'bgasindex.php', 'Dashboard', array('title' => 'Dashboard'));
 			echo "</li>";
 			echo "<li>";
 				echo anchor('budgetl', 'Budgets', array('title' => 'Budget accounts'));

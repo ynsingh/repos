@@ -174,10 +174,18 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 			if(!($ta["prgname"]==$pre1)){
 				$flag=1;
 				$h=$ta["prgname"];
-				$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
-				$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
+	//			echo $h;
+				if(!empty($h)){
+	//				$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
+			//		$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
+					$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h)->prg_branch;
+				}else{
+	//				$hname='';
+					$hbranch =='';
+				}
 				echo "<tr>";
-			echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$hname." ( ".$hbranch. " )  <br>";
+	//		echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$hname." ( ".$hbranch. " )  <br>";
+			echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$h." ( ".$hbranch. " )  <br>";
 			echo "</tr>";
 			
 			}

@@ -54,7 +54,8 @@ yearRange: 'c-47:c+50',
 <script>
     $(document).ready(function(){
        $('#country_id').on('change',function(){
-           var cid = $(this).val();
+	       var cid = $(this).val();
+//	       alert(cid);
            if(cid == ''){
                $('#stname').prop('disabled',true);
                
@@ -62,13 +63,14 @@ yearRange: 'c-47:c+50',
            else{
               	 $('#stname').prop('disabled',false); 
                $.ajax({
-                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_state",
+                   url: "<?php echo base_url();?>sisindex.php/setup/get_state",
                    type: "POST",
                    data: {"cid" : cid},
                    dataType:"html",
+                    //  alert($data);
                    success:function(data){
+                    //  alert($data);
                       $('#stname').html(data.replace(/^"|"$/g, ''));
-                       
                    },
                    error:function(data){
                        
@@ -87,7 +89,7 @@ $('#stname').on('change',function(){
            else{
                  $('#citname').prop('disabled',false); 
                $.ajax({
-                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_city",
+                   url: "<?php echo base_url();?>sisindex.php/setup/get_city",
                    type: "POST",
                    data: {"sid" : sid},
                    dataType:"html",

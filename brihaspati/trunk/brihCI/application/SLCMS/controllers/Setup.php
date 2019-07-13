@@ -29,7 +29,7 @@ class Setup extends CI_Controller
 
 	 	$this->load->model("DateSem_model","datemodel");
 		$this->load->model('SIS_model');
-        $this->load->model('PICO_model');
+ //       $this->load->model('PICO_model');
 
         	if(empty($this->session->userdata('id_user'))) {
             		$this->session->set_flashdata('flash_data', 'You don\'t have access!');
