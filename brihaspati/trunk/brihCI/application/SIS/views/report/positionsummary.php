@@ -59,10 +59,10 @@
         <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float: right;padding:5px; margin-right:30px;' title="Click for print" >
         <img src='<?php echo base_url(); ?>assets/sis/images/pdf.jpeg' alt='pdf'  onclick="javascript:akash1('printme1')" style='width:30px; height:30px; float: right;padding:5px;' title="Click for pdf" >  
       
-        <div style="margin-left:600px;valign:top"><b><?php echo $this->wtype." Position-Summary";?></b></div>   
+        <div style="margin-left:600px;valign:top"><b><?php echo str_replace('_',' ',$this->wtype)." Position-Summary";?></b></div>   
          </td>   
         
-        <input type="hidden" id="title" name="title" value="<?php echo $this->wtype?>" >
+        <input type="hidden" id="title" name="title" value="<?php echo str_replace(' ','_',this->wtype) ?>" >
            
         </tr></table>
          <div id="printme" align="left" style="width:100%;">

@@ -151,7 +151,7 @@
 	<tr style=" background-color: graytext;">
          <td>
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >   
-            <form action="<?php echo site_url('Pdfgen/proflist/'.$this->wtyp.'/'.$this->desig) ?>">
+            <form action="<?php echo site_url('Pdfgen/proflist/'.str_replace(' ','_',$this->wtyp).'/'.$this->desig) ?>">
             <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
             </form>
             <div style="margin-left:500px;"><b><?php echo  "List of ";

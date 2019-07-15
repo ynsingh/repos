@@ -7,7 +7,9 @@
 
 <html>
  <body> 
-     <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/> 
+<!--     <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/> -->
+<?php $this->load->view('template/pheader'); ?>
+
     <div class="scroller_sub_page">
                     <table class="TFtable" id="printme" >
                         <thead><tr>
@@ -105,6 +107,8 @@
                 </table> 
       
             </div><!------scroller div------>
-            <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>
+<!--            <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>-->
+<?php $this->load->view('template/footer'); ?>
+
         </body>    
     </html>

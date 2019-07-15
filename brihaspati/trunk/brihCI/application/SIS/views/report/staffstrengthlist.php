@@ -157,7 +157,7 @@
         <table width="100%"><tr style=" background-color: graytext;">
             <td>
                  <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;'  title="Click for print" >     
-                <form action="<?php echo site_url('Pdfgen/ssl/'.$this->wtyp.'/'.$this->uolt.'/'.$this->deptmt) ?>">
+                <form action="<?php echo site_url('Pdfgen/ssl/'.str_replace(' ','_',this->wtyp).'/'.$this->uolt.'/'.$this->deptmt) ?>">
                 <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
                 </form>
                 <div style="margin-left:542px;"><b>Staff Strength List Details</b></div>

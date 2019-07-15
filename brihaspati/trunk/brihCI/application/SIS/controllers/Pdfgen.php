@@ -32,7 +32,7 @@
             $whdata= '';
             //$whdata = $this->getwhdata();
 
-            $wid=$this->uri->segment(3,0);
+            $wid=str_replace('_',' ',$this->uri->segment(3,0));
             $uolt1=$this->uri->segment(4,0);
             $dept=  $this->uri->segment(5,0);
 
@@ -64,7 +64,7 @@
             $whorder = "sp_emppost asc, sp_uo asc, sp_dept asc";
             $whdata = '';
         
-            $wid=$this->uri->segment(3,0);
+            $wid=str_replace('_',' ',$this->uri->segment(3,0));
             $uolt1=$this->uri->segment(4,0);
             $desig=  $this->uri->segment(5,0);
 
@@ -94,7 +94,7 @@
             $selectfield ="sp_emppost";
             $whdata ='';
 
-            $wid=$this->uri->segment(3,0);
+            $wid=str_replace('_',' ',$this->uri->segment(3,0));
             $desig=  $this->uri->segment(4,0);
 
             if($wid !=0 || $desig!=0){
@@ -126,7 +126,7 @@
             $data['tnttype']='';
             $data['seldept']='';
             
-            $wid=$this->uri->segment(3,0);
+            $wid=str_replace('_',' ',$this->uri->segment(3,0));
             $uolt1=$this->uri->segment(4,0);
             $dept=$this->uri->segment(5,0);
             
@@ -164,7 +164,7 @@
             $whdata['emp_leaving'] = NULL;
             $whdata['emp_dor>=']=$cdate;
         
-            echo $wid=$this->uri->segment(3,0);
+            echo $wid=str_replace('_',' ',$this->uri->segment(3,0));
             echo $uolt1=$this->uri->segment(4,0);
             echo $dept[]=  $this->uri->segment(5,0);
             
@@ -267,7 +267,7 @@
             $desig=null;
             $whdata=array('emp_leaving' => NULL,'emp_dor>='=>$cdate);
            
-            $wid=$this->uri->segment(3,0);
+            $wid=str_replace('_',' ',$this->uri->segment(3,0));
             $desig=$this->uri->segment(4,0);
             if($wid !=0 || $desig !=0)
             {    
@@ -301,7 +301,7 @@
             $whdata['emp_leaving'] = NULL;
             $whdata['emp_dor>=']=$cdate;
                
-            $wtyp=$this->uri->segment(3,0);
+            $wtyp=str_replace('_',' ',$this->uri->segment(3,0));
             $uoff=$this->uri->segment(4,0);        
             $dept= $this->uri->segment(5,0);
                 //echo "wtyp==".$wtyp.$uoff. $dept;
@@ -315,9 +315,9 @@
                     $data['deptmt']= "All";
                 }
 
-                if(!empty($wtype)){
-                    $whdata['emp_worktype']=$wtype;
-                    $data['wtyp'] = $wtype;
+                if(!empty($wtyp)){
+                    $whdata['emp_worktype']=$wtyp;
+                    $data['wtyp'] = $wtyp;
                 }
                 if(($dept != "null") && ($dept != "All") && (!empty($dept))){
                     $whdata['emp_dept_code']= $dept;
@@ -372,8 +372,8 @@
             $today= date("Y-m-d H:i:s");
             $selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
             $whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
-                //$whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
-            $whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
+            $whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+            //$whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
             $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,$whdata,$whorder);
         
             $this->load->library('pdf');
@@ -392,7 +392,7 @@
             //$whdata = array ('emp_leaving ' =>NULL ,'emp_dor>=' =>$cdate); 
             $whdata = array ('emp_leaving !=' =>NULL); 
                     
-            $wtyp=$this->uri->segment(3,0);
+            $wtyp=str_replace('_',' ',$this->uri->segment(3,0));
             $uoff=$this->uri->segment(4,0);        
             $dept[]= $this->uri->segment(5,0);
             $year=$this->uri->segment(6,0);

@@ -1164,7 +1164,8 @@ public function disciplinewiselist(){
         //$selectfield ="ul_userid,ul_empcode,ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
-	$whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
+	//$whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
+	$whdata=array('ul_status'=>'Fulltime','ul_dateto '=>'0000-00-00 00:00:00');
 //	$grpby="ul_authuoid";
 //	get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
         //$data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');

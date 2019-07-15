@@ -195,7 +195,7 @@
         
             <table width="100%"><tr style=" background-color: graytext;"> 
                <td valign="top">
-                <form action="<?php echo site_url('Pdfgen/rel/'.$this->wtyp.'/'.$this->uolt.'/'.$this->deptmt.'/'.$this->year.'/'.$this->month) ?>">
+                <form action="<?php echo site_url('Pdfgen/rel/'.str_replace(' ','_',$this->wtyp).'/'.$this->uolt.'/'.$this->deptmt.'/'.$this->year.'/'.$this->month) ?>">
                 
                 <input type="submit" value="" style="width:30px; height:30px;float:right;padding:5px; margin-right:30px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
                 </form>    

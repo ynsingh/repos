@@ -7,9 +7,10 @@
     <head>
        
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-    </head>
-    
-    <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/>
+</head>
+<body>
+    <?php $this->load->view('template/pheader'); ?>
+<!--    <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/>-->
 
 <div> 
         <table class="TFtable" style="border-width:2px;border-color:black;border-style:solid;">
@@ -131,5 +132,7 @@
                 </tbody> 
         </table> 
         </div> <!------scroller div------>
- <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>
+<!-- <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>-->
+<?php $this->load->view('template/footer'); ?>
+</body>
 </html>

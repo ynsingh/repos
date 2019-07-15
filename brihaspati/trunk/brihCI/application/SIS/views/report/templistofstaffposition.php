@@ -17,8 +17,8 @@
     </head>
 
     <body>
-        
-  <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/>
+<?php $this->load->view('template/pheader'); ?>        
+<!--  <img src="uploads/logo/logotanuvas.jpeg" alt="logo" style= " width:100%;height:80px; margin-bottom:15px; " > <br/>-->
         
         <div class="scroller_sub_page">
            <table class="TFtable"width="100 %" border=1 frame=void rules=rows >
@@ -202,6 +202,7 @@
         <!--</div> -->
        </table>
     </div>        
-    <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>
+<?php $this->load->view('template/footer'); ?>
+<!--    <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>-->
     </body>
 </html>

@@ -167,7 +167,7 @@ table {
             <td valign='top'> 
                 <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  align="left" onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;'  title="Click for print" >
                 <?php // if(!empty($wtype)||(!empty($uolt))||(!empty($deptmt))):?>
-                 <form action="<?php echo site_url('Pdfgen/rpc/'.$wtyp.'/'.$uolt.'/'.$deptmt) ?>"> 
+                 <form action="<?php echo site_url('Pdfgen/rpc/'.str_replace(' ','_',$wtyp).'/'.$uolt.'/'.$deptmt) ?>"> 
                   
                   <input type="submit" value="" style="width:30px; height:30px;float:right;padding:5px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
                   <?php //endif ;?>

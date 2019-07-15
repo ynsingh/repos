@@ -159,7 +159,7 @@
         <tr style=" background-color: graytext;">
         <td valign="top">
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >
-            <form action="<?php echo site_url('Pdfgen/svp/'.$this->wtyp.'/'.$this->uolt.'/'.$this->desigm) ?>">
+            <form action="<?php echo site_url('Pdfgen/svp/'.str_replace(' ','_',$this->wtyp).'/'.$this->uolt.'/'.$this->desigm) ?>">
             <input type="submit" value="" title="Click for pdf" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px; background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')"> 
             </form>
             
