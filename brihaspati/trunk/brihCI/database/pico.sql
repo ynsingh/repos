@@ -389,7 +389,7 @@ CREATE TABLE `tender_bid_openers_selection` (
 --
 
 CREATE TABLE `tender_create` (
-  `tc_id` int(255) NOT NULL,
+  `tc_id` int(11) NOT NULL,
   `tc_refno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_tentype` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_contractform` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -427,7 +427,7 @@ CREATE TABLE `tender_create` (
   `tc_invitngoffemail` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tc_invitngoffphone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_tenderfees` int(15) NOT NULL,
-  `tc_tenderfeespayble` int(15) NOT NULL,
+  `tc_tenderfeespayble` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_tenderfeespaybleat` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_processingfees` int(15) NOT NULL,
   `tc_surcharge` int(15) NOT NULL,
@@ -438,26 +438,94 @@ CREATE TABLE `tender_create` (
   `tc_emdexemption` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_emdexemptionper` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_publishingdate` date NOT NULL,
+  `tc_publishingdatet` time NOT NULL,
   `tc_docsalestartdate` date NOT NULL,
+  `tc_docsalestartdatet` time NOT NULL,
   `tc_docsaleenddate` date NOT NULL,
+  `tc_docsaleenddatet` time NOT NULL,
   `tc_seekclailstartdate` date NOT NULL,
+  `tc_seekclailstartdatet` time NOT NULL,
   `tc_seekclailenddate` date NOT NULL,
+  `tc_seekclailenddatet` time NOT NULL,
   `tc_prebidmeetingdate` date NOT NULL,
+  `tc_prebidmeetingdatet` time NOT NULL,
   `tc_bidsubstartdate` date NOT NULL,
+  `tc_bidsubstartdatet` time NOT NULL,
   `tc_bidsubenddate` date NOT NULL,
+  `tc_bidsubenddatet` time NOT NULL,
   `tc_bidopeningdate` date NOT NULL,
+  `tc_bidopeningdatet` time NOT NULL,
   `tc_tenderprepby` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_prepbydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_prepbydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tc_approvedstatus` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tc_approvedbyname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_approvedbydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tc_approvedbydate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tc_approvedbydate` datetime NOT NULL,
   `tc_creatorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_creationdate` date NOT NULL,
   `tc_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Indexes for table `tender_create`
+--
+ALTER TABLE `tender_create`
+  ADD PRIMARY KEY (`tc_id`);
+
+--
+-- AUTO_INCREMENT for table `tender_create`
+--
+ALTER TABLE `tender_create`
+  MODIFY `tc_id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `tender_create_archive` (
+  `archive_id` int(11) NOT NULL,
+  `tc_id` int(11) NOT NULL,
+  `tc_refno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_approvedstatus` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_byname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_bydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `archive_datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for table `tender_create_archive`
+--
+ALTER TABLE `tender_create_archive`
+  ADD PRIMARY KEY (`archive_id`);
+
+--
+-- AUTO_INCREMENT for table `tender_create_archive`
+--
+ALTER TABLE `tender_create_archive`
+  MODIFY `archive_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Table structure for table `tender_query`
+--
+
+CREATE TABLE `tender_query` (
+  `tq_id` int(11) NOT NULL,
+  `tq_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tq_subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tq_desc` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  `tq_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for table `tender_query`
+--
+ALTER TABLE `tender_query`
+  ADD PRIMARY KEY (`tq_id`);
+
+
+--
+-- AUTO_INCREMENT for table `tender_query`
+--
+ALTER TABLE `tender_query`
+  MODIFY `tq_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -511,15 +579,101 @@ CREATE TABLE `tender_upload_doc` (
 CREATE TABLE `vendor` (
   `vendor_id` int(11) NOT NULL,
   `vendor_companyname` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_name` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_address` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,
-  `vendor_city` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_pincode` int(6) NOT NULL,
-  `vendor_ phone` int(10) NOT NULL,
-  `vendor_type` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `vendor_blackliststatus` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `vendor_blacklistdate` date NOT NULL
+  `vendor_hqaddress` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_hqpincode` int(6) NOT NULL,
+  `vendor_email` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_website` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_contact_person_name` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_phone` int(10) NOT NULL,
+  `vendor_mobile` int(10) NOT NULL,
+  `vendor_fax` int(10) NOT NULL,
+  `vendor_city` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_state` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_gstno` varchar(15) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_pan` varchar(10) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_shop_act_registration_no` varchar(20) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_excise_registration_no` varchar(20) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_bank_account_no` varchar(18) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_type` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_pre_order` longtext COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_item_supply` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_blackliststatus` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_blacklistdatefrom` date DEFAULT NULL,
+  `vendor_blacklistdateto` date DEFAULT NULL,
+  `vendor_blacklistby` varchar(100) COLLATE utf32_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
+--
+-- Indexes for table `vendor`
+--
+ALTER TABLE `vendor`
+  ADD PRIMARY KEY (`vendor_id`);
+
+--
+-- AUTO_INCREMENT for table `vendor`
+--
+ALTER TABLE `vendor`
+  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE `vendor_archive` (
+  `archive_id` int(11) NOT NULL,
+  `vendor_archive_id` int(11) NOT NULL,
+  `vendor_archive_companyname` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_name` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_address` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_pincode` int(6) NOT NULL,
+  `vendor_archive_hqaddress` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_hqpincode` int(6) NOT NULL,
+  `vendor_archive_email` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_website` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_contact_person_name` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_phone` int(10) NOT NULL,
+  `vendor_archive_mobile` int(10) NOT NULL,
+  `vendor_archive_fax` int(10) NOT NULL,
+  `vendor_archive_city` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_state` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_gstno` varchar(15) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_pan` varchar(10) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_shop_act_registration_no` varchar(20) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_excise_registration_no` varchar(20) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_bank_account_no` varchar(18) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_type` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_pre_order` longtext COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_item_supply` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_blackliststatus` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_blacklistdatefrom` date DEFAULT NULL,
+  `vendor_archive_blacklistdateto` date DEFAULT NULL,
+  `vendor_archive_blacklistby` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_updatedby` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `vendor_archive_updatedate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+
+ALTER TABLE `vendor_archive`
+  ADD PRIMARY KEY (`archive_id`);
+  
+ALTER TABLE `vendor_archive` CHANGE `archive_id` `archive_id` INT(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `level` int(1) NOT NULL,
+  `host_ip` varchar(25) NOT NULL,
+  `user` varchar(255) DEFAULT NULL,
+  `url` varchar(255) NOT NULL,
+  `user_agent` varchar(100) NOT NULL,
+  `message_title` varchar(255) NOT NULL,
+  `message_desc` mediumtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+  
+  ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Indexes for dumped tables
 --

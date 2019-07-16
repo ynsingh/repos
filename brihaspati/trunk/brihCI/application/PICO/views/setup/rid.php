@@ -1,7 +1,7 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>Add item</title>
+<title>Add|Item|Details</title>
 
  <head>
      <?php $this->load->view('template/header'); ?>
@@ -13,7 +13,7 @@
 
      <table width="100%">
             <tr><td>
-                <?php echo anchor('picosetup/displayrid/', "View rid Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
+                <?php echo anchor('picosetup/displayrid/', "View Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <?php
                  echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";
@@ -39,68 +39,68 @@
     <form action="<?php echo site_url('picosetup/rid');?>" method="POST" class="form-inline">
             <table>
             <tr>
-                <td><label for="rid_ppid" class="control-label">item ppid:</label></td>
+                <td><label for="rid_ppid" class="control-label">Id:</label></td>
                 <td><input type="text" name="rid_ppid"  class="form-control" size="30" /><br></td>
                 <td>
                     <?php echo form_error('rid_ppid')?>
                 </td>
-                <td>Example:xyz limited etc.</td>
+                <td>Example:xyz.</td>
             </tr>
             <tr>
-                <td><label for="rid_itemdes" class="control-label">item des:</label></td>
+                <td><label for="rid_itemdes" class="control-label">Item Description:</label></td>
                 <td><input type="text" name="rid_itemdes" size="30"  class="form-control" /><br></td>
                 <td>
                     <?php echo form_error('rid_itemdes')?>
                 </td>
-                <td>Example : house-123,new Delhi  .</td>
+                <td>Example : Computers  .</td>
             </tr>
             <tr>
-                <td><label for="rid_itemstock" class="control-label">item stock:</label></td>
+                <td><label for="rid_itemstock" class="control-label">In Stock:</label></td>
                 <td><input type="text" name="rid_itemstock"  class="form-control" size="30" /><br></td>
                 <td>
                     <?php echo form_error('rid_itemstock')?>
                 </td>
-                <td>Example:Kanpur etc.</td>
+                <td>Example:50.</td>
             </tr>
             <tr>
-                <td><label for="rid_itemqtyreq" class="control-label"> itemqtyreq:</label></td>
+                <td><label for="rid_itemqtyreq" class="control-label"> Quantity Required:</label></td>
                 <td><input type="text" name="rid_itemqtyreq" size="30"  class="form-control" /><br></td>
                 <td>
                     <?php echo form_error('rid_itemqtyreq')?>
                 </td>
-                <td>Example :208017 .</td>
+                <td>Example :28 .</td>
             </tr>
             <tr>
-                <td><label for="rid_itemunitp" class="control-label">item unit p:</label></td>
+                <td><label for="rid_itemunitp" class="control-label">Unit Cost:</label></td>
                 <td><input type="text" name="rid_itemunitp"  class="form-control" size="30" /><br></td>
                 <td>
                     <?php echo form_error('rid_itemunitp')?>
                 </td>
-                <td>Example: XXXXX789 etc.</td>
+                <td>Example: 789 etc.</td>
             </tr>
             <tr>
-                <td><label for="rid_itemgstapply" class="control-label">item gst apply:</label></td>
+                <td><label for="rid_itemgstapply" class="control-label">GST Apply:</label></td>
                 <td><input type="text" name="rid_itemgstapply" size="30"  class="form-control" /><br></td>
                 <td>
                     <?php echo form_error('rid_itemgstapply')?>
                 </td>
-                <td>Example : types .</td>
+                <td>Example :5 percent .</td>
             </tr>
             <tr>
-                <td><label for="rid_gst" class="control-label">gst:</label></td>
+                <td><label for="rid_gst" class="control-label">GST No:</label></td>
                 <td><input type="text" name="rid_gst"  class="form-control" size="30" /><br></td>
                 <td>
                     <?php echo form_error('rid_gst')?>
                 </td>
-                <td>Example:bts  etc.</td>
+                <td>Example:12MA1234567890A .</td>
             </tr>
             <tr>
-                <td><label for="rid_itemtotcost" class="control-label">item tot. cost:</label></td>
+                <td><label for="rid_itemtotcost" class="control-label">Total Cost:</label></td>
                 <td><input type="text" name="rid_itemtotcost" size="30"  class="form-control" /><br></td>
                 <td>
                     <?php echo form_error('rid_itemtotcost')?>
                 </td>
-                <td>Example :2017-06-24 .</td>
+                <td>Example :25000.</td>
             </tr>
             
             

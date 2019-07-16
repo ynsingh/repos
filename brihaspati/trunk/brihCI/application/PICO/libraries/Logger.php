@@ -10,7 +10,7 @@ class Logger
 	public function __construct()
 	{
 		$this->CI =& get_instance();
-		$this->CI->db2=$this->CI->load->database('payroll', TRUE);
+		$this->CI->db4=$this->CI->load->database('pico', TRUE);
 	//	return;
 	}
 
@@ -111,15 +111,15 @@ class Logger
                 $data['user_agent'] = $this->CI->input->user_agent();
                 $data['message_title'] = $title;
                 $data['message_desc'] = $desc;
-                $this->CI->db2->insert('logs', $data);
+                $this->CI->db4->insert('logs', $data);
                 return;
         }
 
         function read_recent_messages()
         {
                // $CI =& get_instance();
-                $this->CI->db2->from('logs')->order_by('id', 'desc')->limit(20);
-                $logs_q = $this->CI->db2->get();
+                $this->CI->db4->from('logs')->order_by('id', 'desc')->limit(20);
+                $logs_q = $this->CI->db4->get();
                 if ($logs_q->num_rows() > 0)
                 {
                         return $logs_q;

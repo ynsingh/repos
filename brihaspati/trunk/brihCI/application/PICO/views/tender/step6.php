@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tender input form</title>
+<title>Tender-DOC|BID</title>
 
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
@@ -149,26 +149,27 @@
        
         <tr>
            <td><label for="tp" class="control-label">Tender Prepared By.:</label></td>
-           <td><input type="text" name="tp"  class="form-control" size="20" /><br></td>
+           <td><input type="text" name="tp" value="<?php echo $this->session->userdata('username')  ?>" class="form-control" size="20" readonly /><br></td>
            <td><label for="tpd" class="control-label">Designation.:</label></td>
-           <td><input type="text" name="tpd"  class="form-control" size="20" /><br></td>
+           <td><input type="text" name="tpd" value="<?php echo 'admin' ?>" class="form-control" size="20" readonly  /><br></td>
         </tr>
+      <!--  
         <tr>
            <td><label for="ta" class="control-label">Tender Approved By.:</label></td>
            <td><input type="text" name="ta"  class="form-control" size="20" /><br></td>
            <td><label for="tad" class="control-label">Designation.:</label></td>
            <td><input type="text" name="tad"  class="form-control" size="20" /><br></td>
         </tr>
-       
+      --> 
        
          
    <tr>
  
-   <td colspan="5">
-   <input  type="submit" value="Submit Details" name="submit">
-    <input  type="submit" value="Reset" name="reset">
-   <input type="hidden" name="tid" value="<?php  echo $tid ;?>" >
-   </td>
+     <td colspan="5">
+         <input  type="submit" value="Submit Details" name="submit">
+         <input  type="submit" value="Reset" name="reset">
+         <input type="hidden" name="tid" value="<?php  echo $tid ;?>" >
+     </td>
    </tr>         
          
          </table>

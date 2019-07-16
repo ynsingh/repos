@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>View Tender </title>
+<title>VIEW|MODE|TENDER </title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
@@ -12,7 +12,7 @@
             <tr>
                 <?php 
 		 echo "<td align=\"left\"width=\"33%\">";
-	         echo anchor('picosetup/tender_type/', "Add Tender", array('title' => 'Add Detail','class' =>'top_parent'));
+	         echo anchor('picosetup/tender_type/', "Add Mode Type", array('title' => 'Add Detail','class' =>'top_parent'));
                  echo "</td>";
 		 ?>
                  <?php
@@ -42,7 +42,7 @@
         <div class="scroller_sub_page">
         <table class="TFtable" >
                 <tr>
-<thead><th>Sr.No</th><th>Tender Name</th><th>Tender Description</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Mode Name</th><th>Description</th><th>Action</th></tr></thead>
 <tbody>
    <?php
         $count =0;

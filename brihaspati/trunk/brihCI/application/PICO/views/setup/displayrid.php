@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>View required items </title>
+<title>View|Required|Items </title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
@@ -12,12 +12,12 @@
             <tr>
                 <?php 
 		 echo "<td align=\"left\"width=\"33%\">";
-	         echo anchor('picosetup/rid/', "Add rid", array('title' => 'Add Detail','class' =>'top_parent'));
+	         echo anchor('picosetup/rid/', "Add Details", array('title' => 'Add Detail','class' =>'top_parent'));
                  echo "</td>";
 		 ?>
                  <?php
 		 echo "<td align=\"center\" width=\"34%\">";
-                 echo "<b>required item Details</b>";
+                 echo "<b>Item Details</b>";
                  echo "</td>";
                  echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
@@ -42,7 +42,7 @@
         <div class="scroller_sub_page">
         <table class="TFtable" >
                 <tr>
-<thead><th>Sr.No</th><th>ppid</th><th>item des</th><th>item stock</th><th>item qty req</th><th>item unit p</th><th>item gst apply</th><th>gst</th><th>item tot. cost</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Id</th><th>Item Description</th><th>In Stock</th><th>Quantity Required</th><th>Per Unit Cost</th><th>GST % Apply</th><th>GST No</th><th>Total Cost</th><th>Action</th></tr></thead>
 <tbody>
    <?php
         $count =0;

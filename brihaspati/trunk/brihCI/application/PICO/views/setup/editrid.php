@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>Edit required items details</title>
+<title>Edit|Details</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         
@@ -37,18 +37,18 @@
        
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('rid ppid', 'rid_ppid');
+                    echo form_label('ID:', 'rid_ppid');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_ppid);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example:1234 etc. ";
+                    echo "Example:123 etc. ";
                 echo "</td>";
             echo "</tr>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('item description', 'rid_itemdes');
+                    echo form_label('Item Description:', 'rid_itemdes');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_itemdes);
@@ -62,24 +62,24 @@
             
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('item stock', 'rid_itemstock');
+                    echo form_label('Stock:', 'rid_itemstock');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_itemstock);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example:30 unit etc. ";
+                    echo "Example:30 Unit etc. ";
                 echo "</td>";
             echo "</tr>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('item qty req', 'rid_itemqtyreq');
+                    echo form_label('Required:', 'rid_itemqtyreq');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_itemqtyreq);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example : 20 units .";
+                    echo "Example : 20 Units .";
                 echo "</td>";
             echo "</tr>";
             
@@ -87,7 +87,7 @@
             
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('item unit purchased', 'rid_itemunitp');
+                    echo form_label('Unit Price:', 'rid_itemunitp');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_itemunitp);
@@ -98,13 +98,13 @@
             echo "</tr>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('item gst apply', 'rid_itemgstapply');
+                    echo form_label('GST Apply:', 'rid_itemgstapply');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_itemgstapply);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example :gst of iten.";
+                    echo "Example :Gst Of Item.";
                 echo "</td>";
             echo "</tr>";
             
@@ -112,24 +112,24 @@
             
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('gst no', 'rid_gst');
+                    echo form_label('GST no', 'rid_gst');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_gst);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example: gst. ";
+                    echo "Example: GST. ";
                 echo "</td>";
             echo "</tr>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('total cost', 'rid_itemtotcost');
+                    echo form_label('Total Cost', 'rid_itemtotcost');
                 echo "</td>";
                 echo "<td>";
                     echo form_input($rid_itemtotcost);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example :total cost 7000";
+                    echo "Example :Total cost 7000";
                 echo "</td>";
             echo "</tr>";
         
@@ -146,7 +146,7 @@
                 echo "<td>";
                     echo form_hidden('rid_id', $id);
                    echo"<td>";
-                    echo form_submit('submit','Update');
+                    echo form_submit('Submit','Update');
                    echo " ";
        
             echo form_close();

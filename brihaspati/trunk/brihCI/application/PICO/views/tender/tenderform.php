@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tender input form</title>
+<title>Tender|Input|Form</title>
 <!-- Including CSS File Here -->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/abhay.css">
 <!-- Including JS File Here -->

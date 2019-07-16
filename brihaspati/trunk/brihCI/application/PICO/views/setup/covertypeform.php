@@ -55,7 +55,7 @@
                 	<input type="text" name="ct_coverno"  class="form-control" size="30" placeholder="Cover Number" /><br>
                 	</td>
                 	<td>
-                    <td><label for="ct_coverfixed" class="control-label">Fixed Cover :<font color='Red'>*</font></label></td>
+                   <label for="ct_coverfixed" class="control-label">Fixed Cover :<font color='Red'>*</font></label>
                     <td >
                     <input type="text" name="ct_coverfixed"  class="form-control" size="30" placeholder="Fixed Cover " /><br>
                     </td>

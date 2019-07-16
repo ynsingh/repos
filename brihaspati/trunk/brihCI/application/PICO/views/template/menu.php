@@ -239,40 +239,45 @@ echo "<ul class=\"sf-menu\" >";
                                          
                                     echo "</li>";
 
-/*Mode of Tender*/
+                                       
 
                                 
-
+                                                     /*Mode of Tender,supplier,Required Item Details,Tender Form*/
 
 
 
                                       
 
-                                         echo "<li>";
-                                                echo anchor('picosetup/displayvendor','Vendor', array('title' => 'vendor '));
-                                        echo "</li>";
                                         echo "<li>";
-                                                echo anchor('picosetup/displaytypeoftender','Mode of Tender', array('title' => 'Mode of Tender'));
+                                                echo anchor('picosetup/displayvendor','Supplier', array('title' => 'Supplier'));
                                         echo "</li>";
-													//testing
-									//	echo "<li>";
-                                      //          echo anchor('','test here...', array('title' => 'tender create'));
-                                        //echo "</li>";
+                                        
+                                        echo "<li>";
+                                                echo anchor('picosetup/displaytypeoftender','Mode Of Tender', array('title' => 'Mode of Tender'));
+                                        echo "</li>";
+												
+                                        echo "<li>";
+                                                echo anchor('picosetup/displayrid', 'Required Item', array('title' => 'Item Details'));
+                                        echo "</li>"; 
+                                   
+                               
+                                        echo "<li>";
+                                                echo anchor('tender/tenderform', 'Tender Form', array('title' => 'Tender Form'));       
+                                        echo "</li>";
+                                        
+                                        echo "<li>";
+                                                echo anchor('tender/tenderdisplay', 'Tenders', array('title' => 'Tender View'));       
+                                        echo "</li>";
+                                        
+                                        echo "<li>";
+                                                echo anchor('tender/tender_apply_list', 'Tender Apply', array('title' => 'Tender Apply'));       
+                                        echo "</li>";
+
                                         echo "<li>";
 
                                                 echo anchor('setup/displaybankdetails', 'Bank List', array('title' => 'Bank List'));
                                         echo "</li>";
-                                        echo "<li>";
-                                                echo anchor('picosetup/displayrid', 'Required Item', array('title' => 'req item'));
-                                        echo "</li>"; 
-                                   
-                  //                      echo "<li>";
-                      //                          echo anchor('tender/tenderbiddoc', 'Tender|Form ', array('title' => 'Tender'));
-                    //                    echo "</li>";
-                                        echo "<li>";
-                                                echo anchor('tender/tenderform', 'Tender Form', array('title' => 'Tender'));       
-                                        echo "</li>";
-
+                                        
                                         echo "<li>";
                                                 echo anchor('picosetup/displaycovertypedetails', 'Cover Type', array('title' => 'Cover Type'));
                                         echo "</li>";

@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tender input form</title>
-<!-- Including CSS File Here --
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/abhay.css">
-<!-- Including JS File Here --
- <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-abhay.js" ></script> -->
+<title>Tender|Input|Form</title>
    <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
      <?php $this->load->view('template/header');
@@ -51,46 +47,67 @@
 
 
 
-    <script>
+<script>
     $(document).ready(function(){
-     $('#purchtype').on('change',function(){
-                var worktype = $(this).val();
-                //alert(worktype);
-                if(worktype == ''){
-                    $('#subpurchtype').prop('disabled',true);
-                   
-                }
-                else
-                
-                
-                { 
-                    $('#subpurchtype').prop('disabled',false);
-                    $.ajax({
-
-                        url: "<?php echo base_url();?>picoindex.php/tender/getpaymentmode",
-                        type: "POST",
-                        data: {"purchase" : worktype},
-                        dataType:"html",
-                        success:function(data)  
-                        
-                        { //alert("data==1="+data);
-                            $('#subpurchtype').html(data.replace(/^"|"$/g, ''));
-                                          }
-                                    
-                                                 ,
-                        error:function(data){
-                            alert("data in error==="+data);
-                            alert("error occur..!!");
-                 
+    			$("#offpayrowl").hide();
+    			$("#offpayrow").hide();
+            $("#onpayrowl").hide();
+            $("#onpayrow").hide();
+         	 $("#fill").show();
+        
+                 $('#paytype').on('change',function(){
+                        var pt= $('#paytype').val();
+                        if(pt == 'offline'){
+                               
+                                
+                                $("#offpayrowl").show();
+                                $("#offpayrow").show();
+                                $("#onpayrowl").hide();
+                                $("#onpayrow").hide();
+                                $("#fill").hide(); 
+                               
                         }
-                                                                                            });
-                }
-            });
-            
-            
-            
-            
-            
+                        else{
+                                $("#onpayrowl").show();
+                                $("#onpayrow").show();
+                                $("#offpayrowl").hide();
+                                $("#offpayrow").hide();
+                               $("#fill").hide();
+                               
+                                
+                        }
+               });
+					
+					$('#nocover').on('change',function(){
+						var ncov=$('#nocover').val();
+			//alert(ncov);
+
+			               if(ncov == ''){
+                        	$('#nmecovr').prop('disabled',true);
+                    	}else{
+                        $('#nmecovr').prop('disabled',false);
+                        $.ajax({
+                            url: "<?php echo base_url();?>picoindex.php/pjslist/getcoverdetail",
+                            type: "POST",
+                            data: {"noc" : ncov},
+                            dataType:"html",
+                            success:function(data){
+                                  alert("data==="+data);
+										var sginput=data.split(",");
+                             //  alert(sginput[0].replace(/[[\]"|"]/g,""));
+                            $('#nmecovr').val(sginput[0].replace(/[[\]"|"]/g,""));
+                            $('#typcovr').val(sginput[1].replace(/[[\]"|"]/g,""));
+                            },
+                            error:function(data){
+                            alert("data in error==="+data);
+                          
+                            	
+                            }
+                        });
+                    }
+		});                 
+                
+                     
     });
 
 </script>
@@ -110,15 +127,13 @@
           <table class="TFtable">
             <tr>
                 <td><label for="bd_trn" class="control-label">Tender Reference No:</label></td>
-                <td><input type="text" name="bd_trn"  class="form-control" style="width:300 ;" /><br></td>
-                <td>
-                    <?php // echo form_error('bd_trn')?>
-                </td>
+                <td><input type="text" name="bd_trn"  class="form-control" style="width:300px ;" /><br></td>
+              
              
          
                 <td><label for="bd_tt" class="control-label">Tender type:</label></td>
                 <td>
-                <select name="bd_tt"  style="width:300 ;">
+                <select name="bd_tt"  style="width:317px ;">
 				    <option selected hidden value="">--option--</option>
 				    <option value="open">		  Open  		</option>
 				    <option value="limited">		Limited 		</option>
@@ -132,15 +147,12 @@
                 
                 
                 <br></td>
-                <td>
-                    <?php //echo form_error('bd_tt')?>
-                </td>
-               
+             
            </tr>
                
                 <td><label for="bd_foc" class="control-label">Form of contract:</label></td>
                 <td>
-                    <select name="bd_foc"  style="width:300 ;" >
+                    <select name="bd_foc"  style="width:317px ;" >
 				    <option selected hidden value="">--option--</option>
 				    <option value="work contract">Work contract</option>
 				    <option value="auction">Auction</option>
@@ -153,15 +165,13 @@
                 
                 
                 <br></td>
-                <td>
-                    <?php //echo //form_error('bd_foc')?>
-                </td>
+              
              
            
          
                 <td><label for="bd_noc" class="control-label">No. of Covers:</label></td>
                 <td>   
-                 <select name="bd_noc"  style="width:300 ;">
+                 <select name="bd_noc" id="nocover" style="width:317px ;">
 				    <option selected hidden value="">--option--</option>
 				    <option value="1">1</option>
 				    <option value="2">2</option>
@@ -169,14 +179,12 @@
 				    <option value="4">4</option>
 				    </select>
                 <br></td>
-                <td>
-                    <?php //echo //form_error('bd_noc')?>
-                </td>
+              
          </tr> 
         
                 <td><label for="bd_tc" class="control-label">Tender category:</label></td>
                 <td>    
-                <select name="bd_tc"  style="width:300 ;">
+                <select name="bd_tc"  style="width:317px ;">
 				    <option selected hidden value="">--option--</option>
 				    <option value="goods">Goods</option>
 				    <option value="works">Works</option>
@@ -187,9 +195,7 @@
                 
                 
                 <br></td>
-                <td>
-                    <?php //echo //form_error('bd_tc')?>
-                </td>
+               
    
              
              
@@ -201,9 +207,7 @@
                 <br></td>
                
                
-                <td>
-                    <?php //echo //form_error('bd_ars')?>
-                </td>
+              
          
          </tr>
          <tr>
@@ -211,43 +215,35 @@
                 <td><input type="radio" name="bd_aw" value="yes" >YES
                      <input type="radio" name="bd_aw" value="no" >NO
                      <br></td>
-                <td>
-                    <?php //echo //form_error('bd_aw')?>
-                </td>
+             
         
                 <td><label for="bd_aos" class="control-label">Allow Offline Submission :</label></td>
                 <td> <input type="radio" name="bd_aos" value="yes" >YES
                      <input type="radio" name="bd_aos" value="no" >NO
                      <br></td>
-                <td>
-                    <?php //echo //form_error('bd_aos')?>
-                </td>
+               
             </tr>
          
             <tr>   
-            <td><label  id="purchtype" for="bd_pm" class="control-label">Payment Mode:</label></td>
-                <td>   
-                 <select id="purchtype"  name="bd_pm"  style="width:300 ;" class="my_dropdown" >
+            <td><label  id="paytypel" for="bd_pm" class="control-label">Payment Mode:</label></td>
+                <td >   
+                 <select id="paytype"  name="bd_pm"  style="width:317px ;" class="my_dropdown" >
 				    <option selected disabled value="">--option--</option>
 				    <option value="offline">offline </option>
 				    <option value="online">online </option>
 				  
 				    </select>
                 <br></td>
-                <td>
-                    <?php //echo form_error('bd_pm')?>
-                </td>
+             
             
-           </tr>  
-           
-           <tr>  
+               <td colspan="2" id="fill"></td>
        
-                <td>
+                <td id="offpayrowl">
                
                 
-                <label id="subpurchtype" for="bd_offline" class="control-label">if Offline:</label></td>
-                <td>   
-                 <select id="subpurchtype"  name="bd_offline"  style="width:300;" class="my_dropdown"  >
+                <label id="subpurchtype" for="bd_offline" class="control-label">Offline:</label></td>
+                <td id="offpayrow">   
+                 <select id="subpurchtype"  name="bd_offline"  style="width:317px;" class="my_dropdown"  >
 				    <option selected disabled value="">--option--</option>
 			        <option value="SS-small saving instrument">SS-small savings instrument</option>
 				    <option value="BG-bank guarantee">BG-bank guarantee</option>
@@ -260,14 +256,9 @@
                 
                 </td>
          
-                <td>
-                    <?php //echo //form_error('bd_offline')?>
-                </td>
-           </tr>
-           <tr>
-                <td><label for="bd_online" class="control-label">if Online:</label></td>
-                <td>   
-                 <select name="bd_online"  style="width:600 ;">
+                <td id="onpayrowl"><label for="bd_online" class="control-label">Online:</label></td>
+                <td id="onpayrow">   
+                 <select name="bd_online"  style="width:317px ;">
 				    <option selected hidden value="">--option--</option>
 				    <option value="ICICI">ICICI</option>
 				    <option value="UTI">UTI</option>
@@ -275,9 +266,7 @@
 				    <option value="PNB">PNB</option>
 				    </select>
                 <br></td>
-                <td>
-                    <?php //echo //form_error('bd_online')?>
-                </td>
+               
            
            
            </tr>
@@ -287,7 +276,8 @@
 
 	<thead>
  		 		<tr>
- 		 			<th>No. of cover</th>
+ 		 			<th>No of Covers</th>
+ 		 			<th>Cover Type</th>
  		 			<th>Cover contents<th>
 
  		 		</th>
@@ -296,18 +286,22 @@
  		 	<tbody>
  		 		<tr>
  		 			<td >
- 		 				<select name="">
+ 		 				<input type="text" id="nmecovr" name="nmecovr" placeholder="No of Cover" value="" size="15" readonly=""> 
+ 		 			<!--	<select name="" style="width:150px" ;>
  		 				<option name="select" value="disabled" selected="selected" disabled selected>----Select----</option>
- 		 				<option value="">single cover</option>
- 		 				<option value="">two cover</option>
- 		 				<option value="">three cover</option>	
- 		 			   <option value="">four cover</option>	
+ 		 				<option value="1">single cover</option>
+ 		 				<option value="2">two cover</option>
+ 		 				<option value="3">three cover</option>	
+ 		 			   <option value="4">four cover</option>	
  		 				</select>
-
+-->
+ 		 			</td>
+ 		 			<td>
+ 		 			<input type="textarea" id="typcovr"  name="typcovr" placeholder="Cover Type" value="" size="45" readonly="">
  		 			</td>
                   	
- 		 			<td>
- 		 				<input type="text" name="bd_covcon" placeholder="Give Description..." size="95" style="float:right;"> 
+ 		 			<td colspan="2" >
+ 		 				<input type="text" name="bd_covcon" placeholder="Give Description..." size="25"> 
  		 			</td>
  		 			
  		 		</tr>
@@ -316,12 +310,7 @@
  		 		<br>
  		 			
 
- <!-- <tr> 
-     <td>  
-    <input type="file" name="file_a" id="file_a" > 
-     </td>
-     </tr>
- 		--> 	</tbody>
+  	</tbody>
 
 </table>           
 
@@ -330,6 +319,10 @@
 
           <table class="TFtable"><td>
                     <button name="bd">Next</button>
+                    <input type="hidden" name="flag"  value="<?php  
+                                                                    $a=1;
+                                                                  
+                                                                   echo $a++ ;  ?> " />
                     <button name="reset">Clear</button>
                    
  			 <td>    

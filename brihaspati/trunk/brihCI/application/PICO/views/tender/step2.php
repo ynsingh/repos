@@ -1,8 +1,9 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<!DOCTYPE html>
 <html>
 <title>Work|Item|Details</title>
 
  <head>
+   <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
      <?php $this->load->view('template/header'); ?>
    
@@ -13,7 +14,7 @@
 
      <table width="100%">
             <tr><td>
-                <?php echo anchor('', "View Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
+                <?php //echo anchor('', "View Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <?php
                  echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";
@@ -37,6 +38,31 @@
         </table>
 
 
+<script>
+               $(document).ready(function(){
+                            $("#offpayrowl").hide();
+    		              
+    		      $('#prebid').on('change',function(){
+                        var pt= $('#prebid').val();
+                        if(pt == 'yes'){
+                            $("#offpayrowl").show();}
+                        else{
+                            $("#offpayrowl").hide();}
+               });
+               
+               $('#prebidd').on('change',function(){
+                        var pt= $('#prebidd').val();
+                        if(pt == 'no'){
+                        	 $("#offpayrowl").hide(); }
+                        else{
+                        	 $("#offpayrowl").show(); }
+               });               
+               });
+
+</script>
+
+
+
 
 
 <form action="<?php echo site_url('tender/tenderwork/');?>" method="POST" class="form-inline"> 
@@ -47,13 +73,13 @@
 
           <table class="TFtable">
             <tr>
-                <td><label for="wid_wit" class="control-label">Work item tittle.:</label></td>
-                <td><input type="text" name="wid_wit"  class="form-control" style="width:300 ;" /><br></td>
+                <td><label for="wid_wit" class="control-label">Work Item Title.:</label></td>
+                <td><input type="text" name="wid_wit"  class="form-control" style="width:300px ;" /><br></td>
                 <td>
                     <?php echo form_error('wid_wit')?>
                 </td>
-                 <td><label for="wid_wd" class="control-label">Work description.:</label></td>
-                <td><input type="text" name="wid_wd"  class="form-control" style="width:300 ;" /><br></td>
+                 <td><label for="wid_wd" class="control-label">Work Description.:</label></td>
+                <td><input type="text" name="wid_wd"  class="form-control" style="width:300px ;" /><br></td>
                 <td>
                     <?php echo form_error('wid_wd')?>
                 </td>
@@ -62,14 +88,14 @@
             
           <tr>
               <td><label for="wid_pd" class="control-label">Prequal  Details.:</label></td>
-                <td><input type="text" name="wid_pd"  class="form-control" style="width:300 ;" /><br></td>
+                <td><input type="text" name="wid_pd"  class="form-control" style="width:300px ;" /><br></td>
                 <td>
                     <?php echo form_error('wid_pd')?>
                 </td>
          
                 <td><label for="wid_pc" class="control-label">Product Category:</label></td>
                 <td>
-                <select name="wid_pc"  style="width:300 ;">
+                <select  name="wid_pc"  style="width:317px ;" class="my_dropdown" >
 				    <option selected hidden value="">--option--</option>
 				    <option value="civil works">	         civil works          </option>
 				    <option value="electrical works">     electrical works		</option>
@@ -90,18 +116,18 @@
           </tr>
           <tr>
                
-                <td><label for="wid_psc" class="control-label">Product sub category.:</label></td>
-                <td><input type="text" name="wid_psc"  class="form-control" style="width:300 ;" /><br></td>
+                <td><label for="wid_psc" class="control-label">Product Sub Category.:</label></td>
+                <td><input type="text" name="wid_psc"  class="form-control" style="width:300px ;" /><br></td>
                 <td>
                     <?php echo form_error('wid_psc')?>
            
                
-                <td><label for="wid_ct" class="control-label">Contract type:</label></td>
+                <td><label for="wid_ct" class="control-label">Contract Type:</label></td>
                 <td>
-                    <select name="wid_ct"  style="width:300 ;" >
+                    <select name="wid_ct"  style="width:317px ;" >
 				    <option selected hidden value="">--option--</option>
 				    <option value="tender">Tender</option>
-				    <option value="empanekment">Empanelment</option>
+				    <option value="empanelment">Empanelment</option>
 				 
 				    </select>
                 
@@ -113,9 +139,9 @@
            </tr>
            <tr>
          
-                <td><label for="wid_tv" class="control-label">Tender value :</label></td>
+                <td><label for="wid_tv" class="control-label">Tender Value :</label></td>
                 <td>   
-                 <select name="wid_tv"  style="width:300 ;">
+                 <select name="wid_tv"  style="width:317px ;">
 				    <option selected hidden value="">--option--</option>
 				    <option value="inr">INR</option>
 				    <option value="us">US</option>
@@ -128,10 +154,10 @@
                 </td>
          
         
-                <td><label for="wid_bvd" class="control-label">Bid validity days:</label></td>
+                <td><label for="wid_bvd" class="control-label">Bid Validity Days:</label></td>
                 <td>    
-                <select name="wid_bvd"  style="width:300 ;">
-				    <option selected hidden value="">--option--</option>
+                <select  name="wid_bvd"  style="width:317px ;">
+				    <option selected disabled value="">--option--</option>
 				    <option value="120">120</option>
 				    <option value="90">90</option>
 				    <option value="60">60</option>
@@ -147,9 +173,9 @@
    
              </tr>
              <tr>
-               <td><label for="wid_cpm" class="control-label">Completion period in months :</label></td>
-                <td>
-                 <input type="text" name="wid_cpm"  class="form-control" style="width:300 ;" />
+               <td ><label for="wid_cpm" class="control-label">Completion Period In Months :</label></td>
+                <td >
+                 <input type="text" name="wid_cpm"  class="form-control" style="width:300px ;" />
                  
                 
                 <br></td>
@@ -161,7 +187,7 @@
          
        
                 <td><label for="wid_l" class="control-label">Location.:</label></td>
-                <td><input type="text" name="wid_l"  class="form-control" style="width:300 ;" /><br></td>
+                <td><input type="text" name="wid_l"  class="form-control" style="width:300px ;" /><br></td>
                 <td>
                     <?php echo form_error('wid_l')?>
                 </td>
@@ -169,30 +195,31 @@
                <tr> 
                 
                  <td><label for="wid_p" class="control-label"> Pincode .:</label></td>
-                <td><input type="text" name="wid_p"  class="form-control" style="width:300 ;" /><br></td>
+                <td><input type="text" name="wid_p"  class="form-control" style="width:300px ;" /><br></td>
                 <td>
                     <?php echo form_error('wid_p')?>
                 </td>
             
         
                 <td><label for="wid_pbm" class="control-label">Pre Bid Meeting :</label></td>
-                <td><input type="radio" name="wid_pbm" value="yes" >YES
-                     <input type="radio" name="wid_pbm" value="no" >NO
+                <td><input id="prebid" type="radio" name="wid_pbm" value="yes" >YES
+                     <input id="prebidd" type="radio" name="wid_pbm" value="no" >NO
                      <br></td>
                 <td>
                     <?php echo form_error('wid_pbm')?>
                 </td>
         </tr>
-        <tr>
+        <tr></tr>
+        <tr id="offpayrowl">
 
-                <td><label for="wid_pbmp" class="control-label">Pre Bid Meeting Place:</label></td>
-                <td><input type="text" name="wid_pbmp"  class="form-control" style="width:300 ;" />
+                <td id="lone"><label for="wid_pbmp" class="control-label">Pre Bid Meeting Place:</label></td>
+                <td><input type="text" name="wid_pbmp"  class="form-control" style="width:300px ;" />
                 <br></td>
                 <td>
                     <?php echo form_error('wid_pbmp')?>
                 </td>
                  <td><label for="wid_pbma" class="control-label">Pre Bid Meting Address:</label></td>
-                <td><input type="text" name="wid_pbma"  class="form-control" style="width:300 ;" />
+                <td><input type="text" name="wid_pbma"  class="form-control" style="width:300px ;" />
                 <br></td>
                 <td>
                     <?php echo form_error('wid_pbma')?>
@@ -203,16 +230,9 @@
         
         
         <tr>
-                <td><label for="wid_bop" class="control-label">BID opening place :</label></td>
-                <td><input type="text" name="wid_bop"  class="form-control" style="width:300 ;" />
-                <br></td>
-                <td>
-                    <?php echo form_error('wid_bop')?>
-                </td>
+                <td><label for="wid_tc" class="control-label">Tender Class:</label></td>
                
-                <td><label for="wid_tc" class="control-label">Tender class:</label></td>
-               
-               <td> <select name="wid_tc"  style="width:300 ;">
+               <td> <select name="wid_tc"  style="width:317px ;">
 				    <option selected hidden value="">--option--</option>
 				    <option value="a">A</option>
 				    <option value="b">B</option>
@@ -232,17 +252,29 @@
                 <td>
                     <?php echo form_error('wid_tc')?>
                 </td>
+           
+                 <td><label for="wid_tsc" class="control-label">Tender Sub-class:</label></td>
+                <td><input type="text" name="wid_tsc"  class="form-control" style="width:300px ;" />
+                <br></td>
+                <td>
+                    <?php echo form_error('wid_tsc')?>
+                </td>
+           
+           
+           
+           
+           
             </tr>
             <tr>
 
  <td><label for="wid_io" class="control-label">Inviting Officer :</label></td>
-                <td><input type="text" name="wid_io"  class="form-control" style="width:300 ;" />
+                <td><input type="text" name="wid_io"  class="form-control" style="width:300px ;" />
                 <br></td>
                 <td>
                     <?php echo form_error('wid_io')?>
                 </td>
                  <td><label for="wid_ioa" class="control-label">Inviting Officer Address  :</label></td>
-                <td><input type="text" name="wid_ioa"  class="form-control" style="width:300 ;" />
+                <td><input type="text" name="wid_ioa"  class="form-control" style="width:300px ;" />
                 <br></td>
                 <td>
                     <?php echo form_error('wid_ioa')?>
@@ -253,25 +285,38 @@
  <tr>
 
  <td><label for="wid_iop" class="control-label">Inviting Officer Phone:</label></td>
-                <td><input type="text" name="wid_iop"  class="form-control" style="width:300 ;" />
+                <td><input type="text" name="wid_iop"  class="form-control" style="width:300px ;" />
                 <br></td>
                 <td>
-                  <font color="red">   <?php echo form_error('wid_iop')?> </font>
+                  <?php echo form_error('wid_iop')?> 
                 </td>
                  <td><label for="wid_ioe" class="control-label">Inviting Officer Email:</label></td>
-                <td><input type="text" name="wid_ioe"  class="form-control" style="width:300 ;" />
+                <td><input type="text" name="wid_ioe"  class="form-control" style="width:300px ;" />
                 <br></td>
                 <td>
                     <?php echo form_error('wid_ioe')?>
                 </td>
 </tr>
+            <tr>
+                   
+                     <td><label for="wid_bop" class="control-label">BID Opening Place :</label></td>
+                <td><input type="text" name="wid_bop"  class="form-control" style="width:300px ;" />
+                <br></td>
+                <td colspan="4">
+                    <?php echo form_error('wid_bop')?>
+                </td>         
+            
+            </tr>
+        
+
+
       <tr>
                
               
-                <td>
+               <!--  <td>
                    
                 
-                </td>  <td></td> <td></td>  <td></td><td>
+                </td>  <td></td> <td></td>  <td></td> --><td colspan="6">
           
             
                 <button name="wd" >Next</button>

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>Edit Tender</title>
+<title>EDIT MODE|TENDER</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         
@@ -51,7 +51,7 @@
                     echo form_label('Tender Description', 'tt_desc');
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($tt_desc);
+                    echo form_textarea($tt_desc);
                 echo "</td>";
                 echo "<td>";
                     echo "Example : Tender details like DOS & D control.";

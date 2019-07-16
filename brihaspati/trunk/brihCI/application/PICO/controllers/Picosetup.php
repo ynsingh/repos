@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @name: Picosetup
  * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
+ * @author: Abhay Singh (abhay831877@gmail.com)
  */
 
 class Picosetup extends CI_Controller
@@ -1493,8 +1494,8 @@ class Picosetup extends CI_Controller
 	public function tender_type()
                 {
                  if(isset($_POST['tender_type'])) {
-                 $this->form_validation->set_rules('tt_name','tt Name','trim|xss_clean|required|alpha_numeric_spaces|callback_istender_typeExist');
-                 $this->form_validation->set_rules('tt_desc','tt Desc','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('tt_name','tt Name','trim|xss_clean|required|callback_istender_typeExist');
+                 $this->form_validation->set_rules('tt_desc','tt Desc','trim|xss_clean|required');
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
 
@@ -1508,14 +1509,14 @@ class Picosetup extends CI_Controller
                 {
                     $this->logger->write_logmessage("insert","Trying to add tender", "tender_type is not added ".$tt_name);
                     $this->logger->write_dblogmessage("insert","Trying to add tender", "tender_type is not added ".$tt_name);
-                    $this->session->set_flashdata('err_message','Error in adding tender type setting - '  , 'error');
+                    $this->session->set_flashdata('err_message','Error in adding Tender Type setting - '  , 'error');
                     redirect('picosetup/tender_type');
 
                 }
                 else{
                     $this->logger->write_logmessage("insert","Add tender type Setting", "tender_type".$_POST['tt_name']." added  successfully...");
                     $this->logger->write_dblogmessage("insert","Add tender type Setting", "tender_type ".$_POST['tt_name']."added  successfully...");
-                    $this->session->set_flashdata("success", "tender add successfully...");
+                    $this->session->set_flashdata("success", "Tender Type Added Successfully...");
                     redirect("picosetup/displaytypeoftender");
         }
         }
@@ -1532,7 +1533,7 @@ class Picosetup extends CI_Controller
         $is_exist = $this->PICO_model->isduplicate('tender_type','tt_name',$tt_name);
         if ($is_exist)
         {
-            $this->form_validation->set_message('istender_typeExist', 'tender type is already exist.');
+            $this->form_validation->set_message('istender_typeExist', 'Tender Type is Already exist.');
             return false;
         }
         else {
@@ -1563,14 +1564,14 @@ class Picosetup extends CI_Controller
           {
           	$this->logger->write_message("error", "Error  in deleting tender type " ."[tt_id:" . $id . "]");
             $this->logger->write_dbmessage("error", "Error  in deleting tender type "." [tt_id:" . $id . "]");
-            $this->session->set_flashdata('err_message', 'Error in Deleting tender type - ', 'error');
+            $this->session->set_flashdata('err_message', 'Error In Deleting Tender Type - ', 'error');
             redirect('picosetup/displaytypeoftender');
            return;
           }
           else{
           $this->logger->write_logmessage("delete", "Deleted   tender type " . "[tt_id:" . $id . "] deleted successfully.. " );
            $this->logger->write_dblogmessage("delete", "Deleted tender type" ." [tt_id:" . $id . "] deleted successfully.. " );
-            $this->session->set_flashdata("success", 'tender type Deleted successfully...' );
+            $this->session->set_flashdata("success", 'Tender Type Deleted Successfully...' );
             redirect('picosetup/displaytypeoftender');
           }       
  
@@ -1601,8 +1602,8 @@ else  redirect('picosetup/displaytypeoftender');
         
         /*Form Validation*/
         
-        $this->form_validation->set_rules('tt_name','tt name','trim|xss_clean|required|alpha_numeric_spaces');
-        $this->form_validation->set_rules('tt_desc','tt Desc','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('tt_name','tt name','trim|xss_clean|required');
+        $this->form_validation->set_rules('tt_desc','tt Desc','trim|xss_clean|required');
 	
 	    /* Re-populating form */
         if ($_POST)
@@ -1637,13 +1638,13 @@ else  redirect('picosetup/displaytypeoftender');
             {
                 $this->logger->write_logmessage("error","Edit tender Setting error", "Edit tender Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit tender Setting error", "Edit tender Setting details. $logmessage ");
-                $this->session->set_flashdata('err_message','Error updating tender - ' . $logmessage . '.', 'error');
+                $this->session->set_flashdata('err_message','Error Updating tender - ' . $logmessage . '.', 'error');
                 $this->load->view('setup/edittypeoftender', $data);
             }
             else{
                 $this->logger->write_logmessage("update","Edit tender Setting", "Edit tender Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("update","Edit tender Setting", "Edit tender Setting details. $logmessage ");
-                $this->session->set_flashdata('success','tender  detail updated successfully..');
+                $this->session->set_flashdata('success','Tender Type Detail Updated Successfully..');
                 redirect('picosetup/displaytypeoftender/');
                 }
         }
@@ -1670,52 +1671,190 @@ else  redirect('picosetup/displaytypeoftender');
 
                  if(isset($_POST['vendor'])) {
                  	
-               
-                 $this->form_validation->set_rules('vendor_companyname','vendor company name','trim|xss_clean|required|alpha_numeric_spaces|callback_isvendorExist');
-                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required');
-                 $this->form_validation->set_rules('vendor_city','vendor city','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_pincode','vendor pincode','required|exact_length[6]');
-                 $this->form_validation->set_rules('vendor_phone','vendor phone','required|numeric');
-                 $this->form_validation->set_rules('vendor_type','vendor type','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_blackliststatus','vendor blacklist status','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_blacklistdate','vendor blacklist date','required');
-                
+                 
+                 
+                 //echo $list;
+                 //die();
+                 
+                 $this->form_validation->set_rules('vendor_companyname','Firm name','trim|xss_clean|required|alpha_numeric_spaces|callback_isvendorExist');
+                 $this->form_validation->set_rules('vendor_name','Owner Name','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_address','Postal Address','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_pincode','Pincode','trim|xss_clean|required|exact_length[6]');
+                 $this->form_validation->set_rules('vendor_hqaddress','HQ Address','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_hqpincode','HQ Pincode','trim|xss_clean|required|exact_length[6]');
+                 $this->form_validation->set_rules('vendor_email','Email','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_website','Website','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_cpn','Contact Person Name','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_phone','Phone','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('vendor_mobile','Mobile','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('vendor_fax','Fax','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('vendor_city','City','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_state','State','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_gstno','Gst No','trim|xss_clean|required|alpha_numeric');
+                 $this->form_validation->set_rules('vendor_pan','Pan No','trim|xss_clean|required|alpha_numeric');
+                 $this->form_validation->set_rules('vendor_sarn','Shop ACT Registration No','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_ern','Excise Registration No','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_ban','Bank Account No','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_type','Manufacturer Supplier','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_supply[]','Items Supply','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_blackliststatus','vendor blacklist status','trim|xss_clean');
                   	
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
-
+                 
+                 $vendor_supply = $this->input->post('vendor_supply', TRUE);
+                 $l=(join(", ", $vendor_supply));
+                 
                  $data = array(
                 'vendor_companyname'=>$_POST['vendor_companyname'],
+                'vendor_name'=>$_POST['vendor_name'],
                 'vendor_address'=>$_POST['vendor_address'],
-                'vendor_city'=>$_POST['vendor_city'],
                 'vendor_pincode'=>$_POST['vendor_pincode'],
+                'vendor_hqaddress'=>$_POST['vendor_hqaddress'],
+                'vendor_hqpincode'=>$_POST['vendor_hqpincode'],
+                'vendor_email'=>$_POST['vendor_email'],
+                'vendor_website'=>$_POST['vendor_website'],      
+                'vendor_contact_person_name'=>$_POST['vendor_cpn'],
                 'vendor_phone'=>$_POST['vendor_phone'],
+                'vendor_mobile'=>$_POST['vendor_mobile'],
+                'vendor_fax'=>$_POST['vendor_fax'],
+                'vendor_city'=>$_POST['vendor_city'],
+                'vendor_state'=>$_POST['vendor_state'],
+                'vendor_gstno'=>$_POST['vendor_gstno'],
+                'vendor_pan'=>$_POST['vendor_pan'],
+                'vendor_shop_act_registration_no'=>$_POST['vendor_sarn'],
+                'vendor_excise_registration_no'=>$_POST['vendor_ern'],
+                'vendor_bank_account_no'=>$_POST['vendor_ban'],
                 'vendor_type'=>$_POST['vendor_type'],
+                'vendor_pre_order'=>$_POST['vendor_list'],
+                'vendor_item_supply'=>$l,
                 'vendor_blackliststatus'=>$_POST['vendor_blackliststatus'],
-                'vendor_blacklistdate'=>$_POST['vendor_blacklistdate'],
-                 );
-                $rflag=$this->PICO_model->insertrec('vendor', $data);
+                  );
+                
+                
+                
+                $entryid=$this->PICO_model->insertdata('vendor', $data);
+                
+                if(!$entryid)
+                {
+                $rflag=false;  }
+                else
+                {
+					 $rflag=true;   }
+                
                 if (!$rflag)
                 {
                     $this->logger->write_logmessage("insert","Trying to add vendor", "vendor is not added ".$vendor_companyname);
                     $this->logger->write_dblogmessage("insert","Trying to add vendor", "vendor is not added ".$vendor_companyname);
-                    $this->session->set_flashdata('err_message','Error in adding vendor setting - '  , 'error');
+                    $this->session->set_flashdata('err_message','Error in Adding Supplier setting - '  , 'error');
                     redirect('picosetup/vendor');
 
                 }
                 else{
-                    $this->logger->write_logmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']." added  successfully...");
-                    $this->logger->write_dblogmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']."added  successfully...");
-                    $this->session->set_flashdata("success", "vendor add successfully...");
-                    redirect("picosetup/displayvendor");
-                }
+                	  
+               	  
+               $id=$entryid; 
+                       $desired_dir = './uploads/PICO/Supplier/';
+                           if(is_dir($desired_dir)==false){
+                           mkdir("$desired_dir",0777);
+                                                          }
+                       $desired_dir1 = './uploads/PICO/Supplier/'.$id.'/';
+                           if(is_dir($desired_dir1)==false){
+                           mkdir("$desired_dir1",0777);
+                                                           }
+                     
+                       $target_dir = $desired_dir1;    // path computer/opt/lampp/htdocs/brihCI/uploads/supplier/id folder
+
+			              $target_file1 = $target_dir . basename($_FILES["f_gst"]["name"]);
+			              $target_file2 = $target_dir . basename($_FILES["f_pan"]["name"]);
+			              $target_file3 = $target_dir . basename($_FILES["f_shop"]["name"]);
+			              $target_file4 = $target_dir . basename($_FILES["f_excise"]["name"]);
+			              $target_file5 = $target_dir . basename($_FILES["f_bank"]["name"]);
+			               
+			               
+			              $uploadOk = 1;
+			              
+			              $imageFileType1 = strtolower(pathinfo($target_file1,PATHINFO_EXTENSION));
+			              $imageFileType2 = strtolower(pathinfo($target_file2,PATHINFO_EXTENSION));
+			              $imageFileType3 = strtolower(pathinfo($target_file3,PATHINFO_EXTENSION));
+			              $imageFileType4 = strtolower(pathinfo($target_file4,PATHINFO_EXTENSION));
+			              $imageFileType5 = strtolower(pathinfo($target_file5,PATHINFO_EXTENSION));
+
+		   
+                       //name change
+                       		   
+		   
+			
+			 if ($_FILES["f_gst"]["size"] > 500000 && $_FILES["f_pan"]["size"] > 500000 && $_FILES["f_shop"]["size"] > 500000 && $_FILES["f_excise"]["size"] > 500000 && $_FILES["f_bank"]["size"] > 500000 ) //5mb
+		    { 
+  	       $this->session->set_flashdata("success", "Sorry, your file is too large (must be below 500 kb ).");
+  	       $this->PICO_model->deleterow('vendor','vendor_id', $id);
+  	 	    $this->load->view('setup/vendor');
+          $uploadOk = 0;
+          return;}
+          
+          if($imageFileType1 != "jpg" && $imageFileType1 != "pdf" && $imageFileType2 != "jpg" && $imageFileType2 != "pdf" && $imageFileType3 != "jpg" && $imageFileType3 != "pdf" &&
+           $imageFileType4 != "jpg" &&  $imageFileType4 != "pdf" && $imageFileType5 != "jpg" && $imageFileType5 != "pdf" ) 
+		    {
+  			 $this->session->set_flashdata("success",  "Sorry, only JPG & pdf files are allowed (check your files format).");
+  			 $this->PICO_model->deleterow('vendor','vendor_id', $id);
+  			 $this->load->view('setup/vendor');
+          $uploadOk = 0;
+ 			 return;}
+          
+          if ($uploadOk == 0)
+		    {
+          $this->session->set_flashdata("success", "Sorry, your file was not uploaded.");
+          $this->PICO_model->deleterow('vendor','vendor_id', $id);
+          $this->load->view('setup/vendor');
+          return;
+          }
+          else // if everything is ok, try to upload file
+          {
+          	
+                      	
+          	$name1 = $target_dir .'gst.'.$imageFileType1;
+			              $name2 = $target_dir .'pan.'.$imageFileType2 ;
+			              $name3 = $target_dir .'shop.'.$imageFileType3;
+			              $name4 = $target_dir . 'exise.'.$imageFileType4;
+			              $name5 = $target_dir . 'bank.'.$imageFileType5;
+          	
+          if (move_uploaded_file($_FILES["f_gst"]["tmp_name"], $name1) && move_uploaded_file($_FILES["f_pan"]["tmp_name"], $name2) && move_uploaded_file($_FILES["f_shop"]["tmp_name"], $name3)
+              &&   move_uploaded_file($_FILES["f_excise"]["tmp_name"], $name4) && move_uploaded_file($_FILES["f_bank"]["tmp_name"], $name5) ) 
+            {
+          
+          
+          
+          $this->session->set_flashdata("success", "The files has been uploaded....<br>");
+          $this->logger->write_logmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']." added  successfully...");
+          $this->logger->write_dblogmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']."added  successfully...");
+          $this->session->set_flashdata("success", "Supplier Added Successfully...");
+          redirect("picosetup/displayvendor");          
+          
+          return;}
+          else 
+          {
+          $this->session->set_flashdata("success", "Sorry, there was an error uploading your file.");
+          $this->PICO_model->deleterow('vendor','vendor_id', $id);
+          $this->load->view('setup/vendor');
+          return;
+          }
+          }
+          
+                    // $this->logger->write_logmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']." added  successfully...");
+                    // $this->logger->write_dblogmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']."added  successfully...");
+                    // $this->session->set_flashdata("success", "Supplier Added Successfully...");
+                    // redirect("picosetup/displayvendor");
+                
+                
+            }
 
             }
         }
         $this->load->view('setup/vendor');
     }
 
-    /** This function check for duplicate vendor
+    /** This function check for duplicate vendor/supplier
      * @return type
     */
 
@@ -1724,7 +1863,7 @@ else  redirect('picosetup/displaytypeoftender');
         $is_exist = $this->PICO_model->isduplicate('vendor','vendor_companyname',$vendor_companyname);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isvendorExist', 'vendor is already exist.');
+            $this->form_validation->set_message('isvendorExist', 'Supplier With This Company Name Is Already Registered.');
             return false;
         }
         else {
@@ -1760,14 +1899,14 @@ else  redirect('picosetup/displaytypeoftender');
           {
           	$this->logger->write_message("error", "Error  in deleting vendor " ."[vendor_id:" . $id . "]");
             $this->logger->write_dbmessage("error", "Error  in deleting vendor "." [vendor_id:" . $id . "]");
-            $this->session->set_flashdata('err_message', 'Error in Deleting vendor - ', 'error');
+            $this->session->set_flashdata('err_message', 'Error In Deleting Specific Supplier - ', 'error');
             redirect('picosetup/displayvendor');
            return;
           }
         else{
           $this->logger->write_logmessage("delete", "Deleted   vendor_type " . "[vendor_id:" . $id . "] deleted successfully.. " );
            $this->logger->write_dblogmessage("delete", "Deleted vendor_type" ." [vendor_id:" . $id . "] deleted successfully.. " );
-            $this->session->set_flashdata("success", 'vendor type Deleted successfully...' );
+            $this->session->set_flashdata("success", 'Selected Supplier Deleted Successfully...' );
             redirect('picosetup/displayvendor');
         }
         $this->load->view('setup/displayvendor',$data);
@@ -1788,24 +1927,43 @@ else {
          $suname=$this->session->userdata['username'];
 	      if((strcasecmp($suname,"admin"))==0)  
         {  
+       
         $this->db4->from('vendor')->where('vendor_id', $id);
         $eset_data_q = $this->db4->get();
      
         $editeset_data = $eset_data_q->row();
        
        /* Form fields */
-   
+            
    
    
             $data['vendor_companyname'] = array('name' => 'vendor_companyname','id' => 'vendor_companyname','size' => '40','value' => $editeset_data->vendor_companyname,);
+            $data['vendor_name'] = array('name' => 'vendor_name','id' => 'vendor_name','size' => '40','value' => $editeset_data->vendor_name,);
             $data['vendor_address'] = array('name' => 'vendor_address','id' => 'vendor_address','size' => '40','value' => $editeset_data->vendor_address,);
-            $data['vendor_city'] = array('name' => 'vendor_city','id' => 'vendor_city','size' => '40','value' => $editeset_data->vendor_city,);
             $data['vendor_pincode'] = array('name' => 'vendor_pincode','id' => 'vendor_pincode','size' => '40','value' => $editeset_data->vendor_pincode,);
+            $data['vendor_hqaddress'] = array('name' => 'vendor_hqaddress','id' => 'vendor_hqaddress','size' => '40','value' => $editeset_data->vendor_hqaddress,);
+            $data['vendor_hqpincode'] = array('name' => 'vendor_hqpincode','id' => 'vendor_hqpincode','size' => '40','value' => $editeset_data->vendor_hqpincode,);
+            $data['vendor_email'] = array('name' => 'vendor_email','id' => 'vendor_email','size' => '40','value' => $editeset_data->vendor_email,);
+            $data['vendor_website'] = array('name' => 'vendor_website','id' => 'vendor_website','size' => '40','value' => $editeset_data->vendor_website,);
+            $data['vendor_cpn'] = array('name' => 'vendor_cpn','id' => 'vendor_cpn','size' => '40','value' => $editeset_data->vendor_contact_person_name,);
             $data['vendor_phone'] = array('name' => 'vendor_phone','id' => 'vendor_phone','size' => '40','value' => $editeset_data->vendor_phone,);
+            $data['vendor_mobile'] = array('name' => 'vendor_mobile','id' => 'vendor_mobile','size' => '40','value' => $editeset_data->vendor_mobile,);
+            $data['vendor_fax'] = array('name' => 'vendor_fax','id' => 'vendor_fax','size' => '40','value' => $editeset_data->vendor_fax,);
+            $data['vendor_city'] = array('name' => 'vendor_city','id' => 'vendor_city','size' => '40','value' => $editeset_data->vendor_city,);
+            $data['vendor_state'] = array('name' => 'vendor_state','id' => 'vendor_state','size' => '40','value' => $editeset_data->vendor_state,);
+            $data['vendor_gstno'] = array('name' => 'vendor_gstno','id' => 'vendor_gstno','size' => '40','value' => $editeset_data->vendor_gstno,);
+            $data['vendor_pan'] = array('name' => 'vendor_pan','id' => 'vendor_pan','size' => '40','value' => $editeset_data->vendor_pan,);
+            $data['vendor_sarn'] = array('name' => 'vendor_sarn','id' => 'vendor_sarn','size' => '40','value' => $editeset_data->vendor_shop_act_registration_no,);
+            $data['vendor_ern'] = array('name' => 'vendor_ern','id' => 'vendor_ern','size' => '40','value' => $editeset_data->vendor_excise_registration_no,);
+            $data['vendor_ban'] = array('name' => 'vendor_ban','id' => 'vendor_ban','size' => '40','value' => $editeset_data->vendor_bank_account_no,);
+         
             $data['vendor_type'] = array('name' => 'vendor_type','id' => 'vendor_type','size' => '40','value' => $editeset_data->vendor_type,);
+            $data['vendor_list'] = array('name' => 'vendor_list','id' => 'vendor_list','size' => '40','value' => $editeset_data->vendor_pre_order,);
+            $data['vendor_supply'] = array('name' => 'vendor_supply','id' => 'vendor_supply','size' => '40','value' => $editeset_data->vendor_item_supply,);
             $data['vendor_blackliststatus'] = array('name' => 'vendor_blackliststatus','id' => 'vendor_blackliststatus','size' => '40','value' => $editeset_data->vendor_blackliststatus,);
-            $data['vendor_blacklistdate'] = array('name' => 'vendor_blacklistdate','id' => 'vendor_blacklistdate','size' => '40','value' => $editeset_data->vendor_blacklistdate,);
-                
+            $data['vendor_blacklistdatefrom'] = array('name' => 'vendor_blacklistdatefrom','id' => 'vendor_blacklistdatefrom','size' => '40','value' => $editeset_data->vendor_blacklistdatefrom,);
+            $data['vendor_blacklistdateto'] = array('name' => 'vendor_blacklistdateto','id' => 'vendor_blacklistdateto','size' => '40','value' => $editeset_data->vendor_blacklistdateto,);
+            $data['vendor_blacklistby'] = array('name' => 'vendor_blacklistby','id' => 'vendor_blacklistby','size' => '40','value' => $editeset_data->vendor_blacklistby,);    
                 
                 
                 
@@ -1815,40 +1973,69 @@ else {
       $data['id'] = $id;
         /*Form Validation*/
                  
-                 $this->form_validation->set_rules('vendor_companyname','vendor company name','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_address','vendor address','trim|xss_clean|required');
-                 $this->form_validation->set_rules('vendor_city','vendor city','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_pincode','vendor pincode','required');
-                 $this->form_validation->set_rules('vendor_phone','vendor phone','required|numeric');
-                 $this->form_validation->set_rules('vendor_type','vendor type','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_blackliststatus','vendor blacklist status','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('vendor_blacklistdate','vendor blacklist date','required');
+                 $this->form_validation->set_rules('vendor_companyname','Firm name','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_name','Owner Name','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_address','Postal Address','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_pincode','Pincode','trim|xss_clean|required|exact_length[6]');
+                 $this->form_validation->set_rules('vendor_hqaddress','HQ Address','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_hqpincode','HQ Pincode','trim|xss_clean|required|exact_length[6]');
+                 $this->form_validation->set_rules('vendor_email','Email','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_website','Website','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_cpn','Contact Person Name','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_phone','Phone','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('vendor_mobile','Mobile','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('vendor_fax','Fax','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('vendor_city','City','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_state','State','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('vendor_gstno','Gst No','trim|xss_clean|required|alpha_numeric');
+                 $this->form_validation->set_rules('vendor_pan','Pan No','trim|xss_clean|required|alpha_numeric');
+                 $this->form_validation->set_rules('vendor_sarn','Shop ACT Registration No','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_ern','Excise Registration No','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_ban','Bank Account No','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_type','Manufacturer Supplier','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_supply[]','Items Supply','trim|xss_clean|required');
+                 $this->form_validation->set_rules('vendor_blackliststatus','vendor blacklist status','trim|xss_clean');
+                 $this->form_validation->set_rules('vendor_blacklistfrom','vendor blacklist from','trim|xss_clean');
+                 $this->form_validation->set_rules('vendor_blacklistto','vendor blacklist to','trim|xss_clean');
+                 $this->form_validation->set_rules('vendor_blacklistby','vendor blacklist by','trim|xss_clean');
                 
-                
-	    
-	    
-	    
-	    
-	    
-	    
 	    
 	    /* Re-populating form */
         if ($_POST)
         {
-        	
+        	   
+                	   
+        	   
         	
             $data['vendor_companyname']['value'] = $this->input->post('vendor_companyname', TRUE);
+            $data['vendor_name']['value'] = $this->input->post('vendor_name', TRUE);
             $data['vendor_address']['value'] = $this->input->post('vendor_address', TRUE);
-       
-            $data['vendor_city']['value'] = $this->input->post('vendor_city', TRUE);
             $data['vendor_pincode']['value'] = $this->input->post('vendor_pincode', TRUE);
+            $data['vendor_hqaddress']['value'] = $this->input->post('vendor_hqaddress', TRUE);
+            $data['vendor_hqpincode']['value'] = $this->input->post('vendor_hqpincode', TRUE);
+            $data['vendor_email']['value'] = $this->input->post('vendor_email', TRUE);
+            $data['vendor_website']['value'] = $this->input->post('vendor_website', TRUE);
+            $data['vendor_cpn']['value'] = $this->input->post('vendor_cpn', TRUE);
             $data['vendor_phone']['value'] = $this->input->post('vendor_phone', TRUE);
+            $data['vendor_mobile']['value'] = $this->input->post('vendor_mobile', TRUE);
+            $data['vendor_fax']['value'] = $this->input->post('vendor_fax', TRUE);
+            $data['vendor_city']['value'] = $this->input->post('vendor_city', TRUE);
+            $data['vendor_state']['value'] = $this->input->post('vendor_state', TRUE);
+            $data['vendor_gstno']['value'] = $this->input->post('vendor_gstno', TRUE);
+            $data['vendor_pan']['value'] = $this->input->post('vendor_pan', TRUE);
+            $data['vendor_sarn']['value'] = $this->input->post('vendor_sarn', TRUE); 
+            $data['vendor_ern']['value'] = $this->input->post('vendor_ern', TRUE);
+            $data['vendor_ban']['value'] = $this->input->post('vendor_ban', TRUE);
             $data['vendor_type']['value'] = $this->input->post('vendor_type', TRUE);
+            $data['vendor_list']['value'] = $this->input->post('vendor_list', TRUE);
+            $data['vendor_supply']['value'] = $this->input->post('vendor_supply', TRUE);
             $data['vendor_blackliststatus']['value'] = $this->input->post('vendor_blackliststatus', TRUE);
-            $data['vendor_blacklistdate']['value'] = $this->input->post('vendor_blacklistdate', TRUE);
-       
-       
-       
+            //$data['vendor_blacklistdatefrom']['value'] = $this->input->post('vendor_blacklistdatefrom', TRUE);
+            //$data['vendor_blacklistdateto']['value'] = $this->input->post('vendor_blacklistdateto', TRUE);
+            $data['vendor_blacklistby']['value'] = $this->input->post('vendor_blacklistby', TRUE);
+            
+            $v=$_POST['vendor_blacklistdatefrom'];
+            $ven=$_POST['vendor_blacklistdateto'];
        
         }
 
@@ -1858,16 +2045,35 @@ else {
             return;
         }
         else{
-
+       
             $data_a = $this->input->post('vendor_companyname', TRUE);
-            $data_b = $this->input->post('vendor_address', TRUE);
-            $data_c = $this->input->post('vendor_city', TRUE);
+            $data_b = $this->input->post('vendor_name', TRUE);
+            $data_c = $this->input->post('vendor_address', TRUE);
             $data_d = $this->input->post('vendor_pincode', TRUE);
-            $data_e = $this->input->post('vendor_phone', TRUE);
-            $data_f = $this->input->post('vendor_type', TRUE);
-            $data_g = $this->input->post('vendor_blackliststatus', TRUE);
-            $data_h = $this->input->post('vendor_blacklistdate', TRUE);
+            $data_e = $this->input->post('vendor_hqaddress', TRUE);
+            $data_f = $this->input->post('vendor_hqpincode', TRUE);
+            $data_g = $this->input->post('vendor_email', TRUE);
+            $data_h = $this->input->post('vendor_website', TRUE);
+            $data_i = $this->input->post('vendor_cpn', TRUE);
+            $data_j = $this->input->post('vendor_phone', TRUE);
+            $data_k = $this->input->post('vendor_mobile', TRUE);
+            $data_l = $this->input->post('vendor_fax', TRUE);
+            $data_m = $this->input->post('vendor_city', TRUE);
+            $data_n = $this->input->post('vendor_state', TRUE);
+            $data_o = $this->input->post('vendor_gstno', TRUE);
+            $data_p = $this->input->post('vendor_pan', TRUE);
+            $data_q = $this->input->post('vendor_sarn', TRUE);
+            $data_r = $this->input->post('vendor_ern', TRUE);
+            $data_s = $this->input->post('vendor_ban', TRUE);
+            $data_t = $this->input->post('vendor_type', TRUE);
+            $data_u = $this->input->post('vendor_list', TRUE);
+            $data_v = $this->input->post('vendor_supply', TRUE);
+            $data_w = $this->input->post('vendor_blackliststatus', TRUE);
+            $data_x = $v;                         //$this->input->post('vendor_blacklistfrom', TRUE);
+            $data_y = $ven;                       //$this->input->post('vendor_blacklistto', TRUE);
+            $data_z = $this->input->post('vendor_blacklistby', TRUE);
             
+         
             
             $data_eid = $id;
            
@@ -1875,70 +2081,147 @@ else {
            
             if($editeset_data->vendor_companyname != $data_a)
                 $logmessage = "Add vendor " .$editeset_data->vendor_companyname. " changed by " .$data_a;
-            if($editeset_data->vendor_address != $data_b)
-                $logmessage = "Add vendor " .$editeset_data->vendor_address. " changed by " .$data_b;
-            if($editeset_data->vendor_city != $data_c)
-                $logmessage = "Add vendor " .$editeset_data->vendor_city. " changed by " .$data_c;
+            if($editeset_data->vendor_name != $data_b)
+                $logmessage = "Add vendor " .$editeset_data->vendor_name. " changed by " .$data_b;
+            if($editeset_data->vendor_address != $data_c)
+                $logmessage = "Add vendor " .$editeset_data->vendor_address. " changed by " .$data_c;
             if($editeset_data->vendor_pincode != $data_d)
                 $logmessage = "Add vendor " .$editeset_data->vendor_pincode. " changed by " .$data_d;
-            if($editeset_data->vendor_phone != $data_e)
-                $logmessage = "Add vendor " .$editeset_data->vendor_phone. " changed by " .$data_e;
-            if($editeset_data->vendor_type != $data_f)
-                $logmessage = "Add vendor " .$editeset_data->vendor_type. " changed by " .$data_f;
-            if($editeset_data->vendor_blackliststatus != $data_g)
-                $logmessage = "Add vendor " .$editeset_data->vendor_blackliststatus. " changed by " .$data_g;
-            if($editeset_data->vendor_blacklistdate != $data_h)
-                $logmessage = "Add vendor " .$editeset_data->vendor_blacklistdate. " changed by " .$data_h;
-
+            if($editeset_data->vendor_hqaddress != $data_e)
+                $logmessage = "Add vendor " .$editeset_data->vendor_hqaddress. " changed by " .$data_e;
+            if($editeset_data->vendor_hqpincode != $data_f)
+                $logmessage = "Add vendor " .$editeset_data->vendor_hqpincode. " changed by " .$data_f;
+            if($editeset_data->vendor_email != $data_g)
+                $logmessage = "Add vendor " .$editeset_data->vendor_email. " changed by " .$data_g;
+            if($editeset_data->vendor_website != $data_h)
+                $logmessage = "Add vendor " .$editeset_data->vendor_website. " changed by " .$data_h;
+             if($editeset_data->vendor_contact_person_name != $data_i)
+                $logmessage = "Add vendor " .$editeset_data->vendor_contact_person_name. " changed by " .$data_i;
+            if($editeset_data->vendor_phone != $data_j)
+                $logmessage = "Add vendor " .$editeset_data->vendor_phone. " changed by " .$data_j;
+             if($editeset_data->vendor_mobile != $data_k)
+                $logmessage = "Add vendor " .$editeset_data->vendor_mobile. " changed by " .$data_k;
+            if($editeset_data->vendor_fax != $data_l)
+                $logmessage = "Add vendor " .$editeset_data->vendor_fax. " changed by " .$data_l;
+            if($editeset_data->vendor_city != $data_m)
+                $logmessage = "Add vendor " .$editeset_data->vendor_city. " changed by " .$data_m;
+             if($editeset_data->vendor_state != $data_n)
+                $logmessage = "Add vendor " .$editeset_data->vendor_state. " changed by " .$data_n;
+            if($editeset_data->vendor_gstno != $data_o)
+                $logmessage = "Add vendor " .$editeset_data->vendor_gstno. " changed by " .$data_o;
+             if($editeset_data->vendor_pan != $data_p)
+                $logmessage = "Add vendor " .$editeset_data->vendor_pan. " changed by " .$data_p;
+            if($editeset_data->vendor_shop_act_registration_no != $data_q)
+                $logmessage = "Add vendor " .$editeset_data->vendor_shop_act_registration_no. " changed by " .$data_q;
+             if($editeset_data->vendor_excise_registration_no != $data_r)
+                $logmessage = "Add vendor " .$editeset_data->vendor_excise_registration_no. " changed by " .$data_r;
+            if($editeset_data->vendor_bank_account_no != $data_s)
+                $logmessage = "Add vendor " .$editeset_data->vendor_bank_account_no. " changed by " .$data_s;
+            if($editeset_data->vendor_type != $data_t)
+                $logmessage = "Add vendor " .$editeset_data->vendor_type. " changed by " .$data_t;
+            if($editeset_data->vendor_pre_order != $data_u)
+                $logmessage = "Add vendor " .$editeset_data->vendor_pre_order. " changed by " .$data_u;
+            if($editeset_data->vendor_item_supply != $data_v)
+                $logmessage = "Add vendor " .$editeset_data->vendor_item_supply. " changed by " .$data_v;
+            if($editeset_data->vendor_blackliststatus != $data_w)
+                $logmessage = "Add vendor " .$editeset_data->vendor_blackliststatus. " changed by " .$data_w;
+            if($editeset_data->vendor_blacklistdatefrom != $data_x)
+                $logmessage = "Add vendor " .$editeset_data->vendor_blacklistdate. " changed by " .$data_x;
+            if($editeset_data->vendor_blacklistdateto != $data_y)
+                $logmessage = "Add vendor " .$editeset_data->vendor_blacklistdateto. " changed by " .$data_y;
+            if($editeset_data->vendor_blacklistby != $data_z)
+                $logmessage = "Add vendor " .$editeset_data->vendor_blacklistby. " changed by " .$data_z;
            
            
            
            
             $update_data = array(
-              'vendor_companyname' => $data_a,
-              'vendor_address' => $data_b,
-              'vendor_city' => $data_c,
-              'vendor_pincode' => $data_d,
-              'vendor_phone' => $data_e,
-              'vendor_type' => $data_f,
-              'vendor_blackliststatus' => $data_g,
-              'vendor_blacklistdate' => $data_h,
-            );
-
+                'vendor_companyname'=>$data_a,
+                'vendor_name'=>$data_b,
+                'vendor_address'=>$data_c,
+                'vendor_pincode'=>$data_d,
+                'vendor_hqaddress'=>$data_e,
+                'vendor_hqpincode'=>$data_f,
+                'vendor_email'=>$data_g,
+                'vendor_website'=>$data_h,    
+                'vendor_contact_person_name'=>$data_i,
+                'vendor_phone'=>$data_j,
+                'vendor_mobile'=>$data_k,
+                'vendor_fax'=>$data_l,
+                'vendor_city'=>$data_m,
+                'vendor_state'=>$data_n,
+                'vendor_gstno'=>$data_o,
+                'vendor_pan'=>$data_p,
+                'vendor_shop_act_registration_no'=>$data_q,
+                'vendor_excise_registration_no'=>$data_r,
+                'vendor_bank_account_no'=>$data_s,
+                'vendor_type'=>$data_t,
+                'vendor_pre_order'=>$data_u,
+                'vendor_item_supply'=>$data_v,
+                'vendor_blackliststatus'=>$data_w,
+                'vendor_blacklistdatefrom'=>$data_x,
+                'vendor_blacklistdateto'=>$data_y,
+                'vendor_blacklistby'=>$this->session->userdata('username'),
+                  );
         
         
+          $update_archive_data = array(
+                'vendor_archive_id'=>$data_eid,
+                'vendor_archive_companyname'=>$data_a,
+                'vendor_archive_name'=>$data_b,
+                'vendor_archive_address'=>$data_c,
+                'vendor_archive_pincode'=>$data_d,
+                'vendor_archive_hqaddress'=>$data_e,
+                'vendor_archive_hqpincode'=>$data_f,
+                'vendor_archive_email'=>$data_g,
+                'vendor_archive_website'=>$data_h,    
+                'vendor_archive_contact_person_name'=>$data_i,
+                'vendor_archive_phone'=>$data_j,
+                'vendor_archive_mobile'=>$data_k,
+                'vendor_archive_fax'=>$data_l,
+                'vendor_archive_city'=>$data_m,
+                'vendor_archive_state'=>$data_n,
+                'vendor_archive_gstno'=>$data_o,
+                'vendor_archive_pan'=>$data_p,
+                'vendor_archive_shop_act_registration_no'=>$data_q,
+                'vendor_archive_excise_registration_no'=>$data_r,
+                'vendor_archive_bank_account_no'=>$data_s,
+                'vendor_archive_type'=>$data_t,
+                'vendor_archive_pre_order'=>$data_u,
+                'vendor_archive_item_supply'=>$data_v,
+                'vendor_archive_blackliststatus'=>$data_w,
+                'vendor_archive_blacklistdatefrom'=>$data_x,
+                'vendor_archive_blacklistdateto'=>$data_y,
+                'vendor_archive_blacklistby'=>$this->session->userdata('username'),
+                'vendor_archive_updatedby'=>$this->session->userdata('username'),
+              // used current timestamp in database 'vendor_archive_updatedate'=>date('Y-m-d'),
+                  );        
         
         
+        $entry_archive_id=$this->PICO_model->insertdata('vendor_archive', $update_archive_data);
+                  
         $roledflag=$this->PICO_model->updaterec('vendor', $update_data,'vendor_id', $data_eid);
         if(!$roledflag)
             {
                 $this->logger->write_logmessage("error","Edit vendor Setting error", "Edit vendor Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit vendor Setting error", "Edit vendor Setting details. $logmessage ");
-                $this->session->set_flashdata('err_message','Error updating vendor - ' . $logmessage . '.', 'error');
+                $this->session->set_flashdata('err_message','Error updating Supplier - ' . $logmessage . '.', 'error');
                 $this->load->view('setup/editvendor', $data);
             }
             else{
                 $this->logger->write_logmessage("update","Edit vendor Setting", "Edit vendor Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("update","Edit vendor Setting", "Edit vendor Setting details. $logmessage ");
-                $this->session->set_flashdata('success','vendor  detail updated successfully..');
+                $this->session->set_flashdata('success','Supplier Details Updated Successfully..');
                 redirect('picosetup/displayvendor/');
               
                 }
         }
-		}
-   else redirect('picosetup/displayvendor');
+		}//admin close
+   else 
+   redirect('picosetup/displayvendor');
   
   
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     //for rid controller code is this......
@@ -1951,12 +2234,12 @@ else {
                
                  $this->form_validation->set_rules('rid_ppid','rid co name','trim|xss_clean|required|callback_isridExist');
                  $this->form_validation->set_rules('rid_itemdes','rid itemdes','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('rid_itemstock','rid itemstock','required');
-                 $this->form_validation->set_rules('rid_itemqtyreq','rid itemqtyreq','required');
-                 $this->form_validation->set_rules('rid_itemunitp','rid itemunitp','required|numeric');
-                 $this->form_validation->set_rules('rid_itemgstapply','rid itemgstapply','required');
-                 $this->form_validation->set_rules('rid_gst','rid gst','required|alpha_numeric|exact_length[15]');
-                 $this->form_validation->set_rules('rid_itemtotcost','rid tt cost','required');
+                 $this->form_validation->set_rules('rid_itemstock','rid itemstock','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_itemqtyreq','rid itemqtyreq','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_itemunitp','rid itemunitp','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('rid_itemgstapply','rid itemgstapply','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_gst','rid gst','trim|xss_clean|required|alpha_numeric|exact_length[15]');
+                 $this->form_validation->set_rules('rid_itemtotcost','rid tt cost','trim|xss_clean|required');
                 
                   	
                  if($this->form_validation->run()==TRUE){
@@ -1977,14 +2260,14 @@ else {
                 {
                     $this->logger->write_logmessage("insert","Trying to add rid", "rid is not added ".$rid_ppid);
                     $this->logger->write_dblogmessage("insert","Trying to add rid", "rid is not added ".$rid_ppid);
-                    $this->session->set_flashdata('err_message','Error in adding rid setting - '  , 'error');
+                    $this->session->set_flashdata('err_message','Error In Item Details setting - '  , 'error');
                     redirect('picosetup/rid');
 
                 }
                 else{
                     $this->logger->write_logmessage("insert","Add rid Setting", "rid".$_POST['rid_ppid']." added  successfully...");
                     $this->logger->write_dblogmessage("insert","Add rid Setting", "rid".$_POST['rid_ppid']."added  successfully...");
-                    $this->session->set_flashdata("success", "rid add successfully...");
+                    $this->session->set_flashdata("success", "Item Details Added Successfully...");
                     redirect("picosetup/displayrid");
                 }
 
@@ -2002,7 +2285,7 @@ else {
         $is_exist = $this->PICO_model->isduplicate('required_item_details','rid_ppid',$rid_ppid);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isridExist', 'rid is already exist.');
+            $this->form_validation->set_message('isridExist', 'Item With This ID already exist.');
             return false;
         }
         else {
@@ -2038,14 +2321,14 @@ else {
           {
           	$this->logger->write_message("error", "Error  in deleting rid " ."[rid_id:" . $id . "]");
             $this->logger->write_dbmessage("error", "Error  in deleting rid "." [rid_id:" . $id . "]");
-            $this->session->set_flashdata('err_message', 'Error in Deleting rid - ', 'error');
+            $this->session->set_flashdata('err_message', 'Error In Deleting - ', 'error');
             redirect('picosetup/displayrid');
            return;
           }
         else{
           $this->logger->write_logmessage("delete", "Deleted   rid  " . "[rid_id:" . $id . "] deleted successfully.. " );
            $this->logger->write_dblogmessage("delete", "Deleted rid " ." [rid_id:" . $id . "] deleted successfully.. " );
-            $this->session->set_flashdata("success", 'required items details Deleted successfully...' );
+            $this->session->set_flashdata("success", 'Deleted successfully...' );
             redirect('picosetup/displayrid');
         }
         $this->load->view('setup/displayrid',$data);
@@ -2095,21 +2378,13 @@ else {
                  
                $this->form_validation->set_rules('rid_ppid','rid company ','trim|xss_clean|required');
                  $this->form_validation->set_rules('rid_itemdes','rid itemdes','trim|xss_clean|required|alpha_numeric_spaces');
-                 $this->form_validation->set_rules('rid_itemstock','rid itemstock','required');
-                 $this->form_validation->set_rules('rid_itemqtyreq','rid itemqtyreq','required');
-                 $this->form_validation->set_rules('rid_itemunitp','rid itemunitp','required|numeric');
-                 $this->form_validation->set_rules('rid_itemgstapply','rid itemgstapply','required');
-                 $this->form_validation->set_rules('rid_gst','rid gst','required|alpha_numeric|exact_length[15]');
-                 $this->form_validation->set_rules('rid_itemtotcost','rid tt cost','required');
+                 $this->form_validation->set_rules('rid_itemstock','rid itemstock','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_itemqtyreq','rid itemqtyreq','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_itemunitp','rid itemunitp','trim|xss_clean|required|numeric');
+                 $this->form_validation->set_rules('rid_itemgstapply','rid itemgstapply','trim|xss_clean|required');
+                 $this->form_validation->set_rules('rid_gst','rid gst','trim|xss_clean|required|alpha_numeric|exact_length[15]');
+                 $this->form_validation->set_rules('rid_itemtotcost','rid tt cost','trim|xss_clean|required');
                 
-                
-	    
-	    
-	    
-	    
-	    
-	    
-	    
 	    /* Re-populating form */
         if ($_POST)
         {
@@ -2192,13 +2467,13 @@ else {
             {
                 $this->logger->write_logmessage("error","Edit rid Setting error", "Edit rid Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit rid Setting error", "Edit rid Setting details. $logmessage ");
-                $this->session->set_flashdata('err_message','Error updating required items details - ' . $logmessage . '.', 'error');
+                $this->session->set_flashdata('err_message','Error Updating  Items Details - ' . $logmessage . '.', 'error');
                 $this->load->view('setup/editrid', $data);
             }
             else{
                 $this->logger->write_logmessage("update","Edit rid Setting", "Edit rid Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("update","Edit rid Setting", "Edit rid Setting details. $logmessage ");
-                $this->session->set_flashdata('success','required item details updated successfully..');
+                $this->session->set_flashdata('success','Item Details Updated Successfully..');
                 redirect('picosetup/displayrid/');
               
                 }
@@ -2210,13 +2485,8 @@ else {
     }
     
   
-    public function tenderform()
-    {
-     
-        $this->logger->write_logmessage("view"," View tender form ", " tender form details...");
-        
-        $this->load->view('setup/tenderform');
-    }
+   
+   
 
 
 
@@ -2529,26 +2799,4 @@ else {
 
     }
  
-
-        
-  
-    
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

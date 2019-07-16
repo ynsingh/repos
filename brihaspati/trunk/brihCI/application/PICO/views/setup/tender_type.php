@@ -2,7 +2,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-<title>Add Tender</title>
+<title>ADD|MODE|TENDER</title>
 
  <head>
      <?php $this->load->view('template/header'); ?>
@@ -12,7 +12,7 @@
  <body> 
      <table width="100%">
             <tr><td>
-                <?php echo anchor('picosetup/displaytypeoftender/', "View tender Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
+                <?php echo anchor('picosetup/displaytypeoftender/', "View Entries", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <?php
                  echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";
@@ -41,6 +41,7 @@
                 <td><label for="tt_name" class="control-label">Tender Name:</label></td>
                 <td>
                 <input type="text" name="tt_name"  class="form-control" size="30" /><br>
+              
                 </td>
                 <td>
                     <?php echo form_error('tt_name')?>
@@ -55,7 +56,7 @@
                 <label for="tt_desc" class="control-label">Tender Description:</label>
                 </td>
                 <td>
-                    <input type="text" name="tt_desc" size="30"  class="form-control" /> <br>
+                   <textarea style="width:330px; height:100px; " name="tt_desc" placeholder="Give Details......" ></textarea><br>
                 </td>
                 <td>
                     <?php echo form_error('tt_desc')?>

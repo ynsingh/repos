@@ -50,7 +50,22 @@
 <div class="scroller_sub_page">
       <table class="TFtable" >
                 <tr>
-<thead><th>Sr.No</th><th>Cover No.</th><th>Fixed Cover</th><th>Optional Cover</th><th>Cover Description</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Cover No.</th><th>Fixed Cover</th><th>Cover Type</th>
+
+
+<th>
+<?php  
+
+
+echo "Optional Cover";
+
+?>
+</th><th>
+<?php
+
+echo "Cover Description";
+?>
+</th><th>Action</th></tr></thead>
 <tbody>
 <?php
         $count =0;
@@ -61,6 +76,7 @@
              <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->ct_coverno ?></td>
+            <td> <?php echo $row->ct_coverfixed ?></td>           
             <td>
                 (a)<?php echo $row->ct_cover1 ?><br>
 
@@ -77,7 +93,7 @@
                 <?php } ?>
             </td>
 
-            <td> <?php echo $row->ct_coverfixed ?></td>
+           
             <td> <?php echo $row->ct_coveroptional ?></td>
             <td> <?php echo $row->ct_desc ?></td>
 
@@ -86,9 +102,11 @@
     if ($row->ct_id >=0){
           
           echo "&nbsp; ";
+                echo anchor('picosetup/editcoverdetails/' . $row->ct_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . "<br><br> ";
+                 echo "&nbsp; ";             
                 echo anchor('picosetup/deletcovertype/' . $row->ct_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
-                echo "<br>";
-               echo anchor('picosetup/editcoverdetails/' . $row->ct_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
+                
+             
         }
             echo "</td>";
             echo "</tr>";

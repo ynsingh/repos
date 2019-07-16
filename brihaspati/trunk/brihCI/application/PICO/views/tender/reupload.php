@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>NIT|DOCUMENT</title>
+<title>NIT|DOCUMENT(Change)</title>
 
  <head>
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
@@ -8,9 +8,6 @@
    
  </head>    
  <body> 
-<!--
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>-->
-
 
      <table width="100%">
             <tr><td>
@@ -39,10 +36,10 @@
    
 
 
-<form action="<?php echo site_url('tender/tenderupload');?>" method="POST" class="form-inline" enctype="multipart/form-data" >
+<form action="<?php echo site_url('tender/tender_re_upload');?>" method="POST" class="form-inline" enctype="multipart/form-data" >
 
 <h2 class="title">Upload NIT Documents</h2>
-<p class="subtitle"><b>Step 5</b></p>
+
         
         <table class="TFtable">
         
