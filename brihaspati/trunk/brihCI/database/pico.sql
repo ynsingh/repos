@@ -23,11 +23,9 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `cover_type`
 --
-
 CREATE TABLE `cover_type` (
   `ct_id` int(11) NOT NULL,
   `ct_coverno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -39,18 +37,22 @@ CREATE TABLE `cover_type` (
   `ct_coveroptional` varchar(255) COLLATE utf8_unicode_ci  NULL,
   `ct_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
--- Dumping data for table `cover_type`
+-- Indexes for table `cover_type`
 --
-
+ALTER TABLE `cover_type`
+  ADD PRIMARY KEY (`ct_id`);
+--
+-- AUTO_INCREMENT for table `cover_type`
+--
+ALTER TABLE `cover_type`
+  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `depart_indent`
 --
-
 CREATE TABLE `depart_indent` (
   `di_id` int(11) NOT NULL,
   `di_date` date NOT NULL,
@@ -58,12 +60,15 @@ CREATE TABLE `depart_indent` (
   `di_itemid` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `depart_indent`
+	MODIFY `di_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `depart_indent`
+	 ADD PRIMARY KEY (`di_id`);
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `financial_power`
 --
-
 CREATE TABLE `financial_power` (
   `fp_id` int(11) NOT NULL,
   `fp_typeofpurch` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -76,18 +81,21 @@ CREATE TABLE `financial_power` (
   `fp_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `fp_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
--- Dumping data for table `financial_power`
+-- Indexes for table `financial_power`
 --
-
-
+ALTER TABLE `financial_power`
+  ADD PRIMARY KEY (`fp_id`);
+--
+-- AUTO_INCREMENT for table `financial_power`
+--
+ALTER TABLE `financial_power`
+  MODIFY `fp_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `items`
 --
-
 CREATE TABLE `items` (
   `item_id` int(11) NOT NULL,
   `item_mtid` int(15) NOT NULL,
@@ -95,29 +103,42 @@ CREATE TABLE `items` (
   `item_price` int(15) NOT NULL,
   `item_stock` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
--- Dumping data for table `items`
+-- Indexes for table `items`
 --
+ALTER TABLE `items`
+  ADD PRIMARY KEY (`item_id`);
 
-
+ALTER TABLE `items`
+	MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `material_type`
 --
-
 CREATE TABLE `material_type` (
   `mt_id` int(11) NOT NULL,
   `mt_name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `mt_desc` varchar(500) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Indexes for table `material_type`
+--
+ALTER TABLE `material_type`
+  ADD PRIMARY KEY (`mt_id`),
+  ADD UNIQUE KEY `mt_name` (`mt_name`);
+--
+-- AUTO_INCREMENT for table `material_type`
+--
+ALTER TABLE `material_type`
+  MODIFY `mt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+-- --------------------------------------------------------
 
 --
 -- Dumping data for table `material_type`
 --
-
 INSERT INTO `material_type` (`mt_id`, `mt_name`, `mt_desc`) VALUES
 (1, 'Non-Consumable Store(NCS)', 'Stores satisfying any one of the\r\nfollowing conditions shall be classified as non-consumable stores :\r\n(a) stores which are intended to be used over prolonged periods before\r\nbecoming unusable, or obsolete,\r\n(b) stores having a significant disposal value,\r\n(c) stores which are sub-systems, or parts of an equipment, which can be\r\npotentially repaired and reused, and\r\n(d) stores which are either fabricated, or assembled equipment, and which\r\nif bought as a single item would have been classified Non-Consumable\r\nStores.\r\nAll non-consumable stores have to be entered into the Asset Register of the\r\nInstitute and the NCS Stock register of the appropriate Department.\r\nExamples :(examples are indicative and not exhaustive) plant machinery,\r\nequipment, fabricated equipment, instruments, assembled instruments,\r\nmotors, gas cylinder, workshop machines, furniture and books etc.'),
 (2, 'Limited Time Asset Stores(LTAS)', 'Stores satisfying any one of the\r\nfollowing conditions shall be classified as LTAS.\r\n(a) stores which have significant value when purchased but rapidly lose\r\ntheir value/relevance with the lapse of time and have very little or\r\nnegligible disposal value, and/or\r\n(b) stores which can be upgraded either by replacing components/parts or\r\nwhich can be rendered obsolete by the release of new versions or\r\neditions.\r\nAll LTAS shall be entered into the Limited Time Asset Stores Register of the\r\nInstitute and in a separate Limited Time Asset Stock Register in the\r\nappropriate Department.\r\nExamples: (examples are indicative and not exhaustive) Computers, disk and\r\nother peripherals drives which are computer accessories, software, printers,\r\nmonitors, UPS, telephones, mobile, etc.'),
@@ -128,7 +149,6 @@ INSERT INTO `material_type` (`mt_id`, `mt_name`, `mt_desc`) VALUES
 --
 -- Table structure for table `offline_instrument`
 --
-
 CREATE TABLE `offline_instrument` (
   `oi_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `oi_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -141,7 +161,6 @@ CREATE TABLE `offline_instrument` (
 --
 -- Table structure for table `online_bank`
 --
-
 CREATE TABLE `online_bank` (
   `ob_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ob_bankname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -154,7 +173,6 @@ CREATE TABLE `online_bank` (
 --
 -- Table structure for table `product_category`
 --
-
 CREATE TABLE `product_category` (
   `pc_id` int(11)  NOT NULL,
   `pc_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -162,17 +180,21 @@ CREATE TABLE `product_category` (
   `pc_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `product_category`
+ ADD PRIMARY KEY (`pc_id`);
+
+ALTER TABLE `product_category`
+	MODIFY `pc_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `purchase_committee`
 --
-
 CREATE TABLE `purchase_committee` (
   `pc_id` int(11) NOT NULL,
   `pc_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pc_dept` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-`pc_purchasethrough` VARCHAR(255) NOT NULL,
+  `pc_purchasethrough` VARCHAR(255) NOT NULL,
   `pc_purchpricelimit` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pc_rep1` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pc_rep2` varchar(100) COLLATE utf8_unicode_ci  NULL,
@@ -186,13 +208,22 @@ CREATE TABLE `purchase_committee` (
   `pc_modifiedby` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pc_modifieddate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Indexes for table `purchase_committee`
+--
+ALTER TABLE `purchase_committee`
+  ADD PRIMARY KEY (`pc_id`);
+--
+-- AUTO_INCREMENT for table `purchase_committee`
+--
+ALTER TABLE `purchase_committee`
+  MODIFY `pc_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `purchase_com_form_rule`
 --
-
 CREATE TABLE `purchase_com_form_rule` (
   `pcfr_id` int(11) NOT NULL,
   `pcfr_purchasethrough` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -207,7 +238,18 @@ CREATE TABLE `purchase_com_form_rule` (
   `pcfr_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pcfr_modifydate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Indexes for table `purchase_com_form_rule`
+--
+ALTER TABLE `purchase_com_form_rule`
+  ADD PRIMARY KEY (`pcfr_id`);
+--
+-- AUTO_INCREMENT for table `purchase_com_form_rule`
+--
+ALTER TABLE `purchase_com_form_rule`
+  MODIFY `pcfr_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
+-- --------------------------------------------------------
 --
 -- Dumping data for table `purchase_com_form_rule`
 --
@@ -226,7 +268,6 @@ INSERT INTO `purchase_com_form_rule` (`pcfr_id`, `pcfr_purchasethrough`, `pcfr_e
 --
 -- Table structure for table `purchase_order`
 --
-
 CREATE TABLE `purchase_order` (
   `po_id` int(11) NOT NULL,
   `po_ppid` int(11) NOT NULL,
@@ -243,12 +284,16 @@ CREATE TABLE `purchase_order` (
   `po_creationdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE  `purchase_order`
+	ADD PRIMARY KEY (`po_id`);
+ALTER TABLE `purchase_order`
+	MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT;
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `purchase_proposal`
 --
-
 CREATE TABLE `purchase_proposal` (
   `pp_id` int(11) NOT NULL,
   `pp_tcid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -298,12 +343,15 @@ CREATE TABLE `purchase_proposal` (
   `pp_updateby` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `purchase_proposal`
+	ADD PRIMARY KEY (`pp_id`);
+ALTER TABLE `purchase_proposal`
+	MODIFY `pp_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `purchase_type`
 --
-
 CREATE TABLE `purchase_type` (
   `pt_id` int(11) NOT NULL,
   `purch_type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -312,7 +360,17 @@ CREATE TABLE `purchase_type` (
   `amt_below` int(15) NOT NULL,
   `pt_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+--
+-- Indexes for table `purchase_type`
+--
+ALTER TABLE `purchase_type`
+  ADD PRIMARY KEY (`pt_id`),
+  ADD UNIQUE KEY `sub_purch_type` (`sub_purch_type`);
+--
+-- AUTO_INCREMENT for table `purchase_type`
+--
+ALTER TABLE `purchase_type`
+  MODIFY `pt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Dumping data for table `purchase_type`
 --
@@ -326,7 +384,6 @@ INSERT INTO `purchase_type` (`pt_id`, `purch_type`, `sub_purch_type`, `amt_above
 --
 -- Table structure for table `required_item_details`
 --
-
 CREATE TABLE `required_item_details` (
   `rid_id` int(11) NOT NULL,
   `rid_ppid` int(20) NOT NULL,
@@ -338,13 +395,21 @@ CREATE TABLE `required_item_details` (
   `rid_gst` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `rid_itemtotcost` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+--
+-- Indexes for table `required_item_details`
+--
+ALTER TABLE `required_item_details`
+  ADD PRIMARY KEY (`rid_id`);
+--
+-- AUTO_INCREMENT for table `required_item_details`
+--
+ALTER TABLE `required_item_details`
+  MODIFY `rid_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `tender_apply`
 --
-
 CREATE TABLE `tender_apply` (
   `ta_id` int(11) NOT NULL,
   `ta_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -362,13 +427,21 @@ CREATE TABLE `tender_apply` (
   `ta_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+--
+-- Indexes for table `tender_apply`
+--
+ALTER TABLE `tender_apply`
+  ADD PRIMARY KEY (`ta_id`);
+--
+-- AUTO_INCREMENT for table `tender_apply`
+--
+ALTER TABLE `tender_apply`
+  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `tender_bid_openers_selection`
 --
-
 CREATE TABLE `tender_bid_openers_selection` (
   `tbos_id` int(11) NOT NULL,
   `tbos_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -381,13 +454,21 @@ CREATE TABLE `tender_bid_openers_selection` (
   `tbos_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tbos_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+--
+-- Indexes for table `tender_bid_openers_selection`
+--
+ALTER TABLE `tender_bid_openers_selection`
+  ADD PRIMARY KEY (`tbos_id`);
+--
+-- AUTO_INCREMENT for table `tender_bid_openers_selection`
+--
+ALTER TABLE `tender_bid_openers_selection`
+  MODIFY `tbos_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `tender_create`
 --
-
 CREATE TABLE `tender_create` (
   `tc_id` int(11) NOT NULL,
   `tc_refno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -467,18 +548,17 @@ CREATE TABLE `tender_create` (
   `tc_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
 -- Indexes for table `tender_create`
 --
 ALTER TABLE `tender_create`
   ADD PRIMARY KEY (`tc_id`);
-
 --
 -- AUTO_INCREMENT for table `tender_create`
 --
 ALTER TABLE `tender_create`
   MODIFY `tc_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 
 CREATE TABLE `tender_create_archive` (
   `archive_id` int(11) NOT NULL,
@@ -489,23 +569,21 @@ CREATE TABLE `tender_create_archive` (
   `tc_bydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `archive_datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
 -- Indexes for table `tender_create_archive`
 --
 ALTER TABLE `tender_create_archive`
   ADD PRIMARY KEY (`archive_id`);
-
 --
 -- AUTO_INCREMENT for table `tender_create_archive`
 --
 ALTER TABLE `tender_create_archive`
   MODIFY `archive_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `tender_query`
 --
-
 CREATE TABLE `tender_query` (
   `tq_id` int(11) NOT NULL,
   `tq_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -513,14 +591,11 @@ CREATE TABLE `tender_query` (
   `tq_desc` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
   `tq_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
 -- Indexes for table `tender_query`
 --
 ALTER TABLE `tender_query`
   ADD PRIMARY KEY (`tq_id`);
-
-
 --
 -- AUTO_INCREMENT for table `tender_query`
 --
@@ -531,12 +606,21 @@ ALTER TABLE `tender_query`
 --
 -- Table structure for table `tender_type`
 --
-
 CREATE TABLE `tender_type` (
   `tt_id` int(11) NOT NULL,
   `tt_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tt_desc` varchar(5000) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Indexes for table `tender_type`
+--
+ALTER TABLE `tender_type`
+  ADD PRIMARY KEY (`tt_id`);
+--
+-- AUTO_INCREMENT for table `tender_type`
+--
+ALTER TABLE `tender_type`
+  MODIFY `tt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- Dumping data for table `tender_type`
 --
@@ -556,7 +640,6 @@ INSERT INTO `tender_type` (`tt_id`, `tt_name`, `tt_desc`) VALUES
 --
 -- Table structure for table `tender_upload_doc`
 --
-
 CREATE TABLE `tender_upload_doc` (
   `tud_id` int(11) NOT NULL,
   `tud_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -569,12 +652,21 @@ CREATE TABLE `tender_upload_doc` (
   `tud_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tud_modifierdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Indexes for table `tender_upload_doc`
+--
+ALTER TABLE `tender_upload_doc`
+  ADD PRIMARY KEY (`tud_id`);
+--
+-- AUTO_INCREMENT for table `tender_upload_doc`
+--
+ALTER TABLE `tender_upload_doc`
+  MODIFY `tud_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `vendor`
 --
-
 CREATE TABLE `vendor` (
   `vendor_id` int(11) NOT NULL,
   `vendor_companyname` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
@@ -604,20 +696,21 @@ CREATE TABLE `vendor` (
   `vendor_blacklistdateto` date DEFAULT NULL,
   `vendor_blacklistby` varchar(100) COLLATE utf32_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
-
 --
 -- Indexes for table `vendor`
 --
 ALTER TABLE `vendor`
   ADD PRIMARY KEY (`vendor_id`);
-
 --
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
   MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 
-
+--
+-- Table structure for table `vendor__archive`
+--
 CREATE TABLE `vendor_archive` (
   `archive_id` int(11) NOT NULL,
   `vendor_archive_id` int(11) NOT NULL,
@@ -655,7 +748,11 @@ ALTER TABLE `vendor_archive`
   ADD PRIMARY KEY (`archive_id`);
   
 ALTER TABLE `vendor_archive` CHANGE `archive_id` `archive_id` INT(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `logs`
+--
 CREATE TABLE `logs` (
   `id` int(11) NOT NULL,
   `date` datetime NOT NULL,
@@ -671,204 +768,51 @@ CREATE TABLE `logs` (
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
   
-  ALTER TABLE `logs`
+ALTER TABLE `logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Indexes for dumped tables
---
+-- --------------------------------------------------------
 
 --
--- Indexes for table `cover_type`
---
-ALTER TABLE `cover_type`
-  ADD PRIMARY KEY (`ct_id`);
-
-ALTER TABLE `depart_indent`
-	 ADD PRIMARY KEY (`di_id`);
---
--- Indexes for table `financial_power`
---
-ALTER TABLE `financial_power`
-  ADD PRIMARY KEY (`fp_id`);
-
-ALTER TABLE `product_category`
- ADD PRIMARY KEY (`pc_id`);
-
-
---
--- Indexes for table `items`
---
-ALTER TABLE `items`
-  ADD PRIMARY KEY (`item_id`);
-
---
--- Indexes for table `material_type`
---
-ALTER TABLE `material_type`
-  ADD PRIMARY KEY (`mt_id`),
-  ADD UNIQUE KEY `mt_name` (`mt_name`);
-
---
--- Indexes for table `purchase_committee`
---
-ALTER TABLE `purchase_committee`
-  ADD PRIMARY KEY (`pc_id`);
-
---
--- Indexes for table `purchase_com_form_rule`
---
-ALTER TABLE `purchase_com_form_rule`
-  ADD PRIMARY KEY (`pcfr_id`);
-
---
--- Indexes for table `purchase_type`
---
-ALTER TABLE `purchase_type`
-  ADD PRIMARY KEY (`pt_id`),
-  ADD UNIQUE KEY `sub_purch_type` (`sub_purch_type`);
-
-ALTER TABLE  `purchase_order`
-	ADD PRIMARY KEY (`po_id`);
-
-ALTER TABLE `purchase_proposal`
-	ADD PRIMARY KEY (`pp_id`);
---
--- Indexes for table `required_item_details`
---
-ALTER TABLE `required_item_details`
-  ADD PRIMARY KEY (`rid_id`);
-
---
--- Indexes for table `tender_apply`
---
-ALTER TABLE `tender_apply`
-  ADD PRIMARY KEY (`ta_id`);
-
---
--- Indexes for table `tender_bid_openers_selection`
---
-ALTER TABLE `tender_bid_openers_selection`
-  ADD PRIMARY KEY (`tbos_id`);
-
---
--- Indexes for table `tender_create`
---
-ALTER TABLE `tender_create`
-  ADD PRIMARY KEY (`tc_id`);
-
---
--- Indexes for table `tender_type`
---
-ALTER TABLE `tender_type`
-  ADD PRIMARY KEY (`tt_id`);
-
---
--- Indexes for table `tender_upload_doc`
---
-ALTER TABLE `tender_upload_doc`
-  ADD PRIMARY KEY (`tud_id`);
-
---
--- Indexes for table `vendor`
---
-ALTER TABLE `vendor`
-  ADD PRIMARY KEY (`vendor_id`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Table structure for table `user_role_type`
 --
 
---
--- AUTO_INCREMENT for table `cover_type`
---
-ALTER TABLE `cover_type`
-  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT;
+CREATE TABLE `user_role_type` (
+  `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `roleid` int(11) NOT NULL,
+  `scid` int(10) DEFAULT NULL,
+  `deptid` int(10) DEFAULT NULL,
+  `usertype` varchar(255) NOT NULL,
+  `ext1` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `depart_indent`
-	MODIFY `di_id` int(11) NOT NULL AUTO_INCREMENT;
+insert into user_role_type values (1,1,1,1,NULL,'Administrator','');
+insert into user_role_type values (2,6,11,NULL,NULL,'PICOAdministrator','');
 
+-- --------------------------------------------------------
 --
--- AUTO_INCREMENT for table `financial_power`
+-- Table structure for table `user_role_type_archive`
 --
-ALTER TABLE `financial_power`
-  MODIFY `fp_id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `items`
-	MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+CREATE TABLE `user_role_type_archive` (
+  `urta_id` INT(11) NOT NULL,
+  `urta_urtid` INT(11) NOT NULL,
+  `urta_userid` int(11) NOT NULL,
+  `urta_roleida` int(11) NOT NULL,
+  `urta_scida` int(10) DEFAULT NULL,
+  `urta_deptida` int(10) DEFAULT NULL,
+  `urta_usertypea` varchar(255) NOT NULL,
+  `creatorid` varchar(255) NOT NULL,
+  `creatordate` date NOT NULL,
+  `ext1` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- AUTO_INCREMENT for table `material_type`
---
-ALTER TABLE `material_type`
-  MODIFY `mt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `user_role_type_archive`
+  ADD PRIMARY KEY (`urta_id`);
 
-ALTER TABLE `product_category`
-	MODIFY `pc_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `purchase_committee`
---
-ALTER TABLE `purchase_committee`
-  MODIFY `pc_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `user_role_type_archive`
+  MODIFY `urta_id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `purchase_com_form_rule`
---
-ALTER TABLE `purchase_com_form_rule`
-  MODIFY `pcfr_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `purchase_type`
---
-ALTER TABLE `purchase_type`
-  MODIFY `pt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
-ALTER TABLE `purchase_order`
-	MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `purchase_proposal`
-	MODIFY `pp_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `required_item_details`
---
-ALTER TABLE `required_item_details`
-  MODIFY `rid_id` int(11) NOT NULL AUTO_INCREMENT;
-
-
---
--- AUTO_INCREMENT for table `tender_apply`
---
-ALTER TABLE `tender_apply`
-  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tender_bid_openers_selection`
---
-ALTER TABLE `tender_bid_openers_selection`
-  MODIFY `tbos_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tender_create`
---
-ALTER TABLE `tender_create`
-  MODIFY `tc_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tender_type`
---
-ALTER TABLE `tender_type`
-  MODIFY `tt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `tender_upload_doc`
---
-ALTER TABLE `tender_upload_doc`
-  MODIFY `tud_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `vendor`
---
-ALTER TABLE `vendor`
-  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 
