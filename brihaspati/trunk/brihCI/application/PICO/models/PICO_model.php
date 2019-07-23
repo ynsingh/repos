@@ -68,6 +68,18 @@ class PICO_model extends CI_Model
         }
     }
     
+    // get the number of rows in table where record is already exist with as many field you want
+//$data = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function getnoofrows($tbname,$data='') {
+        $this->db4->flush_cache();
+        $this->db4->from($tbname);
+        if($data != ''){
+            $this->db4->where($data);
+        }
+        $query = $this->db4->get();
+        return $query->num_rows();
+    }
+
     //get the list of one/specific  records with  one specific fields for specific values
     public function get_listspfic1($tbname,$selfield1,$fieldname='',$fieldvalue=''){
 	$this->db4->flush_cache();
@@ -198,7 +210,7 @@ class PICO_model extends CI_Model
 
 
     // get the join  table result value
-    public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$jtype,$whdata){
+    public function get_jointbrecord($tbname,$selectfield,$jointbname,$joincond,$jtype,$whdata,$whorder=''){
             $this->db4->flush_cache();
             $this->db4->select($selectfield);
             $this->db4->from($tbname);
@@ -206,8 +218,13 @@ class PICO_model extends CI_Model
             if($whdata != ''){
                         $this->db4->where($whdata);
             }
+            if($whorder != ''){
+                $this->db4->order_by($whorder);
+        		}
             return $this->db4->get()->result();
     }
+    
+  
 
     public function get_distinctrecord($tbname,$selectfield,$whdata){
             $this->db4->flush_cache();

@@ -92,7 +92,7 @@
                             data: {"noc" : ncov},
                             dataType:"html",
                             success:function(data){
-                                  alert("data==="+data);
+                                  //alert("data==="+data);
 										var sginput=data.split(",");
                              //  alert(sginput[0].replace(/[[\]"|"]/g,""));
                             $('#nmecovr').val(sginput[0].replace(/[[\]"|"]/g,""));

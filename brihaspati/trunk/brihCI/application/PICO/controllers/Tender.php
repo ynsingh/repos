@@ -600,7 +600,7 @@ public function tenderbid()
                 $this->form_validation->set_rules('f1','File Name 1','trim|xss_clean|required');
                 $this->form_validation->set_rules('de1','Desp. of file 1 ','trim|xss_clean|required');
                 $this->form_validation->set_rules('ty1','Type of file 1 ','trim|xss_clean|required');
-                $this->form_validation->set_rules('si1','Size of file 1 ','trim|xss_clean|required');
+                $this->form_validation->set_rules('si1','Size of file 1 ','trim|xss_clean|required|numeric');
                 
                 $this->form_validation->set_rules('b2',' ','trim|xss_clean|required');
                 $this->form_validation->set_rules('n2','Name Field 2','trim|xss_clean|required');
@@ -610,7 +610,7 @@ public function tenderbid()
                 $this->form_validation->set_rules('f2',' ','trim|xss_clean');
                 $this->form_validation->set_rules('de2',' ','trim|xss_clean');
                 $this->form_validation->set_rules('ty2',' ','trim|xss_clean');
-                $this->form_validation->set_rules('si2',' ','trim|xss_clean');
+                $this->form_validation->set_rules('si2',' size of file 2','trim|xss_clean|numeric');
                 
                 $this->form_validation->set_rules('b3',' ','trim|xss_clean|required');
                 $this->form_validation->set_rules('n3',' ','trim|xss_clean');
@@ -620,7 +620,7 @@ public function tenderbid()
                 $this->form_validation->set_rules('f3',' ','trim|xss_clean');
                 $this->form_validation->set_rules('de3',' ','trim|xss_clean');
                 $this->form_validation->set_rules('ty3',' ','trim|xss_clean');
-                $this->form_validation->set_rules('si3',' ','trim|xss_clean');
+                $this->form_validation->set_rules('si3','size of file 3','trim|xss_clean|numeric');
                 
                 $this->form_validation->set_rules('b4',' ','trim|xss_clean|required');
                 $this->form_validation->set_rules('n4',' ','trim|xss_clean');
@@ -630,7 +630,7 @@ public function tenderbid()
                 $this->form_validation->set_rules('f4',' ','trim|xss_clean');
                 $this->form_validation->set_rules('de4',' ','trim|xss_clean');
                 $this->form_validation->set_rules('ty4',' ','trim|xss_clean');
-                $this->form_validation->set_rules('si4',' ','trim|xss_clean');
+                $this->form_validation->set_rules('si4','size of file 4','trim|xss_clean|numeric');
                 
                 $this->form_validation->set_rules('b5',' ','trim|xss_clean|required');
                 $this->form_validation->set_rules('n5',' ','trim|xss_clean');
@@ -640,7 +640,7 @@ public function tenderbid()
                 $this->form_validation->set_rules('f5',' ','trim|xss_clean');
                 $this->form_validation->set_rules('de5',' ','trim|xss_clean');
                 $this->form_validation->set_rules('ty5',' ','trim|xss_clean');
-                $this->form_validation->set_rules('si5',' ','trim|xss_clean');
+                $this->form_validation->set_rules('si5','size of file 5 ','trim|xss_clean|numeric');
                   
                 $this->form_validation->set_rules('tp','Tender Prepared ','required');
                   
@@ -720,8 +720,7 @@ public function tenderbid()
                       	  $dataz = array(
                           'tc_tenderprepby'=>$_POST['tp'],
                           'tc_prepbydesig'=>$_POST['tpd'],
-                          //'tc_approvedbyname'=>$_POST['ta'],
-                         // 'tc_approvedbydesig'=>$_POST['tad'],
+                          //'tc_prepbydate'=>date('Y-m-d'),
                           'tc_creatorid'=>$this->session->userdata('username'),
                           'tc_creationdate'=>date('Y-m-d'),
                           //'tc_modifierid'=>$this->session->userdata('username'),
@@ -738,8 +737,8 @@ public function tenderbid()
 
 
 
-
-                $this->load->view('tender/tenderdisplay');   //success
+                $this->session->set_flashdata("success", "Tender Added Successfully...");
+                redirect("tender/tenderdisplay");   //success
                 return;
                 }
                 
@@ -908,8 +907,8 @@ public function tenderedit($id)
 	  $this->form_validation->set_rules('tc_location',' Location..','trim|xss_clean|required|alpha_numeric_spaces');
 	  $this->form_validation->set_rules('tc_pincode','Pincode..','trim|xss_clean|required|numeric|exact_length[6]');
 	  $this->form_validation->set_rules('tc_prebidmeeting','Pre Bid Meeting..','trim|xss_clean|required');
-	  $this->form_validation->set_rules('tc_prebidmeetplace','Pre Bid Meeting place..','trim|xss_clean|required');
-	  $this->form_validation->set_rules('tc_prebidmeetadd','Pre Bid Meeting address..','trim|xss_clean|required');
+	  $this->form_validation->set_rules('tc_prebidmeetplace','Pre Bid Meeting place..','trim|xss_clean');
+	  $this->form_validation->set_rules('tc_prebidmeetadd','Pre Bid Meeting address..','trim|xss_clean');
 	  $this->form_validation->set_rules('tc_bidopenplace','Bid Open place','trim|xss_clean|required|alpha_numeric_spaces');
 	  $this->form_validation->set_rules('tc_tenderclass','Tenderer Class','trim|xss_clean|required');
 	  $this->form_validation->set_rules('tc_tendersubclass','Tenderer Sub-Class','trim|xss_clean|required');
@@ -1491,10 +1490,12 @@ redirect('tender/tenderdisplay');
             $this->session->set_flashdata("success", 'Tender Deleted Successfully...' );
             redirect('tender/tenderdisplay');
           }       
- 
-          $this->load->view('tender/tenderdisplay');
+          $this->session->set_flashdata("err_message", 'Tender Not Deleted ...' );
+          redirect('tender/tenderdisplay');
           }
-          else  redirect('tender/tenderdisplay');
+          else 
+           $this->session->set_flashdata("err_message", 'Tender Can Not Deleted By You...' );
+           redirect('tender/tenderdisplay');
     
     
     }
@@ -1511,6 +1512,7 @@ redirect('tender/tenderdisplay');
               'tc_approvedstatus'=>$status,         	 
            	  'tc_approvedbyname'=>$this->session->userdata('username'),
               'tc_approvedbydesig'=>$this->session->userdata('username'),
+              'tc_approvedbydate'=>date('Y-m-d'),
            	 );
            	 $update_archive= array(
            	  'tc_id'=>$tid,
@@ -1526,7 +1528,7 @@ redirect('tender/tenderdisplay');
                 $this->logger->write_logmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
                 $this->session->set_flashdata('err_message','Error Approving Tender- ' . $logmessage . '.', 'error');
-                $this->load->view('tender/tenderdisplay');
+                redirect('tender/tenderdisplay/');
             }
             else{
                 $this->logger->write_logmessage("update","Edit  Setting", "Edit Setting details. $logmessage ");
@@ -1554,6 +1556,7 @@ public function tenderdismiss($id)
               'tc_approvedstatus'=>$status,         	 
            	  'tc_approvedbyname'=>$this->session->userdata('username'),
               'tc_approvedbydesig'=>$this->session->userdata('username'),
+              'tc_approvedbydate'=>date('Y-m-d'),
            	 );
            	 $update_archive= array(
            	  'tc_id'=>$tid,
@@ -1569,7 +1572,7 @@ public function tenderdismiss($id)
                 $this->logger->write_logmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
                 $this->session->set_flashdata('err_message','Error Dis-Approving Tender- ' . $logmessage . '.', 'error');
-                $this->load->view('tender/tenderdisplay');
+                redirect('tender/tenderdisplay/');
             }
             else{
                 $this->logger->write_logmessage("update","Edit  Setting", "Edit Setting details. $logmessage ");
@@ -1703,7 +1706,11 @@ public function tender_apply_list()
 	     $selectfield='tc_id,tc_refno,tc_tenderfees,tc_processingfees,tc_surcharge
 	     ,tc_emdfeesmode,tc_emdamount,tc_emdpercentage,tc_emdexemption,tc_publishingdate,tc_bidsubstartdate,tc_approvedstatus
 	     ,tc_bidsubenddate,tc_bidopeningdate';
+	     //joint used but no data called so ...
 	     $joincond='tender_bid_openers_selection.tbos_tcid=tender_create.tc_id';
+        
+        
+        
         $data['result'] = $this->PICO_model->get_jointbrecord('tender_create',$selectfield,'tender_bid_openers_selection',$joincond,'LEFT',''); //,$whdata   get_list('tender_create');
         $this->logger->write_logmessage("view"," View tenders for apply", "tender  details...");
         $this->logger->write_dblogmessage("view"," View tenders for apply", "tender  details...");
@@ -1712,9 +1719,9 @@ public function tender_apply_list()
 
 public function tenderapply($id)
 
-{              $data['tc_id']=$id;	
-               $data['tc_refno']=$this->PICO_model->get_listspfic1('tender_create','tc_refno','tc_id',$id)->tc_refno;
-              $fieldems="tc_tenderfees,tc_processingfees,tc_surcharge,tc_emdfeesmode,tc_emdamount,tc_emdpercentage,tc_emdexemption,tc_othercharge ";
+{             $data['tc_id']=$id;	
+              $data['tc_refno']=$this->PICO_model->get_listspfic1('tender_create','tc_refno','tc_id',$id)->tc_refno;
+              $fieldems="tc_tenderfees,tc_processingfees,tc_surcharge,tc_emdfeesmode,tc_emdamount,tc_emdpercentage,tc_emdexemption,tc_emdexemptionper,tc_othercharge ";
               $whdataems = array ('tc_id' => $id);
               $whorderems = '';
               $data['result'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdataems,$whorderems);   
@@ -1728,14 +1735,542 @@ public function tenderapply($id)
 
 public function tender_apply()
 
-{              if(isset($_POST['submit']))  { 
-               echo 'working here line 1732'; 	
-               die();      	
-                                             }
+{              
+                 if(isset($_POST['submit']))  { 
+                   	
+                                            
+                 $this->form_validation->set_rules('a_id'  ,'Some Error Occur','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_ref' ,'Some Error Occur','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_vid' ,'Supplier Id','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_bp'  ,'Base Price','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_gst' ,'GST','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_total',' total Cost','trim|xss_clean|required');    
+                 $this->form_validation->set_rules('a_warranty'  ,'Warranty Statement ','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_payment' ,'Payment Statement','trim|required');
+                 $this->form_validation->set_rules('a_delivery','Delivery Days','trim|xss_clean|required|numeric');                        
+                 $this->form_validation->set_rules('a_validity','Validity Days','trim|xss_clean|numeric');                 
+                                         
+                 $tcid=$_POST['a_id'];                          
+                 if($this->form_validation->run()==TRUE){
+                 	
+                 if(empty($_POST['a_validity'])) {	$a='Not Provided';
+                 }
+                 else { $a=$_POST['a_validity'];       
+                 }	           
+                 
+                 
+                 $data = array(
+                'ta_tcid'=>$tcid,
+                'ta_tcrefno'=>$_POST['a_ref'],
+                'ta_vendorid'=>$_POST['a_vid'],               
+                'ta_baseprice'=>$_POST['a_bp'],
+                'ta_gsttax'=>$_POST['a_gst'],
+                'ta_totalprice'=>$_POST['a_total'],
+                'ta_warranty'=>$_POST['a_warranty'],
+                'ta_payment'=>$_POST['a_payment'],
+                'ta_validity'=>$a,
+                'ta_delivery'=>$_POST['a_delivery'],
+                'ta_creatorid'=>$this->session->userdata('username'),   
+                'ta_creationdate'=>date('Y-m-d'),
+                              );
+                 $entryid=$this->PICO_model->insertdata('tender_apply',$data);
+                
+                 $id=$entryid;
+                 //echo $entryid;
+                 //die(); 	
+                 
+                if(!empty($entryid)){
+                	
+                	
+						$rflag=true;                
+                }
+                elseif($entryid == false){
+						$rflag=false;                
+                }
+                  //upload files...                	
+                 if($rflag)
+                 {
+                 $desired_dir = './uploads/PICO/tender_apply/'; 
+                           if(is_dir($desired_dir)==false){
+                           mkdir("$desired_dir",0777);
+                                                          }
+                 $desired_dir1 = './uploads/PICO/tender_apply/'.$tcid;
+                           if(is_dir($desired_dir1)==false){
+                           mkdir("$desired_dir1",0777);
+                                                           }     
+                 $desired_dir2 = './uploads/PICO/tender_apply/'.$tcid.'/'.$id.'/';
+                           if(is_dir($desired_dir2)==false){
+                           mkdir("$desired_dir2",0777);
+                                                           }  
+                                                                                                                                 
+                 for($i=1;$i<6;$i++)
+                	      {
+                	       $target_dir = $desired_dir2;
+                	       $uploadOk = 1;
+                	       $n=$this->input->post('n_'.$i, TRUE);
+                	       $s=$this->input->post('s_'.$i, TRUE);
+                	       $t=$this->input->post('t_'.$i, TRUE);
+                	       
+                	       if(!empty($n)) {
+                	        $f=$_FILES["file_".$i]["name"];
+                	         
+                	        $target_file = $target_dir . basename($f);
+                	        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                	        if ($_FILES["file_".$i]["size"]/1024 > $s)
+                	        { 
+						  	       $this->session->set_flashdata("err_message", "Sorry, your file is too large (must be below $s kb ).");
+						  	       $this->PICO_model->deleterow('tender_apply','ta_id', $id);
+						  	 	    
+						  	 	    redirect('tender/tenderapply/'.$tcid);
+						          $uploadOk = 0;
+						          return;}
+                	        if($imageFileType != $t )                	        
+                	        {
+						  			 $this->session->set_flashdata("err_message",  "Sorry This File Type Does Not Match Required Type (check your files format).");
+						  			 $this->PICO_model->deleterow('tender_apply','ta_id', $id);
+						  	 	    
+ 									 redirect('tender/tenderapply/'.$tcid);             
+						          $uploadOk = 0;
+						 			 return;}
+						 			 else // if everything is ok, try to upload file
+                            {
+          	                $name = $target_dir.$n.'.'.$imageFileType; 
+                            if (move_uploaded_file($_FILES["file_".$i]["tmp_name"], $name))
+                	          {
+                	        
+                	          $datau= array('ta_updoc'.$i=>$name,);
+                            $r=$this->PICO_model->updaterec('tender_apply',$datau,'ta_id',$id);
+                             }
+                        
+                                   }     
+                                   }                	
+                	        
+                	        else          {
+                	        break;
+								
+								                }                	
+                      	
+                      	 } 
+                  }
+                      	
+                      	
+                 
+                 
+                
+                 
+                 if (!$rflag) //if no data goes to db
+                 {
+                    $this->logger->write_logmessage("insert","Trying to apply", " can't Apply");
+                    $this->logger->write_dblogmessage("insert","Trying to apply", " can't Apply ");
+                    $this->session->set_flashdata('err_message','Error In Applying For Tender- '  , 'error');
+                    redirect('tender/tender_apply_list');
+
+                 }
+                else{
+                    $this->logger->write_logmessage("insert","tender apply.. ","Applied successfully...");
+                    $this->logger->write_dblogmessage("insert","tender apply.. ","Applied successfully...");
+                    $this->session->set_flashdata("success", "Applied Successfully...");
+                    redirect("tender/tender_apply_list");
+                    }                                         
+                                             }   //if validation fails                       
+                     $this->session->set_flashdata("err_message", "Error:Data Inserted Is Invalid/Missing..Try Again");
+	                 redirect('tender/tenderapply/'.$tcid);           
+                                             } //if button not pushed
           
           
 }
 
+public function tender_applied()
+{
+		  $today=date('Y-m-d');
+	     $selectfield='tc_id,ta_tcid,tc_refno,tc_creatorid ,tc_workitemtitle,tc_tenderprepby,tc_approvedstatus,tc_bidsubstartdate,tc_bidsubenddate' ;
+	   
+	     $joincond='tender_create.tc_id=tender_apply.ta_tcid';
+		  $whdata = array('tc_approvedstatus' => 'Approved','tc_bidsubstartdate <='=>$today,'tc_bidsubenddate >=' =>$today);
+		  $whorder='ta_tcid asc';
+        $data['result'] = $this->PICO_model->get_jointbrecord('tender_apply',$selectfield,'tender_create',$joincond,'LEFT',$whdata,$whorder); 
+	
+        $this->logger->write_logmessage("view"," View Tender Requests setting", "setting details...");
+        $this->logger->write_dblogmessage("view"," View Tender Requests setting", "setting details...");
+        $this->load->view('tender/tender_applied',$data);
+
+}
+
+public function tender_applicants($id)
+        {
+
+         $data['tcidlink']=$id;
+         $tid=$id;
+			$whdata = array('tc_id'=>$tid);
+		   $selectfield='tc_id,tc_refno,tc_workitemtitle,tc_tenderprepby,tc_prepbydesig,tc_prepbydate,tc_approvedstatus,tc_bidsubstartdate,tc_bidsubenddate,tc_bidsubstartdatet,tc_bidsubenddatet' ;
+			$data['tcresult']=$this->PICO_model->get_orderlistspficemore('tender_create',$selectfield,$whdata,'');  
+		   
+		   
+		  
+		   
+		  
+		   $whdata = array('ta_tcid' => $tid);
+		   $fieldems="ta_id,ta_tcid,ta_vendorid,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_payment,ta_delivery,ta_validity,ta_updoc1,ta_updoc2,ta_updoc3,ta_updoc4,ta_updoc5,ta_status,ta_approvedby";
+         $whorderems = '';
+         $data['result'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);   
+		   
+		   
+		   $this->logger->write_logmessage("view"," View specific  tender", "tender  detail...");
+         $this->logger->write_dblogmessage("view"," View specific tender", "tender  detail...");
+     
+         $this->load->view('tender/tender_applicants',$data);
+
+
+}
+
+public function vendor_approve($id)
+ {
+   $suname=$this->session->userdata['username'];
+	       if((strcasecmp($suname,"admin"))==0)	
+           {
+           	$ta_id=$id;
+           	$n=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+           	$status='Approved';
+           	$update_data= array(
+              'ta_status'=>$status,         	 
+           	  'ta_approvedby'=>$this->session->userdata('username'),
+              'ta_approvedbydesg'=>$this->session->userdata('username'),
+              'ta_approvedbydate'=>date('Y-m-d'),
+           	 );
+           	 $update_archive= array(
+           	  'ta_id'=>$ta_id,
+           	  'ta_tcid'=>$n,
+              'ta_approvedstatus'=>$status,         	 
+           	  'ta_byname'=>$this->session->userdata('username'),
+              'ta_bydesig'=>$this->session->userdata('username'),
+           	 );
+            $entry_archive_id=$this->PICO_model->insertdata('tender_apply_archive', $update_archive); 
+           	$roledflag=$this->PICO_model->updaterec('tender_apply',$update_data,'ta_id',$ta_id);
+            if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error Approving Tender- ' . $logmessage . '.', 'error');
+                redirect('tender/tender_applicants/'.$n);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit  Setting", "Edit Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit  Setting", "Edit  Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Updated and Approved..');
+                redirect('tender/tender_applicants/'.$n);
+              
+                }  
+           	
+            return;
+           }
+         $this->session->set_flashdata("err_message", 'Supplier can\'t be approved by you.....' );
+         redirect('tender/tender_applicants/'.$n);
+ }
+
+public function vendor_dismiss($id)
+ {
+   $suname=$this->session->userdata['username'];
+	       if((strcasecmp($suname,"admin"))==0)	
+           {
+           	$ta_id=$id;
+           	$n=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+           	$status='Dismissed';
+           	$update_data= array(
+              'ta_status'=>$status,         	 
+           	  'ta_approvedby'=>$this->session->userdata('username'),
+              'ta_approvedbydesg'=>$this->session->userdata('username'),
+              'ta_approvedbydate'=>date('Y-m-d'),
+           	 );
+           	 $update_archive= array(
+           	  'ta_id'=>$ta_id,
+           	  'ta_tcid'=>$n,
+              'ta_approvedstatus'=>$status,         	 
+           	  'ta_byname'=>$this->session->userdata('username'),
+              'ta_bydesig'=>$this->session->userdata('username'),
+           	 );
+           	$entry_archive_id=$this->PICO_model->insertdata('tender_apply_archive', $update_archive);
+           	$roledflag=$this->PICO_model->updaterec('tender_apply', $update_data,'ta_id',$ta_id);
+            if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error Dis-Approving Tender- ' . $logmessage . '.', 'error');
+                redirect('tender/tender_applicants/'.$n);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit  Setting", "Edit Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit  Setting", "Edit  Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Updated and Dis-Approved..');
+                redirect('tender/tender_applicants/'.$n);
+              
+                }  
+           	
+            return;
+           }
+         $this->session->set_flashdata("err_message", 'Supplier can\'t be Dis-Approved by you.....' );
+         redirect('tender/tender_applicants/'.$n);
+ }
+
+public function vendor_reject($id)
+ {
+   $suname=$this->session->userdata['username'];
+	       if((strcasecmp($suname,"admin"))==0)	
+           {
+           	$ta_id=$id;
+           	$n=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+           	$status='Rejected';
+           	$update_data= array(
+              'ta_status'=>$status,         	 
+           	  'ta_approvedby'=>$this->session->userdata('username'),
+              'ta_approvedbydesg'=>$this->session->userdata('username'),
+              'ta_approvedbydate'=>date('Y-m-d'),
+           	 );
+           	 $update_archive= array(
+           	  'ta_id'=>$ta_id,
+           	  'ta_tcid'=>$n,
+              'ta_approvedstatus'=>$status,         	 
+           	  'ta_byname'=>$this->session->userdata('username'),
+              'ta_bydesig'=>$this->session->userdata('username'),
+           	 );
+           	$entry_archive_id=$this->PICO_model->insertdata('tender_apply_archive', $update_archive);
+           	$roledflag=$this->PICO_model->updaterec('tender_apply', $update_data,'ta_id',$ta_id);
+            if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit  Setting error", "Edit Approve details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error Dis-Approving Tender- ' . $logmessage . '.', 'error');
+                redirect('tender/tender_applicants/'.$n);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit  Setting", "Edit Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit  Setting", "Edit  Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Updated and Rejected..');
+                redirect('tender/tender_applicants/'.$n);
+              
+                }  
+           	
+            return;
+           }
+         $this->session->set_flashdata("err_message", 'Supplier can\'t be Rejected by you.....' );
+         redirect('tender/tender_applicants/'.$n);
+ }
+
+public function tender_applicants_approved($id)
+        {
+
+          $data['tcidlink']=$id;
+         $tid=$id;
+			$whdata = array('tc_id'=>$tid);
+		   $selectfield='tc_id,tc_refno,tc_workitemtitle,tc_tenderprepby,tc_prepbydesig,tc_prepbydate,tc_approvedstatus,tc_bidsubstartdate,tc_bidsubenddate,tc_bidsubstartdatet,tc_bidsubenddatet' ;
+			$data['tcresult']=$this->PICO_model->get_orderlistspficemore('tender_create',$selectfield,$whdata,'');  
+		   
+		   
+		  
+		   
+		  
+		   $whdata = array('ta_tcid' => $tid,'ta_status'=>'Approved');
+		   $fieldems="ta_id,ta_tcid,ta_vendorid,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_payment,ta_delivery,ta_validity,ta_updoc1,ta_updoc2,ta_updoc3,ta_updoc4,ta_updoc5,ta_status,ta_approvedby";
+         $whorderems = '';
+         $data['result'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);   
+		   
+		   
+		   $this->logger->write_logmessage("view"," View specific  tender", "tender  detail...");
+         $this->logger->write_dblogmessage("view"," View specific tender", "tender  detail...");
+     
+         $this->load->view('tender/tender_applicants_approved',$data);
+
+
+}
+
+public function tender_applicants_rejected($id)
+        {
+
+        $data['tcidlink']=$id;
+         $tid=$id;
+			$whdata = array('tc_id'=>$tid);
+		   $selectfield='tc_id,tc_refno,tc_workitemtitle,tc_tenderprepby,tc_prepbydesig,tc_prepbydate,tc_approvedstatus,tc_bidsubstartdate,tc_bidsubenddate,tc_bidsubstartdatet,tc_bidsubenddatet' ;
+			$data['tcresult']=$this->PICO_model->get_orderlistspficemore('tender_create',$selectfield,$whdata,'');  
+		   
+		   
+		  
+		   
+		  
+		   $whdata = array('ta_tcid' => $tid,'ta_status'=>'Rejected');
+		   $fieldems="ta_id,ta_tcid,ta_vendorid,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_payment,ta_delivery,ta_validity,ta_updoc1,ta_updoc2,ta_updoc3,ta_updoc4,ta_updoc5,ta_status,ta_approvedby";
+         $whorderems = '';
+         $data['result'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);   
+		   
+		   
+		   $this->logger->write_logmessage("view"," View specific  tender", "tender  detail...");
+         $this->logger->write_dblogmessage("view"," View specific tender", "tender  detail...");
+     
+         $this->load->view('tender/tender_applicants_rejected',$data);
+
+
+}
+
+public function proposal(){
+  
+  
+            if(isset($_POST['push'])) {
+
+             
+             $ta_id=$_POST['aradio'];
+
+             $n=$this->PICO_model->get_listspfic1('tender_apply','ta_vendorid','ta_id',$ta_id)->ta_vendorid;
+				 
+				 $whdata = array('vendor_id' => $n);
+				 $fieldems="vendor_id,vendor_companyname,vendor_address";
+				 $whorderems = '';
+				 $typeofmat['result'] = $this->PICO_model->get_orderlistspficemore('vendor',$fieldems,$whdata,$whorderems); 
+				 
+				 $typeofmat['material']=  $this->PICO_model->get_list('material_type');
+				 $typeofmat['dept']= $this->common_model->get_list('Department');
+   
+             $k=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+				 
+				 $whdata = array('tc_id' => $k);
+				 $fieldems="tc_id,tc_refno,tc_workitemtitle,tc_workdesc ";
+				 $whorderems = '';
+				 $typeofmat['tcresult'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
+           
+             $whdata = array('ta_id' => $ta_id);
+				 $fieldems="ta_id,ta_baseprice,ta_gsttax,ta_totalprice";
+				 $whorderems = '';
+				 $typeofmat['taresult'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);
+             
+           
+           
+           
+            $this->load->view('tender/proposalform',$typeofmat);
+   
+  }
+
+                         }
+
+
+public function proposal_entry() 
+{
+            if(isset($_POST['press'])) {
+
+				
+				
+				    $this->form_validation->set_rules('pp_refno',' refno','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_ddate','ddate ','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_deptindentno',' deptindentno','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_deptid','deptid ','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_indentername','indentername ','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_indenteremail',' indenteremail','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_indentdate',' indentdate','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_indenterid','indenterid ','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_typeofmaterial','type of material','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_total','Total ','required');
+                $this->form_validation->set_rules('pp_budgetprojno','budgetprojno','required');
+                $this->form_validation->set_rules('pp_budgethead',' budgethead','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_budgetamount',' budgetamount','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_Date',' period','trim|xss_clean|required');
+               $this->form_validation->set_rules('pp_DateFrom',' DateFrom','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_DateTo','DateTo ','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_warranty',' warranty','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_guarantee','guarantee ','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_payterm','payterm','required');
+                //$this->form_validation->set_rules('pp_','Tender Maker ','required');
+                  
+              
+     //*/
+               if($this->form_validation->run()==TRUE)
+               {
+               	
+				   $data=array(
+				   'pp_tcid'=>$_POST['pp_tid'],	
+					'pp_taid'=>$_POST['pp_taid'],  
+				   'pp_purchasefrom'=>'Non-Gem',
+					//'pp_gemrefno'=>$_POST['pp_'],	
+					'pp_tenrefno'=>$_POST['pp_refno'],	
+					'pp_dddate'=>$_POST['pp_ddate'],	
+					'pp_deptindentno'=>$_POST['pp_deptindentno'],	
+					'pp_deptid'=>$_POST['pp_deptid'],	
+					'pp_indentername'=>$_POST['pp_indentername'],	
+					'pp_indenteremail'=>$_POST['pp_indenteremail'],	
+					'pp_indentdate'=>$_POST['pp_indentdate'],	
+					'pp_indenterid'=>$_POST['pp_indenterid'],	
+					'pp_materialtypeid'=>$_POST['pp_typeofmaterial'],	
+					'pp_itemtotcost'=>$_POST['pp_total'],	
+					'pp_budgetdept'=>$_POST['pp_budgetprojno'],	
+					'pp_budgetprojno'=>$_POST['pp_budgetprojno'],	
+					'pp_budgethead'=>$_POST['pp_budgethead'],	
+					'pp_budgethead2'=>$_POST['pp_budgetamount'],	
+					'pp_vendorid'=>$_POST['pp_vid'],	
+					'pp_deliveryperiod'=>$_POST['pp_Date'],	
+					'pp_deliveryperiodfrom'=>$_POST['pp_DateFrom'],	
+					'pp_deliveryperiodto'=>$_POST['pp_DateTo'],	
+					'pp_warranty'=>$_POST['pp_warranty'],	
+					'pp_guarantee'=>$_POST['pp_guarantee'],	
+					'pp_payterm'=>$_POST['pp_payterm'],
+						
+					//'pp_hodapproved'=>$_POST['pp_'],	
+					//'pp_hodapproveddate'=>$_POST['pp_'],	
+					//'pp_budgetcomment'=>$_POST['pp_'],	
+					//'pp_budgetapproved'=>$_POST['pp_'],	
+					//'pp_budgetapprovedby'=>$_POST['pp_'],	
+					//'pp_budgetapproveddate'=>$_POST['pp_'],	
+					//'pp_auditobservation'=>$_POST['pp_'],	
+					//'pp_auditapproved'=>$_POST['pp_'],	
+					//'pp_auditapprovedby'=>$_POST['pp_'],	
+					//'pp_auditapproveddate'=>$_POST['pp_'],	
+					//'pp_expsanctionstatus'=>$_POST['pp_'],	
+					//'pp_expsanctionby'=>$_POST['pp_'],	
+					//'pp_expsanctiondate'=>$_POST['pp_'],	
+					//'pp_dordstatus'=>$_POST['pp_'],	
+					//'pp_dorddate'=>$_POST['pp_'],	
+					//'pp_ddstatus'=>$_POST['pp_'],	
+					//'pp_dstatus'=>$_POST['pp_'],	
+					//'pp_ddate'=>$_POST['pp_'],	
+					//'pp_reqcreationdate'=>$_POST['pp_'],	
+					//'pp_reqcreationby'=>$_POST['pp_'],	
+					//'pp_updatedate'=>$_POST['pp_'],	
+					//'pp_updateby'=>$_POST['pp_'],
+					   );
+				   
+				   $entryid=$this->PICO_model->insertdata('purchase_proposal', $data);
+                
+                $data['id']=$entryid;
+              
+                
+                if(!$entryid){
+                	
+                	
+						$rflag=false;                
+                }else{
+						$rflag=true;                
+                }
+                if (!$rflag)
+                {
+                    $this->logger->write_logmessage("insert","Trying to add Tender basic details", "Tender basic details is not added ".$bd_trn);
+                    $this->logger->write_dblogmessage("insert","Trying to add Tender basic details", "Tender basic details is not added ".$bd_trn);
+                    $this->session->set_flashdata('err_message','Error in adding  details setting - '  , 'error');
+                    redirect('tender/tender_applied');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add Tender basic details Setting", "Tender basic details".$_POST['bd_trn']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add Tender basic details Setting", "Tender basic details".$_POST['bd_trn']."added  successfully...");
+                    $this->session->set_flashdata("success", " details add successfully...");
+                  
+                     redirect('tender/tender_applied');
+                   
+                  
+                     return;
+                }
+                				
+				
+				
+               }
+               $this->load->view('tender/step1');
+           //redirect('tender/tender_applied');
+  }
+echo 'hiii';
+}
 } 
     ?>
        

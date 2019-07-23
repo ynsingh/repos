@@ -449,8 +449,8 @@
                <input  type="hidden" name="tud<?php echo $j ?>" value="<?php echo $f->tud_id ;?>"  />
                 <td><input  type="text"  name="f<?php echo $j ?>"  class="form-control" value="<?php echo $f->tud_filename ;?>" style="width:200;" /></td>
                 <td><input  type="text"  name="de<?php echo $j ?>"  class="form-control" value="<?php echo $f->tud_desc ;?>" style="width:200;" /></td>
-                <td><input  type="text"  name="ty<?php echo $j ?>"  class="form-control" value="<?php echo $f->tud_filesize ;?>" style="width:200;" /> </td>
-                <td><input  type="text"  name="si<?php echo $j ?>"  class="form-control" value="<?php echo $f->tud_filetype ;?>" style="width:200;" /></td>
+                <td><input  type="text"  name="si<?php echo $j ?>"  class="form-control" value="<?php echo $f->tud_filesize ;?>" style="width:200;" /> </td>
+                <td><input  type="text"  name="ty<?php echo $j ?>"  class="form-control" value="<?php echo $f->tud_filetype ;?>" style="width:200;" /></td>
             </tr> 
             <?php $j++;  } ?>
  </table>

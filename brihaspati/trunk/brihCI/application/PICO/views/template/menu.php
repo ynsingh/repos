@@ -242,7 +242,7 @@ echo "<ul class=\"sf-menu\" >";
                                        
 
                                 
-                                                     /*Mode of Tender,supplier,Required Item Details,Tender Form*/
+                                                     /*Mode of Tender,supplier,Mode of Tender,Required Item Details,Tender Form,Tender Apply,Tender Requests*/
 
 
 
@@ -256,11 +256,7 @@ echo "<ul class=\"sf-menu\" >";
                                                 echo anchor('picosetup/displaytypeoftender','Mode Of Tender', array('title' => 'Mode of Tender'));
                                         echo "</li>";
 												
-                                        echo "<li>";
-                                                echo anchor('picosetup/displayrid', 'Required Item', array('title' => 'Item Details'));
-                                        echo "</li>"; 
-                                   
-                               
+                                       
                                         echo "<li>";
                                                 echo anchor('tender/tenderform', 'Tender Form', array('title' => 'Tender Form'));       
                                         echo "</li>";
@@ -272,7 +268,15 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                                 echo anchor('tender/tender_apply_list', 'Tender Apply', array('title' => 'Tender Apply'));       
                                         echo "</li>";
-
+													
+													 echo "<li>";
+                                                echo anchor('tender/tender_applied', 'Tender Requests', array('title' => 'Tender Request'));       
+                                        echo "</li>";
+                                        
+                                        echo "<li>";
+                                                echo anchor('picosetup/displayrid', 'Required Item Details', array('title' => 'Item Details'));
+                                        echo "</li>"; 
+                                        
                                         echo "<li>";
 
                                                 echo anchor('setup/displaybankdetails', 'Bank List', array('title' => 'Bank List'));

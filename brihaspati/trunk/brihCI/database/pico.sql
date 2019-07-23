@@ -669,6 +669,7 @@ ALTER TABLE `tender_upload_doc`
 --
 CREATE TABLE `vendor` (
   `vendor_id` int(11) NOT NULL,
+  `vendor_userid` INT(11) NULL,
   `vendor_companyname` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_name` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_address` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,
@@ -714,6 +715,7 @@ ALTER TABLE `vendor`
 CREATE TABLE `vendor_archive` (
   `archive_id` int(11) NOT NULL,
   `vendor_archive_id` int(11) NOT NULL,
+  `vendor_archive_userid` INT(11) NULL,
   `vendor_archive_companyname` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_archive_name` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_archive_address` varchar(1000) COLLATE utf32_unicode_ci NOT NULL,

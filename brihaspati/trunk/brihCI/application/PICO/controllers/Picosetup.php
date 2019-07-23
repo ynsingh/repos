@@ -12,12 +12,13 @@ class Picosetup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-        $this->load->model('login_model'); 
-  		$this->load->model('common_model'); 
+        $this->load->model('login_model','lgnmodel'); 
+  		$this->load->model('common_model'); //,'commodel'
         $this->load->model('PICO_model');   //changed to PICO insted of
         $this->load->model('SIS_model'); 
        	$this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
+        	$this->load->model("Mailsend_model","mailmodel");
         $this->db4=$this->load->database('pico', TRUE);
         if(empty($this->session->userdata('id_user'))) {
         $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -1822,13 +1823,90 @@ else  redirect('picosetup/displaytypeoftender');
           if (move_uploaded_file($_FILES["f_gst"]["tmp_name"], $name1) && move_uploaded_file($_FILES["f_pan"]["tmp_name"], $name2) && move_uploaded_file($_FILES["f_shop"]["tmp_name"], $name3)
               &&   move_uploaded_file($_FILES["f_excise"]["tmp_name"], $name4) && move_uploaded_file($_FILES["f_bank"]["tmp_name"], $name5) ) 
             {
+          //code here from sis
+                 	//generate 10 digit random password
+			$passwd=$this->common_model->randNum(10);
+			
+          $isdupl= $this->lgnmodel->isduplicate('edrpuser','username',$_POST['vendor_email']);
+		    if(!$isdupl){
+
+                    /* generate the hash of password */
+                    $password=md5($passwd);
+                    $dataedrpusr = array(
+                        'username'=> $_POST['vendor_email'],
+                        'password'=> $password,
+                        'email'=> $_POST['vendor_email'],
+                        'componentreg'=> '*',
+                        'mobile'=>$_POST['vendor_phone'],
+                        'status'=>1,
+                        'category_type'=>'Supplier',
+                        'is_verified'=>1
+                    );
+                    /* insert record in edrpuser */
+                    $this->lgnmodel->insertrec('edrpuser',$dataedrpusr);
+                    $this->logger->write_logmessage("insert", "data insert in edrpuser table.");
+                    $this->logger->write_dblogmessage("insert", "data insert in edrpuser table." );
+                    
+                    /*get user id from login (edrpuser table)*/
+                    $getid= $this->lgnmodel->get_listspfic1('edrpuser','id','username',$_POST['vendor_email']);
+                    $usrid=$getid->id;
+                    
+                    $datausrpf = array(
+                        'userid'=> $usrid,
+                        'firstname'=>$_POST['vendor_name'],
+                        'lang'=> 'english',
+                        'mobile'=>$_POST['vendor_phone'],
+                        'status'=>1
+                    );
+                    /* insert record in userprofile table */
+                    $this->lgnmodel->insertrec('userprofile', $datausrpf);
+                    $this->logger->write_logmessage("insert", "data insert in userprofile table.");
+                    $this->logger->write_dblogmessage("insert", "data insert in userprofile table." );
+                }//edusr
           
+                    $getid= $this->lgnmodel->get_listspfic1('edrpuser','id','username',$_POST['vendor_email']);
+                    $usrid=$getid->id;
+                    $dataurt = array(
+                        'userid'=> $usrid,
+                        'roleid'=> 12,
+                        'scid'  => '',
+                        'deptid'=>'',
+                        'usertype'=>"Supplier"
+                    );
+                    /* insert record in user_role_type */
+                    $isdupl= $this->PICO_model->isduplicatemore('user_role_type',$dataurt);
+                    
+		              if(!$isdupl){
+                    $r=array('vendor_userid'=>$usrid);
+                    $v_userid=$this->PICO_model->updaterec('vendor',$r,'vendor_id',$id);
+                    
+                    $this->PICO_model->insertrec('user_role_type',$dataurt);
+                    $this->logger->write_logmessage("insert", "data insert in user_role_type table.");
+                    $this->logger->write_dblogmessage("insert", "data insert in user_role_type table." );
           
-          
+                    }
+           //if sucess send mail to user with login details 
+                    $sub='Supplier Registration in PICO System';
+                    $mess="Your registration is completed. The user id ".$_POST['vendor_email']." and password is ".$passwd ."\r\n".'Kindly check with website:'."\r\n". site_url('welcome');
+			
+                    $mailstoperson =$this->mailmodel->mailsnd($_POST['vendor_email'], $sub, $mess,'');
+                    //  mail flag check 
+                    if($mailstoperson){
+                        //echo "in if part mail";
+                        $mailmsg='Please check your mail for username and password....Mail send successfully';
+                        $this->logger->write_logmessage("insert"," add user profile in edrpuser,profile and user role type ",'mail send successfully  to '.$_POST['vendor_email'] );
+                        $this->logger->write_dblogmessage("insert"," add user profile in edrpuser,profile and user role type ",'mail send successfully  to '.$_POST['vendor_email'] );
+                    }
+                     else{
+                        //echo "in else part";
+                        $mailmsg='Mail does not sent';
+                        $this->logger->write_logmessage("insert"," add user profile in  edrpuser,userprofile vendor and user role type ", "Mail does not sent to ".$_POST['vendor_email']);
+                        $this->logger->write_dblogmessage("insert"," add user profile in edrpuser,userprofile,vendor and user role type ", "Mail does not sent to ".$_POST['vendor_email']);
+                    }
           $this->session->set_flashdata("success", "The files has been uploaded....<br>");
           $this->logger->write_logmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']." added  successfully...");
           $this->logger->write_dblogmessage("insert","Add vendor Setting", "vendor".$_POST['vendor_companyname']."added  successfully...");
-          $this->session->set_flashdata("success", "Supplier Added Successfully...");
+          $this->session->set_flashdata("success", "Supplier Added Successfully & ".$mailmsg);
           redirect("picosetup/displayvendor");          
           
           return;}
@@ -2133,11 +2211,11 @@ else {
                 $logmessage = "Add vendor " .$editeset_data->vendor_blacklistby. " changed by " .$data_z;
            
            
-           
-           
+            $userid=$this->PICO_model->get_listspfic1('vendor','vendor_userid','vendor_id',$id)->vendor_userid;
             $update_data = array(
                 'vendor_companyname'=>$data_a,
                 'vendor_name'=>$data_b,
+                'vendor_userid'=>$userid,
                 'vendor_address'=>$data_c,
                 'vendor_pincode'=>$data_d,
                 'vendor_hqaddress'=>$data_e,
@@ -2167,6 +2245,7 @@ else {
         
           $update_archive_data = array(
                 'vendor_archive_id'=>$data_eid,
+                'vendor_archive_userid'=>$userid,
                 'vendor_archive_companyname'=>$data_a,
                 'vendor_archive_name'=>$data_b,
                 'vendor_archive_address'=>$data_c,
@@ -2495,7 +2574,7 @@ else {
 
     /*** This Function is used to open form ***/
     public function opencommitteeselection(){
-        $data['dept']= $this->common_model->get_list('department');
+        $data['dept']= $this->common_model->get_list('Department');
         $data['result']= $this->PICO_model->get_list('purchase_com_form_rule');
         $this->load->view('setup/committeeselectionform',$data);
     }	
@@ -2551,7 +2630,7 @@ else {
                     redirect("picosetup/displaycommitteeselection");
                 }
             }
-          
+          $this->load->view('setup/committeeselectionform');
         }
     }
 

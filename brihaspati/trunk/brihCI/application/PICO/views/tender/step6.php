@@ -59,31 +59,31 @@
             
             
             <tr>
-            <td><input name="b1" value="BO1" readonly   size="10" /> </td>
+            <td><input name="b1" value="BO1" readonly   size="1" /> </td>
             <td><input type="text" name="n1"  class="form-control" size="25" /><br></td>
             <td><input type="text" name="d1"  class="form-control" size="30" /><br></td>
             <td><input type="text" name="e1"  class="form-control" size="30" /><br></td>
             </tr>
             <tr>
-            <td><input name="b2" value="BO2" readonly   size="10" /> </td>
+            <td><input name="b2" value="BO2" readonly   size="1" /> </td>
             <td><input type="text" name="n2"  class="form-control" size="25" /><br></td>
             <td><input type="text" name="d2"  class="form-control" size="30" /><br></td>
             <td><input type="text" name="e2"  class="form-control" size="30" /><br></td>
             </tr>
             <tr>
-            <td><input name="b3" value="BO3" readonly   size="10" /> </td>
+            <td><input name="b3" value="BO3" readonly   size="1" /> </td>
             <td><input type="text" name="n3"  class="form-control" size="25" /><br></td>
             <td><input type="text" name="d3"  class="form-control" size="30" /><br></td>
             <td><input type="text" name="e3"  class="form-control" size="30" /><br></td>
             </tr>
             <tr>
-            <td><input name="b4" value="BO4" readonly   size="10" /> </td>
+            <td><input name="b4" value="BO4" readonly   size="1" /> </td>
             <td><input type="text" name="n4"  class="form-control" size="25" /><br></td>
             <td><input type="text" name="d4"  class="form-control" size="30" /><br></td>
             <td><input type="text" name="e4"  class="form-control" size="30" /><br></td>
             </tr>
             <tr>
-            <td><input name="b5" value="BO5" readonly   size="10" /> </td>
+            <td><input name="b5" value="BO5" readonly   size="1" /> </td>
             <td><input type="text" name="n5"  class="form-control" size="25" /><br></td>
             <td><input type="text" name="d5"  class="form-control" size="30" /><br></td>
             <td><input type="text" name="e5"  class="form-control" size="30" /><br></td>
@@ -96,44 +96,100 @@
          
            <caption style="color:black;  "><big><big><big><b>Uploading Tender Documents</b></big></big></big></caption>
         
-         <thead><th>Sr.No</th><th><center>File Name</center></th><th><center>Description</center></th><th><center>Type</center></th><th><center>Size</center></th></tr></thead>
+         <thead><th>Sr.No</th><th><center>File Name</center></th><th><center>Description</center></th><th><center>Type</center></th><th><center>Size(Kilo-bytes)</center></th></tr></thead>
 	            
             
             
             <tr>
-            <td><input name="s1" value="1" readonly   size="10" /> </td>
+            <td><input name="s1" value="1" readonly   size="1" /> </td>
             <td><input type="text" name="f1"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="de1"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="ty1"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="si1"  class="form-control" size="20" /><br></td>
+            <td><input type="text" name="de1"  class="form-control" size="40" /><br></td>
+            <td> <select name="ty1"  style="width:100px ;">
+				    <option selected hidden value="">--option--</option>
+				    <option value="pdf">PDF</option>
+				    <option value="jpg">JPG</option>
+				    <option value="png">PNG</option>
+				    <option value="doc">DOC</option>
+				    <option value="txt">TEXT</option>
+				    <option value="rar">RAR</option>
+				    <option value="zip">ZIP</option>
+				    </select>
+            
+            <br></td>
+            <td><input type="text" name="si1"  class="form-control" size="10" /><br></td>
             </tr>
             <tr>
-            <td><input name="s2" value="2" readonly   size="10" /> </td>
+            <td><input name="s2" value="2" readonly   size="1" /> </td>
             <td><input type="text" name="f2"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="de2"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="ty2"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="si2"  class="form-control" size="20" /><br></td>
+            <td><input type="text" name="de2"  class="form-control" size="40" /><br></td>
+            <td> <select name="ty2"  style="width:100px ;">
+				    <option selected hidden value="">--option--</option>
+				    <option value="pdf">		  PDF  		</option>
+				    <option value="jpg">		JPG 		</option>
+				    <option value="png">		  PNG   		</option>
+				    <option value="doc">		DOC 		</option>
+				    <option value="txt">		 TEXT 		</option>
+				     <option value="rar">RAR</option>
+				    <option value="zip">ZIP</option>
+				    </select>
+            
+            <br></td>
+            <td><input type="text" name="si2"  class="form-control" size="10" /><br></td>
             </tr>
             <tr>
-            <td><input name="s3" value="3" readonly   size="10" /> </td>
+            <td><input name="s3" value="3" readonly   size="1" /> </td>
             <td><input type="text" name="f3"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="de3"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="ty3"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="si3"  class="form-control" size="20" /><br></td>
+            <td><input type="text" name="de3"  class="form-control" size="40" /><br></td>
+            <td> <select name="ty3"  style="width:100px ;">
+				    <option selected hidden value="">--option--</option>
+				    <option value="pdf">		  PDF  		</option>
+				    <option value="jpg">		JPG 		</option>
+				    <option value="png">		  PNG   		</option>
+				    <option value="doc">		DOC 		</option>
+				    <option value="txt">		 TEXT 		</option>
+				     <option value="rar">RAR</option>
+				    <option value="zip">ZIP</option>
+				    </select>
+            
+            <br></td>
+            <td><input type="text" name="si3"  class="form-control" size="10" /><br></td>
             </tr>
             <tr>
-            <td><input name="s4" value="4" readonly   size="10" /> </td>
+            <td><input name="s4" value="4" readonly   size="1" /> </td>
             <td><input type="text" name="f4"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="de4"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="ty4"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="si4"  class="form-control" size="20" /><br></td>
+            <td><input type="text" name="de4"  class="form-control" size="40" /><br></td>
+            <td> <select name="ty4"  style="width:100px ;">
+				    <option selected hidden value="">--option--</option>
+				    <option value="pdf">		  PDF  		</option>
+				    <option value="jpg">		JPG 		</option>
+				    <option value="png">		  PNG   		</option>
+				    <option value="doc">		DOC 		</option>
+				    <option value="txt">		 TEXT 		</option>
+				     <option value="rar">RAR</option>
+				    <option value="zip">ZIP</option>
+				    </select>
+            
+            <br></td>
+            <td><input type="text" name="si4"  class="form-control" size="10" /><br></td>
             </tr>
             <tr>
-            <td><input name="s5" value="5" readonly   size="10" /> </td>
+            <td><input name="s5" value="5" readonly   size="1" /> </td>
             <td><input type="text" name="f5"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="de5"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="ty5"  class="form-control" size="20" /><br></td>
-            <td><input type="text" name="si5"  class="form-control" size="20" /><br></td>
+            <td><input type="text" name="de5"  class="form-control" size="40" /><br></td>
+            <td>
+            <select name="ty5"  style="width:100px ;">
+				    <option selected hidden value="">--option--</option>
+				    <option value="pdf">		  PDF  		</option>
+				    <option value="jpg">		JPG 		</option>
+				    <option value="png">		  PNG   		</option>
+				    <option value="doc">		DOC 		</option>
+				    <option value="txt">		 TEXT 		</option>
+				     <option value="rar">RAR</option>
+				    <option value="zip">ZIP</option>
+				    </select>
+            
+            <br></td>
+            <td><input type="text" name="si5"  class="form-control" size="10" /><br></td>
             </tr>   
          
          
@@ -153,14 +209,7 @@
            <td><label for="tpd" class="control-label">Designation.:</label></td>
            <td><input type="text" name="tpd" value="<?php echo 'admin' ?>" class="form-control" size="20" readonly  /><br></td>
         </tr>
-      <!--  
-        <tr>
-           <td><label for="ta" class="control-label">Tender Approved By.:</label></td>
-           <td><input type="text" name="ta"  class="form-control" size="20" /><br></td>
-           <td><label for="tad" class="control-label">Designation.:</label></td>
-           <td><input type="text" name="tad"  class="form-control" size="20" /><br></td>
-        </tr>
-      --> 
+     
        
          
    <tr>
