@@ -99,7 +99,7 @@
                             <th>Date of Academic Grade Pay/Level</th>
                             <th>Selection Grade Date</th>
                             <th>Special Grade Date </th>
-			    <th> </th>
+			    <th>Support Doc </th>
 			    <th colspan=2> </th>
                         </tr>
                     </thead>
@@ -163,10 +163,17 @@
 					echo  $record->spd_specialgrddate;
 					}
 				echo "</td>";
+					?>
+        		    	<td>
+				<?php if(!empty($record->spd_filename)):;?>
+		                <a href="<?php echo base_url().'uploads/SIS/Promotional_Details/'.$record->spd_filename ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php echo $record->spd_filename ?>">Download the pdf</a>
+		            <?php endif;?>
+			       </td>
+<!--
 				echo "<td>";
 
 				echo "</td>";
-					?>
                                 <td>
                                     <?php 
                                 //    $date1 = new DateTime($record->empsd_dojoin);
@@ -175,6 +182,7 @@
                                    // echo "<b>&nbsp;&nbsp;".$diff->y . "&nbsp;&nbsp;&nbsp; " . $diff->m."&nbsp;&nbsp;&nbsp; ".$diff->d." ";
 				?>
                                 </td>
+-->
                                 <td>
                                 <?php 
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){

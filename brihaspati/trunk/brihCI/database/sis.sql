@@ -1243,6 +1243,7 @@ CREATE TABLE `staff_promotionals_details` (
   `spd_dojinsession` varchar(50) DEFAULT NULL,
   `spd_selgradedate` date DEFAULT NULL,
   `spd_specialgrddate` date DEFAULT NULL,
+  `spd_filename` VARCHAR(500) NULL,
   `spd_creatordate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `spd_creatorid` varchar(255) NOT NULL,
   `spd_modifierid` varchar(255) NOT NULL,

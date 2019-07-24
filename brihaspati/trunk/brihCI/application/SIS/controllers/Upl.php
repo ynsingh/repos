@@ -1484,7 +1484,10 @@ class Upl extends CI_Controller
        // $grade_select_box ='';
 	}
 	public function getctglist(){
-		 $combid = $this->input->post('groupp');
+		$combid = $this->input->post('groupp');
+		$selectfield = 'sub_id,sub_name';
+                $whorder = 'sub_name ASC';
+                $sublist = $this->commodel->get_orderlistspficemore('subject',$selectfield,'',$whorder);
 		$grade_select_box ='';
         $grade_select_box.='<option value>------- Select Category Name-----------------';
         if($combid == 'Undergraduate'){
@@ -1496,11 +1499,11 @@ class Upl extends CI_Controller
 			$grade_select_box.='<option value='.'BE'.'>'.'BE'.'';  
 			$grade_select_box.='<option value='.'BVsc'.'>'.'BVsc'.'';  
 			$grade_select_box.='<option value='.'BLit'.'>'.'BLit'.'';  
-			$grade_select_box.='<option value='.'BLIS'.'>'.'BLIS'.'';  
+			$grade_select_box.='<option value='.'BLis'.'>'.'BLis'.'';  
 			$grade_select_box.='<option value='.'BBA'.'>'.'BBA'.'';  
 			$grade_select_box.='<option value='.'BFSc'.'>'.'BFSc'.'';  
 			$grade_select_box.='<option value='.'BEd'.'>'.'BEd'.'';  
-			$grade_select_box.='<option value='.'BPED'.'>'.'BPED'.'';  
+			$grade_select_box.='<option value='.'BPEd'.'>'.'BPEd'.'';  
 			$grade_select_box.='<option value='.'BC'.'>'.'BC'.'';  
 			 }
 			else if($combid == 'Postgraduate'){
@@ -1512,27 +1515,19 @@ class Upl extends CI_Controller
 			$grade_select_box.='<option value='.'ME'.'>'.'ME'.'';  
 			$grade_select_box.='<option value='.'MVsc'.'>'.'MVsc'.'';  
 			$grade_select_box.='<option value='.'MLit'.'>'.'MLit'.'';  
-			$grade_select_box.='<option value='.'MLIS'.'>'.'MLIS'.'';  
+			$grade_select_box.='<option value='.'MLis'.'>'.'MLis'.'';  
 			$grade_select_box.='<option value='.'MBA'.'>'.'MBA'.'';  
 			$grade_select_box.='<option value='.'MFSc'.'>'.'MFSc'.'';  
 			$grade_select_box.='<option value='.'MEd'.'>'.'MEd'.'';  
-			$grade_select_box.='<option value='.'MPED'.'>'.'MPED'.'';  
+			$grade_select_box.='<option value='.'MPEd'.'>'.'MPEd'.'';  
 			$grade_select_box.='<option value='.'MC'.'>'.'MC'.'';  
 			 }
-			 else if($combid == 'MPhil'){
-			  $grade_select_box.='<option value='.'Science'.'>'.'Science'.''; 
-			     $grade_select_box.='<option value='.'Arts'.'>'.'Arts'.''; 
-			 $grade_select_box.='<option value='.'Accounts'.'>'.'Accounts'.'';
-			 $grade_select_box.='<option value='.'hindi'.'>'.'hindi'.''; 
-			 $grade_select_box.='<option value='.'RDBMS'.'>'.'RDBMS'.'';
-			 $grade_select_box.='<option value='.'Chemistry'.'>'.'Chemistry'.''; 
-			 $grade_select_box.='<option value='.'Animal Biotechnology'.'>'.'Animal Biotechnology'.''; 
-			 $grade_select_box.='<option value='.'Animal Genetics and Breeding'.'>'.'Animal Genetics and Breeding'.''; 
-			 $grade_select_box.='<option value='.'Animal Neutrition'.'>'.'Animal Neutrition'.''; 
-			 $grade_select_box.='<option value='.'Biochemistry'.'>'.'Biochemistry'.''; 
-			
+			 else if(($combid == 'MPhil')||($combid == 'Phd')){
+				foreach($sublist as $rec){
+			  		$grade_select_box.='<option value='.$rec->sub_name.'>'.$rec->sub_name.''; 
+				}
 			  }
-			  else if($combid == 'Phd'){
+			/*  else if($combid == 'Phd'){
 			 $grade_select_box.='<option value='.'Science'.'>'.'Science'.''; 
 		     $grade_select_box.='<option value='.'Arts'.'>'.'Arts'.''; 
 			 $grade_select_box.='<option value='.'Accounts'.'>'.'Accounts'.'';
@@ -1544,17 +1539,39 @@ class Upl extends CI_Controller
 			 $grade_select_box.='<option value='.'Animal Neutrition'.'>'.'Animal Neutrition'.''; 
 			 $grade_select_box.='<option value='.'Biochemistry'.'>'.'Biochemistry'.''; 
 			
-			  }
+			  }*/
 			 echo json_encode($grade_select_box);
        // $grade_select_box ='';
 	}
 	public function viewuploaddocument(){
+		$rlid=$this->session->userdata('id_role');
+		$uname=$this->session->userdata('username');
+		if ($rlid == 5){
+	                $usrid=$this->session->userdata('id_user');
+        	        $deptid = '';
+                	$whdatad = array('userid' => $usrid,'roleid' => $rlid);
+	                $resu = $this->sismodel->get_listspficemore('user_role_type','deptid',$whdatad);
+        	        foreach($resu as $rw){
+                	        $deptid=$rw->deptid;
+                	}
+			$whdata['emp_dept_code'] = $deptid;
+		}
+		$joincond = 'employee_master.emp_code = uploaddocuments.ud_pfno';
+
 		$selectfield = 'ud_proflname,ud_subproflnme,ud_degreename,ud_pfno,ud_filename,ud_filelocation';
 		$whorder = 'ud_id DESC';
-		$data['record'] = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,'',$whorder);
+		if($rlid == 5){
+	                $data['record']=$this->sismodel->get_jointbrecord('uploaddocuments',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
+		}else{
+			$data['record'] = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,'',$whorder);
+		}
 		$this->load->view('upl/viewupldocument',$data);
 	}
+
     public function uploaddocumentlist(){
+	$uname=$this->session->userdata('username');
+	$rlid=$this->session->userdata('id_role');
+        if(((strcasecmp($uname,"admin"))==0)||($rlid == 5)){
         if(isset($_POST['adddocumentlist']))
         {
 		$this->form_validation->set_rules('profilename', 'Profile Name', 'trim|xss_clean|required');
@@ -1617,10 +1634,22 @@ class Upl extends CI_Controller
 					if(!empty($spname)){
 						$name=$name.'_'.$spname;
 					}
-					if(!empty($catpname)){
+					//This is academic qualification
+					if(!empty($catname)){
+						if((strcasecmp($catname,"Other" )) == 0){
+							$catname=$this->input->post('asignother');
+						}
 						$name=$name.'_'.$catname;
 					}
-					$name = $name.$file_ext;
+					// this block is used only for technical qualification
+					if(empty($catname)){
+						$catname=$this->input->post('asignother');
+						if(!empty($catname)){
+							$name=$name.'_'.$catname;
+						}
+					}
+				//	$name = $name.$file_ext;
+					$name = $name;
 					$name = str_replace(" ", "_",$name);
 					if(strpos($name, '.') === false){
 						$name='';
@@ -1708,6 +1737,7 @@ class Upl extends CI_Controller
                         return;
             }//end validation 
         }//button pressed
+	}//check for admin and hod
         $this->load->view('upl/uploaddocumentlist');
     }//method close    
 }

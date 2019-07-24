@@ -176,8 +176,17 @@
                                 <td>
 <?php   echo    "<b>Post Type</b> <br>".$data->emp_type_code; ?>
                                 </td>
-  <td>
-<?php   echo    "<b>Appointment Order No</b> <br>".$data->emp_apporderno; ?>
+                                <td>
+<?php   echo    "<b>Appointment Order No</b>";
+	//	$file_path = $this->base_path.'uploads/SIS/Basic_Profile/'.$data->emp_code.'_First_Appointment_Order_No.png';
+		$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_First_Appointment_Order_No';
+		if (file_exists($file_path)){
+		?>
+                	<a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_First_Appointment_Order_No' ; ?>"
+                               target="_blank" type="application/octet-stream" download >View</a>
+<?php 		
+		}
+	echo  "<br>".$data->emp_apporderno; ?>
                                 </td>
 </tr>
 <tr>
@@ -247,7 +256,16 @@
 <?php   echo    "<b>Date of Retirement</b> <br>".implode('-', array_reverse(explode('-', $data->emp_dor)));?>
                                 </td>
  <td>
-<?php   echo    "<b>Date of Probation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doprobation)));?>
+<?php   echo    "<b>Date of Probation</b> ";
+		$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Date_Of_Probation';
+                if (file_exists($file_path)){
+                ?>
+                        <a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Date_Of_Probation' ; ?>"
+                               target="_blank" type="application/octet-stream" download >View</a>
+<?php
+                }
+
+	echo "<br>".implode('-', array_reverse(explode('-', $data->emp_doprobation)));?>
                                 </td>
   <td>
 <?php   echo    "<b>Date of Regularisation</b> <br>".implode('-', array_reverse(explode('-', $data->emp_doregular)));?>
@@ -301,7 +319,16 @@
 </tr>
 <tr>
                                 <td>
-<?php   echo    "<b>Whether Physically handicapped</b> <br>".$data->emp_phstatus;?>
+<?php   echo    "<b>Whether Physically handicapped</b> ";
+ $file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_Physically_Handicapped';
+                if (file_exists($file_path)){
+                ?>
+                        <a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_Physically_Handicapped' ; ?>"
+                               target="_blank" type="application/octet-stream" download >View</a>
+<?php
+                }
+
+		echo "<br>".$data->emp_phstatus;?>
                                 </td>
                                 <td>
 <?php   echo    "<b>Details of PH</b> <br>".$data->emp_phdetail;?>
@@ -446,7 +473,15 @@ echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$u
 			if($ntqnew0 == "Yes"){
 				$ntqnew1=$ntqnew[1];
 			}
-echo    "<td><b>NET qualified</b> <br>".$ntqnew0; ?>
+echo    "<td><b>NET qualified</b>";
+$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_NET_Qualified';
+                if (file_exists($file_path)){
+                ?>
+                        <a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_NET_Qualified' ; ?>"
+                               target="_blank" type="application/octet-stream" download >View</a>
+<?php
+                }
+echo " <br>".$ntqnew0; ?>
 </td><td><b>Organiser</b><br><?php   echo    $ntqnew1;?></td><td><b>Year of Passing</b><br><?php   echo   substr( (implode('-', array_reverse(explode('-', $data->emp_netpassingyear)))),6,10);?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
 
 
@@ -461,7 +496,15 @@ echo    "<td><b>NET qualified</b> <br>".$ntqnew0; ?>
 			}else{
 				echo "<tr>";
 				echo "<td> <b>Chapter</b> <br>".$emsdata->ems_vci_statchapter."</td>";
-				echo "<td> <b>Registration No</b> <br>".$emsdata->ems_vci_statregno."</td>";
+				echo "<td> <b>Registration No</b> ";
+				$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Veterinory_Council_Registration';
+                		if (file_exists($file_path)){
+                ?>
+                        	<a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Veterinory_Council_Registration' ; ?>"
+                               target="_blank" type="application/octet-stream" download >View</a>
+<?php
+                }
+				echo "<br>".$emsdata->ems_vci_statregno."</td>";
 				echo "<td> <b>Date of Registration</b> <br>".$emsdata->ems_vci_statregdate."</td>";
 				echo "<td> <b>Validity Date</b> <br>".$emsdata->ems_vci_statvaliddate."</td>";
 				echo "</tr>";

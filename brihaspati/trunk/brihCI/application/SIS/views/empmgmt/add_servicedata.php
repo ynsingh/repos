@@ -51,7 +51,7 @@
                         },
                         error:function(data){
                             //alert("data in error==="+data);
-                            alert("error occur..!!");
+                            alert("error occur uoc list..!!");
                  
                         }
                     });
@@ -82,7 +82,7 @@
                         },
                         error:function(data){
                             //alert("data in error==="+data);
-                            alert("error occur..!!");
+                            alert("error occur dept list..!!");
                  
                         }
                                             
@@ -118,7 +118,7 @@
                         },
                         error:function(data){
                             //alert("data in error==="+data);
-                            alert("error occur..!!");
+                            alert("error occur scheme list..!!");
                  
                         }
                                             
@@ -154,7 +154,7 @@
                         },
                         error:function(data){
                             //alert("data in error part==="+data);
-                            alert("error occur..!!");
+                            alert("error occur ddo list..!!");
                  
                         }
                                             
@@ -187,7 +187,7 @@
                         },
                         error:function(data){
                             //alert("data in error part==="+data);
-                            alert("error occur..!!");
+                            alert("error occur desig list..!!");
                  
                         }
                                             
@@ -260,7 +260,7 @@
 			 $('#gradepay').val(ldata.replace(/\"/g,""));
                             },
                             error:function(data){
-                                alert("error occur..!!");
+                                alert("error occur grade..!!");
                             }
                         });
                     }
@@ -287,7 +287,7 @@
                             
                         },
                         error:function(data){
-                            alert("error occur..!!");
+                            alert("error occur grade list..!!");
                  
                         }
                                             

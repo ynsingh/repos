@@ -378,6 +378,18 @@
                         </td>
                 </tr>
 <?php } ?>
+                <tr>
+		<td>Upload Attachment<br>(Max size 20MB, Allowed Type- pdf)</td>
+            <td><input type='file' name='userfile' size='20' style="font-size:15px;"/>
+            </td>
+            <?php if(!empty($promotdata->spd_filename)):;?>
+            <td colspan="2">
+                <a href="<?php echo base_url().'uploads/SIS/Promotional_Details/'.$promotdata->spd_filename ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php echo $promotdata->spd_filename ?>">Download the pdf</a>
+            </td>
+            <?php endif;?>
+                </tr>
+
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">

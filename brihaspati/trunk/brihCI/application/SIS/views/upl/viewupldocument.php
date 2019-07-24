@@ -117,20 +117,20 @@
 						$tmp = explode('.', $rec->ud_filename);
 						$file_ext = end($tmp);
 		
-						if((strcasecmp($file_ext,"pdf" )) == 0){
+				//		if((strcasecmp($file_ext,"pdf" )) == 0){
 							if(!empty($rec->ud_filename)){ ?>
                             				<a href="<?php echo base_url().$rec->ud_filelocation.'/'.$rec->ud_filename ; ?>"
                                			target="_blank" type="application/octet-stream" download="<?php echo $rec->ud_filename ?>"><?php echo str_replace('_',' ',$rec->ud_filename) ?></a>
                        				 <?php }
-						}
-						
+				//		}
+						/*
 						if((strcasecmp($file_ext,"png" )) == 0){
 							if(!empty($rec->ud_filename)){ ?>
                             				<a href="<?php echo base_url().$rec->ud_filelocation.'/'.$rec->ud_filename ; ?>"
                                			target="_blank" type="image/png" download="<?php echo $rec->ud_filename ?>"><?php echo str_replace('_',' ',$rec->ud_filename) ?></a>
                        				 <?php }
 						}
-						
+						*/
 //						echo str_replace('_',' ',$rec->ud_filename);
 						echo "</td>";
 			//	$usrnme=$this->lgnmodel->get_listspfic1('edrpuser','username','id',$record->ul_userid)->username;

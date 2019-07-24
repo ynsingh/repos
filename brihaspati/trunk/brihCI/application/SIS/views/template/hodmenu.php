@@ -91,10 +91,14 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 					
 				echo "</ul>";
-			echo "</li>";
+			echo "</li>";*/
 			echo "<li>";
 				echo "<a href=" . ">Upload</a>";
 				echo "<ul>";
+					echo "<li>";
+                                                echo anchor('upl/viewuploaddocument', 'Upload Support Documents', array('title' => 'Upload Support Documents'));
+                                        echo "</li>";
+
 		/*			echo "<li>";
 						echo anchor('upl/uploadlogo', 'Upload Logo', array('title' => 'Upload Logo'));
 					echo "</li>";
@@ -109,10 +113,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
      				        echo "<li>";
                                                 echo anchor('upl/uploadslist', 'Upload Staff List', array('title' => 'Upload Staff List'));
-                                        echo "</li>";					
+                                        echo "</li>";				*/	
 				echo "</ul>";
 				echo "</li>";
-				echo "<li>";
+/*				echo "<li>";
                                 echo "<a href=" . ">Announcement</a>";
                                 echo "<ul>";
  /*                                       echo "<li>";

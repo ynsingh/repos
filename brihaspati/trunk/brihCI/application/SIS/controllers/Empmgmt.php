@@ -647,8 +647,8 @@ public function disciplin_profile() {
                         foreach ($error as $item => $value):
                         $ferror = $ferror ."</br>". $item .":". $value;
                         endforeach;
-                        $simsg = "The permitted size of file is 20MB";
-                        $ferror = $simsg.$ferror;
+                    //    $simsg = "The permitted size of file is 20MB";
+                      //  $ferror = $simsg.$ferror;
                         $this->logger->write_logmessage("uploadfile","file upload error", $ferror);
                         $this->logger->write_dblogmessage("uploadfile","file upload error", $ferror);
                         $this->session->set_flashdata('err_message', $ferror);
@@ -914,6 +914,14 @@ public function disciplin_profile() {
                 }else{
                         $datesp=$_POST['Datesp'];
                 }
+		$name='';
+                if(!empty($_FILES['userfile']['name'])){
+
+                    $newFileName = $_FILES['userfile']['name'];
+                    $fileExt1 = explode('.', $newFileName);
+                    $file_ext = end( $fileExt1);
+                    $name = $empid."_".$newFileName;
+                }
 
                 $data = array(
                     'spd_empid'           	=>$empid,
@@ -932,12 +940,49 @@ public function disciplin_profile() {
                     'spd_dojinsession'        	=>$_POST['jsession'],
                     'spd_selgradedate'          =>$datesg,
 		    'spd_specialgrddate'       	=>$datesp,
+		    'spd_filename'		=>$name,
                     'spd_creatordate'           =>date('Y-m-d H:i:s'),
                     'spd_creatorid'        	=>$this->session->userdata('username'),
                     'spd_modifierid'        	=>$this->session->userdata('username'),
                     'spd_modifydate'          	=>date('Y-m-d H:i:s')
                 );
                 $servdataflag=$this->sismodel->insertrec('staff_promotionals_details', $data) ;
+		$uplflag=false;
+                if(!empty($name)){
+                    $_FILES['userFile']['name'] = $_FILES['userfile']['name'];
+                    $_FILES['userFile']['type'] = $_FILES['userfile']['type'];
+                    $_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
+                    $_FILES['userFile']['size'] = $_FILES['userfile']['size'];
+                    $config['upload_path'] = 'uploads/SIS/Promotional_Details/';
+                    $config['max_size'] = '2048000000';
+                    //$config['allowed_types'] = 'pdf';
+		    $config['allowed_types'] = "gif|jpg|png|jpeg|pdf";
+                    $config['file_name'] = $name;
+                    $config['overwrite'] = TRUE;
+                    $this->load->library('upload',$config);
+                    $this->upload->initialize($config);
+
+                    if($this->upload->do_upload('userfile')){
+                        $uploadData = $this->upload->data();
+                        $picture = $uploadData['file_name'];
+                        $this->logger->write_logmessage("insert","upload staff promotional data file ", "Staff promotional Data file attach successfully");
+                        $uplflag=true;
+                    }
+                    else{
+                        $picture = '';
+                        $error =  array('error' => $this->upload->display_errors());
+                        foreach ($error as $item => $value):
+                            $ferror = $ferror.$value;
+                        endforeach;
+                        $ferror=str_replace("\r\n","",$ferror);
+                    //    $simsg = "The permitted size of document is 20MB";
+                      //  $ferror = $simsg.$ferror;
+                        $this->logger->write_logmessage("insert","File upload error", $ferror);
+                        $this->logger->write_dblogmessage("insert","File upload error", $ferror);
+                        $uplflag=false;
+                    }
+                }
+
 
                 if(!$servdataflag)
                 {
@@ -1188,7 +1233,7 @@ public function disciplin_profile() {
                         $this->logger->write_logmessage("uploadfile","file upload error", $ferror);
                         $this->logger->write_dblogmessage("uploadfile","file upload error", $ferror);
                         $this->session->set_flashdata('err_message', $ferror);
-                        $this->load->view('empmgmt/edit_servicedata', $edpref_data);
+                        $this->load->view('empmgmt/edit_servicedata', $eds_data);
                       
                     }
                     else { 
@@ -1328,6 +1373,7 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('lsession','level session','trim|xss_clean');
             $this->form_validation->set_rules('agpsession','AGP session','trim|xss_clean');
             $this->form_validation->set_rules('jsession','join session','trim|xss_clean');
+	    $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
             if($this->form_validation->run() == FALSE){
 //               $this->load->view('empmgmt/edit_promotdata/',$data);
                 redirect('empmgmt/edit_promotdata/'.$id);
@@ -1382,6 +1428,14 @@ public function disciplin_profile() {
                 }else{
                         $datesp=$_POST['Datesp'];
                 }
+		$new_name='';
+                if(!empty($_FILES['userfile']['name'])){
+
+                    $newFileName = $_FILES['userfile']['name'];
+                    $fileExt1 = explode('.', $newFileName);
+                    $file_ext = end( $fileExt1);
+                    $new_name = $id."_".$newFileName;
+                }
 
                 $data = array(
 //                    'spd_empid'           	=>$empid,
@@ -1392,7 +1446,7 @@ public function disciplin_profile() {
                     'spd_agpsession'          	=>$agpsess,
 		    'spd_level'           	=>$level,
 		    'spd_leveldate'           	=>$ldate,
-		    'spd_levelsession'           	=>$lsess,
+		    'spd_levelsession'          =>$lsess,
                     'spd_grade'           	=>$_POST['empgrade'],
                     'spd_group'           	=>$_POST['group'],
                     'spd_designation'       	=>$_POST['designation'],
@@ -1403,6 +1457,39 @@ public function disciplin_profile() {
                     'spd_modifierid'        	=>$this->session->userdata('username'),
                     'spd_modifydate'          	=>date('Y-m-d H:i:s')
                 );
+		if(!empty($new_name)){
+			$data['spd_filename']=$new_name;
+		}	
+		$msgfile='';
+                if(!empty($_FILES['userfile']['name'])){
+                    
+                    $config['upload_path'] = 'uploads/SIS/Promotional_Details/';
+                    $config['max_size'] = '2048000000';
+		    $config['allowed_types'] = "gif|jpg|png|jpeg|pdf";
+                    //$config['allowed_types'] = 'pdf';
+                    $config['file_name'] = $new_name;
+                    $config['overwrite'] = TRUE;
+                    $this->load->library('upload',$config);
+                    if(! $this->upload->do_upload()){
+                        $ferror='';
+                        $error = array('error' => $this->upload->display_errors()); 
+                        foreach ($error as $item => $value):
+                        $ferror = $ferror ."</br>". $item .":". $value;
+                        endforeach;
+                        //$simsg = "The permitted size of file is 20MB";
+                       // $ferror = $simsg.$ferror;
+                        $this->logger->write_logmessage("uploadfile","file upload error", $ferror);
+                        $this->logger->write_dblogmessage("uploadfile","file upload error", $ferror);
+                        $this->session->set_flashdata('err_message', $ferror);
+                        $this->load->view('empmgmt/edit_promotdata', $eds_data);
+                      
+                    }
+                    else { 
+                        $upload_data=$this->upload->data();
+                        $msgfile=" and Attachment" ;
+                    } 
+            
+                }//userfileifcond
                 $servdataflag=$this->sismodel->updaterec('staff_promotionals_details', $data,'spd_id', $id) ;
 
                 if(!$servdataflag)

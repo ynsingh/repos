@@ -13,6 +13,10 @@
         <script>
             $(document).ready(function(){
            
+		$("#psc").hide();
+                $("#psc1").hide();
+                $("#psc2").hide();
+                $("#psc3").hide();
             /**********************************Start of empdetail by  PF NOscript*********************************/
                 
                 $("#emppfno").on('change',function(){
@@ -79,11 +83,13 @@
                             //$('#upfno').val(empinput[23].replace(/[[\]"|"]/g,""));
                             var pfno=empinput[23].replace(/[[\]"|"]/g,"");
 //	alert(pfno);
-				if(pfno.indexOf("V") === 0){
-					$('#upfno').val(pfno);
+				if((pfno.indexOf("V") === 0)||(pfno.indexOf("v") === 0)){
+					$('#upfno').val(pfno.toUpperCase());
+					$('#cpsno').val('');
 				}
-				else if(pfno.indexOf("C") === 0){
-					$('#cpsno').val(pfno);
+				else if((pfno.indexOf("C") === 0)||(pfno.indexOf("c") === 0)){
+					$('#cpsno').val(pfno.toUpperCase());
+					$('#upfno').val('');
 				}
                             $('#qtrno').val(empinput[24].replace(/[[\]"|"]/g,""));
                             $('#qtrtype').val(empinput[25].replace(/[[\]"|"]/g,""));
@@ -223,6 +229,24 @@
                         });
                     }
 		}); 
+		
+        
+                 $('#pcomm').on('change',function(){
+                        var pc= $('#pcomm').val();
+                        if(pc == '6th'){
+                                $("#psc").show();
+                                $("#psc1").show();
+                                $("#psc2").show();
+                                $("#psc3").show();
+                        }
+                        else{
+                                $("#psc").hide();
+                                $("#psc1").show();
+                                $("#psc2").show();
+                                $("#psc3").hide();
+                        }
+                  });
+
 
 
             });
@@ -363,7 +387,7 @@
 				</div>
 			<!--	<input type="text" id="pcomm" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly> -->
 			</td>
-                            <td> <b>Pay Band:</b><br>
+                            <td id="psc"> <b>Pay Band:</b><br>
 				<div>
 	                        <select name="pscale" id="pscale" style="width:300px;" >
         	                <option disabled selected >------Select----------------</option>
@@ -372,7 +396,7 @@
 
 		<!--		<input type="text" id="pscale" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>-->
 				</td>
-                            <td> <b>Academic Level of Pay:</b><br>
+                            <td id="psc1"> <b>Academic Level of Pay:</b><br>
 				<div>
                                 <select name="pscale1" id="pscale1" style="width:300px;" >
                                 <option disabled selected >------Select----------------</option>
@@ -381,10 +405,10 @@
 
 <!--				<input type="text" id="pscale1" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>-->
 				</td>
-                            <td> <b>Scale of Pay:</b><br><input type="text" id="pscale2" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly ></td>
+                            <td id="psc2"> <b>Scale of Pay:</b><br><input type="text" id="pscale2" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly ></td>
                         </tr> 
                         <tr>
-                            <td colspan=4> <b>Academic Grade Pay :</b><br><input type="text" id="pscale3" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
+                            <td colspan=4 id="psc3"> <b>Academic Grade Pay :</b><br><input type="text" id="pscale3" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td>
                       <!--      <td> <b>Pay Scale:</b><br><input type="text" id="pscale" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly></td> -->
                         </tr> 
                         <tr><td colspan="5"><b> <hr/> <span style="color:#0099CC;">Bank Details</span></b></td></tr> 

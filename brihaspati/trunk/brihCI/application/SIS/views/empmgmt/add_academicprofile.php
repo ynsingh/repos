@@ -62,8 +62,8 @@
                   
                 cols +='<td><b>Under Graduate (UG)</b><select name="degree[]" id="degree" >';
                 cols +='<option value="">----- Select ------</option><option value="BA">BA</option>';
-                cols +='<option value="BSc">BSc</option><option value="BCom">Bcom</option><option value="BCA">BCA</option><option value="BTech">BTech</option>';
-                cols +='<option value="BE">BE</option><option value="BVSc">BVSc</option><option value="B.Lit">B.Lit.</option><option value="BLIS">BLIS</option>';
+                cols +='<option value="BSc">BSc</option><option value="BCom">BCom</option><option value="BCA">BCA</option><option value="BTech">BTech</option>';
+                cols +='<option value="BE">BE</option><option value="BVSc">BVSc</option><option value="BLit">BLit</option><option value="BLis">BLis</option>';
                 cols +='<option value="BBA">BBA</option><option value="BFSc">BFSc</option><option value="BEd">BEd</option><option value="BPEd">BPEd</option>';
                 cols +='<option value="BL">BL</option></select></td>';
             
@@ -88,9 +88,9 @@
                 var cols = "";
                   
                 cols += '<td><b>Post Graduate (PG)</b><select name="pgdegree[]" id="pgdegree" ><option value="">----- Select ------</option>';
-                cols += '<option value="MA">MA</option><option value="MSc">MSc</option><option value="MCom">Mcom</option><option value="MCA">MCA</option>';
-                cols += '<option value="MTech">MTech</option><option value="ME">ME</option><option value="MVSc">MVSc</option><option value="M.Lit">M.Lit.</option>';
-                cols += '<option value="MLIS">MLIS</option><option value="MBA">MBA</option><option value="MFSc">MFSc</option><option value="MEd">MEd</option>';
+                cols += '<option value="MA">MA</option><option value="MSc">MSc</option><option value="MCom">MCom</option><option value="MCA">MCA</option>';
+                cols += '<option value="MTech">MTech</option><option value="ME">ME</option><option value="MVSc">MVSc</option><option value="MLit">MLit</option>';
+                cols += '<option value="MLis">MLis</option><option value="MBA">MBA</option><option value="MFSc">MFSc</option><option value="MEd">MEd</option>';
                 cols += '<option value="MPEd">MPEd</option><option value="ML">ML</option></select></td>';
             
                 cols += '<td><input type="text" name="board3[]" id="buniv" placeholder="Board/university.." size="30"></td>';

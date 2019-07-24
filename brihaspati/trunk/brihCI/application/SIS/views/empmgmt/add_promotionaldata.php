@@ -315,6 +315,11 @@
                         <td><input type="text" name="Datesp" id="Datesp" value="<?php echo isset($_POST["Datesp"]) ? $_POST["Datesp"] : ''; ?>"  size="40" >
                         </td>
                 </tr>
+        	<tr>
+			<td>Upload Attachment<br>(Max size 20MB, Allowed Type- pdf)</td>                   
+			<td><input type='file' name='userfile' size='20' />
+       		</td></tr>
+
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">

@@ -1473,24 +1473,8 @@ class Picosetup extends CI_Controller
         $typeofmat['ven']= $this->PICO_model->get_list('vendor');
         $this->load->view('setup/purchaseproposalform',$typeofmat);
     }
-
-
-
 /************************************************************************************************************************/
-
-
 	//work started from here by (abhay831877@gmail.com)
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public function tender_type()
                 {
@@ -1544,12 +1528,12 @@ class Picosetup extends CI_Controller
 	
 	
 	
-	     public function displaytypeoftender() {
+    public function displaytypeoftender() {
         $data['result']= $this->PICO_model->get_list('tender_type');
         $this->logger->write_logmessage("view"," View tender type setting", "tender type setting details...");
         $this->logger->write_dblogmessage("view"," View tender type setting", "tender type setting details...");
         $this->load->view('setup/displaytypeoftender',$data);
-        }
+    }
 
     /**This function Delete the tender records
      * @param type $id
