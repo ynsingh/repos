@@ -88,6 +88,13 @@ echo "</center>"; ?>
 </div>
 </table>
 </td>
+<td align=center style="width:30%;" valign="top">
+<div style="overflow:auto;height:300px;">
+<li style="font-size: 25px;">
+	<a href="picosetup/vendor/" style="font-size: 25px; text-decoration: none">Supplier/Vendor Registration</a>
+</li>
+</div>
+</td>
  <td align=right style="width:30%;" valign="top">
                 <form action="<?= site_url('welcome') ?>" method="post">
                         <table>
@@ -111,6 +118,9 @@ echo "</center>"; ?>
                                 <a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="" title="Forgot Password">
                                 <input type="button" value="Forgot Password" style="font-size:17px;width:60%"></a></td>
                         </tr>
+                        </table>
+                        </form>
+                        <table>
 			<tr>
 			<td align=left></br><label><b>For any clarifications, please contact</b></label></br>
 			<label>Phone : 0512-259 7841</label></br>
@@ -118,9 +128,8 @@ echo "</center>"; ?>
 			</td>
 			</tr>
 			
-
                         </table>
-                        </form>
+
                 </td>
         </tr>
 

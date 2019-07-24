@@ -28,6 +28,7 @@ class Welcome extends CI_Controller {
                 $this->load->model("User_model", "usrmodel");
                 $this->load->model("Common_model", "commodel");
 		$this->load->model("SIS_model", "sismodel");
+		$this->load->model("PICO_model", "picomodel");
         	//if(!empty($_SESSION['id_user'])){
                     
                 //}
@@ -36,7 +37,7 @@ class Welcome extends CI_Controller {
 
 	public function index() {
 		$cdate = date('Y-m-d');
-                $wharray = array('anou_cname=' => 'SIS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
+                $wharray = array('anou_cname=' => 'PICO', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
                 $this->annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
 
             if($_POST) {

@@ -298,7 +298,9 @@ CREATE TABLE `purchase_proposal` (
   `pp_id` int(11) NOT NULL,
   `pp_tcid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_taid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `pp_purchasefrom` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_gemrefno` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `pp_tenrefno` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_deptindentno` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_deptid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_indentername` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -413,15 +415,24 @@ ALTER TABLE `required_item_details`
 CREATE TABLE `tender_apply` (
   `ta_id` int(11) NOT NULL,
   `ta_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_tcrefno` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_vendorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_baseprice` int(20) NOT NULL,
   `ta_gsttax` int(20) NOT NULL,
   `ta_totalprice` int(20) NOT NULL,
+  `ta_warranty` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_payment` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_delivery` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_validity` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_updoc1` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
   `ta_updoc2` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
   `ta_updoc3` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
   `ta_updoc4` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
   `ta_updoc5` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_status` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_approvedby` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_approvedbydate` DATE NOT NULL ,
+  `ta_approvedbydesg` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_creatorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_creationdate` date NOT NULL,
   `ta_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -438,7 +449,22 @@ ALTER TABLE `tender_apply`
 ALTER TABLE `tender_apply`
   MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
+CREATE TABLE `tender_apply_archive` (
+  `archive_id` int(11) NOT NULL,
+  `ta_id` int(11) NOT NULL,
+  `ta_tcid` int(11) NOT NULL,
+  `ta_approvedstatus` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_byname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_bydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `archive_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `tender_apply_archive`
+  ADD PRIMARY KEY (`archive_id`);
+
+ALTER TABLE `tender_apply_archive`
+  MODIFY `archive_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 --
 -- Table structure for table `tender_bid_openers_selection`
 --
