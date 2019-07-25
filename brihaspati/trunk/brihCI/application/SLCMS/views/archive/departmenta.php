@@ -5,7 +5,8 @@
  -->
 
 <html>
-    <head>    
+    <head>   
+    <title>Department Archive</title> 
         <?php $this->load->view('template/header'); ?>
         <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
         <?php // $this->load->view('template/menu');?>
@@ -52,8 +53,8 @@
 <div class="scroller_sub_page">
         <table  class="TFtable" >
             <thead>
-                <th>University Name</th>
-                <th>Campus Name</th>
+              <!--  <th>University Name</th>
+                <th>Campus Name</th> -->
                 <th>Authorities Name</th>
                 <th>School/Faculty Code</th>
                 <th>School/Faculty Name</th>
@@ -66,24 +67,39 @@
                 </tr>
             </thead>
             <tbody>
-                    <?php $count =0?>
+                    <?php //$count =0
+                    $scid=0;?>
                     <?php foreach($this->deptaresult as $row) 
 			{ 
+                    $orgid = $this->common_model->get_listspfic1('org_profile','org_id','org_code',$row->depta_orgcode)->org_id;
+            if($scid != $orgid){
+            ?>
+                <tr>
+                    <td colspan=10 style="font-size:18px;text-align:center;">
+                    <b>Institute Name :</b> 
+                                <?php
+                                echo $this->common_model->get_listspfic1('org_profile','org_name','org_id',$orgid)->org_name;
+                                ?></td>
+                </tr>
+                        <?php $scid =$orgid;
+            //$count  = 1;
+            }?>
+    <?php
 		        echo "<tr align=\"center\">";
-                        echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->depta_orgcode)->org_name. "</td>";
-                        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->depta_sccode)->sc_name . "</td>";
+                        //echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->depta_orgcode)->org_name. "</td>";
+                        //echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->depta_sccode)->sc_name . "</td>";
                         echo "<td>";
                         if(!empty($this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name)){
                         echo  $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name;}
                         echo "</td>";
-                        echo "<td>" . $row->depta_schoolcode. "</td>";
-                        echo "<td>" . $row->depta_schoolname . "</td>";
-                        echo "<td>" . $row->depta_code . "</td>";
-                        echo "<td>" . $row->depta_name . "</td>";
-                        echo "<td>" . $row->depta_short. "</td>";
-                        echo "<td>" . $row->depta_description. "</td>";
-                        echo "<td>" . $row->creatorid. "</td>";
-                        echo "<td>" . $row->createdate. "</td>";
+                 echo "<td>" . $row->depta_schoolcode. "</td>";
+                 echo "<td>" . $row->depta_schoolname . "</td>";
+                  echo "<td>" . $row->depta_code . "</td>";
+                 echo "<td>" . $row->depta_name . "</td>";
+                  echo "<td>" . $row->depta_short. "</td>";
+                 echo "<td>" . $row->depta_description. "</td>";
+                echo "<td>" . $row->creatorid. "</td>";
+                  echo "<td>" . $row->createdate. "</td>";
 
                         //echo "<td>" . anchor('setup/deletedept/' . $row->dept_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
                        // echo "</br>";

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Welcome to IGNTU</title>
+        <title>Welcome to SLCMS</title>
 	
     </head>
     <body>
@@ -43,7 +43,7 @@
 	echo "<table>";
         echo "<tbody>";
 
-	echo "<div>";
+	/*echo "<div>";
 // display user message area
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		echo "<div style=\"margin-left:30px;width:1700px;align:left;\" class=\"isa_success\">";
@@ -55,7 +55,22 @@
 		echo $_SESSION['error'];
 		echo "</div>";
 	}
-	echo "</div>";
+	echo "</div>";*/
+	echo "<div align=\"left\">";
+// display user message area
+	if(isset($_SESSION)) {
+                echo $this->session->flashdata('flash_data');
+        }
+	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
+		echo "<div class=\"isa_success\">";
+		echo $_SESSION['success'];
+		echo "</div>";
+	}
+	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
+		echo "<div class=\"isa_error\">";
+		echo $_SESSION['error'];
+		echo "</div>";
+	}
 
 	//echo $error;
 	echo form_open_multipart('upl/uploadlogo');

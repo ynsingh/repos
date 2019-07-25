@@ -71,19 +71,20 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 8px 8px 8px 20px;">University Name</td> 
+                                        <td style="padding: 8px 8px 8px 20px;">Institute Name</td> 
 					<?php foreach($this->scname as $row){?>
-                                        	<td><?php   $orgcode=$this->cmodel->get_listspfic1('study_center','org_code','sc_id',$row->scid)->org_code;
-							echo $this->cmodel->get_listspfic1('org_profile','org_name','org_code',$orgcode)->org_name;
+                                        	<td><?php   //$orgcode=$this->cmodel->get_listspfic1('study_center','org_code','sc_id',$row->scid)->org_code;
+							//echo $this->cmodel->get_listspfic1('org_profile','org_name','org_code',$orgcode)->org_name;
+                                echo $this->cmodel->get_listspfic1('org_profile','org_name','org_id',$row->scid)->org_name;
 							?></td>
 					<?php }?>
                                     </tr>
-                                    <tr>
+                                  <!--  <tr>
                                         <td style="padding: 8px 8px 8px 20px;">Campus Name</td> 
-					<?php foreach($this->scname as $row){?>
-                                        	<td><?php  echo $this->campusname=$this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;?></td>
+					<?php //foreach($this->scname as $row){?>
+                                        	<td><?php  //echo $this->campusname=$this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;?></td>
 					<?php }?>
-                                    </tr>
+                                    </tr>-->
                                     <tr>
                                         <td style="padding: 8px 8px 8px 20px;">Department Name</td> 
                                         <td><?php  echo $this->deptname->dept_name ;?></td>
@@ -110,19 +111,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if( count($this->cdetail) ): ?>
-                                        <?php foreach($this->cdetail as $row){ 
+                <?php if( count($this->cdetail) ): ?>
+                <?php foreach($this->cdetail as $row){ 
 						$prgid = $row->pstp_prgid;
 					?>
-                                            <tr align="center">
-                                                <td><?php echo $this->cmodel->get_listspfic1('program','prg_category ','prg_id',$prgid)->prg_category;?></td>
-                                                <td><?php echo $this->cmodel->get_listspfic1('program','prg_name ','prg_id',$prgid)->prg_name .'( '.$this->cmodel->get_listspfic1('program','prg_branch ','prg_id',$prgid)->prg_branch .' )';?></td>
-                                                <td><?php echo $this->cmodel->get_listspfic1('program_subject_teacher','pstp_acadyear','pstp_prgid',$prgid)->pstp_acadyear;?></td>
-                                                <td><?php echo $this->cmodel->get_listspfic1('program_subject_teacher','pstp_sem','pstp_prgid',$prgid)->pstp_sem;?></td>
-                                                <td><?php echo $this->cmodel->get_listspfic1('subject','sub_name','sub_id',$prgid)->sub_name;?></td>
-                                                <td><?php echo $this->cmodel->get_listspfic1('subject_paper','subp_name','subp_id',$prgid)->subp_name;?></td>
-                                            </tr>
-                                        <?php }; ?>
+     <tr align="center">
+     <td><?php echo $this->cmodel->get_listspfic1('program','prg_category ','prg_id',$prgid)->prg_category;?></td>
+          <td><?php echo $this->cmodel->get_listspfic1('program','prg_name ','prg_id',$prgid)->prg_name .'( '.$this->cmodel->get_listspfic1('program','prg_branch ','prg_id',$prgid)->prg_branch .' )';?></td>
+         <td><?php echo $this->cmodel->get_listspfic1('program_subject_teacher','pstp_acadyear','pstp_prgid',$prgid)->pstp_acadyear;?></td>
+         <td><?php echo $this->cmodel->get_listspfic1('program_subject_teacher','pstp_sem','pstp_prgid',$prgid)->pstp_sem;?></td>
+           <td><?php 
+                        $subid = $this->cmodel->get_listspfic1('program_subject_teacher','pstp_subid','pstp_prgid',$prgid)->pstp_subid;
+                        echo $this->cmodel->get_listspfic1('subject','sub_name','sub_id',$subid)->sub_name;?></td>
+         <td><?php 
+                        $papid = $this->cmodel->get_listspfic1('program_subject_teacher','pstp_papid','pstp_prgid',$prgid)->pstp_papid;
+                        echo $this->cmodel->get_listspfic1('subject_paper','subp_name','subp_id',$papid)->subp_name;?></td>
+                        
+           <!--  <td><?php// echo $this->cmodel->get_listspfic1('subject','sub_name','sub_id',$prgid)->sub_name;?></td>
+             <td><?php //echo $this->cmodel->get_listspfic1('subject_paper','subp_name','subp_id',$prgid)->subp_name;?></td>      -->                               </tr>                               <?php }; ?>
                                         <?php else : ?>
                                         <td colspan= "6" align="center"> No Records found...!</td>
                                         <?php endif;?>

@@ -49,24 +49,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <table style="width:100%;" class="TFtable">
 	<thead>
 	<tr>
-		<th>Sr. No.</th><th>Center Name</th><th>Name of Exam</th><th>Student Name</th><th>Course Name</th><th>Roll No.</th><th>Enrollment No.</th>
+	<th>Sr. No.</th><th><!--<th>Center Name</th>--><th>Name of Exam</th><th>Student Name</th><th>Course Name</th><th>Roll No.</th><th>Enrollment No.</th>
 		<th>Action</th>
 	</tr>
 	</thead>
 
 	<tbody>
 		<?php
-			$count = 1;
+		$orgid = 0;
+			//$count = 1;
 			if(!empty($stud_program)){
 				foreach($stud_program as $row){
 					$smid = $row->sp_smid;
 					$deptid = $row->sp_deptid;
 					$year = $currentacadyear;
 					$stu_stp5 = $this->commodel->get_listspfic1('student_admissionstep','step5_status','student_masterid',$smid)->step5_status;
+					$scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$smid)->sm_sccode;
+				if($orgid != $scid){
+					echo "<tr>";
+					echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
+					echo "<b>University Name : </b>";
+                      			echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
+					echo "</td>";
+					echo "</tr>";
+				$orgid = $scid; 
+				$count =1;				
+				}
 		?>
 		<tr>
 			<td><?php echo $count++; ?></td>
-			<?php $scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$smid)->sm_sccode;?>
+			<?php //$scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$smid)->sm_sccode;?>
 			<td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;?></td>
 			<td><?php echo $this->commodel->get_listspfic1('student_entry_exit','senex_entexamname','senex_smid',$smid)->senex_entexamname;?></td>
 			<td><?php echo $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smid)->sm_fname;?></td>

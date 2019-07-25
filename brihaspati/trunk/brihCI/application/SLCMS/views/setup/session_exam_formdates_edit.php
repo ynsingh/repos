@@ -79,18 +79,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</select>
 		</td>
 	</tr>
-	<tr>
-		<td align=left><label>Campus Name</label></td>
+	<!--<tr>
+		<td align=left><label>Institute Name</label></td>
 		<td align=left>
 			<select name="editcampus_code" style="height:30px;width:100%;">
-			<?php $campusname = $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$campuscode)->sc_name;?>
+			<?php //$campusname = $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$campuscode)->sc_name;
+            $campusname = $this->common_model->get_listspfic1('org_profile','org_name','org_id',$campuscode)->org_name;?>
 				<option value="<?php echo $campuscode;?>"><?php echo $campusname;?></option>
 				<option disabled >Select Campus Name</option>
 				<?php foreach($campuslist as $data){?>
 					<option value="<?php echo $data->sc_code;?>"><?php echo $data->sc_name;?></option>
 				<?php }?>
 			</select>
-		</td>
+		</td>-->
 	</tr>
 	<tr>
 		<td align=left><label>Session Start Date</label></td>

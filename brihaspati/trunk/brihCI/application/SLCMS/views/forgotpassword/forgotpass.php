@@ -30,10 +30,10 @@
      </tr>
 </table>
 <tr>
-                <div style="margin-left:30px;margin-top:-18px">
+                <div style="margin-top:-18px">
                 <br>
                            <form action="<?php echo site_url('forgotpassword/forgotpass');?>" method="POST" class="form-inline">
-                        <table style="margin-left:30px;">
+                        <table style="">
                             <tr>
                                 <td><label for="username" class="control-label"><b>User Name (Email)</b></label></td> 
                             </tr>

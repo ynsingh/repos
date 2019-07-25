@@ -6,7 +6,7 @@
 
 echo "<html>";
 echo "<head>";
-echo "<title>".'IGNTU - Program Subject Add List'."</title>";
+echo "<title>".'Program Subject Add List'."</title>";
     $this->load->view('template/header');
   
 //    $this->load->view('template/menu');
@@ -153,7 +153,8 @@ echo "<body>";?>
 				<?php 
 				    foreach($pcategory as $row){
 			        ?>
-					<option value="<?php echo $row->prgcat_name;?>"><?php echo $row->prgcat_name;?>
+				<!--	<option value="<?php echo $row->prgcat_name;?>"><?php echo $row->prgcat_name;?> -->
+                 <option value="<?php echo $row->prgcat_id;?>"><?php echo $row->prgcat_name;?>
 				<?php  }?>
 	  </select>
 		

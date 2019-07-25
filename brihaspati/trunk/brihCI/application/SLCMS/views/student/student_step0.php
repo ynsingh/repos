@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to IGNTU</title>
+	<title>Welcome to SLCMS</title>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 
@@ -124,6 +124,33 @@ echo "</center>";
 		
         	<input type="email" name="Semail" placeholder="Enter Your Email-id" value="<?php echo isset($_POST["Semail"]) ? $_POST["Semail"] : ''; ?>"/><br>
 		</td></tr>
+		<tr><td>
+        <label for="text">Date Of Birth :</label></td>
+        <td>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
+  	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
+        <input type="text" name="Sdateofbirth" placeholder="Select your dob" value="<?php echo isset($_POST["dateofbirth"]) ? $_POST["dateofbirth"] : ''; ?>" id="dob" required="true"/>
+        
+            <script>
+                $('#dob').datepicker({
+                onSelect: function(value, ui) {
+                    console.log(ui.selectedYear)
+                    var today = new Date(), 
+                    dob = new Date(value), 
+                    age = 2017-ui.selectedYear;
+
+//                $("#age").text(age);
+                },
+                
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy-mm-dd',
+                   // defaultDate: '1yr',
+                    yearRange: 'c-76:c+10',
+                });
+            </script>
+        </td>
+        </tr>
 		<tr>
         	<td></td>
 		<td>

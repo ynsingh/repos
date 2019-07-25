@@ -22,7 +22,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-        ?>--!>
+        ?>-->
    <table width= "100%">
             <tr>
                 <div>

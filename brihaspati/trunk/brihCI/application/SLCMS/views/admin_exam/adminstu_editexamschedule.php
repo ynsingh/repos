@@ -68,20 +68,25 @@ function calculate() {
             echo form_open('adminstuexam/exam_scheduleedit/' . $id);
 		?>
 		<tr>
-		<td><label class="control-label">University Name</label></td>
+		<td><label class="control-label">Institute Name</label></td>
                 <td>
                 <select style="height:35px;width:100%" name="exmsch_center"  id="exmsch_center" >
-                <option value="<?php echo $exmsch_center['value'];?>"><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$exmsch_center['value'])->sc_name ;?></option>;
-		<option disabled>Select University Name</option>
-                <?php foreach($exam_center as $datas): ?>
-                	<option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
+                <option value="<?php echo $exmsch_center['value'];?>"><?php //echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$exmsch_center['value'])->sc_name ;
+               echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$exmsch_center['value'])->org_name ;?>
+                ?></option>;
+		<option disabled>Select Institute Name</option>
+                <?php foreach($exam_center as $datas): 
+                    ?>
+                	<!--<option value="<?php //echo $datas->sc_id; ?>"><?php// echo $datas->sc_name; ?></option>-->
+                    <option value="<?php echo $datas->org_id; ?>"><?php echo $datas->org_name; ?></option>
                 <?php endforeach; ?>
                 </select>
                 </td></tr>
 		<td><label  class="control-label">Program Category</label></td>
                 <td>
                 <select style="height:35px;width:100%" name="exmsch_progcat" >
-                 <option value="<?php echo $exmsch_progcat['value'];?>"><?php echo $exmsch_progcat['value'];?></option>;
+                 <option value="<?php echo $exmsch_progcat['value'];?>"><?php //echo $exmsch_progcat['value'];
+                 echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$exmsch_progcat['value'])->prgcat_name;?>?></option>;
                 </select>
                 </td></tr>
 		<tr>
@@ -97,7 +102,7 @@ function calculate() {
 		<td><label class="control-label">Programme Name</label></td>
                 <td>
                 <select style="height:35px;width:100%" name="exmsch_prog" >
-                <option value="<?php echo $exmsch_prog['value'];?>"><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$exmsch_prog['value'])->prg_name ;?></option>;
+                <option value="<?php echo $exmsch_prog['value'];?>"><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$exmsch_prog['value'])->prg_name.'( '.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$exmsch_prog['value'])->prg_branch.' )'  ;?></option>;
 		                
                 </select>
                 </td></tr>

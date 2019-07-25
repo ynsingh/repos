@@ -20,6 +20,9 @@
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
 
 <style type="text/css">
+	a[title] {
+    display : none;
+}
 label{font-size:18px;}
 input[type='text']{font-size:17px;height:35px;background-color:white;width:97%;}
 input[type='email']{font-size:17px;height:30px;background-color:white;}
@@ -33,7 +36,11 @@ select{width:100%;font-size:17px;height:30px;font-weight:bold;}
 
 <script>
 function myFunction() {
-    window.print();
+    //window.print();
+    var originalTitle = document.title;
+	document.title = "Print page title";
+	window.print();
+	document.title = originalTitle;
 }
 
 </script>

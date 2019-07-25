@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Semester registration</title>
+	<title>Semester registration</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -53,21 +53,30 @@ echo "<div>";
 
 echo "</center>";
 ?>
-	<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
-        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
+	<!--<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
+        <?php //echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php //echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+        <?php //if(isset($_SESSION['success'])){?>
+        <div class="alert alert-success"><?php// echo $_SESSION['success'];?></div>
         <?php
     	 };
-       	?>
+       	?>-->
+       	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
              <div class="isa_error" ><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
-      </div>
+     <!-- </div>-->
 <?php //$uid=($this->session->userdata['id_user']); print_r($uid);?>
 
 	<!---<h1>Welcome <?//= $this->session->userdata('username') ?>  </h1>-->
@@ -91,7 +100,7 @@ echo "</center>";
 			<input type="text" name="Sname" placeholder="Enter your name" value="<?php echo $this->name;?>" readonly>	
 		<td/>		
 		<td>	<!---<span style="color:red;"><?php echo form_error('Scenters');?></span>--->
-			<label for="nnumber">Study Centers</label></br>
+			<!--<label for="nnumber">Study Centers</label>--><label for="nnumber">Institute Name</label></br>
 			<input type="text" name="Studecenter" placeholder="Enter your study center" value="<?php echo $this->scname;?>" readonly>	
 		<td/>
 		<td>	<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
@@ -171,14 +180,14 @@ echo "</center>";
 		<td/>
 		
 	
-		<td>	<!--<span style="color:red;"><?php echo form_error('Semail');?></span>-->
+		<!--<td>	<span style="color:red;"><?php echo form_error('Semail');?></span>--
 			<label>District</label></br>
-	    <input type="text" name="Stdist" placeholder="Enter Your District" style="height:30px;width:97%;" value="<?php echo $this->pdist; ?>" readonly/>		
+	    <input type="text" name="Stdist" placeholder="Enter Your District" style="height:30px;width:97%;" value="<?php //echo $this->pdist; ?>" readonly/>		
 		<td/>
-		<td>	<!--<span style="color:red;"><?php echo form_error('Semail');?></span>-->
+		<td>	<span style="color:red;"><?php echo form_error('Semail');?></span>--
 			<label>Post Office</label></br>
-	    <input type="text" name="Stpost" placeholder="Enter Your post office" style="height:30px;width:98%;" value="<?php echo $this->ppost; ?>" readonly/>		
-		<td/>
+	    <input type="text" name="Stpost" placeholder="Enter Your post office" style="height:30px;width:98%;" value="<?php //echo $this->ppost; ?>" readonly/>		
+		<td/>-->
 
 		<td>	<!---<span style="color:red;"><?php echo form_error('Scity');?></span>--->
 			<label for="nnumber">City</label></br>	
@@ -188,10 +197,6 @@ echo "</center>";
 			<label>State</label></br>
 			<input type="text" name="Ststate" placeholder="Enter Your State" value="<?php echo $this->pstat; ?>" readonly/>		
 		<td/>
-	<tr>
-		
-	<tr height=10></tr>
-	<tr>
 		<td>	<!---<span style="color:red;"><?php echo form_error('Spincode');?></span>--->
 			<label>Country</label></br>
 			<input type="text" name="Stcountry" placeholder="Enter Your Country" value="<?php echo $this->pcounname; ?>" readonly/>		
@@ -201,10 +206,14 @@ echo "</center>";
 			<label>Pincode</label></br>
 			<input type="text" name="Stpincode" placeholder="Enter Your Pincode" MaxLength="6" value="<?php echo $this->ppin; ?>" readonly/>		
 		<td/>
+	<tr>
+		
+	<tr height=10></tr>
+	<tr>
 		
 		<td>	<!---<span style="color:red;"><?php echo form_error('Smobile');?></span>--->
 			<label>Mobile/Phone no.</label></br>
-			<input type="text" name="Stmobile" placeholder="Enter Mobile Number" MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo $this->mobile; ?>" readonly/>		
+			<input type="text" name="Stmobile" placeholder="Enter Mobile Number" MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php //echo $this->mobile; ?>" readonly/>		
 		<td/>
 		<td>	<!--<span style="color:red;"><?php echo form_error('Semail');?></span>-->
 			<label>Email-Id</label></br>

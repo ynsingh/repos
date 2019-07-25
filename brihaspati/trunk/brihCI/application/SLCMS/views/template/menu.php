@@ -145,14 +145,14 @@ echo "<ul class=\"sf-menu\">";
                                         echo "</li>";	*/				
 				echo "</ul>";
 			echo "</li>";
-					echo "<li>";
+				/*	echo "<li>";
                                                 echo "<a href=" . ">Audit Trails</a>";
                                                 echo "<ul>";
                                                         echo "<li>";
                                                                 echo anchor('audittr/logdetail', 'Log Details', array('title' => 'Log Details'));
                                                         echo "</li>";
                                                 echo "</ul>";
-                                        echo "</li>";
+                                        echo "</li>";*/
                         echo "<li>";
                                 echo "<a href=" . ">Entrance</a>";
                                 echo "<ul>";
@@ -269,8 +269,8 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('admin_studentresult/studentmarks', 'Marks Submission', array('title' => 'Marks Submission'));
 					echo "</li>";
 					echo "<li>";
-						//echo anchor('result/tabulationchart', 'Tabulation Chart', array('title' => 'Tabulation Chart'));
-						echo anchor('welcome/work_underprocess', 'Tabulation Chart', array('title' => 'Tabulation Chart'));
+						echo anchor('Admin_studentresult/tabulationchart', 'Tabulation Chart', array('title' => 'Tabulation Chart'));
+						//echo anchor('welcome/work_underprocess', 'Tabulation Chart', array('title' => 'Tabulation Chart'));
 					echo "</li>";
 					echo "<li>";
 						//echo anchor('result/resultscrutiny', 'Result Scrutiny', array('title' => 'Result Scrutiny'));

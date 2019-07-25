@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Student Detail</title>
+	<title>SLCMS:Student Detail</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">

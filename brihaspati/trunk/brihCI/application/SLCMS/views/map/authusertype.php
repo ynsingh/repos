@@ -5,8 +5,7 @@
  -->
 <html>
 <title>Add Authorities</title>
-<head>
-<title>Authorities</title>       
+<head>     
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>

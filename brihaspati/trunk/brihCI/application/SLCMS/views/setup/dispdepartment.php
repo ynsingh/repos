@@ -69,6 +69,7 @@
          <div class="scroller_sub_page">
           <table  class="TFtable">
           <thead>
+            <th>Sr. No.</th>
           <th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
                  <?php
 				  $pre="l";
@@ -79,12 +80,14 @@
 					 $org=strtoupper($org);
 					if(!($org==$pre)){
 							echo "<td style=\"text-align:center;\" class=\"light\" colspan=\"11\"> $org  </td>";
-						
+						$serial_no=1;
 					}
-					echo "<tr>";
+					
+          echo "<tr>";
 					$pre=$org;
-					echo "<tr>";					
-	      	        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name . "</td>";
+          echo "<tr>";					
+	      	echo "<td>".$serial_no++;
+                  echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name . "</td>";
                         echo "<td>";
 			if(!empty($this->login_model->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name)){ 
 			echo $this->login_model->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name;

@@ -111,7 +111,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<tr>
 	<tr>
 		<td align=left><label>Session End Date</label></td>
-		<td>
+		<td align=left>
 		<input type="text" name="session_edate" placeholder="Session End Date" value="<?php echo isset($_POST["session_edate"]) ? $_POST["session_edate"] : ''; ?>" id="edate" style="height:20px;font-size:18px;" size=20 />
         
             			<script>
@@ -136,7 +136,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<tr>
 		<td align=left><label>Exam Start Date </label></td>
-		<td>
+		<td align=left>
 	<input type="text" name="exam_startdate" placeholder="Exam Start Date" value="<?php echo isset($_POST["exam_startdate"]) ? $_POST["exam_startdate"] : ''; ?>" id="examsdate" style="height:20px;font-size:18px;" size=20 />
         
             			<script>
@@ -160,7 +160,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<tr>
 		<td align=left><label>Exam End Date  </label></td>
-		<td>
+		<td align=left>
 			<input type="text" name="exam_enddate" placeholder="Exam End Date" value="<?php echo isset($_POST["exam_enddate"]) ? $_POST["exam_enddate"] : ''; ?>" id="examedate" style="height:20px;font-size:18px;" size=20 />
         
             			<script>
@@ -184,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<tr>
 		<td align=left><label>Marks Submission Start Date : </label></td>
-		<td>
+		<td align=left>
         		<input type="text" name="form_sdate" placeholder="Form Submission Start Date" value="<?php echo isset($_POST["form_sdate"]) ? $_POST["form_sdate"] : ''; ?>" id="formsdate" style="height:20px;font-size:18px;" size=20 />
         
             			<script>
@@ -208,7 +208,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<tr>
 		<td align=left><label>Marks Submission End Date : </label></td>
-		<td>
+		<td align=left>
         		<input type="text" name="form_edate" placeholder="Form Submission End Date" value="<?php echo isset($_POST["form_edate"]) ? $_POST["form_edate"] : ''; ?>" id="formedate" style="height:20px;font-size:18px;" size=20 />
         
             			<script>

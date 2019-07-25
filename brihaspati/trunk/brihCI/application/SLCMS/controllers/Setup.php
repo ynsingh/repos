@@ -46,7 +46,10 @@ class Setup extends CI_Controller
     /** This function add email setting
      * @return type
      */
-    
+    public function exceltomysql(){
+             $this->load->view('excel/index');
+            
+    }
     public function emailsetting() {
               
         if(isset($_POST['emailsetting'])) {
@@ -103,9 +106,9 @@ class Setup extends CI_Controller
      */
     public function dispemailsetting() {
         
-	$this->result = $this->common_model->get_list('email_setting');
+	$data['result'] = $this->common_model->get_list('email_setting');
         $this->logger->write_logmessage("view"," View Email Setting", "Email setting details...");
-        $this->load->view('setup/dispemailsetting',$this->result);
+        $this->load->view('setup/dispemailsetting',$data);
     }
     
     /**This function Delete the Eamil setting records
@@ -309,13 +312,13 @@ class Setup extends CI_Controller
 
     public function program() 
     {
-	$this->prgcat = $this->common_model->get_listspfic2('programcategory','prgcat_id','prgcat_name');    
-        $this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
-        $this->deptresult = $this->common_model->get_listspfic2('Department','dept_id', 'dept_name');
+	   $data['prgcat'] = $this->common_model->get_listspfic2('programcategory','prgcat_id','prgcat_name');    
+       $data['scresult'] = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
+        $data['deptresult'] = $this->common_model->get_listspfic2('Department','dept_id', 'dept_name');
         $data['title'] = 'Add program';
         if(isset($_POST['program'])) 
         {
-            $this->form_validation->set_rules('prgcampus','Campus','trim|xss_clean|required');
+           // $this->form_validation->set_rules('prgcampus','Campus','trim|xss_clean|required');
             $this->form_validation->set_rules('prgdepartment','Department','trim|xss_clean|required');
             $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
             $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
@@ -330,7 +333,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
 
             
-            $prgcampus = $this->input->post('prgcampus');
+         //   $prgcampus = $this->input->post('prgcampus');
             $prgdepartment = $this->input->post('prgdepartment');
             $prgcat = $this->input->post('prgcat');
             $prgname = $this->input->post('prgname');
@@ -359,13 +362,13 @@ class Setup extends CI_Controller
 
         if ($this->form_validation->run() == FALSE)
         {
-            $this->load->view('setup/program');
+            $this->load->view('setup/program',$data);
             return;
         }
         else
         {
-            $data = array(
-                'prg_scid'=>$prgcampus,
+            $prgdata = array(
+         //       'prg_scid'=>$prgcampus,
                 'prg_deptid'=>$prgdepartment,
                 'prg_category'=>ucwords(strtolower($prgcat)),
                 'prg_name'=>ucwords(strtolower($prgname)),
@@ -382,14 +385,14 @@ class Setup extends CI_Controller
                 'createdate'=>$prgdate
             );
             $this->db->trans_start();
-            if(!$this->db->insert('program',$data))
+            if(!$this->db->insert('program',$prgdata))
             {
                 $this->db->trans_rollback();
                 log_message('error', "Error  in adding program data " . $prgcrtid . " [Program id:" . $prg_id . "]");
                 log_message('debug', "Problem in adding program" . $prgcrtid );
                 $this->session->set_flashdata('Error in adding Program - ' . $prgcrtid . '.', 'error');
                 log_message('info', "Error  in adding  Program record " . $prgcrtid . " [Program_id:" . $prg_id . "]");
-                $this->load->view('setup/program');
+                $this->load->view('setup/program',$data);
             }
             else
             {
@@ -409,9 +412,12 @@ class Setup extends CI_Controller
         //$getprg = $this->db->get();
         //$getres = $getprg->result();
 //	$data['prgres'] = $getres;
-	$data['prgres']=$this->common_model->get_list('program');
+        $selectfield= '*';
+        $whorder = 'prg_scid ASC,prg_category asc';
+	   $data['prgres']=$this->common_model->get_orderlistspficemore('program',$selectfield,'',$whorder);
         $msg="";
         $data['msg'] = $msg;
+
         $this->load->view('setup/viewprogram', $data);
         $this->logger->write_logmessage("view"," View Program Details", "View Program details...");
     }
@@ -429,13 +435,13 @@ class Setup extends CI_Controller
 
         /* Form Field */
         
-        $data['prgcampus'] = array(
+    /*    $data['prgcampus'] = array(
             'name' => 'prgcampus',
             'id' => 'prgcampus',
             'size' => '40',
             'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$program_data->prg_scid)->sc_name,
             'readonly'=>'true',
-            );
+            );*/
         $data['prgdepartment'] = array(
             'name' => 'prgdepartment',
             'id' => 'prgdepartment',
@@ -443,8 +449,8 @@ class Setup extends CI_Controller
             'value' => $this->common_model->get_listspfic1('Department','dept_name','dept_id',$program_data->prg_deptid)->dept_name,
             'readonly'=>'true',
             );
-        
-        $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $program_data->prg_category,'readonly'=>'true');
+        $prgcatname = $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$program_data->prg_category)->prgcat_name;
+        $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $prgcatname,'readonly'=>'true');
         $data['prgname'] = array('name' => 'prgname','id' => 'prgname','maxlength' => '100','size' => '40','value' => $program_data->prg_name,'',);
         $data['prgbranch'] = array('name' => 'prgbranch','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_branch,'',);
         $data['prgpattern'] = array('name' => 'prgpattern','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_pattern,'',);
@@ -497,7 +503,7 @@ class Setup extends CI_Controller
         {
             //echo $data['prgcat'];
             //echo $data_prgcat;
-            $data_prgcampus = $this->input->post('prgcampus', TRUE);
+          //  $data_prgcampus = $this->input->post('prgcampus', TRUE);
             $data_prgdepartment = $this->input->post('prgdepartment', TRUE);
             $data_prgcat = $this->input->post('prgcat', TRUE);
             $data_prgname = $this->input->post('prgname', TRUE);
@@ -619,7 +625,7 @@ class Setup extends CI_Controller
 
     public function subject()
     {
-	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
+	$data['prgresult'] = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
 
         $data['subname'] = array('name' => 'subname','id' => 'subname','maxlength' => '100','size' => '40','value' => '',);
         $data['subcode'] = array('name' => 'subcode','id' => 'subcode','maxlength' => '100','size' => '40','value' => '',);
@@ -680,10 +686,10 @@ class Setup extends CI_Controller
 
     public function viewsubject()
     {
-        $data = array();
+       // $data = array();
         $this->load->model('setup_model','getsubjectlist');
-        $this->data['subjectlists'] = $this->getsubjectlist->viewsubject();
-        $this->load->view('setup/viewsubject',$this->data);
+        $data['subjectlists'] = $this->getsubjectlist->viewsubject();
+        $this->load->view('setup/viewsubject',$data);
     }
     
     /* method to update subject detail */
@@ -1034,17 +1040,17 @@ class Setup extends CI_Controller
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
  	public function dept(){
-		$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
-   	        $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
+		//$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
+   	    //    $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
               	$this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
             
 	   	if(isset($_POST['dept'])) { 
                
-                $this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
-                $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
-                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
+        //        $this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
+        //        $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
+        //        $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
+        //        $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
+        //        $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
                 $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required|alpha_numeric');
@@ -1561,14 +1567,27 @@ class Setup extends CI_Controller
                                 redirect('setup/fees');
 			}
 		}
-        $tabler['subject']=$this->common_model->get_list("subject");
+        $tabler['subject'] = $this->common_model->get_list("subject");
   		$this->load->view('setup/fees',$tabler);  
-		
 	}  
+    public function joindb(){
+        //$value=$this->get->post('comid');
+        $combid= $this->input->post('gwt');
+        $parts = explode(',',$combid);
+            $datawh=array('desig_group' => $parts[0],'desig_type' => $parts[1]);
+        $whorder = ("desig_name asc");
+            $grp_data = $this->commodel->get_jointbrecord('subject','sub_name,program,prg_id','sub_program');
+//          $grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+            $desig_select_box ='';
+            $desig_select_box.='<option value="">--Select Designation--';
+            foreach($grp_data as $grprecord){
+                $desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_name.'('. $grprecord->desig_code .')'.' ';
+            }
+         echo json_encode($desig_select_box);
+    }
        /** This function check for duplicate fees master
      * @return type
      */
-
     public function isheadExist($fm_head) {
         $is_exist = $this->common_model->isduplicatemore('fees_master',$fm_head);
         if ($is_exist)
@@ -2021,8 +2040,8 @@ class Setup extends CI_Controller
 /****************************************** Add Study Center Module ********************************************/
 
     	public function sc(){
-            	$this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
-		$this->cresult = $this->common_model->get_listmore('countries','id,name');
+            $this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
+		    $this->cresult = $this->common_model->get_listmore('countries','id,name');
 
            if(isset($_POST['sc']))
                 {
@@ -2052,9 +2071,9 @@ class Setup extends CI_Controller
             //if form validation true
                 if($this->form_validation->run()==TRUE){
                        // if (($_POST['orgprofile'] != ''))
-	                $data = array(
+	                $scdata = array(
         		           'org_code'=>$_POST['orgprofile'],
-                         	   'sc_code'=>$_POST['institutecode'],
+                         	'sc_code'=>$_POST['institutecode'],
                    		   'sc_name'=>$_POST['name'],
 		                   'sc_nickname'=>$_POST['nickname'],
 		                   'sc_address'=>$_POST['address'],
@@ -2072,14 +2091,14 @@ class Setup extends CI_Controller
 		                   'sc_incharge'=>$_POST['incharge'],
 		                   'sc_mobile'=>$_POST['mobile'],
                     );
-                     	$scflag=$this->common_model->insertrec('study_center', $data) ;
+                     	$scflag=$this->common_model->insertrec('study_center', $scdata) ;
                         if(!$scflag)
                         {
                                 $this->logger->write_logmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name']  );
                                 $this->logger->write_dblogmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name'] );
                                 $this->session->set_flashdata('err_message','Error in adding Study center - ' . $data['sc_name'] . '.', 'error');
-                                //redirect('setup/sc');
-				 $this->load->view('setup/sc');
+                                redirect('setup/sc');
+				// $this->load->view('setup/sc');
                         }
                         else{
                                 $this->logger->write_logmessage("insert"," add Study center ", "Study center record added successfully.".$data['sc_name']  );
@@ -2117,10 +2136,10 @@ class Setup extends CI_Controller
      * @return type
      */
     public function viewsc() {
-        $this->result = $this->common_model->get_list('study_center');
+        $data['result'] = $this->common_model->get_list('study_center');
         $this->logger->write_logmessage("view"," View Study center list", "study center list display");
         $this->logger->write_dblogmessage("view"," View Study center list", "study center list display");
-	$this->load->view('setup/viewsc',$this->result);
+	   $this->load->view('setup/viewsc',$data);
        }
  /* this function is used for delete study center record */
 

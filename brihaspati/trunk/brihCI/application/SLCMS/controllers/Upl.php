@@ -31,8 +31,8 @@ class Upl extends CI_Controller
     // This function is used for upload logo
     public function uploadlogo(){
 	// for clearing the previous sucess/error flashdata
-	$array_items = array('success' => '', 'error' => '', 'warning' =>'');
-	$this->session->set_flashdata($array_items);
+	//$array_items = array('success' => '', 'error' => '', 'warning' =>'');
+	//$this->session->set_flashdata($array_items);
 
 	if(isset($_POST['uploadlogo'])) {
             $config = array(
@@ -55,13 +55,16 @@ class Upl extends CI_Controller
             }
             else
             {
-		$error =  array('error' => $this->upload->display_errors());
-		foreach ($error as $item => $value):
-			$ferror = $item .":". $value;
-		endforeach;
-		$this->logger->write_logmessage("update","logo update error", $ferror);
-		$this->logger->write_dblogmessage("update","logo update error", $ferror);
-		$this->session->set_flashdata('error', $ferror);
+		//$error =  array('error' => $this->upload->display_errors());
+		//foreach ($error as $item => $value):
+		//	$ferror = $item .":". $value;
+		//endforeach;
+		//$this->logger->write_logmessage("update","logo update error", $ferror);
+		//$this->logger->write_dblogmessage("update","logo update error", $ferror);
+		//$this->session->set_flashdata('error', $ferror);
+        $this->logger->write_logmessage("update","logo update error.");
+        $this->logger->write_dblogmessage("update","logo update error.");
+        $this->session->set_flashdata('error', 'Logo is not uploaded successfully.');
 		redirect('upl/uploadlogo');
             }
 	}//close ifpost
@@ -195,33 +198,53 @@ class Upl extends CI_Controller
                         $datal = explode(",", $line);
 			$flag=false;
 	//		print_r($datal);
-			if (count($datal) >= 13){
-                            $appno = $datal[0];
-                            $entexamname = $datal[1];
-                            $entexamrollno = $datal[2];
-                            $course_name = $datal[3];
-                            $branchname = $datal[4];
-                            $name = $datal[5];
-                            $email = $datal[6];
-                            $father_name = $datal[7];
-                            $marks = $datal[8];
-                            $admission_quota = $datal[9];
-                            $category  = $datal[10];
-                            $meritlist_no = $datal[11];
-                            $lastdate_admission = $datal[12];
+			//if (count($datal) >= 13){
+                           // $appno = $datal[0];
+                           // $entexamname = $datal[1];
+                            //$entexamrollno = $datal[2];
+                          //  $course_name = $datal[3];
+                        //    $branchname = $datal[4];
+                        //    $name = $datal[5];
+                        //    $email = $datal[6];
+                        //    $father_name = $datal[7];
+                         //   $marks = $datal[8];
+                         //   $admission_quota = $datal[9];
+                         //   $category  = $datal[10];
+                         //   $meritlist_no = $datal[11];
+                         //   $lastdate_admission = $datal[12];
+            if (count($datal) >= 15){
+                            $jeemainno = $datal[0];
+                $jeeappno = $datal[1];  
+                            $entexamname = $datal[2];
+                            $entexamrollno = $datal[3];
+                            $course_name = $datal[4];
+                            $branchname = $datal[5];
+                            $name = $datal[6];
+                $dob = $datal[7];   
+                            $email = $datal[8];
+                            $father_name = $datal[9];
+                            $marks = $datal[10];
+                            $admission_quota = $datal[11];
+                            $category  = $datal[12];
+                            $meritlist_no = $datal[13];
+                            $lastdate_admission = $datal[14];
+
 
                             // check for duplicate
                            // $isdup= $this->commodel->isduplicate('admissionmeritlist','student_email',$email);
-			   $isdup= $this->commodel->isduplicate('admissionmeritlist','application_no',$appno); 	
+			 /* $isdup= $this->commodel->isduplicate('admissionmeritlist','application_no',$appno); */	$isdup= $this->commodel->isduplicate('admissionmeritlist','jeeapplication_no',$jeeappno);  
                             if(!$isdup){
 				    	// insert into student merit list db
 					$dataurt = array(
-				           'application_no'=> $appno,
-				           'entexamname'=> $entexamname,
+				          // 'application_no'=> $appno,
+				           'jee_mainno'=> $jeemainno,
+                       'jeeapplication_no'=> $jeeappno,
+                           'entexamname'=> $entexamname,
 				           'entexamrollno'=> $entexamrollno,
 				           'course_name'=> $course_name,
 				           'branchname'=> $branchname,
 				           'student_name'=> $name,
+                           'student_dob'=> $dob,
 				           'student_email'=> $email,
 				           'father_name'=> $father_name,
 				           'marks'=> $marks,
@@ -237,7 +260,7 @@ class Upl extends CI_Controller
 					     $upimg = '<input type="image" src="http://103.246.106.195/~brihaspati/brihCI/uploads/logo/logo1.png" alt="Submit" style="width:100%" height="80">';
 
 				 //mail function
-				$mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+				/*$mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
 					   <tr><td colspan=2>".$upimg."</br><hr></td></tr>
 					   <tr><td colspan=2><b>Congrats!  Now you are eligible for taking the admission.</td></tr>
 					   <tr><td colspan=2><b>Your admissions details are given below.</td></tr>	
@@ -247,7 +270,19 @@ class Upl extends CI_Controller
 					   <tr><td><b>Merit list number :</b></td><td align=left>".$meritlist_no."</td></tr>
 					   <tr><td><b>Last date of admission : </b></td><td align=left> ".$lastdate_admission ."</td></tr>
 				   	   <tr><td colspan=2 align=right><a href='".site_url('Student/student_step0')."' style='color:yellow;' title='Click to link'>Click To Link For Admission</a></td><tr>
-					</table> " ;
+					</table> " ;*/
+
+                    $mess = "<table width='50%'; style='border:1px solid #3A5896;background-color:#8470FF;color:white;font-size:18px;' align=center border=0>
+                       <tr><td colspan=2>".$upimg."</br><hr></td></tr>
+                       <tr><td colspan=2><b>Congrats!  Now you are eligible for taking the admission.</td></tr>
+                       <tr><td colspan=2><b>Your admissions details are given below.</td></tr>  
+                       <tr height=15><td colspan=2></td></tr>
+                       <tr><td width=370><b>JEE Main Number : </b></td><td align=left>".$jeemainno."</td></tr> 
+                       <tr><td><b>JEE Application Number : </b> </td><td align=left>".$jeeappno."</td></tr>
+                       <tr><td><b>Merit list number :</b></td><td align=left>".$meritlist_no."</td></tr>
+                       <tr><td><b>Last date of admission : </b></td><td align=left> ".$lastdate_admission ."</td></tr>
+                       <tr><td colspan=2 align=right><a href='".site_url('Student/student_step0')."' style='color:yellow;' title='Click to link'>Click To Link For Admission</a></td><tr>
+                    </table> " ;
 
                                            // $mess="Congrats!  Now you are eligible for taking the admission. \n Your admissions details are given below - \n Hall ticket number - ".$entexamrollno." \n Program name - ".$course_name ." ( ".$branchname ." )  \n  Merit list number - ".$meritlist_no." \n Last date of admission - ".$lastdate_admission." \n Kindly check the website - base_url()";
                                             $mails = $this->mailmodel->mailsnd($email, $sub, $mess);

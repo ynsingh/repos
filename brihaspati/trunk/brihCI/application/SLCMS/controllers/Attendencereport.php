@@ -72,7 +72,8 @@ class Attendencereport extends CI_Controller
             $attendencedate = $this->commodel->get_distinctrecord('student_attendance',$selectfield,$data1);
             //get academic session information
             $selectsessiondata = array('sed_sessionsdate','sed_sessionedate');
-            $wheresession = array('sed_acadyear' => $acadyear, 'sed_sem' => $sem);
+            //$wheresession = array('sed_acadyear' => $acadyear, 'sed_sem' => $sem);
+    $wheresession = array('sed_acadyear' => $acadyear);
             $sessiondata = $this->commodel->get_distinctrecord('set_date',$selectsessiondata,$wheresession);
             $sdate = "";
             $edate = "";

@@ -5,7 +5,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-    <head>    
+    <head>  
+    <title>Add Teacher List</title>    
         <?php $this->load->view('template/header'); ?>
        
         <?php //$this->load->view('template/menu');?>
@@ -165,13 +166,14 @@ function getpaperName(idcomb){
    <div> 
    <form id="myform" action="<?php echo site_url('map/subjectteacher');?>" method="POST" class="form-inline">
    <table>
- 	<tr>
+  	<tr>
             <td>Campus Name :</td>
             <td>
             	<select name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">
                 <option value="" disabled selected >------Select Campus Name---------------</option>
 		<?php foreach($this->scresult as $dataspt): ?>
-		<option value="<?php echo $dataspt->sc_id; ?>" ><?php echo $dataspt->sc_name; ?></option>
+		<!--<option value="<?php echo $dataspt->sc_id; ?>" ><?php echo $dataspt->sc_name; ?></option> -->
+    <option value="<?php echo $dataspt->org_code; ?>" ><?php echo $dataspt->org_name; ?></option>
                 <?php endforeach; ?>
            </td>
       </tr>

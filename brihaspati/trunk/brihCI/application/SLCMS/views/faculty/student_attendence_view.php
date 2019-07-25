@@ -245,7 +245,8 @@
 		//$scid = $this->cmodel->get_listspfic1('student_program','sp_sccode','sp_smid',$getname->satd_smid)->sp_sccode;
 		$scid = $getname->satd_scid;
 		if($scid > 0){
-			$scname = $this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+			//$scname = $this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+			$scname = $this->cmodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
 			if(!empty($scname)){
                     		 echo "<td>".$scname."</td>";
              		 }

@@ -3,7 +3,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-    <head>    
+    <head> 
+    <title>Fees Detail</title>   
         <?php $this->load->view('template/header'); ?>
           <!--<h1>Welcome <?//= $this->session->userdata('username') ?>  </h1>-->
           <?php //$this->load->view('template/stumenu'); ?>
@@ -21,9 +22,12 @@
     </head>    
     <body>
 <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    //echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<table style=\"padding: 10px 0px 0px 10px;width:100%;\">";
                     echo "<tr valign=\"top\">";
-                    echo "<td>";
+                    echo "<td  style='width:53%;' align=right>";
+                  echo "<b>Fees Record</b>";
+             echo "<td>";
                     $help_uri = site_url()."/help/helpdocstudent#FeesRecord";
                     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:60%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
                     echo "</td>";
@@ -47,8 +51,8 @@
         	</div>
         </td></tr>  
         </table>  
-        <br/>
-      <!--  <a href="<?php echo site_url(); ?>/studentrecord/mypdf">pdf</a>-->
+        
+      <!--  <a href="<?php //echo site_url(); ?>/studentrecord/mypdf">pdf</a>-->
       <!-- <div class="panel panel-primary"> -->
             <table cellpadding="16" class="TFtable">
             <thead >
@@ -64,6 +68,7 @@
                 <th>Action</th>
             </tr>
 	<?php
+  if(!empty($this->result)){
 	    foreach($this->result as $row){
             	echo "<tr align=\"center\">";
 		/*echo "<td>" . $row->sfee_spid ."</td>";*/
@@ -92,6 +97,9 @@
 		<?php
 		echo "</tr>";
 		}
+    }else{
+    echo "<tr align=\"center\">"; echo "<td colspan=9 style='text-align:center;'> <b>Your Fees Not Reconciled !</b>  </td>";  echo "</tr>";
+  }
 	?>
         </thead>
         <tbody>

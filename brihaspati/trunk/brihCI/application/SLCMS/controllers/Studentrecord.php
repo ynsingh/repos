@@ -18,6 +18,7 @@ class Studentrecord extends CI_Controller
         $this->load->model("Login_model", "logmodel");
         $this->load->model("Common_model", "commodel");
         $this->load->model("User_model", "usrmodel");
+        $this->load->model("Student_model", "stumodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -45,7 +46,8 @@ class Studentrecord extends CI_Controller
 		$userid = $this->session->userdata('id_user');
         	$smid =$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
         	$whdata= array('sfee_smid' => $smid,'sfee_reconcilestatus' => 'Y');
-        	$this->result = $this->commodel->get_listarry('student_fees','*',$whdata);
+
+        	$this->result = $this->commodel->  get_listarry('student_fees','*',$whdata);
                 $this->logger->write_logmessage("view"," View map user with role setting", "user map setting details...");
                 $this->logger->write_dblogmessage("view"," View map user with role setting", "Role setting details...");
                 $this->load->view('student/feesrecord',$this->result);
@@ -124,20 +126,167 @@ class Studentrecord extends CI_Controller
 	}
    }
 
-   // marks display to te student
+   // marks display to student
    public function marksrecord()
       {
         $userid = $this->session->userdata('id_user');
         $smid = $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
         $whdata= array('smr_smid' => $smid);
-        $this->result = $this->commodel->get_listarry('student_marks','*',$whdata);
-        print_r($this->result);
+        $stumarks = $this->commodel->get_listarry('student_marks','*',$whdata);
+        $data['stumarks'] = $stumarks;  
+             //print_r($this->result);
         $this->logger->write_logmessage("view"," View Student program and marks", "View Student program and marks");
         $this->logger->write_dblogmessage("view"," View Student program and marks", "View Student program and marks");
-        $this->load->view('student/studentmarks');
+       $this->load->view('student/stu_semmarks',$data);
         //$this->load->view('student/studentmarks',$this->result);
        }
 
+// grade display to student
+   public function graderecord()
+      {
+        $userid = $this->session->userdata('id_user');
+        $smid = $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+        $whdata= array('smr_smid' => $smid);
+        $stumarks = $this->commodel->get_listarry('student_marks','*',$whdata);
+    $data['stumarks'] = $stumarks;  
+      //  print_r($data['stumarks']);
+        $this->logger->write_logmessage("view"," View Student program and marks", "View Student program and marks");
+        $this->logger->write_dblogmessage("view"," View Student program and marks", "View Student program and marks");
+        $this->load->view('student/stu_semgradecard',$data);
+        //$this->load->view('student/studentmarks',$this->result);
+       }
+
+
+    public function marksrecorddw(){
+        $userid = $this->session->userdata('id_user');
+            $smid = $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+            $whdata= array('smr_smid' => $smid);
+            $stumarks = $this->commodel->get_listarry('student_marks','*',$whdata);
+        $data['stumarks'] = $stumarks;  
+            //  print_r($data['stumarks']);
+            $this->logger->write_logmessage("view"," View Student program and marks", "View Student program and marks");
+            $this->logger->write_dblogmessage("view"," View Student program and marks", "View Student program and marks");
+
+
+        $this->load->libraries('pdf');
+            $this->pdf->load_view('student/stu_semmarksdw',$data);
+            $this->pdf->render();
+            $this->pdf->stream("feesreceipt.pdf");
+    }
+
+    public function gradecarddw(){
+        $userid = $this->session->userdata('id_user');
+            $smid = $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+            $whdata= array('smr_smid' => $smid);
+            $stumarks = $this->commodel->get_listarry('student_marks','*',$whdata);
+        $data['stumarks'] = $stumarks;  
+            //  print_r($data['stumarks']);
+            $this->logger->write_logmessage("view"," View Student program and marks", "View Student program and marks");
+            $this->logger->write_dblogmessage("view"," View Student program and marks", "View Student program and marks");
+
+
+        $this->load->library('pdf');
+            $this->pdf->load_view('student/stu_semgradecarddw',$data);
+            $this->pdf->render();
+            $this->pdf->stream("feesreceipt.pdf");
+    }
+
+
+    public function subjectrecorddw(){
+        $userid = $this->session->userdata('id_user');
+        $smid = $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+        //$sem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_smid',$smid)->sp_semester;
+        //$whdata= array('sp_smid' => $smid );//, 'sp_semester' => $sem);
+        //$data['subres'] = $this->commodel->get_listarry('student_program','sp_id',$whdata);
+        $stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$smid);
+            $degree_id = $stud_prg_rec->row()->sp_programid;
+            $noofsemester = sizeof($stud_prg_rec->result());
+        $sp_id=$this->uri->segment(3);
+        $whdata= array('sp_id' => $sp_id , 'sp_smid' => $smid );
+        $data['subres'] = $this->commodel->get_listarry('student_program','*',$whdata);
+        
+        //print_r($data['subres']);die;
+            $this->logger->write_logmessage("view"," View Student program and  subject", "View Student program and  subject");
+            $this->logger->write_dblogmessage("view"," View Student program and  subject", "View Student program and  subject");
+            
+        $this->load->library('pdf');
+            $this->pdf->load_view('student/subjectrecorddw',$data);
+            $this->pdf->render();
+            $this->pdf->stream("feesreceipt.pdf");
+    }
+
+
+
+    public function admitcard(){
+        $suid=$this->session->userdata('id_user');
+        //print_r($suid);
+        $Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
+        
+        $acadyer = $this->usrmodel->getcurrentAcadYear();
+        $data['name']=$this->commodel->get_listspfic1("student_master","sm_fname","sm_userid",$suid)->sm_fname;
+        
+        //$this->enrono=$this->commodel->get_listspfic1("student_master","sm_enrollmentno","sm_userid",$suid)->sm_enrollmentno;
+        //$this->rollno=$this->commodel->get_listspfic1("student_entry_exit","senex_rollno","senex_smid",$Stuid)->senex_rollno;
+        
+        $catid = $this->commodel->get_listspfic1('student_master','sm_category','sm_id',$Stuid)->sm_category;
+        $data['caste'] = $this->commodel->get_listspfic1('category','cat_name','cat_id',$catid)->cat_name;
+        $data['rollno'] = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_id',$Stuid)->senex_rollno;
+        
+                $semestertype = $this->usrmodel->getcurrentSemester();
+                $semesterrec = $this->stumodel->get_semester_no($Stuid,$acadyer);
+            $semsize = sizeof($semesterrec);
+        //$this->curresem = $semsize;
+        //$getspid = array('sp_smid' => $Stuid, 'sp_semester' => $semsize);
+            //$spstid = $this->commodel->get_listspficemore('student_program','sp_id',$getspid);
+        $deptid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$Stuid)->sp_deptid;
+        $prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
+        $data['prgname'] = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+        $data['brname'] = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
+
+        $getspid = array('exsc_prgid' => $prgid, 'exsc_semester' => $semsize);
+        $select = 'exsc_centerid,exsc_examname,exsc_examdatetime';
+            $data['exam'] = $this->commodel->get_listspficemore('studentexam_schedule',$select,$getspid);
+        
+    
+        $data['mname'] = $this->commodel->get_listspfic1('student_parent','spar_mothername','spar_smid',$Stuid)->spar_mothername;       
+        $data['fname'] = $this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$Stuid)->spar_fathername;
+        $data['gender'] = $this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$Stuid)->sm_gender;
+        
+        //postal address detail
+        $stupadd = $this->commodel->get_listspfic1('student_parent','spar_paddress','spar_smid',$Stuid)->spar_paddress;
+        $stupcity=$this->commodel->get_listspfic1('student_parent','spar_pcity','spar_smid',$Stuid)->spar_pcity;
+        //$this->ppost=$this->commodel->get_listspfic1('student_parent','spar_ppostoffice','spar_smid',$id)->spar_ppostoffice;
+        //$this->pdist=$this->commodel->get_listspfic1('student_parent','spar_pdistrict','spar_smid',$id)->spar_pdistrict;
+        $stupstat=$this->commodel->get_listspfic1('student_parent','spar_pstate','spar_smid',$Stuid)->spar_pstate;
+        $stuppin=$this->commodel->get_listspfic1('student_parent','spar_ppincode','spar_smid',$Stuid)->spar_ppincode;
+
+        $data['paddress'] = $stupadd.' , '.$stupcity.' , '.$stupstat.' , '.$stuppin;
+
+        //get photo or sign
+        $data['phresult'] = $this->commodel->get_listspfic1('student_master','sm_photo','sm_id',$Stuid)->sm_photo;
+        $data['signresult'] = $this->commodel->get_listspfic1('student_master','sm_signature','sm_id',$Stuid)->sm_signature;
+        $data['deptid'] = $deptid;
+        $data['acadyer'] = $acadyer;    
+        $data['Stuid'] = $Stuid;
+        $data['prgid'] = $prgid;
+        //$this->load->library('pdf');
+            //$this->pdf->load_view('request/stu_admitcarddw',$data);
+            //$this->pdf->render();
+            //$this->pdf->stream("Admit Card.pdf"); 
+            ///$temp = $this->load->view('request/stu_admitcarddw',$data, TRUE);
+                //$dirpath = 'uploads/SLCMS/adminstudent_exam/'.$acadyer.'/admit_card/'.$deptid.'/'.$Stuid.'.pdf';
+
+            //if (file_exists($dirpath)) {
+                //$this->commodel->genpdf($temp,$dirpath);
+
+            //}
+            //else{
+                //$this->session->set_flashdata('err_message','Your Admit Card Is Not Updated By Administrator.');
+                //redirect('studenthome');
+                //}
+    
+        $this->load->view('request/stu_admitcarddw',$data);
+    }
 /*******************************************************Download Link Code Start*************************************************************************/
 	public function admissionformdw(){
 		$userid = $this->session->userdata('id_user');

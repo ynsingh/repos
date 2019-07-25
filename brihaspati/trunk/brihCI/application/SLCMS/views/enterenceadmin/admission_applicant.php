@@ -117,7 +117,8 @@ function myFunction() {
 	<thead style="">
 		<tr>
 			<th>Sr. No.</th>
-			<th>Hall Ticket Number</th>
+			<!--<th>Hall Ticket Number</th>-->
+			<th>Application Number</th>		
 			<th>Student Name</th>
 			<th>Father Name</th>
 			<th>Mother Name</th>
@@ -174,7 +175,8 @@ function myFunction() {
 
 				<td><?php echo $this->commodel->get_listspfic1('student_master','sm_religion','sm_id',$asmid)->sm_religion;?></td>
 				<td><?php echo $address; ?></td>
-				<td><?php echo $prgcatname; ?></td>
+			<!--	<td><?php echo $prgcatname; ?></td>-->
+			<td><?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$progcatid)->prgcat_name; ?></td>
 				<td><?php echo $prgbranch?></td>
 			</tr>		
 	<?php }	if (!empty ($admrecrd)){ ?>

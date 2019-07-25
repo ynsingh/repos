@@ -72,8 +72,8 @@ class Dependrop_model extends CI_Model
 
      /* This function has been created for get list of Department on the basis of campus */
      public function getdeptlist_model($scid){
-            $deptcode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $scid)->sc_code;
-            $resultsc = $this->commodel->get_listrow('Department','dept_sccode', $deptcode);
+           // $deptcode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $scid)->sc_code;
+            $resultsc = $this->commodel->get_listrow('Department','dept_sccode', $scid);
             $dept_data = $resultsc->result();
             if(count($dept_data)>0){
                 $dept_select_box = '';

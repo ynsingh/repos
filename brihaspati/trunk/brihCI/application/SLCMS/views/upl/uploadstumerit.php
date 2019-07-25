@@ -73,7 +73,10 @@
 	echo "<b>";
 	echo " Note :The file should be in csv or txt file. The format of admission merit list file is : ";
 	echo "<br>";
-	echo "application no,entrance exam name,hall ticket number,course name,branch name,student name ,student email,father name,marks,admission quota,category,meritlist no,last date of admission";
+	//echo "application no,entrance exam name,hall ticket number,course name,branch name,student name ,student email,father name,marks,admission quota,category,meritlist no,last date of admission";
+	echo "<br>";
+	echo "JEE Main no,JEE application no,entrance exam name,hall ticket number,course name,branch name,student name,student DOB ,student email,father name,marks,admission quota,category,meritlist no,last date of admission";
+	echo "<br>";
 	echo "<br>";
 	echo "123456,JEE,17009875,Master Of Art,Hindi,Ram Kumar,ramkumar@iitk.ac.in,Mohan Kumar,400,General,General,1,2017-08-27";
 	echo "</b>";

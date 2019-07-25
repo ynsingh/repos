@@ -12,8 +12,8 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
 <script>
-	 $(document).ready(function(){
-	 $('#tnt').on('change',function(){
+     $(document).ready(function(){
+     $('#tnt').on('change',function(){
                 var worktype = $(this).val();
                 //alert(worktype);
                 if(worktype == ''){
@@ -40,7 +40,7 @@
                     });
                 }
             }); 
-	});
+    });
 </script>
 </head>
 <body>

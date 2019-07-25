@@ -50,7 +50,7 @@
                 $('#spreq_subid').html(data.replace(/^"|"$/g, ''));
                 }
              });
-        }*/
+	}*/
 
         function getpapername(combid){
                 var subid = $('#spreq_subid').val();

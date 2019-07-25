@@ -11,8 +11,10 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
+
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 <table style="width:100%;">
+
 	<tr><td>
 		<?php
                 echo "<td align=\"left\" width=\"33%\">";
@@ -28,6 +30,7 @@
 	<div class="scroller_sub_page">
         <table  class="TFtable" >
             <thead><tr>
+                <th>Sr. No.</th>
                 <th>Student Name</th>
                 <th>Father's Name</th>
                 <th>Address</th>
@@ -41,7 +44,9 @@
                 </tr>
                 <?php
                         if( count($this->tresult) ):
+                            $serial_no = 1;
                                 foreach($this->tresult as $row){
+
 					   if(!empty($this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)))
 						{$stufname = $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;}
 					   if(!empty( $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)))
@@ -67,7 +72,8 @@
 						$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;	
 					
                                         echo "<tr>";
-                                        echo " <td>";
+
+                                        echo "<td>".$serial_no++;
 					if(!empty($stufname)){
                                         echo $stufname; }
                                        if(!empty($stulname)){ echo $stulname; }
@@ -85,6 +91,7 @@
                                         echo " <td align=\"center\"> ";
                                         if(!empty($stu_mobile)){ echo $stu_mobile; }
                                         echo "</td>";
+                                        echo " <td>";
                                         echo " <td align=\"center\">";
                                         if(!empty($stu_center)){ echo $stu_center; }
                                         echo "</td>";
@@ -98,6 +105,7 @@
 					echo " ) ";
                                         echo "</td>";
                                         echo " <td>";
+
 					$semester=$this->commodel->get_listspficarry('student_program','sp_semester','sp_smid ',$smid);
 					foreach($semester as $row1){
 						$sem= $row1->sp_semester;
@@ -108,7 +116,7 @@
 
                                 };
                         else :
-                                echo "<td colspan=\"16\" align=\"center\"> No Records found...!</td>";
+                                echo "<td  =\"17\" align=\"center\"> No Records found...!</td>";
                         endif;
 
                 ?>

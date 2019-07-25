@@ -79,7 +79,8 @@
 	echo " ";
 //	echo $this->result->sm_lname;
 	echo "</td></tr>";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Campus</b> </td><td>";
+	//echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Campus</b> </td><td>";
+    echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Institute</b> </td><td>"; 
 	echo $sc_name; //name of the campus
 	echo "</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Department<b></td><td>";

@@ -61,12 +61,25 @@
 
     <?php  
         $count=0;
+        $scid=0;
 	if(!empty($getdatelist)){
          foreach($getdatelist as $row)  
          {
+            if($scid !=$row->sed_campuscode){
+            ?>
+            <!--    <tr>
+                    <td colspan=10 style="font-size:18px;text-align:center;">
+                    <b>Institute Name :</b> 
+                                <?php
+                                    echo $this->common_model->get_listspfic1('org_profile','org_name','org_id',$row->sed_campuscode)->org_name;
+                                ?></td>
+                </tr>-->
+                        <?php $scid =$row->sed_campuscode;
+            $count = 1;
+            
 		
-            $count = $count + 1;
-    ?>
+           // $count = $count + 1;
+    }?>
             <tr>
             <td><?php echo $count;?></td>
             <td><?php echo $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->sed_campuscode)->sc_name;?></td>

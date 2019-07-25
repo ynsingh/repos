@@ -14,6 +14,45 @@
         <?php $this->load->view('template/header'); ?>
         <?php //$this->load->view('template/menu'); ?>
 </div>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+
+<script type="text/javascript">
+      $(document).ready(function(){
+            //document.getElementById("t").style.display = "none";
+
+            $('#semester').on('change',function(){
+            var sem = $(this).val();
+            var program_id = $('#program').val();
+            var wtg=sem+","+program_id;
+//    alert(wtg);
+                if(program_id == ''){
+                    $('#subject').prop('disabled',true);
+                }
+               else{
+             
+                  $('#subject').prop('disabled',false);
+                  $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/setup/joindb",
+                      type: "POST",
+                        data: {"gwt" : wtg},
+                        dataType:"html",
+                        success:function(data){
+                            $('#subject').html(data.replace(/^"|"$/g, ''));
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+      });
+
+
+       })
+</script>
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
  <table width= "100%"> 
             <tr>
@@ -57,18 +96,32 @@
             </td></tr>
 </table>
  <div>
+    <?php 
+        $this->prgresult=$this->common_model->get_list('program');
+         //print_r($this->prgresult);?>
      <form action="<?php echo site_url('setup/fees');?>" method="POST" class="form-inline">    
-                <table>
-                	<tr><td><label> Program Name:</label> </td><td>
-			<select name="program" style="width:100%;">
-                        <option value=""disabled selected>---------Select program ---------</option>
+        <table class="TFtable">
+                	<tr><td><label> Program Name:</label> </td>
+                    <td>
+			     <select name="program" id="program" style="width:100%;">
+                        <option   value=""disabled selected>---------Select program ---------</option>
+                      <?php  //print_r($this->prgresult);?>
                         <?php foreach($this->prgresult as $datas): ?>
-                        <option value="<?php echo $datas->prg_name; ?>"><?php echo $datas->prg_name; ?></option>
-                        <!-- <option value="<?php echo $datas->prg_id; ?>"><?php echo $datas->prg_name."(".$this->common_model->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")"; ?></option> -->
+                        <!--<option value="<?php echo $datas->prg_name; ?>"><?php echo $datas->prg_name; ?></option>-->
+                        <option  value="<?php echo $datas->prg_id; ?>"><?php echo $datas->prg_name."(".$this->common_model->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")"; ?></option> 
                         <?php endforeach; ?>
                         </select>
                         </td></tr>
+                        <tr>
 			<?php
+           //$z=$this->common_model->get_listspfic2('program','prg_id','prg_name','Pgdca');
+           //print_r($z);
+            // $z=$this->common_model->get_listspfic2('program','prg_id','prg_name','Pgdca');
+            // foreach($z as $y):
+            //     if('Pgdca'==$y->prg_name){
+            //         echo $y->prg_name;
+            //     }
+          //  endforeach;
 			echo "<td>";
 	                echo form_label('Academic Year', 'acadyear');
         	        echo "</td>";
@@ -80,8 +133,21 @@
         	        $j=$i+1;
 	                echo '<option value="'.$i.' - '.$j.'">'.$i.' - '.$j.'</option>';
                         }
-        	        echo " </select>";
+        	        echo " </select>"; 
 			?>
+      <!--<tr id="tr" style="float: right">
+        <td><label>Subject :</label></td>
+          <td>
+            <select name="subject" class="my_dropdown" style="width: 100%;">
+              <option id="sub" class="dropdown-item"></option>
+
+          </select>
+        </td>-->
+
+      </tr>
+
+   
+
 			<tr>
 			<td><label>Semester :</label></td>
                 	<td>
@@ -97,6 +163,19 @@
                         <option value="8" class="dropdown-item">8</option>
                     	</select>
                 	</td></tr>
+
+           <tr>
+
+      <td><label>Subject Name :</label></td>
+      <td>  
+      <select class="my_dropdown" id="subject" name="subject name"style="width:100%;"align="left"> 
+      
+      <option class ="dropdown-item" value=""disabled selected>------Select Subject------</option>
+      
+        </select>
+
+     </td>
+      </tr>
 
 			<tr><td><label> Category:</label> </td><td>
                         <select name="category" style="width:100%;">
@@ -149,7 +228,7 @@
                         <td></td>
                         <td>
                         <button name="fees">Add Fees </button>
-			<button name="clear">Clear</button>
+			                  <button name="clear">Clear</button>
                         </td>
                         </tr>
                     </form>

@@ -3,7 +3,8 @@
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-    <head>    
+    <head>  
+      <title>Add User Role</title>
          <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 <script>
@@ -24,11 +25,12 @@
                    data: {"campusname" : sc_code},
                    dataType:"html",
                    success:function(data){
+                     // alert(data);
                       $('#scid').html(data.replace(/^"|"$/g, ''));
                        
                    },
                    error:function(data){
-                       alert("error occur..!!");
+                      alert("error occur..!!");
                  
                    }
                });
@@ -83,11 +85,14 @@
  <div>
         <table>
            <form action="<?php echo site_url('map/userroletype');?>" method="POST">
-                         <tr><td> Choose your Campus: </td><td>
-                         <select name="campus" id="camp" style="width:150%;">
-                         <option value="">-------------Select Campus---------------</option>
+                <!-- <tr><td> Choose your Campus: </td><td>  -->
+                  <tr><td> Choose your Institute : </td><td>
+                    <select name="campus" id="camp" style="width:150%;">
+                         <option value="">-------------Select Institute---------------</option>
                          <?php foreach($this->scresult as $datas): ?>
- 		         <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
+ 		      <!--   <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; 
+             ?></option>-->
+             <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
                          <?php endforeach; ?>
                          </select>
                         </td></tr><tr><td>

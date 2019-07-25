@@ -65,9 +65,9 @@
 
 	   <thead>
 	        <th>No</th>
-                <th>Campus Name</th>
+             <!--   <th>Campus Name</th>-->
                 <th>Deptt. Name</th>
-		<th>Prog Category</th>
+		<!--<th>Prog Category</th>-->
 		<th>Prog Pattern</th>
 		<th>Prog Name</th>
 		<th>Prog Branch</th>
@@ -81,27 +81,66 @@
 		<!--<th>Creator Name</th>
 		<th>Creatoion Date</th>-->
 		<th>Action</th>
-    <!--<td><strong>No</strong></td><td><strong>Program Category</strong></td><td><strong>Program Name</strong></td><td><strong>Program Branch</strong></td> <td><strong>Seat Available</strong></td><td><strong>Program Code</strong></td><td><strong>Program Short</strong></td><td><strong>Program Description</strong></td><td><strong>Program Min Time</strong></td><td><strong>Program Max Time</strong></td><td><strong>Creator Name</strong></td><td><strong>Creatoion Date</strong></td><td><strong>Edit/Delete</strong></td> -->
+    
 	</thead>
 
-    <?php  
-        $count=0;
+    <?php 
+    $count=0; 
+    $orid=0;
+    $prgcatid='';
+       // $count=1;
          foreach($prgres as $row)  
          {
+    
+    //$orgid = $this->common_model->get_listspfic1('org_profile','org_id','org_id',$row->prg_scid)->org_id;
+    if($orid != $row->prg_scid){
+     ?>
+       <tr>
+
+                <td colspan=15 style="font-size:18px;text-align:center;"><b>Institute Name :</b>
+        <?php if(!empty($row->prg_scid)){
+                                echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;
+                }?></td>
+        </tr>   
+     <?php $orid = $row->prg_scid; 
+     $count= 0;
+     $prgcatid='';
+    }
+    
+    if($prgcatid != $row->prg_category){
+    
+         ?> 
+       <tr>
+
+                <td colspan=15 style="font-size:18px;"><b>Programme Category :</b>
+        <?php //echo $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name; 
+              echo  $row->prg_category;
+        echo " &nbsp";"&nbsp";"&nbsp";"&nbsp";?>
+   
+     <?php 
+    
+     echo "</td>";
+        echo "</tr>";
+     $prgcatid =$row->prg_category; 
+    $count= 0;
+    
+        
+    } 
+    
             $count = $count + 1;
     ?>
             <tr>
             <td><?php echo $count;?></td>
-            <td><?php echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;?></td>
+           <!-- <td><?php //echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;?></td>-->
             <td><?php echo $this->common_model->get_listspfic1('Department','dept_name','dept_id',$row->prg_deptid)->dept_name;?></td>
-            <td><?php echo $row->prg_category;?></td>
+            <!--<td><?php echo $row->prg_category;?></td> -->
             <td><?php echo $row->prg_pattern;?></td>
             <td><?php echo $row->prg_name;?></td>
             <td><?php echo $row->prg_branch;?></td>
             <td><?php echo $row->prg_code;?></td>
             <td><?php echo $row->prg_short;?></td>
             <td><?php echo $row->prg_desc;?></td>
-             <td><?php echo $row->prg_credit;?></td>
+            <td><?php echo $row->prg_credit;?></td>
             <td><?php echo $row->prg_seat;?></td>
             <td><?php echo $row->prg_mintime;?></td>
             <td><?php echo $row->prg_maxtime;?></td>
@@ -111,7 +150,8 @@
              <?php //echo anchor('setup/deleteprogram/' . $row->prg_id , "Delete", array('title' => 'Delete Program', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')"));?>
             </td>
     <?php        
-         }?>  
+      //   }
+     }?>  
     </tr>     
     </table></div>
 <div>
@@ -119,4 +159,3 @@
 </div>
 </body>
 </html>
-

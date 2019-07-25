@@ -95,12 +95,13 @@
 	            </td>
                  </tr>  
 		 <tr>
-                    <td >University Name :</td>
+                  <!--  <td >University Name :</td> -->
+                    <td>Institute Name :</td>
                     <td><?php  echo $this->orgname->org_name ;?></td>
                  </tr>
                  <tr>
-                     <td >Campus Name :</td>
-                     <td><?php  echo $this->campusname->sc_name ;?></td>
+                 <!--    <td >Campus Name :</td>
+                     <td><?php  echo $this->campusname->sc_name ;?></td> -->
                  </tr>
 	         </div>
                  </div>

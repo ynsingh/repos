@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Welcome to IGNTU</title>
+        <title>Welcome to SLCMS</title>
+        <!--<link rel="shortcut icon" href="<?php //echo base_url('assets/images'); ?>/index.jpg">-->
+	<link rel="icon" href="<?php echo base_url('uploads/logo'); ?>/logo.png" type="image/png">	
 	
     </head>
     <body>

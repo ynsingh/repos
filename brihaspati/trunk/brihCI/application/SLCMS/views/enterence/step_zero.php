@@ -10,7 +10,7 @@
 ?>
 <html>
 <head>
-<title>IGNTU - Entrance Exam Registraion</title>
+<title>SLCMS - Entrance Exam Registraion</title>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">

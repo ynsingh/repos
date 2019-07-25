@@ -34,6 +34,21 @@ input[type='button']{font-size:16px;}
 	<div class="welcome"><h2>Welcome : <?php echo $email?></h2></div>
 
 	<?php $this->load->view('student/stuStepshead');?>
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php 
+	    if(!empty($_SESSION['success'])){	
+		if(isset($_SESSION['success'])){?>
+         <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
+         <?php
+          } };
+         ?>
+	
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>
 	<center>
 </br>
 

@@ -97,7 +97,8 @@
         </div>
 
         <form action="<?php echo site_url('Attendencereport/attendencereport');?>" method="POST">
-        <table style="margin-left:30px; width:96%;" >
+        <!--<table style="margin-left:30px; width:96%;" >-->
+            <table style="width:100%;" >
             <tr style="font-weight:bold; background-color:lightslategray;">
                 <td> <span style="color:white;margin-left:2px;">Select Program :</span>
                     <select name="program_branch" id="program_branch" onchange="getsemester(this.value);">
@@ -138,7 +139,8 @@
         <?php 
         //print_r($prgsubpap);
         ?>
-        <table style="margin-left:30px; width:96%"; class="TFtable">
+        <!--<table style="margin-left:30px; width:96%"; class="TFtable">-->
+            <table style="width:100%"; class="TFtable">
             <thead>
             <tr style="text-align: center;">
             <th>Sr.No</th>
@@ -219,7 +221,8 @@
                     foreach($attenddate as $todate)
                     {
                         $todate;
-                        $studwhere = array('satd_prgid' => $prgid, 'satd_sem' => $sem, 'satd_subid' => $subjectid, 'satd_papid' => $paperid, 'satd_acadyear' => $academicyear, 'satd_adate' => $todate, 'satd_smid' => $stud_smid);
+                      //  $studwhere = array('satd_prgid' => $prgid, 'satd_sem' => $sem, 'satd_subid' => $subjectid, 'satd_papid' => $paperid, 'satd_acadyear' => $academicyear, 'satd_adate' => $todate, 'satd_smid' => $stud_smid);
+                        $studwhere = array('satd_prgid' => $prgid, 'satd_subid' => $sub, 'satd_papid' => $pap, 'satd_acadyear' => $academicyear, 'satd_adate' => $todate, 'satd_smid' => $stud_id);
                         $attendencefield = 'satd_astatus';
                         $attendencevalue = $this->commodel->get_listspficemore('student_attendance',$attendencefield,$studwhere);
                         foreach($attendencevalue as $row)

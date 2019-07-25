@@ -4,6 +4,7 @@
 
 <html>
     <head>    
+      <title>Subjects Record</title>
         <?php $this->load->view('template/header'); ?>
          <!-- <h1>Welcome <?//= $this->session->userdata('username') ?>  </h1>-->
           <?php //$this->load->view('template/stumenu'); ?>
@@ -21,11 +22,16 @@
     </head>
     <body>
 <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    //echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<table style=\"padding: 10px 0px 0px 10px;width:100%;\" >";
                     echo "<tr valign=\"top\">";
+                    echo "<td style='width:57%;' align=right>";
+                    echo "<b>Semester Subjects Record</b>";
+                    echo "</td>"; 
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdocstudent#SubjectRecord";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
+                   // echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
+                     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -47,11 +53,12 @@
                 </div>
         </td></tr>
         </table>
-        <br/>
+       
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:" class="TFtable">
+            <!--<table cellpadding="16" style="margin-left:" class="TFtable">-->
+            <table cellpadding="16"  class="TFtable" >
             <thead >
-            <tr align="center">
+            <tr align="left">
                 <th>Program Name(Branch)</th>
                 <th>Semester</th>
                 <th>Academic Year</th>
@@ -109,7 +116,8 @@
 		}
 //		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid2)->sub_name;
 //		echo $row->sp_subid3 .','. $row->sp_subid4 .','. $row->sp_subid5 .','. $row->sp_subid6 .','. $row->sp_subid7 .','. $row->sp_subid8 .','. $row->sp_subid9 .','. $row->sp_subid10 ."</td>";
-                echo "<td>" . "<a > </a>" ."</td>";
+             //   echo "<td>" . "<a > </a>" ."</td>";
+             echo "<td>" . anchor('studentrecord/subjectrecorddw/'.$row->sp_id, "Download") . "</td>";
                 echo "</tr>";
                 }
         ?>

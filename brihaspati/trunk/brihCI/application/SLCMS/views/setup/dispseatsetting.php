@@ -43,13 +43,28 @@
       
 	        <?php
                 echo "<table border=0 class=\"TFtable\">";
-                echo "<thead><th>Sr. No.</th><th>University</th><th>Category</th><th>Pecentage(%)</th><th>Number of Seat</th><th>Action</th></tr></thead>";
-		$count=0;
+                echo "<thead><th>Sr. No.</th><th>Category</th><th>Pecentage(%)</th><th>Number of Seat</th><th>Action</th></tr></thead>";
+		//$count=0;
+        $scid=0;
                     foreach ($this->srresult as $row)
                     {
+             $orgid = $this->common_model->get_listspfic1('org_profile','org_id','org_code',$row->org_code)->org_id;
+        if($scid !=$orgid){
+            ?>
+                <tr>
+                    <td colspan=10 style="font-size:18px;">
+                    <b>University Name :</b> 
+                                <?php
+                                echo $this->common_model->get_listspfic1('org_profile','org_name','org_id',$orgid)->org_name;
+                                ?></td>
+                </tr>
+                        <?php $scid =$orgid;
+            $count=0;
+            }?>
+        <?php
                     echo "<tr>";
 	            echo "<td>" . ++$count. "</td>";
-		    echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->org_code)->org_name. "</td>";
+		   // echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->org_code)->org_name. "</td>";
                     echo "<td>" . $this->common_model->get_listspfic1('category','cat_name','cat_id',$row->category_id)->cat_name."</td>";
                     echo "<td>" . $row->percentage . "</td>";
                     echo "<td>" . $row->noofseat . "</td>";

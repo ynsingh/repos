@@ -130,11 +130,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
  <table style="width:100%;" align=right border=0>
 	<tr>
-		<td width=170><label>University Name :</label> </td>
+		<td width=170><label>Institute Name :</label> </td>
 		<td> <select class="dropdown" name="examsch_center">
-			<option disabled selected>Select University</option>
+			<option disabled selected>Select Institute</option>
 			<?php foreach($exam_center as $row){?>
-				<option value="<?php echo $row->sc_id;?>"><?php echo $row->sc_name;?></option>
+				<!--<option value="<?php echo $row->sc_id;?>"><?php //echo $row->sc_name;?></option>-->
+                <option value="<?php echo $row->org_id;?>"><?php echo $row->org_name;?></option>
 			<?php }?>
 			</select>
 	     </td>
@@ -148,7 +149,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php 
 				    foreach($pcategory as $row){
 			        ?>
-					<option value="<?php echo $row->prgcat_name;?>"><?php echo $row->prgcat_name;?>
+					<option value="<?php echo $row->prgcat_id;?>"><?php echo $row->prgcat_name;?>
 				<?php  }?>
 	  </select>
 		

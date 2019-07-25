@@ -51,11 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<td align=left><b>Verify Exam-Forms : </b></td>
 		<td align=left>
 			<select name="study_center" style="height:30px;width:100%;font-size:18px;" required>
-				<option disabled selected>Select Study Center</option>
+				<option disabled selected>Select Study Institute Name</option>
 				<?php 
 					foreach($sclist as $row){
 				?>
-						<option value="<?php echo $row->sc_id;?>"><?php echo $row->sc_name;?></option>
+					<!--	<option value="<?php// echo $row->sc_id;?>"><?php //echo $row->sc_name;?></option>-->
+					<option value="<?php echo $row->org_id;?>"><?php echo $row->org_name;?></option>
 				<?php 	}?>
 			</select>
 		</td>
@@ -63,7 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="submit" name="search" value="Search" style="font-size:18px;">
 		</td>
 		<tr>
-			<td colspan=3 align=right><span style="font-size:12px;">Select study center then click search button to view all student forms.</span></td>
+			<td colspan=3 align=right><span style="font-size:12px;">Select Institute name then click search button to view all student forms.</span></td>
 		</tr>
 	</tr>
 </form>
@@ -91,7 +92,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		foreach($getstuid as $row){
 			$smid  = $row->sp_smid;
 			$stcid = $this->commodel->get_listspfic1('student_program','sp_sccode','sp_smid',$smid)->sp_sccode;
-			$cname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$stcid)->sc_name;
+			//$cname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$stcid)->sc_name;
+			$cname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$stcid)->org_name;
 			$deptid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$smid)->sp_deptid;
 			$prgid  = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
 			$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )';

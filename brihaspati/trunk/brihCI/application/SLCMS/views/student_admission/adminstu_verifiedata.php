@@ -84,13 +84,13 @@ select{width:98%;height:40px;font-size:18px;font-size:18px;}
 			<?php echo $name;?>
 		</td>		
 		<td>	
-			<label for="nnumber">Study Centers</label></br>
+			<label for="nnumber">Institute Name</label></br>
 			<?php echo $scname;?>
 		</td>
 
 		<td>	
 			<label for="nnumber">Programme Category</label></br>
-			<?php echo $prgcat; ?>
+			<?php echo $prgcatname; ?>
 		</td>
 		<td>	
 			<label for="nnumber">Name of Programme/Course</label></br>
@@ -228,9 +228,9 @@ select{width:98%;height:40px;font-size:18px;font-size:18px;}
 	<thead>
 		<th colspan=9 style="background-color:#7e7e7e;color:white;font-size:22px;text-align:left;">Academic Details</th>
 	</thead>
-	<thead  style="background-color:#067eb7;color:white;font-size:20px;">
+	<thead  style="background-color:#067eb7;color:white;font-size:20px;text-align:left;">
 		<tr>
-			<th>Class Name</th><th>Institute Name</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>
+			<th>Class</th><th>Institute Name</th><th>Board</th><th>Subject</th><th>Passing Year</th><th>Result Status</th><th>Max Marks</th><th>Marks Obtained</th><th>Total Marks</th>
 		<tr>
 	</thead>	
 	<tbody>

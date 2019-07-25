@@ -27,7 +27,7 @@ class Adminstuexam extends CI_Controller
      */
 	public function stu_addexamcenter(){
 		$data = array('country_id' => 101);
-		 $this->cresult = $this->commodel->get_listspficemore('states','id,name',$data);
+		 $saec['cresult'] = $this->commodel->get_listspficemore('states','id,name',$data);
 
 		 if(isset($_POST['addexamcenter'])) {
                  	$this->form_validation->set_rules('eec_code','Exam Center Code','trim|xss_clean|required');
@@ -73,7 +73,7 @@ class Adminstuexam extends CI_Controller
                 	}
         	}
 
-    	$this->load->view('admin_exam/admin_stuaddexamcenter');
+    	$this->load->view('admin_exam/admin_stuaddexamcenter',$saec);
     }
 /** This function check for duplicate exam center
      * @return type
@@ -96,18 +96,18 @@ class Adminstuexam extends CI_Controller
   */
 
      public function stu_examcenter() {
-        $this->result = $this->commodel->get_list('student_examcenter');
+        $data['result'] = $this->commodel->get_list('student_examcenter');
         $this->logger->write_logmessage("view"," View Exam Center", "Exam Center details...");
         $this->logger->write_dblogmessage("view"," View Exam Center" , "Exam Center record display successfully..." );
-        $this->load->view('admin_exam/admin_stuexamcenter',$this->result);
+        $this->load->view('admin_exam/admin_stuexamcenter',$data);
        }
 
  /**This function is used for update exam center records
      */
 	
    public function stu_editexamcenter($id){
-	$data = array('country_id' => 101);
-	$this->cresult = $this->commodel->get_listspficemore('states','id,name',$data);
+	$whdata = array('country_id' => 101);
+	$data['cresult'] = $this->commodel->get_listspficemore('states','id,name',$whdata);
 	$examcenterrow=$this->commodel->get_listrow('student_examcenter','sec_id', $id);
         if ($examcenterrow->num_rows() < 1)
         {
@@ -310,7 +310,8 @@ class Adminstuexam extends CI_Controller
 	public function exam_scheduleadd(){
 		$userid = $this->session->userdata('id_user');
 		$data['pcategory'] = $this->commodel->get_list('programcategory');
-		$data['exam_center'] = $this->commodel->get_list('study_center');
+		//$data['exam_center'] = $this->commodel->get_list('study_center');
+    $data['exam_center'] = $this->commodel->get_list('org_profile');
 		$data['prgname'] =  $this->commodel->get_list('program');
 		$data['exmname'] =  $this->commodel->get_list('examtype');
 		$data['deptname'] =  $this->result = $this->commodel->get_list('Department');
@@ -368,8 +369,9 @@ class Adminstuexam extends CI_Controller
      */
 	
    public function exam_scheduleedit($id){
-	$data['exam_center'] = $this->commodel->get_list('study_center');
-	$data['exmname'] =  $this->commodel->get_list('examtype');
+	//$data['exam_center'] = $this->commodel->get_list('study_center');
+	$data['exam_center'] = $this->commodel->get_list('org_profile');
+  $data['exmname'] =  $this->commodel->get_list('examtype');
 	$examcenterrow=$this->commodel->get_listrow('studentexam_schedule','exsc_id', $id);
         if ($examcenterrow->num_rows() < 1)
         {
@@ -620,7 +622,8 @@ class Adminstuexam extends CI_Controller
 			$studata['sname'] = $sname;
 			$studata['currentacadyear']=$currentacadyear;
 			$scid = $row->sm_sccode;
-			$studata['scname'] = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+			//$studata['scname'] = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+      $studata['scname'] = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
 			$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
 			$studata['coursename'] = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '. $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )';
 			$studata['sturollno'] = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$smid)->senex_rollno;
@@ -669,7 +672,8 @@ class Adminstuexam extends CI_Controller
                 $getscid = $this->commodel->get_distinctrecord('student_program',$sdata,$wharray);
 		$data['getscid'] = $getscid;
 
-		$data['sclist'] = $this->commodel->get_list('study_center');
+		//$data['sclist'] = $this->commodel->get_list('study_center');
+    $data['sclist'] = $this->commodel->get_list('org_profile');
 
 		$this->load->view('admin_exam/adminstu_attsheet',$data);
 	}
@@ -692,7 +696,7 @@ class Adminstuexam extends CI_Controller
 		else{
 		//collect the distinct list of center
 			$scenter = $this->input->post('attstudy_center',TRUE);
-				$stcenter = $row->sc_name;
+				//$stcenter = $row->sc_name;
 				if(!empty($stcenter)){
 					$sdata = 'sp_smid,sp_deptid,sp_programid,sp_sccode';
 					$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem,'sp_sccode' => $scenter);
@@ -796,8 +800,8 @@ class Adminstuexam extends CI_Controller
                 $getverifie = $this->commodel->get_distinctrecord('student_program',$sdata,$wharray);
 		$data['getverifie'] = $getverifie;
 
-		$data['sclist'] = $this->commodel->get_list('study_center');
-		
+		//$data['sclist'] = $this->commodel->get_list('study_center');
+		$data['sclist'] = $this->commodel->get_list('org_profile');
 		$this->load->view('admin_exam/adminstu_formverifie',$data);
 	}
 

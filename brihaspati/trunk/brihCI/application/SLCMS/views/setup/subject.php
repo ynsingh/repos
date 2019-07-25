@@ -84,7 +84,7 @@ echo "<body>";
 </td><td>
      <select name="program" style="width:100%;">
                         <option value=""disabled selected>---------Select program ---------</option>
-                        <?php foreach($this->prgresult as $datas): ?>
+                        <?php foreach($prgresult as $datas): ?>
                         <option value="<?php echo $datas->prg_id; ?>"><?php echo $datas->prg_name."(".$this->common_model->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")"; ?></option>
                         <?php endforeach; ?>
                         </select>

@@ -87,6 +87,7 @@
 				<li class="new"><a style="padding: 5px 0 10px 45px;">Personnel / Education Detail</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Instructions</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Upload Files</a></li>
+				<li><a style="padding: 15px 0 10px 45px;">Check Submit Documents</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
@@ -107,6 +108,18 @@
 				<li class="active"><a style="padding: 5px 0 10px 45px;">Personnel / Education Detail</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Education</a></li>
 				<li class="new"><a style="padding: 15px 0 10px 45px;">Upload Files</a></li>
+				<li><a style="padding: 15px 0 10px 45px;">Check Submit Documents</a></li>
+				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
+				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
+			</ul>
+		<?php }?>
+				<?php if (stripos($_SERVER['REQUEST_URI'],'student_checklist') !== false) { ?>
+			<ul class="breadcrumb ">
+    				<li class="active"><a style="padding: 15px 0px 10px 30px;">Registration</a></li>
+				<li class="active"><a style="padding: 5px 0 10px 45px;">Personnel / Education Detail</a></li>
+				<!--<li class="new"><a style="padding: 15px 0 10px 45px;">Instructions</a></li>-->
+				<li class="active"><a style="padding: 15px 0 10px 45px;">Upload Files</a></li>
+				<li class="new"><a style="padding: 15px 0 10px 45px;">Check Submit Documents</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
@@ -117,6 +130,7 @@
 				<li class="active" ><a style="padding: 5px 0 10px 45px;">Personnel / Education Detail</a></li>
 				<li class="active" ><a style="padding: 15px 0 10px 45px;">Instructions</a></li>
 				<li class="active" ><a style="padding: 15px 0 10px 45px;">Upload Files</a></li>
+				<li><a style="padding: 15px 0 10px 45px;">Check Submit Documents</a></li>
 				<li class="new"><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
@@ -127,6 +141,7 @@
 				<li class="active"><a style="padding: 5px 0 10px 45px;">Personnel / Education Detail</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Instructions</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Upload Files</a></li>
+				<li class="active"><a style="padding: 15px 0 10px 45px;">Check Submit Documents</a></li>
 				<li class="new"><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
@@ -137,6 +152,7 @@
 				<li class="active"><a style="padding: 5px 0 10px 45px;">Personnel / Education Detail</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Instructions</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Upload Files</a></li>
+				<li class="active"><a style="padding: 15px 0 10px 45px;">Check Submit Documents</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li class="new"><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>

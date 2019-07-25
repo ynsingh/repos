@@ -51,20 +51,26 @@ class Student extends CI_Controller {
 		//$this->pnresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
 
 		if(isset($_POST['login'])){
-			$this->form_validation->set_rules('Sanumber', 'Application Number', 'required');
-			$this->form_validation->set_rules('Sprogramname', 'Program/Course', 'required');
+			$this->form_validation->set_rules('Sanumber', 'JEE Main Number', 'required');
+			$this->form_validation->set_rules('Sjeeanumber', 'JEE Application Number', 'required');
+			$this->form_validation->set_rules('Sdateofbirth', 'Your Date of Birth', 'required');
+			//$this->form_validation->set_rules('Sanumber', 'Application Number', 'required');
+			//$this->form_validation->set_rules('Sprogramname', 'Program/Course', 'required');
 			//$this->form_validation->set_rules('Sbranchname', 'Branch', 'required');
-			$this->form_validation->set_rules('Semail', 'Student Email-id', 'required');
+			//$this->form_validation->set_rules('Semail', 'Student Email-id', 'required');
 		
 				if ($this->form_validation->run() == FALSE) {	
 					//$this->load->view('student/student_step0');
 					}else{	
 											
 						$data = array(
-							'entexamrollno' => $this->input->post('Sanumber'),
-							'course_name'    => $this->input->post('Sprogramname'),
+							//'entexamrollno' => $this->input->post('Sanumber'),
+							//'course_name'    => $this->input->post('Sprogramname'),
 							//'branchname'     => $this->input->post('Sbranchname'),
-							'student_email'  => $this->input->post('Semail')				
+							//'student_email'  => $this->input->post('Semail')
+							'jee_mainno' => $this->input->post('Sanumber'),
+							'application_no'    => $this->input->post('Sjeeanumber'),
+							'student_dob'  => $this->input->post('Sdateofbirth')						
 						);
 						
 						//verify the data existance filled by user 
@@ -72,7 +78,8 @@ class Student extends CI_Controller {
 					//	print_r($result);
 						//$result = $this->stumodel->login($data);
 						if ($result == true) {
-							$number = $this->input->post('Sanumber');
+							//$number = $this->input->post('Sanumber');
+							$number = $this->input->post('Sjeeanumber');
 							$this->studentstep($number);
 						}
 						else {
@@ -136,7 +143,8 @@ class Student extends CI_Controller {
 				
                                $this->session->set_userdata($data);
 				// redirect to step2 for completion
-				redirect('Student/student_step2');
+				//redirect('Student/student_step2');
+                  redirect('Student/student_step3');
 			}
 			else if($stp3 == 0 || $stp3 == NULL){
 				//check the value set in session if not then
@@ -152,7 +160,8 @@ class Student extends CI_Controller {
 			                ];
                                 $this->session->set_userdata($data);
 				// redirect to step3 for completion
-				redirect('Student/student_step3');
+				//redirect('Student/student_step3');
+                  redirect('Student/student_checklist');
 			}
 			else if($stp4 == 0 || $stp4 == NULL){
 				//check the value set in session if not then
@@ -262,11 +271,13 @@ class Student extends CI_Controller {
 		$data['number']	= $number;
 		$data['stu_prgcat'] = $this->commodel->get_list('programcategory');
 		//$data['stu_examcenter'] = $this->commodel->get_list('student_examcenter');
-		$data['stu_studycenter'] = $this->commodel->get_list('study_center');
+		//$data['stu_studycenter'] = $this->commodel->get_list('study_center');
+		$data['stu_studycenter'] = $this->commodel->get_list('org_profile');	
 		$data['stu_categorylist'] = $this->commodel->get_list('category');
 		$data['stu_depresult'] = $this->commodel->get_list('Department');
 		$data['stu_program'] = $this->commodel->get_list('program');
-		$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','entexamrollno',$number)->row();
+		//$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','entexamrollno',$number)->row();
+		$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','application_no',$number)->row();
 		if(!empty($stu_addmisdata)) {
 			$prgname = $stu_addmisdata->course_name;	
 			$data['email'] = $stu_addmisdata->student_email;
@@ -276,11 +287,14 @@ class Student extends CI_Controller {
 			$prgname = $data['prgname'];
 			$branchname = $data['branchname'];
 			$whdata = array('prg_name' => $prgname,'prg_branch' => $branchname);
-			$data['prgcat'] = $this->commodel->get_distinctrecord('program','prg_category',$whdata);
+			//$data['prgcat'] = $this->commodel->get_distinctrecord('program','prg_category',$whdata);
+			$data['prgcat'] = $this->commodel->get_distinctrecord('program','prg_category,prg_id',$whdata);
 			$data['fathername'] = $stu_addmisdata->father_name;
 		}
 	//check admission last date for student
-	$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
+	//$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
+	$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$number)->lastdate_admission;
+
 	$admidate = $this->datmodel->comparedate($ldate);
 	if($admidate)
 	{
@@ -502,13 +516,14 @@ class Student extends CI_Controller {
 					//insert into student program
 					$cdate = date("Y-m-d");
 					$sem=1;
-					$stu_prgcatname = $_POST['stu_addprgcate'];
-					$stu_prgcatid = $this->commodel->get_listspfic1("programcategory","prgcat_id","prgcat_name",$stu_prgcatname)->prgcat_id;
+					//$stu_prgcatname = $_POST['stu_addprgcate'];
+					//$stu_prgcatid = $this->commodel->get_listspfic1("programcategory","prgcat_id","prgcat_name",$stu_prgcatname)->prgcat_id;
 					
 					$stu_stuprog = array(
 						'sp_smid'		=>	$insertid,
 						'sp_sccode'		=>	$_POST['stu_addcenter'],
-						'sp_pcategory'   	=>	$stu_prgcatid,
+						//'sp_pcategory'   	=>	$stu_prgcatid,
+						'sp_pcategory'   	=>	$_POST['stu_addprgcate'],
 			                	'sp_programid'  	=>	$_POST['stu_addcourse'],
 			                	'sp_acadyear'  		=>	$cacadyer,
 						'sp_semester'  		=>	$sem,
@@ -534,10 +549,14 @@ class Student extends CI_Controller {
                 				);
 					$this->commodel->insertrec('student_admissionstatus',$stud_status);
 					
-					$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
+					/*$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
 					$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","entexamrollno",$number)->entexamname;
-					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;
-					$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	
+					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;*/
+					$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$number)->id;
+					$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$number)->entexamname;
+					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$number)->entexamrollno;
+					$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$number)->meritlist_no;
+				//	$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	
 					//print_r($ameritid.' '.$ameritexname.' '.$ameritrollno.' '.$ameritno);die;
 					//insert  into student entry exit
 						$stu_entry = array(
@@ -579,7 +598,8 @@ class Student extends CI_Controller {
                     				$this->logger->write_logmessage("insert","New Student admission personnel , family & education record add successfully.".$_POST['stu_addrollno']);
                     				$this->logger->write_dblogmessage("insert", "Student admission personnel , family & education record add successfully.".$_POST['stu_addrollno']);
                    				$this->session->set_flashdata("success", "Your admission details has been  added successfully.");
-						redirect('student/student_step2');
+						//redirect('student/student_step2');
+                   		 redirect('student/student_step3');
                 			}
 				}//validation if close
 				
@@ -733,7 +753,8 @@ class Student extends CI_Controller {
 		$this->semail=$this->commodel->get_listspfic1("admissionmeritlist","student_email","application_no",$this->number)->student_email;*/
 
 
-		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
+		//$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
+		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$number)->lastdate_admission;
 		//print_r($ldate);die;
 		$admidate = $this->datmodel->comparedate($ldate);
 	//	if($admidate == $cdate)
@@ -1014,10 +1035,14 @@ class Student extends CI_Controller {
                 );
 		$this->db->insert('student_admissionstep', $stuadmission);
 		
-		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
+		/*$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
 		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","entexamrollno",$number)->entexamname;
 		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;
-		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	
+		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	*/
+		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$number)->id;
+		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$number)->entexamname;
+		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$number)->entexamrollno;
+		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$number)->meritlist_no;
 		//print_r($ameritid.' '.$ameritexname.' '.$ameritrollno.' '.$ameritno);die;
 		//insert  into student entry exit
 		$stuentry = array(
@@ -1063,7 +1088,8 @@ class Student extends CI_Controller {
            		 $this->db->trans_commit();
 			 $this->logger->write_logmessage("insert", "Step1 insert detail in student_master table.");
                		 $this->logger->write_dblogmessage("insert", "Step1 insert detail in student_master table.");
-			 redirect('student/student_step2');
+			 //redirect('student/student_step2');
+               	redirect('student/student_step3');
            		 //return TRUE;
        			 }
 
@@ -1079,7 +1105,7 @@ class Student extends CI_Controller {
 		}
    }/*close function step1*/
 
-	public function student_step2(){
+	/*public function student_step2(){
 		
 		//$array_items = array('success' => '', 'error' => '', 'warning' =>'');
         	//$this->session->set_flashdata($array_items);
@@ -1154,7 +1180,7 @@ class Student extends CI_Controller {
 			}//close of else validation
 		}// close for check submit button		
 		$this->load->view('student/student_step2',$data);	
-	}
+	}*/
 
 	public function student_step3(){
 		$id = $this->session->userdata['sm_id'];
@@ -1164,12 +1190,12 @@ class Student extends CI_Controller {
 		// for clearing the previous sucess/error flashdata
 		//$array_items = array('success' => '', 'error' => '', 'warning' =>'');
         	//$this->session->set_flashdata($array_items);
-		$rsdata = array('step2_status' => '1', 'student_masterid' => $id);
+		/*$rsdata = array('step2_status' => '1', 'student_masterid' => $id);
 		$recheckstep_exist = $this->commodel->isduplicatemore('student_admissionstep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
 			redirect('welcome');	
-		}
+		}*/
 
 		$rsdata1 = array('step3_status' => '1', 'student_masterid' => $id);
 		$recheckstep_exist1 = $this->commodel->isduplicatemore('student_admissionstep',$rsdata1);
@@ -1195,23 +1221,23 @@ class Student extends CI_Controller {
 				$_FILES['userFile']['name'] = $_FILES['userfile']['name'];
                	 		$_FILES['userFile']['type'] = $_FILES['userfile']['type'];
                 		$_FILES['userFile']['tmp_name'] = $_FILES['userfile']['tmp_name'];
-                		$_FILES['userFile']['error'] = $_FILES['userfile']['error'];
+                		//$_FILES['userFile']['error'] = $_FILES['userfile']['error'];
                 		$_FILES['userFile']['size'] = $_FILES['userfile']['size'];
 
 				$_FILES['userFile2']['name'] = $_FILES['userfile2']['name'];
                 		$_FILES['userFile2']['type'] = $_FILES['userfile2']['type'];
                 		$_FILES['userFile2']['tmp_name'] = $_FILES['userfile2']['tmp_name'];
-                		$_FILES['userFile2']['error'] = $_FILES['userfile2']['error'];
+                		//$_FILES['userFile2']['error'] = $_FILES['userfile2']['error'];
                 		$_FILES['userFile2']['size'] = $_FILES['userfile2']['size'];
 				
-				/*if($_FILES['userfile']['size'] > 2000) {
+				if($_FILES['userfile']['size'] > 2000) {
          				$errors[]='Photo size must be excately 2 MB';
 					
       				}
 
 				if($_FILES['userfile2']['size'] > 1000) {
          				$errors[]='Signature size must be excately 1 MB';
-      				}*/
+      				}
 
 				$name2 = $_FILES['userfile2']['name'];
 				$name = $_FILES['userfile']['name'];
@@ -1267,14 +1293,14 @@ class Student extends CI_Controller {
                     		$this->logger->write_dblogmessage("update", "Step 3 student_master table upload file updated." );
 				
         	    		//Storing insertion status message. update student_admissionstep table
-				//update student master
-				$cdate = date('Y-m-d H:i:s');				
+				
+				//$cdate = date('Y-m-d H:i:s');				
 				$step3 = array(
-					'step3_status'	       =>		 1,
-					'step3_date'	       =>		 $cdate
-				);
-				$this->db->where('student_masterid',$id);
-				$this->db->update('student_admissionstep', $step3);
+				//	'step3_status'	       =>		 1,
+					//'step3_date'	       =>		 $cdate
+				//);
+				//$this->db->where('student_masterid',$id);
+				//$this->db->update('student_admissionstep', $step3);
 				//$updst3 = $this->commodel->updaterec('student_admissionstep', $step3,'student_masterid',$id);
 
 				$this->logger->write_logmessage("update", "Step 3 admission step table updated.");
@@ -1314,10 +1340,10 @@ class Student extends CI_Controller {
         	        	if($this->upload->do_upload('userfile2')){
         	           		$uploadData = $this->upload->data();
         	           		$picture = $uploadData['file_name'];
-					$this->logger->write_logmessage("update","File updated", "Step 3 file update");
-					$this->logger->write_dblogmessage("update","File updated", "Step 3 file update");
-					$this->session->set_flashdata('success', 'Your photo and signature successfully uploaded.');
-					redirect('student/student_step4');
+				//	$this->logger->write_logmessage("update","File updated", "Step 3 file update");
+				//	$this->logger->write_dblogmessage("update","File updated", "Step 3 file update");
+				//	$this->session->set_flashdata('success', 'Your photo and signature successfully uploaded.');
+				//	redirect('student/student_step4');
         	        	}else{
         	            		$picture = '';
 					$error =  array('err_message' => $this->upload->display_errors());
@@ -1332,11 +1358,47 @@ class Student extends CI_Controller {
 					redirect('student/student_step3');
         	        	}
             	
+       			 //update student master
+        	       $cdate = date('Y-m-d H:i:s');				
+				$step3 = array(
+					'step3_status'	       =>		 1,
+					'step3_date'	       =>		 $cdate
+				);
+								$this->db->where('student_masterid',$id);
+				$stp3update = $this->db->update('student_admissionstep', $step3);
+				if ($stp3update)
+                	        {
+                                	$this->logger->write_logmessage("update","File updated", "Step 3 file update");
+					$this->logger->write_dblogmessage("update","File updated", "Step 3 file update");
+					$this->session->set_flashdata('success', 'Your photo and signature successfully uploaded.');
+					//redirect('student/student_step4');
+					redirect('student/student_checklist');
+                        	}
+                        	else{
+                                	$this->logger->write_logmessage("upload","step 3 File upload error");
+					$this->logger->write_dblogmessage("upload"," step 3 File upload error");
+					$this->session->set_flashdata('err_message', 'File Not Uploaded Successfully');
+					redirect('student/student_step3');
+                        	}
+            	
        			 	//Form for adding user data
 			   }
      		    }
 			$this->load->view('student/student_step3',$data);	
     	}
+
+    public function student_checklist(){
+		$Sid = $this->session->userdata['sm_id'];
+		$mailid = $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Sid)->sm_email;
+		$data['email'] = $mailid;
+
+		if(isset($_POST['stu_doclist'])) {
+			// add insert code	
+			redirect('student/student_step4');
+		}		
+		
+		$this->load->view('student/student_checklist',$data);
+	}
 	
 	public function student_step4(){
 		$Sid = $this->session->userdata['sm_id'];
@@ -1426,13 +1488,13 @@ class Student extends CI_Controller {
             		'tid' => $txnid,
             		'hash' => $hash,
             		'amount' => $amount,  
-			'productinfo' => $pinfo,         
+					'productinfo' => $pinfo,         
             		'name' => $name,
             		'mailid' => $mailid,
-           		'phoneno' => $phoneno,
-           		'address' => $ftype,
+           			'phoneno' => $phoneno,
+           			'address' => $ftype,
 			//'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
-			'action' => PAYU_BASE_URL,
+				'action' => PAYU_BASE_URL,
            		'surl' => $success,
            		'furl' => $fail,
             		   
@@ -1793,7 +1855,8 @@ class Student extends CI_Controller {
 					//insert into userroletype group
 					$roleid = $this->commodel->get_listspfic1('role','role_id','role_name','Student')->role_id;
 					$sccode = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$Sid)->sm_sccode;
-					$scid = $this->commodel->get_listspfic1('study_center','sc_id','sc_id',$sccode)->sc_id;
+					//$scid = $this->commodel->get_listspfic1('study_center','sc_id','sc_id',$sccode)->sc_id;
+					//$scid = $this->commodel->get_listspfic1('org_profile','org_id','org_id',$sccode)->org_id;
 					//print_r($scid);die;
 					$deptid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$Sid)->sp_deptid;
 					$dataurt = array(
@@ -1801,8 +1864,9 @@ class Student extends CI_Controller {
 				           	'roleid'=> $roleid,
 				           	'prgid'=> $prgid,
 				           	'deptid'=> $deptid,
-				           	'scid'  => $scid,
-				           	'usertype'=>"Student"
+				           //'scid'  => $scid,
+				           	'scid'  => $sccode,
+				           'usertype'=>"Student"
         	    			);
 					//$this->db->insert('user_role_type',$dataurt);
 					$this->commodel->insertrec('user_role_type',$dataurt);

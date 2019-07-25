@@ -389,7 +389,8 @@ class Map extends CI_Controller
         $data['subjectshrname'] = array('name' => 'subjectshrname','id' => 'subjectshrname','maxlength' => '100','size' => '30','value' => '',);
         $data['subjectdesc'] = array('name' => 'subjectdesc','id' => 'subjectdesc','maxlength' => '100','size' => '30','value' => '',);
         $this->form_validation->set_rules('subjectname','Subject Name','trim|required');
-        $this->form_validation->set_rules('subjecttype','Paper Category','trim|required');
+        $this->form_validation->set_rules('subjecttype','Programme Category','trim|required');
+        //$this->form_validation->set_rules('subjecttype','Paper Category','trim|required');
   //      $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
         $this->form_validation->set_rules('subjectno','Paper No','trim|required|numeric');
       //  $this->form_validation->set_rules('papername','Paper Name','trim|required');
@@ -568,7 +569,8 @@ class Map extends CI_Controller
         $data['degree'] = array('name' => 'degree','id' => 'degree','maxlength' => '100','size' => '30','readonly'=>'true','value' => $prg_data->prg_name." ( ".$prg_data->prg_branch." ) " ,);
         $data['acadyear'] = array('name' => 'acadyear','id' => 'acadyear','maxlength' => '100','size' => '30','value' => $degyear,'readonly'=>'true',);
         $data['subjectname'] = array('name' => 'subjectname','id' => 'subjectname','maxlength' => '100','size' => '30','value' =>$sub_data->sub_name ,'readonly'=>'true',);
-        $data['papercat'] = array('name' => 'papercat','id' => 'papercat','maxlength' => '100','size' => '30','value' => $subject_type ,'readonly'=>'true',);
+      //  $data['papercat'] = array('name' => 'papercat','id' => 'papercat','maxlength' => '100','size' => '30','value' => $subject_type ,'readonly'=>'true',);
+        $data['papercat'] = array('name' => 'papercat','id' => 'papercat','maxlength' => '100','size' => '30','value' => $prgcatname ,'readonly'=>'true',);
         $data['paperdept'] = array('name' => 'paperdept','id' => 'paperdept','maxlength' => '100','size' => '30','value' => $subprgdept ,'readonly'=>'true',);
         $data['papersem'] = array('name' => 'papersem','id' => 'papersem','maxlength' => '100','size' => '30','value' => $subsem ,'readonly'=>'true',);
         $data['papertype'] = array('name' => 'papertype','id' => 'papertype','maxlength' => '100','size' => '30','value' => $subtype ,'readonly'=>'true',);
@@ -755,7 +757,8 @@ class Map extends CI_Controller
   * this function has been created for add the new program subject and teacher record.
   */
    public function subjectteacher(){
-        $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        //$this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+    $this->scresult = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
         $this->pnresult = $this->commodel->get_listspfic2('program','prg_id,prg_name,prg_branch', '','','','prg_id,prg_name,prg_branch');
 	
        if(isset($_POST['subjectteacher'])) {
@@ -779,8 +782,10 @@ class Map extends CI_Controller
 
 	$pstdatacheck = array('pstp_scid'=>$_POST['campusname'], 'pstp_prgid'=>$_POST['programname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
 
+    $orgid = $this->commodel->get_listspfic1('org_profile','org_id','org_code',$_POST['campusname'])->org_id;   
         $datapst = array(
-        'pstp_scid'=>$_POST['campusname'],
+      //  'pstp_scid'=>$_POST['campusname'],
+         'pstp_scid'=>$orgid,
         'pstp_prgid'=>$_POST['programname'],
         'pstp_subid'=>$_POST['subjectname'],
         'pstp_papid'=>$_POST['papername'],
@@ -870,7 +875,8 @@ class Map extends CI_Controller
             'id' => 'campusname',
             'maxlength' => '40',
             'size' => '40',
-            'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editpst_data->pstp_scid)->sc_name,
+            //'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editpst_data->pstp_scid)->sc_name,
+            'value' => $this->commodel->get_listspfic1('org_profile', 'org_name', 'org_id', $editpst_data->pstp_scid)->org_name,
             'readonly' => 'readonly'
         );
 
@@ -1121,7 +1127,7 @@ class Map extends CI_Controller
                 $prgid = $this->input->post('programname', TRUE);
 		$subid = $this->input->post('spreq_subid', TRUE);
 		$subdepid = $this->input->post('spreq_subdepid', TRUE);
-	//	$subpid = $this->input->post('spreq_subpid', TRUE);
+	    $subpid = $this->input->post('spreq_subpid', TRUE);
 		$subpdepid = $this->input->post('spreq_subpdepid', TRUE);
 
 		$datawh=array('spreq_subid' => $subid, 'spreq_prgid' => $prgid,'spreq_depsubid' =>$subdepid);
@@ -1157,7 +1163,7 @@ class Map extends CI_Controller
 			$this->logger->write_logmessage("insert","Map subject Prerequisite", "Map Subject Prerequisite successfully.....".$subid.$prgid.$subdepid);
 			
                     $this->logger->write_dblogmessage("insert","Map subject Prerequisite", "Map Subject Prerequisite successfully....." .$subid.$prgid.$subdepid);
-                    $this->session->set_flashdata("success", "Map Subject Prerequisite  successfully...".$subid.$prgid.$subdepid);
+                    $this->session->set_flashdata("success", "Map Subject Prerequisite  successfully");
                     redirect("map/prerequisite");
 		}//database error check
 	    	}//else duplicate exist
@@ -1182,7 +1188,8 @@ class Map extends CI_Controller
 
         public function userroletype()
         {
-        $this->scresult   = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        //$this->scresult   = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->scresult   = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
         $this->roleresult = $this->commodel->get_listspfic2('role','role_id', 'role_name');
         $this->loginuser  = $this->loginmodel->get_userlist('edrpuser','id','username');
 
@@ -1198,11 +1205,12 @@ class Map extends CI_Controller
         if($this->form_validation->run() == TRUE)
         {
                $Campus = $this->input->post('campus',TRUE);
+               $orgid=$this->commodel->get_listspfic1('org_profile', 'org_id', 'org_code', $Campus)->org_id;    
 		//check for duplicate
 	        $datadup = array('roleid' => $_POST['role_name'],'usertype'=>$_POST['usertype'],'userid'=>$_POST['username']);
                		$datauserrole = array(
                 	//	'scid'=>$this->scid,
-                		'scid'=>$Campus,
+                		'scid'=>$orgid,
                 		'deptid'=>$_POST['dept_name'],
                 		'roleid'=>$_POST['role_name'],
                 		'usertype'=>$_POST['usertype'],
@@ -1288,7 +1296,8 @@ class Map extends CI_Controller
         /* Form fields */
         $data['scid']= array(
             //'value' =>$editeset_data->scid,
-            'value' =>$this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$editeset_data->scid)->sc_name,
+            //'value' =>$this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$editeset_data->scid)->sc_name,
+            'value' =>$this->commodel->get_listspfic1('org_profile','org_name', 'org_id',$editeset_data->scid)->org_name,
             'size'  =>'35',
             'readonly'=>'true',
         );

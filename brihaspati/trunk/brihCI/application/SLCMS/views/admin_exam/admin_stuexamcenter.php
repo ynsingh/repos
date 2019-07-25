@@ -55,9 +55,9 @@
 <tbody>
  <?php
         $count =0;
-        if( count($this->result) ){
-	if(!empty($this->result)){
-        foreach ($this->result as $row)
+        if( count($result) ){
+	if(!empty($result)){
+        foreach ($result as $row)
         {
          ?>
             <tr>

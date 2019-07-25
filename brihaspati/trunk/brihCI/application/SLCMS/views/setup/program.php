@@ -70,7 +70,7 @@
         <td>
             <select name="prgcampus" style="width:100%;">
         	<option value=""disabled selected>------------------Select Campus------------</option>
-                <?php foreach($this->scresult as $datas): ?>	
+                <?php foreach($scresult as $datas): ?>	
                     <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
 		<?php endforeach; ?>
 	    </select>          
@@ -82,7 +82,7 @@
          <td>
             <select name="prgdepartment" style="width:100%;">
         	<option value=""disabled selected>--------------Select Department----------</option>
-                <?php foreach($this->deptresult as $deptdata): ?>	
+                <?php foreach($deptresult as $deptdata): ?>	
                     <option value="<?php echo $deptdata->dept_id; ?>"><?php echo $deptdata->dept_name; ?></option>
 		<?php endforeach; ?>
 	    </select>          
@@ -99,8 +99,8 @@
                 <option value="Research" class="dropdown-item">Research</option>
                 <option value="Diploma" class="dropdown-item">Diploma Course</option>
                 <option value="Certificate" class="dropdown-item">Certificate Course</option>-->
-		<?php foreach($this->prgcat as $datas): ?>	
-                    <option value="<?php echo $datas->prgcat_name; ?>"><?php echo $datas->prgcat_name; ?></option>
+		<?php foreach($prgcat as $datas): ?>	
+                    <option value="<?php echo $datas->prgcat_id; ?>"><?php echo $datas->prgcat_name; ?></option>
 		<?php endforeach; ?>
             </select>    
         </td>

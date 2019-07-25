@@ -113,7 +113,7 @@ function calculate() {
 		<tr><td><label>State: </label></td><td>
                 <select style="width:100%" name="eec_state"  id="state_id"  >
                 <option value="">Select State</option>
-                <?php foreach($this->cresult as $datas): ?>
+                <?php foreach($cresult as $datas): ?>
                 <option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
                 <?php endforeach; ?>
                 </select>

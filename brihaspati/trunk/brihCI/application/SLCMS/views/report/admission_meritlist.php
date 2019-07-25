@@ -44,18 +44,26 @@ echo "</table>";
             <thead>
                 <tr align="center"> 
                 	<th>Sr No.</th>
-               	 	<th>Application Number</th>
+               	 	<!--<th>Application Number</th>
                 	<th>Entrance Exam Name</th>
                 	<th>Entrance Exam Roll No.</th>
                 	<th>Course Name</th>
-                	<th>Branch Name</th>
+                	<th>Branch Name</th> -->
 			<th>Student Name</th>
+            <th>DOB</th>
 			<th>Student Email-ID</th>
+            <th>Category</th>
                 	<th>Father Name</th>
+                    <th>JEE Main No</th>
+                    <th>JEE Application No</th>
+                    <th>Entrance Exam Name</th>
+                    <th>Entrance Exam Roll No.</th>
+                    <th>Programme</th>
+
                 	<th>Marks</th>
                 	<th>Admission Quota</th>
-			<th>Category</th>
-                	<th>Merit List No.</th>
+			
+                    <th>Merit List No.</th>
 			<th>Last Date of Admission</th>
                 	<th>Admission Taken</th>
                  </tr>
@@ -69,6 +77,27 @@ echo "</table>";
                                         echo " <td align=\"center\">";
                                         echo $count++;
                                         echo "</td>";
+                    echo " <td align=\"center\">";
+                                        echo $row->student_name;
+                                        echo " </td>";
+                    echo " <td align=\"center\">";
+                                        echo $row->student_dob;
+                                        echo " </td>";
+                    echo " <td align=\"center\">";
+                                        echo $row->student_email;
+                                        echo " </td>";  
+                    echo " <td align=\"center\">";
+                                        echo $row->category;
+                                        echo " </td>";
+                    echo " <td align=\"center\">";
+                                        echo $row->father_name;
+                                        echo " </td>";
+                    
+                    echo " <td align=\"center\">";
+                    //echo $row->jee_mainno;
+                    echo $row->entexamrollno;
+                                        echo " </td>";
+                                        echo "</td>";
 					echo " <td align=\"center\">";
 					echo $row->application_no;
                                         echo " </td>";
@@ -79,11 +108,11 @@ echo "</table>";
                                         echo $row->entexamrollno;
                                         echo "</td>";
                                         echo " <td align=\"center\">";
-                                        echo $row->course_name;
+                                       echo $row->course_name.'( '.$row->branchname.' )';
                                         echo "</td>";
                                         echo " <td align=\"center\">";
-                                        echo $row->branchname;
-                                        echo "</td>";
+                                    //    echo $row->branchname;
+                                      //  echo "</td>";
 					echo " <td align=\"center\">";
                                        	echo $row->student_name;
                                         echo " </td>";

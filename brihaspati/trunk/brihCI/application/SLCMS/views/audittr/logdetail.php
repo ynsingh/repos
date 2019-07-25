@@ -4,7 +4,8 @@
   @author Vijay (vijay.pal428@gmail.com)
  -->
 <html>
-    <head>    
+    <head>   
+    <title>Log Details</title> 
         <?php $this->load->view('template/header'); ?>
 <!--        <h1>Welcome <?//= $this->session->userdata('username') ?>  </h1>-->
         <?php //$this->load->view('template/menu');?>
@@ -12,11 +13,13 @@
     </head>
     <body>
                    <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                   // echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                echo "<table style=\"width:100%;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#LogDetails";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                  //  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";  
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -44,6 +47,7 @@
             </div>
             </td></tr>
 	</table>
+    <div class="scroller_sub_page">
 	<div align="center" >
 	<?php
 	echo "<table><tr><td valign=\"top\">";
@@ -102,6 +106,7 @@
 
 	echo "</td></tr></table>";
 	?>
+    <div>
 	</div>
 
     </body>

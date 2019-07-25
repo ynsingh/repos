@@ -117,7 +117,9 @@ function myFunction() {
 	<thead>
 		<tr>
 			<th>Sr. No.</th>
-			<th>Hall Ticket Number</th>
+		<!---	<th>Hall Ticket Number</th> -->
+			<th>JEE Main No</th>
+			<th>JEE Application No</th>
 			<th>Student Name</th>
 			<th>Father Name</th>
 			<th>Mother Name</th>
@@ -162,10 +164,14 @@ function myFunction() {
 			$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgcatid)->prg_name;
 			$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgcatid)->prg_branch;
 			$prgbranch = $prgname.'( '.$prgbranch.' )';
+			$appno = $this->commodel->get_listspfic1('student_admissionstep','application_no','student_masterid',$asmid)->application_no;
 		?>
 			<tr>
 				<td><?php echo $count++;?></td>
-				<td><?php echo $this->commodel->get_listspfic1('student_admissionstep','application_no','student_masterid',$asmid)->application_no;?></td>
+				<td><?php //echo $this->commodel->get_listspfic1('student_admissionstep','application_no','student_masterid',$asmid)->application_no;
+				echo $this->commodel->get_listspfic1('admissionmeritlist','jee_mainno','application_no',$appno)->jee_mainno;
+				?></td>
+				<td><?php echo $appno;?></td>
 				<td><?php echo $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$asmid)->sm_fname;?></td>
 				<td><?php echo $this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$asmid)->spar_fathername;?></td>
 				<td><?php echo $this->commodel->get_listspfic1('student_parent','spar_mothername','spar_smid',$asmid)->spar_mothername;?></td>

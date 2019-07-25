@@ -5,7 +5,8 @@
   @author Neha Khullar (nehukhullar@gmail.com)
  -->
 <html>
-    <head>    
+    <head>
+    <title>Exam Center Archive</title>    
         <?php $this->load->view('template/header'); ?>
         <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
         <?php //$this->load->view('template/menu');?>

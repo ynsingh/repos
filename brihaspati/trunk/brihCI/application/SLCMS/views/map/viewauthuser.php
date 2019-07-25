@@ -3,7 +3,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-   <head>    
+   <head>
+   <title>Authority Detail</title>    
         <?php $this->load->view('template/header'); ?>
         <?php //$this->load->view('template/menu');?>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">

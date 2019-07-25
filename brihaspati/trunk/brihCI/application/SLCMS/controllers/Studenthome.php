@@ -62,9 +62,9 @@ class Studenthome extends CI_Controller
             $data['dept_name'] = $dept_name;
 
             //get study center code.
-            $sc_code = $stud_master1->sm_sccode;  
-		
-           $sc_name = $this->commodel->get_listrow('study_center','sc_id',$sc_code)->row()->sc_name;
+            $sc_code = $stud_master1->sm_sccode;
+            $sc_name = $this->commodel->get_listrow('org_profile','org_id',$sc_code)->row()->org_name;		
+          // $sc_name = $this->commodel->get_listrow('study_center','sc_id',$sc_code)->row()->sc_name;
 		//print_r($sc_name);
                 $data['sc_name'] = $sc_name;
 

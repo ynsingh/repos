@@ -66,11 +66,28 @@ echo "</td>";
 /* form data */
          echo "<table border=0  class=\"TFtable\">";
          echo "<thead><tr><th>Sr. No </th><th>Program Name</th><th>Semester/Year</th><th>Subject Type</th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>";
-
-	 $srno = 0;
+     $prgid = 0;
+	 $srno = 0;    
 	 if( count($subjectlists) ):
     foreach($subjectlists as $subjectlist)
     {
+        if($prgid !=$subjectlist->sub_program){
+            ?>
+                <tr>
+                    <td colspan=10 style="font-size:18px;">
+                    <b>Programme Name :</b> 
+                                <?php
+                                if(!empty($subjectlist->sub_program)){
+                        echo $this->common_model->get_listspfic1('program','prg_name','prg_id',$subjectlist->sub_program)->prg_name;
+                        echo " ( " .$this->common_model->get_listspfic1('program','prg_branch','prg_id',$subjectlist->sub_program)->prg_branch;
+                        echo " ) ";
+                    }
+                                ?></td>
+                </tr>
+                        <?php $prgid =$subjectlist->sub_program;
+            //$count =0;
+            }?> 
+<?php
         $srno = $srno + 1;
         echo "<td>"; echo $srno; echo"</td>";
 	echo "<td>"; 

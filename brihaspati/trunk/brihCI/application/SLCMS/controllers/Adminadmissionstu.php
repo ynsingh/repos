@@ -88,6 +88,7 @@ class Adminadmissionstu extends CI_Controller
 				$newdeptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$newdeptid)->dept_name;
 				$email = $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$smid)->sm_email;
 				$stuname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smid)->sm_fname;
+//				print_r($stuname);die;
                			 $data = array(
                     			'st_hallticketno'	=>	$hallno,
                     			'st_smid'		=>	$smid,
@@ -584,10 +585,12 @@ class Adminadmissionstu extends CI_Controller
 			$data['dob'] = $dob;
 			
 
-			$prgcat = $this->commodel->get_listspfic1('program','prg_category','prg_id',$progid)->prg_category;
-			$data['prgcat'] = $prgcat;
-			$prgcatid = $this->commodel->get_listspfic1('programcategory','prgcat_id','prgcat_name',$prgcat)->prgcat_id;
-			$data['prgcatid'] = $prgcatid;
+			$prgcatid = $this->commodel->get_listspfic1('program','prg_category','prg_id',$progid)->prg_category;
+			//$data['prgcat'] = $prgcat;
+			//$prgcatid = $this->commodel->get_listspfic1('programcategory','prgcat_id','prgcat_name',$prgcat)->prgcat_id;
+//			$data['prgcatid'] = $prgcatid;
+			$prgcatname = $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$prgcatid)->prgcat_name;	
+			$data['prgcatname'] = $prgcatname;
 			$bloodgroup = $stu_data->sm_bloodgroup;
 			$data['blgroup'] =$bloodgroup;
 			$gender = $stu_data->sm_gender;
@@ -604,7 +607,8 @@ class Adminadmissionstu extends CI_Controller
 			//$data['rollno'] = $rollno;
 			$sccode = $stu_data->sm_sccode;
 			$data['sccode'] = $sccode;
-			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
+			//$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
+			$scname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$sccode)->org_name;
 			$data['scname'] = $scname;
 			//$excode = $stu_data->sm_enterenceexamcenter;
 			//$exname =  $this->commodel->get_listspfic1('adminadmissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
@@ -679,7 +683,8 @@ class Adminadmissionstu extends CI_Controller
                 	else{
 				$this->logger->write_logmessage("insert","Insert in student admission cancel".$data['hlno']);
 			        $this->logger->write_dblogmessage("insert","Insert in student admission cancel" .$stuhlno);
-                    		$this->session->set_flashdata("success", "This hall ticket number ".$stuhlno." student verify successfully!");
+                    	//	$this->session->set_flashdata("success", "This hall ticket number ".$stuhlno." student verify successfully!");
+			        $this->session->set_flashdata("success", "This Application number ".$stuhlno." student verify successfully!");
                     		redirect('adminadmissionstu/adminstu_nonverified');
 				}
 			

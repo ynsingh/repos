@@ -3,7 +3,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-    <head>    
+    <head>  
+    <title>Edit User Role</title>  
         <?php $this->load->view('template/header'); ?>
             <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
         <?php //$this->load->view('template/menu');?>
@@ -48,7 +49,8 @@
      <table>
       <form action="<?php echo site_url('map/edituserrole/' .$id );?>" method="POST" class="form-inline">
            <tr>
-           <td>Campus Name</td>
+        <!--   <td>Campus Name</td> -->
+           <td>Institute Name</td>
                 <td>
                    <?php echo form_input($scid); ?>
                                           

@@ -84,8 +84,8 @@
                 </tr>
             </thead>
             <tbody>
-              <?php if( count($this->result) ): ?>
-                    <?php foreach($this->result as $row){ ?>
+              <?php if( count($result) ): ?>
+                    <?php foreach($result as $row){ ?>
                         <tr>
                             <td><?php echo $row->emailprotocol; ?></td>
                             <td><?php echo $row->emailhost; ?></td>

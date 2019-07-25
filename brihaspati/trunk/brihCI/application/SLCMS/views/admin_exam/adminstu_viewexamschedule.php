@@ -52,12 +52,13 @@
 <div class="scroller_sub_page">
 <table class="TFtable" >
 <tr>
-<thead><th>Sr.No</th><th>Exam Center Name</th><th>Programme Category</th><th>Department Name</th><th>Programme Name</th><th>Session</th><th>Semester</th>
+<thead><th>Sr.No</th><!--<th>Exam Center Name</th>--><th>Programme Category</th><th>Department Name</th><th>Programme Name</th><th>Session</th><th>Semester</th>
 <th>Paper Name</th><th> Exam Name</th><th>Exam Date</th>
 	<th>Exam Time</th><th>Action</th></thead>
 <tbody>
  <?php
-        $count =0;
+        //$count =0;
+ $orgid =0;
         if( count($exam_schedulelist) ){
 	if(!empty($exam_schedulelist)){
         foreach ($exam_schedulelist as $row)
@@ -70,7 +71,7 @@
 		$prgcatid = $row->exsc_progcatid;
 		$subid = $row->exsc_subjectid;
 		$paperid = $row->exsc_paperid;
-		$exmname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$centerid)->sc_name ;
+	//	$exmname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$centerid)->sc_name ;
 		//$prgcat = $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$prgcatid)->prgcat_name ;
 		$deptname = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name ;
 		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )' ;
@@ -78,11 +79,22 @@
 		if(!empty($paperid)){ $papername = $this->commodel->get_listspfic1('subject_paper','subp_name','subp_id',$paperid)->subp_name ; }
 		$examnameid = $row->exsc_examname;
 		$exam_name = $this->commodel->get_listspfic1('examtype','exty_name','exty_id',$examnameid)->exty_name ;
+    if($orgid != $centerid){
+      echo "<tr>";
+      echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
+      echo "<b>Institute Name : </b>";
+                          echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$centerid)->org_name;
+      echo "</td>";
+      echo "</tr>";
+    $orgid = $centerid; 
+    $count =1;        
+    }
          ?>
             <tr>
             <td> <?php echo ++$count; ?> </td>
-            <td> <?php if(!empty($exmname)){ echo $exmname; }?></td>
-	    <td> <?php echo $row->exsc_progcatid;?></td>	
+            <!--  <td> <?php //if(!empty($exmname)){ echo $exmname; }?></td>-->
+            <td> <?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->exsc_progcatid)->prgcat_name ;?></td>
+	    <!--<td> <?php //echo $row->exsc_progcatid;?></td>	-->
             <td> <?php if(!empty($deptname)){ echo $deptname; } ?></td>
 	    <td> <?php if(!empty($prgname)){ echo $prgname; }?></td>
 	    <td> <?php echo $row->exsc_acadyear; ?></td>

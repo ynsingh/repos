@@ -82,10 +82,10 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('studentrecord/admitcard', 'Admit Card', array('title' => 'Downlaod Admit Card'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('studentrecord/markscard', 'Marks Card', array('title' => 'Download Marks Card'));
+						echo anchor('studentrecord/marksrecorddw', 'Marks Card', array('title' => 'Download Marks Card'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('studentrecord/gradecard', 'Grade Card', array('title' => 'Downlaod Grade Card'));
+						echo anchor('studentrecord/gradecarddw', 'Grade Card', array('title' => 'Downlaod Grade Card'));
 					echo "</li>";
 				echo "</ul>";
 				

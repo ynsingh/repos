@@ -16,6 +16,7 @@
 
 <html>
     <head>    
+        <title>Fees Master Archive</title>
         <?php $this->load->view('template/header'); ?>
         <!--h1>Welcome <?//= $this->session->userdata('username') ?>  </h1-->
         <?php //$this->load->view('template/menu');?>
@@ -63,7 +64,7 @@
         <table  class="TFtable" >
             <thead> 
 		<th>Sr.No</th>
-		<th>Fees master Id</th>
+		<!--<th>Fees master Id</th>-->
 		<th>Program Name</th>
 		<th>Academic Year</th>
 		<th>Semester</th>
@@ -71,8 +72,8 @@
 		<th>Gender</th>
 		<th>Head</th>
 		<th>Amount</th>
-		<th>From Date</th>
-		<th>To Date</th>
+		<!--<th>From Date</th>
+		<th>To Date</th>-->
 		<th>Description</th>
 		<th>Archiver Name</th>
 		<th>Archive Date</th>
@@ -84,7 +85,7 @@
                     <?php foreach($this->fmaresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
-			 <td> <?php echo $row->fma_fmid ?></td>
+			<!-- <td> <?php //echo $row->fma_fmid ?></td>-->
 			 <?php  echo "<td>" . $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fma_programid)->prg_name. "</td>";?>
 			 <td> <?php echo $row->fma_acadyear ?></td>
             		 <td> <?php echo $row->fma_semester ?></td>
@@ -92,8 +93,8 @@
             		 <td> <?php echo $row->fma_gender ?></td>
            		 <td> <?php echo $row->fma_head ?></td>
             		 <td> <?php echo $row->fma_amount ?></td>
-            		 <td> <?php echo $row->fma_frmdate ?></td>
-            		 <td> <?php echo $row->fma_todate ?></td>
+            		<!-- <td> <?php //echo $row->fma_frmdate ?></td>
+            		 <td> <?php //echo $row->fma_todate ?></td>-->
          		 <td> <?php echo $row->fma_desc ?></td>
             		 <td> <?php echo $row->creatorid ?></td>
             		 <td> <?php echo $row->createdate ?></td>
@@ -101,7 +102,7 @@
                         </tr>
                     <?php }; ?>
                 <?php else : ?>
-                    <td colspan= "10" align="center"> No Records found...!</td>
+                    <td colspan= "14" align="center"> No Records found...!</td>
                 <?php endif;?>
 
             </tbody>

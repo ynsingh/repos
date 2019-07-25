@@ -48,7 +48,8 @@
     <table>
         <form action="<?php echo site_url('map/editsubjectteacher/' . $pstp_id);?>" method="POST" class="form-inline">
             <tr>
-                <td> Campus Name </td>
+                <!--<td> Campus Name </td> -->
+                <td>Institute Name</td>
                 <td>
                     <?php echo form_input($campusname); ?>
                 </td>

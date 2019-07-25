@@ -25,7 +25,10 @@ class Home extends CI_Controller
 	$this->session->set_userdata($data);
 	// get the values of program and seat
 	$selectfield = 'prg_scid,prg_category,prg_name,prg_branch,prg_seat';
-	$this->prgseat=$this->commodel->get_listmore('program',$selectfield);
+	$whorder = "prg_scid,prg_category asc,prg_name asc,prg_branch asc";
+	//get_orderlistspficemore($tbname,$selectfield,$whdata,$whorder)
+	$this->prgseat=$this->commodel->get_orderlistspficemore('program',$selectfield,'',$whorder);
+	//$this->prgseat=$this->commodel->get_listmore('program',$selectfield);
 	// get the values of university 
 	$this->result = $this->universitym->get_udetails();
 	$contcode=$this->result->org_countrycode;

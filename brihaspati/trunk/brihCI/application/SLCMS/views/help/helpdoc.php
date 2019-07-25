@@ -5,6 +5,7 @@
  -->
 <html>
 <head>
+	<title>User Manual</title>
         <?php $this->load->view('template/header'); ?>
         <?php //$this->load->view('template/menu');?>
  	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
