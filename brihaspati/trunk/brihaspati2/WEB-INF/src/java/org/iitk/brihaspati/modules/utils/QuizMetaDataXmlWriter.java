@@ -47,6 +47,7 @@ import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.FileLockUnlock;
+import org.iitk.brihaspati.modules.utils.BufferQuizThread;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -54,6 +55,7 @@ import java.io.IOException;
 import org.apache.commons.lang.math.Range;
 import org.apache.commons.lang.math.DoubleRange;
 import java.util.Random;
+import java.util.Map;
 /**
  * This class generate Xml file with attributes and values
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -799,6 +801,7 @@ public class QuizMetaDataXmlWriter
 
             xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
             if(!answerFile.exists()) {
+		//BufferThread.storage(quizID,uid,totalScore,usedTime,seq);
 		xmlWriter=WriteinScorexml(filePath,quizXmlPath);
             	QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,usedTime,seq);
             	xmlWriter.writeXmlFile();
@@ -1109,6 +1112,21 @@ public class QuizMetaDataXmlWriter
     	        	if(flag){
 				xmlScoreWriter=WriteinScorexml(scoreFilePath,scorePath);
     	        		QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq,evaluate);
+				// code used in buffer writer then comment above two line
+		/*	String tscore=String.valueOf(totalScore);
+			String seq1=String.valueOf(seq);	
+				Map m=BufferQuizThread.storage(quizID,uid,tscore,usedTime,seq1,evaluate);
+				ErrorDumpUtil.ErrorLog("Map !!"+m);
+		 		quizID=(String)m.get("QuizID");
+				uid=(String)m.get("UserID");
+				tscore=(String)m.get("TotalScore");
+				usedTime=(String)m.get("UsedTime");
+				seq1=(String)m.get("seq");
+				evaluate=(String)m.get("evaluate");
+				//xmlScoreWriter=WriteinScorexml(scoreFilePath,scorePath);
+				QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,Integer.parseInt(tscore),usedTime,Integer.parseInt(seq1),evaluate);
+    	        		//QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq,evaluate);
+			*/
     	        	}
     	        	else{
 			 xmlScoreWriter=WriteinScorexml(scoreFilePath,scorePath);

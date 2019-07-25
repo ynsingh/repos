@@ -345,16 +345,32 @@ public class ResendActivation extends VelocityAction{
                           		a_key =((UserPref)list.get(0)).getActivation();
 			  		if (a_key == null || a_key.equalsIgnoreCase("NULL"))
 			  		{
+						
+						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                		pr =MailNotification.uploadingPropertiesFile(fileName);
+                                		msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+						msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", e_mail);
+						msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+						msgRegard = MailNotification.replaceServerPort(msgRegard);
+						subject=pr.getProperty("brihaspati.Mailnotification.newUser.a_subject");
+      	                         		activationLink=pr.getProperty("brihaspati.Mailnotification.newUser.activationLink");
+						activationLink=MailNotification.getMessage(activationLink, e_mail, a_key,"", lang);
+                                		activationLink=MailNotification.replaceServerPort(activationLink);
+						messageFormate = messageFormate+activationLink;
+						Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", e_mail, subject, "", "");
+						
 						try{
-							str=MultilingualUtil.ConvertedString("usr_queries",LangFile);
-                              				data.setMessage(str);
-                          			 }
-                          			catch (Exception ex){
-							String msg1 = "Error in activation	";
-                               				ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS  inside 2nd catch"+ex);
-                        				throw new RuntimeException(msg1,ex);
-						}
-			  		}//if 2
+							str=MultilingualUtil.ConvertedString("act_mail",LangFile);
+                             		 		data.setMessage(str);
+                             		 	 }
+                                		catch (Exception ex){
+							String msg3 = "Error in activation	";
+							ErrorDumpUtil.ErrorLog("Activation mail sending	inside 4th catch "+ex);
+                               				throw new RuntimeException(msg3);
+				 		}
+
+
+			  		}
 					else if(a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
 			   		{
 							try{

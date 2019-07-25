@@ -75,6 +75,7 @@ import org.iitk.brihaspati.modules.utils.OnlineExamSystemMail;
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28jan2013
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>14aug2013
+ * @author <a href="mailto:ankitadwivedikit007@gmail.com">Ankita Dwivedi</a>
  */
 public class OLES_Quiz extends SecureAction{
 
@@ -266,7 +267,7 @@ public class OLES_Quiz extends SecureAction{
 				if(!QuizQuestionSettingxmls.exists()) {
 					QuizMetaDataXmlWriter.OLESRootOnly(QuizQuestionSettingxmls.getAbsolutePath());
 				}
-				data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg",LangFile));
+				data.addMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg",LangFile));
 			}
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !! "+e);
@@ -1553,7 +1554,7 @@ public class OLES_Quiz extends SecureAction{
 				QuizQuestionxmls.delete();
 			}
 			tempquizQuestionxmls.renameTo(QuizQuestionxmls);
-			data.setMessage(MultilingualUtil.ConvertedString("brih_preview",LangFile));
+			data.setMessage(MultilingualUtil.ConvertedString("brih_preview",LangFile)); // added by Ankita Dwivedi
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:acceptQuizPreview !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -1760,13 +1761,39 @@ public class OLES_Quiz extends SecureAction{
                          */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
+			String uname=user.getName();
 			String quizID=data.getParameters().getString("quizID","");
+			String quizPath="Quiz.xml";
+			//String allowPrac=data.getParameters().getString("allowPractice","");
+			//ErrorDumpUtil.ErrorLog("allow ankita==== "+allowPractice);
 			String courseid=(String)user.getTemp("course_id");
 			/**get path of the Exam directory*/
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-			String quizPath="/Quiz.xml";
 			QuizMetaDataXmlReader quizmetadata=null;
-
+			File file=new File(filePath+"/"+quizPath);
+			Vector quizList=new Vector();
+			if(file.exists()){
+				context.put("isFile","exist");
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
+				if(quizList!=null && quizList.size()!=0){
+					for(int i=0;i<quizList.size();i++){
+						String qid=((QuizFileEntry) quizList.elementAt(i)).getQuizID();
+						if(qid.equalsIgnoreCase(quizID)){
+							String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();
+								if(allowPractice.equalsIgnoreCase("yes")){
+								//ErrorDumpUtil.ErrorLog("allowPractice"+allowPractice);		
+									data.setMessage(MultilingualUtil.ConvertedString("brih_noneedpractice",LangFile));
+									data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+									return;
+								}
+						}
+					}
+				}
+			}// the above code of announceExam() is modified by ankita dwivedi as there is no need of announcing exam in practice quiz	
+				
+					//data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+				
 			//==========functionality - if quiz is attempted then can not be reannounced===============
 			/**reading the score xml get the information quiz is attempted by ant one or not
 			 *if quiz is attempted then can not be reannounced
@@ -1775,7 +1802,6 @@ public class OLES_Quiz extends SecureAction{
 			//File scoreFile = new File(filePath+"/score.xml");
 			File scoreFile = new File(filePath+"/"+quizID+"/score.xml");
 			Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
-
 			if(scoreFile.exists()){
 					//quizmetadata=new QuizMetaDataXmlReader(filePath+"/score.xml");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizID+"/score.xml");
@@ -1814,11 +1840,10 @@ public class OLES_Quiz extends SecureAction{
 				data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotannounced",LangFile));
 				data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
 			}
-
-			//============================================================================
+		//============================================================================
 			String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "",resDate = "";
 
-			File file=new File(filePath+"/"+quizPath);
+			
 			Vector quizDetail=new Vector();
 			/**check the Quiz xml file exists or not
 			 *get quiz detail on the basis of the passed quizID
@@ -1846,6 +1871,7 @@ public class OLES_Quiz extends SecureAction{
 					}
 				}
 			}
+			
 			String m = "";
 			if(startDate==null & startTime==null & endDate==null & endTime==null & resDate==null){
 				m="new";
@@ -1957,11 +1983,11 @@ public class OLES_Quiz extends SecureAction{
 			}
 
 			if(resDate.compareTo(endDate)==0){
-					data.setMessage(MultilingualUtil.ConvertedString("brih_resdateqlEnd",LangFile));
+					data.setMessage(MultilingualUtil.ConvertedString("brih_resdatgrtEnd",LangFile)); //updated by ankita dwivedi
 					return;
 			}
 			else if(resDate.compareTo(endDate)==-1){
-				data.setMessage(MultilingualUtil.ConvertedString("brih_resdatlessEnd",LangFile));
+				data.setMessage(MultilingualUtil.ConvertedString("brih_resdatgrtEnd",LangFile));	//updated by ankita dwivedi
 				return;
 			}
 			/**In this part after get the start time/date end time/date and result data
@@ -2614,5 +2640,7 @@ public class OLES_Quiz extends SecureAction{
                 }
                 return collect;
         }
+	
+	
 
 }

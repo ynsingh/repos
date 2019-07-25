@@ -79,6 +79,7 @@ import org.iitk.brihaspati.modules.utils.FileLockUnlock;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>28jan2013
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modify date:14aug2013
+ * @author <a href="mailto:ankitadwivedikit007@gmail.com">Ankita Dwivedi</a>
  */
 public class OLES_AttemptQuiz extends SecureAction{
 
@@ -155,6 +156,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ViewAnswerSheet(data,context);
 		else if(action.equals("eventSubmit_ResetSecuritynumber"))
                         ResetSecuritynumber(data,context);
+		else if(action.equals("eventSubmit_showCertificate"))      //added by ankita dwivedi
+			showCertificate(data,context);
 		else{
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));
 			}
@@ -166,6 +169,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 * @exception Exception, a generic exception
 	 */
 	public void attemptQuiz(RunData data, Context context){
+//					 ErrorDumpUtil.ErrorLog("seema-------------------");
+
 		try{
 			/**get LangFile for multingual changes
 			 * get user Id and user name
@@ -213,10 +218,14 @@ public class OLES_AttemptQuiz extends SecureAction{
                          		 */
 					quizQuestionMetaData=new QuizMetaDataXmlReader(quizFilePath+"/"+quizQuestionPath);
 					quizQuestionList=quizQuestionMetaData.getInsertedQuizQuestions();
+	//				 ErrorDumpUtil.ErrorLog("quizQuestionList------------------"+quizQuestionList);
+                        
 					if(quizQuestionList!=null && quizQuestionList.size()!=0){
 						Collections.shuffle(quizQuestionList);
 						context.put("quizQuestionList",quizQuestionList);
 						data.getUser().setTemp("questionvector",quizQuestionList);
+	//					ErrorDumpUtil.ErrorLog("1quizQuestionList------------------"+quizQuestionList);
+
 					}
 					else{
 						data.setMessage(MultilingualUtil.ConvertedString("brih_quizwithoutquestion",LangFile));
@@ -225,7 +234,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			}
 			else{
 				context.put("quizQuestionList",questionVector);
-			//	ErrorDumpUtil.ErrorLog("quizQuestionList------------------"+quizQuestionList);
+	//			ErrorDumpUtil.ErrorLog("2quizQuestionList------------------"+quizQuestionList);
 			}
 
 			//----------------To Store the IP Address in Xml File----------------------
@@ -397,6 +406,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			user.setTemp("questionvector",new Vector());
 			user.setTemp("timerValue","");
 			data.setScreenTemplate("call,OLES,Student_Quiz.vm");
+			data.setMessage(MultilingualUtil.ConvertedString("brih_submit",LangFile));   //modified by ankita dwivedi
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:saveFinalQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -1472,14 +1482,46 @@ public class OLES_AttemptQuiz extends SecureAction{
          */
 	public static void generateSecurity(RunData data, Context context){
 		try{
+			String LangFile=(String)data.getUser().getTemp("LangFile");
+			User user=data.getUser();
+			String uname=user.getName();
+			String quizID=data.getParameters().getString("quizID","");
+			String quizPath="Quiz.xml";
+			//String allowPrac=data.getParameters().getString("allowPractice","");
+			//ErrorDumpUtil.ErrorLog("allow ankita==== "+allowPractice);
+			String courseid=(String)user.getTemp("course_id");
+			/**get path of the Exam directory*/
+			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+			QuizMetaDataXmlReader quizmetadata=null;
+			File file=new File(filePath+"/"+quizPath);
+			Vector quizList=new Vector();
+			if(file.exists()){
+				context.put("isFile","exist");
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
+				if(quizList!=null && quizList.size()!=0){
+					for(int i=0;i<quizList.size();i++){
+						String qid=((QuizFileEntry) quizList.elementAt(i)).getQuizID();
+						if(qid.equalsIgnoreCase(quizID)){
+							String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();
+								if(allowPractice.equalsIgnoreCase("yes")){
+								//ErrorDumpUtil.ErrorLog("allowPractice"+allowPractice);		
+									data.setMessage(MultilingualUtil.ConvertedString("brih_canNotgenerateSecurity",LangFile));
+									data.setScreenTemplate("call,OLES,SecurityString.vm");
+									return;
+								}
+						}
+					}
+				}
+			}	// the above code of generateSecurity() is modified by ankita dwivedi as there is no need of security string in practice exam		
 			XmlWriter xmlWriter=null;
 			/**Get parameters from template through Parameter Parser
                          * get LangFile for multingual changes
                          */
-			String LangFile=(String)data.getUser().getTemp("LangFile");
+			//String LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseID=(String)data.getUser().getTemp("course_id");
 			ParameterParser pp=data.getParameters();
-			String quizID=pp.getString("quizID","");
+			//String quizID=pp.getString("quizID","");
 			String quizName=pp.getString("quizName","");
 			//pp.setString("flag","generate");
 			pp.setString("flag1","generate");
@@ -1886,6 +1928,14 @@ public class OLES_AttemptQuiz extends SecureAction{
 						String a=new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 						return a;
 				}
+// the showCertificate() created by ankita dwivedi for generation of certificate
+public void showCertificate(RunData data, Context context){
+		ParameterParser pp=data.getParameters();
+		String quizName=pp.getString("quizName","");
+		context.put("quizName",quizName);
+		 //ErrorDumpUtil.ErrorLog("quiz id is !! "+quizID);		
+		data.setScreenTemplate("call,OLES,Certificate.vm");
+	}
 
 
 }//class

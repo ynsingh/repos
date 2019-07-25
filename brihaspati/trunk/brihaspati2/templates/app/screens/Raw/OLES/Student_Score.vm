@@ -41,6 +41,8 @@ $page.setBgColor("#ffffff")
 
 #if($type=="gradeCard")
 <form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Report_Card.vm").setAction("OLES_AttemptQuiz")>
+#elseif($type=="Certificate")
+<form name="frm" method="get" enctype="multipart/form-data" action=$link.setPage("call,OLES,Certificate.vm").setAction("OLES_AttemptQuiz")>
 #else
 <form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Score.vm").setAction("OLES_AttemptQuiz")>
 #end
@@ -57,34 +59,43 @@ $page.setBgColor("#ffffff")
 <tr bgcolor="$ui.tableColor">
 	#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
 		#if($tdcolor != "1")
-    		<td width="25%">
+    		<td width="20%">
 		#elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end
 				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style='text-decoration:none'> #if($lang == "hindi") $brih_quiz $brih_attempt  #else $brih_attempt $brih_quiz #end </a>
 			</td>
 		#if($tdcolor != "2")
-			<td width="25%"> 
+			<td width="20%"> 
 		#elseif($tdcolor == "2")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end
 				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>  $brih_practice $brih_quiz  </a>
 			</td>
 			
 		#if($tdcolor != "3")
-			<td width="25%">
+			<td width="20%">
 		#elseif($tdcolor == "3")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end	
 			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_score $brih_card</a>
 			</td>
 		#if($tdcolor != "4")
-			<td width="25%">
+			<td width="20%">
 		#elseif($tdcolor == "4")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end	
         	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard") style='text-decoration:none'>$brih_grade $brih_card</a>
         	</td>
+		#if($tdcolor != "5")
+			<td width="20%">
+		#elseif($tdcolor == "5")
+			<td bgcolor="#AFDCEC" width="20%">
+		#end	
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","5").addPathInfo("type","Certificate") style='text-decoration:none'>$brih_cert</a>
+
+        	</td>
+		
 	#end		
 	
    	</tr>
@@ -105,11 +116,13 @@ $page.setBgColor("#ffffff")
 	        			<select name="quizList" class="drop">
 	        				#foreach($qid in $quizList)	
 	        					       				
-	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getQuestionNumber(),$qid.getMaxTime()">$qid.getQuizName()</option>
+	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getQuestionNumber(),$qid.getMaxTime(),$qid.getResDate()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			#if($type=="gradeCard")
 	        				<input type="button" class="button-ftextstyle" name="eventSubmit_showReportCard" value="$RemoteShow $brih_grade $brih_card" onClick="showScore(document.frm,this);">
+					#elseif($type=="Certificate")
+					<input type="button" class="button-ftextstyle" name="eventSubmit_showCertificate" value="$RemoteShow $brih_cert" onClick="showScore(document.frm,this);">
         				#else
 	        			<input type="button" name="eventSubmit_showScoreQuiz" class="button-ftextstyle" value="$RemoteShow $brih_score $brih_card" onClick="showScore(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
@@ -139,6 +152,7 @@ $page.setBgColor("#ffffff")
 <input type="hidden" name="maxTime">
 <input type="hidden" name="maxMarksQuestion">
 <input type="hidden" name="userID" value=$userID>
+<input type="hidden" name="ResultDate">
 </form>
 <SCRIPT LANGUAGE="javascript">
  function popupWin(url,popupName)
@@ -155,6 +169,7 @@ function showScore(frm,field){
 	frm.maxMarks.value = temp[1];
 	frm.maxQuestion.value = temp[2];
 	frm.maxTime.value = temp[3];
+	frm.ResultDate.value=temp[4];
 	frm.quizName.value=frm.quizList.options[frm.quizList.selectedIndex].text;	
 	frm.submit();					
 }

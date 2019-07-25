@@ -77,6 +77,7 @@ import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 	*  @author<a href="arvindjss17@gmail.com">Arvind Pal</a>
 	*  @author<a href="sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
 	*  <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+	* @author <a href="mailto:ankitadwivedikit007@gmail.com">Ankita Dwivedi</a>
 	* @modified date: 31-03-2014 (Dewanshu Singh)
 	*/
 
@@ -125,7 +126,8 @@ public class Assignments extends SecureAction
                         String month=pp.getString("Start_mon");
                         String day=pp.getString("Start_day");
                         String pubst=pp.getString("publish");
-			if (pubst == "0")
+//			ErrorDumpUtil.ErrorLog("list of assignment-------------"+pubst);
+			if(pubst.equalsIgnoreCase("0"))            // modified by ankita dwivedi
 				pubst="0";
 			else
 				pubst="1";
@@ -323,6 +325,7 @@ public class Assignments extends SecureAction
 						crit1=new Criteria();
 						if(mode.equals("Update")) 
 	                                                crit1.add(AssignmentPeer.ID,Id);
+				//		ErrorDumpUtil.ErrorLog("I am here 289 for pubst ====>"+pubst);
                                                 crit1.add(AssignmentPeer.ASSIGN_ID,agroup_name);
                                                 crit1.add(AssignmentPeer.GROUP_NAME,courseid);
                                                 crit1.add(AssignmentPeer.TOPIC_NAME,DB_subject1);

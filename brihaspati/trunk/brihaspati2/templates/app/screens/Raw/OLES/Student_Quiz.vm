@@ -19,7 +19,7 @@ $page.setBgColor("#ffffff")
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #set($flag=false)
 
-##$!data.getMessage()
+$!data.getMessage()
 <table width=100%  bgcolor="$ui.menuColor">
 <tr><td>
 	<b>	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
@@ -59,33 +59,41 @@ $page.setBgColor("#ffffff")
 <tr bgcolor="$ui.tableColor">
 	#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
 		#if($tdcolor != "1")
-    		<td width="25%">
+    		<td width="20%">
 		#elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end
 				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("type","attempt") style='text-decoration:none'> #if($lang == "hindi") $brih_quiz $brih_attempt  #else $brih_attempt $brih_quiz #end </a>
 			</td>
 		#if($tdcolor != "2")
-			<td width="25%"> 
+			<td width="20%"> 
 		#elseif($tdcolor == "2")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end
 				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>  $brih_practice $brih_quiz  </a>
 			</td>
 			
 		#if($tdcolor != "3")
-			<td width="25%">
+			<td width="20%">
 		#elseif($tdcolor == "3")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end	
 			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_score $brih_card</a>
 			</td>
 		#if($tdcolor != "4")
-			<td width="25%">
+			<td width="20%">
 		#elseif($tdcolor == "4")
-			<td bgcolor="#AFDCEC" width="25%">
+			<td bgcolor="#AFDCEC" width="20%">
 		#end	
         	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard") style='text-decoration:none'>$brih_grade $brih_card</a>
+
+        	</td>
+		#if($tdcolor != "5")
+			<td width="20%">
+		#elseif($tdcolor == "5")
+			<td bgcolor="#AFDCEC" width="20%">
+		#end	
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","5").addPathInfo("type","Certificate") style='text-decoration:none'>$brih_cert</a>
 
         	</td>
 	#end		
@@ -104,6 +112,7 @@ $page.setBgColor("#ffffff")
 </table>
 	##Drop down list to select a quiz
 <table align="left" width="100%" bgcolor="$ui.tableColor">
+
 #if($quizList.size()!=0)
 	<tr bgcolor="$ui.menuColor">
 		<td align="left">

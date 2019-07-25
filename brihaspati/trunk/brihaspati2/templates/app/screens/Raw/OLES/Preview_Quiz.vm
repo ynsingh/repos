@@ -15,7 +15,7 @@ $page.setBgColor("bgcolor")
 </head>
 
 ## If some message has been set, that is retrieved and displayed.
-##$!data.getMessage()
+$!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())

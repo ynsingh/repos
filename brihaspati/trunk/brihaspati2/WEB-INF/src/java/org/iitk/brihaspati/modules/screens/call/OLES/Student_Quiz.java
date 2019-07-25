@@ -99,6 +99,7 @@ public class Student_Quiz extends SecureScreen
 			context.put("user_role",Role);
 			String count = pp.getString("count","");
 			context.put("userID",user_id);
+//			ErrorDumpUtil.ErrorLog(" line 1----------------"+Role);
 			if(count.isEmpty()){
 				count=(String)user.getTemp("count");
 			}
@@ -109,6 +110,7 @@ public class Student_Quiz extends SecureScreen
 			context.put("tdcolor",count);
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
 			String quizPath="/Quiz.xml";
+			String quizPath2="Quiz.xml";
 			String scorePath="/score.xml";
 			File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
@@ -116,7 +118,9 @@ public class Student_Quiz extends SecureScreen
 			Vector finalQuizList=new Vector();
 			Vector futureQuizList = new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
+//			ErrorDumpUtil.ErrorLog(" line 2-eema--------------"+type);
 			if(type.equalsIgnoreCase("practice")){
+//					ErrorDumpUtil.ErrorLog(" line 2-------neer loop if ---------"+type);
 				if(!file.exists()){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
 				}
@@ -127,6 +131,7 @@ public class Student_Quiz extends SecureScreen
 					if(quizList!=null){
 						if(quizList.size()!=0){
 							context.put("quizList",quizList);
+//					ErrorDumpUtil.ErrorLog(" line 2----sjadhkashdkhasdhhs-pal-----------"+quizList);
 						}
 						else{
 							data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
@@ -142,8 +147,9 @@ public class Student_Quiz extends SecureScreen
 				}
 				else{
 					context.put("isFile","exist");
-					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
+					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath2);
 					quizList=quizmetadata.readyToAttemptQuiz();
+//			ErrorDumpUtil.ErrorLog(" line 151 in else cond-------------"+quizList+"\nfilepath==="+filePath+"\nquizpath=="+quizPath2+"\nquizmetadata==="+quizmetadata);
 
 				//-------------------------------------------DEVENDRA-------------------------------------------------------
 				//----------Functionality to get Security String for Login Student of a perticular Quiz from xml files------
@@ -152,44 +158,54 @@ public class Student_Quiz extends SecureScreen
 					//String IPAddr=request.getRemoteAddr();
 					String IPAddr=getClientIpAddr(data.getRequest());
 					context.put("ip",IPAddr);
+//			ErrorDumpUtil.ErrorLog(" line padd-d------------"+IPAddr);
 
 					if(quizList!=null && quizList.size()!=0){
 						for(int i=0;i<quizList.size();i++){
 							String quizid=((QuizFileEntry) quizList.elementAt(i)).getQuizID();
 							String path=filePath+"/"+quizid;
 							File secFile=new File(path+"/"+quizid+"_Security.xml");
+//							ErrorDumpUtil.ErrorLog(" line secfiled------------"+secFile);
+
 							Vector collect=new Vector();
 							if(secFile.exists()){
 								QuizMetaDataXmlReader reader=new QuizMetaDataXmlReader(path+"/"+quizid+"_Security.xml");
 								collect=reader.getSecurityDetail();
+//								ErrorDumpUtil.ErrorLog(" line collectd------------"+collect);
+
+
 								if(collect!=null && collect.size()!=0){
 									for(int j=0;j<collect.size();j++){
 										String student=((QuizFileEntry) collect.elementAt(j)).getStudentID();
+//										 ErrorDumpUtil.ErrorLog(" line student object-----------"+student);
 										if(student.equals(loginname)){
-										String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
-										Criteria crt=new Criteria();
-					                                	crt.add(QuizIpaddressPeer.USER_ID,user_id);
-                                						crt.add(QuizIpaddressPeer.QUIZ_ID,quizid);
-					                                	List iplist=QuizIpaddressPeer.doSelect(crt);
-										//ErrorDumpUtil.ErrorLog(" ip list 4----------------"+iplist);
-										String ip="";
-                                						if(iplist.size()!=0)
-                                						{			
-						                                        QuizIpaddress element=(QuizIpaddress)iplist.get(0);
-                                        						ip=element.getIpAddress();
-											//ErrorDumpUtil.ErrorLog(" ip add 5----------- "+IPAddr);
-                                						}
+											String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
+//										 	ErrorDumpUtil.ErrorLog(" line 183 sec string-----------"+securityString);
+
+											Criteria crt=new Criteria();
+					                                		crt.add(QuizIpaddressPeer.USER_ID,user_id);
+                                							crt.add(QuizIpaddressPeer.QUIZ_ID,quizid);
+					                                		List iplist=QuizIpaddressPeer.doSelect(crt);
+//											ErrorDumpUtil.ErrorLog(" ip list 4----------------"+iplist);
+											String ip="";
+                                							if(iplist.size()!=0)
+                                							{			
+						                                        	QuizIpaddress element=(QuizIpaddress)iplist.get(0);
+                                        							ip=element.getIpAddress();
+//												ErrorDumpUtil.ErrorLog(" ip add 5----------- "+IPAddr);
+                                							}
 										
 
-											//String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
-											String temp=securityString+":"+ip;
-											securityData.put(quizid, temp);
-										}
-									}
-								}
-							}
-						}
-					}
+												//String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
+												String temp=securityString+":"+ip;
+												securityData.put(quizid, temp);
+//										 		ErrorDumpUtil.ErrorLog(" line 202------------"+temp);
+											}//if2
+										}//for
+									}//collect
+								}//isexists
+							}//for
+						}//ifquizlist
 
 					context.put("securityData",securityData);
 
@@ -197,16 +213,17 @@ public class Student_Quiz extends SecureScreen
 
 
 					futureQuizList = quizmetadata.listFutureQuiz();
-					//ErrorDumpUtil.ErrorLog("futureQuizList 6--------------------"+futureQuizList.toArray());
+//					ErrorDumpUtil.ErrorLog("futureQuizList 6--------------------"+futureQuizList.toArray());
 					context.put("futureQuizList",futureQuizList);
 					//File scoreFile=new File(filePath+"/"+scorePath);
 					String quizID=pp.getString("quizID","");
+				 	//ErrorDumpUtil.ErrorLog(" line ------------"+collect);
 					// get the quiz id form quizlist
 					for(int kk=0;kk<quizList.size();kk++){
 						quizID =(((QuizFileEntry) quizList.elementAt(kk)).getQuizID()); 
 					}
 					File scoreFile=new File(filePath+"/"+quizID+"/"+scorePath);
-					//ErrorDumpUtil.ErrorLog("7----------"+scoreFile);
+//					ErrorDumpUtil.ErrorLog("7----------"+quizList);
 					if(quizList==null || quizList.size()==0){
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
 						return;

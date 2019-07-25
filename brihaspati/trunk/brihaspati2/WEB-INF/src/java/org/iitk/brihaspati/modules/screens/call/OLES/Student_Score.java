@@ -166,6 +166,7 @@ public class Student_Score extends SecureScreen
 						for(int j=0;j<attemptedQuizList.size();j++){
 							QuizFileEntry q = (QuizFileEntry)attemptedQuizList.get(j);
 							String quizid1 = q.getQuizID();
+							//String resultdate=q.getResultDate();
 							//==========================================
 							if(quizID.equals(quizid1))
 							{
@@ -182,8 +183,10 @@ public class Student_Score extends SecureScreen
 								for(int k=0;k<quizDetail.size();k++){
 									String quizName = (((QuizFileEntry) quizDetail.elementAt(k)).getQuizName());
 									String maxTime = (((QuizFileEntry) quizDetail.elementAt(k)).getMaxTime());
+									String resdate = (((QuizFileEntry) quizDetail.elementAt(k)).getResDate());
 									q.setQuizName(quizName);
 									q.setMaxTime(maxTime);
+									q.setResDate(resdate);
 								}
 								finalQuizList.add(q);
 							}

@@ -1,0 +1,76 @@
+#*
+ * @(#) Certificate.vm
+ * Copyright (c) 
+ * All Rights Reserved.
+ * @author <a href="mailto:ankitadwivedikit007@gmail.com ">Ankita Dwivedi</a>
+
+ * @modify date: 04july2019
+ * 
+*#
+
+$page.setTitle("Certificate")
+$page.setBgColor($ui.bgcolor)
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
+## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+$!data.getMessage()
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+	<td>
+	<b>
+	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |	
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> | 
+	<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","4").addPathInfo("type","attempt") style='text-decoration:none'>$brih_quiz </a> | $brih_cert  
+    </td>
+## Creating the links for help regarding FAQ 
+	<td align=right>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin") style='text-decoration:none'>$brih_help</a>
+	</td>
+</tr>
+</table>
+#if($finalResult=="Passed")
+<form name=frm method="post" action="$link.setPage("call,OLES,Certificate.vm").setAction("OLES_AttemptQuiz")">
+<div id="divPrint">
+<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #0000A0">
+<div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #0000A0">
+       <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
+       <br><br>
+       <span style="font-size:25px"><i>This is to certify that</i></span><br><br>
+       <span style="font-size:30px"><b>$username</b></span><br/><br/>
+       <span style="font-size:25px"><i>has $finalResult the quiz</i></span> <br/><br/>
+       <span style="font-size:30px">$!quizName</span><br/><br/>
+       <span style="font-size:25px"><i>of course</i></span><br><br/>
+       <span style="font-size:30px">$coursenm</span> <br/><br/>
+       <span style="font-size:20px">with score of <b>$percentageScore %</b></span> <br/><br/>
+       <span style="font-size:25px"><i>dated</i></span><br><br/>
+      <span style="font-size:30px">$!ResultDate</span><br><br/><br><br/>
+	<span style="font-size:10px">Note: This is online generated certificate so there is no need of authorised signature, it is authorised by admin.</span> 
+
+	<input type="hidden" name="quizID">
+</div>
+</div>
+</div>
+<div style="width:800px; height:30px; text-align:center;">
+	<input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="CallPrint('divPrint')"/>
+       	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","Certificate")> Go Back </a>
+</div>
+</form>
+#end
+<script language="javascript">
+        function CallPrint($!quizName) {
+            var prtContent = document.getElementById($!quizName);
+            var WinPrint = window.open('', '', 'letf=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status=0');
+            WinPrint.document.write(prtContent.innerHTML);
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            WinPrint.close();
+            prtContent.innerHTML = strOldOne;
+        }
+    </script>
