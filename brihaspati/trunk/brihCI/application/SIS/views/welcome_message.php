@@ -54,7 +54,7 @@ echo "</center>"; ?>
             </td>
      </tr>
 </table>
-<div class="welcome"style="width:98.6%;"><h2>Welcome to TANUVAS Staff Information System</h2></div>
+<div class="welcome"style="width:98.6%;"><h2>Welcome to Staff Information System</h2></div>
 </br>
 <table style="width:100%;border:0px solid black;" align=center border=0>
 <tr>

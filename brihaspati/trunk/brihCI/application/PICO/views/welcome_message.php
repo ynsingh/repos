@@ -89,11 +89,11 @@ echo "</center>"; ?>
 </table>
 </td>
 <td align=center style="width:30%;" valign="top">
-<div style="overflow:auto;height:300px;">
+<!--<div style="overflow:auto;height:300px;">
 <li style="font-size: 25px;">
-	<a href="picosetup/vendor/" style="font-size: 25px; text-decoration: none">Supplier/Vendor Registration</a>
+	<a href="welcome/vendor/" style="font-size: 25px; text-decoration: none">Supplier/Vendor Registration</a>
 </li>
-</div>
+</div>-->
 </td>
  <td align=right style="width:30%;" valign="top">
                 <form action="<?= site_url('welcome') ?>" method="post">
@@ -121,6 +121,14 @@ echo "</center>"; ?>
                         </table>
                         </form>
                         <table>
+			</tr>
+
+			<tr>
+			<td>
+			<br>	<a href="welcome/vendor/" style="font-size: 20px; text-decoration: none">Supplier/Vendor Registration</a>
+			</td>
+			</tr>
+
 			<tr>
 			<td align=left></br><label><b>For any clarifications, please contact</b></label></br>
 			<label>Phone : 0512-259 7841</label></br>

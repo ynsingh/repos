@@ -14,7 +14,15 @@
 
      <table width="100%">
             <tr><td>
-                <?php echo anchor('picosetup/displayvendor/', "View Supplier Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
+		<?php 
+			$sunme = $this->session->userdata['username'];
+                	if((strcasecmp($sunme,"admin" )) == 0){
+				echo anchor('picosetup/displayvendor/', "View Supplier Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+			}else{
+
+				echo anchor('welcome/', "Login Page ", array('title' => 'Login Page' ,'class' =>'top_parent'));
+			}
+		?>
                 <?php
                  echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";

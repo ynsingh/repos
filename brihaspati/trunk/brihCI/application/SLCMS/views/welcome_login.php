@@ -52,7 +52,8 @@ echo "</center>"; ?>
             </td>
      </tr>
 </table>
-
+<div class="welcome"style="width:98.6%;"><h2>Welcome to Student Life Cycle Management System</h2></div>
+</br>
 <!--<div class="welcome"><h2>Welcome</h2></div>-->
 
 <?php //$this->load->view('enterence/enterence_head');?>
