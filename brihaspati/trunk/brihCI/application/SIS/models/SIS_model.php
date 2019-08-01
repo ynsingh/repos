@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name: SIS_model
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
- * @author: Manorama pal (palseema30@gmail.com)
+ * @author: Manorama pal (palseema30@gmail.com) Add function for saving salaryslip pdf
  * @author: Om Prakash (omprakashkgp@gmail.com) check the record is already exist 
  */
 class SIS_model extends CI_Model
@@ -500,7 +500,7 @@ class SIS_model extends CI_Model
                         'sp_vpermanenet'=>$vpermanenet,
                         'sp_org_id'=> '1'
                     );
-                    //echo "vacacny=per==".$position.$vacant.$pospermanent.$vpermanenet;
+                    //echo "vacacny=per=seema=".$position.$vacant.$pospermanent.$vpermanenet;
                     $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
                     if(!$upempdata_flag){
                         $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
@@ -526,7 +526,7 @@ class SIS_model extends CI_Model
                        'sp_vtemporary'=>$vtemporary,
                        'sp_org_id'=> '1'
                     );
-                   // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
+                    //echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
                     $upempdata_flag=$this->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
                     if(!$upempdata_flag){
                         $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
@@ -695,7 +695,7 @@ class SIS_model extends CI_Model
                   //  echo"first====" .$empdata->sp_sancstrenght.$empdata->sp_position;
                    
                     if($emptype == 'Permanent'){
-                       // echo"<br/>first2====" .$empdata->sp_sspermanent.$empdata->sp_pospermanent;
+                     //   echo"<br/>first2====" .$empdata->sp_sspermanent.$empdata->sp_pospermanent;
                         $update_data = array(
                         'sp_sancstrenght'=>$empdata->sp_sancstrenght+1,
                         'sp_position'=>$empdata->sp_position+1,    
@@ -799,6 +799,7 @@ class SIS_model extends CI_Model
             foreach($emppost_data as $empdata){
                    
                     if($emptype == 'Permanent'){
+                       // echo "in permanent case".$empdata->sp_sancstrenght.$empdata->sp_position.$empdata->sp_sspermanent.$empdata->sp_pospermanent;
                         $update_data = array(
                         'sp_sancstrenght'=>$empdata->sp_sancstrenght-1,
                         'sp_position'=>$empdata->sp_position-1,  
@@ -808,6 +809,7 @@ class SIS_model extends CI_Model
                         );
                     }
                     else{
+                      //  echo "in temp case".$empdata->sp_sancstrenght.$empdata->sp_position.$empdata->sp_sstemporary.$empdata->sp_postemporary;
                         $update_data = array(
                         'sp_sancstrenght'=>$empdata->sp_sancstrenght-1,
                         'sp_position'=>$empdata->sp_position-1,    
@@ -953,6 +955,39 @@ class SIS_model extends CI_Model
         return $newrange;
     }
     
+    /****************function for create salary slip pdf for send as a attachment***********************************/
+    public function payslipAttachment($empid,$month,$year,$case){
+        
+        $spec_data['empid'] = $empid;
+        $spec_data['month'] = $month;
+        $spec_data['year'] = $year;   
+        $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+       // $whorder = " sh_name asc";
+        $whdata = array('sh_type' =>'I');
+        $spec_data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        $whdata = array('sh_type' =>'D');
+        $spec_data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+        // move file to directory code for photo
+	$desired_dir = 'uploads/SIS/Payslip/'.$year.'/'.$month;
+        
+        // Create directory if it does not exist
+        if(is_dir($desired_dir)==false){
+            mkdir("$desired_dir", 0777);
+        }
+        $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
+        if($case == "transcase"){
+           $temp= $this->load->view('setup3/salaryslipcopy2',$spec_data, TRUE);
+        }
+        else{
+            $temp=$this->load->view('setup3/salaryslipcopy',$spec_data, TRUE);   
+        }
+       	//add pdf code to store and view pdf file
+	$pth=$desired_dir.'/'.$emp_pf.'.pdf';
+        //echo $month.$year.$empid.$desired_dir.$pth;      
+        //die();
+	$this->genpdf($temp,$pth);
+    }
+           
     function __destruct() {
         $this->db2->close();
     }

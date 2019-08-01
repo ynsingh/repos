@@ -5,7 +5,7 @@
  * @name Setup3.php
  * @author Manorama Pal(palseema30@gmail.com) Salary heads, Salary formula, Salary head configuration
  * Salary head default value, CCa grade, HRA grade, Salary policies,SalaryCopy, SalarySlip, Transfer salary slip
- * generate salary slip pdf for regular leave transfer cases 
+ * generate salary slip pdf for regular leave transfer cases, mail function for sending monthly payslip as a attachment
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -915,7 +915,17 @@ class Setup3 extends CI_Controller
                 $this->logger->write_logmessage("insert"," salary data head wise value  ", " salary data head wise value added  successfully...");
                 $this->logger->write_dblogmessage("insert"," salary data head wise value ", "salary data head wise value added  successfully...");
                 $this->session->set_flashdata("success", "   salary data head wise value updated successfully... PF NO [ " .$this->emppfno. " ]");
-                redirect("setup3/salaryslip",$data);
+               
+                /*************************sending mail with Attachment Salaryslip********************************************/
+                
+                $uempid=$this->uri->segment(3);
+                $umonth=$this->uri->segment(4);
+                $uyear=$this->uri->segment(5);
+                $ucase=$this->uri->segment(6);
+                
+                $this->mailmodel->mailAttachment($uempid,$this->emppfno,$umonth,$uyear,$ucase);
+                
+                redirect("setup3/salaryprocess",$data);
             }
             
         }//for button
@@ -2296,12 +2306,22 @@ class Setup3 extends CI_Controller
                             
                         }
                     }
-                }    
+                } 
+                  /*************************sending mail with Attachment Salaryslip********************************************/
+                
+              //  $uempid=$this->uri->segment(3);
+               // $umonth=$this->uri->segment(4);
+               // $uyear=$this->uri->segment(5);
+                $ucase=$this->uri->segment(6,0);
+                
+                $this->mailmodel->mailAttachment($record->emp_id,$record->emp_code,$cmonth,$cyear,$ucase);
+                
             
             }//emplistloop
             $this->logger->write_logmessage("insert", " Salary data copy "."Salary data copy");
             $this->logger->write_dblogmessage("insert"," Salary data copy "."Salary data copy");
             $this->session->set_flashdata("success", 'Salary data copy successfully ...' );
+            
                  
         }
         $this->load->view('setup3/empSalary',$data);
@@ -2867,11 +2887,13 @@ class Setup3 extends CI_Controller
     } 
     
     
-    
-    
     public function transfersalaryslip(){
         
         $empid=$this->uri->segment(3);
+        $month=$this->uri->segment(4);
+        $year=$this->uri->segment(5);
+        $case=$this->uri->segment(6);
+      //  $data[]=array();
         $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
         $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
         $whorder = " sh_name asc";
@@ -2892,6 +2914,17 @@ class Setup3 extends CI_Controller
         if(isset($_POST['upsalhdval'])){
           //  $checklist=$this->input->post('check_list', TRUE);
             $ttcase=$this->input->post('tcase', TRUE);
+            $empid=$this->uri->segment(3,0);
+             $month=$this->uri->segment(4,0);
+            $year=$this->uri->segment(5,0);
+            $tcase=$this->uri->segment(6,0);
+            $data['empid']=$empid;
+            $data['month']=$month;
+            $data['year']=$year;
+            $data['case']=$case;
+            
+           // print_r($data);
+           // die();
             //echo "checlistsize===".(count($checklist))."\n=count==".(count($ttcaselist))."\n--value--".$ttcaselist[0].$ttcaselist[1].$ttcaselist[2];
             //die;
             //die;
@@ -2913,8 +2946,7 @@ class Setup3 extends CI_Controller
           //  $totalincome = $this->input->post('incometotal', TRUE);
            // $totaldeduction = $this->input->post('deductiontotal', TRUE);
             //$netpay = $this->input->post('netpay', TRUE);
-            $month=$this->uri->segment(4);
-            $year=$this->uri->segment(5);
+           
             $totalincome=0;
             $totaldeduction = 0;
             $netpay = 0;
@@ -2972,7 +3004,7 @@ class Setup3 extends CI_Controller
             
                 $stempdsal ="uit_emptype,uit_uoc_from,uit_workdept_from,uit_desig_from,uit_workingpost_from,uit_scid_from,
                     uit_schm_from,uit_ddoid_from,uit_paybandid_to,uit_vactype_from,uit_group_from";
-                $wempsal = array ('uit_staffname'=>$record->emp_id);
+                $wempsal = array ('uit_staffname'=>$empid);
                 $stvalemp = $this->sismodel->get_orderlistspficemore('user_input_transfer',$stempdsal,$wempsal,'');
                 
                 $scid=$stvalemp[0]->uit_scid_from;
@@ -3040,21 +3072,26 @@ class Setup3 extends CI_Controller
                 $this->logger->write_logmessage("insert","Trying to add  salary data head wise", "  salary data head wise value is not added ".$this->emppfno);
                 $this->logger->write_dblogmessage("insert","Trying to add salary data head wise ", " salary data head wise value is not added ".$this->emppfno);
                 $this->session->set_flashdata('err_message','Error in  salary data head wise value - '  , 'error');
-                redirect('setup3/salaryslip',$data);
+                redirect('setup3/transfersalaryslip',$data);
             }
             else{
             
                 $upsalaryflag = $this->sismodel->insertrec('salary_lt', $saldata1);
                 $this->logger->write_logmessage("insert"," salary data head wise value  ", " salary data head wise value added  successfully...");
                 $this->logger->write_dblogmessage("insert"," salary data head wise value ", "salary data head wise value added  successfully...");
-                $this->session->set_flashdata("success", "   salary data head wise value updated successfully... PF NO [ " .$this->emppfno. " ]");
-                redirect("setup3/salaryslip",$data);
+                $this->session->set_flashdata("success", " salary data ( ".$ttcase." days ) updated successfully  PF NO [ " .$this->emppfno. " ]");
+                
+            /*************************sending mail with Attachment Salaryslip********************************************/
+                if($ttcase=='to'){
+                    $this->mailmodel->mailAttachment($empid,$this->emppfno,$month,$year,$case);
+                }
+                
+                redirect("setup3/transfersalaryslip/".$empid.'/'.$month.'/'.$year.'/'.$case,$data);
             }
-            //$k++;
-           // }//checklistcloser  
-          //  }//foreach
             
+           
         }//for button
+        
         
         $this->load->view('setup3/transfersalaryslip',$data);   
     }
@@ -3339,6 +3376,16 @@ class Setup3 extends CI_Controller
                 $this->logger->write_logmessage("insert"," salary data head wise value  ", " salary data head wise value added  successfully...");
                 $this->logger->write_dblogmessage("insert"," salary data head wise value ", "salary data head wise value added  successfully...");
                 $this->session->set_flashdata("success", "salary data updated successfully... PF NO [ " .$this->emppfno. " ]");
+                
+                /*************************sending mail with Attachment Salaryslip********************************************/
+                
+                $uempid=$this->uri->segment(3);
+                $umonth=$this->uri->segment(4);
+                $uyear=$this->uri->segment(5);
+                $ucase=$this->uri->segment(6);
+                
+                $this->mailmodel->mailAttachment($uempid,$this->emppfno,$umonth,$uyear,$ucase);
+                
                 redirect('setup3/salaryprocess');
             }
            

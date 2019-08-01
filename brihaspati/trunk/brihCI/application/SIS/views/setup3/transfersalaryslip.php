@@ -109,9 +109,13 @@
             </div>
             </td></tr>
         </table>
-         <?php $empid=$this->uri->segment(3);
-               $month=$this->uri->segment(4);
-               $year=$this->uri->segment(5);
+         <?php 
+               $empid=$this->uri->segment(3,0);
+               $month=$this->uri->segment(4,0);
+               $year=$this->uri->segment(5,0);
+               $case=$this->uri->segment(6,0);
+            //   echo "cases===".$empid.$month.$year.$case;
+               
                $fromdays=''; $trnasitdays=''; $todays='';
                
                $cnomonth= date("m",strtotime($month));
@@ -186,8 +190,9 @@
                 </tr>
                       
             </table>
+             <form action="<?php echo site_url('setup3/transfersalaryslip/'.$empid.'/'.$month."/".$year."/".$case);?>" method="POST" enctype="multipart/form-data">                      
             <?php $tcase='from'; if ($tcase=="from"){;?> 
-            <form action="<?php echo site_url('setup3/transfersalaryslip/'.$empid.'/'.$month."/".$year);?>" method="POST" enctype="multipart/form-data">           
+            
             <tr bgcolor="lightgrey"><td><!--<input type="checkbox" name="check_list[]" checked ="true" value="<?php // echo "from" ?>" /> -->
                 <?php echo "<b><font color=teal>Previous Campus Salary Slip ( No of days: $fromdays )</font></b>"; ?>
                 </td></tr>             
@@ -566,9 +571,14 @@
             <input type="hidden" name="tcase" id="tcase" value="<?php echo $tcase;?>">  
             
             <?php $tcase='from'; }; // closer of tcasefrom ?>
+            <input type="hidden" name="empid" value="<?php echo (isset($empid));?>">
+            <input type="hidden" name="month" value="<?php echo (isset($month));?>">
+            <input type="hidden" name="year" value="<?php echo (isset($year));?>">
+            <input type="hidden" name="case" value="<?php echo (isset($case));?>">
+            
             
             </form>
-             <form action="<?php echo site_url('setup3/transfersalaryslip/'.$empid.'/'.$month."/".$year);?>" method="POST" enctype="multipart/form-data"> 
+             <form action="<?php echo site_url('setup3/transfersalaryslip/'.$empid.'/'.$month."/".$year."/".$case);?>" method="POST" enctype="multipart/form-data"> 
             <?php $tcase='transit'; if ($tcase =="transit"){;?> 
             <tr bgcolor="lightgrey"><td colspan="13" ><!--<input type="checkbox" name="check_list[]" checked ="true" value="<?php //echo "transit" ?>"> -->
                 <?php echo "<b><font color=teal>Transit Days Salary  Slip ( No of days: $trnasitdays )</font></b>"; ?></td></tr> 
@@ -935,9 +945,12 @@
            
             <input type="hidden" name="tcase" id="tcase" value="<?php echo $tcase;?>">  
            <?php $tcase='transit'; }; // closer of tcase transit ?>
-            
+                <input type="hidden" name="empid" value="<?php echo (isset($empid));?>">
+                <input type="hidden" name="month" value="<?php echo (isset($month));?>">
+                <input type="hidden" name="year" value="<?php echo (isset($year));?>">
+                <input type="hidden" name="case" value="<?php echo (isset($case));?>">
             </form>
-             <form action="<?php echo site_url('setup3/transfersalaryslip/'.$empid.'/'.$month."/".$year);?>" method="POST" enctype="multipart/form-data"> 
+             <form action="<?php echo site_url('setup3/transfersalaryslip/'.$empid.'/'.$month."/".$year."/".$case);?>" method="POST" enctype="multipart/form-data"> 
             <?php $tcase ='to'; if ($tcase =="to"){;?> 
             <tr bgcolor="lightgrey"> <td colspan="13"><!--<input type="checkbox" name="check_list[]" checked ="true" value="<?php // echo "to" ?>"> -->
                 <?php echo "<b><font color=teal>Current Salary  Slip ( No of days: $todays )</font></b>" ?></td></tr> 
@@ -1316,7 +1329,10 @@
                 </td></tr> 
                 <input type="hidden" name="tcase" id="tcase" value="<?php echo $tcase;?>">  
                <?php $tcase='to'; };// closer of tcase to ?> 
-               
+                <input type="hidden" name="empid" value="<?php echo (isset($empid));?>">
+                <input type="hidden" name="month" value="<?php echo (isset($month));?>">
+                <input type="hidden" name="year" value="<?php echo (isset($year));?>">
+                <input type="hidden" name="case" value="<?php echo (isset($case));?>">
             </form>       
             </td></tr>
             <!--<tr><td> <button name="upsalhdval" id="btnUpload" style="align:right" onclick="return confirm('Are you sure you want to process salary?');">Update</button></span></td> -->

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name: Mailsend_model
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
- * @author: Manorama Pal (palseema30@gmail.com)
+ * @author: Manorama Pal (palseema30@gmail.com) mail function for sending monthly payslip as a attachment.
  */
 
 class Mailsend_model extends CI_Model
@@ -13,6 +13,7 @@ class Mailsend_model extends CI_Model
     	function __construct() {
         	parent::__construct();
         	$this->load->database();
+                $this->load->model('SIS_model',"sismodel");
     	}
 	// used for sending mail with and without attachment. parameter are  
 	// tomail, subject, message body, file name with complete path
@@ -72,6 +73,35 @@ class Mailsend_model extends CI_Model
 		}//close for if record exist
 		return false;
 	}
+        
+        /*****************************function for sending mail with attachment*************************/ 
+        public function mailAttachment($empid,$emppfno,$month,$year,$case){
+            $sub=" Monthly Pay Slip";
+            $mess="Dear Madam / Sir, "."\r\n"." Please find ".$month." " . $year." pay slip as attachment"." \r\n"
+                . " this is computer generated pay slip if found, any data mismatched \r\n please contact Payroll Admin"." \r\n \r\n \r\n"
+                . " Regards "."\r\n"." Payroll Admin";
+         
+            $dwlattachment=$this->sismodel->payslipAttachment($empid,$month,$year,$case);
+            $desired_dir = 'uploads/SIS/Payslip/'.$year.'/'.$month;
+            $Attachpth=$desired_dir.'/'.$emppfno.'.pdf';
+            //echo "Attachfile===".$Attachpth;
+            //die();
+            $this->empmailid=$this->sismodel->get_listspfic1('employee_master','emp_secndemail','emp_id',$empid)->emp_secndemail;
+            if(!empty($this->empmailid)){
+                $mails=$this->mailmodel->mailsnd($this->empmailid,$sub,$mess,$Attachpth);
+                if($mails){
+                    $this->logger->write_logmessage("update"," Salary slip generated", " successfully" .$this->empmailid);
+                    $this->logger->write_dblogmessage("update","Salary slip generated", "successfully".$this->empmailid);     
+                    $this->session->set_flashdata("success", '  Salary slip generated successfully !! Mail sent Sucessfully !! [ Email ID : '.$this->empmailid. ' ]' );
+                }
+                else{
+                    $this->logger->write_logmessage("update","Salary slip generated", " successfully" .$this->empmailid);
+                    $this->logger->write_dblogmessage("update","Salary slip generated", "successfully".$this->empmailid );     
+                    $this->session->set_flashdata("success", ' Salary slip generated successfully !! Mail does not sent !!' );
+                }
+            }   
+        }
+    
 
     	function __destruct() {
         	$this->db->close();

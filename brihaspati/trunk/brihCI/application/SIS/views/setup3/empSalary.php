@@ -123,6 +123,7 @@
                     <td> Process Salary for the current month:
                     <input type="submit" name="salcopy" id="salcopy" value="Salary Process" onclick="return confirm('Are you sure you want to copy previous month salary to current month?');"/> 
                     </td>
+                    
                     </form>
                    
                 </tr>
@@ -191,7 +192,7 @@
                                 <td><?php echo anchor("setup3/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
                             </tr>
                         <?php }; ?>
-                            
+                        <input type="hidden" name="typecase" value="normal">    
                     <?php else : ?>
                         <td colspan= "13" align="center"> No Records found...!</td>
                     <?php endif;?> 
@@ -241,10 +242,10 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
-                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
-                        <?php }; ?>
+                            <?php }; ?>
                         <?php foreach($empleavelist as $recordsle){ ?> 
                             <tr>
                              
@@ -284,10 +285,10 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
-                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'View salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
-                            
+                                
                         <?php }; ?>   
                     <?php else : ?>
                         <td colspan= "13" align="center"> No Records found...!</td>
