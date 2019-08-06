@@ -324,12 +324,12 @@ class SIS_model extends CI_Model
 	$desired_dir = 'uploads/SIS/transferorder/'.$year;
         // Create directory if it does not exist
         if(is_dir($desired_dir)==false){
-            mkdir("$desired_dir", 0700);
+            mkdir("$desired_dir", 0777);
         }
         $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
        	//add pdf code to store and view pdf file
 	$temp = $this->load->view('staffmgmt/transferordercopy', $spec_data, TRUE);
-	$pth='uploads/SIS/transferorder/'.$year.'/'.$emp_pf.'.pdf';
+	$pth=$desired_dir.'/'.$emp_pf.'.pdf';
 	$this->genpdf($temp,$pth);
     }
     

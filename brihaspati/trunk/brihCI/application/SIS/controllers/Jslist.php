@@ -52,7 +52,7 @@ class Jslist extends CI_Controller
 
 
 	/* This function has been created for get list of Designation on the basis of  selected Working type */
-        public function getwdesiglist(){
+    /*    public function getwdesiglist(){
                 $groups = $this->input->post('wtype');
 
                 $datawh=array('desig_type' => $groups);
@@ -73,7 +73,7 @@ class Jslist extends CI_Controller
         	}
                 echo json_encode($desig_select_box);
 	}
-
+*/
     	/* This function has been created for get list of Designation on the basis of  selected Group */
     	public function getgdesiglist(){
         	$groups = $this->input->post('group');
@@ -470,9 +470,25 @@ class Jslist extends CI_Controller
                 $empname=$detail->emp_name;
                 $empbox='<option value='.$detail->emp_id.'>'.$detail->emp_name.' ';
                 
+                $ddocode=$this->sismodel->get_listspfic1('ddo', 'ddo_code', 'ddo_id',$detail->emp_ddoid)->ddo_code;
+                $ddoname=$this->sismodel->get_listspfic1('ddo', 'ddo_name', 'ddo_id',$detail->emp_ddoid)->ddo_name;
+                $ddobox='<option value='.$detail->emp_ddoid.'>'.$ddoname."(".$ddocode.")".' ';
+                                
+                $groupbox='<option value='.$detail->emp_group.'>'.$detail->emp_group.' ';
+                
+                $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$detail->emp_salary_grade)->sgm_name;
+                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$detail->emp_salary_grade)->sgm_max;
+                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$detail->emp_salary_grade)->sgm_min;
+                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
+                
+                $pgbox='<option value='.$detail->emp_salary_grade.'>'.$payband."(".$pay_min."-".$pay_max.")".$gardepay.' ';
+                
+                
+                
                // array_push($values,$campusbox,$uocbox,$deptbox,$schmbox,$detail->emp_worktype,$desigbox,
                 $values=$campusbox."^".$uocbox."^".$deptbox."^".$schmbox."^".$detail->emp_worktype."^".$desigbox.
-                "^".$empbox."^".$detail->emp_post."^".$detail->emp_type_code;
+                "^".$empbox."^".$detail->emp_post."^".$detail->emp_type_code."^".$ddobox."^".$groupbox."^".$pgbox;
+                    //    ."^".$ddobox."^".$pgbox."^".$groupbox;
                
                                 
             }
@@ -666,4 +682,3 @@ class Jslist extends CI_Controller
         echo json_encode($socno);
     }
 }    
-

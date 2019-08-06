@@ -1545,7 +1545,9 @@ class Staffmgmt extends CI_Controller
                    /********************check vacancy available or not if not then create vacancy**********/ 
                     $this->sismodel->checkvacancy($_POST['campus'],$_POST['uocontrolto'],$_POST['deptto'],
                     $_POST['schemto'],$sapostnew,$_POST['emptypeto'],$_POST['group'],$_POST['vacanttype'],$_POST['payband']);
-                
+                    //echo "check===".$_POST['campus'].$_POST['uocontrolto'].$_POST['deptto'].$_POST['schemto'].$sapostnew.
+                     //$_POST['emptypeto']. $_POST['group'] . $_POST['vacanttype']. $_POST['payband'];
+                   // die();
                    /***********************************************************************************/
                  
                    $usrinputtfr_flag=$this->sismodel->insertdata('user_input_transfer', $data); 
@@ -1591,9 +1593,12 @@ class Staffmgmt extends CI_Controller
                         $this->transferpostbudget($_POST['empname'],$lastentryid);
                         /******************update in from data(staff position ) of budgetpost************/
                         $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;
+                        //echo "postbudget==".$_POST['campusfrom'].$_POST['uocfrom'].$_POST['deptfrom'].$_POST['schemfrom'].$postfrom.
+                        //$postfrom,$_POST['employeetype'].$_POST['empptfrom'];
+                       // die();
                         $this->sismodel->updatespbudgetpost($_POST['campusfrom'],$_POST['uocfrom'],$_POST['deptfrom'],
                         $_POST['schemfrom'],$postfrom,$_POST['employeetype'],$_POST['empptfrom']);
-                        /******************update in from data(staff position ) of budgetpost************/          
+                        /******************update in from data(staff position ) of budgetpost*************************************/          
                     }
                     if($transtype == 'workorder'){
                         $this->workorder($_POST['empname']);
@@ -1606,10 +1611,14 @@ class Staffmgmt extends CI_Controller
                     }  
                     /*************************************updating the staff position table******************************************************************/
                     if($transtype =='singletransfer' ||$transtype =='singlepromtion'){
-                    
+                    // echo "update2==to=".$_POST['empptfrom'];
+                     //echo "update".$_POST['vacanttype'];
+                     //die();
+                    //echo "from data====".$_POST['campusfrom'].$_POST['uocfrom'].$_POST['deptfrom'].$postfrom,$_POST['employeetype'].$_POST['empptfrom'].$_POST['schemfrom'];
                     $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;    
                     //descrease position and increase vacancy from old data(means from )
                     $this->sismodel->updatestaffposition2($_POST['campusfrom'],$_POST['uocfrom'],$_POST['deptfrom'],$postfrom,$_POST['employeetype'],$_POST['empptfrom'],$_POST['schemfrom']);
+                    //echo"to datta===".$_POST['campus'].$_POST['uocontrolto'].$_POST['deptto'].$_POST['postto'].$_POST['emptypeto'].$_POST['vacanttype'];
                     //increase in position and decrease vacancy from new data(means to)
                     $this->sismodel->updatestaffposition($_POST['campus'],$_POST['uocontrolto'], $_POST['deptto'],$_POST['postto'],$_POST['emptypeto'],$_POST['vacanttype']) ;
                     }
@@ -1642,13 +1651,38 @@ class Staffmgmt extends CI_Controller
                     $mail_sent_to=$_POST['emailsentto'];
                    // $mailarray=explode(',',$mail_sent_to);
                     //if sucess send mail to user with transfer order copy 
+                    $camto=$this->input->post('campus');
+                    $cmpnameto=$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id',$camto)->sc_name;
+                    $year=date('Y');
                     $sub='Employee Transfer And Posting - Letter  ' ;
-                    $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptto.'with immediate effect.<br/>
-                    Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
-                    '.$this->regname.'<br/>'.$this->uitdesig;
+                    $mess="OFFICE ORDER"." \r\n"." Dear Madam/Sir,"."\r\n"." This is to inform you that you will be transferred at ".$deptto.",". $cmpnameto." with immediate effect"
+                     . "\r\n"."Please find the attachment of transfer order copy"."\r\n"." Wish you all the best"."\r\n"
+                     . "\r\n"."if found, any data mismatched"."\r\n"."please contact Payroll Admin"."\r\n\r\n\r\n"
+                     . " Regards "."\r\n"." Payroll Admin";
+                    //$this->regname."\r\n".$this->uitdesig;
+                    if($transtype =='mutual'){
+                        $emppfno1=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$_POST['empmutual'])->emp_code;
+                        $attachment=$this->sismodel->gentransferordertpdf($_POST['empname']);
+                        $attachment1=$this->sismodel->gentransferordertpdf($_POST['empmutual']);
+                        $desired_dir = 'uploads/SIS/transferorder/'.$year;
+                        $Attachfile=$desired_dir.'/'.$emppfno.'.pdf';
+                        $Attachfile1=$desired_dir.'/'.$emppfno1.'.pdf';
+                        $this->mailstoperson =$this->mailmodel->mailsnd($mail_sent_to,$sub,$mess,$Attachfile);
+                        $this->mailstoperson =$this->mailmodel->mailsnd($mail_sent_to,$sub,$mess,$Attachfile1);
+                        
+                    }
+                    else{
                     $attachment=$this->sismodel->gentransferordertpdf($_POST['empname']);
-                   // $this->mailstoperson =$this->mailmodel->mailsnd($mail_sent_to, $sub, $mess,$attachment,'');
-                    $this->mailstoperson = '';//$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'','Sis');
+                    
+                    $desired_dir = 'uploads/SIS/transferorder/'.$year;
+                    $Attachfile=$desired_dir.'/'.$emppfno.'.pdf';
+                    
+                 //   echo "Attach====".$Attachfile."==desiredpath===".$desired_dir;
+                   // die();
+                   // $this->mailstoperson =$this->mailmodel->mailsnd($mail_sent_to, $sub, $mess,$Attachfile);
+                    $this->mailstoperson =$this->mailmodel->mailsnd($mail_sent_to,$sub,$mess,$Attachfile);
+                    }
+                    //$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,$Attachfile,'Sis');
                     if($this->mailstoperson){
                         //echo "in if part mail";
                         $mailmsg='Transfer and Promotion order ....Mail send successfully';
@@ -2938,6 +2972,9 @@ class Staffmgmt extends CI_Controller
         /**uit tranfer data for mutal transfer one employee from to is became to from for other employe**/
       // $flag=false;
         $transtype = $transtype.",".$_POST['empmutual']; 
+        $ddoidfrom = $this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$_POST['empname'])->emp_ddoid;
+        $groupfrom = $this->sismodel->get_listspfic1('employee_master','emp_group','emp_id',$_POST['empname'])->emp_group;
+        $posto=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postto'])->desig_id;
         $data = array(
             'uit_registrarname'                => $this->input->post('registrarname'),
             'uit_desig'                        => $this->input->post('designation'),
@@ -2958,7 +2995,7 @@ class Staffmgmt extends CI_Controller
             'uit_uoc_to'                       => $this->input->post('uocontrolto'),
             'uit_dept_to'                      => $this->input->post('deptto'),
             'uit_desig_to'                     => $this->input->post('desigto'),
-            'uit_post_to'                      => $this->input->post('postto'),
+            'uit_post_to'                      => $posto, //$this->input->post('postto'),
             'uit_tta_detail'                   => $this->input->post('ttadetail'),
                 
             'uit_dateofrelief'                 => $this->input->post('dateofrelief'),
@@ -2972,10 +3009,13 @@ class Staffmgmt extends CI_Controller
             'uit_paybandid_to'                 => $this->input->post('payband'),
             'uit_vacanttype_to'                => $this->input->post('vacanttype'),
             'uit_transfertype'                 => $transtype,
+            'uit_ddoid_from'                   => $ddoidfrom,
+            'uit_group_from'                   => $groupfrom
         );  
         $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
         $transtype = "mutual,".$_POST['empname']; 
         $postto2=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['postto'])->desig_name;
+      //  echo "postto2===".$postto2;
         $postfrom2=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['postfrom'])->desig_id;
         $ddoidfrom = $this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$_POST['empname'])->emp_ddoid;
         $ddouseridfrom = $this->sismodel->get_listspfic1('employee_master','emp_ddouserid','emp_id',$_POST['empname'])->emp_ddouserid;
@@ -2995,13 +3035,14 @@ class Staffmgmt extends CI_Controller
             'uit_desig_from'                   => $this->input->post('desigto'),
                 
             'uit_staffname'                    => $this->input->post('empmutual'),
-            'uit_workingpost_from'             => $postto2,
+          //  'uit_workingpost_from'           => $postto2,
+            'uit_workingpost_from'             => $_POST['postto'],
             'uit_scid_from'                    => $this->input->post('campus'),
             'uit_scid_to'                      => $this->input->post('campusfrom'),
             'uit_uoc_to'                       => $this->input->post('uocfrom'),
             'uit_dept_to'                      => $this->input->post('deptfrom'),
             'uit_desig_to'                     => $this->input->post('desigfrom'),
-            'uit_post_to'                      => $postfrom2,
+            'uit_post_to'                      =>$postfrom2,
             'uit_tta_detail'                   => $this->input->post('ttadetail'),
                 
             'uit_dateofrelief'                 => $this->input->post('dateofrelief'),
@@ -3010,11 +3051,15 @@ class Staffmgmt extends CI_Controller
             'uit_emptypeto'                    => $this->input->post('employeetype'),
             'uit_schm_from'                    => $this->input->post('schemto'),
             'uit_schm_to'                      => $this->input->post('schemfrom'),
-            'uit_ddoid_to'                     => $ddoid, // from ddo
-            'uit_group_to'                     => $this->input->post('group'),
+          // 'uit_ddoid_to'                     => $ddoid, // from ddo
+            'uit_ddoid_to'                     => $ddoidfrom, // from ddo
+            //'uit_group_to'                     => $this->input->post('group'),
+            'uit_group_to'                     => $groupfrom,
             'uit_paybandid_to'                 => $this->input->post('payband'),
             'uit_vacanttype_to'                => $this->input->post('empptfrom'),
             'uit_transfertype'                 => $transtype,
+            'uit_ddoid_from'                   => $this->input->post('ddo'),
+            'uit_group_from'                   => $this->input->post('group')
                     
         );
             //'uit_ddoid_to'                     => $this->input->post('ddo'), // from ddo
@@ -3033,7 +3078,8 @@ class Staffmgmt extends CI_Controller
         $empdata = array(
             'emp_dept_code'    => $_POST['deptto'],
             'emp_desig_code'   => $_POST['desigto'],
-            'emp_post'         => $postto,
+          //  'emp_post'         => $postto,
+            'emp_post'         => $_POST['postto'],
             'emp_worktype'     => $_POST['emptypeto'],
             'emp_salary_grade' => $_POST['payband'],
             'emp_schemeid'     => $_POST['schemto'],
@@ -3067,8 +3113,9 @@ class Staffmgmt extends CI_Controller
            'emp_uocid'        => $_POST['uocfrom'],
            'emp_uocuserid'    => $_POST['uocfrom'],
            'emp_ddouserid'    => $ddouserid,//from ddo
-           'emp_ddoid'        => $ddoid,//from ddo
-           'emp_group'        => $_POST['group'],
+           //'emp_ddoid'      =>$ddoid,//from ddo
+           'emp_ddoid'        =>$ddoidfrom,//from ddo
+           'emp_group'        =>$groupfrom,
                     
         );
            //'emp_ddouserid'    => $_POST['ddo'],//from ddo
@@ -3079,7 +3126,7 @@ class Staffmgmt extends CI_Controller
         $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$_POST['desigto'])->desig_code;
         // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
         $this->sismodel->insertsdetail($id,$_POST['campusfrom'],$_POST['uocfrom'],$_POST['deptfrom'],$desigcode,
-        $_POST['schemfrom'],$_POST['ddo'],$_POST['group'],$_POST['payband'],'',$_POST['postto'],'','','',$this->input->post('usono'));
+        $_POST['schemfrom'],$ddoidfrom,$groupfrom,$_POST['payband'],'',$_POST['postto'],'','','',$this->input->post('usono'));
         /***********************************************************************************************/
         return $upempdata_flag;
         

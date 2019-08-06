@@ -577,7 +577,9 @@
              /**********************************Start of empdetail by  PF NOscript*********************************/
                 
                 $("#emppfno").on('change',function(){
+                  //   alert("seema===2nd step===");
                     var pfno = $(this).val();
+                  //  alert("seema===2nd step==="+pfno);
                     var transtype= "<?php echo $ttype;?>";
                     if(pfno === ''){
                //       $('#my_id').[0]reset(); 
@@ -593,8 +595,9 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
+                                
                                 var empdata = data;
-                               // alert("seee=in objecvtdata1="+empdata);
+                             //   alert("seee=in objecvtdata1="+empdata);
                                 var empinput=empdata.split('^');
                                 $('#campfrom').html(empinput[0].replace(/"|"/g,""));
                                 $('#uocid').html(empinput[1]);
@@ -625,7 +628,58 @@
                
                 });  //method empname
                 /**********************************End of empdetail PF NO  script*********************************/
-            
+                
+                /**********************************Start of empdetail by  PF NOscript*********************************/
+                
+                $("#emppfno1").on('change',function(){
+                   //  alert("seema===2nd step===");
+                    var pfno = $(this).val();
+                   // alert("seema===2nd step==="+pfno);
+                    var transtype= "<?php echo $ttype;?>";
+                    if(pfno === ''){
+               //       $('#my_id').[0]reset(); 
+                       // $('#campfrom,#uocid,#scid,#schmid,#emptype,#desigid,#empnameid,#postfrom,#emppt').prop('disabled',true);
+                        
+                    }
+                    else{
+                       // $('#campfrom,#uocid,#scid,#schmid,#emptype,#desigid,#empnameid,#postfrom,#emppt').prop('disabled',false);
+                       
+                        $.ajax({
+                            url: "<?php echo base_url();?>sisindex.php/jslist/getempdata",
+                            type: "POST",
+                            data: {"emplypfno" : pfno},
+                            dataType:"html",
+                            success:function(data){
+                                
+                                var empdata = data;
+                             //   alert("seee=in objecvtdata1="+empdata);
+                                var empinput=empdata.split('^');
+                                $('#campto').html(empinput[0].replace(/"|"/g,""));
+                                $('#uocidto').html(empinput[1]);
+                                $('#scidto').html(empinput[2]);
+                                $('#schmidto').html(empinput[3].replace(/"|"/g,""));
+                                $('#emptypeto').val(empinput[4]);
+                                $('#desigidto').html(empinput[5].replace(/"|"/g,""));
+                                $('#empnameidto').html(empinput[6].replace(/"|"/g,""));
+                                $('#postto').val(empinput[7].replace(/\"/g,""));
+                                $('#vtypeidto').val(empinput[8].replace(/\"/g,""));
+                                $('#ddoid').html(empinput[9].replace(/"|"/g,""));
+                                $('#grpidto').html(empinput[10].replace(/\"/g,""));
+                                $('#paybandto').html(empinput[11].replace(/\"/g,""));
+                                                              
+                            },
+                            error:function(data){
+                                alert("error occur..!!");
+                 
+                            }
+                        });
+                                               
+                    }//else
+               
+                });  //method empname
+                /**********************************End of empdetail PF NO  script*********************************/
+                
+               
             });
     </script>
     </head>
@@ -859,6 +913,7 @@
                         ?>
                         </font></td>
                     </tr>
+                    <?php if($ttype !='mutual') : ?> 
                     <tr>
                         <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
                         <div> <select id="camp" style="width:350px;" name="campus" required> 
@@ -936,6 +991,7 @@
                         </td>
                       
                     </tr>
+                    <?php endif; ?>
                     <tr>
                         <?php if($ttype =='budgetpost') : ?> 
                         <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
@@ -946,7 +1002,7 @@
                            
                         </td>
                         <?php else : ?>
-                        
+                        <?php if($ttype !='mutual'): ?>
                         <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
                         <div>    
                             <select required name="postto" id="postto" style="width:350px;"> 
@@ -962,19 +1018,199 @@
                             </select><div>
                         </td> 
                         <?php endif; ?>
+                        <?php endif; ?>
+                    </tr>    
+                    <?php if($ttype =='mutual'): ?>
+                    <tr>
+                        <td colspan="5"><label for="" style="font-size:15px;">Employee PF No. <font color='Red'>*</font></label>
+                        <div><input type="text" name="emppfnoto" id="emppfno1" value="<?php echo isset($_POST["emppfno"]) ? $_POST["emppfno"] : ''; ?>" size="35"></div>       
+                        </td>
+                    </tr>
+                    <tr>
                         
-                        <?php if($ttype =='mutual'): ?>
-                        <td><label for="empname" style="font-size:15px;">Employee Name for Mutual Tranfer<font color='Red'>*</font></label>
-                            <div><select name="empmutual" id="empnto" style="width:350px;"> 
-                                <option value="">--------- Select Employee Name --------------</option>
-                              
-                                                   
+                         <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
+                        <div>
+                            <select  name="campus" id="campto" required="required" style="width:350px;" > 
+                                
+                            <option value="">--------Campus Name-----</option>
+                            <?php foreach($this->campus as $camdata): ?>	
+   				<option  value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
+                            <?php endforeach; ?> 
+                            </select> 
+                           
+                        </div>
+                        </td>
+                        
+                        
+                        <!--<td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
+                        <div> <select id="camp" style="width:350px;" name="campus" required> 
+                            <option selected="selected" disabled selected>--------Campus Name-----</option>
+                            <?php foreach($this->campus as $camdata): ?>	
+   				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
+                            <?php endforeach; ?>
+                      
+                            </select></div>
+                        </td>  -->
+                        
+                        <td><label for="uocontrol" style="font-size:15px;">University Officer Control To<font color='Red'>*</font></label>
+                            
+                            <div>
+                                <select name="uocontrolto" id="uocidto"  style="width:350px;" required> 
+                                <option value="">------- Select University Officer Control --------</option>
+                                
+                                <?php foreach($this->uoc as $ucodata): ?>	
+                                    <option value="<?php echo $ucodata->id; ?>"><?php echo $ucodata->name; ?></option> 
+                                <?php endforeach; ?>
+                                </select>
+                               
+                            </div>
+                        </td>
+                        
+                        <!--
+                        <td><label for="uocontrol" style="font-size:15px;">University Officer Control To<font color='Red'>*</font></label>
+                            <div><select name="uocontrolto" id="uocidto" style="width:350px;" required> 
+                                <option value="">------- Select University Officer Control ---------</option>
+                                
+                                <?php foreach($this->uoc as $ucodata): ?>	
+                                    <option value="<?php echo $ucodata->id; ?>"><?php echo $ucodata->name; ?></option> 
+                                <?php endforeach; ?>
+                            </select></div>
+                        </td> -->
+                        
+                        <td><label for="dept" style="font-size:15px;">Department To<font color='Red'>*</font></label>
+                            <div>
+                                <select required name="deptto"  id="scidto" style="width:350px;"> 
+                                <option value="">----------------- Select Department --------------</option>
+                                </select>
+                               
+                            </div>
+                        </td>
+                        
+                        
+                        <!--<td><label for="dept" style="font-size:15px;">Department To<font color='Red'>*</font></label>
+                            <div><select required name="deptto" id="scidto" style="width:350px;"> 
+                               <option value="">----------------- Select Department ------------</option>
+                            </select></div>
+                        </td> -->
+                        
+                    </tr>
+                    <tr>
+                        
+                        <td><label for="schemecode" style="font-size:15px;">Scheme Name To<font color='Red'>*</font></label>
+                            <div>
+                                <select required name="schemto" id="schmidto" style="width:350px;"> 
+                                    <option value="">-------------- Select Scheme ------------------</option>
+                                </select>
+                                
+                            </div>
+                        </td>
+                        <!--<td><label for="schemecode" style="font-size:15px;">Scheme Name To<font color='Red'>*</font></label>
+                            <div><select required name="schemto" id="schmidto" style="width:350px;"> 
+                            <option selected="selected" disabled selected>----------------- Select Scheme ------------------</option>
+                        
+                            </select><div>
+                        </td> -->
+                        <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer To<font color='Red'>*</font></label>
+                            <div><select name="ddo" id="ddoid" required style="width:350px;"> 
+                            <option value="">--------- Drawing and Disbursing Officer-----</option>
                             </select></div>
                         </td>
-                        <?php endif;?>
                         
-                                               
+                        <td><label for="employeetype" style="font-size:15px;">Working Type To<font color='Red'>*</font></label>
+                            <div>
+                                <select name="emptypeto" id="emptypeto"  style="width:350px;" required="required"> 
+                                <option value="">------------ Select Working Type ---------------</option>
+                                <option value="Teaching">Teaching</option>
+                                <option value="Non Teaching">Non Teaching</option>
+                                </select>
+                                
+                            </div>
+                        </td>
+                        
+                        <!--<td><label for="employeetype" style="font-size:15px;">Working Type To<font color='Red'>*</font></label>
+                            <div><select name="emptypeto" id="emptypeto" style="width:350px;" required="required"> 
+                                <option value="">------------ Select Working  Type ---------------</option>
+                                <option value="Teaching">Teaching</option>
+                                <option value="Non Teaching">Non Teaching</option>                     
+                            </select></div>
+                        </td> -->
+                        
                     </tr>
+                    <tr>
+                        
+                        <td><label for="group" style="font-size:15px;">Group To<font color='Red'>*</font></label>
+                        <div><select name="group" id="grpidto" required style="width:350px;"> 
+                        <option value="">------------ Select Group ---------</option>
+                        </select></div>
+                        </td>
+                        <?php //echo $ttype ;?>
+                        
+                        <td><label for="desigto" style="font-size:15px;">Designation To<font color='Red'>*</font></label>
+                            <div>
+                                <select name="desigto" id="desigidto" style="width:350px;" required> 
+                                <option value="">-------------- Select Designation -----------------</option>
+                                </select>
+                               
+                            </div>
+                        </td>
+                        
+                        <!--<td><label for="desigto" style="font-size:15px;">Designation To<font color='Red'>*</font></label>
+                            <div><select required name="desigto" id="desigidto" style="width:350px;"> 
+                               <option value="">--------------- Select Designation ---------------</option>
+                            </select>
+                            </div>
+                        </td> -->
+                        <td><label for="payband" style="font-size:15px;">Pay Band To<font color='Red'>*</font></label>
+                        <div><select name="payband" id="paybandto"   style="width:350px;"> 
+                        <option value="">------------------ Select Pay Band -------------</option>
+                    
+                        </select></div>
+                        </td>
+                      
+                    </tr>
+                    <tr> 
+                        <td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
+                            <div><input type="text" name="postto" id="postto"  readonly size="40"  required="required"></div>
+                        </td>
+                        
+                         <!--<td><label for="postto" style="font-size:15px;">Post To<font color='Red'>*</font></label>
+                        <div>    
+                            <select required name="postto" id="postto" style="width:350px;"> 
+                               <option value="">--------------- Select Post ------------------------</option>
+                            </select>   
+                         
+                        </div>       
+                        </td> -->
+                        
+                        <td><label for="emptype" style="font-size:15px;">Post Type<font color='Red'>*</font></label>
+                             <div><input type="text" name="vacanttype" id="vtypeidto"  readonly class="keyup-characters" size="40"  required pattern="[a-zA-Z0-9 ]+" required="required"></div>
+                        </td>
+                        
+                        
+                        <!--<td><label for="emptype" style="font-size:15px;">Post Type<font color='Red'>*</font></label>
+                            <div><select id="vtypeid" name="vacanttype" required style="width:350px;"> 
+                            <option selected="selected" disabled selected>-------- Select Post Type ------</option>
+                            
+                            </select><div>
+                        </td> -->
+                        
+                        <td><label for="empname" style="font-size:15px;">Employee Name for Mutual Tranfer<font color='Red'>*</font></label>
+                            <div>
+                                <select name="empmutual" id="empnameidto" style="width:350px;"> 
+                                <option value="">--------- Select Employee Name --------------</option> -->
+                                </select>
+                              
+                            </div>
+                        </td>
+                        
+                        <!--<td><label for="empname" style="font-size:15px;">Employee Name for Mutual Tranfer<font color='Red'>*</font></label>
+                        <div><select name="empmutual" id="empnto" style="width:350px;"> 
+                        <option value="">--------- Select Employee Name --------------</option>
+                        </select></div>
+                        </td> -->
+                        
+                    </tr> 
+                     <?php endif;?>
                     <tr>
                         <td><label for="dateofrelief" style="font-size:15px;">Date of Relieve</label>
                             <div><input type="text" name="dateofrelief" id="Dateofrelief"  value="<?php echo isset($_POST["dateofrelief"]) ? $_POST["dateofrelief"] : ''; ?>" size="40" />
