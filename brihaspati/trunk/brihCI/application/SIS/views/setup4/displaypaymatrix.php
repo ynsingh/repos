@@ -57,13 +57,28 @@
 	</thead>
 
     <?php  
-        $count=0;
+        $count=0;$wt='';$pcom='';
 	if(!empty($paymat)){
          foreach($paymat as $row)  
          {
+		$sgmpc= $row->pm_pc;
+                $sgmwt = $row->pm_wt;
+                if((strcmp($pcom,$sgmpc))||(strcmp($wt,$sgmwt))){
+                	echo "<tr><td colspan=42><b>". $sgmpc ." Pay commission  - ".$sgmwt."</b></td></tr>";
+                        $pcom = $sgmpc;
+                        $wt = $sgmwt;
+                }
+
+//		echo "<tr>";
+//		echo "<td colspan=42><b>";
+//		echo $row->pm_pc;
+//		echo " - ";
+//		echo $row->pm_wt;
+//		echo "</b></td>";
+//		echo "</tr>";
     ?>
             <tr align='center'>
-            <td><?php echo $row->pm_level;?></td>
+            <td><b><?php echo $row->pm_level;?></b></td>
 	<?php
                         for($i=1;$i<=40;$i++){
 				$nme='pm_sublevel'.$i;

@@ -1969,11 +1969,117 @@ class Staffmgmt extends CI_Controller
 			                $this->load->view('staffmgmt/newstaffposition');
 					return false; 
 				}
+				$sptype=$this->input->post("type");
+				$err_message='';
+				$err_message1='';
+				$err_message2='';
+				$positionflag=true;
+				$positionflag2=true;
+				$positionflag2=true;
 
-//			        $datadupposition = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>$_POST['type'], 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_plan_nonplan'=>$_POST['pnp'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
+				if($sptype == "PT"){
+			        $datadupposition1 = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>'Permanent', 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
+			        $dataposition1 = array(
+				        'sp_tnt'=>$_POST['tnt'],
+				        'sp_type'=>'Permanent',
+				        'sp_emppost'=>$_POST['emppost'],
+				        'sp_grppost'=>$_POST['grouppost'],
+				        'sp_scale'=>$_POST['scale'],
+				        'sp_plan_nonplan'=>'',
+				        'sp_methodRect'=>$_POST['methodrect'],
+				        'sp_group'=>$_POST['group'],
+				        'sp_uo'=>$_POST['uo'],
+				        'sp_dept'=>$_POST['dept'],
+				        'sp_address1'=>$_POST['address1'],
+				        'sp_address2'=>'Null',
+				        'sp_address3'=>'Null',
+				        'sp_campusid'=>$_POST['campus'],
+				        'sp_per_temporary'=>'Null',
+				        'sp_schemecode'=>$_POST['schemecode'],
+				        'sp_sancstrenght'=>$_POST['ss'],
+				        'sp_position'=>$_POST['p'],
+				        'sp_vacant'=>$_POST['v'],
+				        'sp_remarks'=>$_POST['remarks'],
+				        'sp_ssdetail'=>$_POST['ssdetail'],
+				        'sp_sspermanent'=>$_POST['ssper'],
+				        'sp_sstemporary'=>0,
+				        'sp_pospermanent'=>$_POST['pper'],
+				        'sp_postemporary'=>0,
+				        'sp_vpermanenet'=>$_POST['vper'],
+				        'sp_vtemporary'=>0,
+				        'sp_org_id'=> '1'
+			        );
+				$duppositionflag1 = $this->sismodel->isduplicatemore('staff_position', $datadupposition1) ;
+                                if($duppositionflag1 == 1)
+                                {
+                                        $err_message1="Record is already exist with this combination under PT-per";
+                                }
+                                else{
+                                        $positionflag1 = $this->sismodel->insertrec('staff_position', $dataposition1) ;
+					if(!$positionflag1)
+                                        {
+                                                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
+                                                $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
+					}
+                                        else{
+                                                $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
+                                                $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
+                                	}
+				}
+
+			        $datadupposition2 = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>'Temporary', 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
+			        $dataposition2 = array(
+				        'sp_tnt'=>$_POST['tnt'],
+				        'sp_type'=>'Temporary',
+				        'sp_emppost'=>$_POST['emppost'],
+				        'sp_grppost'=>$_POST['grouppost'],
+				        'sp_scale'=>$_POST['scale'],
+				        'sp_plan_nonplan'=>'',
+				        'sp_methodRect'=>$_POST['methodrect'],
+				        'sp_group'=>$_POST['group'],
+				        'sp_uo'=>$_POST['uo'],
+				        'sp_dept'=>$_POST['dept'],
+				        'sp_address1'=>$_POST['address1'],
+				        'sp_address2'=>'Null',
+				        'sp_address3'=>'Null',
+				        'sp_campusid'=>$_POST['campus'],
+				        'sp_per_temporary'=>'Null',
+				        'sp_schemecode'=>$_POST['schemecode'],
+				        'sp_sancstrenght'=>$_POST['ss'],
+				        'sp_position'=>$_POST['p'],
+				        'sp_vacant'=>$_POST['v'],
+				        'sp_remarks'=>$_POST['remarks'],
+				        'sp_ssdetail'=>$_POST['ssdetail'],
+				        'sp_sspermanent'=>0,
+				        'sp_sstemporary'=>$_POST['sstem'],
+				        'sp_pospermanent'=>0,
+				        'sp_postemporary'=>$_POST['ptem'],
+				        'sp_vpermanenet'=>0,
+				        'sp_vtemporary'=>$_POST['vtem'],
+				        'sp_org_id'=> '1'
+			        );
+				$duppositionflag2 = $this->sismodel->isduplicatemore('staff_position', $datadupposition2) ;
+                                if($duppositionflag1 == 2)
+                                {
+                                        $err_message2="Record is already exist with this combination under PT-temp";
+                                }
+                                else{
+                                        $positionflag2 = $this->sismodel->insertrec('staff_position', $dataposition2) ;
+					if(!$positionflag2)
+                                        {
+                                                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
+                                                $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
+					}
+                                        else{
+                                                $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
+                                                $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
+                                	}
+                                }
+
+
+				}else{ //PT if end and else start
 			        $datadupposition = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>$_POST['type'], 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
 
-				//        'sp_plan_nonplan'=>$_POST['pnp'],
 			        $dataposition = array(
 				        'sp_tnt'=>$_POST['tnt'],
 				        'sp_type'=>$_POST['type'],
@@ -2004,39 +2110,62 @@ class Staffmgmt extends CI_Controller
 				        'sp_vtemporary'=>$_POST['vtem'],
 				        'sp_org_id'=> '1'
 			        );
-
 				$duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
-				if($duppositionflag == 1)
+                                if($duppositionflag == 1)
+                                {
+                                        $err_message="Record is already exist with this combination";
+                                }
+                                else{
+                                        $positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
+					if(!$positionflag)
+                                        {
+                                                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
+                                                $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
+					}
+                                        else{
+                                                $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
+                                                $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
+                                	}
+				}
+
+			}// PT else end
+
+//				$duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
+//				if($duppositionflag == 1)
+				if(($duppositionflag == 1)||($duppositionflag1 == 1)||($duppositionflag2 == 1))
 				{
-			                $this->session->set_flashdata("err_message", "Record is already exist with this combination......... ");
+					$this->session->set_flashdata("err_message", $err_message.",  ".$err_message1."  ,".$err_message2);
+//			                $this->session->set_flashdata("err_message", "Record is already exist with this combination......... ");
 			                redirect('staffmgmt/newstaffposition');
 			                return;
 				}
 				else{
-					$positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
-				        if(!$positionflag)
+//					$positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
+//				        if(!$positionflag)
+					if((!$positionflag)||(!$positionflag1)||(!$positionflag2))
         				{
-				                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
-				                $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
-				                $this->session->set_flashdata('err_message','Error in adding Staff Position - ' .  '.', 'error');
+				//                $this->logger->write_logmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost "  );
+				  //              $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
+//				                $this->session->set_flashdata('err_message','Error in adding Staff Position - ' .  '.', 'error');
+						$this->session->set_flashdata("err_message", $err_message.",  ".$err_message1."  ,".$err_message2);
 				                $this->load->view('staffmgmt/newstaffposition');
         				}
 				        else{
-				                $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
-				                $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
+				    //            $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
+				      //          $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
 				                $this->session->set_flashdata("success", "Record added successfully...'Teaching /Non Teaching :' = $sptnt, 'Employee_Post : ' = $spemppost ");
 				                redirect('staffmgmt/staffposition');
         				}
-      				}
-    			}
-   		}
+      				}//else duplicate
+    			}//validation
+   		}// post
    		$this->load->view('staffmgmt/newstaffposition');
-	}
+	}//close if admin
 	else{
 		$this->session->set_flashdata('err_message','You do not have the right to add new staff position.' .  '.', 'error');
 		redirect('staffmgmt/staffposition');
-	}
-   }
+	}//close else admin
+   }//close function
 
   /*This function has been created for update the staff position record */
   public function editstaffposition($sp_id){
@@ -2622,19 +2751,13 @@ class Staffmgmt extends CI_Controller
                       
             foreach($emptype_data as $empdata){
                 // echo json_encode("seema=999===".$empdata);
-              
-                $emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
-              
+                	$emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
             }//foreach
-            
         } //if close   
         else{
-            
             $emptype_select_box='No vacancy';
-            
         }
         echo json_encode($emptype_select_box);
-                        
     }
     /*********************************** closer Employee type from staff position*********************************************/   
   

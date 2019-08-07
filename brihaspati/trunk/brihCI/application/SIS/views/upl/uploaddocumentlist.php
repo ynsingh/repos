@@ -5,7 +5,7 @@
 	<?php $this->load->view('template/header'); ?>
 	 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
-
+<?php $current="upldoc"; ?>
         <script>
 		$(document).ready(function(){
 			$( "#asignother" ).hide();
@@ -89,10 +89,26 @@
 					$( "#ctnm" ).show();
                                 }
                         });
-	//		$('#pfno').on('change',function(){
-          //                      var pfno = $(this).val();
-	//			
-	//		});
+			$('#pfno').on('change',function(){
+                                var pfno = $(this).val();
+                    			$('#pfnoname').prop('disabled',false);
+                    			$.ajax({                      
+						url: "<?php echo base_url();?>sisindex.php/jslist/getempuname",
+			                        type: "POST",
+                        			data: {"emplypfno" : pfno},
+			                        dataType:"html",
+                        			success:function(data){
+			  //                          alert("data==1="+data);
+							var empinput=data.split(",");
+                            				$('#pfnoname').val(empinput[0].replace(/[[\]"|"]/g, ""));
+                        			},
+                        			error:function(data){
+			                            	alert("data in error==="+data);
+                            				alert("error occur..!!");
+                        			}
+                    			});
+				
+			});
 	
 
 	});
@@ -112,11 +128,22 @@
                     echo "</table>";
                     ?-->
 	<div>
+	<?php
+//        include  'view/report/ptab.php';
+?>
 	<table width="100%;">
             <tr>
  <?php
 		    echo "<td align=\"left\" width=\"33%\" style=\"font-size:16px\">";
+ //                   if($roleid == 4){
+   //                     echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
+     //               }
+       //             else{
+         //               echo anchor('upl/uploaddocumentlist'.$empid, 'View Profile ', array('class' => 'top_parent'));
+           //         }
+	//		if($roleid == 1){
 			echo anchor("upl/viewuploaddocument","View Uploaded Support Document ",array('title' => 'View Uploaded Support Document' , 'class' => 'red-link'));
+	//		}
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
                     echo "<b>Upload Document List</b>";
@@ -189,7 +216,11 @@ echo "</tr>";
 		<tr align="left">
                 <td><label for="role_name" class="control-label">PF No:<font color=red>*</font></label></td>
                 <td>
-                <input type="text" name="pfno" id="pfno" class="form-control" size="35" required/><br>
+                <input type="text" name="pfno" id="pfno" class="form-control" size="35" required/> 
+			&nbsp;&nbsp;
+                <input  name="pfnoname" id="pfnoname" class="form-control" size="35" readonly />
+		
+		<br>
                 </td>
             </tr>
 		<tr align="left">

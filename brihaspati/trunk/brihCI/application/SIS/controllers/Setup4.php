@@ -439,7 +439,10 @@ public function rejectedincomereq(){
 	}//end view rejected function
 
 	public function displaypaymatrix(){
-		$data['paymat']=$this->sismodel->get_list('paymatrix');	
+		//$data['paymat']=$this->sismodel->get_list('paymatrix');	
+		$selectfield = '*';
+		$whorder='pm_wt asc,pm_pc asc';
+		$data['paymat']=$this->sismodel->get_orderlistspficemore('paymatrix',$selectfield,'',$whorder);	
 		$this->logger->write_logmessage("view"," view Pay Matrix", "view pay matrix");		
 		$this->load->view('setup4/displaypaymatrix',$data);
 	}
@@ -451,24 +454,25 @@ public function rejectedincomereq(){
                         	$this->form_validation->set_rules('subpaylevel'.$i, 'Sub Pay Level', 'trim|xss_clean');
 			}
 	                if($this->form_validation->run()==TRUE){
-				$level=$_POST['pmlevel'];
-				$is_exist = $this->sismodel->isduplicate('paymatrix','pm_level',$level);
-				if($is_exist){
-					$this->session->set_flashdata("err_message", "Level is already exist.");
-				}
-				else{
-	        	 		$data = array(
+	        	 		$datapm = array(
 			                    	'pm_pc'=>$_POST['paycomm'],
 			                    	'pm_wt'=>$_POST['workingtype'],
 			                    	'pm_level'=>$_POST['pmlevel'],
 					);
+//				$level=$_POST['pmlevel'];
+			//	$is_exist = $this->sismodel->isduplicate('paymatrix','pm_level',$level);
+				$is_exist = $this->sismodel->isduplicatemore('paymatrix',$datapm);
+				if($is_exist){
+					$this->session->set_flashdata("err_message", "Level is already exist.");
+				}
+				else{
 					for($i=1;$i<=40;$i++){
                                                 $field='pm_sublevel'.$i ;
 						$fieldv = $this->input->post('subpaylevel'.$i,'0');
-						$data[$field]=$fieldv;
+						$datapm[$field]=$fieldv;
 					}
 	//				print_r($data); die();
-                    			$pmflag=$this->sismodel->insertrec('paymatrix', $data) ;
+                    			$pmflag=$this->sismodel->insertrec('paymatrix', $datapm) ;
 		        	        if ( ! $pmflag)
                 			{
 			                    	$this->logger->write_logmessage("error", "Error in adding pay matrix detail");

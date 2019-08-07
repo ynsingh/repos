@@ -171,7 +171,7 @@ class Jslist extends CI_Controller
 				array_push($values,$range,$agp);
 			}
 		}else{
-                        $mess="Please select the valid values";
+                        $mess="Please select the valid values or check setup values";
                         array_push($values,$mess);
                 }
                 echo json_encode($values);
@@ -400,6 +400,20 @@ class Jslist extends CI_Controller
                 echo json_encode($lpb_select_box);
         }
 
+	public function getempuname(){
+	        $values=array();
+        	$pfno= $this->input->post('emplypfno');
+	        $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
+	        $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_code',$pfno)->emp_name;
+		if(!empty($empname)){
+				array_push($values, $empname,$empid);
+		}
+		else{
+			$mess="Please enter the valid PF Number";
+			array_push($values,$mess);
+		}
+		echo json_encode($values);
+	}
 
 	public function getemppdata(){
 	        $values=array();
@@ -506,8 +520,11 @@ class Jslist extends CI_Controller
     public function getempdata2(){
         $values=array();
         $pfno= $this->input->post('emplypfno');
-	$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
-       // echo "pfno---".$pfno;
+ //       echo "pfno---".$pfno;
+//	$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
+	$empiddata=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno);
+	if(!empty($empiddata)){
+	$empid=	$empiddata->emp_id;
 	$sel1="emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_name,emp_post,emp_bank_ifsc_code,emp_bankname,emp_bankbranch,emp_bank_accno,emp_phone,emp_address,emp_secndemail,emp_ddoid,emp_dor,emp_doj,emp_dob,emp_salary_grade,emp_aadhaar_no,emp_paycomm,emp_pan_no,emp_nhisidno,emp_worktype,emp_group,emp_type_code";
 	$whdata1= array('emp_code'=>$pfno);
         //$emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
@@ -662,8 +679,11 @@ class Jslist extends CI_Controller
   //              $inclsummary,$lic1no,$lic1amount,$lic2no,$lic2amount,$lic3no,$lic3amount,$lic4no,$lic4amount,$lic5no,$lic5amount,$prdno1,
     //            $prdno2,$prdno3,$plino1,$plino2,$society, $socmem);      
             }
-            
-        }
+   	}         
+        }else{
+		$mess="Please enter the valid PF Number";
+                array_push($values,$mess);
+	}
        // echo "values in controller===".$values;
         echo json_encode($values);
     }

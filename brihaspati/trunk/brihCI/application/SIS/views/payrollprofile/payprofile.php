@@ -29,8 +29,14 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-   //                         alert("datat==="+data);
+//                           alert("datat==="+data);
                             var empinput=data.split(",");
+			    if(empinput.length < 2){
+				$('#invalidpf').val(empinput[0].replace(/[[\]"|"]/g,""));
+				empinput.length = 0;
+			    }else{
+				$('#invalidpf').val("");
+			    }
 //				alert(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
@@ -161,9 +167,10 @@
    	     		    $('#fsfamount').val(empinput[69].replace(/[[\]"|"]/g,""));                            
    	     		    $('#spfcgs2amount').val(empinput[70].replace(/[[\]"|"]/g,""));                            
    	     		    $('#spfcgsamount').val(empinput[71].replace(/[[\]"|"]/g,""));                            
+		//	}
                         },
                         error:function(data){
-                            alert("error occur..!!");
+                            alert("error occur..!!"+data);
                  
                         }
                     });
@@ -205,7 +212,7 @@
 			var pc= $('#pcomm').val();
 			var levl= $('#pscale1').val();
 			var val = wty+","+pc+","+levl;
-//			alert(val);
+		//	alert(val);
 			if(levl == ''){
                         	$('#pscale2').prop('disabled',true);
                     	}else{
@@ -216,7 +223,7 @@
                             data: {"wtpcl" : val},
                             dataType:"html",
                             success:function(data){
-  //                              alert("data==="+data);
+                  //              alert("data==="+data);
 				var sginput=data.split(",");
 //                              alert(sginput[0].replace(/[[\]"|"]/g,""));
                             $('#pscale2').val(sginput[0].replace(/[[\]"|"]/g,""));
@@ -322,6 +329,9 @@
                     <td><label for="emppfno" style="font-size:15px;"><font>Employee PF No</font> <font color='Red'>*</font></label>
                     <div><input type="text" name="emppfno" id="emppfno" value="" placeholder="Employee PF No..."  required>    
                     </td>
+		    <td>
+				<input type="text" name="invalidpf" id="invalidpf" value="" style="text-decoration:none;border:0; font-size:20px;font-weight:bold;color:red; word-break: break-all;width:400px;"   readonly>
+		    </td>
                 </tr>
                 </table>
             <?php echo form_open_multipart('payrollprofile/payprofile','id="my_id"');?>

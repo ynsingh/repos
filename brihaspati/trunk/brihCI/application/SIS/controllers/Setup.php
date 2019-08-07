@@ -1218,8 +1218,8 @@ class Setup extends CI_Controller
     }
      /* this function is used for update department record */
     public function editdepartment($id) {
-
-	$this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
+	$data['scresult'] = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
+	$data['authresult'] = $this->login_model->get_listspfic2('authorities','id','name');
 	$deptrow=$this->common_model->get_listrow('Department','dept_id', $id);
         if ($deptrow->num_rows() < 1)
         {
@@ -1400,7 +1400,7 @@ class Setup extends CI_Controller
                'dept_name'  => $departmentname,
                'dept_short'  => $departmentshort,
                'dept_description' => $departmentdescription,
-              // 'dept_sccode' => $deptsccode,
+               'dept_sccode' => $deptsccode,
                //'dept_orgcode' => $deptorgcode
             );
 	   $deptdatadupe = $this->common_model->isduplicatemore('Department', $ddatachecke);

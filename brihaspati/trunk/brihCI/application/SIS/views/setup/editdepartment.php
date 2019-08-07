@@ -91,8 +91,16 @@
                 echo "<td>";
                 echo form_label('Campus Name', 'deptsccode');
                 echo "</td>";
-                echo "<td>";
-                 echo form_input($deptsccode);
+                echo "<td>"; ?>
+
+		<select name="deptsccode" id="deptsccode" class="my_dropdown" style="width:75%;">
+		<option value="<?php echo  $this->common_model->get_listspfic1('study_center','sc_id','sc_name', $deptsccode["value"])->sc_id; ?>" > <?php echo $deptsccode["value"]; ?></option>
+		<?php foreach($scresult as $datas): ?>
+                    <option value="<?php echo $datas->sc_id ; ?>"><?php echo $datas->sc_name ; ?></option>
+                 <?php endforeach; ?>
+                </select>
+<?php              //    echo form_input($deptsccode);
+		
                  echo "</td>";
                  echo "<td>";
                  echo "</td>";
@@ -106,9 +114,9 @@
                 echo "</td>";
                 echo "<td>"; 
                 //echo form_input($authorities); ?>
-		<select name="authorities" id="authorities" class="my_dropdown" style="width:100%;">
+		<select name="authorities" id="authorities" class="my_dropdown" style="width:75%;">
 		<option value="<?php echo  $this->login_model->get_listspfic1('authorities','id','name', $authorities["value"])->id; ?>" > <?php echo $authorities["value"]; ?></option> 
-		 <?php foreach($this->authresult as $datas): ?>
+		 <?php foreach($authresult as $datas): ?>
                     <option value="<?php echo $datas->id ; ?>"><?php echo $datas->name ; ?></option>
                  <?php endforeach; ?>
 		</select>	
