@@ -184,8 +184,8 @@ INSERT INTO `edrpuser` (`id`, `username`, `password`, `email`, `componentreg`, `
 (1, 'admin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
 (2, 'guest', md5('guest'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
 (3, 'entranceadmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
-(4, 'admissionadmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1)
-(5, 'payrolladmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1)
+(4, 'admissionadmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
+(5, 'payrolladmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1),
 (6, 'picodmin', md5('admin'), 'ynsingh@iitk.ac.in', '*', NULL, '1', '', '', 1)
 ;
 

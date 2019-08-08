@@ -928,7 +928,7 @@ ALTER TABLE `org_profile`
 --
 
 INSERT INTO `org_profile` (`org_id`, `org_code`, `org_name`, `org_nickname`, `org_type`, `org_tagline`, `org_address1`, `org_address2`, `org_city`, `org_district`, `org_state`, `org_countrycode`, `org_pincode`, `org_phone`, `org_fax`, `org_email`, `org_web`, `org_institutedomain`, `org_tanno`, `org_logo`, `org_affiliation`, `org_status`, `org_reg_date`, `org_close_date`, `org_adminfn`, `org_adminln`, `org_admindesig`, `creatorid`, `create_date`, `modifierid`, `modify_date`) VALUES
-(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Government', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '101', '484887', '+91-7629 269 701', '+91-7629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', '2008-07-01', '', 'Prof. T. V.', 'Kattimani', 'Vice-Chancellor', '1', '2017-04-21', '', '');
+(1, 'CU001', 'Brihaspati ERP University', 'BERPU', 'Private', '', 'Kanpur', '', '', '', 'Uttar Pradesh', '101', '208016', '+91-0512 259 7841', '+91-0512 259 7841', 'admission@berpu.ac.in', 'www.berpu.ac.in', 'berpu.ac.in', '', '', 'HRD', 'Active', '2008-07-01', '', 'Prof. Y. N.', 'Singh', 'Vice-Chancellor', '1', '2017-04-21', '', '');
 
 -- --------------------------------------------------------
 

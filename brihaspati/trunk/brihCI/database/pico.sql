@@ -30,11 +30,11 @@ CREATE TABLE `cover_type` (
   `ct_id` int(11) NOT NULL,
   `ct_coverno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ct_coverfixed` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-   `ct_cover1` VARCHAR(255) NOT NULL,
-  `ct_cover2` VARCHAR(255) NULL,
-  `ct_cover3` VARCHAR(255) NULL,
-  `ct_cover4` VARCHAR(255) NULL,
-  `ct_coveroptional` varchar(255) COLLATE utf8_unicode_ci  NULL,
+  `ct_cover1` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ct_cover2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ct_cover3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ct_cover4` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ct_coveroptional` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ct_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --
@@ -46,8 +46,13 @@ ALTER TABLE `cover_type`
 -- AUTO_INCREMENT for table `cover_type`
 --
 ALTER TABLE `cover_type`
-  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT AUTO_INCREMENT=5;;
 
+INSERT INTO `cover_type` (`ct_id`, `ct_coverno`, `ct_coverfixed`, `ct_cover1`, `ct_cover2`, `ct_cover3`, `ct_cover4`, `ct_coveroptional`, `ct_desc`) VALUES
+(1, 'Single Cover', '100', 'Fee or Prequal or Technical or Financial', '', '', '', '', ''),
+(2, 'Two Covers', '100', 'Fee or Prequal or Technical', 'Financial', '', '', '', ''),
+(3, 'Three Covers', '100', 'Fee', 'Prequal or Technical', 'Financial', '', '', ''),
+(4, 'Four Covers', '100', 'Fee', 'Prequal', 'Technical', 'Financial', '', '');
 -- --------------------------------------------------------
 
 --
@@ -61,9 +66,9 @@ CREATE TABLE `depart_indent` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `depart_indent`
-	MODIFY `di_id` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `depart_indent`
 	 ADD PRIMARY KEY (`di_id`);
+ALTER TABLE `depart_indent`
+	MODIFY `di_id` int(11) NOT NULL AUTO_INCREMENT;
 -- --------------------------------------------------------
 
 --
@@ -506,7 +511,7 @@ CREATE TABLE `tender_create` (
   `tc_allowwithdra` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_allowoffline` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_paymode` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tc_offlineinstrumentid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_offlineinstrumentid` varchar(255) COLLATE utf8_unicode_ci NULL,
   `tc_onlinebankid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_covercontent` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_nitdocfilename` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

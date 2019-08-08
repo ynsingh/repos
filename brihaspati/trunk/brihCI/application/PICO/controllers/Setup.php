@@ -25,9 +25,9 @@ class Setup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-        $this->load->model('login_model'); 
+        $this->load->model('login_model','lgnmodel'); 
   	$this->load->model('common_model');
-    $this->load->model('SIS_model'); 
+    	$this->load->model('SIS_model'); 
         $this->load->model('PICO_model');   //changed to PICO insted of 
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
@@ -1044,7 +1044,7 @@ class Setup extends CI_Controller
 	public function dept(){
         	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
                 $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
-	        $this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
+	        $this->authresult = $this->lgnmodel->get_listspfic2('authorities','id','name');
 
             
 	   	if(isset($_POST['dept'])) { 
@@ -1064,7 +1064,7 @@ class Setup extends CI_Controller
 				$campcode = $this->input->post("studycenter");
 				$campname = $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$campcode)->sc_name;
 				$authid = $this->input->post("authorities");
-				$authname = $this->login_model->get_listspfic1('authorities','name','id',$authid)-> name;
+				$authname = $this->lgnmodel->get_listspfic1('authorities','name','id',$authid)-> name;
 		 		$deptbame = $this->input->post("dept_name");
 				$deptcode = strtoupper($this->input->post("dept_name"));
 
@@ -1220,7 +1220,7 @@ class Setup extends CI_Controller
      /* this function is used for update department record */
     public function editdepartment($id) {
 
-	$this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
+	$this->authresult = $this->lgnmodel->get_listspfic2('authorities','id','name');
 	$deptrow=$this->common_model->get_listrow('Department','dept_id', $id);
         if ($deptrow->num_rows() < 1)
         {
@@ -1253,7 +1253,7 @@ class Setup extends CI_Controller
             'id' => 'authorities',
     //        'maxlength' => '50',
             'size' => '40',
-            'value' => $this->login_model->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name,
+            'value' => $this->lgnmodel->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name,
           'readonly' => 'readonly'
         );
 
@@ -3201,7 +3201,7 @@ class Setup extends CI_Controller
                 	" "."(".$this->common_model->get_listspfic1('study_center', 'sc_code', 'sc_id', $bankprofile_data->campusid)->sc_code.")";
 	        }else{$sc="";}
 		if ($bankprofile_data->ucoid != 0) {
-			$uo=$this->login_model->get_listspfic1('authorities', 'name', 'id', $bankprofile_data->ucoid)->name; 
+			$uo=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $bankprofile_data->ucoid)->name; 
 		}else{ $uo='';}
 
 		if ($bankprofile_data->deptid != 0) {

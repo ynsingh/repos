@@ -81,7 +81,7 @@
 			<?php
 			echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->dept_orgcode)->org_name. "</td>";
 	      	        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name ." ( ".$row->dept_sccode  ." )</td>";
-		        echo "<td>". $this->login_model->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name . "</td>";
+		        echo "<td>". $this->lgnmodel->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name . "</td>";
   //                      echo "<td>" . $row->dept_schoolcode. "</td>";
                         echo "<td>" . $row->dept_schoolname ;
 			if (!empty($row->dept_schoolcode)){

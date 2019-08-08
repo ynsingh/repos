@@ -111,7 +111,7 @@ echo "</center>"; ?>
                                 <td >
                                 <button type="submit" style="width:30%" id="button"><b>Login</b></button>
 
-                <!--            <a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
+                <!--            <a href="<?php //echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
                                 <input type="button" value="New Student" style="font-size:17px;width:58%;"></a></td></tr>
                         <tr>
                                  <td> -->
@@ -124,13 +124,13 @@ echo "</center>"; ?>
 			</tr>
 
 			<tr>
-			<td>
+			<td align=right>
 			<br>	<a href="welcome/vendor/" style="font-size: 20px; text-decoration: none">Supplier/Vendor Registration</a>
 			</td>
 			</tr>
 
 			<tr>
-			<td align=left></br><label><b>For any clarifications, please contact</b></label></br>
+			<td align=right></br><label><b>For any clarifications, please contact</b></label></br>
 			<label>Phone : 0512-259 7841</label></br>
 			<label>E-mail : nksinghiitk@gmail.com</label>
 			</td>

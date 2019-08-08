@@ -107,7 +107,7 @@
                 echo "<td>"; 
                 //echo form_input($authorities); ?>
 		<select name="authorities" id="authorities" class="my_dropdown" style="width:100%;">
-		<option value="<?php echo  $this->login_model->get_listspfic1('authorities','id','name', $authorities["value"])->id; ?>" > <?php echo $authorities["value"]; ?></option> 
+		<option value="<?php echo  $this->lgnmodel->get_listspfic1('authorities','id','name', $authorities["value"])->id; ?>" > <?php echo $authorities["value"]; ?></option> 
 		 <?php foreach($this->authresult as $datas): ?>
                     <option value="<?php echo $datas->id ; ?>"><?php echo $datas->name ; ?></option>
                  <?php endforeach; ?>

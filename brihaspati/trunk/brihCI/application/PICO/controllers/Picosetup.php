@@ -13,7 +13,7 @@ class Picosetup extends CI_Controller
     function __construct() {
         parent::__construct();
         $this->load->model('login_model','lgnmodel'); 
-  		$this->load->model('common_model'); //,'commodel'
+	$this->load->model('common_model'); //,'commodel'
         $this->load->model('PICO_model');   //changed to PICO insted of
         $this->load->model('SIS_model'); 
        	$this->load->model('dependrop_model','depmodel');
@@ -240,7 +240,7 @@ class Picosetup extends CI_Controller
 
     public function openfinancialpower(){
         $data['material']= $this->PICO_model->get_list('material_type');
-        $data['authresult'] = $this->login_model->get_listspfic2('authorities','id','name');
+        $data['authresult'] = $this->lgnmodel->get_listspfic2('authorities','id','name');
         $this->load->view('setup/financialpowerform',$data);
     }
 
