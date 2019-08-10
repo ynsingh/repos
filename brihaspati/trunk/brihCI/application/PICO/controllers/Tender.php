@@ -2055,17 +2055,17 @@ public function vendor_reject($id)
          redirect('tender/tender_applicants/'.$n);
  }
 
-public function tender_applicants_approved($id)
+public function tender_applicants_approved($id,$cf="")
         {
 
-          $data['tcidlink']=$id;
+         $data['tcidlink']=$id;
          $tid=$id;
 			$whdata = array('tc_id'=>$tid);
 		   $selectfield='tc_id,tc_refno,tc_workitemtitle,tc_tenderprepby,tc_prepbydesig,tc_prepbydate,tc_approvedstatus,tc_bidsubstartdate,tc_bidsubenddate,tc_bidsubstartdatet,tc_bidsubenddatet' ;
 			$data['tcresult']=$this->PICO_model->get_orderlistspficemore('tender_create',$selectfield,$whdata,'');  
 		   
 		   
-		  
+		   $data['comingfrom']=$cf;
 		   
 		  
 		   $whdata = array('ta_tcid' => $tid,'ta_status'=>'Approved');
@@ -2271,6 +2271,24 @@ public function proposal_entry()
   }
 echo 'hiii';
 }
+
+public function l1_applicants()
+{
+             $whdata = array('tc_approvedstatus'=>'Approved');
+				 $fieldems="tc_id,tc_refno";
+				 $whorderems = '';
+				 $typeofmat['dept'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
+             $this->load->view('tender/l1_applicants',$typeofmat);
+
+}
+
+public function l1()
+{
+	$a=$_POST['id'];
+	$this->tender_applicants_approved($a,"cs");
+	
+}
+
 } 
     ?>
        

@@ -38,8 +38,10 @@
        <tr>
                 <?php 
 		 echo "<td align=\"left\"width=\"33%\">";
+		 if(empty($comingfrom) )
+		 {
 	         echo anchor('tender/tender_applied', "View Tenders Requests", array('title' => 'Tender Detail','class' =>'top_parent'));
-                 echo "</td>";
+                } echo "</td>";
 		 ?>
                  <?php
 		 echo "<td align=\"center\" width=\"34%\">";
@@ -133,7 +135,8 @@
          <?php  } ?>
          </table>
          <br> 
-         
+        <?php  if(empty($comingfrom) )
+		 { ?>
            <table width="100%">
        <tr> 
        <td> <?php   echo anchor('tender/tender_applicants/' . $tcidlink, "Full List", array('title' => 'Complete List' , 'class' => 'red-link' ))." ";              		
@@ -148,7 +151,7 @@
       </td>      
        </tr>
        </table>
-         
+         <?php } ?>
          
          <br>
        
@@ -336,6 +339,8 @@ L1
 </tbody>
 </table>
 <br>
+<?php if(empty($comingfrom) )
+		 { ?>
 <table class="TFtable" style="border-color:transparent;">
 <tr id="offpayrowl" >
 <td>
@@ -344,7 +349,7 @@ L1
 </tr>
 
 </table>
-
+<?php } ?>
 </form>
 </div><!------scroller div------>
      <br> <br>
