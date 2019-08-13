@@ -29,11 +29,18 @@
        <tr><td>
                                 <?php
                                 $uname=$this->session->userdata('username');
-                  //              $rest = substr($uname, -21);
+                                $empid=$this->uri->segment(3,0);
+                               
+                //              $rest = substr($uname, -21);
 		//		if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 				if($uname == "admin"){
-				echo anchor("upl/uploaddocumentlist","Upload Support Document ",array('title' => 'Upload Support Document' , 'class' => 'red-link'));
-				}
+                                    if($empid !=0){    
+                                        echo anchor("upl/uploaddocumentlist/".$empid,"Upload Support Document ",array('title' => 'Upload Support Document' , 'class' => 'red-link'));
+                                    }
+                                    else{
+                                        echo anchor("upl/uploaddocumentlist","Upload Support Document ",array('title' => 'Upload Support Document' , 'class' => 'red-link'));
+                                    }
+                                }
                                 ?>
         </td>      
        <div>
@@ -96,7 +103,7 @@
                     <?php foreach($record as $rec){
 						echo "<tr>";
 						echo "<td>";
-						echo $i;
+						echo $i++;
 						echo "</td>";
                         			echo "<td>";
 						echo str_replace('_',' ',$rec->ud_proflname);
@@ -108,9 +115,9 @@
 						echo str_replace('_',' ',$rec->ud_degreename);
 						echo "</td>";
                         			echo "<td>";
-						echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$rec->ud_pfno)->emp_name;
+						echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$rec->ud_pfno)->emp_name;
 						echo " ( ";
-						echo $rec->ud_pfno;
+						echo    $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$rec->ud_pfno)->emp_code;;
 						echo " ) ";
 						echo "</td>";
                         			echo "<td>";
@@ -119,7 +126,7 @@
 		
 				//		if((strcasecmp($file_ext,"pdf" )) == 0){
 							if(!empty($rec->ud_filename)){ ?>
-                            				<a href="<?php echo base_url().$rec->ud_filelocation.'/'.$rec->ud_filename ; ?>"
+                            				<a href="<?php echo base_url().$rec->ud_filelocation.$rec->ud_filename ; ?>"
                                			target="_blank" type="application/octet-stream" download="<?php echo $rec->ud_filename ?>"><?php echo str_replace('_',' ',$rec->ud_filename) ?></a>
                        				 <?php }
 				//		}

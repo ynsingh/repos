@@ -178,14 +178,20 @@
                                 </td>
                                 <td>
 <?php   echo    "<b>Appointment Order No</b>";
+       
 	//	$file_path = $this->base_path.'uploads/SIS/Basic_Profile/'.$data->emp_code.'_First_Appointment_Order_No.png';
-		$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_First_Appointment_Order_No';
-		if (file_exists($file_path)){
-		?>
-                	<a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_First_Appointment_Order_No' ; ?>"
+                $selectfield = 'ud_filename';
+                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_First_Appointment_Order_No%') ;
+                $empfd['filename']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                if(!empty($empfd['filename'])){
+                    $file_path = 'uploads/SIS/Basic_Profile/'.$empfd['filename'][0]->ud_filename;
+                    if (file_exists($file_path)){
+                    ?>
+                	<a href="<?php echo base_url().$file_path; ?>"
                                target="_blank" type="application/octet-stream" download >View</a>
 <?php 		
-		}
+                    }
+                }    
 	echo  "<br>".$data->emp_apporderno; ?>
                                 </td>
 </tr>
@@ -320,12 +326,19 @@
 <tr>
                                 <td>
 <?php   echo    "<b>Whether Physically handicapped</b> ";
- $file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_Physically_Handicapped';
-                if (file_exists($file_path)){
-                ?>
-                        <a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_Physically_Handicapped' ; ?>"
-                               target="_blank" type="application/octet-stream" download >View</a>
+                $selectfield1 = 'ud_filename';
+                $whdata1 = array ('ud_filename LIKE' =>$data->emp_code.'_Whether_Physically_Handicapped%') ;
+                $ph['phfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield1,$whdata1,'');
+                if(!empty($ph['phfile'])){
+                    $file_path1 = 'uploads/SIS/Basic_Profile/'.$ph['phfile'][0]->ud_filename;
+               
+                    echo $file_path1;
+                    if (file_exists($file_path1)){
+                    ?>
+                    <a href="<?php echo base_url().$file_path1 ; ?>"
+                    target="_blank" type="application/octet-stream" download >View</a>
 <?php
+                    }
                 }
 
 		echo "<br>".$data->emp_phstatus;?>
@@ -474,13 +487,19 @@ echo    $this->sismodel->get_listspfic1('leave_type_master','lt_name','lt_id',$u
 				$ntqnew1=$ntqnew[1];
 			}
 echo    "<td><b>NET qualified</b>";
-$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_NET_Qualified';
-                if (file_exists($file_path)){
-                ?>
-                        <a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Whether_NET_Qualified' ; ?>"
+                
+                $selectfield2 = 'ud_filename';
+                $whdata2 = array ('ud_filename LIKE' =>$data->emp_code.'_Whether_NET_Qualified%') ;
+                $netfd['netfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield2,$whdata2,'');
+                if(!empty($netfd['netfile'])){
+                    $file_path2 = 'uploads/SIS/Basic_Profile/'.$netfd['netfile'][0]->ud_filename;
+                    if (file_exists($file_path2)){
+                    ?>
+                        <a href="<?php echo base_url().$file_path2 ; ?>"
                                target="_blank" type="application/octet-stream" download >View</a>
 <?php
-                }
+                    }
+                }    
 echo " <br>".$ntqnew0; ?>
 </td><td><b>Organiser</b><br><?php   echo    $ntqnew1;?></td><td><b>Year of Passing</b><br><?php   echo   substr( (implode('-', array_reverse(explode('-', $data->emp_netpassingyear)))),6,10);?></td><td><b>Discipline</b><br><?php   echo     $data->emp_netdiscipline;}?></td></tr>
 
@@ -497,13 +516,19 @@ echo " <br>".$ntqnew0; ?>
 				echo "<tr>";
 				echo "<td> <b>Chapter</b> <br>".$emsdata->ems_vci_statchapter."</td>";
 				echo "<td> <b>Registration No</b> ";
-				$file_path = 'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Veterinory_Council_Registration';
-                		if (file_exists($file_path)){
-                ?>
-                        	<a href="<?php echo base_url().'uploads/SIS/Basic_Profile/'.$data->emp_code.'_Veterinory_Council_Registration' ; ?>"
-                               target="_blank" type="application/octet-stream" download >View</a>
-<?php
-                }
+                                $selectfield3 = 'ud_filename';
+                                $whdata3 = array ('ud_filename LIKE' =>$data->emp_code.'_Veterinory_Council_Registration%') ;
+                                $vcrfd['vcrfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield3,$whdata3,'');
+                                if(!empty($vcrfd['vcrfile'])){
+                                    $file_path3 = 'uploads/SIS/Basic_Profile/'.$vcrfd['vcrfile'][0]->ud_filename;
+                                    echo $file_path3 ;
+                                    if (file_exists($file_path3)){
+                                ?>  
+                                    <a href="<?php echo base_url().$file_path3 ; ?>"
+                                    accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                <?php
+                                    }
+                                }    
 				echo "<br>".$emsdata->ems_vci_statregno."</td>";
 				echo "<td> <b>Date of Registration</b> <br>".$emsdata->ems_vci_statregdate."</td>";
 				echo "<td> <b>Validity Date</b> <br>".$emsdata->ems_vci_statvaliddate."</td>";
@@ -620,6 +645,7 @@ echo " <br>".$ntqnew0; ?>
                         <tr>
                 </table>
 <?php if($print){ ?>
+    
 <br>
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">

@@ -120,12 +120,13 @@
                                 <th>Year of Passing</th>
                                 <th>Certificate Type</th>
                                 <th>Discipline</th>
+                                <th></th>
                             </tr>    
                         </thead>
                         <tbody>
                                
                                 
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;">School Education</span></b></td></tr>
+                                    <tr><td colspan="7"><b><span style="color:#0099CC;">School Education</span></b></td></tr>
                                     <?php if( !empty($schooledu) ):  ?>
                                     <?php foreach($schooledu as $record){; ?>
                                         
@@ -133,12 +134,39 @@
                                             <?php $str= substr($record->saq_dgree,0,1);
                                             
                                             if($str != 'B' && $record->saq_dgree != 'PhD' && $record->saq_dgree != 'PDF' && $record->saq_dgree != 'P.G.Diploma' && $record->saq_dgree != 'NA'): ?>
-                                            <td><b><?php echo $record->saq_dgree;?></b></td>
+                                            <td><b><?php $record->saq_dgree;
+                                                    if($record->saq_dgree == '8th_std'){
+                                                        echo "8<sup>th</sup> std";
+                                                    }
+                                                    if($record->saq_dgree == '10th_std'){
+                                                        echo "10<sup>th</sup>std/SSLC";
+                                                    }
+                                                     if($record->saq_dgree == 'Ten_Plus_Two'){
+                                                        echo "Ten Plus Two/12<sup>th</sup>";
+                                                    }
+                                            ;?></b></td>
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
                                             <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
+                                            <td>
+                                           <?php
+                                                $selectfield = 'ud_filename';
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_'.$record->saq_dgree."%") ;
+                                                $schfd['schfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($schfd['schfile'])){
+                                                $file_path = 'uploads/SIS/School_Education/'.$schfd['schfile'][0]->ud_filename;
+                                               // echo $file_path ;
+                                                    if (file_exists($file_path)){
+                                                 //  echo "true";     
+                                              ?>  
+                                                    <a href="<?php echo base_url().$file_path; ?>"
+                                                    accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?>
+                                            </td>    
                                             <?php endif;?>
                                         </tr>
                                     <?php }; ?>
@@ -150,18 +178,35 @@
                             <tbody>
                                
                                 
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;">P. G. Diploma</span></b></td></tr>
+                                    <tr><td colspan="7"><b><span style="color:#0099CC;">P. G. Diploma</span></b></td></tr>
                                     <?php if( !empty($diploma) ):  ?>
                                     <?php foreach($diploma as $record){; ?>
                                         
                                         <tr>
-                                            <td><b><?php echo $record->saq_dgree;?></b></td>
+                                            <td><b><?php echo $record->saq_dgree
+                                                    
+                                                    ;?></b></td>
                                             <td><?php echo $record->saq_board_univ;?></td>
                                             <td><?php echo $record->saq_result;?></td>
                                             <td><?php echo $record->saq_yopass;?></td>
                                             <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
-                                           
+                                            <td>
+                                                <?php
+                                                $selectfield = 'ud_filename';
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_Postgraduate_PG_Diploma'."%") ;
+                                                $dipfd['dipfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($dipfd['dipfile'])){
+                                                $file_path1 = 'uploads/SIS/Academic_Qualification/'.$dipfd['dipfile'][0]->ud_filename;
+                                               // echo $file_path1 ;
+                                                    if (file_exists($file_path1)){
+                                            ?>            
+                                                    <a href="<?php echo base_url().$file_path1; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?>
+                                            </td>    
                                         </tr>
                                     <?php }; ?>
                                 <?php else : ?>
@@ -172,7 +217,7 @@
                             <tbody>
                                 
                                                                
-                                <tr><td colspan="6"><b><span style="color:#0099CC;">Under Graduate (UG)</span></b></td></tr>
+                                <tr><td colspan="7"><b><span style="color:#0099CC;">Under Graduate (UG)</span></b></td></tr>
                                  <?php if( !empty($ugraduate) ):  ?>
                                     <?php foreach($ugraduate as $record){; ?>
                                         
@@ -184,7 +229,22 @@
                                             <td><?php echo $record->saq_yopass;?></td>
                                             <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
-                                            
+                                            <td>
+                                            <?php
+                                                $selectfield = 'ud_filename';
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_Undergraduate_'.$record->saq_dgree."%") ;
+                                                $ungfd['ungfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($ungfd['ungfile'])){
+                                                $file_path2 = 'uploads/SIS/Academic_Qualification/'.$ungfd['ungfile'][0]->ud_filename;
+                                                //echo $file_path2 ;
+                                                    if (file_exists($file_path2)){
+                                            ?>            
+                                                    <a href="<?php echo base_url().$file_path2 ; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?>
+                                            </td>    
                                         </tr>
                                     <?php }; ?>
                                 <?php else : ?>
@@ -195,7 +255,7 @@
                             <tbody>
                                 
                                 
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;">Post Graduate (PG)</span></b></td></tr>
+                                    <tr><td colspan="7"><b><span style="color:#0099CC;">Post Graduate (PG)</span></b></td></tr>
                                     <?php if( !empty($masters) ):  ?>
                                     <?php foreach($masters as $record){; ?>
                                         
@@ -207,7 +267,28 @@
                                             <td><?php echo $record->saq_yopass;?></td>
                                             <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
-                                            
+                                            <td>
+                                            <?php
+                                                $selectfield = 'ud_filename';
+                                                if($record->saq_dgree == 'MPhil'){
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_'.$record->saq_dgree.'_'."%") ;
+                                                }
+                                                else{
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_Postgraduate_'.$record->saq_dgree."%") ;
+                                                }
+                                                $pgfd['pgfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($pgfd['pgfile'])){
+                                                $file_path3 = 'uploads/SIS/Academic_Qualification/'.$pgfd['pgfile'][0]->ud_filename;
+                                               // echo $file_path3 ;
+                                                    if (file_exists($file_path3)){
+                                            ?>            
+                                                    <a href="<?php echo base_url().$file_path3 ; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                
+                                                } 
+                                             ?>
+                                            </td>    
                                         </tr>
                                     <?php }; ?>
                                 <?php else : ?>
@@ -217,7 +298,7 @@
                             <tbody>
                                 
                                 
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;">Doctoral Programmes</span></b></td></tr>
+                                    <tr><td colspan="7"><b><span style="color:#0099CC;">Doctoral Programmes</span></b></td></tr>
                                     <?php if( !empty($doctrate) ):  ?>
                                         <?php foreach($doctrate as $record){; ?>
                                         
@@ -231,7 +312,24 @@
                                             <td><?php echo $record->saq_certtype;?></td>
                                             <td><?php echo $record->saq_discipline;?></td>
                                             <?php };?>
-                                            
+                                             <td>
+                                           <?php
+                                                $selectfield = 'ud_filename';
+                                                if($record->saq_dgree == 'PhD' ||$record->saq_dgree == 'PDF' ){
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_'.$record->saq_dgree.'_'."%") ;
+                                                }
+                                                $docfd['docfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($docfd['docfile'])){
+                                                $file_path4 = 'uploads/SIS/Academic_Qualification/'.$docfd['docfile'][0]->ud_filename;
+                                                //echo $file_path4 ;
+                                                    if (file_exists($file_path4)){
+                                            ?>            
+                                                   <a href="<?php echo base_url().$file_path4 ; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?> 
+                                            </td>     
                                         </tr>
                                     <?php }; ?>
                                 <?php else : ?>

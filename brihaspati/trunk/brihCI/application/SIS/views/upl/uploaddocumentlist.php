@@ -40,7 +40,7 @@
                 		var grp_id = $(this).val();
 				var profile_id = $('#profileid').val();
 				var wtg=grp_id+","+profile_id;
-//		alert(wtg);
+		//alert(wtg+"seema"); 
                 		if(grp_id == ''){
                     			$('#catgid').prop('disabled',true);
                 		}
@@ -78,17 +78,27 @@
                                 }
                         });
 			
-			$('#profileid').on('change',function(){
-				var pnme = $(this).val();
+			$('#profileid,#subprfid').on('change',function(){
+				var pnme = $('#profileid').val();
+                                var subpcat=$('#subprfid').val();
+                             //   alert("pnme==="+pnme+subpcat);
 				if(pnme == 'Technical_Qualification'){
-					$( "#asignother" ).show();
+                                    if(subpcat !='Shorthand' && subpcat !='Typing'){
+                                   //     alert("seema if cond"+subpcat+"--"+pnme);    
+					
+                                        $( "#asignother" ).show();
 					$( "#ctnm" ).hide();
-				}
-                                else{
+                                    }
+                                    else{
+                                     //   alert("seema else cond"+subpcat); 
+                                       
                                         $( "#asignother" ).hide();
 					$( "#ctnm" ).show();
+                                    }
                                 }
                         });
+                        
+                        
 			$('#pfno').on('change',function(){
                                 var pfno = $(this).val();
                     			$('#pfnoname').prop('disabled',false);
@@ -108,7 +118,7 @@
                         			}
                     			});
 				
-			});
+			})
 	
 
 	});
@@ -130,7 +140,14 @@
 	<div>
 	<?php
 //        include  'view/report/ptab.php';
-?>
+        
+        ?>
+          <?php  $empid=$this->uri->segment(3,0);
+                if($empid != 0){
+                    $pfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $empid)->emp_code;
+                    $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id',$empid)->emp_name;
+                }
+         ?>     
 	<table width="100%;">
             <tr>
  <?php
@@ -142,8 +159,13 @@
          //               echo anchor('upl/uploaddocumentlist'.$empid, 'View Profile ', array('class' => 'top_parent'));
            //         }
 	//		if($roleid == 1){
-			echo anchor("upl/viewuploaddocument","View Uploaded Support Document ",array('title' => 'View Uploaded Support Document' , 'class' => 'red-link'));
-	//		}
+                        if($empid !=0){  
+                            echo anchor("upl/viewuploaddocument/".$empid,"View Uploaded Support Document ",array('title' => 'View Uploaded Support Document' , 'class' => 'red-link'));
+			}
+                        else{
+                            echo anchor("upl/viewuploaddocument","View Uploaded Support Document ",array('title' => 'View Uploaded Support Document' , 'class' => 'red-link'));   
+                        }
+        //		}
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
                     echo "<b>Upload Document List</b>";
@@ -178,14 +200,19 @@ echo "</tr>";
                ?>
               </div>
          </td></tr>
-    </table>							
-	<form action="<?php echo site_url('upl/uploaddocumentlist');?>" method="POST" enctype="multipart/form-data">
+    </table>
+        <?php if($empid!=0): ;?> 
+            <form action="<?php echo site_url('upl/uploaddocumentlist/'.$empid);?>" method="POST" enctype="multipart/form-data">
+        <?php else: ;?>    
+            <form action="<?php echo site_url('upl/uploaddocumentlist');?>" method="POST" enctype="multipart/form-data"> 
+        <?php endif ;?>    
 	<table border=0>
 		<tr align="left">
 			<td><label>Profile Name :  <font color=red>*</font> </label></td>
 			<td>
 				<select class="my_dropdown" id="profileid" name="profilename" style="width:300px;" required> 
 					<option selected="selected" disabled selected>--Select profile name--</option>
+                                        <option value="School_Education">School Education</option>
 					<option value="Basic_Profile">Basic Profile</option>
 					<option value="Academic_Qualification">Academic Qualification</option>
 					<option value="Technical_Qualification">Technical Qualification</option>
@@ -216,9 +243,16 @@ echo "</tr>";
 		<tr align="left">
                 <td><label for="role_name" class="control-label">PF No:<font color=red>*</font></label></td>
                 <td>
-                <input type="text" name="pfno" id="pfno" class="form-control" size="35" required/> 
-			&nbsp;&nbsp;
-                <input  name="pfnoname" id="pfnoname" class="form-control" size="35" readonly />
+                    <?php if($empid !=0): ;?>
+                        <input type="text" name="pfno" id="pfno" class="form-control" value="<?php echo $pfno;?>"  size="30" required readonly/>
+                            &nbsp;&nbsp;
+                        <input  name="pfnoname" id="pfnoname" class="form-control" value="<?php echo $empname;?>" size="35" readonly />
+                    <?php else: ;?>
+                        <input type="text" name="pfno" id="pfno" class="form-control" value=""  size="30" required/>
+                            &nbsp;&nbsp;
+                        <input  name="pfnoname" id="pfnoname" class="form-control"  size="35" readonly />
+                    
+                    <?php endif;?>
 		
 		<br>
                 </td>

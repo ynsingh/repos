@@ -36,7 +36,7 @@
        
                 var newRow = $("<tr>");
                 var cols = "";
-                cols += '<td><b>School Education</b><select name="stdclass[]" id="stdclass" ><option value="">----- Select ------</option><option value="8<sup>th</sup> std">8<sup>th</sup> std</option><option value="10<sup>th</sup> std/SSLC">10<sup>th</sup> std/SSLC</option><option value="Ten Plus Two/12<sup>th</sup>">Ten Plus Two/12<sup>th</sup></option></select></td>';
+                cols += '<td><b>School Education</b><select name="stdclass[]" id="stdclass" ><option value="">----- Select ------</option><option value="8th_std">8<sup>th</sup> std</option><option value="10th_std">10<sup>th</sup> std/SSLC</option><option value="Ten_Plus_Two">Ten Plus Two/12<sup>th</sup></option></select></td>';
        
                 cols += '<td><input type="text" name="board[]" id="buniv" placeholder="Board/university.." size="30"></td>';
                 cols += '<td><select name="result[]" id="result" style="width:150px;"><option value="">-- Select result ---</option><option value="Pass">Pass</option><option value="Fail">Fail</option><option value="Discontinued">Discontinued</option></select></td>';
@@ -173,9 +173,9 @@
                             <td><b>School Education</b><br/>
                             <select name="stdclass[]" id="stdclass" >
                                 <option value="">----- Select ------</option>
-                                <option value="8<sup>th</sup> std">8<sup>th</sup> std</option>
-                                <option value="10<sup>th</sup> std/SSLC">10<sup>th</sup> std/SSLC</option>
-                                <option value="Ten Plus Two/12<sup>th</sup>">Ten Plus Two/12<sup>th</sup></option>
+                                <option value="8th_std">8<sup>th</sup> std</option>
+                                <option value="10th_std">10<sup>th</sup>std/SSLC</option>
+                                <option value="Ten_Plus_Two">Ten Plus Two/12<sup>th</sup></option>
                             </select>
                             </td>
                             <td>

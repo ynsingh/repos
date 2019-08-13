@@ -114,6 +114,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var combid = sc_code+","+uoc_id;
+               // var employeeid = "<?php  echo $this->uri->segment(3);?>";
+               // alert("seema==="+employeeid);
                 if(uoc_id == ''){
                     $('#scid').prop('disabled',true);
                 }
@@ -126,7 +128,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         data: {"campuoc" : combid},
                         dataType:"html",
                         success:function(data){
-                           // alert("data==1="+data);
+                          //  alert("data==1="+data);
                             $('#scid').html(data.replace(/^"|"$/g, ''));
                        
                         },
@@ -610,6 +612,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             
             $('#vcrapp,#vcrnoapp').on('change',function(){
                 var vcrradioval = $(this).val();
+                
                // alert("vcrradioval====="+vcrradioval);
                 if(vcrradioval == 'Applicable'){
                     $('#chapter,#vciregno,#vciregdate,#vcrvaliddate').prop('disabled',false);
@@ -709,7 +712,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             ?>
         </td>
         </tr>
+          
         </table>
+       
         <div align="left" width="100%">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -725,14 +730,24 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <?php
                 };
                 ?>    
-                  
+                     
         </div>
-        <div>
+        <table style="width:100%;"  border=0 >
+        <tr> <td>
+       
 		<?php $current="basic"; 
 			$emp_id=$id;
 		  	include 'eprofiletab.php';
+                  //	include 'report/profiletab.php';     
 		 ?>
+            </td></tr> 
+        </table>   
+      
+        
+              
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
+        
+         
         <!--<table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">-->
         <table width="100%" style="margin-left:0%;border:1px solid gray;" class="TFtable">
             
@@ -1658,7 +1673,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
           
         </table> 
          <p> &nbsp; </p>   
-        </div>    
+     
         <div align="center">  <?php $this->load->view('template/footer');?></div>
-    </body>
+       
+ </body>   
 </html>

@@ -119,12 +119,13 @@
                                     <th>Result</th>
                                     <th>Year of Passing</th>
                                     <th>Discipline</th>
+                                    <th></th>
                                     
                                 </tr>    
                                 </thead>
                                 <tbody>
                                     
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;"> Diploma / ITI / Certified Course</span></b></td></tr>
+                                    <tr><td colspan="7"><b><span style="color:#0099CC;"> Diploma / ITI / Certified Course</span></b></td></tr>
                                     <?php if( !empty($technical) ):  ?>    
                                         <?php foreach($technical as $record){; ?>
                                         
@@ -138,7 +139,29 @@
                                             <td><?php echo $record->stq_result;?></td>
                                             <td><?php echo $record->stq_dopass;?></td>
                                             <td><?php echo $record->stq_discipline;?></td>
+                                             <td>
+                                           <?php
+                                                $selectfield = 'ud_filename';
+                                                if($record->stq_dgree == 'Certified Course'){
+                                                    $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_Certificate_Course_'."%") ;
+                                                }
+                                                else{
+                                                    $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_'.$record->stq_dgree.'_'."%") ;   
+                                                }
+                                                $dcitifd['dcitifile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($dcitifd['dcitifile'])){
+                                                $file_path = 'uploads/SIS/Technical_Qualification/'.$dcitifd['dcitifile'][0]->ud_filename;
+                                                //echo $file_path ;
+                                                    if (file_exists($file_path)){
+                                            ?>            
+                                                    <a href="<?php echo base_url().$file_path ; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?>
+                                            </td>    
                                             <?php };?>
+                                           
                                         </tr>
                                     <?php }; ?>
                                     <?php else : ?>
@@ -165,7 +188,26 @@
                                             <td><?php echo $record->stq_result;?></td>
                                             <td><?php echo $record->stq_dopass;?></td>
                                             <td><?php echo $record->stq_discipline;?></td>
+                                             <td>
+                                           <?php
+                                                $shvalue= str_replace(" ", "_",$str[0]);
+                                                //echo $shvalue;
+                                                $selectfield = 'ud_filename';
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_Shorthand_'.$shvalue."%") ;
+                                                $sothfd['sothfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($sothfd['sothfile'])){
+                                                $file_path1 = 'uploads/SIS/Technical_Qualification/'.$sothfd['sothfile'][0]->ud_filename;
+                                              //  echo $file_path1;
+                                                    if (file_exists($file_path1)){
+                                            ?>            
+                                                    <a href="<?php echo base_url().$file_path1 ; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?>
+                                            </td>   
                                             <?php }};?>
+                                            
                                         </tr>
                                     <?php }; ?>
                                     <?php else : ?>
@@ -175,7 +217,7 @@
                                 </tbody>
                                 <tbody>
                                     
-                                    <tr><td colspan="6"><b><span style="color:#0099CC;"> Typing</span></b></td></tr>
+                                    <tr><td colspan="7"><b><span style="color:#0099CC;"> Typing</span></b></td></tr>
                                     <?php if( !empty($technical) ):  ?>
                                     <?php foreach($technical as $record){; ?>
                                         
@@ -192,7 +234,26 @@
                                             <td><?php echo $record->stq_result;?></td>
                                             <td><?php echo $record->stq_dopass;?></td>
                                             <td><?php echo $record->stq_discipline;?></td>
+                                            <td>
+                                           <?php
+                                                $typvalue= str_replace(" ", "_",$str1[0]);
+                                                
+                                                $selectfield = 'ud_filename';
+                                                $whdata = array ('ud_filename LIKE' =>$data->emp_code.'_Typing_'.$typvalue."%") ;
+                                                $typfd['typfile']= $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,'');
+                                                if(!empty($typfd['typfile'])){
+                                                $file_path2 = 'uploads/SIS/Technical_Qualification/'.$typfd['typfile'][0]->ud_filename;
+                                              // echo $file_path2 ;
+                                                    if (file_exists($file_path2)){
+                                            ?>            
+                                                    <a href="<?php echo base_url().$file_path2 ; ?>"
+                                                        accesskey=""target="_blank" type="application/octet-stream" download >View</a>
+                                                <?php    }
+                                                } 
+                                             ?>
+                                            </td>  
                                             <?php }};?>
+                                             
                                         </tr>
                                     <?php }; ?>
                                     <?php else : ?>

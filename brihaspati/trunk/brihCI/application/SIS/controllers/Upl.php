@@ -1455,7 +1455,7 @@ class Upl extends CI_Controller
 		$grade_select_box ='';
         $grade_select_box.='<option value>------- Select Sub Profile Category -----------------';
         if($combid == 'Basic_Profile'){
-            $grade_select_box.='<option value='.'First_Appointment_Order_No.'.'>'.'First Appointment Order No';
+            $grade_select_box.='<option value='.'First_Appointment_Order_No'.'>'.'First Appointment Order No';
             $grade_select_box.='<option value='.'Date_Of_Probation'.'>'.'Date Of Probation';    
             $grade_select_box.='<option value='.'Whether_Physically_Handicapped'.'>'.'Whether Physically Handicapped';     
 			$grade_select_box.='<option value='.'Whether_NET_Qualified'.'>'.'Whether NET Qualified'; 
@@ -1464,17 +1464,23 @@ class Upl extends CI_Controller
         else if($combid == 'Academic_Qualification'){
             $grade_select_box.='<option value='.'Undergraduate'.'>'.'Undergraduate'.'';
             $grade_select_box.='<option value='.'Postgraduate'.'>'.'Postgraduate'.'';  
-			$grade_select_box.='<option value='.'MPhil'.'>'.'MPhil'.'';  
-			$grade_select_box.='<option value='.'Phd'.'>'.'Phd'.'';  
-			 }
-		else if($combid == 'Technical_Qualification'){
+            $grade_select_box.='<option value='.'MPhil'.'>'.'MPhil'.'';  
+            $grade_select_box.='<option value='.'Phd'.'>'.'Phd'.'';  
+	}
+	else if($combid == 'Technical_Qualification'){
             $grade_select_box.='<option value='.'Diploma'.'>'.'Diploma'.'';
             $grade_select_box.='<option value='.'ITI'.'>'.'ITI'.'';  
-			$grade_select_box.='<option value='.'Certificate_Course'.'>'.'Certificate Course';  
-			$grade_select_box.='<option value='.'Shorthand'.'>'.'Shorthand'.'';  
-			$grade_select_box.='<option value='.'Typing'.'>'.'Typing'.'';
-			 }
-		else{
+            $grade_select_box.='<option value='.'Certificate_Course'.'>'.'Certificate Course';  
+            $grade_select_box.='<option value='.'Shorthand'.'>'.'Shorthand'.'';  
+            $grade_select_box.='<option value='.'Typing'.'>'.'Typing'.'';
+	}
+        else if($combid == 'School_Education'){
+            $grade_select_box.='<option value='.'8th_std'.'>'.'8th std'.'';
+            $grade_select_box.='<option value='.'10th_std'.'>'.'10th std (SSLC)'.'';  
+            $grade_select_box.='<option value='.'Ten_Plus_Two'.'>'.'Ten Plus Two (12th)';  
+            
+	}
+        else{
             $grade_select_box.='<option value='.'Selection_Grade(SG)'.'>'.'Selection Grade(SG)'.'';
             $grade_select_box.='<option value='.'Special_Grade(SplG)'.'>'.'Special Grade(SplG)'.''; 
             $grade_select_box.='<option value='.'Career_Advance(CA)'.'>'.'Career Advance(CA)'.'';
@@ -1521,12 +1527,39 @@ class Upl extends CI_Controller
 			$grade_select_box.='<option value='.'MEd'.'>'.'MEd'.'';  
 			$grade_select_box.='<option value='.'MPEd'.'>'.'MPEd'.'';  
 			$grade_select_box.='<option value='.'MC'.'>'.'MC'.'';  
+                        $grade_select_box.='<option value='.'PG_Diploma'.'>'.'P.G.Diploma'.''; 
 			 }
+                         
 			 else if(($combid == 'MPhil')||($combid == 'Phd')){
 				foreach($sublist as $rec){
 			  		$grade_select_box.='<option value='.$rec->sub_name.'>'.$rec->sub_name.''; 
 				}
 			  }
+                          
+                        /*  dropdown for Shorthand and Typing  */ 
+                        else if($combid == 'Shorthand'){
+			$grade_select_box.='<option value='.'English_Higher'.'>'.'English Higher'.'';
+            		$grade_select_box.='<option value='.'English_Lower'.'>'.'English Lower'.'';  
+			$grade_select_box.='<option value='.'English_Inter'.'>'.'English Inter'.'';  
+			$grade_select_box.='<option value='.'Tamil_Higher'.'>'.'Tamil Higher'.'';
+            		$grade_select_box.='<option value='.'Tamil_Lower'.'>'.'Tamil Lower'.'';  
+			$grade_select_box.='<option value='.'Tamil_Inter'.'>'.'Tamil Inter'.'';   
+                        }  
+                        else if($combid == 'Typing'){
+			$grade_select_box.='<option value='.'English_Higher'.'>'.'English Higher'.'';
+            		$grade_select_box.='<option value='.'English_Lower'.'>'.'English Lower'.'';  
+			$grade_select_box.='<option value='.'Tamil_Higher'.'>'.'Tamil Higher'.'';
+            		$grade_select_box.='<option value='.'Tamil_Lower'.'>'.'Tamil Lower'.'';  
+			}
+                        else if($combid == '8th_std' ||$combid == '10th_std'||$combid == 'Ten_Plus_Two'){ 
+                        $grade_select_box.='<option value='.'Science'.'>'.'Science'.'';
+            		$grade_select_box.='<option value='.'Commerce'.'>'.'Commerce'.'';  
+			$grade_select_box.='<option value='.'Arts'.'>'.'Arts'.'';   
+                        }
+                        
+                          
+                          
+                          
 			/*  else if($combid == 'Phd'){
 			 $grade_select_box.='<option value='.'Science'.'>'.'Science'.''; 
 		     $grade_select_box.='<option value='.'Arts'.'>'.'Arts'.''; 
@@ -1544,6 +1577,7 @@ class Upl extends CI_Controller
        // $grade_select_box ='';
 	}
 	public function viewuploaddocument(){
+                $empid=$this->uri->segment(3,0);
 		$rlid=$this->session->userdata('id_role');
 		$uname=$this->session->userdata('username');
 		if ($rlid == 5){
@@ -1556,21 +1590,36 @@ class Upl extends CI_Controller
                 	}
 			$whdata['emp_dept_code'] = $deptid;
 		}
-		$joincond = 'employee_master.emp_code = uploaddocuments.ud_pfno';
+		//$joincond = 'employee_master.emp_code = uploaddocuments.ud_pfno';
+                $joincond = 'employee_master.emp_id = uploaddocuments.ud_pfno';
 
 		$selectfield = 'ud_proflname,ud_subproflnme,ud_degreename,ud_pfno,ud_filename,ud_filelocation';
 		$whorder = 'ud_id DESC';
+                
 		if($rlid == 5){
 	                $data['record']=$this->sismodel->get_jointbrecord('uploaddocuments',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
 		}else{
-			$data['record'] = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,'',$whorder);
+                        if($empid !=0 ){
+                            $whdata['ud_pfno'] = $empid;
+                            $data['record'] = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,$whdata,$whorder);
+                        }
+                        else{
+                            $data['record'] = $this->sismodel->get_orderlistspficemore('uploaddocuments',$selectfield,'',$whorder);
+                        }
 		}
 		$this->load->view('upl/viewupldocument',$data);
 	}
 
     public function uploaddocumentlist(){
-	$uname=$this->session->userdata('username');
+        
+        $empid=$this->uri->segment(3,0);
+        if($empid == 0){
+            $pfno=$this->input->post('pfno');
+            $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code', $pfno)->emp_id;
+        }
+        $uname=$this->session->userdata('username');
 	$rlid=$this->session->userdata('id_role');
+        
         if(((strcasecmp($uname,"admin"))==0)||($rlid == 5)){
         if(isset($_POST['adddocumentlist']))
         {
@@ -1589,8 +1638,8 @@ class Upl extends CI_Controller
 			$pfno=$this->input->post('pfno');
 	//		$filename=$this->input->post('userfile');
             		$ferror='';
-		        if (isset($_FILES["userfile"]))
-            		{
+		        if (isset($_FILES["userfile"])){
+            		
                 		$errors= array();
                 		$file_name = $_FILES['userfile']['name'];
 				$flestring = explode('.',$file_name);
@@ -1606,6 +1655,10 @@ class Upl extends CI_Controller
 				else{
                     			$flag=true;
 					$desired_dir = "uploads/SIS/";
+                                        
+                                        if(strcasecmp($pname,"School_Education")==0){
+						$desired_dir = $desired_dir ."School_Education/";
+					}
 
 					if(strcasecmp($pname,"Basic_Profile")==0){
 						$desired_dir = $desired_dir ."Basic_Profile/";
@@ -1616,9 +1669,9 @@ class Upl extends CI_Controller
 					if(strcasecmp($pname,"Technical_Qualification")==0){
 						$desired_dir = $desired_dir ."Technical_Qualification/";
 					}
-					if(strcasecmp($pname,"Promotional_Details")==0){
+					/*if(strcasecmp($pname,"Promotional_Details")==0){
 						$desired_dir = $desired_dir ."Promotional_Details/";
-					}
+					}*/
 					//Check if the directory already exists.
 					if(!is_dir($desired_dir)){
 					    //Directory does not exist, so lets create it.
@@ -1633,6 +1686,7 @@ class Upl extends CI_Controller
 //					$_FILES['userFile']['name'] = $_FILES['userfile']['name'];
 					if(!empty($spname)){
 						$name=$name.'_'.$spname;
+                                                echo "spname===".$name."<br />";
 					}
 					//This is academic qualification
 					if(!empty($catname)){
@@ -1640,6 +1694,7 @@ class Upl extends CI_Controller
 							$catname=$this->input->post('asignother');
 						}
 						$name=$name.'_'.$catname;
+                                                echo "\r\n"."!catname==".$name."<br />";
 					}
 					// this block is used only for technical qualification
 					if(empty($catname)){
@@ -1647,12 +1702,16 @@ class Upl extends CI_Controller
 						if(!empty($catname)){
 							$name=$name.'_'.$catname;
 						}
+                                                  echo "\r\n"."catname==".$name."<br />";
 					}
-				//	$name = $name.$file_ext;
-					$name = $name;
-					$name = str_replace(" ", "_",$name);
+					$name = $name.".".$file_ext;
+				//	$name = $name;
+                                        echo "\r\n"."==name==".$name."<br />";
+		//			$name = str_replace(" ", "_",$name);
+                                    //    echo "\r\n"."replacename==".$name."<br />";
 					if(strpos($name, '.') === false){
 						$name='';
+                                                echo "\r\n"."in nullcasename==".$name."<br />";
 					}
 //			echo $pname.":".$spname.":".$catname.":".$pfno.":".$name.":".$desired_dir; 
 //			die();
@@ -1680,7 +1739,8 @@ class Upl extends CI_Controller
 								'ud_proflname'	=>$pname,
 								'ud_subproflnme'	=>$spname,
 								'ud_degreename'	=>$catname,
-								'ud_pfno'	=>$pfno,
+								//'ud_pfno'	=>$pfno,
+                                                                'ud_pfno'	=>$empid,
                             				);
 				                            // check for duplicate
                             				$isdup= $this->sismodel->isduplicatemore('uploaddocuments',$ddatacheck);
@@ -1689,7 +1749,8 @@ class Upl extends CI_Controller
 									'ud_proflname'	=>$pname,
 									'ud_subproflnme'	=>$spname,
 									'ud_degreename'	=>$catname,
-									'ud_pfno'	=>$pfno,
+									//'ud_pfno'	=>$pfno,
+                                                                        'ud_pfno'	=>$empid,
 									'ud_filename' =>$name,
 									'ud_filelocation' =>$desired_dir,
 									'ud_creator' =>$this->session->userdata('username'),
@@ -1733,9 +1794,19 @@ class Upl extends CI_Controller
 				$ferror= $ferror.'File is not choosen for upload.';
 			}
 			$this->session->set_flashdata('success', $ferror);
-                        $this->load->view('upl/uploaddocumentlist');
+                        
+                        $empid=$this->uri->segment(3,0);
+                        if($empid!=0){
+                            redirect('upl/viewuploaddocument/'.$empid);
+                            // $this->load->view('upl/uploaddocumentlist/'.$empid);
+                        }
+                        else{
+                             redirect('upl/viewuploaddocument');
+                            
+                           // $this->load->view('upl/uploaddocumentlist');    
+                        }
                         return;
-            }//end validation 
+            }//end from validation 
         }//button pressed
 	}//check for admin and hod
         $this->load->view('upl/uploaddocumentlist');
