@@ -108,7 +108,7 @@
       
             </div><!------scroller div------>
 <!--            <img src="uploads/logo/logo23.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/>-->
-<?php $this->load->view('template/footer'); ?>
+<?php //$this->load->view('template/footer'); ?>
 
         </body>    
     </html>

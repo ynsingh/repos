@@ -62,7 +62,7 @@
         <div style="margin-left:600px;valign:top"><b><?php echo str_replace('_',' ',$this->wtype)." Position-Summary";?></b></div>   
          </td>   
         
-        <input type="hidden" id="title" name="title" value="<?php echo str_replace(' ','_',this->wtype) ?>" >
+        <input type="hidden" id="title" name="title" value="<?php echo str_replace(' ','_',$this->wtype) ?>" >
            
         </tr></table>
          <div id="printme" align="left" style="width:100%;">

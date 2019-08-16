@@ -1610,7 +1610,7 @@ class Upl extends CI_Controller
 		$this->load->view('upl/viewupldocument',$data);
 	}
 
-    public function uploaddocumentlist(){
+    public function uploaddocumentlist($id=''){
         
         $empid=$this->uri->segment(3,0);
         if($empid == 0){
@@ -1619,7 +1619,8 @@ class Upl extends CI_Controller
         }
         $uname=$this->session->userdata('username');
 	$rlid=$this->session->userdata('id_role');
-        
+	$data['roleid']=$rlid;
+	$data['empid']=$id;
         if(((strcasecmp($uname,"admin"))==0)||($rlid == 5)){
         if(isset($_POST['adddocumentlist']))
         {
@@ -1629,7 +1630,7 @@ class Upl extends CI_Controller
 		$this->form_validation->set_rules('pfno', 'PF NO', 'trim|xss_clean|required'); 
 		$this->form_validation->set_rules('userfile', 'Select File', 'trim|xss_clean'); 
 		if($this->form_validation->run() == FALSE){
-                    	$this->load->view('upl/uploaddocumentlist');
+                    	$this->load->view('upl/uploaddocumentlist',$data);
                     	return;
                 }else{
 			$pname=$this->input->post('profilename');
@@ -1649,7 +1650,7 @@ class Upl extends CI_Controller
                 		{
                     			$ferror="extension not allowed, please choose a png or pdf file.";
                     			$this->session->set_flashdata('error', $ferror);
-			                $this->load->view('upl/uploaddocumentlist');
+			                $this->load->view('upl/uploaddocumentlist',$data);
                     			return;
 				}
 				else{
@@ -1723,7 +1724,7 @@ class Upl extends CI_Controller
 	                                        if($_FILES['userfile']['size'] > 800000000000) {
                         				$errors[]='file size must be less 8 MB';
 							$this->session->set_flashdata('error', "file size must be less 8 MB");
-                		                        $this->load->view('upl/uploaddocumentlist');
+                		                        $this->load->view('upl/uploaddocumentlist',$data);
 		                                        return;
                                         	}
                         		        $config['file_name'] = $name;
@@ -1794,7 +1795,6 @@ class Upl extends CI_Controller
 				$ferror= $ferror.'File is not choosen for upload.';
 			}
 			$this->session->set_flashdata('success', $ferror);
-                        
                         $empid=$this->uri->segment(3,0);
                         if($empid!=0){
                             redirect('upl/viewuploaddocument/'.$empid);
@@ -1809,7 +1809,7 @@ class Upl extends CI_Controller
             }//end from validation 
         }//button pressed
 	}//check for admin and hod
-        $this->load->view('upl/uploaddocumentlist');
+        $this->load->view('upl/uploaddocumentlist',$data);
     }//method close    
 }
 

@@ -168,7 +168,7 @@
 
                 </tbody>
         </table>
-	<?php $this->load->view('template/footer'); ?>
+	<?php //$this->load->view('template/footer'); ?>
 <!--    <img src="uploads/logo/logo1.png" alt="logo" style= " width:100%;height:30px; margin-top:30px; " > <br/> --> 
 </div>
     </body>

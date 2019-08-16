@@ -7,14 +7,14 @@
 		function levelofpay(val){
                          //var wt= $('#worktypeid').val();
                          var wt= val;
-                      alert(wt);
+//                      alert(wt);
                          $.ajax({
                                 type: "POST",
                                 url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpay",
                                 data: {"wt" : wt},
                                 dataType:"html",
                                 success: function(data){
-              alert(data);
+  //            alert(data);
                                         $('#pmlevel').html(data.replace(/^"|"$/g, ''));
                                 }
                         });

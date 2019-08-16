@@ -1040,7 +1040,7 @@ class Setup extends CI_Controller
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
  	public function dept(){
-		//$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
+		$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
    	    //    $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
               	$this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
             
@@ -1222,7 +1222,7 @@ class Setup extends CI_Controller
         {
     //         $this->input->post('deptorgcode', TRUE);
            // $data['deptorgcode']['value'] = $this->input->post('deptorgcode', TRUE);
-      //      $data['deptsccode']['value'] = $this->input->post('deptsccode', TRUE);
+            $data['deptsccode']['value'] = $this->input->post('deptsccode', TRUE);
             $data['deptschoolcode']['value'] = $this->input->post('deptschoolcode', TRUE);
             $data['deptschoolname']['value'] = $this->input->post('deptschoolname', TRUE);
             $data['deptcode']['value'] = $this->input->post('deptcode', TRUE);
@@ -1243,7 +1243,7 @@ class Setup extends CI_Controller
             $departmentname = ucwords(strtolower($this->input->post('deptname', TRUE)));
             $departmentshort = $this->input->post('deptshort', TRUE);
             $departmentdescription = $this->input->post('deptdescription', TRUE);
-//            $deptsccode = strtoupper($this->input->post('deptsccode',TRUE));
+            $deptsccode = strtoupper($this->input->post('deptsccode',TRUE));
   //          $deptorgcode = strtoupper($this->input->post('deptorgcode', TRUE));
 
 	    $logmessage = "";

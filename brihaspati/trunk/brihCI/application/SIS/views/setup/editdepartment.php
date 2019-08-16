@@ -94,9 +94,9 @@
                 echo "<td>"; ?>
 
 		<select name="deptsccode" id="deptsccode" class="my_dropdown" style="width:75%;">
-		<option value="<?php echo  $this->common_model->get_listspfic1('study_center','sc_id','sc_name', $deptsccode["value"])->sc_id; ?>" > <?php echo $deptsccode["value"]; ?></option>
+		<option value="<?php echo  $this->common_model->get_listspfic1('study_center','sc_code','sc_name', $deptsccode["value"])->sc_code; ?>" > <?php echo $deptsccode["value"]; ?></option>
 		<?php foreach($scresult as $datas): ?>
-                    <option value="<?php echo $datas->sc_id ; ?>"><?php echo $datas->sc_name ; ?></option>
+                    <option value="<?php echo $datas->sc_code ; ?>"><?php echo $datas->sc_name ; ?></option>
                  <?php endforeach; ?>
                 </select>
 <?php              //    echo form_input($deptsccode);

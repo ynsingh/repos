@@ -1218,7 +1218,7 @@ class Setup extends CI_Controller
     }
      /* this function is used for update department record */
     public function editdepartment($id) {
-	$data['scresult'] = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
+	$data['scresult'] = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
 	$data['authresult'] = $this->login_model->get_listspfic2('authorities','id','name');
 	$deptrow=$this->common_model->get_listrow('Department','dept_id', $id);
         if ($deptrow->num_rows() < 1)
