@@ -171,7 +171,8 @@
 		<td>Select Month </br>
 			<select name="month" id="month" style="width:150px;">
 			<?php if((!empty($this->month))&&($this->month != 'All')){ ?>
-                                <option value="<?php echo $this->month; ?>" > <?php echo $this->month; ?></option>
+                               <!-- <option value="<?php //echo $this->month; ?>" > <?php //echo $this->month; ?></option>-->
+                                <option value="<?php echo $this->month; ?>" > <?php echo date("F", strtotime("2015-$this->month-01")); ?></option>
                         <?php  }else{ ?>
 				<option value="" disabled selected>--Select Month --</option>
 			<?php

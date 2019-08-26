@@ -48,8 +48,8 @@
                                                  
                             },
                             error:function(data){
-                                //alert("data in error==="+data);
-                                alert("error occur..!!");
+                                alert("data in error==="+data);
+                                //alert("error occur..!!");
                  
                             }
                         });

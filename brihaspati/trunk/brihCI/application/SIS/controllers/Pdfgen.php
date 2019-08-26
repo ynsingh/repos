@@ -223,11 +223,12 @@
             //$this->subj='';
             $camp=$this->uri->segment(3,0);
             $subj[]=$this->uri->segment(4,0); 
-            //echo"===".$camp;
-           // die();
             if($camp !=0 || $subj !=0){
-                if(!empty($camp))
-                $whdata['emp_scid']=$camp;
+                if(!empty($camp)){
+			if($camp != "All"){
+                		$whdata['emp_scid']=$camp;
+			}
+		}
                 $i=0;
 		if(!empty($subj)){
                     foreach($subj as $row){
@@ -236,12 +237,13 @@
 			$i++;
                     }
 		}
+//	print_r($whdata);
+  //          die();
 		if(empty($names))
-                $whdata['emp_specialisationid >'] = 0;
+                	$whdata['emp_specialisationid >'] = 0;
                 $this->result = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_specialisationid',$names,$whorder);
                // print_r("seema".$this->result);
                 //die();
-   
             }
             else{
                 $whdata['emp_specialisationid >'] = 0;

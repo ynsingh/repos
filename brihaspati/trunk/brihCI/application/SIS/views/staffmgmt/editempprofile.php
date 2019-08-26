@@ -1564,23 +1564,38 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 -->
 <?php 
 			$pref1 = $this->sismodel->get_listspfic1('employee_master_support','ems_pwplace1','ems_empid',$emp_id);
+//			print_r( $pref1);
 			if(!empty($pref1)){
 				$pref1 = $this->sismodel->get_listspfic1('employee_master_support','ems_pwplace1','ems_empid',$emp_id)->ems_pwplace1;
-				$prefloc1 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$pref1)->sc_name;
+//				echo $pref1;
+//				print_r($pref1);
+				if($pref1 >0){
+					$prefloc1 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$pref1)->sc_name;
+				}else{
+					$prefloc1='';
+				}
 			}else{
 				$prefloc1='';
 			}
 			$pref2 = $this->sismodel->get_listspfic1('employee_master_support','ems_pwplace2','ems_empid',$emp_id);
 			if(!empty($pref2)){
 				$pref2 = $this->sismodel->get_listspfic1('employee_master_support','ems_pwplace2','ems_empid',$emp_id)->ems_pwplace2;
-				$prefloc2 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$pref2)->sc_name;
+				if($pref2 >0){
+					$prefloc2 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$pref2)->sc_name;
+				}else{
+					$prefloc2='';
+				}
 			}else{
 				$prefloc2='';
 			}
 			$pref3 = $this->sismodel->get_listspfic1('employee_master_support','ems_pwplace3','ems_empid',$emp_id);
 			if(!empty($pref3)){
 				$pref3 = $this->sismodel->get_listspfic1('employee_master_support','ems_pwplace3','ems_empid',$emp_id)->ems_pwplace3;
-				$prefloc3 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$pref3)->sc_name;
+				if($pref3 >0){
+					$prefloc3 = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$pref3)->sc_name;
+				}else{
+					$prefloc3='';
+				}
 			}else{
 				$prefloc3='';
 			}

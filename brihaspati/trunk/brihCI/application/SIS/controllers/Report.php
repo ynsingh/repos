@@ -812,8 +812,11 @@ public function disciplinewiselist(){
 		$camp = $this->input->post('camp');
             	$subj[] = $this->input->post('subj');	
 		$this->camp = $camp;
-		if(!empty($camp))
-			$whdata['emp_scid']=$camp;
+		if(!empty($camp)){
+			if($camp != "All"){
+				$whdata['emp_scid']=$camp;
+			}
+		}
 		$i=0;
 		if(!empty($subj)){
 			foreach($subj as $row){
@@ -1117,7 +1120,7 @@ public function disciplinewiselist(){
 		$doagp  = $this->input->post('dateofagp');
 		if(!empty($wtype))
         		$whdata['emp_worktype'] = $wtype;
-		if(!empty($desig))
+		if((!empty($desig)) && ($desig != "All"))
         		$whdata['emp_desig_code'] = $desig;
 		//if(!empty($dosc))
         	//	$whdata['emp_desig_code'] = $dosc;

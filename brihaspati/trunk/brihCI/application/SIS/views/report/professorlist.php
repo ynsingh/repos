@@ -155,8 +155,11 @@
             <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
             </form>
             <div style="margin-left:500px;"><b><?php echo  "List of ";
-                    if(!empty($this->desig))
+                if((!empty($this->desig)) && ($this->desig != "All")){
                        echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$this->desig)->desig_name;
+		}else{
+				echo " All " . $this->wtyp;
+		}
                     
                     echo " - ( Seniority on the basis of date of appt. as Prof )";
                     ; ?>
@@ -197,8 +200,11 @@
                         <?php    echo "<tr>";
                             echo "<td colspan=7>";
                             echo " <b> Designation : ";
-			if(!empty($this->desig))
+			if((!empty($this->desig)) && ($this->desig != "All")){
 				echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$this->desig)->desig_name ;
+			}else{
+				echo " All " . $this->wtyp;
+			}
                             echo "</b></td>";
                             echo "</tr>";
                          foreach($emplist as $record){

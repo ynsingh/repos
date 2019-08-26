@@ -49,7 +49,13 @@ class Setup3 extends CI_Controller
                 return;
             }//formvalidation
             else{
-               
+            	$shtyp=$this->input->post('salh_type');
+  		if($ht == "I")
+                        $salhcat="GS";
+                if($ht == "D")
+                        $salhcat="GD";
+                if($ht == "L")
+                        $salhcat="GL";
                 $data = array(
                     'sh_code'                  =>$_POST['salh_code'],
                     'sh_name'                  =>$_POST['salh_name'],
@@ -59,7 +65,7 @@ class Setup3 extends CI_Controller
                     'sh_type'                  =>$_POST['salh_type'],
                     'sh_calc_type'             =>$_POST['salh_caltype'],
                     'sh_taxable'               =>$_POST['salh_tax'],
-                    'sh_category'              =>$_POST['salh_cat'],
+                    'sh_category'              =>$salhcat,
                     'sh_ledgercode'            =>'',
                     'sh_description'           =>$_POST['salh_desc'], 
                     'sh_creatorid'             =>$this->session->userdata('username'),
@@ -130,28 +136,31 @@ class Setup3 extends CI_Controller
     
     /************************************** Display Salary Head records **************************/
 
-    public function salaryhead_list(){
+    public function salaryhead_list($ht="I"){
         $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
-	$data['records']= $this->sismodel->get_list('salary_head');
-        $data['teach']= array();
-        $data['nonteach']=array();
-        $data['tntboth']=array();
-        foreach($data['records'] as $record){
+	$shdata['ht']=$ht;
+	$whdata=array('sh_type'=>$ht);
+	//$shdata['records']= $this->sismodel->get_list('salary_head');
+	$shdata['records']= $this->sismodel->get_orderlistspficemore('salary_head','*',$whdata,'');
+        $shdata['teach']= array();
+        $shdata['nonteach']=array();
+        $shdata['tntboth']=array();
+        foreach($shdata['records'] as $record){
             if(($record->sh_tnt == NULL)||($record->sh_tnt == 'Common')){
-                array_push($data['tntboth'],$record->sh_id);
+                array_push($shdata['tntboth'],$record->sh_id);
             }
             if($record->sh_tnt =='Teaching'){
-                array_push($data['teach'],$record->sh_id);
+                array_push($shdata['teach'],$record->sh_id);
             
             }
             if($record->sh_tnt =='Non Teaching'){
-            array_push($data['nonteach'],$record->sh_id);
+            array_push($shdata['nonteach'],$record->sh_id);
             
             }
         }
         $this->logger->write_logmessage("view"," view Salary head list" );
         $this->logger->write_dblogmessage("view"," view Salary head list");
-        $this->load->view('setup3/salaryhead_list',$data);
+        $this->load->view('setup3/salaryhead_list',$shdata);
     }
     /********************* closer salary head list  *******************************************/
     

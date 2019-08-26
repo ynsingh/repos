@@ -47,10 +47,16 @@
             <tr style="font-weight:bold;">
                <td>  Select Campus<br>
                     <select name="camp" id="camp" style="width:250px;">
-			<? if  (!empty($this->camp)){ ?>
+			<? if  (!empty($this->camp)){ 
+				if($this->camp != "All"){
+			?>
 			<option value="<?php echo $this->camp; ?>" > <?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id' ,$this->camp)->sc_name ." ( ". $this->commodel->get_listspfic1('study_center','sc_code','sc_id' ,$this->camp)->sc_code ." )"; ?></option>
-			<?php  }else{ ?>
-                      <option value="" disabled selected>-------- Select Campus name------</option>
+			<?php }else{  ?>
+					
+                      <option value="All" selected>All</option>
+			<?php	}
+			 }else{ ?>
+                      <option value="All" selected>All</option>
 			<?php  } ?>
                       <?php
                       foreach( $this->sc as $row ){
@@ -136,7 +142,13 @@ sccess link with data
         <tr style=" background-color: graytext;">
             <td valign="top" >
             <img src='<?php echo base_url(); ?>uploads/logo/print1.png' alt='print'  onclick="javascript:printDiv('printme')" style='width:30px; height:30px;float:right;padding:2px; margin-right:30px;' title="Click for print" >     
-            <form action="<?php echo site_url('Pdfgen/dwel/'.$this->camp.'/'.$this->subj);?>">
+<?php //		$sa=array("camp"=>$this->camp,"subj"=>$this->subj);
+		$camps=$this->camp;
+		if(empty($camps)){
+			$camps=NULL;
+		}
+ ?>
+            <form action="<?php echo site_url('Pdfgen/dwel/'.$camps.'/'.$this->subj); ?>" >
                 <input type="submit" value="" style="width:30px; height:30px;float:right;padding:2px; margin-right:10px;background-image:url('<?php echo base_url(); ?>assets/sis/images/pdf.jpeg')" title="Click for pdf">     
             </form>
             <div style="margin-left:500px;"><b>Discipline Wise List Details</b></div>

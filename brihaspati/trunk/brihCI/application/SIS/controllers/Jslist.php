@@ -52,7 +52,7 @@ class Jslist extends CI_Controller
 
 
 	/* This function has been created for get list of Designation on the basis of  selected Working type */
-    /*    public function getwdesiglist(){
+        public function getwdesiglist(){
                 $groups = $this->input->post('wtype');
 
                 $datawh=array('desig_type' => $groups);
@@ -73,7 +73,7 @@ class Jslist extends CI_Controller
         	}
                 echo json_encode($desig_select_box);
 	}
-*/
+
     	/* This function has been created for get list of Designation on the basis of  selected Group */
     	public function getgdesiglist(){
         	$groups = $this->input->post('group');

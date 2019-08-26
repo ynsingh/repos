@@ -9,19 +9,43 @@
     <body>
             <?php $this->load->view('template/header'); ?>
            
-        <table width="100%"><tr colspan="2">
+        <table width="100%">
+	<tr>
         <?php 
-        echo "<td align=\"left\" width=\"33%\">";
+        echo "<td align=\"left\" width=\"25%\">";
 	echo anchor('setup3/salaryhead/', "Add Salary Head" ,array('title' => 'View salary head ' , 'class' => 'top_parent'));
         echo "</td>";
-        echo "<td align=\"center\" width=\"34%\">";
-        echo "<b>Salary Head List</b>";
+        echo "<td align=\"center\" width=\"25%\">";
+	echo anchor('setup3/salaryhead_list/I', "View Salary Earning Head" ,array('title' => 'View Salary Earning Head ' , 'class' => 'top_parent'));
         echo "</td>";
-        echo "<td align=\"right\" width=\"33%\">";
-	$help_uri = site_url()."/help/helpdoc#SalaryHeadList";
-//        echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+        echo "<td align=\"center\" width=\"25%\">";
+	echo anchor('setup3/salaryhead_list/D', "View Salary Deduction-Subscription Head" ,array('title' => 'View Salary Deduction-Subscription Head ' , 'class' => 'top_parent'));
+        echo "</td>";
+        echo "<td align=\"right\" width=\"25%\">";
+	echo anchor('setup3/salaryhead_list/L', "View Loan Salary Head" ,array('title' => 'View Salary Loan Head ' , 'class' => 'top_parent'));
         echo "</td>";
         ?>
+	</tr><tr>
+        <?php 
+//        echo "<td align=\"left\" width=\"33%\">";
+//	echo anchor('setup3/salaryhead/', "Add Salary Head" ,array('title' => 'View salary head ' , 'class' => 'top_parent'));
+  //      echo "</td>";
+        echo "<td align=\"center\" colspan=4>";
+        echo "<b>Salary ";
+		if($ht == "I")
+			echo "Earning";
+		if($ht == "D")
+			echo "Deduction-Subscription";
+		if($ht == "L")
+			echo "Loan";
+	echo " Head List</b>";
+        echo "</td>";
+   //     echo "<td align=\"right\" width=\"33%\">";
+//	$help_uri = site_url()."/help/helpdoc#SalaryHeadList";
+//        echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+  //      echo "</td>";
+        ?>
+	</tr><tr>
         <div>     
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -54,6 +78,17 @@
                     <th>Category</th>
                     <th>Income</th>
                     <th>Deduction</th>
+                    <th>Loan</th> 
+		<?php 
+		//	echo "<th>";
+		//	 if($ht == "I")
+                //	    	echo "Income";
+		//	 if($ht == "D")
+                  //  		echo "Deduction";
+		//	 if($ht == "L")
+                  //  		echo "Loan";
+		//	echo "</th>";
+		?>
                     <th>Formula</th>
                     <th>Taxable</th>
                     <!-- <th>Head Description</th> -->
@@ -62,9 +97,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $serial_no = 1;?>
-            <!--------------------------------------bothtnt heads ------------------------------------>
-            
+                <?php $serial_no = 1;
+		?>
+            <!-- ------------------------------------bothtnt heads --------------------------------- -->
+           
             <?php if( count($tntboth) ):  ?>
                     <tr> <td colspan="13"><?php echo "<b>Common Salary Heads</b>"; ?></td></tr>
                     <?php foreach($tntboth as $record){ ?>
@@ -120,6 +156,13 @@
                                 <?php endif;?>
                             </td>
                             <td>
+                                <?php if($shtype == "L"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',L,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',L,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
                                 <?php $shcaltype=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$record)->sh_calc_type;
                                 if($shcaltype == "Y"): ?>
                                 <input type="checkbox" name="check_list[]" checked ="true"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
@@ -135,7 +178,7 @@
                                 <input type="checkbox" name="check_list[]" value="<?php echo $record.',T,'.$shtaxable; ?>" />
                                 <?php endif;?>
                             </td>
-                            <!--<td><?php /* $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
+                            <!-- <td><?php /* $shdesc=$this->sismodel->get_listspfic1('salary_head','sh_description','sh_id',$record);
                                 if(!empty($shdesc)){
                                     $description=$shdesc->sh_description;
                                 echo $description; } */ ?></td> -->
@@ -147,10 +190,10 @@
                     <?php }; ?>
                     
                 <?php else : ?>
-                    <td colspan= "13" align="center"> No Records found...!</td>
+                 <tr>   <td colspan= "13" align="center"> No Records found...!</td></tr>
                 <?php endif;?>
-            <!-------------------------------------------------end both------------------------------->
-             <!--------------------------------------teaching heads ------------------------------------>
+            <!-----------------------------------------------end both------------------------------>
+             <!--------------------------------------teaching heads ---------------------------------->
               <?php if( count($teach) ):  ?>
                     <tr> <td colspan="13"><?php echo "<b>Teaching Salary Heads</b>"; ?></td></tr>
                     <?php foreach($teach as $record){ ?>
@@ -206,6 +249,13 @@
                                 <?php endif;?>
                             </td>
                             <td>
+                                <?php if($shtype == "L"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',L,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',L,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
                                 <?php $shcaltype=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$record)->sh_calc_type;
                                 if($shcaltype == "Y"): ?>
                                 <input type="checkbox" name="check_list[]" checked ="true"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
@@ -233,10 +283,10 @@
                     <?php }; ?>
                     
                 <?php else : ?>
-                    <td colspan= "13" align="center"> No Records found...!</td>
+                   <tr> <td colspan= "13" align="center"> No Records found...!</td></tr>
                 <?php endif;?>
                <!--------------------------------------end teaching heads ------------------------------------>      
-               <!-----------------------------------NON taeching---------------------------------------> 
+               <!---------------------------------NON taeching--------------------------------------> 
                
                <?php if( count($nonteach) ):  ?>
                     <tr> <td colspan="13"><?php echo "<b> Non Teaching Salary Heads</b>"; ?></td></tr>
@@ -293,6 +343,13 @@
                                 <?php endif;?>
                             </td>
                             <td>
+                                <?php if($shtype == "L"): ?>
+                                <input type="checkbox" name="check_list[]" checked ="true" value="<?php echo $record.',L,'.$shtype; ?>" />
+                                <?php else : ?>
+                                <input type="checkbox" name="check_list[]"  value="<?php echo $record.',L,'.$shtype; ?>" />
+                                <?php endif;?>
+                            </td>
+                            <td>
                                 <?php $shcaltype=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$record)->sh_calc_type;
                                 if($shcaltype == "Y"): ?>
                                 <input type="checkbox" name="check_list[]" checked ="true"  value="<?php echo $record.',F,'.$shcaltype; ?>" />
@@ -320,7 +377,7 @@
                     <?php }; ?>
                     
                 <?php else : ?>
-                    <td colspan= "13" align="center"> No Records found...!</td>
+			<tr> <td colspan= "13" align="center"> No Records found...!</td></tr>
                 <?php endif;?>
                
 		</tbody>
