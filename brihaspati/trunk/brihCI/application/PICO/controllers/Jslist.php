@@ -579,7 +579,13 @@ class Jslist extends CI_Controller
         echo json_encode($values);
     }
     /****************************************closer employee detail by pf no *********************************/
-    
+   public function getempdept(){
+        $selval = $this->input->post('empid');
+	$deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$selval)->emp_dept_code;
+	$deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$deptid)->dept_name;
+        echo json_encode($deptname);
+    }
+ 
     
     /* This function has been created for get society members on the basis of society */
     public function getsocietymembers(){
