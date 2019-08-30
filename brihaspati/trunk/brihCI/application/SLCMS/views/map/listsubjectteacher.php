@@ -61,9 +61,9 @@
 	</thead>
 	<tbody>
 	<?php $count = 0;
-	 if( count($this->result) ) {
+	 if( count($result) ) {
 		 $pre="l";
-		 foreach ($this->result as $row)
+		 foreach ($result as $row)
 		 {
 	?>    
 			<tr>

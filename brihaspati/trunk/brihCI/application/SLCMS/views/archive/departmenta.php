@@ -69,7 +69,7 @@
             <tbody>
                     <?php //$count =0
                     $scid=0;?>
-                    <?php foreach($this->deptaresult as $row) 
+                    <?php foreach($deptaresult as $row) 
 			{ 
                     $orgid = $this->common_model->get_listspfic1('org_profile','org_id','org_code',$row->depta_orgcode)->org_id;
             if($scid != $orgid){

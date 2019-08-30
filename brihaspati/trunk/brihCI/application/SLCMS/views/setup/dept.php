@@ -90,7 +90,7 @@
                 	<label>Choose your University:</label></td><td>
     			<select name="orgprofile" style="width:100%;">
     			<option value=""disabled selected>--------------------Select university------------------</option>
-			<?php foreach($this->uresult as $datas): ?>	
+			<?php foreach($uresult as $datas): ?>	
    				<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
  			<?php endforeach; ?>
    			</select>          
@@ -100,7 +100,7 @@
  			<select name="studycenter" style="width:100%;">
  			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
-			<?php foreach($this->scresult as $datas): ?>	
+			<?php foreach($scresult as $datas): ?>	
 				<option value="<?php echo $datas->sc_code; ?>"><?php echo $datas->sc_name; ?></option>
 			<?php endforeach; ?>
 			</select>   
@@ -108,7 +108,7 @@
                        <tr><td><label>Choose your Authorities Name:</label> </td><td>
                         <select name="authorities" style="width:100%;">    
                         <option value=""disabled selected>-------------------Select authorities-----------------</option>
-                        <?php foreach($this->authresult as $datas): ?>
+                        <?php foreach($authresult as $datas): ?>
                                 <option value="<?php echo $datas->id; ?>"><?php echo $datas-> name; ?></option>
                         <?php endforeach; ?>
                         </select>

@@ -102,7 +102,7 @@
                 <td> 
                     <select name="teachername" id="" class="my_dropdown" style="width:100%">
                     <option value="<?php echo $teachername['value'];?>" style="display:none"><?php echo $teachername['value'];?></option>
-                    <?php foreach($this->tresult as $dataspt): ?>
+                    <?php foreach($tresult as $dataspt): ?>
                         <?php if ((($dataspt->roleid)==2)&&(($this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $dataspt->userid)->deptid)== $this->commodel->get_listspfic1('Department', 'dept_id', 'dept_name', ($deptname['value']))->dept_id)) { ?>
                         <option value="<?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $dataspt->userid)->firstname ?>"><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $dataspt->userid)->firstname; ?>  <?php echo $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $dataspt->userid)->lastname; ?> </option>
                         <?php } ?>

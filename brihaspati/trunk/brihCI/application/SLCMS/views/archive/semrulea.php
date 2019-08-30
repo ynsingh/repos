@@ -72,8 +72,8 @@
             </thead>
             <tbody>
                     <?php $count =0?>
-              	    <?php if( count($this->sraresult) ): ?>
-                    <?php foreach($this->sraresult as $row){ ?>
+              	    <?php if( count($sraresult) ): ?>
+                    <?php foreach($sraresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 			 <td> <?php echo $row->semcra_semcrid ?></td>

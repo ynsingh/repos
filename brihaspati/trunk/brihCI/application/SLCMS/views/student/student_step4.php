@@ -127,7 +127,7 @@ select{width:100%;font-size:17px;height:40px;}
 		
 	<tbody>
 	<?php	
-		$amount = '';
+		$amount = 0;
 		//$this->progresult = $this->Common_model->get_list('fees_master');
 		foreach($this->feesresult as $d2){
 		 ?>
@@ -206,9 +206,9 @@ select{width:100%;font-size:17px;height:40px;}
                         </div>
                         <div class="form-group">
                             <label class="control-label"> Fees Type</label>
-			    <input class="form-control" type="text" name="address1" value="<?php echo 'Entrance Exam fees'; ?>" readonly>
-                            <!--<input class="form-control" name="address1" value="<?= $address ?>" readonly/>     ----
-			   <!-- <select name="address1" class="form-control">
+			    <input class="form-control" type="text" name="address1" value="<?php //echo 'Entrance Exam fees'; ?>" readonly>
+                            <--<input class="form-control" name="address1" value="<?= $address ?>" readonly/>     ----
+			   <-- <select name="address1" class="form-control">
 				<option selected="true" disabled="disabled">Select Fees Type</option>
 				<option value="semfee">Semester fees</option>
 				<option value="exmfee">Exam fees</option>

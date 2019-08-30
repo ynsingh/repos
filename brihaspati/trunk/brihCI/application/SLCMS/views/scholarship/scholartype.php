@@ -48,8 +48,8 @@
 <thead><tr><th>Sr.No</th><th>Sholarship Type</th><th>Scholarship Code</th><th>Scholarship Name</th><th>Description</th><th>Provider</th><th>Year</th><th>Start Date</th><th>End Date</th><th>Action</th></tr></thead>
  <?php
         $count =0;
-        if(count($this->result) ):
-        foreach ($this->result as $row)
+        if(count($result) ):
+        foreach ($result as $row)
         {
          ?>
            <tr>

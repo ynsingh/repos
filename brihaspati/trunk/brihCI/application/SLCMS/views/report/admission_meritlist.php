@@ -71,8 +71,8 @@ echo "</table>";
 		<tbody>
                 <?php
 			$count=1;
-                         if( count($this->admission) ):
-                                foreach($this->admission as $row){
+                         if( count($admission) ):
+                                foreach($admission as $row){
                                         echo "<tr>";
                                         echo " <td align=\"center\">";
                                         echo $count++;

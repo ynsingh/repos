@@ -26,16 +26,16 @@ class Report  extends CI_Controller
 // View faculty list
     public function listfac() {
         $datawh = array('roleid' => '2');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',2);
-        $this->load->view('report/listfac');
+        $data['tresult']=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',2);
+        $this->load->view('report/listfac',$data);
         return;
 	}
 
 // View staff list
     public function liststaff() {
         $datawh = array('roleid' => '4');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',4);
-        $this->load->view('report/liststaff');
+        $data['tresult']=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',4);
+        $this->load->view('report/liststaff',$data);
         return;
 	}
 
@@ -43,23 +43,23 @@ class Report  extends CI_Controller
 
     public function liststu() {
         $datawh = array('roleid' => '3');
-        $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',3);
-        $this->load->view('report/liststu');
+        $data['tresult']=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',3);
+        $this->load->view('report/liststu',$data);
    } 
 
 // view admission merit list 
 
     public function admission_meritlist() {
       //  $datawh = array('roleid' => '3');
-        $this->admission=$this->commodel->get_list('admissionmeritlist');
-        $this->load->view('report/admission_meritlist');
+        $data['admission']=$this->commodel->get_list('admissionmeritlist');
+        $this->load->view('report/admission_meritlist',$data);
    } 
 
     // view admission application student
     public function list_application() {
-	$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
-	$this->prgname  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
-	$this->prgcatname  = $this->commodel->get_listmore('programcategory','prgcat_name,prgcat_id');
+	$data['examcenter'] = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
+	$data['prgname']  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
+	$data['prgcatname']  = $this->commodel->get_listmore('programcategory','prgcat_name,prgcat_id');
 
 		//get all record search
 		$progid = $this->input->post('appstubranch',TRUE);
@@ -131,7 +131,7 @@ class Report  extends CI_Controller
 		
 		
 
-        $this->load->view('report/listapplicationstu');
+        $this->load->view('report/listapplicationstu',$data);
    } 
 
 /************************************************** student filter record download *****************************************************/

@@ -60,7 +60,7 @@
 	<tbody>
 	     <?php
 		$count = 0;
-	        foreach ($this->result as $row)
+	        foreach ($result as $row)
                 {
               ?>    
 		<tr>

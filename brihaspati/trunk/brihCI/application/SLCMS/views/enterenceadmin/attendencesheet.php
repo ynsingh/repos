@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html moznomarginboxes mozdisallowselectionprint>
 <head>
 <meta charset="utf-8">
-	<title>IGNTU:Attendence sheet</title>
+	<title>SLCMS:Attendence sheet</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<select name="attexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
-				<?php foreach($this->centerlist as $row): 
+				<?php foreach($centerlist as $row): 
 					 if(!empty($row->ca_centername)){
 					$centerid = $row->ca_centername;
 					$centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
@@ -78,9 +78,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php 
 			$year=date('Y');
 			$i=0;
-			if(!empty($this->centerlist)){
+			if(!empty($centerlist)){
 			
-				foreach($this->centerlist as $row){
+				foreach($centerlist as $row){
 					$centerid = $row->ca_centername;
 					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
 					

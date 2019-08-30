@@ -54,8 +54,8 @@
                 <!-- <th></th>-->
                  </tr>
                 <?php
-                         if( count($this->tresult) ):
-                                foreach($this->tresult as $row){
+                         if( count($tresult) ):
+                                foreach($tresult as $row){
                                         echo "<tr>";
                                         echo " <td align=\"center\">";
                                         echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;

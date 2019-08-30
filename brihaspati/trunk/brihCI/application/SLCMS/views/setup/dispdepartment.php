@@ -73,7 +73,7 @@
           <th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
                  <?php
 				  $pre="l";
-                    foreach ($this->deptresult as $row)
+                    foreach ($deptresult as $row)
                     {
                         echo "<tr>";
 			$org=$this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->dept_orgcode)->org_name;

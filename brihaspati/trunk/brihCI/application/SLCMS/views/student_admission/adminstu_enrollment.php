@@ -121,15 +121,23 @@
                 <?php
 		//if(isset($getstuid)){
 		if(!empty($getstuid)){
+                $orgid="";
                         if( count($getstuid) ):
 				
                                 foreach($getstuid as $row){
                 $scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$row->sp_smid)->sm_sccode;
                 if($orgid != $scid){
                     echo "<tr>";
-                    echo "<td colspan=9 style='text-align:center;font-size:18px;'>";
+                    echo "<td colspan=10 style='text-align:center;font-size:18px;'>";
                     echo "<b>Institute Name : </b>";
-                                            echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
+                    $ucode = $this->commodel->get_listspfic1('student_master','sm_universitycode','sm_id',$row->sp_smid)->sm_universitycode;
+                    if(!empty($ucode))
+                    {
+                        echo $this->commodel->get_listspfic1('org_profile','org_name','org_code',$ucode)->org_name;
+                    }
+                    else{
+                         echo $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$scid)->sc_name;  
+                    }
                     echo "</td>";
                     echo "</tr>";
                 $orgid = $scid;             
@@ -180,7 +188,7 @@
                                         echo "</td>";
                                         echo " <td align=\"center\">";
 					$scid = $this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$row->sp_smid)->sm_sccode;
-                                        echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
+                                        echo $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$scid)->sc_name;
                                         echo "</td>";
                                         echo " <td align=\"center\">";
 					$deptid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$row->sp_smid)->sp_deptid;

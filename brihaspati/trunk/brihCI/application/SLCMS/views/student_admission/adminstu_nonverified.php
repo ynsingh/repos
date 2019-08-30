@@ -140,7 +140,10 @@ $count = 1;
 			<td><?php echo $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$smid)->sm_email;?></td>
 			<td><?php echo $this->commodel->get_listspfic1('student_master','sm_mobile','sm_id',$smid)->sm_mobile;?></td>
 			<?php $cateid = $this->commodel->get_listspfic1('student_master','sm_category','sm_id',$smid)->sm_category;?>
-			<td><?php echo $this->commodel->get_listspfic1('category','cat_name','cat_id',$cateid)->cat_name;?></td>
+			<?php  ?>
+			<td><?php //echo $this->commodel->get_listspfic1('category','cat_name','cat_id',$cateid)->cat_name;
+					echo $cateid;
+			?></td>
 			<?php $prgdeptid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$smid)->sp_deptid;?>
 			<td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$prgdeptid)->dept_name; ?></td>
 			<?php $prgbranid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;?>

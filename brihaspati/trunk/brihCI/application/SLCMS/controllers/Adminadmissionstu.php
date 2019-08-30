@@ -13,7 +13,7 @@ class Adminadmissionstu extends CI_Controller
     function __construct() {
         parent::__construct();
 		$this->load->model("user_model","usermodel");
-                $this->load->model('Common_model',"commodel");
+        $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
 		$this->load->model("Mailsend_model","mailmodel");	
 		$this->load->model("University_model","univmodel");
@@ -601,14 +601,16 @@ class Adminadmissionstu extends CI_Controller
 			$data['email'] = $email;
 			$categoryid = $stu_data->sm_category;
 			$data['categoryid'] = $categoryid;
-			$categoryname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$categoryid)->cat_name;
-			$data['categoryname'] = $categoryname;
+
+			//$categoryname = $this->commodel->get_listspfic1('category','cat_name','cat_id',$categoryid)->cat_name;
+			//$data['categoryname'] = $categoryname;
+			$data['categoryname'] = $categoryid;
 			//$rollno = $stu_data->sm_applicationno;
 			//$data['rollno'] = $rollno;
 			$sccode = $stu_data->sm_sccode;
 			$data['sccode'] = $sccode;
-			//$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
-			$scname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$sccode)->org_name;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$sccode)->sc_name;
+			//$scname = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$sccode)->org_name;
 			$data['scname'] = $scname;
 			//$excode = $stu_data->sm_enterenceexamcenter;
 			//$exname =  $this->commodel->get_listspfic1('adminadmissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	

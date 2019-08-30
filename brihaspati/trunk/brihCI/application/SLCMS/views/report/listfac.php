@@ -45,14 +45,14 @@
                 </tr>
                 <?php
                 $orgid=0;
-                        if( count($this->tresult) ):
-                                foreach($this->tresult as $row){
+                        if( count($tresult) ):
+                                foreach($tresult as $row){
    				if(!empty($row->userid)){
                     if($orgid != $row->scid){
                         echo "<tr>";
                         echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
                         echo "<b>Institute Name : </b>";
-                                    echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$row->scid)->org_name;
+                                    echo $this->commodel->get_listspfic1('org_profile','org_name','org_id','')->org_name;
                         echo "</td>";
                         echo "</tr>";
                         $orgid = $row->scid; 

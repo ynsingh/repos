@@ -1099,7 +1099,7 @@ class Stylesheet {
             case ":first":
               $key = $page_selector;
               
-            default: continue;
+            default: continue 3;
           }
 
           // Store the style for later...

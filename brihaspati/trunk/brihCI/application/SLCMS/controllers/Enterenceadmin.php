@@ -97,10 +97,10 @@ class Enterenceadmin extends CI_Controller
   */
 
      public function examcenter() {
-        $this->result = $this->commodel->get_list('admissionstudent_enterenceexamcenter');
+        $data['result'] = $this->commodel->get_list('admissionstudent_enterenceexamcenter');
         $this->logger->write_logmessage("view"," View Exam Center", "Exam Center details...");
         $this->logger->write_dblogmessage("view"," View Exam Center" , "Exam Center record display successfully..." );
-        $this->load->view('enterenceadmin/examcenter',$this->result);
+        $this->load->view('enterenceadmin/examcenter',$data);
        }
 
  /**This function is used for update exam center records
@@ -108,7 +108,7 @@ class Enterenceadmin extends CI_Controller
 	
    public function editexamcenter($id){
 	$data = array('country_id' => 101);
-	$this->cresult = $this->commodel->get_listspficemore('states','id,name',$data);
+	$data['cresult'] = $this->commodel->get_listspficemore('states','id,name',$data);
 	$examcenterrow=$this->commodel->get_listrow('admissionstudent_enterenceexamcenter','eec_id', $id);
         if ($examcenterrow->num_rows() < 1)
         {
@@ -402,7 +402,7 @@ class Enterenceadmin extends CI_Controller
 
 	public function viewstikerlist(){
 		//$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
-        	$this->centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername,ca_stickerstatus','');
+        	$data['centerlist'] = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername,ca_stickerstatus','');
 		
 		$exmceter = $this->input->post('stiexamcenter',TRUE);
 		if(isset($_POST['searchsticker'])){
@@ -414,7 +414,7 @@ class Enterenceadmin extends CI_Controller
        			$this->getsticker = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$selectdata,$record);
 			
 		}//close post
-		$this->load->view('enterenceadmin/stickersheet');
+		$this->load->view('enterenceadmin/stickersheet',$data);
         }
 
 	public function generatesticker(){
@@ -502,9 +502,9 @@ class Enterenceadmin extends CI_Controller
 	
 	public function viewattendancesheet(){
 		//$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
-		$this->centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername,ca_attendencesheetstatus','');
+		$data['centerlist'] = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername,ca_attendencesheetstatus','');
 		
-   		$this->load->view('enterenceadmin/attendencesheet');
+   		$this->load->view('enterenceadmin/attendencesheet',$data);
         }
 
 	public function generateattendence(){

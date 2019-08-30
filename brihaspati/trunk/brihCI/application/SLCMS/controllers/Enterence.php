@@ -18,10 +18,10 @@ class Enterence extends CI_Controller {
     	}
 
  	public function viewadmissionopen() {
-        	$this->result = $this->commodel->get_list('admissionopen');
+        	$data['result'] = $this->commodel->get_list('admissionopen');
         	$this->logger->write_logmessage("view"," View Admission List", "Admission List details...");
         	$this->logger->write_dblogmessage("view"," View Admission List" , "Admission List record display successfully..." );
-       		$this->load->view('enterence/viewadmissionopen',$this->result);
+       		$this->load->view('enterence/viewadmissionopen',$data);
     	}
 
 /*This function has been created for display the list of branch on the basis of program*/
@@ -30,9 +30,9 @@ class Enterence extends CI_Controller {
 	    	$this->depmodel->get_programlist($pgid);
 	}	
 	public function addadmissionopen() {
-         $this->prgcatresult= $this->commodel->get_listspfic2('programcategory','prgcat_id', 'prgcat_name');
-        $this->prgresult = $this->commodel->get_listspfic2('program','prg_id', 'prg_name');
-        $this->result = $this->commodel->get_list('admissionopen');
+         $data['prgcatresult']= $this->commodel->get_listspfic2('programcategory','prgcat_id', 'prgcat_name');
+        $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_id', 'prg_name');
+        $data['result'] = $this->commodel->get_list('admissionopen');
 
         if(isset($_POST['addadmissionopen'])) {
             $this->form_validation->set_rules('academicyear','Academic Year','xss_clean|required');
@@ -79,7 +79,7 @@ class Enterence extends CI_Controller {
 
             }
         }
-                $this->load->view('enterence/addadmissionopen');
+                $this->load->view('enterence/addadmissionopen',$data);
        }
 	
 	public function editadmissionopen($id) {
@@ -276,10 +276,10 @@ class Enterence extends CI_Controller {
 		$whdata = array('admop_lastdate >=' => $cdate);
 		//print_r($whdata);
 		//$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_entexam_date','');
-		$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_prgname_branch,admop_entexam_date',$whdata);
+		$data['result'] = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_prgname_branch,admop_entexam_date',$whdata);
                 $this->logger->write_logmessage("view"," View Admission List", "Admission List details...");
                 $this->logger->write_dblogmessage("view"," View Admission List" , "Admission List record display successfully..." );
-		$this->load->view('enterence/imp_date');
+		$this->load->view('enterence/imp_date',$data);
 	}
 
 	public function important_information(){
@@ -295,8 +295,8 @@ class Enterence extends CI_Controller {
 	}
 
 	public function contactus(){
-		$this->result = $this->commodel->get_list('admissionstudent_contactus');
-		$this->load->view('enterence/contact_us');
+		$data['result'] = $this->commodel->get_list('admissionstudent_contactus');
+		$this->load->view('enterence/contact_us',$data);
 	}
 
 	public function faqs(){

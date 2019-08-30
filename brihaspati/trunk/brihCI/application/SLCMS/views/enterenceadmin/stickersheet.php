@@ -59,7 +59,7 @@ function myFunction() {
 			<select name="stiexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
-					<?php foreach($this->centerlist as $row): 
+					<?php foreach($centerlist as $row): 
 						 if(!empty($row->ca_centername)){
 				$cid = $row->ca_centername;
 				$centername = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
@@ -84,8 +84,8 @@ function myFunction() {
 		<?php 
 			$year=date('Y');
 			$i=0;
-			if(!empty($this->centerlist)){
-				foreach($this->centerlist as $row){
+			if(!empty($centerlist)){
+				foreach($centerlist as $row){
 					$centerid = $row->ca_centername;
 					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
 					//print_r($cname);

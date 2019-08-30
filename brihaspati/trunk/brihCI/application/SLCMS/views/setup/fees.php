@@ -180,7 +180,7 @@
 			<tr><td><label> Category:</label> </td><td>
                         <select name="category" style="width:100%;">
                         <option value=""disabled selected>----Select Category----</option>
-			<?php foreach($this->catresult as $datas): ?>
+			<?php foreach($catresult as $datas): ?>
                         <option value="<?php echo $datas->cat_id;?>"><?php echo $datas->cat_name; ?></option>
 			<?php endforeach; ?>
                         </select>

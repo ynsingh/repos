@@ -85,7 +85,7 @@
            	<td>
                 <select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" >
                 <option value="" disabled  selected >------Select Program Name--------------</option>
-                <?php foreach($this->prgresult as $dataspt): ?>
+                <?php foreach($prgresult as $dataspt): ?>
                 <option value="<?php echo $dataspt->prg_name ?>"><?php echo $dataspt->prg_name; ?></option>
                 <?php endforeach; ?>
            </td>

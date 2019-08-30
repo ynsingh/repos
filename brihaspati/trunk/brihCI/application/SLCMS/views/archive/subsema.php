@@ -72,8 +72,8 @@
             </thead>
             <tbody>
                     <?php $count =0?>
-              	    <?php if( count($this->ssaresult) ): ?>
-                    <?php foreach($this->ssaresult as $row){ ?>
+              	    <?php if( count($ssaresult) ): ?>
+                    <?php foreach($ssaresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 			 <td> <?php echo $row->fma_fmid ?></td>

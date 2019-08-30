@@ -13,7 +13,7 @@ class Adminstuexam extends CI_Controller
     function __construct() {
         parent::__construct();
 		$this->load->model("user_model","usermodel");
-                $this->load->model('Common_model',"commodel");
+    $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
 		$this->load->model("DateSem_model","datesemmodel");
         if(empty($this->session->userdata('id_user'))) {
@@ -562,7 +562,7 @@ class Adminstuexam extends CI_Controller
 		
 		$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem);
 		$sdata = 'sp_smid,sp_deptid,sp_programid';		
-                $stud_program = $this->commodel->get_listspficemore('student_program',$sdata,$wharray);
+    $stud_program = $this->commodel->get_listspficemore('student_program',$sdata,$wharray);
 		
 		$data['stud_program'] = $stud_program;
 
@@ -571,12 +571,12 @@ class Adminstuexam extends CI_Controller
     	public function admitcardgen(){
 
 		$currentacadyear = $this->datesemmodel->getcurrentAcadYear();
-                $semester = $this->datesemmodel->getcurrentSemester();
-		$getsem = sizeof($semester);
+                $data['semester'] = $this->datesemmodel->getcurrentSemester();
+		$getsem = sizeof($data);
 		
 		$wharray = array('sp_acadyear' => $currentacadyear,'sp_semester' => $getsem);
 		$sdata = 'sp_smid,sp_deptid,sp_programid';		
-                $stud_program = $this->commodel->get_listspficemore('student_program',$sdata,$wharray);
+    $stud_program = $this->commodel->get_listspficemore('student_program',$sdata,$wharray);
 		
 		$data['stud_program'] = $stud_program;
 		foreach($stud_program as $data){
@@ -584,8 +584,8 @@ class Adminstuexam extends CI_Controller
 			$deptid = $data->sp_deptid;
 
 		$wharray = array('sm_id' => $smid);
-		$sdata = 'sm_fname,sm_sccode,sm_photo,sm_id,sm_enrollmentno';		
-                $stud_mastre = $this->commodel->get_listspficemore('student_master',$sdata,$wharray);
+		$sdata = 'sm_fname,sm_sccode,sm_photo,sm_id,sm_enrollmentno,sm_signature';		
+    $stud_mastre = $this->commodel->get_listspficemore('student_master',$sdata,$wharray);
 
 		foreach($stud_mastre as $row){
 			$year=date('Y');
@@ -621,9 +621,9 @@ class Adminstuexam extends CI_Controller
 			$sname=$row->sm_fname;
 			$studata['sname'] = $sname;
 			$studata['currentacadyear']=$currentacadyear;
-			$scid = $row->sm_sccode;
-			//$studata['scname'] = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$scid)->sc_name;
-      $studata['scname'] = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
+			$sccode = $row->sm_sccode;
+			$studata['scname'] = $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$sccode)->sc_name;
+      //$studata['scname'] = $this->commodel->get_listspfic1('org_profile','org_name','org_id',$scid)->org_name;
 			$prgid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$smid)->sp_programid;
 			$studata['coursename'] = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'( '. $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.' )';
 			$studata['sturollno'] = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$smid)->senex_rollno;
@@ -631,21 +631,21 @@ class Adminstuexam extends CI_Controller
 			$studata['stuenrollno'] = $stuenrollno;
 			$stuphoto = $row->sm_photo;
 			$studata['stuphoto'] = $stuphoto;
-			$stusign = $row->sm_signature;
+      $stusign = $row->sm_signature;
 			$studata['stusign'] = $stusign;
 			//get paper code & paper name
 			//$paper1 = $this->commodel->get_listspfic1('student_program','sp_subid1','sp_smid',$smid)->sp_subid1;
 			$stu_sem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_smid',$smid)->sp_semester;
 			$studata['stu_sem']=$stu_sem;
-			 $wheredata = array('subp_degree' => $prgid,'subp_sem' => $stu_sem);
+		  $wheredata = array('subp_degree' => $prgid,'subp_sem' => $stu_sem);
        			 $selectfield = 'subp_name,subp_code';
         		 $paper =  $this->commodel->get_listspficemore('subject_paper',$selectfield,$wheredata);
-			 $studata['paper'] = $paper;
-
-			//print_r($studata['paper']);die;
-			$path = 'uploads/SLCMS/adminstudent_exam/'.$currentacadyear.'/admit_card/'.$deptid.'/'.$smid.'.pdf';
+			$studata['paper'] = $paper;
+	    $path = 'uploads/SLCMS/adminstudent_exam/'.$currentacadyear.'/admit_card/'.$deptid.'/'.$smid.'.pdf';
 			$studata['path'] = $path;
-			$content = $this->load->view('admin_exam/adminstuadmitcardpdf',$studata,TRUE);
+      //print_r($studata);
+      //die();
+		  $content = $this->load->view('admin_exam/adminstuadmitcardpdf',$studata,TRUE);
 			$this->commodel->genpdf($content,$path);
 		}
 			

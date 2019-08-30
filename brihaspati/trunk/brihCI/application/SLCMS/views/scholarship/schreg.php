@@ -177,7 +177,7 @@ echo "</center>";
 			<label style="font-size:15px;">Scholarship Name:<font color='Red'>*</font></label></br>
 			<select name="sa_name" style="width:338px;">
                         <option value=""disabled selected>---Select Scholarship Name---</option>
-                        <?php foreach($this->schname as $datas): ?>
+                        <?php foreach($schname as $datas): ?>
                         <option value="<?php echo $datas->sch_id; ?>"><?php echo $datas->sch_name; ?></option>
                         <?php endforeach; ?>
                         </select>

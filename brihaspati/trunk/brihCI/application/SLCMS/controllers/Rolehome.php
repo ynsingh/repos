@@ -18,8 +18,8 @@ class Rolehome extends CI_Controller {
    
     public function index() {
         /*getting roles of logged user by using common model*/
-	$this->roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$this->session->userdata('id_user'));
-        $this->load->view('rolehome');
+	$data['roles']=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$this->session->userdata('id_user'));
+        $this->load->view('rolehome',$data);
     }
        
 }

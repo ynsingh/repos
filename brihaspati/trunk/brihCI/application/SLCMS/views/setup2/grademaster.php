@@ -18,7 +18,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-        ?>--!>
+        ?>-->
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>-->
 
       <table width="100%">
@@ -58,7 +58,7 @@
 
    <?php
         $count =0;
-        foreach ($this->result as $row)
+        foreach ($result as $row)
         {  
          ?>
              <tr>

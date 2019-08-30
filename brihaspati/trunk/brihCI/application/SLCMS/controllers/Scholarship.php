@@ -26,10 +26,10 @@ class Scholarship extends CI_Controller
 
 //This function display the Scholar
 public function scholartype() {
-		 $this->result = $this->commodel->get_list('scholarship');
+		 $data['result'] = $this->commodel->get_list('scholarship');
 		 $this->logger->write_logmessage("view"," View Announcement", " Announcement details...");
         	 $this->logger->write_dblogmessage("view"," View Announcement" , "Announcement record display successfully..." );
-		 $this->load->view('scholarship/scholartype',$this->result);
+		 $this->load->view('scholarship/scholartype',$data);
                 }
 
 /******************************This function adds Scholarship type********************************/
@@ -267,7 +267,7 @@ public function editscholar($id) {
 
 /**********************************Student Registration Form********************************/
 public function schreg() {
-		$this->schname=$this->commodel->get_listspfic2('scholarship','sch_id', 'sch_name,sch_code');
+		$data['schname']=$this->commodel->get_listspfic2('scholarship','sch_id', 'sch_name,sch_code');
 		$suid=$this->session->userdata('id_user');
 		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
 		$this->cacadyer = $this->usermodel->getcurrentAcadYear();
@@ -346,7 +346,7 @@ public function schreg() {
 }
 }
 
-$this->load->view('scholarship/schreg');
+$this->load->view('scholarship/schreg',$data);
     }
 
 
@@ -832,8 +832,8 @@ public function rejectedscholar(){
 public function schstatus() {
 
 		
-		  $this->result = $this->commodel->get_list('schapply');
-		  $this->load->view('scholarship/schstatus');
+		  $data['result'] = $this->commodel->get_list('schapply');
+		  $this->load->view('scholarship/schstatus',$data);
         return;
 }
 

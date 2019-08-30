@@ -103,8 +103,8 @@
             <tbody>
                     <?php 
 		     $count =0;
-              	     if( count($this->result) ): 
-                     foreach($this->result as $row){ ?>
+              	     if( count($result) ): 
+                     foreach($result as $row){ ?>
                      <tr>
 		     <td> <?php echo ++$count; ?> </td>
                             <td><?php echo $row->ascu_name; ?></td>

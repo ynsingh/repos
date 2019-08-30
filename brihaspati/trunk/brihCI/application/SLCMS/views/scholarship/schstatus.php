@@ -58,9 +58,9 @@
 	  </thead>
 			 <tbody>
 				<?php
-		 			if( count($this->result) ):
+		 			if( count($result) ):
         			$count =0;
-               foreach ($this->result as $row)
+               foreach ($result as $row)
         			{
  	$this->schname=$this->commodel->get_listspfic2('schapply','sa_id', 'sa_name');
 	$suid=$this->commodel->get_listspfic1("schapply","sa_userid")->sa_userid;

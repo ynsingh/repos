@@ -66,8 +66,8 @@
 	    <tbody>
 
                     <?php $count =0?>
-              	    <?php if( count($this->authresult) ): ?>
-                    <?php foreach($this->authresult as $row){ ?>
+              	    <?php if( count($authresult) ): ?>
+                    <?php foreach($authresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 <?php  echo "<td>" . $this->logmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name;

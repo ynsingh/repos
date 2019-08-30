@@ -3,7 +3,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <html>
-<title>IGNTU Admission Dashboard</title>
+<title>SLCMS:Admission Dashboard</title>
         <head>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
             <style>

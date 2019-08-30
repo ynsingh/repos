@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Student Detail</title>
+	<title>SLCMS:Student Detail</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -121,7 +121,7 @@ function filladd()
 			<select name="stu_addcenter" style="height:37px;font-size:18px;font-weight:bold;" >
 			<option  disabled selected>Select Study Centers</option>
 			<?php foreach($stu_studycenter as $data){?>
-				<option value="<?php echo $data->sc_id;?>"><?php echo $data->sc_name; ?></option>
+				<option value="<?php echo $data->sc_code;?>"><?php echo $data->sc_name; ?></option>
 			<?php }?>
 			
 			</select>   
@@ -145,7 +145,7 @@ function filladd()
 					<option value="<?php //echo $row1->prgcat_name;?>"><?php //echo $row1->prgcat_name; ?></option>
 				<?php //}?>-->
 				<?php foreach($prgcat as $row1){?>
-					<option value="<?php echo $row1->prg_category;?>"><?php echo $row1->prg_category; ?></option>
+					<option value="<?php echo $row1->prg_category;?>"><?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row1->prg_category)->prgcat_name; ?></option>
 				<?php }?>
 			</select>		
 		</td>	
@@ -161,7 +161,7 @@ function filladd()
 			<!--<select name="stu_addcourse" id="degree" style="font-size:18px;">
 				<option selected="true" disabled="disabled">Select Programme</option>
 	  		</select>
-			<!--<select name="stu_addcourse"  style="font-size:18px;">
+			<--<select name="stu_addcourse"  style="font-size:18px;">
 				<option  disabled selected>Select Program</option>
 				<?php //foreach($stu_program as $row1){?>
 					<option value="<?php //echo $row1->prg_id;?>"><?php //echo $row1->prg_name.'( '.$row1->prg_branch.' )'; ?></option>
@@ -236,7 +236,7 @@ function filladd()
  			        console.log(ui.selectedYear)
        				var today = new Date(), 
          			dob = new Date(value), 
-          			age = 2017-ui.selectedYear;
+          			age = 2019-ui.selectedYear;
 
    				$("#age").text(age);
    				},
@@ -265,7 +265,7 @@ function filladd()
 			<select name="stu_addcate" style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled>Select your category</option>
 				<?php foreach($stu_categorylist as $row){?>
-					<option value="<?php echo $row->cat_id; ?>"><?php echo $row->cat_name;?></option>
+					<option value="<?php echo $row->cat_name; ?>"><?php echo $row->cat_name;?></option>
 				<?php }?>	
 			</select>
 		</td>
@@ -315,7 +315,7 @@ function filladd()
 
 		<td>
 			<label>Reservation Type</label></br>
-			<?php $this->load->view('enterence/multi_drop');?>
+			<?php  $this->load->view('enterence/multi_drop');?>
 			<select name="basic[]" multiple="multiple" class="3col active" >
         			<option value="Diffrently Abled">Differently Abled</option>
         			<option value="Supernumerary Seats">Supernumerary Seats</option>

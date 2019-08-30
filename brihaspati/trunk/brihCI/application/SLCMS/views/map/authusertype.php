@@ -112,7 +112,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
                        <td> Authority Name: </td><td>
                         <select name="authorities" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select authority ---------</option>
-                        <?php foreach($this->authuserresult as $datas): ?>
+                        <?php foreach($authuserresult as $datas): ?>
                         <option value="<?php echo $datas->id;?>"><?php echo $datas->name; ?></option>
                         <?php endforeach; ?>
                         </select>
@@ -123,7 +123,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         <td> User Name: </td><td>
                         <select name="edrpuser" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select Name ---------</option>                        
-                        <?php foreach($this->result as $datas): ?>
+                        <?php foreach($result as $datas): ?>
                         <option value="<?php echo $datas->id; ?>"><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $datas->id)->firstname .' '. $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $datas->id)->lastname; ?></option>
                         <?php endforeach; ?>
                         </select>

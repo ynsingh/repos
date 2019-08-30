@@ -58,8 +58,8 @@
 
 <?php
         $count =0;
-        if( count($this->annoresult) ):
-        foreach ($this->annoresult as $row)
+        if( count($annoresult) ):
+        foreach ($annoresult as $row)
         {
          ?>
              <tr align="center">

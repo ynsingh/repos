@@ -56,8 +56,8 @@
         <tbody>
 <?php
                      $count =0;
-                     if( count($this->authuser) ):
-                     foreach($this->authuser as $row){ ?>
+                     if( count($authuser) ):
+                     foreach($authuser as $row){ ?>
                      <tr>
                      <td> <?php echo ++$count; ?> </td>
 		       <td><?php echo $this->loginmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name ?></td>

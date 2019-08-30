@@ -106,7 +106,7 @@ class Setup extends CI_Controller
      */
     public function dispemailsetting() {
         
-	$data['result'] = $this->common_model->get_list('email_setting');
+	$data['result'] = $this->common_model->get_orderlistspficemore('email_setting','*','','');
         $this->logger->write_logmessage("view"," View Email Setting", "Email setting details...");
         $this->load->view('setup/dispemailsetting',$data);
     }
@@ -333,7 +333,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
 
             
-         //   $prgcampus = $this->input->post('prgcampus');
+            $prgcampus = $this->input->post('prgcampus');
             $prgdepartment = $this->input->post('prgdepartment');
             $prgcat = $this->input->post('prgcat');
             $prgname = $this->input->post('prgname');
@@ -350,13 +350,14 @@ class Setup extends CI_Controller
             $currdate = date("Y/m/d");
             $prgdate  = $currdate;
 
-            /* check for duplicate record
-            $result = $this->common_model->isduplicate('program','prg_category',$prgcat);
+             //check for duplicate record
+             $dwhdata= array('prg_category'=>$prgcat,'prg_name'=>$prgname,'prg_branch'=>$prgbranch);
+            $result = $this->common_model->isduplicatemore('program',$dwhdata);
             if($result == 1)
             {
-                $this->session->set_flashdata('error','Program category <b>' .$prgcat . '</b> already exist' );
+                $this->session->set_flashdata('error','Program category <b>' .$prgcat .'Program Name <b>' .$prgname .'Program Branch <b>' .$prgbranch . '</b> already exist' );
                 redirect('setup/program');
-            }*/
+            }
 
         }
 
@@ -368,7 +369,7 @@ class Setup extends CI_Controller
         else
         {
             $prgdata = array(
-         //       'prg_scid'=>$prgcampus,
+                'prg_scid'=>$prgcampus,
                 'prg_deptid'=>$prgdepartment,
                 'prg_category'=>ucwords(strtolower($prgcat)),
                 'prg_name'=>ucwords(strtolower($prgname)),
@@ -876,11 +877,10 @@ class Setup extends CI_Controller
   /* Display Category record */
 
   public function displaycategory(){
-
-	$this->result = $this->common_model->get_list('category');
+	$data['result'] = $this->common_model->get_orderlistspficemore('category','*','','');
         $this->logger->write_logmessage("view"," View Category", "Category record display successfully..." );
         $this->logger->write_dblogmessage("view"," View Category", "Category record display successfully..." );
-        $this->load->view('setup/displaycategory',$this->result);
+        $this->load->view('setup/displaycategory',$data);
     }
 
   /* this function is used for delete category record */
@@ -1040,9 +1040,9 @@ class Setup extends CI_Controller
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
  	public function dept(){
-		$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
-   	    //    $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
-              	$this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
+		$data['scresult'] = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
+   	    $data['uresult'] = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
+              	$data['authresult'] = $this->login_model->get_listspfic2('authorities','id','name');
             
 	   	if(isset($_POST['dept'])) { 
                
@@ -1088,16 +1088,16 @@ class Setup extends CI_Controller
 			return;
                 }
         }
-        $this->load->view('setup/dept');
+        $this->load->view('setup/dept',$data);
     }
     /** This function Display the Department list records
      * @return type
      */
     public function dispdepartment() {
-        $this->deptresult = $this->common_model->get_list('Department');
+        $data['deptresult'] = $this->common_model->get_orderlistspficemore('Department','*','','');
         $this->logger->write_logmessage("view"," View Department list", "department list display");
         $this->logger->write_dblogmessage("view"," View Department list", "department list display");
-        $this->load->view('setup/dispdepartment');
+        $this->load->view('setup/dispdepartment',$data);
        }
     /* this function is used for delete department record */
     public function deletedept($deptid) {
@@ -1371,10 +1371,10 @@ class Setup extends CI_Controller
     */
 
     public function displayrole() {
-        $this->result = $this->common_model->get_list('role');
+        $data['result'] = $this->common_model->get_orderlistspficemore('role','*','','');
         $this->logger->write_logmessage("view"," View role setting", "Role setting details...");
         $this->logger->write_dblogmessage("view"," View role setting", "Role setting details...");
-        $this->load->view('setup/displayrole',$this->result);
+        $this->load->view('setup/displayrole',$data);
        }
 
     /**This function Delete the role records
@@ -1492,9 +1492,9 @@ class Setup extends CI_Controller
 
      public function fees() {   
                
-        	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
-       	$this->prgresult = $this->common_model->get_distinctrecord('program','prg_name','');
-                $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');
+        	$data['prgresult'] = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
+       	$data['prgresult'] = $this->common_model->get_distinctrecord('program','prg_name','');
+                $data['catresult'] = $this->common_model->get_listspfic2('category','cat_id','cat_name');
                // echo "hi";
 
     		if(isset($_POST['fees'])) {
@@ -1567,8 +1567,8 @@ class Setup extends CI_Controller
                                 redirect('setup/fees');
 			}
 		}
-        $tabler['subject'] = $this->common_model->get_list("subject");
-  		$this->load->view('setup/fees',$tabler);  
+        $data['subject'] = $this->common_model->get_list("subject");
+  		$this->load->view('setup/fees',$data);  
 	}  
     public function joindb(){
         //$value=$this->get->post('comid');
@@ -1894,10 +1894,10 @@ class Setup extends CI_Controller
 
  public function viewprogramcat(){
 
-	$this->result = $this->common_model->get_list('programcategory');
+	$data['result'] = $this->common_model->get_orderlistspficemore('programcategory','*','','');
         $this->logger->write_logmessage("view"," View Category", "Category record display successfully..." );
         $this->logger->write_dblogmessage("view"," View Category", "Category record display successfully..." );
-        $this->load->view('setup/viewprogramcat',$this->result);
+        $this->load->view('setup/viewprogramcat',$data);
     }
 
   /* this function is used for delete category record */
@@ -2040,8 +2040,8 @@ class Setup extends CI_Controller
 /****************************************** Add Study Center Module ********************************************/
 
     	public function sc(){
-            $this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
-		    $this->cresult = $this->common_model->get_listmore('countries','id,name');
+            $data['uresult'] = $this->common_model->get_listmore('org_profile','org_code,org_name');
+		    $data['cresult'] = $this->common_model->get_listmore('countries','id,name');
 
            if(isset($_POST['sc']))
                 {
@@ -2073,7 +2073,7 @@ class Setup extends CI_Controller
                        // if (($_POST['orgprofile'] != ''))
 	                $scdata = array(
         		           'org_code'=>$_POST['orgprofile'],
-                         	'sc_code'=>$_POST['institutecode'],
+                           'sc_code'=>$_POST['institutecode'],
                    		   'sc_name'=>$_POST['name'],
 		                   'sc_nickname'=>$_POST['nickname'],
 		                   'sc_address'=>$_POST['address'],
@@ -2109,7 +2109,7 @@ class Setup extends CI_Controller
     
 				}
                         }
-        $this->load->view('setup/sc');
+        $this->load->view('setup/sc',$data);
     }
 
        
@@ -2136,7 +2136,7 @@ class Setup extends CI_Controller
      * @return type
      */
     public function viewsc() {
-        $data['result'] = $this->common_model->get_list('study_center');
+        $data['result'] = $this->common_model->get_orderlistspficemore('study_center','*','','');
         $this->logger->write_logmessage("view"," View Study center list", "study center list display");
         $this->logger->write_dblogmessage("view"," View Study center list", "study center list display");
 	   $this->load->view('setup/viewsc',$data);
@@ -2455,10 +2455,10 @@ class Setup extends CI_Controller
      	* @return type
      	*/
     	public function dispseatsetting() {
-		$this->srresult = $this->common_model->get_list('seat_reservation');
+		$data['srresult'] = $this->common_model->get_orderlistspficemore('seat_reservation','*','','');
         	$this->logger->write_logmessage("view"," View  Seat Setting list", " Seat reservation list display");
         	$this->logger->write_dblogmessage("view"," View Seat reservation list", "Seat reservation list display");
-		$this->load->view('setup/dispseatsetting');
+		$this->load->view('setup/dispseatsetting',$data);
 	}
 
 	public function isCategoryExist($key)
@@ -2470,8 +2470,8 @@ class Setup extends CI_Controller
 	}
 
 	public function seatsetting() {
-             	$this->uresult=$this->common_model->get_listspfic2('org_profile','org_code','org_name');
-    	     	$this->catresult = $this->common_model->get_listspfic2('category','cat_name','cat_id');
+             	$data['uresult']=$this->common_model->get_listspfic2('org_profile','org_code','org_name');
+    	     	$prgcat['catresult'] = $this->common_model->get_listspfic2('category','cat_name','cat_id');
 	     	$this->totalseat=$this->unimodel->totalnoofseat();
 	     	if(isset($_POST['seatsetting'])) {
 			$this->form_validation->set_rules('org_profile','University','trim|xss_clean|required');
@@ -2685,9 +2685,9 @@ class Setup extends CI_Controller
  
        public function displaycontact() {
  
-        $this->result = $this->common_model->get_list('admissionstudent_contactus');
+        $data['result'] = $this->common_model->get_orderlistspficemore('admissionstudent_contactus','*','','');
         $this->logger->write_logmessage("view"," View Contact Us", "Contact Us details...");
-        $this->load->view('setup/displaycontact',$this->result);
+        $this->load->view('setup/displaycontact',$data);
     }
 
 
@@ -2861,16 +2861,16 @@ class Setup extends CI_Controller
   * @return type
   */                                                                                                           
    public function viewentranceexamfees() {  
-        $this->result = $this->common_model->get_list('admissionstudent_entranceexamfeeconf');
+        $data['result'] = $this->common_model->get_orderlistspficemore('admissionstudent_entranceexamfeeconf','*','','');
         $this->logger->write_logmessage("view"," View Entrance Exam Fees", "Entrance Exam Fees details...");
-        $this->load->view('setup/viewentranceexamfees',$this->result);
+        $this->load->view('setup/viewentranceexamfees',$data);
     }
 
 /** This function add the Entrance Exam Fees
      * @return type
      */
     public function addentranceexamfees() {
-              $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');  
+              $data['catresult'] = $this->common_model->get_listspfic2('category','cat_id','cat_name');  
               if(isset($_POST['addentranceexamfees'])) {
                         $this->form_validation->set_rules('fees','Fees Name','trim|xss_clean|required|callback_isEntranceExist');
                         $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
@@ -2900,7 +2900,7 @@ class Setup extends CI_Controller
                    			redirect("setup/viewentranceexamfees");
                     }
             }    
-    $this->load->view('setup/addentranceexamfees');
+    $this->load->view('setup/addentranceexamfees',$data);
 }    
  /** This function check for duplicate  Entrance Exam Fees 
      * @return type
@@ -3252,10 +3252,10 @@ public function salarygrademaster(){
 
    public function displaysalarygrademaster(){
 
-        $this->result = $this->SIS_model->get_list('salary_grade_master');
+        $data['result'] = $this->SIS_model->get_orderlistspficemore('salary_grade_master','*','','');
         $this->logger->write_logmessage("view"," View ", "Salary Grade Master display successfully..." );
         $this->logger->write_dblogmessage("view"," View Salary Grade Master", "Salary Grade Master successfully..." );
-        $this->load->view('setup/displaysalarygrademaster',$this->result);
+        $this->load->view('setup/displaysalarygrademaster',$data);
     }
 
  /**This function is used for update Salary Grade Master details

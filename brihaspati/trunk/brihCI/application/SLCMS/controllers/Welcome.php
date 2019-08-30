@@ -206,5 +206,4 @@ class Welcome extends CI_Controller {
             $this->load->view("welcome_login",$data);
         }//close index function
 
-
     }//close class

@@ -59,7 +59,7 @@
 		
                 <?php $serial_no = 1;
 				$pre1="p";?>
-                <?php foreach($this->result as $record){ ?>
+                <?php foreach($result as $record){ ?>
                     
 					<tr>
 					<?php $record1= $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid);

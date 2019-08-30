@@ -21,7 +21,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-        ?>--!>
+        ?>-->
    <table width= "100%">
             <tr><td>
              <div>
@@ -69,12 +69,12 @@
                 <th>Action</th></tr></thead>
  <?php
         $count =0;
-        if( count($this->result) ):
+        if( count($result) ):
         $pre="l";
 		$pre2="g";
 		$pre3="z";
 		
-		foreach ($this->result as $row)
+		foreach ($result as $row)
         {
         
          ?>

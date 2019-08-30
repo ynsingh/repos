@@ -46,7 +46,7 @@
                 echo "<thead><th>Sr. No.</th><th>Category</th><th>Pecentage(%)</th><th>Number of Seat</th><th>Action</th></tr></thead>";
 		//$count=0;
         $scid=0;
-                    foreach ($this->srresult as $row)
+                    foreach ($srresult as $row)
                     {
              $orgid = $this->common_model->get_listspfic1('org_profile','org_id','org_code',$row->org_code)->org_id;
         if($scid !=$orgid){

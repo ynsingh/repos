@@ -171,8 +171,8 @@ function getpaperName(idcomb){
             <td>
             	<select name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">
                 <option value="" disabled selected >------Select Campus Name---------------</option>
-		<?php foreach($this->scresult as $dataspt): ?>
-		<!--<option value="<?php echo $dataspt->sc_id; ?>" ><?php echo $dataspt->sc_name; ?></option> -->
+		<?php foreach($scresult as $dataspt): ?>
+		<!--<option value="<?php //echo $dataspt->sc_id; ?>" ><?php //echo $dataspt->sc_name; ?></option> -->
     <option value="<?php echo $dataspt->org_code; ?>" ><?php echo $dataspt->org_name; ?></option>
                 <?php endforeach; ?>
            </td>
@@ -203,7 +203,7 @@ function getpaperName(idcomb){
            <td>
            	<select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
                 <option value="" disabled selected >------Select Program Name--------------</option>
-                <?php foreach($this->pnresult as $dataspt): ?>
+                <?php foreach($pnresult as $dataspt): ?>
                 <option value="<?php echo $dataspt->prg_id; ?>"><?php echo $dataspt->prg_name.'('.$dataspt->prg_branch.')';; ?></option>
 		<?php endforeach; ?>
 	   </td>

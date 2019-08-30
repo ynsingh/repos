@@ -43,9 +43,9 @@
                 <!-- <th></th>-->
                 </tr>
                 <?php
-                        if( count($this->tresult) ):
+                        if( count($tresult) ):
                             $serial_no = 1;
-                                foreach($this->tresult as $row){
+                                foreach($tresult as $row){
 
 					   if(!empty($this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)))
 						{$stufname = $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;}

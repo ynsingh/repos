@@ -74,8 +74,8 @@
             </thead>
             <tbody>
                     <?php $count =0?>
-              	    <?php if( count($this->prgsubaresult) ): ?>
-                    <?php foreach($this->prgsubaresult as $row){ ?>
+              	    <?php if( count($prgsubaresult) ): ?>
+                    <?php foreach($prgsubaresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 			<!-- <td> <?php echo $row->subpa_subpid ?></td>-->

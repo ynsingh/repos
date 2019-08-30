@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Contact Us</title>
+	<title>SLCMS:Contact Us</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -71,8 +71,8 @@ echo "</center>";
 		<thead  style="font-size:19px;"><tr><th>Sr. No.</th><th>Name of Person</th><th>Mobile No.</th></tr></thead>
 		<?php
         $count =0;
-        if( count($this->result) ):
-        foreach ($this->result as $row)
+        if( count($result) ):
+        foreach ($result as $row)
         {
          ?>
              <tr align="center">

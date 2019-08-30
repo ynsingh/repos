@@ -142,7 +142,7 @@ $('#stname').on('change',function(){
                           <tr><td><label for="orgprofile" class="control-label">Choose your University:</td><td>
                         <select name="orgprofile" style="width:100%">
                         <option value=""disabled selected>---------Select university---------</option>
-                        <?php foreach($this->uresult as $datas): ?>
+                        <?php foreach($uresult as $datas): ?>
                        <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
                         <?php endforeach; ?>
                         </select>
@@ -185,7 +185,7 @@ $('#stname').on('change',function(){
 			        <tr><td><label class="control-label">Country:</label></td> <td>
 					<select name="country"  id="country_id">
 					<option value="">Select Country</option>
-					<?php foreach($this->cresult as $datas): ?>
+					<?php foreach($cresult as $datas): ?>
                                 	<option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
                         		<?php endforeach; ?>
 				</select>

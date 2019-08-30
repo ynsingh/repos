@@ -81,11 +81,18 @@ echo "</center>";
     	<form action="<?php echo site_url('student/student_step0'); ?>" method="POST" >
 	   <table>
 		<tr><td>
-        	<label for="username">Hall Ticket Number</label></td>
+        	<label for="username">Hall Ticket Number / JEE Main No.</label></td>
 		</td><td>
 		
-        	<input type="text" name="Sanumber" placeholder="Enter Your Hall Ticket Number" autofocus value="<?php echo isset($_POST["Sanumber"]) ? $_POST["Sanumber"] : ''; ?>"/> <br>
-		</td></tr>	
+        	<input type="text" name="Sanumber" placeholder="Enter Your Hall Ticket / JEE Main No." autofocus value="<?php echo isset($_POST["Sanumber"]) ? $_POST["Sanumber"] : ''; ?>"/> <br>
+		</td></tr>
+			<tr><td>
+        	<label for="username">JEE Application No.</label></td>
+		</td><td>
+		
+        	<input type="text" name="Sjeeanumber" placeholder="JEE Application No." autofocus value="<?php echo isset($_POST["Sjeeanumber"]) ? $_POST["Sjeeanumber"] : ''; ?>"/> <br>
+		</td></tr>
+
 		<tr ><td>
         	<label for="text">Program/Courses</label>
 		</td><td>

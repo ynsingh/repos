@@ -33,10 +33,10 @@ class Setup2 extends CI_Controller
      * @return type
     */
     public function grademaster() {
-	$this->result = $this->commodel->get_list('grade_master');
+	$data['result'] = $this->commodel->get_list('grade_master');
 	$this->logger->write_logmessage("view"," View Master Grade", "Master Grade details...");
 	$this->logger->write_dblogmessage("view"," View Master Grade", "Master Grade record display successfully..." );
-        $this->load->view('setup2/grademaster',$this->result);
+        $this->load->view('setup2/grademaster',$data);
     }
 
     /** This function add the grade master
@@ -241,10 +241,10 @@ class Setup2 extends CI_Controller
      	* @return type
      	*/
     	public function semesterrules() {
-        	$this->result = $this->commodel->get_list('semester_rule');
+        	$data['result'] = $this->commodel->get_list('semester_rule');
         	$this->logger->write_logmessage("view"," View Semester Rule", "Semester Rule details...");
         	$this->logger->write_dblogmessage("view"," View Semester Rule", "Semester Rule record display successfully..." );
-        	$this->load->view('setup2/semesterrules',$this->result);
+        	$this->load->view('setup2/semesterrules',$data);
     	}
 
 	/**This function Delete the semester rule records
@@ -281,7 +281,7 @@ class Setup2 extends CI_Controller
      	*/
 	public function addsemrule()
 	{
-		$this->prgresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+		$data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
         	if(isset($_POST['addsemrule'])) {
                 	$this->form_validation->set_rules('semcr_prgid','Program Branch','trim|xss_clean|required');
                  	$this->form_validation->set_rules('semcr_semester','Semester','trim|xss_clean|required|is_natural');
@@ -325,7 +325,7 @@ class Setup2 extends CI_Controller
 				}
                 	}//close if vallidation
         	}//
-        	$this->load->view('setup2/addsemrule');
+        	$this->load->view('setup2/addsemrule',$data);
     	}
 
     	/** This function check for duplicate semester rule
@@ -508,10 +508,10 @@ class Setup2 extends CI_Controller
   */
     
      public function degreerules() {
-        $this->result = $this->commodel->get_list('degree_rule');
+        $data['result'] = $this->commodel->get_list('degree_rule');
         $this->logger->write_logmessage("view"," View Degree rules", "Degree rules details...");
         $this->logger->write_dblogmessage("view"," View Degree rules" , "Degree rules record display successfully..." );
-        $this->load->view('setup2/degreerules',$this->result);
+        $this->load->view('setup2/degreerules',$data);
        }
 
    /** This function add the degree rules
@@ -520,7 +520,7 @@ class Setup2 extends CI_Controller
 
     public function adddegreerules()
     {       
-                 $this->prgresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+                 $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
                
         if(isset($_POST['adddegreerules'])) {
                  $this->form_validation->set_rules('dr_prgid','Choose Branch','trim|xss_clean|required|callback_isbranchExist');
@@ -568,7 +568,7 @@ class Setup2 extends CI_Controller
                         }
                 }//close if vallidation
         }//
-        $this->load->view('setup2/adddegreerules');
+        $this->load->view('setup2/adddegreerules',$data);
        
          }
 
@@ -855,10 +855,10 @@ class Setup2 extends CI_Controller
   */
 
      public function designation() {
-        $this->result = $this->commodel->get_list('designation');
+        $data['result'] = $this->commodel->get_list('designation');
         $this->logger->write_logmessage("view"," View Designation ", "Designation details...");
         $this->logger->write_dblogmessage("view"," View Designation" , "Designation record display successfully..." );
-        $this->load->view('setup2/designation',$this->result);
+        $this->load->view('setup2/designation',$data);
        }
 
    /** This function add the designation
@@ -866,7 +866,7 @@ class Setup2 extends CI_Controller
      */                 
 
     public function adddesignation(){
-	$this->payresult=$this->sismodel->get_list('salary_grade_master');
+	$data['payresult']=$this->sismodel->get_list('salary_grade_master');
     
          if(isset($_POST['adddesignation'])) {
                  $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|callback_isCodeExist');
@@ -906,7 +906,7 @@ class Setup2 extends CI_Controller
                 }//close if vallidation
         }//  
                
-        $this->load->view('setup2/adddesignation');
+        $this->load->view('setup2/adddesignation',$data);
     }
 
 /** This function check for duplicate designation
@@ -960,7 +960,7 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function editdesignation($desig_id) {
-         $this->payresult=$this->sismodel->get_list('salary_grade_master'); 
+         $data['payresult']=$this->sismodel->get_list('salary_grade_master'); 
         $desig_data_q=$this->commodel->get_listrow('designation','desig_id', $desig_id);
         if ($desig_data_q->num_rows() < 1)
         {
@@ -1140,10 +1140,10 @@ class Setup2 extends CI_Controller
   */
 
      public function authority() {
-        $this->result = $this->logmodel->get_list('authorities');
+        $data['result'] = $this->logmodel->get_list('authorities');
         $this->logger->write_logmessage("view"," View Authorities ", "Authorities details...");
         $this->logger->write_dblogmessage("view"," View Authorities " , "Authorities record display successfully..." );
-        $this->load->view('setup2/authority',$this->result);
+        $this->load->view('setup2/authority',$data);
        }
    
  /** This function add the authority
@@ -1342,10 +1342,10 @@ class Setup2 extends CI_Controller
     /** This function display the Exam 
   */
      public function examtype() {
-        $this->result = $this->commodel->get_list('examtype');
+        $data['result'] = $this->commodel->get_list('examtype');
         $this->logger->write_logmessage("view"," View Exam Type ", "Exam Type details...");
         $this->logger->write_dblogmessage("view"," View Exam Type " , "Exam Type record display successfully..." );
-        $this->load->view('setup2/examtype',$this->result);
+        $this->load->view('setup2/examtype',$data);
      }
 /** This function for add Exam
      */

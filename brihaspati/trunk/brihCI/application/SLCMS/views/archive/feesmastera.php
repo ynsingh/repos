@@ -81,8 +81,8 @@
             </thead>
             <tbody>
                     <?php $count =0?>
-              	    <?php if( count($this->fmaresult) ): ?>
-                    <?php foreach($this->fmaresult as $row){ ?>
+              	    <?php if( count($fmaresult) ): ?>
+                    <?php foreach($fmaresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 			<!-- <td> <?php //echo $row->fma_fmid ?></td>-->

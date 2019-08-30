@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:Important Data</title>
+	<title>SLCMS:Important Data</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
@@ -72,8 +72,8 @@ echo "</center>";
 <thead><th>Sr.No</th><!--<th>Academic Year</th>--><th>Program Name</th><!---<th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th>---><th>Entrance Exam Date </th><th>Entrance Exam Time</th><!--<th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th>---></tr></thead>
 <?php
         $count =0;
-        if( count($this->result) ):
-        foreach ($this->result as $row)
+        if( count($result) ):
+        foreach ($result as $row)
         {
          ?>
              <tr align="center">

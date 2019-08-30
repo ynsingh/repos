@@ -13,7 +13,7 @@
 <!--<table id="uname"><tr><td align=center>Welcome <?//= $this->session->userdata('username') ?>  </td></tr></table>--.
 
 
-    <!--<//?php
+    <--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
         echo "<td style=\"padding: 8px 8px 8px 20px; decoration:none;\">";
@@ -21,7 +21,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-        ?>--!>
+        ?>-->
     <table width= "100%">
             <tr><td>  
               <?php 
@@ -59,8 +59,8 @@
 <thead><th>Sr.No</th><th>Authority Code</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
  <?php
         $count =0;
-        if( count($this->result) ):
-        foreach ($this->result as $row)
+        if( count($result) ):
+        foreach ($result as $row)
         {
          ?>
             <tr>

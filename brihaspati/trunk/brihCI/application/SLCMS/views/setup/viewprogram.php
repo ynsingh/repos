@@ -114,7 +114,7 @@
 
                 <td colspan=15 style="font-size:18px;"><b>Programme Category :</b>
         <?php //echo $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name; 
-              echo  $row->prg_category;
+              echo  $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;
         echo " &nbsp";"&nbsp";"&nbsp";"&nbsp";?>
    
      <?php 

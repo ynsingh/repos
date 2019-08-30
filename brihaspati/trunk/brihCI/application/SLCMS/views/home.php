@@ -146,7 +146,8 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 		{ echo " <td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px; text-align:center;\">$scname <br>";
 	}
 		$pre=$scname;
-		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_category</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
+		$prgcat=$this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;
+		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">$prgcat</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
 	}
         echo "</tbody>";
         echo "</table>";
@@ -180,18 +181,18 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 			if(!($ta["prgname"]==$pre1)){
 				$flag=1;
 				$h=$ta["prgname"];
-	//			echo $h;
+			//	echo $h;
 				if(!empty($h)){
-	//				$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
-			//		$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
-					$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h)->prg_branch;
+					$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
+					$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
+				//	$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h)->prg_branch;
 				}else{
 	//				$hname='';
 					$hbranch =='';
 				}
 				echo "<tr>";
-	//		echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$hname." ( ".$hbranch. " )  <br>";
-			echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$h." ( ".$hbranch. " )  <br>";
+			echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$hname." ( ".$hbranch. " )  <br>";
+		//	echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$h." ( ".$hbranch. " )  <br>";
 			echo "</tr>";
 			
 			}

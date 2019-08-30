@@ -48,7 +48,7 @@
 	   <?php
         	$count =0;
   	      //foreach ($query->result() as $row)
-        	foreach ($this->result as $row)
+        	foreach ($result as $row)
         	{  
          	?>
             <tr>

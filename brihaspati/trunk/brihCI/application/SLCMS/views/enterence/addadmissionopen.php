@@ -102,7 +102,7 @@
 		 <tr><td><label for="programcategory" class="control-label">  Program Category: </label></td><td>
                         <select name="programcategory" id="programcategory" class="my_dropdown" style="width:70%;"onchange="getprogramname(this.value)">
                           <option value=""disabled selected>----Program Category----</option>
-                        <?php foreach($this->prgcatresult as $datas): ?>
+                        <?php foreach($prgcatresult as $datas): ?>
                         <option value="<?php echo $datas->prgcat_name;?>"><?php echo $datas->prgcat_name; ?></option>
                         <?php endforeach; ?>
                         </select>              

@@ -89,7 +89,7 @@
                   <tr><td> Choose your Institute : </td><td>
                     <select name="campus" id="camp" style="width:150%;">
                          <option value="">-------------Select Institute---------------</option>
-                         <?php foreach($this->scresult as $datas): ?>
+                         <?php foreach($scresult as $datas): ?>
  		      <!--   <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; 
              ?></option>-->
              <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
@@ -104,7 +104,7 @@
                         <tr><td> Select your Role: </td><td>
                         <select name="role_name"  style="width:150%;">
                         <option value="" disabled selected>-------------Select Role---------------</option>
-                        <?php foreach($this->roleresult as $datas): ?>
+                        <?php foreach($roleresult as $datas): ?>
                         <option value="<?php echo $datas->role_id; ?>"><?php echo $datas->role_name; ?></option>
                         <?php endforeach; ?>
                         </select>
@@ -125,7 +125,7 @@
              <tr><td> Select Username: </td><td>
                         <select name="username" class="my_dropdown" style="width:150%;">
                         <option value="" disabled selected>-------------Select Username---------------</option>
-                          <?php foreach($this->loginuser as $datas): ?>
+                          <?php foreach($loginuser as $datas): ?>
                         <option value="<?php echo $datas->id; ?>"><?php echo $datas->username; ?></option>
                         <?php endforeach; ?>
                         </select>

@@ -735,10 +735,10 @@ class Map extends CI_Controller
    * this function has been created for display the list of program subject and teacher record.
    */
    public function listsubjectteacher(){
-        $this->result = $this->commodel->get_list('program_subject_teacher');
+        $data['result'] = $this->commodel->get_list('program_subject_teacher');
         $this->logger->write_logmessage("view"," View Subject and Paper with Teacher", "Map Subject and Paper with Teacher record display successfully." );
         $this->logger->write_dblogmessage("view"," View Subject and Paper with Teacher", "Map Subject and Paper with Teacher record display successfully." );
-        $this->load->view('map/listsubjectteacher',$this->result);
+        $this->load->view('map/listsubjectteacher',$data);
    }
 
 //This function has been created for display the list of paper on the basis of program subject and semester
@@ -758,8 +758,8 @@ class Map extends CI_Controller
   */
    public function subjectteacher(){
         //$this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
-    $this->scresult = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
-        $this->pnresult = $this->commodel->get_listspfic2('program','prg_id,prg_name,prg_branch', '','','','prg_id,prg_name,prg_branch');
+    $data['scresult'] = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
+        $data['pnresult'] = $this->commodel->get_listspfic2('program','prg_id,prg_name,prg_branch', '','','','prg_id,prg_name,prg_branch');
 	
        if(isset($_POST['subjectteacher'])) {
             $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
@@ -828,7 +828,7 @@ class Map extends CI_Controller
         }
 	}
 	}
-	$this->load->view('map/subjectteacher');
+	$this->load->view('map/subjectteacher',$data);
    }
   /*
    * this function has been created for delete the program subject teacher record.
@@ -860,7 +860,7 @@ class Map extends CI_Controller
   * this function has been created for update the program subject teacher record.
   */
   public function editsubjectteacher($pstp_id){
-        $this->tresult = $this->commodel->get_listspfic2('user_role_type','userid', 'roleid');
+        $data['tresult'] = $this->commodel->get_listspfic2('user_role_type','userid', 'roleid');
 	$pst_data_q=$this->commodel->get_listrow('program_subject_teacher','pstp_id', $pstp_id);
         if ($pst_data_q->num_rows() < 1)
         {
@@ -875,8 +875,8 @@ class Map extends CI_Controller
             'id' => 'campusname',
             'maxlength' => '40',
             'size' => '40',
-            //'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editpst_data->pstp_scid)->sc_name,
-            'value' => $this->commodel->get_listspfic1('org_profile', 'org_name', 'org_id', $editpst_data->pstp_scid)->org_name,
+            'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editpst_data->pstp_scid)->sc_name,
+            //'value' => $this->commodel->get_listspfic1('org_profile', 'org_name', 'org_id', $editpst_data->pstp_scid)->org_name,
             'readonly' => 'readonly'
         );
 
@@ -1035,7 +1035,7 @@ class Map extends CI_Controller
                 redirect('map/listsubjectteacher/');
                 }
          }//else
-         $this->load->view('map/editsubjectteacher');
+         $this->load->view('map/editsubjectteacher',$data);
      }
   }
 
@@ -1178,10 +1178,10 @@ class Map extends CI_Controller
 
     public function viewuserrole()
      {
-        $this->result = $this->commodel->get_list('user_role_type');
+        $data['result'] = $this->commodel->get_list('user_role_type');
         $this->logger->write_logmessage("view"," View map user with role setting", "user map setting details...");
         $this->logger->write_dblogmessage("view"," View map user with role setting", "Role setting details...");
-        $this->load->view('map/viewuserrole',$this->result);
+        $this->load->view('map/viewuserrole',$data);
      }
    
     /** This function is for map user with role */
@@ -1189,9 +1189,9 @@ class Map extends CI_Controller
         public function userroletype()
         {
         //$this->scresult   = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
-        $this->scresult   = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
-        $this->roleresult = $this->commodel->get_listspfic2('role','role_id', 'role_name');
-        $this->loginuser  = $this->loginmodel->get_userlist('edrpuser','id','username');
+        $data['scresult']   = $this->commodel->get_listspfic2('org_profile','org_code', 'org_name');
+        $data['roleresult'] = $this->commodel->get_listspfic2('role','role_id', 'role_name');
+        $data['loginuser']  = $this->loginmodel->get_userlist('edrpuser','id','username');
 
         if(isset($_POST['userroletype'])) {
 
@@ -1255,7 +1255,7 @@ class Map extends CI_Controller
   
    }
 
-        $this->load->view('map/userroletype');
+        $this->load->view('map/userroletype',$data);
  }
 
       public function deleteuserrole($id)
@@ -1400,10 +1400,10 @@ class Map extends CI_Controller
 
 
  public function viewauthuser() {
-        $this->authuser=$this->loginmodel->get_list('authority_map');
+        $data['authuser']=$this->loginmodel->get_list('authority_map');
         $this->logger->write_logmessage("view"," View map authority and user setting", "authority map setting details...");
         $this->logger->write_dblogmessage("view"," View map authority and user setting", "User setting details...");
-        $this->load->view('map/viewauthuser',$this->authuser);
+        $this->load->view('map/viewauthuser',$data);
      }
 
 
@@ -1411,8 +1411,8 @@ class Map extends CI_Controller
 
         public function authusertype()
         {
-        $this->authuserresult = $this->loginmodel->get_list('authorities','id', 'name');
-        $this->result = $this->loginmodel->get_userlist('edrpuser','username', 'id');
+        $data['authuserresult'] = $this->loginmodel->get_list('authorities','id', 'name');
+        $data['result'] = $this->loginmodel->get_userlist('edrpuser','username', 'id');
         //$this->authresult = $this->loginmodel->get_list('authority_map','id','authority_type');                  
 
 
@@ -1456,7 +1456,7 @@ if(!$amapflag)
            }
 
         }
-       $this->load->view('map/authusertype');
+       $this->load->view('map/authusertype',$data);
 
     }
 
