@@ -38,6 +38,7 @@ class Itemaction extends CI_Controller
         	//$this->form_validation->set_rules('item_mtid','Material ID','trim|xss_clean|required|callback_isMaterialIdExist');
         	$this->form_validation->set_rules('mtid','Material ID','trim|xss_clean|required');
         	$this->form_validation->set_rules('item_pono','Item Purchase Order Number','trim|xss_clean|required');
+        	$this->form_validation->set_rules('item_podate','Item Purchase Order Date','trim|xss_clean|required');
         	$this->form_validation->set_rules('item_challan','Item Challan Number','trim|xss_clean|required');
         	$this->form_validation->set_rules('item_challandate','Item Challan Date','trim|xss_clean|required');
             	$this->form_validation->set_rules('item_name','Item Name','trim|xss_clean|required');
@@ -54,6 +55,7 @@ class Itemaction extends CI_Controller
 				'item_qty'=>$this->input->post('item_stock'),
 				'item_balqty'=>$this->input->post('item_stock'),
 				'item_pono'=>$this->input->post('item_pono'),
+				'item_podate'=>$this->input->post('item_podate'),
 				'item_challanno'=>$this->input->post('item_challan'),
 				'item_challandate'=>$this->input->post('item_challandate'),
 				'item_desc'=>$this->input->post('item_desc'),
@@ -503,5 +505,190 @@ class Itemaction extends CI_Controller
         $this->load->view('itemaction/displayissueitem',$data);
     }
 
+//item return
+    public function returnitem($pfno=''){
+	$pfno = $this->input->post('emppfno');
+	if(!empty($pfno)){
+		$sel='ii_id,ii_itemid,ii_mtid,ii_name,ii_qty,ii_irqty,ii_desc,ii_staffpfno,ii_staffname,ii_dept,ii_receivername,ii_creatordate';
+		$whorder='ii_mtid asc,ii_staffpfno asc,ii_dept asc';
+		$whdata=array('ii_staffpfno'=>$pfno);
+		$data['result']=$this->picomodel->get_orderlistspficemore('items_issued',$sel,$whdata,$whorder);
+	        $this->load->view('itemaction/displayissueitemfr',$data);
+	  //  $this->load->view('itemaction/itemreturnform',$data);
+	}else{
+		$sel='ii_id,ii_itemid,ii_mtid,ii_name,ii_qty,ii_irqty,ii_desc,ii_staffpfno,ii_staffname,ii_dept,ii_receivername,ii_creatordate';
+		$whorder='ii_mtid asc,ii_staffpfno asc,ii_dept asc';
+	    	$data['result']=$this->picomodel->get_orderlistspficemore('items_issued',$sel,'',$whorder);
+        	$this->load->view('itemaction/displayissueitemfr',$data);
+	  //  $this->load->view('itemaction/itemreturnform',$data);
+	}
+    }
+    public function returnitemtype($iiid){
+	    $sel='ii_itemid,ii_mtid,ii_name,ii_qty,ii_desc,ii_staffpfno,ii_staffname,ii_dept,ii_receivername';
+	    $whdata=array('ii_id'=>$iiid);
+	    $result=$this->picomodel->get_orderlistspficemore('items_issued',$sel,$whdata,'');
+	    $ridata=array();
+//	    $emppf="";
+//	    $iiqty=0;
+	    foreach ($result as $res){
+		    $ridata['mtname']=$this->picomodel->get_listspfic1('material_type','mt_name','mt_id',$res->ii_mtid)->mt_name;
+		    $ridata['itemname']=$res->ii_name;
+		    $ridata['itemqty']=$res->ii_qty;
+		    $ridata['desc']=$res->ii_desc;
+		    $ridata['empname']=$res->ii_staffname;
+		    $ridata['emppf']=$res->ii_staffpfno;
+		    $ridata['dept']=$res->ii_dept;
+//		    $emppf=$res->ii_staffpfno;
+//		    $iiqty=$res->ii_qty;
+	    }
+	    $ridata['iiid']=$iiid;
+/*	    $flg=false;
+	    $irqty=0;
+	    $whdata1=array('ir_iiid'=>$iiid,'ir_staffpfno'=>$emppf);
+	    $qtyres=$this->picomodel->get_sumofvalue('items_return','ir_qty',$whdata1);
+	    print_r($qtyres); die();
+	    foreach($qtyres as $rsqt){
+		$irqty=$rsqt->ir_qty;
+	    }
+	    if($iiqty >$irqty)
+		    $flg=true;
+	    $ridata['retflag']=$flg;
+*/
+	    $this->load->view('itemaction/itemreturnform',$ridata);
+    }
+  /*  public function getpfitemdata(){
+	$pfno = $this->input->post('emppfno');
+	$sel='ii_itemid,ii_mtid,ii_name,ii_qty,ii_desc,ii_staffpfno,ii_staffname,ii_dept,ii_receivername,ii_creatordate';
+        $whorder='ii_mtid asc,ii_staffpfno asc,ii_dept asc';
+        $whdata=array('ii_staffpfno'=>$pfno);
+	$result=$this->picomodel->get_orderlistspficemore('items_issued',$sel,$whdata,$whorder);
+	if(empty($result)){
+		$result="No item issued with this PF Number";
+	}
+	echo json_encode($result);
+    }
+*/
+    /**** This function Insert Item type *********************/
+
+    public function insertitemreturned(){
+    	if(isset($_POST['item_return'])){
+//        	$this->form_validation->set_rules('mtid','Material ID','trim|xss_clean|required');
+  //      	$this->form_validation->set_rules('item_name','Item Name','trim|xss_clean|required');
+        	$this->form_validation->set_rules('item_qty','Item Quantity','trim|xss_clean|required');
+    //        	$this->form_validation->set_rules('item_desc','Item Description','trim|xss_clean');
+      //      	$this->form_validation->set_rules('empid','Item Name','trim|xss_clean|required');
+        //    	$this->form_validation->set_rules('deptname','Item Price','trim|xss_clean|required');
+            	$this->form_validation->set_rules('item_recevied','Item Received By','trim|xss_clean|required');
+		if($this->form_validation->run() ==TRUE){
+			$recid=$this->input->post('iiid');
+			$nqty=$this->input->post('item_qty');
+			$receviedby=$this->input->post('item_recevied');
+			
+			$sel='ii_itemid,ii_mtid,ii_name,ii_qty,ii_desc,ii_staffpfno,ii_staffname,ii_dept';
+		        $whdata=array('ii_id'=>$recid);
+		        $result=$this->picomodel->get_orderlistspficemore('items_issued',$sel,$whdata,'');
+	                foreach ($result as $res){
+				$itemid=$res->ii_itemid;
+				$mtid =$res->ii_mtid;
+				$itemname =$res->ii_name;
+				$desc =$res->ii_desc;
+				$emppf =$res->ii_staffpfno;
+				$empname =$res->ii_staffname;
+				$dept =$res->ii_dept;
+			}
+			$itembal=$this->picomodel->get_listspfic1('items', 'item_balqty', 'item_id',$itemid)->item_balqty;
+			$fitembal=$itembal + $nqty;
+
+			$data = array(
+				'ir_iiid'=>$recid,
+                    		'ir_itemid'=>$itemid,
+                    		'ir_mtid'=>$mtid,
+                    		'ir_name'=>strtolower($itemname),
+				'ir_qty'=>$nqty,
+				'ir_desc'=>$desc,
+				'ir_staffpfno'=>$emppf,
+				'ir_staffname'=>$empname,
+				'ir_dept'=>$dept,
+				'ir_receivername'=>$receviedby,
+				'ir_creatorname'=>$this->session->userdata('username'),
+				'ir_creatordate'=>date('Y-m-d'),
+				'ir_modifiername'=>$this->session->userdata('username'),
+				'ir_modifierdate'=>date('Y-m-d'),
+                	);
+
+                	$rflag= $this->picomodel->insertrec('items_return',$data);
+                	if(!$rflag){
+                    		$this->logger->write_logmessage("insert","Trying to Add return Item", "Return Item is not added ".$itemname);
+                    		$this->session->set_flashdata('err_message','Error in adding return Item details...'  , 'error');
+                    		redirect('itemaction/returnitem');
+                	}
+			else{
+				//update items table
+				$upitembal=array('item_balqty'=>$fitembal);
+				$uiflag=$this->picomodel->updaterec('items',$upitembal,'item_id',$itemid);
+				$this->logger->write_logmessage("update"," update Returned Item in item table", "Returned Item List details...".'item_balqty='.$fitembal.'=item_id='.$itemid."=uiflag=".$uiflag);
+				// add log in db
+				$irqty=0;
+				$whdata1=array('ir_iiid'=>$recid,'ir_staffpfno'=>$emppf);
+			        $qtyres=$this->picomodel->get_sumofvalue('items_return','ir_qty',$whdata1);
+				foreach($qtyres as $rsqt){
+			                $irqty=$rsqt->ir_qty;
+            			}				
+				$upiibal=array('ii_irqty'=>$irqty);
+				$uiiflag=$this->picomodel->updaterec('items_issued',$upiibal,'ii_id',$recid);
+				$this->logger->write_logmessage("update"," update Returned Item in item_issued table", "Returned Item List details...".'itemi_balqty='.$irqty.'=iitem_id='.$recid."=uiiflag=".$uiiflag);
+				// add log in db
+				//this entry must go to stock
+				$smtid=$mtid;
+				$stnme=strtolower($itemname);
+
+				$dupsdata=array('sii_mtid'=>$smtid,'sii_name'=>$stnme);
+				$flag=$this->picomodel->isduplicatemore("stock_items_issued",$dupsdata);
+				//if exist then go to stock archive
+				if($flag){
+					$oqty=0;
+					$res=$this->picomodel->get_orderlistspficemore('stock_items_issued','sii_id,sii_qty',$dupsdata,'');
+					foreach($res as $row){
+						$oqty=$row->sii_qty;
+						$stid=$row->sii_id;
+					}
+					$fqty=$oqty - $nqty;
+					$usdata=array('sii_qty'=>$fqty);
+					$uflag=$this->picomodel->updaterec('stock_items_issued', $usdata,'sii_id', $stid);
+					//add log in db
+					$siadata=array(
+						'siia_stockid'=>$stid,
+						'siia_mtid'=>$smtid,
+						'siia_name'=>$stnme,
+						'siia_qty'=>$oqty,
+						'siia_desc'=>$this->input->post('item_desc'),
+						'siia_upstatus'=>"Returned",
+						'siia_creatorname'=>$this->session->userdata('username'),
+						'siia_creatordate'=>date('Y-m-d'),
+					);
+					$siaflag=$this->picomodel->insertrec('stock_items_issued_archive',$siadata);
+					// add log in db
+				}
+                    		$this->logger->write_logmessage("insert","Returned item", "New Item ".$_POST['item_name']." added  successfully...");
+                    		$this->logger->write_dblogmessage("insert","Returned  item", "New Item".$_POST['item_name']." added  successfully...");
+                    		$this->session->set_flashdata("success", "Item Returned successfully...");
+                    		redirect("itemaction/itemreturndetails"); 
+                	}
+            	}//end validation
+        }//end isset
+        $this->load->view('itemaction/returnitem');
+    }
+
+    /** This function is used to issue Item detail entries
+     * @return type
+    */
+    public function itemreturndetails(){
+	$sel='ir_id,ir_itemid,ir_mtid,ir_name,ir_qty,ir_desc,ir_staffpfno,ir_staffname,ir_dept,ir_receivername,ir_creatordate';
+	$whorder='ir_mtid asc,ir_itemid asc';
+	$data['result'] = $this->picomodel->get_orderlistspficemore('items_return',$sel,'',$whorder);
+        $this->logger->write_logmessage("view"," View Returned Item List ", "Returned Item List details...");
+	$this->logger->write_dblogmessage("view"," View Returned Item List ", "Returned Item List details...");
+        $this->load->view('itemaction/displayreturnitem',$data);
+    }
 
 }

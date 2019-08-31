@@ -12,17 +12,16 @@
         <?php $this->load->view('template/header'); ?>
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+<!--        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+<!--        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script> -->
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
                 $(document).ready(function(){
-                        $( "#asignother" ).hide();
-                        $('#asigndatefrom,#asigndateto').datepicker({
-                            dateFormat: 'yy/mm/dd',
+                        $('#item_challandate,#item_podate').datepicker({
+                            dateFormat: 'yy-mm-dd',
                             autoclose:true,
                             changeMonth: true,
                             changeYear: true,
@@ -32,15 +31,6 @@
                             $(this).datepicker('hide');
                         });
                 
-                        $('#asignname').on('change',function(){
-                                var recmthd = $(this).val();
-                                if(recmthd == 'Others'){
-                                        $( "#asignother" ).show();
-                                }
-                                else{
-                                        $( "#asignother" ).hide();
-                                }
-                        });
                 });
         </script> 
  
@@ -96,6 +86,11 @@ echo "<td align=\"center\" width=\"34%\">";
                 	   <input type="text" name="item_pono"  class="form-control" size="30"  placeholder="Item PO Number" />
 		</td></tr>
 		<tr><td>	
+                        <label for="item_podate" class="control-label">PO Date: <font color='Red'>*</font> </label>
+		</td><td>
+                	   <input type="text" name="item_podate" id="item_podate" class="form-control" size="30"  placeholder="Item PO Date" />
+		</td></tr>
+		<tr><td>	
                 	        <label for="item_challanno" class="control-label">Challan Number: <font color='Red'>*</font> </label>
 		</td><td>
                 	   <input type="text" name="item_challan"  class="form-control" size="30"  placeholder="Item Challan Number" />
@@ -103,7 +98,7 @@ echo "<td align=\"center\" width=\"34%\">";
 		<tr><td>	
                         <label for="item_challandate" class="control-label">Challan Date: <font color='Red'>*</font> </label>
 		</td><td>
-                	   <input type="text" name="item_challandate"  class="form-control" size="30"  placeholder="Item Challan Date" />
+                	   <input type="text" name="item_challandate" id="item_challandate" class="form-control" size="30"  placeholder="Item Challan Date" />
 		</td></tr>
 		<tr><td>	
                         <label for="item_name" class="control-label">Item Name :<font color='Red'>*</font></label>

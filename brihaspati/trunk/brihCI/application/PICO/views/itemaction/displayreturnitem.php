@@ -1,7 +1,7 @@
  
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Display Item List
+ * @name: Display Return Item List
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  */
 ?>
@@ -18,12 +18,12 @@
             <tr>
                 <?php 
                     echo "<td align=\"left\"width=\"33%\">";
-                    echo anchor('itemaction/issueitem/', "Issue Item ", array('title' => 'Item Issue Form','class' =>'top_parent'));
+                    echo anchor('itemaction/returnitem/', "Return Item ", array('title' => 'Item Return Form','class' =>'top_parent'));
                     echo "</td>";
                   ?>
                  <?php
                    echo "<td align=\"center\" width=\"34%\">";
-                   echo "<b>Item Issued Details</b>";
+                   echo "<b>Item Returned Details</b>";
                    echo "</td>";
                    echo "<td align=\"right\" width=\"33%\">";
                    $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
@@ -52,7 +52,7 @@
 <!--	ii_id	ii_itemid	ii_mtid	ii_name	ii_qty	ii_desc	ii_staffpfno	ii_staffname	ii_dept	ii_receivername	ii_creatorname	ii_creatordate	ii_modifiername	ii_modifierdate
 -->
 <thead><th>Sr.No</th>
-  <th>Issue Details</th><th> Item Details</th><th>Receiver Details</th><th>Action</th></tr></thead>
+  <th>Return Details</th><th> Item Details</th><th>Receiver Details</th><th>Action</th></tr></thead>
   <tbody>
    <?php
         $count =0;
@@ -63,27 +63,27 @@
           <tr>
             <td> <?php echo ++$count; ?> </td> 
 	    <td> <?php 
-		echo "PF No.:".$row->ii_staffpfno."</br>";
-		echo "Name:".$row->ii_staffname."</br>";
-		echo "Department:".$row->ii_dept."</br>";
-		echo "Date:".$row->ii_creatordate;
+		echo "PF no.:".$row->ir_staffpfno."</br>";
+		echo "Name.:".$row->ir_staffname."</br>";
+		echo "Department:".$row->ir_dept."</br>";
+		echo "Date:".$row->ir_creatordate;
 		 ?></td>
 	    <td> <?php 
-             echo "Type :".$this->picomodel->get_listspfic1('material_type','mt_name','mt_id',$row->ii_mtid)->mt_name."</br>"; 
-		echo "Name :".$row->ii_name."</br>";
+             echo "Type :".$this->picomodel->get_listspfic1('material_type','mt_name','mt_id',$row->ir_mtid)->mt_name ."</br>";
+		echo "Name :".$row->ir_name."</br>";
 //		echo "Price :".$row->item_price."</br>";
-		echo "Qty :".$row->ii_qty."</br>";
-		echo "Desc :".$row->ii_desc;
+		echo "Qty :".$row->ir_qty."</br>";
+		echo "Desc :".$row->ir_desc;
 
 		 ?></td>
-            <td> <?php echo $row->ii_receivername; ?></td>
+            <td> <?php echo $row->ir_receivername; ?></td>
 
       <td>
          <?php  
-      if ($row->ii_id){
+      if ($row->ir_id){
             
             echo "&nbsp; ";
-            echo anchor('itemaction/deleteitemtype/' . $row->ii_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
+            echo anchor('itemaction/deleteitemtype/' . $row->ir_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
          //   echo "<br>";
          //   echo anchor('itemaction/edititemdetails/' . $row->item_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
             

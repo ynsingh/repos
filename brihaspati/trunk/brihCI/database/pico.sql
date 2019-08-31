@@ -110,6 +110,7 @@ CREATE TABLE `items` (
   `item_balqty` INT(11) NOT NULL, 
   `item_desc` BLOB NOT NULL,
   `item_pono` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `item_podate` DATE NULL,
   `item_challanno` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `item_challandate` DATE NOT NULL,
   `item_transport` VARCHAR(255) COLLATE utf8_unicode_ci NULL,
@@ -906,7 +907,8 @@ CREATE TABLE `items_issued` (
   `ii_itemid` int(11) NOT NULL,
   `ii_mtid` int(15) NOT NULL,
   `ii_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ii_qty` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ii_qty` int(11) NOT NULL,
+  `ii_irqty` INT(11) NOT NULL DEFAULT '0',
   `ii_desc` blob NOT NULL,
   `ii_staffpfno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ii_staffname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -933,7 +935,7 @@ CREATE TABLE `stock_items_issued` (
   `sii_mtid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `sii_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `sii_qty` int(5) NOT NULL,
-  `stock_desc` blob
+  `sii_desc` blob NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `stock_items_issued`
@@ -971,10 +973,11 @@ ALTER TABLE `stock_items_issued_archive`
 
 CREATE TABLE `items_return` (
   `ir_id` int(11) NOT NULL,
+  `ir_iiid` INT(11) NOT NULL,
   `ir_itemid` int(11) NOT NULL,
   `ir_mtid` int(15) NOT NULL,
   `ir_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ir_qty` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ir_qty` int(11) NOT NULL,
   `ir_desc` blob NOT NULL,
   `ir_staffpfno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ir_staffname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -990,6 +993,33 @@ ALTER TABLE `items_return`
   ADD PRIMARY KEY (`ir_id`);
 ALTER TABLE `items_return`
   MODIFY `ir_id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `specification` (
+  `id` int(10) NOT NULL,
+  `enquiry_date` date NOT NULL,
+  `enquiry_no` varchar(255) NOT NULL,
+  `enquiry_lastdate` date NOT NULL,
+  `item_name` varchar(255) NOT NULL,
+  `item_quantity` int(11) NOT NULL,
+  `description` blob NOT NULL,
+  `description_upload_filename` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `dept_id` varchar(255) NOT NULL,
+  `desig_id` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `terms_condition_desc` varchar(255) NOT NULL,
+  `terms_condition_filename` varchar(255) NOT NULL,
+  `creator_id` varchar(255) NOT NULL,
+  `creator_date` date NOT NULL,
+  `modifier_id` varchar(255) NOT NULL,
+  `modifier_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `specification`
+  ADD PRIMARY KEY (`id`);
+ALTER TABLE `specification`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 COMMIT;
 
