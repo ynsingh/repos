@@ -6,15 +6,31 @@
     <title>Salary Head</title>
     <head>
         <?php $this->load->view('template/header'); ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+
     <script>
         function goBack() {
        // window.location="<?php echo site_url('setup3/salaryhead_list/');?>";
         window.history.back();
         }
         $(document).ready(function(){
+		$('#tnt').on('change',function(){
+                var sht = $(this).val();
+                if((sht == 'D')||(sht == 'L')){
+                        $( "#caltyp" ).hide();                  
+                        $( "#taxble" ).hide();                  
+                }
+                else{
+                        $( "#caltyp" ).show();                  
+                        $( "#taxble" ).show();                  
+                }
+            });
+
             $("#btnUpload").on('click',function(){
                 var emptype= $('#emptnt').val(); 
-                alert("emptyy==="+emptype);
+//                alert("emptyy==="+emptype);
                 if( emptype === null || emptype === ''){
                     alert("Please select Employee type..!!");
                     return false;
@@ -65,6 +81,34 @@
             <input type="hidden" name="id" value="<?php echo  $id ; ?>">
             <table>
                 <tr>
+                	<td><label for="salh_type" class="control-label">Salary Head Type:</label></td>
+                        <td>
+                            <select name="salh_type" id="tnt" class="my_dropdown" style="width:100%;">
+                                <?php if(!empty($salhdata->sh_type)):;?>
+                                <option value="<?php echo $salhdata->sh_type;?>"><?php 
+                                    if($salhdata->sh_type == "I"){
+                                        echo "Salary Earning Heads";
+                                    }
+                                    else if($salhdata->sh_type == "D"){
+                                        echo "Salary Deduction-Subscription Heads"; 
+                                    }
+				    else if($salhdata->sh_type == "L"){
+                                        echo "Salary Loan Heads"; 
+					}
+                                    //echo $salhdata->sh_type;
+                                ?></option>
+                		<?php else:?>
+                                <option value="" disabled selected >------Select Salary Head type----------------</option>
+                		<?php endif;?>
+				<option value="I">Salary Earning Heads</option>
+                                <option value="D">Salary Deduction-Subscription Heads</option>
+                                <option value="L">Salary Loan Heads</option>
+<!--                                <option value="I">Income</option>
+                		<option value="D">Deduction</option>-->
+			    </select>
+                        </td>
+	     	</tr>
+                <tr>
                     <td><label for="salhtnt" class="control-label">Working Type:</label></td>
                     <td>
                         <select name="salhtnt" id="emptnt" class="my_dropdown" style="width:100%;">
@@ -88,29 +132,7 @@
                 	<td><label for="salh_name" class="control-label">Salary Head Name:</label></td>
                 	<td><input type="text" name="salh_name" value="<?php echo $salhdata->sh_name ;?>" size="40" /><br></td>
 	     	</tr>
-                <tr>
-                	<td><label for="salh_type" class="control-label">Salary Head Type:</label></td>
-                        <td>
-                            <select name="salh_type" id="tnt" class="my_dropdown" style="width:100%;">
-                                <?php if(!empty($salhdata->sh_type)):;?>
-                                <option value="<?php echo $salhdata->sh_type;?>"><?php 
-                                    if($salhdata->sh_type == "I"){
-                                        echo "Income";
-                                    }
-                                    else{
-                                        echo "Deduction"; 
-                                    }
-                                    //echo $salhdata->sh_type;
-                                ?></option>
-                		<?php else:?>
-                                <option value="" disabled selected >------Select Salary Head type----------------</option>
-                		<?php endif;?>
-                                <option value="I">Income</option>
-                		<option value="D">Deduction</option>
-			    </select>
-                        </td>
-	     	</tr>
-                <tr>
+                <tr id="caltyp">
                 	<td><label for="salh_caltype" class="control-label">Calculation Type:</label></td>
                         <td>
                             <select name="salh_caltype" id="tnt" class="my_dropdown" style="width:100%;">
@@ -133,7 +155,7 @@
 			    </select>
                         </td>
 	     	</tr>
-                <tr>
+                <tr id="taxble">
                 	<td><label for="salh_tax" class="control-label">Taxable:</label></td>
                         <td>
                             <select name="salh_tax" id="tnt" class="my_dropdown" style="width:100%;">
@@ -161,13 +183,27 @@
                         <td>
                             <select name="salh_cat"  class="my_dropdown" style="width:100%;">
                                 <?php if(!empty($salhdata->sh_category)):;?>
-                                <option value="<?php echo $salhdata->sh_category;?>"><?php echo $salhdata->sh_category;?></option>
+                                <option value="<?php echo $salhdata->sh_category;?>"><?php 
+					if($salhdata->sh_category == "GS"){
+						echo "General Salary";
+					}
+					else if($salhdata->sh_category == "GD"){
+						echo "General Deduction";
+					}
+					else if($salhdata->sh_category == "GL"){
+						echo "General Loan";
+					}
+//					echo $salhdata->sh_category;
+				?></option>
                 		<?php else:?>
                                 <option value="" disabled selected>------Select Category----------------</option>
                 		<?php endif;?>
-                                <option value="TDS">TDS</option>
+				<option value="GS">General Salary</option>
+                                <option value="GD">General Deduction</option>
+                                <option value="GL">General Loan</option>
+<!--                                <option value="TDS">TDS</option>
                 		<option value="PF">PF</option>
-                                <option value="GS">General Salary</option>
+                                <option value="GS">General Salary</option>-->
 			    </select> 
                         </td>
 	     	</tr>

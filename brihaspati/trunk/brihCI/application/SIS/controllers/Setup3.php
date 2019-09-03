@@ -38,8 +38,8 @@ class Setup3 extends CI_Controller
             $this->form_validation->set_rules('salh_code','Salary Head Code','trim|required|xss_clean|alpha_numeric_spaces|callback_issalheadcode_Exist');
             $this->form_validation->set_rules('salh_name','Salary Head Name','trim|required|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('salh_type','Salary Head Type','required|xss_clean');
-            $this->form_validation->set_rules('salh_caltype','Calculation Type','trim|required|xss_clean');
-            $this->form_validation->set_rules('salh_tax','Taxable','trim|required|xss_clean');
+            $this->form_validation->set_rules('salh_caltype','Calculation Type','trim|xss_clean');
+            $this->form_validation->set_rules('salh_tax','Taxable','trim|xss_clean');
             $this->form_validation->set_rules('salh_cat','Category','trim|xss_clean');
             $this->form_validation->set_rules('salh_nickname','Salary Head Short Name','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('salh_desc','Salary Head Description','trim|xss_clean');
@@ -50,21 +50,34 @@ class Setup3 extends CI_Controller
             }//formvalidation
             else{
             	$shtyp=$this->input->post('salh_type');
-  		if($ht == "I")
+  		if($shtyp == "I"){
                         $salhcat="GS";
-                if($ht == "D")
+			$caltype=$this->input->post('salh_caltype');
+			$taxble=$this->input->post('salh_tax');
+			if(empty($caltype) || empty($taxble)){
+				$this->load->view('setup3/salaryhead');
+		                return;
+			}
+		}
+                if($shtyp == "D"){
                         $salhcat="GD";
-                if($ht == "L")
+			$caltype="N";
+			$taxble="N";
+		}
+                if($shtyp == "L"){
                         $salhcat="GL";
+			$caltype="N";
+			$taxble="N";
+		}
                 $data = array(
                     'sh_code'                  =>$_POST['salh_code'],
                     'sh_name'                  =>$_POST['salh_name'],
                     'sh_tnt'                   =>$_POST['salhtnt'], 
                     'sh_shortname'             =>$_POST['salh_nickname'],
                     
-                    'sh_type'                  =>$_POST['salh_type'],
-                    'sh_calc_type'             =>$_POST['salh_caltype'],
-                    'sh_taxable'               =>$_POST['salh_tax'],
+                    'sh_type'                  =>$shtyp,
+                    'sh_calc_type'             =>$caltype,
+                    'sh_taxable'               =>$taxble,
                     'sh_category'              =>$salhcat,
                     'sh_ledgercode'            =>'',
                     'sh_description'           =>$_POST['salh_desc'], 
@@ -184,8 +197,8 @@ class Setup3 extends CI_Controller
             $this->form_validation->set_rules('salh_code','Head Code','trim|required|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('salh_name','Head Name','trim|required|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('salh_type','Head Type','required|xss_clean');
-            $this->form_validation->set_rules('salh_caltype','Calculation Type','trim|required|xss_clean');
-            $this->form_validation->set_rules('salh_tax','Taxable','trim|required|xss_clean');
+            $this->form_validation->set_rules('salh_caltype','Calculation Type','trim|xss_clean');
+            $this->form_validation->set_rules('salh_tax','Taxable','trim|xss_clean');
             $this->form_validation->set_rules('salh_cat','Category','trim|xss_clean');
             $this->form_validation->set_rules('salh_nickname','Head Short Name','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('salh_desc','Head Description','trim|xss_clean');
@@ -204,7 +217,27 @@ class Setup3 extends CI_Controller
                 $salhtax = $this->input->post('salh_tax', TRUE);
                 $salhcategory = $this->input->post('salh_cat', TRUE);
                 $salhdesc = $this->input->post('salh_desc', TRUE);
-                
+            
+                if($salhtype == "I"){
+                        $salhcategory="GS";
+  //                      $caltype=$this->input->post('salh_caltype');
+//                        $taxble=$this->input->post('salh_tax');
+                        if(empty($salhcaltype) || empty($salhtax)){
+                                $this->load->view('setup3/edit_salaryhead',$salh_data);
+                                return;
+                        }
+                }
+                if($salhtype == "D"){
+                        $salhcategory="GD";
+                        $salhcaltype="N";
+                        $salhtax="N";
+                }
+                if($salhtype == "L"){
+                        $salhcategory="GL";
+                        $salhcaltype="N";
+                        $salhtax="N";
+                }
+
                 $logmessage = "";
                 if($salh_data['salhdata']->sh_code != $shcode)
                     $logmessage = "Edit Salary Head Data " .$salh_data['salhdata']->sh_code. " changed by " .$shcode;
@@ -228,10 +261,10 @@ class Setup3 extends CI_Controller
                     'sh_name'                  =>$_POST['salh_name'],
                     'sh_tnt'                   =>$_POST['salhtnt'],
                     'sh_shortname'             =>$_POST['salh_nickname'],
-                    'sh_type'                  =>$_POST['salh_type'],
-                    'sh_calc_type'             =>$_POST['salh_caltype'],
-                    'sh_taxable'               =>$_POST['salh_tax'],
-                    'sh_category'              =>$_POST['salh_cat'],
+                    'sh_type'                  =>$salhtype,
+                    'sh_calc_type'             =>$salhcaltype,
+                    'sh_taxable'               =>$salhtax,
+                    'sh_category'              =>$salhcategory,
                     'sh_ledgercode'            =>'',
                     'sh_description'           =>$_POST['salh_desc'], 
                     'sh_creatorid'             =>$this->session->userdata('username'),

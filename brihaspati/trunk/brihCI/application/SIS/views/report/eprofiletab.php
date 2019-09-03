@@ -113,6 +113,20 @@ If you make any change in this file then you must change same file in report dir
 				<td class=btn1>
 			<?php } ?>
 			<b>  <a href='<?php echo site_url()."/report/recruit_profile/".$emp_id?>' style="color:white;text-decoration: none">Recruitment Particulars</a></b> </td>
+
+ <?php if($current == 'uplsdoc') { ?>
+                                <td class=btn active>
+                        <?php }else{ ?>
+                                <td class=btn1>
+                        <?php } ?>
+                        <b>  <a href='<?php echo site_url()."/upl/viewuploaddocument/".$emp_id?>' style="font-size:13px;color:white;text-decoration: none;size:55;" >Upload Support Documents</a></b> </td>
+<!--			<?php //if($current == 'upldoc') { ?>
+				<td class=btn active>
+			<?php// }else{ ?>
+				<td class=btn1>
+			<?php //} ?>
+			<b>  <a href='<?php //echo site_url()."/upl/uploaddocumentlist/".$emp_id?>' style="color:white;text-decoration: none">Upload Support Documents</a></b> </td>
+-->
 			<?php if($current == 'disciplin') { ?>
 				<td class=btn active>
 			<?php }else{ ?>
