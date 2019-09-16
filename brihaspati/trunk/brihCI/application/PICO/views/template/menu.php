@@ -247,11 +247,17 @@ echo "<nav>";
 					echo "<li>";
 						echo anchor('archive/itemissueda', 'Item Issued/Return Archive', array('title' => 'Item Issued/Return Archive'));
                                         echo "</li>";
-/*
+					echo "<li>";
+						echo anchor('archive/authoritya', 'Authority Archive', array('title' => 'Authority Archive'));
+                                        echo "</li>";
+					echo "<li>";
+						echo anchor('archive/mapuserrolea', 'User Role Archive', array('title' => 'User Role Archive'));
+                                        echo "</li>";
+
 					echo "<li>";
                                                 echo anchor('archive/announcementa', 'Announcement Archive', array('title' => 'Announcement Archive'));
                                         echo "</li>";
- */
+ 
 				echo "</ul>";
 			echo "</li>";
 /*			echo "<li>";

@@ -65,7 +65,7 @@
             <td> <?php echo $row->item_mtid ?></td>
             <td> <?php echo $row->item_name ?></td>
             <td> <?php echo $row->item_price ?></td>
-            <td> <?php echo $row->item_stock ?></td>
+            <td> <?php echo $row->item_qty ?></td>
 
       <td>
          <?php  

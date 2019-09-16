@@ -1,21 +1,17 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-
-
 ?>
 <html>
 <title>Intender Specification Form </title>
  <head>    
         <?php $this->load->view('template/header'); 
-              
-
         ?>
 		<?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 					<?php
                     };
                     ?>
-					<?php if(isset($_SESSION['err_message'])){?>
+			<?php if(isset($_SESSION['err_message'])){?>
                         <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                     <?php
@@ -27,8 +23,6 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-
-       
 </head>
 <script>
     $(document).ready(function(){
@@ -45,12 +39,6 @@
                 $(this).datepicker('hide');
             });
 			});
-
-
-            
-
-   
-
     </script>
 
 <table width="100%"> 
@@ -68,13 +56,8 @@
                 </div> </br> 
         </td></tr>  
         </table>
-         
-        
 <body>
-
-   
-
-    <form id="myform" action="<?php echo site_url('Iprocess/specificationsform');?>" method="POST" class="form-inline" autocomplete="OFF" enctype="multipart/form-data">
+    <form id="myform" action="<?php echo site_url('iprocess/specificationsform');?>" method="POST" class="form-inline" autocomplete="OFF" enctype="multipart/form-data">
 			<table class="TFtable" >
 			    <tr>
 					
@@ -143,28 +126,14 @@
 					 <td colspan="3">
                     <input  type="file" name="terms_condition_filename" id="terms_condition_filename" > 
                 </td>
-                    
-        </table>
-
-        
-       
-
-        </table> 
-
-        
-        <br>
-                <tr>
                 </tr>
                 <tr>
-                <td></td>
-                <td>
-                <button name="Ispecification">Submit Form</button>
+                <td colspan=4>
+                <button name="ispecification">Submit Form</button>
                 </td>
            		</tr>
-
-			
+        </table> 
     </form>
-
         <br>
 </body>
 <p>&nbsp;</p>

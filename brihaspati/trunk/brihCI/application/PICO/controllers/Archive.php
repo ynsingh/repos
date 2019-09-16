@@ -3,9 +3,6 @@
 /* 
  * @name Archive.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
- * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive, DDO Archive, map sc with uo archive
- * Scheme archive, Salary grade master archive
- * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -15,9 +12,10 @@ class Archive extends CI_Controller
 {
 	function __construct() {
         	parent::__construct();
-		$this->load->model('common_model'); 
+		$this->load->model('common_model','commodel'); 
 		$this->load->model('login_model','logmodel'); 
 	        $this->load->model('SIS_model',"sismodel");
+	        $this->load->model('PICO_model',"picomodel");
 	
         	if(empty($this->session->userdata('id_user'))) {
 	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -26,54 +24,54 @@ class Archive extends CI_Controller
     	}
 
     	public function index() {
-        	$this->feesmastera();
+        	$this->tendercreatea();
     	}
 
 	/** This function Display the fees with headwise list archive records */
-        public function feesmastera() {
-        	$this->fmaresult = $this->common_model->get_list('fees_master_archive');
-	        $this->logger->write_logmessage("view"," View fees list archive head wise", "Fees setting archive details...");
-        	$this->logger->write_dblogmessage("view"," View fees list archive head wise", "Fees setting archive details...");
-	        $this->load->view('archive/feesmastera');
+	public function tendercreatea() {
+		$whorder='tc_id asc';
+        	$data['tca'] = $this->picomodel->get_orderlistspficemore('tender_create_archive','*','',$whorder);
+	        $this->logger->write_logmessage("view"," View tender list archive ", "Tender setting archive details...");
+        	$this->logger->write_dblogmessage("view"," View tender list archive ", "tender setting archive details...");
+	        $this->load->view('archive/tendercreatea',$data);
 	}
 
 	/** This function Display the Program Subject Paper archive records */
-        public function prgsubpapa() {
-        	$this->prgsubaresult = $this->common_model->get_list('subject_paper_archive');
-	        $this->logger->write_logmessage("view"," View Subject paper archive ", "Program Subject paper archive details...");
-        	$this->logger->write_dblogmessage("view"," View subject paper archive", "Program Subject Paper archive details...");
-	        $this->load->view('archive/prgsubpapa');
+	public function tenderapplya() {
+		$whorder='ta_id asc';
+        	$data['taa']= $this->picomodel->get_orderlistspficemore('tender_apply_archive','*','',$whorder);
+	        $this->logger->write_logmessage("view"," View tender_apply archive ", "tender_apply archive details...");
+        	$this->logger->write_dblogmessage("view"," View tender_apply archive", "tender_apply archive details...");
+	        $this->load->view('archive/tenderapplya',$data);
 	}
 
 	/** This function Display the semester rule list archive records */
-        public function semrulea() {
-        	$this->sraresult = $this->common_model->get_list('semester_rule_archive');
-	        $this->logger->write_logmessage("view"," View semester rule archive ", "Semester rule archive details...");
-        	$this->logger->write_dblogmessage("view"," View semester rule archive", "Semester rule archive details...");
-	        $this->load->view('archive/semrulea');
+	public function vendera() {
+		$whorder='vendor_archive_id asc';
+        	$data['va'] = $this->picomodel->get_orderlistspficemore('vendor_archive','*','',$whorder);
+	        $this->logger->write_logmessage("view"," View  vendor archive ", "vendor archive details...");
+        	$this->logger->write_dblogmessage("view"," View vendor  archive", "vendor archive details...");
+	        $this->load->view('archive/vendera',$data);
 	}
 
 	/** This function Display the Subject semester Program list archive records */
-        public function subsema() {
-        	$this->ssaresult = $this->common_model->get_list('subject_semester_archive');
-	        $this->logger->write_logmessage("view"," View Subject semester Program archive ", "Subject semester Program archive details...");
-        	$this->logger->write_dblogmessage("view"," View Subject semester Program archive", "Subject Semester Program archive details...");
-	        $this->load->view('archive/subsema');
-	}
-	/** This function Display the Authority list archive records */
-        public function authoritya() {
-        	$this->authresult = $this->logmodel->get_list('authority_archive');
-	        $this->logger->write_logmessage("view"," View Authority archive ", "Authority archive details...");
-        	$this->logger->write_dblogmessage("view"," View Authority archive", "Authority archive details...");
-	        $this->load->view('archive/authoritya');
+	public function stockitema() {
+		$whorder='stocka_stockid asc';
+        	$data['sia'] = $this->picomodel->get_orderlistspficemore('stock_items_archive','*','',$whorder);
+	        $this->logger->write_logmessage("view"," View stock_items archive ", "stock_items archive details...");
+        	$this->logger->write_dblogmessage("view"," View stock_items archive", "stock_items archive details...");
+	        $this->load->view('archive/stockitema',$data);
 	}
   	/*this function has been created for display the staff position archive records */
-  	public function staffpositiona(){
-        	$this->result = $this->sismodel->get_list('staff_position_archive');
-	        $this->logger->write_logmessage("view"," View staff position archive ", "Staff position archive details...");
-        	$this->logger->write_dblogmessage("view"," View staff position archive", "Staff position archive details...");
-        	$this->load->view('archive/staffpositiona');
-  	}
+	public function itemissueda(){
+		$whorder='siia_stockid asc';
+        	$data['iia'] = $this->picomodel->get_orderlistspficemore('stock_items_issued_archive','*','',$whorder);
+	        $this->logger->write_logmessage("view"," View  stock_items_issued archive ", "stock_items_issued archive details...");
+        	$this->logger->write_dblogmessage("view"," View stock_items_issued archive", "stock_items_issued archive details...");
+        	$this->load->view('archive/itemissueda',$data);
+	}
+
+
   	/*this function has been created for display the ddo archive records */
   	public function listddoa(){
         	$this->result = $this->sismodel->get_list('ddo_archive');
@@ -111,17 +109,10 @@ class Archive extends CI_Controller
 	}
 	/*this function has been created for display the Department archive records */
         public function departmenta(){
-                $this->deptaresult = $this->common_model->get_list('Department_archive');
+                $this->deptaresult = $this->commodel->get_list('Department_archive');
                 $this->logger->write_logmessage("view"," View Department archive ", "Department archive details...");
                 $this->logger->write_dblogmessage("view"," View Department archive", "Department archive details...");
                 $this->load->view('archive/departmenta');
-        }
-	/*this function has been created for display the user role type archive records */
-        public function mapuserrolea(){
-                $this->result = $this->sismodel->get_list('user_role_type_archive');
-                $this->logger->write_logmessage("view"," View user role type archive ", "User Role Type archive details...");
-                $this->logger->write_dblogmessage("view"," View user role type archive", "User Role Type archive details...");
-                $this->load->view('archive/mapuserrolea');
         }
       /*this function has been created for display the map scheme department archive records */
         public function mapschemedepta(){
@@ -129,13 +120,30 @@ class Archive extends CI_Controller
                 $this->logger->write_logmessage("view"," View map scheme department archive ", " Map Scheme Department archive details...");
                 $this->logger->write_dblogmessage("view"," View  map scheme department archive", "Map Scheme Department archive details...");
                 $this->load->view('archive/mapschemedepta');
+	}
+
+
+	/** This function Display the Authority list archive records */
+        public function authoritya() {
+        	$data['authresult'] = $this->logmodel->get_list('authority_archive');
+	        $this->logger->write_logmessage("view"," View Authority archive ", "Authority archive details...");
+        	$this->logger->write_dblogmessage("view"," View Authority archive", "Authority archive details...");
+	        $this->load->view('archive/authoritya',$data);
+	}
+	/*this function has been created for display the user role type archive records */
+	public function mapuserrolea(){
+		$whorder ='urta_urtid asc';
+                $data['result'] = $this->picomodel->get_orderlistspficemore('user_role_type_archive','*','',$whorder);
+                $this->logger->write_logmessage("view"," View user role type archive ", "User Role Type archive details...");
+                $this->logger->write_dblogmessage("view"," View user role type archive", "User Role Type archive details...");
+                $this->load->view('archive/mapuserrolea',$data);
         }
      /** This function Display the Announcement list archive records */
         public function announcementa() {
-                $this->annoresult = $this->common_model->get_list('announcement_archive');
+                $data['annoresult'] = $this->commodel->get_list('announcement_archive');
                 $this->logger->write_logmessage("view"," View Announcement archive", "Announcement archive details...");
                 $this->logger->write_dblogmessage("view"," View Announcement archive", "Announcement archive details...");
-                $this->load->view('archive/announcementa');
+                $this->load->view('archive/announcementa',$data);
         }
 
 }

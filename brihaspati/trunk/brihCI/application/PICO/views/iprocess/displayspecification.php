@@ -1,9 +1,8 @@
  
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Display Committee Selection
+ * @name: Display Item specification
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
- * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com) 
  */
 ?>
 
@@ -49,18 +48,18 @@
       </table>
 <div class="scroller_sub_page">
       <table class="TFtable" >
+         <thead>
             <tr>
-              <thead>
                   <th>Sr.No</th>
                   <th>Enquiry No.</th>
                   <th>Item Details</th>
-					<th>Intender Details.</th>
-				</thead>
+		<th>Intender Details.</th>
             </tr>
+	</thead>
 <tbody>
    <?php
         $count =0;
-        
+        if(!empty($specs)){
         foreach ($specs as $row)
         {  
          ?>
@@ -69,33 +68,24 @@
             <td> <?php echo $row->enquiry_no ?></td>
 			<td> 
                   <b>Item Name:- </b><?php echo $row->item_name ?><br>
-               
-                  <b>Item Quantity:- </b><?php echo $row->item_quantity ?><br>
-                  
-                  
-                  
-			
-				  
-            
-				<td><b>Name:- </b><?php echo $row->name ?><br>
-                
+		  <b>Item Quantity:- </b><?php echo $row->item_quantity ?><br>
+		</td>
+            	<td><b>Name:- </b><?php echo $row->name ?><br>
                   <b>Department Id:- </b><?php echo $row->dept_id ?><br>
-                  
                   <b>Designation Id:- </b><?php echo $row->desig_id ?><br>
-				  
-				  <b>Email-Id:- </b><?php echo $row->email ?><br>
-                
+		  <b>Email-Id:- </b><?php echo $row->email ?><br>
                   <b>Phone:- </b><?php echo $row->phone ?><br>
-				  <?php } ?>
 			</td>
-                  
-                  
-            
-                 
-          
-
-      <td>
-       
+      </tr>
+  <?php }
+	}else{
+		echo "<tr>";
+		echo "<td colspan=4>";
+		echo "<b> No record found</b>";
+		echo "</td>";
+		echo "</tr>";
+	}
+?>
 </tbody>
 </table>
 <br><br>

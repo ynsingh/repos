@@ -8,20 +8,19 @@ class Iprocess extends CI_Controller
     function __construct() 
 	{
         parent::__construct();
-        $this->load->model('login_model','lgnmodel'); 
-  		$this->load->model('common_model'); //,'commodel'
-        $this->load->model('PICO_model');   //changed to PICO insted of
-        $this->load->model('SIS_model'); 
-       	$this->load->model('dependrop_model','depmodel');
-        $this->load->model('university_model','unimodel');
-        	$this->load->model("Mailsend_model","mailmodel");
-        $this->db4=$this->load->database('pico', TRUE);
-        if(empty($this->session->userdata('id_user'))) {
-        $this->session->set_flashdata('flash_data', 'You don\'t have access!');
-        
-		redirect('welcome');
-        }
-    }
+//	        $this->load->model('login_model','lgnmodel'); 
+//  		$this->load->model('common_model'); //,'commodel'
+        	$this->load->model('PICO_model');   //changed to PICO insted of
+//	        $this->load->model('SIS_model'); 
+//       		$this->load->model('dependrop_model','depmodel');
+//	        $this->load->model('university_model','unimodel');
+//        	$this->load->model("Mailsend_model","mailmodel");
+//        	$this->db4=$this->load->database('pico', TRUE);
+        	if(empty($this->session->userdata('id_user'))) {
+	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+			redirect('welcome');
+        	}
+    	}
 	
 	public function specification()
 	{
@@ -32,10 +31,8 @@ class Iprocess extends CI_Controller
 	
 	public function specificationsform()
 	{
-
-		if(isset($_POST['Ispecification']))
+		if(isset($_POST['ispecification']))
 		{
-
             $this->form_validation->set_rules('enquiry_date','Enquiry Date:','trim|xss_clean|required');
             $this->form_validation->set_rules('enquiry_no','Enquiry No:','trim|xss_clean|required');
             $this->form_validation->set_rules('enquiry_lastdate','Enquiry Last Date:','required');
@@ -47,7 +44,7 @@ class Iprocess extends CI_Controller
             $this->form_validation->set_rules('dept_id','Dept Id.');
             $this->form_validation->set_rules('desig_id','Designation Id:','trim|xss_clean|required');
             $this->form_validation->set_rules('email','E-mail ID:','trim|xss_clean|required');
-			$this->form_validation->set_rules('phone','Phone','required');
+	$this->form_validation->set_rules('phone','Phone','required');
             $this->form_validation->set_rules('terms_condition_desc','Terms and Condition Description');
             $this->form_validation->set_rules('terms_condition_filename','Terms and Condition Filename');
  
@@ -170,7 +167,7 @@ class Iprocess extends CI_Controller
 	{
 		$data['specs'] = $this->PICO_model->get_list('specification');
 		$this->logger->write_logmessage("view"," View specification", "Specification details...");
-        $this->logger->write_dblogmessage("view"," View specification", "Specification details...");
+        	$this->logger->write_dblogmessage("view"," View specification", "Specification details...");
 		$this->load->view('iprocess/displayspecification',$data);
 	}
 	

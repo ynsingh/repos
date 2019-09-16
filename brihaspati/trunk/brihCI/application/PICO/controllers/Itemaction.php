@@ -78,6 +78,11 @@ class Itemaction extends CI_Controller
 				$smtid=$this->input->post('mtid');
 				$stnme=strtolower($this->input->post('item_name'));
 				$nqty=$this->input->post('item_stock');
+				//put the entry in inspection report
+				//take data form items, purchase order and purpase proposal				
+				//inr_id	inr_itemid	inr_no	inr_pono	inr_podate	inr_challanno	inr_challandate	
+				//inr_nodate	inr_indentno	inr_indentname	inr_indentdept	inr_suppliername	inr_itemname	inr_itemqty
+
 				$dupsdata=array('stock_mtid'=>$smtid,'stock_name'=>$stnme);
 				$flag=$this->picomodel->isduplicatemore("stock_items",$dupsdata);
 				//if exist then go to stock archive
