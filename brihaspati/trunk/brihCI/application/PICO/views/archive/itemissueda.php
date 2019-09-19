@@ -75,7 +75,7 @@ siia_creatordate
 		//	echo "</td>";
                   //      echo "<td>". $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name . "</td>";
                         echo "<td>" . $row->siia_stockid. "</td>";
-                        echo "<td>" . $row->siia_mtid . "</td>";
+                        echo "<td>" . $this->picomodel->get_listspfic1('material_type','mt_name','mt_id',$row->siia_mtid)->mt_name . "</td>";
 			echo "<td>" . $row->siia_name . "</br>";
 			echo $row->siia_qty. "</br>";
 			echo $row->siia_desc. "</br>";

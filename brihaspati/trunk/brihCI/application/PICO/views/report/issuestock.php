@@ -1,14 +1,13 @@
  
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @name: Display Item List
+ * @name: Display issue Item stock List
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
- * @author: Shivam Kumar Singh  (shivam.iitk1@gmail.com)
  */
 ?>
 
 <html>
-<title>Item List | Display</title>
+<title>Issue Item Stock List | Display</title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
@@ -19,16 +18,16 @@
             <tr>
                 <?php 
                     echo "<td align=\"left\"width=\"33%\">";
-                    echo anchor('picosetup/openitemtype/', "Add Item Details", array('title' => 'Item Type Form','class' =>'top_parent'));
+                  //  echo anchor('picosetup/openitemtype/', "Add Item Details", array('title' => 'Item Type Form','class' =>'top_parent'));
                     echo "</td>";
                   ?>
                  <?php
                    echo "<td align=\"center\" width=\"34%\">";
-                   echo "<b>Item Type Details</b>";
+                   echo "<b>Issue Item Stock Details</b>";
                    echo "</td>";
                    echo "<td align=\"right\" width=\"33%\">";
                    $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
-                   echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+               //    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                    echo "</td>";
                  ?>
     
@@ -52,29 +51,29 @@
                 <tr>
 <thead><th>Sr.No</th>
   <!-- <th>Item ID</th> -->
-  <th>Material ID</th><th>Item Name</th><th>Item Price<br>(Rs)</th><th>Item Stock</th><th>Action</th></tr></thead>
+  <th>Material ID</th><th>Item Name</th><th>Issued Item Stock</th><th>Description</th><th>Action</th></tr></thead>
   <tbody>
    <?php
         $count =0;
 
-        foreach($result as $row)
+        foreach($sresult as $row)
         {  
          ?>
           <tr>
             <td> <?php echo ++$count; ?> </td> 
-            <td> <?php echo $this->PICO_model->get_listspfic1('material_type','mt_name','mt_id',$row->item_mtid)->mt_name; ?></td>
-            <td> <?php echo $row->item_name ?></td>
-            <td> <?php echo $row->item_price ?></td>
-            <td> <?php echo $row->item_qty ?></td>
+            <td> <?php echo $this->picomodel->get_listspfic1('material_type','mt_name','mt_id',$row->sii_mtid)->mt_name; ?></td>
+            <td> <?php echo $row->sii_name ?></td>
+            <td> <?php echo $row->sii_qty ?></td>
+            <td> <?php echo $row->sii_desc ?></td>
 
       <td>
          <?php  
-      if ($row->item_id){
+      if ($row->sii_id){
             
             echo "&nbsp; ";
-            echo anchor('picosetup/deleteitemtype/' . $row->item_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
+//            echo anchor('report/deleteitemtype/' . $row->item_id , "Delete", array('title' => 'Delete' , 'class' => 'red-link')) . " ";
             echo "<br>";
-            echo anchor('picosetup/edititemdetails/' . $row->item_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
+  //          echo anchor('report/edititemdetails/' . $row->item_id , "Modify", array('title' => 'Modify' , 'class' => 'red-link')) . " ";
             
         }
             echo "</td>";

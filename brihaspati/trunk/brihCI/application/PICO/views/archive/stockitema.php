@@ -75,7 +75,7 @@ stocka_creatordate
 		//	echo "</td>";
                   //      echo "<td>". $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name . "</td>";
                         echo "<td>" . $row->stocka_id. "</td>";
-                        echo "<td>" . $row->stocka_mtid . "</td>";
+                        echo "<td>" . $this->picomodel->get_listspfic1('material_type','mt_name','mt_id',$row->stocka_mtid)->mt_name . "</td>";
 			echo "<td>" . $row->stocka_name . "</br>";
 			echo $row->stocka_qty. "</br>";
 			echo $row->stocka_desc. "</br>";
