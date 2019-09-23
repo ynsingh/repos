@@ -270,6 +270,548 @@ class Payrollprofile extends CI_Controller
         $this->load->view('payrollprofile/payprofile');     
     }
 	
+  public function emppayprofile(){
+        $this->hglist= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $this->ccalist= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
+        $this->society= $this->sismodel->get_listspfic2('society_master_list','soc_id','soc_sname');
+
+        $dataem=array();
+        $dataappems=array();
+        /****************************************personal working detail****************************/
+        if(isset($_POST['pwdprofile'])) {
+
+
+            $this->form_validation->set_rules('dedupf','DeductUPF','trim|xss_clean');
+            $this->form_validation->set_rules('pcontri','Pension Contribution','trim|xss_clean');
+            $this->form_validation->set_rules('washallw','Washing allowance','trim|xss_clean');
+
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('payrollprofile/payprofileemp');
+                return;
+            }
+            else{
+
+                $upfno = $this->input->post('upfno', '');
+                if(empty($upfno)){
+                    $cpsno = $this->input->post('cpsno', '');
+                    $upfno = $cpsno;
+                }
+
+                $datappems = array(
+
+                /********** personal working detail*********/
+
+                'ems_deductupf'            =>$_POST['dedupf'],
+                'ems_pensioncontri'        =>$_POST['pcontri'],
+                'ems_washingallowance'     =>$_POST['washallw'],
+                );
+            }
+
+        }//ifpwdbutton
+
+        /***********************Employee Pay Scale*****************************************/
+        if(isset($_POST['espprofile'])) {
+
+
+
+            $this->form_validation->set_rules('pcomm','Pay commission','trim|xss_clean');
+            $this->form_validation->set_rules('pscale','Pay Band','trim|xss_clean');
+            $this->form_validation->set_rules('pscale1','Academic Level of Pay','trim|xss_clean');
+            $this->form_validation->set_rules('pscale2','Scale of Pay','trim|xss_clean');
+            $this->form_validation->set_rules('pscale3','Academic Grade Pay','trim|xss_clean');
+
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('payrollprofile/payprofileemp');
+                return;
+            }
+            else{
+
+                /****************employee pay scale********************************/
+                $paycom=$this->input->post('pcomm', '');
+                $payscle=$this->input->post('pscale', ''); //payband of 6th paycomm
+                $payscle1=$this->input->post('pscale1', ''); //academic level of pay in payband
+               // $payscle2=$this->input->post('pscale2', '');
+
+                $salgrdid=$payscle1;
+
+                $dataem= array(
+                    'emp_paycomm'       =>$paycom,
+                    'emp_salary_grade'  =>$salgrdid
+                );
+
+
+            }
+           //echo $dataem.$paycom.$payscle.$payscle1.$salgrdid;
+        }//ifespprofilebutton
+	  /***********************Bank Detail*******************************************************/
+        if(isset($_POST['bankprofile'])) {
+
+
+            $this->form_validation->set_rules('accno','Account number','trim|xss_clean');
+            $this->form_validation->set_rules('bname','Bank name','trim|xss_clean');
+            $this->form_validation->set_rules('ifsccode','IFSC code','trim|xss_clean');
+            $this->form_validation->set_rules('bbranch','Bank branch','trim|xss_clean');
+            $this->form_validation->set_rules('micrcode','MICR Code','trim|xss_clean');
+            $this->form_validation->set_rules('acctype','Account Type','trim|xss_clean');
+            $this->form_validation->set_rules('bbadd','Branch Address','trim|xss_clean');
+            $this->form_validation->set_rules('bbphone','Branch Phone No','trim|xss_clean');
+            $this->form_validation->set_rules('bbemail','Branch Email','trim|xss_clean');
+
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('payrollprofile/payprofileemp');
+                return;
+            }
+            else{
+
+                /****************bank detail**************************************************/
+                $accno =$this->input->post('accno', '');
+                $bankname = $this->input->post('bname', '');
+                $bbranch = $this->input->post('bbranch', '');
+                $ifsccode = $this->input->post('ifsccode', '');
+                $bbmicr = $this->input->post('micrcode', '');
+                $acctype = $this->input->post('acctype', '');
+                $bbadd = $this->input->post('bbadd', '');
+                $bbphone = $this->input->post('bbphone', '');
+                $bbemail = $this->input->post('bbemail', '');
+
+                if(!empty($_POST['accno']))
+                    $dataem['emp_bank_accno']   =$_POST['accno'];
+                if(!empty($ifsccode))
+                    $dataem['emp_bank_ifsc_code']  =$ifsccode;
+                if(!empty($bankname))
+                    $dataem['emp_bankname']        =$bankname;
+                if(!empty($bbranch))
+                    $dataem['emp_bankbranch']      =$bbranch;
+
+                $datappems = array(
+
+                    /********************bank deatil*****************/
+                    'ems_bbmicr'               =>$bbmicr,
+                    'ems_acctype'              =>$acctype,
+                    'ems_bbadd'                =>$bbadd,
+                    'ems_bbphone'              =>$bbphone,
+                    'ems_bbemail'              =>$bbemail,
+
+                );
+
+
+            }
+        } // bankprofile
+
+        /***********************HRA/CCA/Rent Detail*******************************************************/
+        if(isset($_POST['hcrprofile'])) {
+
+            echo "hcrprofile tab hra hello in form ";
+            $this->form_validation->set_rules('hragrade','HRA grade','trim|xss_clean');
+            $this->form_validation->set_rules('ccagrade','CCA grade','trim|xss_clean');
+            $this->form_validation->set_rules('rfqemp','Eligible for Rent Free Quarters','trim|xss_clean');
+            $this->form_validation->set_rules('exhra','Rent Free HRA Grade','trim|xss_clean');
+            $this->form_validation->set_rules('qoemp','Quarters Occupied','trim|xss_clean');
+            $this->form_validation->set_rules('rentgrade','Rent Grade','trim|xss_clean');
+            $this->form_validation->set_rules('qtrno','QTR No','trim|xss_clean');
+            $this->form_validation->set_rules('qtrtype','Qtrtype','trim|xss_clean');
+
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('payrollprofile/payprofileemp');
+                return;
+            }
+            else{
+
+                /****************HRA/CCA/Rent Detail****************************************/
+
+                $exhra=$this->input->post('exhra', '');
+                $rentgrade=$this->input->post('rentgrade', '');
+                $qtrtype = $this->input->post('qtrtype', '');
+
+                $datappems = array(
+
+                    /******HRA/CCA/Rent Detail********************/
+                    'ems_hragrade'             =>$_POST['hragrade'],
+                    'ems_ccagrade'             =>$_POST['ccagrade'],
+                    'ems_erfq'                 =>$_POST['rfqemp'],
+                    'ems_erfqhra'              =>$exhra,
+                    'ems_qoccupai'             =>$_POST['qoemp'],
+                    'ems_rentgrade'            =>$rentgrade,
+                    'ems_house_type'          =>$qtrtype,
+                    'ems_house_no'            =>$_POST['qtrno'],
+                );
+
+            }
+
+        }//hcrprofile
+
+	 /*****************************Others******************************************/
+
+        if(isset($_POST['otherprofile'])) {
+
+            $this->form_validation->set_rules('panno','PAN No','trim|xss_clean');
+            $this->form_validation->set_rules('society','society','trim|xss_clean');
+            $this->form_validation->set_rules('socamount','Society Amount','trim|xss_clean');
+            $this->form_validation->set_rules('societymember','societymember','trim|xss_clean');
+
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('payrollprofile/payprofileemp');
+                return;
+            }
+            else{
+
+
+                $panno =$this->input->post('panno', '');
+                $society = $this->input->post('society', '');
+                $socmem = $this->input->post('societymember', '');
+                $socamount =$this->input->post('socamount', '');
+
+
+                if(!empty($panno))
+                    $dataem['emp_pan_no']       =$panno;
+
+                $datappems = array(
+
+                    /******Others************************/
+                    'ems_society'              =>$society,
+                    'ems_societymember'        =>$socmem,
+                    'ems_socamount'            =>$socamount,
+                );
+
+            }
+
+
+        }//otherprofile
+
+        /***********************Salary Earning Heads***************************************************/
+
+        $empid = $this->input->post('empid', '');
+     //   echo "seema id==controller=".$empid;
+        $data['empid']=$empid;
+        $cmonth = date('M');
+        $cyear= date("Y");
+
+        $tcount = $this->input->post('totalcount', TRUE);
+        $tded = $this->input->post('dedcount', TRUE);
+        $tloan = $this->input->post('loancount', TRUE);
+
+        if(isset($_POST['ppearnings'])){
+           $empid = $this->input->post('empid', '');
+          // echo "seema id==controller=".$empid;
+          // die;
+            for ($i=0; $i<$tcount ;$i++){
+                $headidin = $this->input->post('sheadidin'.$i, TRUE);
+                $headval = $this->input->post('headamtI'.$i, TRUE);
+
+                $headname= $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$headidin)->sh_name;
+                $earningdata = array(
+                    'seh_empid'         =>$empid,
+                    'seh_headid'        =>$headidin,
+                    'seh_headname'      =>$headname,
+                    'seh_headamount'    =>$headval,
+                    'seh_month'         =>$cmonth,
+                    'seh_year'          =>$cyear,
+                    'seh_creator'       =>$this->session->userdata('username'),
+                    'seh_createdate'    =>date('y-m-d'),
+                    'seh_modifier'      =>$this->session->userdata('username'),
+                    'seh_modifydate'    =>date('y-m-d'),
+
+                );
+
+                $dupcheck = array(
+                   'seh_empid'         =>$empid,
+                   'seh_headid'        =>$headidin,
+                   'seh_month'         =>$cmonth,
+                   'seh_year'          =>$cyear,
+
+                );
+                $salEardup = $this->sismodel->isduplicatemore('salary_earnings_head', $dupcheck);
+                if(!$salEardup){
+                    $pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
+                }
+                else{
+
+                    $earupdata = array(
+                    //'seh_empid'         =>$empid,
+                    //'seh_headid'        =>$headidin,
+                    //'seh_headname'      =>$headname,
+                    'seh_headamount'    =>$headval,
+                    //'seh_month'         =>$cmonth,
+                    //'seh_year'          =>$cyear,
+                   // 'seh_creator'       =>$this->session->userdata('username'),
+                    //'seh_createdate'    =>date('y-m-d'),
+                    'seh_modifier'      =>$this->session->userdata('username'),
+                    'seh_modifydate'    =>date('y-m-d'),
+
+                    );
+
+                    $datawh=array('seh_empid' =>$empid,'seh_headid' =>$headidin,'seh_month'=>$cmonth,'seh_year'=>$cyear);
+                    $cdata = $this->sismodel->get_listspficemore('salary_earnings_head','seh_id',$datawh);
+                    $sehid=$cdata[0]->seh_id;
+
+                    $pprofileflag=$this->sismodel->updaterec('salary_earnings_head',$earupdata, 'seh_id', $sehid);
+                }
+
+           // } //tcount
+
+		 /****************************Increment****************************************************************/
+            $headcode= $this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$headidin)->sh_code;
+            if($headcode == 'BP'){
+
+            $headval = $this->input->post('headamtI'.$i, TRUE);
+            $incrementamt = $this->input->post('increment'.$i, TRUE);
+           //d echo "seema ---in ccc". $headval.$incrementamt;
+            $incrementdata = array(
+                'esi_empid'         =>$empid,
+                'esi_bpamount'      =>$headval,
+                'esi_increment'     =>$incrementamt,
+                'esi_month'         =>$cmonth,
+                'esi_year'          =>$cyear,
+                'esi_creator'       =>$this->session->userdata('username'),
+                'esi_createdate'    =>date('y-m-d'),
+
+                'esi_modifier'      =>$this->session->userdata('username'),
+                'esi_modifydate'    =>date('y-m-d'),
+
+            );
+
+            $dupcheck = array(
+                'esi_empid'         =>$empid,
+               // 'esi_bpamount'      =>$headval,
+                //'esi_increment'     =>$incrementamt,
+                'esi_month'         =>$cmonth,
+                'esi_year'          =>$cyear,
+
+                );
+            $icremtdup = $this->sismodel->isduplicatemore('employee_salary_increment', $dupcheck);
+            if(!$icremtdup){
+
+                $pprofileflag = $this->sismodel->insertrec('employee_salary_increment', $incrementdata);
+            }
+            else{
+
+                $incrmtupdata = array(
+                    //'esi_empid'         =>$empid,
+                    'esi_bpamount'      =>$headval,
+                    'esi_increment'     =>$incrementamt,
+                    //'esi_month'         =>$cmonth,
+                    //'esi_year'          =>$cyear,
+                    //'esi_creator'       =>$this->session->userdata('username'),
+                    //'esi_createdate'    =>date('y-m-d'),
+
+                    'esi_modifier'      =>$this->session->userdata('username'),
+                    'esi_modifydate'    =>date('y-m-d'),
+
+                );
+
+                $datawh=array('esi_empid' =>$empid,'esi_month'=>$cmonth,'esi_year'=>$cyear);
+                $cdata = $this->sismodel->get_listspficemore('employee_salary_increment','esi_id',$datawh);
+                $esiid=$cdata[0]->esi_id;
+
+                $pprofileflag=$this->sismodel->updaterec('employee_salary_increment',$incrmtupdata, 'esi_id',$esiid);
+
+            }
+            }//ifcode
+        } //tcount
+
+        /************************************Increment******************************************************/
+
+
+        }
+
+
+	 /***********************  end Salary Earning Heads***************************************************/
+
+        /************************* start Salary Subscription Deduction Heads********************************/
+        if(isset($_POST['sdedprofile'])){
+
+            for ($j=0; $j<$tded ;$j++){
+
+                $headidD = $this->input->post('sheadidded'.$j, TRUE);
+                $headvald = $this->input->post('headamtD'.$j, TRUE);
+                $headnoD = $this->input->post('headnumber'.$j, TRUE);
+                $instaltotD = $this->input->post('totalinstall'.$j, TRUE);
+                $instalnoD = $this->input->post('installno'.$j, TRUE);
+                $instamtD = $this->input->post('installamount'.$j, TRUE);
+
+                $headname= $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id', $headidD)->sh_name;
+
+                $deductdata = array(
+                    'ssdh_empid'                =>$empid,
+                    'ssdh_headid'               =>$headidD,
+                    'ssdh_headname'             =>$headname,
+
+                    'ssdh_headno'               =>$headnoD,
+                    'ssdh_headamount'           =>$headvald,
+
+                    'ssdh_totalintall'          =>$instaltotD,
+                    'ssdh_intallmentno'         =>$instalnoD,
+                    'ssdh_installamount'        =>$instamtD,
+                    'ssdh_month'                =>$cmonth,
+                    'ssdh_year'                 =>$cyear,
+                    'ssdh_creator'              =>$this->session->userdata('username'),
+                    'ssdh_createdate'           =>date('y-m-d'),
+                    'ssdh_modifier'             =>$this->session->userdata('username'),
+                    'ssdh_modifydate'           =>date('y-m-d'),
+
+                );
+                $dupcheck = array(
+                    'ssdh_empid'                =>$empid,
+                    'ssdh_headid'               =>$headidD,
+                    'ssdh_month'                =>$cmonth,
+                    'ssdh_year'                 =>$cyear,
+
+                );
+                $ssddup = $this->sismodel->isduplicatemore('salary_subsdeduction_head', $dupcheck);
+                if(!$ssddup){
+
+                    $pprofileflag = $this->sismodel->insertrec('salary_subsdeduction_head', $deductdata);
+                }
+                else{
+
+                    $ssdupdata = array(
+                        //'ssdh_empid'                =>$empid,
+                        //'ssdh_headid'               =>$headidD,
+                        //'ssdh_headname'             =>$headname,
+
+                        'ssdh_headno'               =>$headnoD,
+                        'ssdh_headamount'           =>$headvald,
+
+                        //'ssdh_totalintall'          =>$instaltotD,
+                        'ssdh_intallmentno'         =>$instalnoD,
+                        'ssdh_installamount'        =>$instamtD,
+                        //'ssdh_month'                =>$cmonth,
+                        //'ssdh_year'                 =>$cyear,
+                        //'ssdh_creator'              =>$this->session->userdata('username'),
+                        //'ssdh_createdate'           =>date('y-m-d'),
+                        'ssdh_modifier'             =>$this->session->userdata('username'),
+                        'ssdh_modifydate'           =>date('y-m-d'),
+
+                    );
+
+                    $datawh=array('ssdh_empid' =>$empid,'ssdh_headid' =>$headidD,'ssdh_month'=>$cmonth,'ssdh_year'=>$cyear);
+                    $cdata = $this->sismodel->get_listspficemore('salary_subsdeduction_head','ssdh_id',$datawh);
+                    $ssdhid=$cdata[0]->ssdh_id;
+
+                    $pprofileflag=$this->sismodel->updaterec('salary_subsdeduction_head', $ssdupdata, 'ssdh_id', $ssdhid);
+
+                }
+
+            }//totalcount
+
+
+        }
+         /************************* end Salary Subscription Deduction Heads************************************/
+	 /*********************** start Salary Loan Heads*******************************************************/
+
+        if(isset($_POST['sloanprofile'])){
+
+            for ($k=0; $k<$tloan ;$k++){
+                $headidL = $this->input->post('sheadidloan'.$k, TRUE);
+                $headvalL = $this->input->post('headamtL'.$k, TRUE);
+                $headnoL = $this->input->post('headnumberL'.$k, TRUE);
+                $instaltotL = $this->input->post('totalinstallL'.$k, TRUE);
+                $instalnoL = $this->input->post('installnoL'.$k, TRUE);
+                $instamtL = $this->input->post('installamountL'.$k, TRUE);
+
+                $headname= $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id', $headidL)->sh_name;
+
+                $loandata = array(
+                    'slh_empid'                =>$empid,
+                    'slh_headid'               =>$headidL,
+                    'slh_headname'             =>$headname,
+
+                    'slh_headno'               =>$headnoL,
+                    'slh_headamount'           =>$headvalL,
+
+                    'slh_totalintall'          =>$instaltotL,
+                    'slh_intallmentno'         =>$instalnoL,
+                    'slh_installamount'        =>$instamtL,
+                    'slh_month'                =>$cmonth,
+                    'slh_year'                 =>$cyear,
+                    'slh_creator'              =>$this->session->userdata('username'),
+                    'slh_createdate'           =>date('y-m-d'),
+                    'slh_modifier'             =>$this->session->userdata('username'),
+                    'slh_modifydate'           =>date('y-m-d'),
+
+                );
+
+                $dupcheck = array(
+                    'slh_empid'                =>$empid,
+                    'slh_headid'               =>$headidL,
+                    'slh_month'                =>$cmonth,
+
+                    'slh_year'                 =>$cyear,
+
+                );
+                $sloandup = $this->sismodel->isduplicatemore('salary_loan_head', $dupcheck);
+                if(!$sloandup){
+
+                    $pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+                }
+                else{
+
+                    $uploandata = array(
+                       // 'slh_empid'                =>$empid,
+                       // 'slh_headid'               =>$headidL,
+                        //'slh_headname'             =>$headname,
+
+                        'slh_headno'               =>$headnoL,
+                        'slh_headamount'           =>$headvalL,
+
+                        'slh_totalintall'          =>$instaltotL,
+                        'slh_intallmentno'         =>$instalnoL,
+                        'slh_installamount'        =>$instamtL,
+                        //'slh_month'                =>$cmonth,
+                        //'slh_year'                 =>$cyear,
+                        //'slh_creator'              =>$this->session->userdata('username'),
+                        //'slh_createdate'           =>date('y-m-d'),
+                        'slh_modifier'             =>$this->session->userdata('username'),
+                        'slh_modifydate'           =>date('y-m-d'),
+
+                    );
+
+                    $datawh=array('slh_empid' =>$empid,'slh_headid' => $headidL,'slh_month'=>$cmonth,'slh_year'=>$cyear);
+                    $cdata = $this->sismodel->get_listspficemore('salary_loan_head','slh_id',$datawh);
+                    $slhid=$cdata[0]->slh_id;
+
+                    $pprofileflag=$this->sismodel->updaterec('salary_loan_head', $uploandata,'slh_id', $slhid);
+
+                }
+
+            }//totalcount
+
+        }
+        /*********************** end Salary Loan Heads*******************************************************/
+
+        // echo "empid---".$empid;
+        $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
+        if(!empty($empid)){
+      //      print_r($empid);
+        //    die();
+            if(!empty($datappems)){
+              // echo "seemainner loop===".$datappems;
+                $pprofileflag=$this->sismodel->updaterec('employee_master_support', $datappems, 'ems_empid', $empid);
+            }
+            if(!empty($dataem)){
+                //print_r($empid);
+                $pprofileflag=$this->sismodel->updaterec('employee_master', $dataem , 'emp_id', $empid);
+            }
+            if (!$pprofileflag)
+            {
+                $this->logger->write_logmessage("update","Trying to add updated values in payroll profile ", " payroll profile values are not updated please try again");
+                $this->logger->write_dblogmessage("update","Trying to updated values in payroll profile", " payroll profile values are not updated please try again");
+                $this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '  , 'error');
+                redirect('payrollprofile/emppayprofile');
+            }
+            else{
+                $this->logger->write_logmessage("update","Add updated values in payroll profile", "payroll profile values updated  successfully...");
+                $this->logger->write_dblogmessage("update","Add  updated values in payroll profile", " payroll profile values updated  successfully...");
+                $this->session->set_flashdata("success", " Payroll Profile values updated  successfully. PF No is  " ."[ "  .$emppfno. " ]");
+                redirect('payrollprofile/emppayprofile');
+            }
+        }
+        //$this->load->view('payrollprofile/payprofile');
+        $this->load->view('payrollprofile/payprofileemp');
+
+    }
+
+
        	public function payleaveentry(){
 	        if(isset($_POST['pleaveent'])) {
             		$this->form_validation->set_rules('emppfno','Employee PF Number','trim|xss_clean');

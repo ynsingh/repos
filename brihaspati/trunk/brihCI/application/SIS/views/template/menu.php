@@ -220,6 +220,9 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                                 echo anchor('payrollprofile/payprofile', 'Payroll Profile', array('title' => 'Payroll Profile'));
                                         echo "</li>";
+                                 //       echo "<li>";
+                                   //             echo anchor('payrollprofile/emppayprofile', 'Payroll Profile', array('title' => 'Payroll Profile'));
+                                     //   echo "</li>";
                                         echo "<li>";
                                                 echo anchor('payrollprofile/viewpayleaveentry', 'Payroll Leave Entry', array('title' => 'Payroll Leave Entry'));
                                         echo "</li>";
@@ -229,6 +232,7 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                                 echo anchor('setup3/salaryprocess', 'Salary Processing', array('title' => 'Salary Processing'));
                                         echo "</li>";
+                                        
                                 echo "</ul>";
 			echo "</li>";
 			echo "<li>";

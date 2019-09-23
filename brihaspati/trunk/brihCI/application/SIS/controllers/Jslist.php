@@ -153,7 +153,7 @@ class Jslist extends CI_Controller
 		$values=array();
                 $combid= $this->input->post('wtpcl');
                 $parts = explode(',',$combid);
-//		print_r($parts); die();
+//                print_r($parts); die();
                 $datawh=array();
 		$datawh['sgm_wt']=$parts[0];	
                 if($parts[1] == '6th'){
@@ -161,7 +161,8 @@ class Jslist extends CI_Controller
                 }else{
                         $datawh['sgm_pc'] = "7th";
                 }
-		$datawh['sgm_level']=$parts[2];	
+//		$datawh['sgm_level']=$parts[2];	
+		$datawh['sgm_id']=$parts[2];	
 //		print_r($datawh);die();
                 $psdata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_max,sgm_min,sgm_gradepay',$datawh);
 		if(count($psdata)>0){
@@ -323,24 +324,45 @@ class Jslist extends CI_Controller
                 $parts = explode(',',$wtype);
        // echo json_encode("this is testing----".$wtype);
                 if(($parts[0] == 'Teaching')&&($parts[1] == '6th')){
-                        $pb_select_box ='';
-                        $pb_select_box.='<option value=>-------Select Pay Band--------';
-                        $pb_select_box.='<option value=UGC1> UGC1';
+                    $datawh=array('sgm_wt' => $parts[0],'sgm_pc' => $parts[1]);
+                    $psdata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_level',$datawh);
+                    $pb_select_box ='';
+                    $pb_select_box.='<option value=>-------Select Pay Band--------';
+                    if(!empty($psdata)){
+                        
+                        foreach($psdata as $emppscale){
+                            $pb_select_box.='<option value='.$emppscale->sgm_id.'>'.$emppscale->sgm_name.' ';
+                        }//foreach
+                        
+                        
+                        /*$pb_select_box.='<option value=UGC1> UGC1';
                         $pb_select_box.='<option value=UGC2> UGC2';
                         $pb_select_box.='<option value=UGC3> UGC3';
                         $pb_select_box.='<option value=UGC4> UGC4';
                         $pb_select_box.='<option value=UGC5> UGC5';
                         $pb_select_box.='<option value=HGP> HGP';
-                        $pb_select_box.='<option value=Fixed> Fixed';
+                        $pb_select_box.='<option value=Fixed> Fixed';*/
+                        
+                    }
                 }
                 elseif(($parts[0] == 'Non Teaching')&&($parts[1] == '6th')){
-                        $pb_select_box ='';
-                        $pb_select_box.='<option value= >-------Select Pay Band--------';
-                        $pb_select_box.='<option value=PB1A> PB1A';
+                    
+                    $datawh=array('sgm_wt' => $parts[0],'sgm_pc' => $parts[1]);
+                    $psdatant = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_max,sgm_min,sgm_gradepay,sgm_level',$datawh);
+                    $pb_select_box ='';
+                    $pb_select_box.='<option value= >-------Select Pay Band--------';
+                    if(!empty($psdatant)){
+                        
+                        foreach($psdatant as $emppscalent){
+                            $pb_select_box.='<option value='.$emppscalent->sgm_id.'>'.$emppscalent->sgm_name.' ';
+                        }//foreach
+                        
+                    }
+                       /* $pb_select_box.='<option value=PB1A> PB1A';
                         $pb_select_box.='<option value=PB1> PB1';
                         $pb_select_box.='<option value=PB2> PB2';
                         $pb_select_box.='<option value=PB3> PB3';
-                        $pb_select_box.='<option value=PB4> PB4';
+                        $pb_select_box.='<option value=PB4> PB4';*/
                 }else{
                         $pb_select_box ='';
                 }
@@ -348,54 +370,41 @@ class Jslist extends CI_Controller
         }
 
         public function getlevelpay(){
-                $wtype = $this->input->post('wt');
-       // echo json_encode("this is testing----".$wtype);
-                if($wtype == 'Teaching'){
-                        $lpb_select_box ='';
-                        $lpb_select_box.='<option value=>-------Select Level of Pay -------';
-                        $lpb_select_box.='<option value=Level10> Level10';
-                        $lpb_select_box.='<option value=Level11> Level11';
-                        $lpb_select_box.='<option value=Level12> Level12';
-                        $lpb_select_box.='<option value=Level13A> Level13A';
-                        $lpb_select_box.='<option value=Level14> Level14';
-                        $lpb_select_box.='<option value=Level15> Level15';
-                        $lpb_select_box.='<option value=Fixed> Fixed';
+                $wtype = $this->input->post('wt','');
+                $parts = explode(',',$wtype);
+                
+               // echo json_encode("this is testing----".$parts[0],$parts[1],$wtype);
+                             
+                $lpb_select_box ='';
+                $lpb_select_box.='<option value=>-------Select Level of Pay -------';
+                
+                if($parts[1] == 'Teaching'){
+                    //echo json_encode("this is if===testing----".$wtype);
+                    
+                    $datawh=array('sgm_pc'=>$parts[0],'sgm_wt' => $parts[1]);
+                    $leveldata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_level',$datawh);
+                   
+                    if(!empty($leveldata)){
+                        
+                        foreach( $leveldata  as $emplevel){
+                            $lpb_select_box.='<option value='.$emplevel->sgm_id.'>'.$emplevel->sgm_level.' ';
+                        }//foreach
+                        
+                    }
+                    
                 }
-		 else{
-                        $lpb_select_box ='';
-                        $lpb_select_box.='<option value=>-------Select Level of Pay -------';
-                        $lpb_select_box.='<option value=Level1> Level1';
-                        $lpb_select_box.='<option value=Level2> Level2';
-                        $lpb_select_box.='<option value=Level3> Level3';
-                        $lpb_select_box.='<option value=Level4> Level4';
-                        $lpb_select_box.='<option value=Level5> Level5';
-                        $lpb_select_box.='<option value=Level6> Level6';
-                        $lpb_select_box.='<option value=Level7> Level7';
-                        $lpb_select_box.='<option value=Level8> Level8';
-                        $lpb_select_box.='<option value=Level9> Level9';
-                        $lpb_select_box.='<option value=Level10> Level10';
-                        $lpb_select_box.='<option value=Level11> Level11';
-                        $lpb_select_box.='<option value=Level12> Level12';
-                        $lpb_select_box.='<option value=Level13> Level13';
-                        $lpb_select_box.='<option value=Level14> Level14';
-                        $lpb_select_box.='<option value=Level15> Level15';
-                        $lpb_select_box.='<option value=Level16> Level16';
-                        $lpb_select_box.='<option value=Level17> Level17';
-                        $lpb_select_box.='<option value=Level18> Level18';
-                        $lpb_select_box.='<option value=Level19> Level19';
-                        $lpb_select_box.='<option value=Level20> Level20';
-                        $lpb_select_box.='<option value=Level21> Level21';
-                        $lpb_select_box.='<option value=Level22> Level22';
-                        $lpb_select_box.='<option value=Level23> Level23';
-                        $lpb_select_box.='<option value=Level24> Level24';
-                        $lpb_select_box.='<option value=Level25> Level25';
-                        $lpb_select_box.='<option value=Level26> Level26';
-                        $lpb_select_box.='<option value=Level27> Level27';
-                        $lpb_select_box.='<option value=Level28> Level28';
-                        $lpb_select_box.='<option value=Level29> Level29';
-                        $lpb_select_box.='<option value=Level30> Level30';
-                        $lpb_select_box.='<option value=Level31> Level31';
-                        $lpb_select_box.='<option value=Level32> Level32';
+		else{
+                   // echo json_encode("this is else===testing----");
+                   
+                    $datawh=array('sgm_pc'=>$parts[0]);
+                    $leveldata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_level',$datawh);
+                    if(!empty($leveldata)){
+                        foreach($leveldata  as $emplevel){
+                            $lpb_select_box.='<option value='.$emplevel->sgm_id.'>'.$emplevel->sgm_level.' ';
+                        }//foreach
+                        
+                    }
+                    
                 }
                 echo json_encode($lpb_select_box);
         }
@@ -700,5 +709,113 @@ class Jslist extends CI_Controller
         $selval = $this->input->post('society');
         $socno=$this->sismodel->get_listspfic1('society_master_list','soc_regno','soc_id',$selval)->soc_regno;
         echo json_encode($socno);
+    }
+    
+    public function getppdetail(){
+      //  echo "seema--- in js"; 
+        $values=array();
+        $pfval = $this->input->post('pfshid');
+        $parts = explode(',',$pfval);
+      //  echo "pfno in tab4=1=".$pfval.$parts[0].$parts[1];
+        $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
+         // $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$pfval)->emp_id;
+        
+        $cmonth = date('M');
+        $cyear= date("Y");
+        
+        if($parts[0] == '#tab6'){
+            $wdata = array('seh_empid' =>$empid,'seh_month'=>$cmonth,'seh_year'=>$cyear);
+            $hdval= $this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_headid,seh_headname,seh_headamount',$wdata,''); 
+        }
+        if($parts[0] == '#tab7'){
+            $selfield= 'ssdh_headid,ssdh_headname,ssdh_headno,ssdh_headamount,ssdh_totalintall,ssdh_intallmentno,ssdh_installamount ';
+            $wdata = array('ssdh_empid' =>$empid,'ssdh_month'=>$cmonth,'ssdh_year'=>$cyear);
+            $hdval= $this->sismodel->get_orderlistspficemore('salary_subsdeduction_head',$selfield,$wdata,'');     
+        }
+        if($parts[0] == '#tab8'){
+            $selfield='slh_headid,slh_headname,slh_headno,slh_headamount,slh_totalintall,slh_intallmentno,slh_installamount';
+            $wdata = array('slh_empid' =>$empid,'slh_month'=>$cmonth,'slh_year'=>$cyear);
+            $hdval= $this->sismodel->get_orderlistspficemore('salary_loan_head',$selfield,$wdata,'');
+            // echo "seema in jslist===".count($hdval);
+        }
+        if(!empty($hdval)){
+            foreach($hdval as $alldata){
+           
+                if($parts[0] == '#tab6'){
+                    $headid=$alldata->seh_headid;
+                    $headname=$alldata->seh_headname;
+                    $headval=$alldata->seh_headamount;
+                    $combthree=$headid."^".$headname."^".$headval;
+                   //  echo "in if part==id===".$combthree;
+                }
+                if($parts[0] == '#tab7'){
+                    $headid=$alldata->ssdh_headid;
+                    $headname=$alldata->ssdh_headname;
+                    $heano=$alldata->ssdh_headno;
+                    $headval=$alldata->ssdh_headamount;
+                    $totalinstall=$alldata->ssdh_totalintall;
+                    $intalno=$alldata->ssdh_intallmentno;
+                    $intalamt=$alldata->ssdh_installamount ;        
+                    $combthree=$headid."^".$headname."^".$heano."^".$headval."^".$totalinstall."^".$intalno."^".$intalamt;
+                    
+                }
+                if($parts[0] == '#tab8'){
+                    
+                    $headid=$alldata->slh_headid;
+                    $headname=$alldata->slh_headname;
+                    $heano=$alldata->slh_headno;
+                    $headval=$alldata->slh_headamount;
+                    $totalinstall=$alldata->slh_totalintall;
+                    $intalno=$alldata->slh_intallmentno;
+                    $intalamt=$alldata->slh_installamount; 
+                     
+                    $combthree=$headid."^".$headname."^".$heano."^".$headval."^".$totalinstall."^".$intalno."^".$intalamt;
+                    
+                   // echo "seema in jslist===".$combthree;
+                    
+                }
+                array_push($values,$combthree);
+            }
+        }
+        else{
+           // echo "in else part==id===".$empid;
+            $mess="Please enter the valid PF Number";
+            array_push($values,$mess);
+           // $headval=0;   
+        }
+      //  array_push($values,$empid);
+       
+        echo json_encode($values);
+       // echo json_encode($empid);
+    }
+    public function getheadfromula(){
+      //  echo "seema--- in js"; 
+        $values=array();
+        $hcval = $this->input->post('hcval');
+        $parts = explode(',',$hcval);
+      //  echo "pfno in tab4=1=".$pfval.$parts[0].$parts[1];
+        $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[2])->emp_id;
+        /*
+        
+        if(!empty($hdval)){
+            foreach($hdval as $alldata){
+           
+              
+                    
+                
+                array_push($values,$combthree);
+            }
+        }
+        else{
+           // echo "in else part==id===".$empid;
+            $mess="Please enter the valid PF Number";
+            array_push($values,$mess);
+           // $headval=0;   
+        }*/
+        
+      //  array_push($values,$empid);
+       
+        echo json_encode($values);
+       // echo json_encode($empid);
     }
 }    
