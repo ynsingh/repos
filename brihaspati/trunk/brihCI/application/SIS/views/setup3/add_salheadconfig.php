@@ -52,7 +52,35 @@
         <div class="scroller_sub_page">
             <table width="100%" border="0">
                 <tr>
-                    <?php  // echo"seloption====".$seloption;?>
+                    <?php
+  // echo"seloption====".$seloption;?>
+			 <td><label for="paycomm" class="control-label">Pay Commission:</label>
+			<!--</td>
+                        <td> -->
+                            <select name="paycomm" id="paycomm"  style="width:40%;">
+				<?php if (!empty($paycom)) :?>
+				<option value="<?php echo $paycom;?>"><?php echo $paycom;?></option>
+	                        <?php else: ?>
+                                <option value="" disabled selected >------Select ---------------</option>
+				<?php endif ;?>
+                                <option value="6th">6th</option>
+                                <option value="7th">7th</option>
+                            </select>
+                        </td>
+			 <td><label for="worktype" class="control-label">Working Type:</label>
+			<!--</td>
+                        <td>-->
+                            <select name="worktype" id="worktype"  style="width:40%;" onchange="this.form.submit();">
+				<?php if (!empty($wtyp)) :?>
+                                <option value="<?php echo $wtyp;?>"><?php echo $wtyp;?></option>
+                                <?php else: ?>
+                                <option value="" disabled selected >------Select ---------------</option>
+				<?php endif ;?>
+                                <option value="Teaching">Teaching</option>
+                                <option value="Non Teaching">Non Teaching</option>
+                            </select>
+                        </td>
+<!--
                     <td>Post Type <font color='Red'>*</font>
                         <select id="emptype" style="width:350px;" name="emptype" required onchange="this.form.submit();"> 
                         <?php if (!empty($seloption)) :?>
@@ -69,6 +97,7 @@
                             <?php endforeach; ?>
                         </select>
                     </td> 
+-->
 	     	</tr>
             </table>                  
             <table class="TFtable">
@@ -83,8 +112,9 @@
                 </thead>
                 <tbody>
                     <?php $serial_no = 1;  $no=0; // $shconf=0; ;?>
-                        <?php if( count($this->salhead ) ):  ?>
-                            <?php foreach($this->salhead as $record){ 
+                        <?php //if( count($salhead ) ):  ?>
+                        <?php //if(!empty($selhead)):  ?>
+                            <?php foreach($salhead as $record){ 
 					$flag=false;
 				?>
                             
@@ -95,20 +125,25 @@
                                 <td><?php echo $record->sh_shortname; ?></td>
                                  <td>  
                                 <?php  // $j = $shconf;
-                                if(!empty($shconf)):?> 
-                               <?php $array  = explode(",", $shconf);
+                                if(!empty($shconf)):
+					foreach($shconf as $shcrec){
+					$shcshid=$shcrec->shc_salheadid;
+					$array  = explode(",", $shcshid);
+					}
+//				$array  = explode(",", $shconf);
                                 //print_r("seema===".$array);
-                                foreach($array as $line) { 
-                               
-                                if($record->sh_id == $line): 
-					$flag = true;
-                                endif;
-                                 }; 
-                                if($flag): ?>
-                                <input type="checkbox" name="check_list[]" checked value="<?php echo $record->sh_id; ?>" />
-                                <?php else : ?>
-                                <input type="checkbox" name="check_list[]"  value="<?php echo $record->sh_id; ?>" />
-                               <?php endif;?>
+        	                        foreach($array as $line) { 
+                		                if($record->sh_id == $line): 
+							$flag = true;
+							break;
+                                		endif;
+                                 	} 
+                                	if($flag): ?>
+                                		<input type="checkbox" name="check_list[]" checked value="<?php echo $record->sh_id; ?>" />
+                                	<?php else : ?>
+                                		<input type="checkbox" name="check_list[]"  value="<?php echo $record->sh_id; ?>" />
+                               		<?php endif;
+				?>
                              
                                
                                 <?php else : ?>
@@ -118,10 +153,10 @@
                             </tr> 
                                
                         <?php }; ?>
-                    <?php else : ?>
-                        <td colspan= "13" align="center"> No Records found...!</td>
-                    <?php endif;?>
-                     <tr><td colspan="6"> <button name="update">Update</button></td></tr>    
+                    <?php //else : ?>
+<!--                        <td colspan= "13" align="center"> No Records found...!</td> -->
+                    <?php // endif;?>
+                     <tr><td colspan="5"> <button name="update">Update</button></td></tr>    
                         
                 </tbody>    
             </table>    

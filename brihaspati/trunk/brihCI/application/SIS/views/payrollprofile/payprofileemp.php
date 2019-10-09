@@ -32,9 +32,6 @@
             //    margin-left:0px 0px;
            //     float:left;
                 list-style:none;
-                
-                
-                
             }
 
             .tab-links a {
@@ -109,6 +106,7 @@
                 $("#psc1").hide();
                 $("#psc2").hide();
                 $("#psc3").hide();
+		$(".6thdisp").hide();
             /**********************************Start of empdetail by  PF NOscript*********************************/
                 
                 $("#emppfno").on('change',function(){
@@ -157,11 +155,15 @@
                             //$('#pscale').val(empinput[17].replace(/[[\]"|"]/g,""));
 			    var cps=empinput[17].replace(/[[\]"|"]/g,"").split('(');	
 
+                            $('#pscale01').val(cps[0]);
                             $('#pscale').val(cps[0]);
 			    var psgp=cps[1].split(')');	
+			    $('#pscale21').val(psgp[0]);
 			    $('#pscale2').val(psgp[0]);
 			    var glev=psgp[1].split('-');
+                            $('#pscale31').val(glev[0]);	
                             $('#pscale3').val(glev[0]);	
+                            $('#pscale11').val(glev[1]);	
                             $('#pscale1').val(glev[1]);	
 
                             $('#bname').val(empinput[18].replace(/[[\]"|"]/g,""));
@@ -170,13 +172,18 @@
                       //      $('#pcomm').val(empinput[21].replace(/[[\]"|"]/g,""));
                             var ppnh=(empinput[21].replace(/[[\]"|"]/g,"")).split('@');
 				$('#pcomm').val(ppnh[0]);
+				if(pcomm === '6th'){
+					 $(".6thdisp").show();
+				}else{
+					 $(".6thdisp").hide();
+				}
+				$('#pcomm01').val(ppnh[0]);
 				$('#panno').val(ppnh[1]);
 				$('#nhisno').val(ppnh[2]);
  
                             var pcon=empinput[22].replace(/[[\]"|"]/g,"");
                             if(pcon ==='yes'){
                                 $('#pcontri').prop("checked", true);
-                               // $('#pcontri1').is(':checked');
                             } 
                             //$('#pcontri').val(empinput[21].replace(/[[\]"|"]/g,""));
                             //$('#upfno').val(empinput[23].replace(/[[\]"|"]/g,""));
@@ -516,8 +523,6 @@
                    
               //  }) ;
                 
-                
-                
                  /******************************************end formula calculation on run time**********/
                  
             });
@@ -557,11 +562,6 @@
                     }
                 });
             }
-     
-     
-     
-     
-                    
     </script>   
     </head>
     <body>
@@ -620,21 +620,13 @@
                 <li><a href="#tab6" id="salearheadtab6">Salary Earning Heads</a></li>
 		<li><a href="#tab7" id="salearheadtab7">Salary Subscription Deduction Heads</a></li>
 		<li><a href="#tab8"id="salearheadtab8" >Salary Loan Heads</a></li>
-		
-               
-                
-		
             </ul>
             </table>    
                 
-            
                 <div class="tab-content" >
                 <!--<div id="PWD" class="tabcontent"> -->
                 <?php echo form_open_multipart('payrollprofile/emppayprofile','id="my_id"');?>
                 <div id="tab1" class="tab active">
-                    
-        
-                
                     <h3>Personal/Work Details</h3>
                     <p>
                         <table  width="100%" class="TFtable">
@@ -706,6 +698,37 @@
                         <tr><thead><th style="background-color:#0099CC;text-align:center;height:30px;color:white;font-size:15px;" colspan=4>Employee Scale of Pay</th></thead></tr>
                         <p> 
                          <tr><td colspan="5"><b> <hr/> </b></td></tr>    
+		<!--	<tr id="6thdisp">-->
+			<tr>
+				<td> <b>Pay Commision:</b><br>
+				<input type="text" id="pcomm01" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
+				</td>
+                            	<td class="6thdisp"> <b>Pay Band:</b><br>
+				<input type="text" id="pscale01" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
+				</td>
+                            	<td> <b>Academic Level of Pay:</b><br>
+				<input type="text" id="pscale11" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
+				</td>
+                            	<td> <b>Scale of Pay:</b><br> 
+				<input type="text" id="pscale21" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly><br>
+				</td><tr>
+                            	<td colspan=4 class="6thdisp"> <b>Academic Grade Pay :</b><br>
+				<input type="text" id="pscale31" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly><br>
+				</td>
+			</tr>
+<!--			<tr id="7thdisp">
+                                <td> <b>Pay Commision:</b><br>
+				<input type="text" id="pcomm01" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
+				</td>
+                                <td> <b>Academic Level of Pay:</b><br>
+				<input type="text" id="pscale11" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
+				</td>
+                                <td> <b>Scale of Pay:</b><br> 
+				<input type="text" id="pscale21" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly><br>
+				</td>
+                        </tr>
+-->		
+			<tr><td colspan=4><font color="blue" size=5>If you want to change the values, please select below dropdown </font></td></tr>
                         <tr> 
                             <td> <b>Pay Commision:</b><br>
                             <div>
@@ -735,14 +758,16 @@
                             </td>
                         </tr>    
                         <tr>
-                            <td colspan=4 id="psc3"> <b>Academic Grade Pay :</b><br><input type="text" id="pscale3" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
+                            <td colspan=4 id="psc3"> <b>Academic Grade Pay :</b><br>
+				<input type="text" id="pscale3" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>
                             </td>
                         </tr> 
                         </p> 
                         <tr>
                             <td colspan="4">   
 				<!--<input type="text" name="empid" id="empid" value="" > -->
-                                <button name="espprofile" id="espprofile">Submit</button>
+                           <!--      <button name="pwdprofile" id="pwdprofile">Submit</button> -->
+                               <button name="espprofile" id="espprofile">Submit</button>
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
                         </tr>
@@ -776,7 +801,6 @@
                                 </div>
                                 </td>
                                 <td colspan="2"> <b>Branch Address:</b><br><input type="text" name="bbadd" id="bbadd" value="" size="40"  style="height:50px;"></td>
-                                
                             </tr>
                             <tr>
                                 <td> <b>Branch Phone No.:</b><br><input type="text" name="bbphone" id="bbphone" value=""  size="30" style=""></td>
@@ -785,7 +809,8 @@
                             <tr>
                             <td colspan="4">   
 				<!--<input type="text" name="empid" id="empid" value="" > -->
-                                <button name="bankprofile" id="bankprofile">Submit</button>
+                               <!--  <button name="pwdprofile" id="pwdprofile">Submit</button> -->
+                                <button name="bankprofile" id="bankprofile">Submit</button> 
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
                             </tr>
@@ -802,7 +827,6 @@
                         <h3></h3>
                         <tr><thead><th style="background-color:#0099CC;text-align:center;height:30px;color:white;font-size:15px;" colspan="4">HRA/CCA/Rent Details</th></thead></tr>
                         <p>
-                            
                         <tr><td colspan="5"><b> <hr/> </b></td></tr> 
                         <tr>
                             <td> <b>HRA Grade:</b><br>
@@ -867,6 +891,7 @@
                         <tr>
                             <td colspan="4">   
 				<!--<input type="text" name="empid" id="empid" value="" > -->
+                                <!-- <button name="pwdprofile" id="pwdprofile">Submit</button> -->
                                 <button name="hcrprofile" id="hcrprofile">Submit</button>
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
@@ -899,7 +924,8 @@
                         <tr>
                             <td colspan="4">   
 				<!--<input type="hidden" name="empid" id="empid" value="" > -->
-                                <button name="otherprofile" id="otherprofile">Submit</button>
+                               <!-- <button name="pwdprofile" id="pwdprofile">Submit</button>--> 
+                               <button name="otherprofile" id="otherprofile">Submit</button> 
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
                         </tr>
@@ -913,11 +939,11 @@
                 <div id="tab6" class="tab">
                     <p id="eartab6">
                     <?php //echo form_open_multipart('payrollprofile/payprofile','id="my_id"');?>
-                    <?php    $whdata=array('sh_type'=>'I');
+                    <?php   
+			echo $empid;
+			 $whdata=array('sh_type'=>'I');
                         $shdata['records']= $this->sismodel->get_orderlistspficemore('salary_head','*',$whdata,'');
-                       ;?>
-                    
-                   
+                       ?>
                     
                     <table  width="100%" class="TFtable" >
                         <h3></h3>
@@ -938,14 +964,13 @@
             </thead>
             <tbody>
                 <?php $serial_no=1; $i=0;$m=0;?>
-                    
-                
                     <?php if(count($shdata['records']) ):  ?>
                    
                     <?php foreach( $shdata['records'] as $recordin){ ?>
                             <?php //echo "seema===".  $recordin->sh_tnt."gfdfgdffd====".$empid ;?>
                      <tr> <?php if($recordin->sh_calc_type == 'Y'){ 
-                                    
+                                   
+                                        $formula='';
                                     $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$recordin->sh_id);
                                     if(!empty($formula1)){
                                         $formula=$formula1->sf_formula;
@@ -958,32 +983,25 @@
                                     } 
                                 }
                                 ?>
-                         
-                         
                             <td><?php echo $serial_no++; ?></td>
                         <?php    if($recordin->sh_tnt == 'Common') : ?>
-                            
-                            
                             <td><span id="ehcode<?php echo $i;?>"><?php $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$recordin->sh_id)->sh_code;
                                 echo $hcode; ?></span></td>
                             <td><span id="ehname<?php echo $i;?>"><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$recordin->sh_id)->sh_name;
                                 echo $shname; 
                                
                             ?></span></td>
-                            
-                                
-                           
                             <td>
                                <?php  if($recordin->sh_calc_type == 'Y'): ?>
                                 <input type="text" class="headF" name="headamtI<?php echo $i;?>" id="headF<?php echo $i;?>"  value="<?php echo $formula; ?>" readonly>    
-                                <!--<input type="text" class="headamtF" name="headamtI<?php echo $i;?>" id="headamtF<?php echo $i;?>"  value="<?php echo 0; ?>" readonly> -->
+<!--                                <input type="text" class="headamtF" name="headamtI<?php echo $i;?>" id="headamtF<?php echo $i;?>"  value="<?php echo 0; ?>" readonly>--> 
                                 <?php //$m++ ;?> 
                                 <?php else: ;?>
                                  <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo 0; ?>">   
                                 <?php endif ;?>
                             </td>
                             <td>
-                            <?php if($hcode == 'BP'): ?>
+                            <?php if($hcode == 'Basic'): ?>
                                 
                                 <input type="text" class="increment" name="increment<?php echo $i;?>" id="increment"  value="<?php echo 0; ?>" >    
                            
@@ -1032,8 +1050,6 @@
             <!-----------------------------------------------end both------------------------------>
              <!--------------------------------------teaching heads ---------------------------------->
              
-               <!--------------------------------------end teaching heads ------------------------------------>      
-               <!---------------------------------NON taeching--------------------------------------> 
                 <input type="hidden" name="sheadidin<?php echo $i;?>" id="shidearn<?php echo $i;?>" value= "<?php echo $recordin->sh_id ; ?> ">
                 <?php  $i++;  }; ?>
                     
@@ -1047,13 +1063,14 @@
                             <td colspan="8">   
 				<!--<input type="text" name="empid" id="empid" value="" > -->
                                 <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
+                               <!-- <button name="pwdprofile" id="pwdprofile">Submit</button>-->
                                 <button name="ppearnings" id="ppearnings">Submit</button>
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
                         </tr>
                     </table>
                     
-                    <?php// echo form_close(); ?>
+                    <?php // echo form_close(); ?>
                     </p>
                 </div>
                 
@@ -1076,12 +1093,12 @@
                     <th style="font-size:16px;" >Sr.No</th>
                     <!--<th style="font-size:16px;">Head Code</th> -->
                     <th style="font-size:16px;">Head Name</th>
-                    <th style="font-size:16px;">Head Number</th>
+                    <th style="font-size:16px;"> Number</th>
                     <th style="font-size:16px;"> Amount</th>
-                    <th style="font-size:16px;">Total No. of Installment</th>
+                  <!--  <th style="font-size:16px;">Total No. of Installment</th>
                     <th style="font-size:16px;">No.of Installment</th>
                     <th style="font-size:16px;">Installment Amount</th>
-		   
+		   -->
                 </tr>
             </thead>
             <tbody>
@@ -1105,7 +1122,7 @@
                             <td>
                                 <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamt<?php echo $j;?>"  value="<?php echo 0; ?>" >    
                             </td>
-                            <td>
+                       <!--     <td>
                                 <input type="text" class="totalinstall" name="totalinstall<?php echo $j;?>" id="totalinstall<?php echo $j;?>"  value="<?php echo 0; ?>" >  
                             </td>
                             <td>
@@ -1113,7 +1130,7 @@
                             </td>
                             <td>
                                 <input type="text" class="installamount" name="installamount<?php echo $j;?>" id="installamount<?php echo $j;?>"  value="<?php echo 0; ?>" >  
-                            </td>
+                            </td> -->
                          <?php else :  /*for TNT case from script*/;?>
                             
                             <td><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$recordded->sh_id)->sh_name;
@@ -1125,7 +1142,7 @@
                             <td>
                                 <input type="text" class="headamtD" name="headamt<?php echo $j;?>" id="headamt<?php echo $j;?>"  value="<?php echo 0; ?>" >    
                             </td>
-                            <td>
+                          <!--  <td>
                                 <input type="text" class="totalinstall" name="totalinstall<?php echo $j;?>" id="totalinstall<?php echo $j;?>"  value="<?php echo 0; ?>" >  
                             </td>
                             <td>
@@ -1134,7 +1151,7 @@
                             <td>
                                 <input type="text" class="installamount" name="installamount<?php echo $j;?>" id="installamoun<?php echo $j;?>t"  value="<?php echo 0; ?>" >  
                             </td>
-                            
+                           --> 
                          <?php endif  /*for TNT case from script*/;?> 
                         </tr>
                         <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $recordded->sh_id ; ?>">  
@@ -1148,11 +1165,12 @@
            </tbody>  
                 </p> 
                     <tr>
-                        <td colspan="4"> 
+                        <td colspan="8"> 
                          <!--<input type="text" name="empid" id="empid" value="" >   -->
                          <input type="hidden" name="dedcount" id="tcount" value="<?php echo $j;?>">     
+<!--                        <button name="pwdprofile" id="pwdprofile">Submit</button>-->
                         <button name="sdedprofile" id="sdedprofile">Submit</button>
-                        <input type="reset" name="Reset" value="Clear"/>
+                       <input type="reset" name="Reset" value="Clear"/>
                         </td>
                     </tr>
                 </table>
@@ -1180,8 +1198,8 @@
                     <th style="font-size:16px;">Head Name</th>
                     <th style="font-size:16px;">Head Number</th>
                     <th style="font-size:16px;">Amount</th>
-                    <th style="font-size:16px;">Total No. of Installment</th>
                     <th style="font-size:16px;">No.of Installment</th>
+                    <th style="font-size:16px;">Total No. of Installment</th>
                     <th style="font-size:16px;">Installment Amount</th>
 		   
                 </tr>
@@ -1208,10 +1226,10 @@
                                 <input type="text" class="headamtL" name="headamtL<?php echo $k;?>" id="headamtL<?php echo $k;?>"  value="<?php echo 0; ?>" >    
                             </td>
                             <td>
-                                <input type="text" class="totalinstallL" name="totalinstallL<?php echo $k;?>" id="totalinstallL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
+                                <input type="text" class="installnoL" name="installnoL<?php echo $k;?>" id="installnoL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
                             </td>
                             <td>
-                                <input type="text" class="installnoL" name="installnoL<?php echo $k;?>" id="installnoL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
+                                <input type="text" class="totalinstallL" name="totalinstallL<?php echo $k;?>" id="totalinstallL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
                             </td>
                             <td>
                                 <input type="text" class="installamountL" name="installamountL<?php echo $k;?>" id="installamountL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
@@ -1228,10 +1246,10 @@
                                 <input type="text" class="headamtL" name="headamtL<?php echo $k;?>" id="headamtL<?php echo $k;?>"  value="<?php echo 0; ?>" >    
                             </td>
                             <td>
-                                <input type="text" class="totalinstallL" name="totalinstallL<?php echo $k;?>" id="totalinstallL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
+                                <input type="text" class="installnoL" name="installnoL<?php echo $k;?>" id="installnoL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
                             </td>
                             <td>
-                                <input type="text" class="installnoL" name="installnoL<?php echo $k;?>" id="installnoL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
+                                <input type="text" class="totalinstallL" name="totalinstallL<?php echo $k;?>" id="totalinstallL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
                             </td>
                             <td>
                                 <input type="text" class="installamountL" name="installamountL<?php echo $k;?>" id="installamountL<?php echo $k;?>"  value="<?php echo 0; ?>" >  
@@ -1251,14 +1269,13 @@
              
                <!--------------------------------------end teaching heads ------------------------------------>      
                <!---------------------------------NON taeching--------------------------------------> 
-               
-                        
 		</tbody>  
                     <tr>
-                            <td colspan="4">  
+                            <td colspan="8">  
                                 <!--<input type="text" name="empid" id="empid" value="" >-->
 				<input type="hidden" name="loancount" id="tcount" value="<?php echo $k;?>">  
-                                <button name="sloanprofile" id="sloanprofile">Submit</button>
+                       <!--          <button name="pwdprofile" id="pwdprofile">Submit</button> -->
+                                <button name="sloanprofile" id="sloanprofile">Submit</button> 
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
                         </tr>
@@ -1272,7 +1289,5 @@
         </div>           
     </body>
     <p>&nbsp;</p>
-       
     <div><?php $this->load->view('template/footer'); ?></div>   
-
 </html>    

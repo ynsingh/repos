@@ -395,7 +395,7 @@
                                 		<option value="7th">7th</option>
 	                            	</select>
 				</div>
-			<!--	<input type="text" id="pcomm" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly> -->
+			<!--<input type="text" id="pcomm" value="" style="text-decoration:none;border:0; word-break: break-all;width:300px;" readonly>-->
 			</td>
                             <td id="psc"> <b>Pay Band:</b><br>
 				<div>

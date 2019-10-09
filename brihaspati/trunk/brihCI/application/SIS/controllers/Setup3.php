@@ -650,13 +650,27 @@ class Setup3 extends CI_Controller
     
     /*********************  Salary Head Configuration form  *******************************************/
     public function salhead_config(){
-        
-        $this->emptype= $this->sismodel->get_list('employee_type');
-        $this->salhead =$this->sismodel->get_list('salary_head');
         $data=array();
+//        $this->emptype= $this->sismodel->get_list('employee_type');
+        $data['salhead'] =$this->sismodel->get_list('salary_head');
         $shconf=array();
-        $emptype = $this->input->post('emptype', TRUE);
-        if(!empty($emptype)){
+//        $emptype = $this->input->post('emptype', TRUE);
+	$whdata=array('');
+        $paycom = $this->input->post('paycomm', TRUE);
+	if(!empty($paycom)){
+		$data['paycom']=$paycom;
+		$whdata['shc_paycom']=$paycom;
+	}
+        $wt = $this->input->post('worktype', TRUE);
+	if(!empty($wt)){
+		$data['wtyp']=$wt ;
+		$whdata['shc_wtype']=$wt ;
+	}
+	if(!empty($wt)){
+	$data['shconf']= $this->sismodel->get_listspficemore('salaryhead_configuration','shc_salheadid ',$whdata);
+	}
+	$emptype=0;
+/*        if(!empty($emptype)){
             $data['seloption'] = $emptype;
             //$data['seloption'] = $emptype;
             $this->confval=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid ','shc_emptypeid',$emptype);
@@ -665,14 +679,18 @@ class Setup3 extends CI_Controller
             }
                        
         }
+*/
         if(isset($_POST['update'])){
                       
             $checklist = $this->input->post('check_list', TRUE);
             $shlist=(join(", ", $checklist));
                      
-            $dupexists=$this->sismodel->isduplicate('salaryhead_configuration','shc_emptypeid',$emptype);
+            //$dupexists=$this->sismodel->isduplicate('salaryhead_configuration','shc_emptypeid',$emptype);
+            $dupexists=$this->sismodel->isduplicatemore('salaryhead_configuration','shc_emptypeid',$whdata);
             if(!$dupexists){
                 $updata = array(
+		    'shc_paycom'		    =>$paycom,
+		    'shc_wtype'			    =>$wt,
                     'shc_emptypeid'                 =>$emptype,
                     'shc_salheadid'                 =>$shlist,
                     'shc_scid'                      =>NULL,
@@ -686,6 +704,8 @@ class Setup3 extends CI_Controller
             else{
                
                 $updata = array(
+		    'shc_paycom'		    =>$paycom,
+		    'shc_wtype'			    =>$wt,
                     'shc_emptypeid'                 =>$emptype,
                     'shc_salheadid'                 =>$shlist,
                     'shc_scid'                      =>NULL,

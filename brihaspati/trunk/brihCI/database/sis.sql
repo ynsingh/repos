@@ -1560,7 +1560,9 @@ CREATE TABLE `Staff_Performance_Data` (
 
 CREATE TABLE `salaryhead_configuration` (
   `shc_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `shc_emptypeid` int(11)  NOT NULL,
+  `shc_emptypeid` int(11)   NULL,
+  `shc_paycom` VARCHAR(50) NULL DEFAULT NULL,
+  `shc_wtype` VARCHAR(50) NULL DEFAULT NULL,
   `shc_salheadid` varchar(255)  NOT NULL,
   `shc_scid` int(11)  Default NULL,
   `shc_creatorid` varchar(255) NOT NULL,

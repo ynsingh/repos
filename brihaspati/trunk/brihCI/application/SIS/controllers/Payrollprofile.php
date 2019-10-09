@@ -310,7 +310,7 @@ class Payrollprofile extends CI_Controller
         }//ifpwdbutton
 
         /***********************Employee Pay Scale*****************************************/
-        if(isset($_POST['espprofile'])) {
+       if(isset($_POST['espprofile'])) {
 
 
 
@@ -331,13 +331,14 @@ class Payrollprofile extends CI_Controller
                 $payscle=$this->input->post('pscale', ''); //payband of 6th paycomm
                 $payscle1=$this->input->post('pscale1', ''); //academic level of pay in payband
                // $payscle2=$this->input->post('pscale2', '');
-
-                $salgrdid=$payscle1;
-
                 $dataem= array(
                     'emp_paycomm'       =>$paycom,
-                    'emp_salary_grade'  =>$salgrdid
+//                    'emp_salary_grade'  =>$salgrdid
                 );
+		if(!empty($payscle1)){
+			$salgrdid=$payscle1;
+			$dataem['emp_salary_grade']=$salgrdid;
+		}
 
 
             }
@@ -401,7 +402,7 @@ class Payrollprofile extends CI_Controller
         /***********************HRA/CCA/Rent Detail*******************************************************/
         if(isset($_POST['hcrprofile'])) {
 
-            echo "hcrprofile tab hra hello in form ";
+//            echo "hcrprofile tab hra hello in form ";
             $this->form_validation->set_rules('hragrade','HRA grade','trim|xss_clean');
             $this->form_validation->set_rules('ccagrade','CCA grade','trim|xss_clean');
             $this->form_validation->set_rules('rfqemp','Eligible for Rent Free Quarters','trim|xss_clean');
@@ -490,7 +491,7 @@ class Payrollprofile extends CI_Controller
         $tded = $this->input->post('dedcount', TRUE);
         $tloan = $this->input->post('loancount', TRUE);
 
-        if(isset($_POST['ppearnings'])){
+       if(isset($_POST['ppearnings'])){
            $empid = $this->input->post('empid', '');
           // echo "seema id==controller=".$empid;
           // die;
@@ -551,7 +552,7 @@ class Payrollprofile extends CI_Controller
 
 		 /****************************Increment****************************************************************/
             $headcode= $this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$headidin)->sh_code;
-            if($headcode == 'BP'){
+            if($headcode == 'Basic'){
 
             $headval = $this->input->post('headamtI'.$i, TRUE);
             $incrementamt = $this->input->post('increment'.$i, TRUE);
@@ -610,15 +611,12 @@ class Payrollprofile extends CI_Controller
         } //tcount
 
         /************************************Increment******************************************************/
-
-
-        }
-
+       }
 
 	 /***********************  end Salary Earning Heads***************************************************/
 
         /************************* start Salary Subscription Deduction Heads********************************/
-        if(isset($_POST['sdedprofile'])){
+       if(isset($_POST['sdedprofile'])){
 
             for ($j=0; $j<$tded ;$j++){
 
@@ -695,11 +693,11 @@ class Payrollprofile extends CI_Controller
             }//totalcount
 
 
-        }
+       }
          /************************* end Salary Subscription Deduction Heads************************************/
 	 /*********************** start Salary Loan Heads*******************************************************/
 
-        if(isset($_POST['sloanprofile'])){
+       if(isset($_POST['sloanprofile'])){
 
             for ($k=0; $k<$tloan ;$k++){
                 $headidL = $this->input->post('sheadidloan'.$k, TRUE);
@@ -780,8 +778,8 @@ class Payrollprofile extends CI_Controller
         /*********************** end Salary Loan Heads*******************************************************/
 
         // echo "empid---".$empid;
-        $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
         if(!empty($empid)){
+        $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
       //      print_r($empid);
         //    die();
             if(!empty($datappems)){
