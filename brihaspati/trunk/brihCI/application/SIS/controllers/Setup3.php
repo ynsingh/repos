@@ -686,7 +686,7 @@ class Setup3 extends CI_Controller
             $shlist=(join(", ", $checklist));
                      
             //$dupexists=$this->sismodel->isduplicate('salaryhead_configuration','shc_emptypeid',$emptype);
-            $dupexists=$this->sismodel->isduplicatemore('salaryhead_configuration','shc_emptypeid',$whdata);
+            $dupexists=$this->sismodel->isduplicatemore('salaryhead_configuration',$whdata);
             if(!$dupexists){
                 $updata = array(
 		    'shc_paycom'		    =>$paycom,
@@ -704,8 +704,8 @@ class Setup3 extends CI_Controller
             else{
                
                 $updata = array(
-		    'shc_paycom'		    =>$paycom,
-		    'shc_wtype'			    =>$wt,
+		//    'shc_paycom'		    =>$paycom,
+		 //   'shc_wtype'			    =>$wt,
                     'shc_emptypeid'                 =>$emptype,
                     'shc_salheadid'                 =>$shlist,
                     'shc_scid'                      =>NULL,
@@ -714,7 +714,8 @@ class Setup3 extends CI_Controller
                     'shc_modifierid'                =>$this->session->userdata('username'),
                     'shc_modifydate'                =>date('y-m-d'),
                 );
-                $shconfigflag = $this->sismodel->updaterec('salaryhead_configuration',$updata,'shc_emptypeid',$emptype);
+                //$shconfigflag = $this->sismodel->updaterec('salaryhead_configuration',$updata,'shc_emptypeid',$emptype);
+                $shconfigflag = $this->sismodel->updaterecarry('salaryhead_configuration',$updata,$whdata);
               //  $emptype = $this->input->post('seloption', TRUE);
                 //$data['seloption'] = $emptype;
             }

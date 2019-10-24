@@ -547,6 +547,7 @@ class Jslist extends CI_Controller
 		}else{
 			$campus='';
 		}
+//echo		json_encode("nks".$campus);
                 $uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
                 $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
                 $deptcode=$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$detail->emp_dept_code)->dept_code;
@@ -569,7 +570,13 @@ class Jslist extends CI_Controller
                 $address=str_replace(","," ",$detail->emp_address);
 		$address=preg_replace("/[\n\r]/","", $address);
                 $email=$detail->emp_secndemail;
-                $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
+		$ddo='';
+		if($detail->emp_ddoid > 0){
+//			if(!empty($this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)){
+		                $ddo=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$detail->emp_ddoid)->ddo_name;
+//			}
+		}
+//	echo            json_encode("nks".$ddo);
                 $dor=date('d-m-Y',strtotime($detail->emp_dor));
                 $doj=date('d-m-Y',strtotime($detail->emp_doj));
                 $dob=date('d-m-Y',strtotime($detail->emp_dob));
@@ -665,7 +672,7 @@ class Jslist extends CI_Controller
 		$ems_nhisamt=$detail2->ems_nhisamount;
 		$ems_bbemail=$detail2->ems_bbemail;
 		$ems_bbphone=$detail2->ems_bbphone;
-		$ems_bbadd =$detail2->ems_bbadd;
+		$ems_bbadd =str_replace(","," ",$detail2->ems_bbadd);
 		$ems_acctype =$detail2->ems_acctype;
 		$ems_bbmicr =$detail2->ems_bbmicr;
 		$ems_socamt =$detail2->ems_socamount;
@@ -744,7 +751,7 @@ class Jslist extends CI_Controller
                 if($parts[0] == '#tab6'){
                     $headid=$alldata->seh_headid;
                     $headname=$alldata->seh_headname;
-                    $headval=$alldata->seh_headamount;
+                    $headval=round($alldata->seh_headamount,0);
                     $combthree=$headid."^".$headname."^".$headval;
                    //  echo "in if part==id===".$combthree;
                 }
@@ -752,7 +759,7 @@ class Jslist extends CI_Controller
                     $headid=$alldata->ssdh_headid;
                     $headname=$alldata->ssdh_headname;
                     $heano=$alldata->ssdh_headno;
-                    $headval=$alldata->ssdh_headamount;
+                    $headval=round($alldata->ssdh_headamount,0);
                     $totalinstall=$alldata->ssdh_totalintall;
                     $intalno=$alldata->ssdh_intallmentno;
                     $intalamt=$alldata->ssdh_installamount ;        
@@ -764,10 +771,10 @@ class Jslist extends CI_Controller
                     $headid=$alldata->slh_headid;
                     $headname=$alldata->slh_headname;
                     $heano=$alldata->slh_headno;
-                    $headval=$alldata->slh_headamount;
+                    $headval=round($alldata->slh_headamount,0);
                     $totalinstall=$alldata->slh_totalintall;
                     $intalno=$alldata->slh_intallmentno;
-                    $intalamt=$alldata->slh_installamount; 
+                    $intalamt=round($alldata->slh_installamount,0); 
                      
                     $combthree=$headid."^".$headname."^".$heano."^".$headval."^".$totalinstall."^".$intalno."^".$intalamt;
                     

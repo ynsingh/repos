@@ -56,14 +56,19 @@ class Hodhome extends CI_Controller
 		$loggedrole=$this->commodel->get_listspfic1('role','role_name','role_id',$this->roleid)->role_name;
         	$userid = $this->session->userdata('id_user');
             //  echo $userid." " .$this->roleid." ".$loggedrole; die();
-
+//	echo $deptid;
+//	die();
         if (($loggedrole == "HoD") && ($this->roleid == "5")){
 		$today = date("Y-m-d H:i:s"); 
                 $empcode='';
-		$orq="(hl_dateto = '0000-00-00 00:00:00' or hl_dateto >= $today)";
-                $whdata=array($orq, 'hl_userid' =>$userid);
+		//$orq="(hl_dateto = '0000-00-00 00:00:00' or hl_dateto >= $today)";
+//		$orq=hl_dateto = '0000-00-00 00:00:00';
+               // $whdata=array($orq, 'hl_userid' =>$userid);
+               // $whdata=array($orq, 'hl_deptid' =>$deptid);
+                $whdata=array('hl_dateto' => '0000-00-00 00:00:00', 'hl_deptid' =>$deptid);
                 //$whdata=array('hl_dateto' => '0000-00-00 00:00:00', 'hl_userid' =>$userid);
                 $uodata = $this->sismodel->get_listspficemore('hod_list','hl_empcode',$whdata);
+//	print_r( $uodata);	
 //		if(empty($uodata)){
 //                	$whdata=array('hl_dateto >=' => $today, 'hl_userid' =>$userid);
   //      	        $uodata = $this->sismodel->get_listspficemore('hod_list','hl_empcode',$whdata);
@@ -72,6 +77,8 @@ class Hodhome extends CI_Controller
                 foreach($uodata as $uorow){
                         $empcode = $uorow->hl_empcode;
                 }
+//		echo $empcode;
+//		die();
                 if(!empty($empcode)){
                         $data['name'] =$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$empcode)->emp_name;
                         $deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_code',$empcode)->emp_dept_code;
