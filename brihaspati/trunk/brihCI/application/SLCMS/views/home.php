@@ -138,7 +138,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 	echo "<tr><td><b>Program Category</b></td><td><b>Program Name</b></td><td><b>Program Branch</b></td> <td><b>Seat</b></td></tr>";
 	$flag=0;
 	$pre="";
-	
+//print_r($this->prgseat);	
 	foreach($this->prgseat as $row){
 		
 		$scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;
@@ -146,8 +146,9 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 		{ echo " <td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px; text-align:center;\">$scname <br>";
 	}
 		$pre=$scname;
-		$prgcat=$this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;
-		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">$prgcat</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
+	//	$prgcat=$this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;
+		//echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">$prgcat</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
+		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_category </td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
 	}
         echo "</tbody>";
         echo "</table>";
@@ -183,9 +184,10 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 				$h=$ta["prgname"];
 			//	echo $h;
 				if(!empty($h)){
-					$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
-					$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
-				//	$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h)->prg_branch;
+					//$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
+					$hname=$h;
+			//		$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
+					$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h)->prg_branch;
 				}else{
 	//				$hname='';
 					$hbranch =='';

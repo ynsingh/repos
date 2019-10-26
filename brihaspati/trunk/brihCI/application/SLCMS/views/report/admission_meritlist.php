@@ -69,7 +69,8 @@ echo "</table>";
                  </tr>
 		</thead>
 		<tbody>
-                <?php
+<?php
+//			print_r($admission);
 			$count=1;
                          if( count($admission) ):
                                 foreach($admission as $row){
@@ -99,7 +100,7 @@ echo "</table>";
                                         echo " </td>";
                                         echo "</td>";
 					echo " <td align=\"center\">";
-					echo $row->application_no;
+					echo $row->jeeapplication_no;
                                         echo " </td>";
                                         echo " <td align=\"center\">";
                                         echo $row->entexamname;
@@ -110,27 +111,27 @@ echo "</table>";
                                         echo " <td align=\"center\">";
                                        echo $row->course_name.'( '.$row->branchname.' )';
                                         echo "</td>";
-                                        echo " <td align=\"center\">";
+                               //         echo " <td align=\"center\">";
                                     //    echo $row->branchname;
                                       //  echo "</td>";
-					echo " <td align=\"center\">";
-                                       	echo $row->student_name;
-                                        echo " </td>";
-					echo " <td align=\"center\">";
-                                        echo $row->student_email;
-                                        echo " </td>";
-					echo " <td align=\"center\">";
-                                       	echo $row->father_name;
-                                        echo " </td>";
+				//	echo " <td align=\"center\">";
+                                  //     	echo $row->student_name;
+                                    //    echo " </td>";
+				//	echo " <td align=\"center\">";
+                                  //      echo $row->student_email;
+                                    //    echo " </td>";
+				//	echo " <td align=\"center\">";
+                                  //     	echo $row->father_name;
+                                    //    echo " </td>";
 					echo " <td align=\"center\">";
                                         echo $row->marks;
                                         echo " </td>";
 					echo " <td align=\"center\">";
                                         echo $row->admission_quota;
                                         echo " </td>";
-					echo " <td align=\"center\">";
-                                        echo $row->category;
-                                        echo " </td>";
+				//	echo " <td align=\"center\">";
+                                  //      echo $row->category;
+                                    //    echo " </td>";
 					echo " <td align=\"center\">";
                                         echo $row->meritlist_no;
                                         echo " </td>";

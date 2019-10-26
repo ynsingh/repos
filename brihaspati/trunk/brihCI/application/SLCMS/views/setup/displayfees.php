@@ -100,8 +100,10 @@
 //			echo  $prgname;
 			//echo $row->fm_programid;
             //print_r($datawh);
-            $p_name=$this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
-            $p_branch=$this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->fm_programid)->prg_branch;
+            //$p_name=$this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
+            //$p_branch=$this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->fm_programid)->prg_branch;
+            $p_name=$row->fm_programid;
+            $p_branch=$row->fm_programid;
             echo "<tr>";?>
            
             <?php if(!($pre2==$p_name && $pre3==$p_branch)||$flag==1){

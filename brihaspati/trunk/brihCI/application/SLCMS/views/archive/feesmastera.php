@@ -86,7 +86,8 @@
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 			<!-- <td> <?php //echo $row->fma_fmid ?></td>-->
-			 <?php  echo "<td>" . $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fma_programid)->prg_name. "</td>";?>
+			 <?php // echo "<td>" . $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fma_programid)->prg_name. "</td>";?>
+			 <?php  echo "<td>" . $row->fma_programid. "</td>";?>
 			 <td> <?php echo $row->fma_acadyear ?></td>
             		 <td> <?php echo $row->fma_semester ?></td>
                          <?php  echo "<td>" . $this->common_model->get_listspfic1('category','cat_name','cat_id',$row->fma_category)->cat_name . "</td>";?>

@@ -436,13 +436,13 @@ class Setup extends CI_Controller
 
         /* Form Field */
         
-    /*    $data['prgcampus'] = array(
+        $data['prgcampus'] = array(
             'name' => 'prgcampus',
             'id' => 'prgcampus',
             'size' => '40',
             'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$program_data->prg_scid)->sc_name,
             'readonly'=>'true',
-            );*/
+            );
         $data['prgdepartment'] = array(
             'name' => 'prgdepartment',
             'id' => 'prgdepartment',
@@ -450,7 +450,8 @@ class Setup extends CI_Controller
             'value' => $this->common_model->get_listspfic1('Department','dept_name','dept_id',$program_data->prg_deptid)->dept_name,
             'readonly'=>'true',
             );
-        $prgcatname = $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$program_data->prg_category)->prgcat_name;
+        //$prgcatname = $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$program_data->prg_category)->prgcat_name;
+        $prgcatname = $program_data->prg_category;
         $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $prgcatname,'readonly'=>'true');
         $data['prgname'] = array('name' => 'prgname','id' => 'prgname','maxlength' => '100','size' => '40','value' => $program_data->prg_name,'',);
         $data['prgbranch'] = array('name' => 'prgbranch','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_branch,'',);
@@ -1650,8 +1651,9 @@ class Setup extends CI_Controller
         /* Form fields */
 //	$prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name.'( '.$this->common_model->get_listspfic1('program','prg_branch','prg_id',$fm_data->fm_programid)->prg_branch.' )';
 	$prgname = $fm_data->fm_programid;
-       $prgnmbr= $this->common_model->get_listspfic1('program','prg_name','prg_id',$prgname)->prg_name ." ( ".
-        $this->common_model->get_listspfic1('program','prg_branch','prg_id',$prgname)->prg_branch." ) ";
+       //$prgnmbr= $this->common_model->get_listspfic1('program','prg_name','prg_id',$prgname)->prg_name ." ( ".
+        //$this->common_model->get_listspfic1('program','prg_branch','prg_id',$prgname)->prg_branch." ) ";
+       $prgnmbr= $prgname ." ( ".$this->common_model->get_listspfic1('program','prg_branch','prg_name',$prgname)->prg_branch." ) ";
           $data['fm_programid'] = array(
             'name' => 'fm_programid',
             'id' => 'prgcode',

@@ -91,7 +91,7 @@
        // $count=1;
          foreach($prgres as $row)  
          {
-    
+//   print_r($prgres); 
     //$orgid = $this->common_model->get_listspfic1('org_profile','org_id','org_id',$row->prg_scid)->org_id;
     if($orid != $row->prg_scid){
      ?>
@@ -114,7 +114,8 @@
 
                 <td colspan=15 style="font-size:18px;"><b>Programme Category :</b>
         <?php //echo $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name; 
-              echo  $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;
+	 //              echo  $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->prg_category)->prgcat_name;
+              echo $row->prg_category;
         echo " &nbsp";"&nbsp";"&nbsp";"&nbsp";?>
    
      <?php 
