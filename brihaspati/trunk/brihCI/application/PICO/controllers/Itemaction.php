@@ -74,15 +74,55 @@ class Itemaction extends CI_Controller
                     		redirect('itemaction/openitemtype');
                 	}
 			else{
+
 				//this entry must go to stock
 				$smtid=$this->input->post('mtid');
 				$stnme=strtolower($this->input->post('item_name'));
 				$nqty=$this->input->post('item_stock');
+				$pono=$this->input->post('item_pono');
+				// get the item id from item table
+				// $gdata=array('item_mtid'=>$smtid,'item_name'=>$stnme, 'item_qty'=>$nqty,'item_pono'=>$pono);
+				// $resid=$this->picomodel->get_orderlistspficemore('items','item_id',$gdata,'');
+				// foreach($resid as $row){
+				// 	$itemid=$row->item_id;
+				// }
 				//put the entry in inspection report
-				//take data form items, purchase order and purpase proposal				
+				//take data form items, purchase order and purpase proposal			
+				//$datair=array(
+				//	'inr_itemid'=>$itemid,
+				//	'inr_no'=>,
+				//	'inr_nodate'=>,
+				//	'inr_pono'=>$pono,
+				//	'inr_podate'=>$this->input->post('item_podate'),
+				//	'inr_challanno'=>$this->input->post('item_challan'),
+				//	'inr_challandate'=>$this->input->post('item_challandate'),
+				//	'inr_indentno'=>,
+				//	'inr_indentname'=>,
+				//	'inr_indentdept'=>,
+				//	'inr_suppliername'=>,
+				//	'inr_itemname'=>$stnme,
+				//	'inr_itemqty'=>$nqty,
+				//);	
+				//
 				//inr_id	inr_itemid	inr_no	inr_pono	inr_podate	inr_challanno	inr_challandate	
 				//inr_nodate	inr_indentno	inr_indentname	inr_indentdept	inr_suppliername	inr_itemname	inr_itemqty
 
+				// get the max row in item index
+	//				$norw=0;
+				// $sdata=array('itemmtid'=>$smtid);
+				// $norw = $this->picomodel->getnoofrows('item_index',$sdata)
+				// put the entry in item index
+	//			foreach ($i=1;$i<=$nqty;$i++){
+	//				$norw++;
+	//				$itmno=$smtid.$norw;
+				//	$dataindex=array(
+				//	'itemmtid=>$smtid,
+	//				'itemid'=>$itemid,
+	//				'itemno'=>$itmno,
+	//				'itemstore'=>'Store',
+	//				);
+	//				$iindexflag= $this->picomodel->insertrec('item_index',$dataindex);
+	//			}
 				$dupsdata=array('stock_mtid'=>$smtid,'stock_name'=>$stnme);
 				$flag=$this->picomodel->isduplicatemore("stock_items",$dupsdata);
 				//if exist then go to stock archive
