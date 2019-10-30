@@ -119,7 +119,7 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-//                           alert("datat==="+data);
+   //                        alert("datat==="+data);
                             var empinput=data.split(",");
                             
 			    if(empinput.length < 2){
@@ -406,6 +406,10 @@
                             dataType:"html",
                             success:function(data){
                                // alert("data=success=="+data);
+                                if(currentAttrValue === '#tab6'){
+					$('#ehtest').html(data.replace(/\\/gi,""));
+                                }
+				else{	
                                 var empinput=data.split(",");
                                 
                                 for (var i=0; i < empinput.length;i++){ 
@@ -413,9 +417,9 @@
                                     var token=(empinput[i].replace(/[[\]"|"]/g,"")).split('^');
                                     
                                     //alert("data=success=token2="+token[2]);
-                                    if(currentAttrValue === '#tab6'){
-                                        $('#headamtI'+i).val(token[2].replace(/[[\]"|"]/g,""));
-                                    }
+                        //            if(currentAttrValue === '#tab6'){
+                          //              $('#headamtI'+i).val(token[2].replace(/[[\]"|"]/g,""));
+                            //        }
                                     if(currentAttrValue ==='#tab7'){
                                         
                                         $('#headnumber'+i).val(token[2].replace(/[[\]"|"]/g,""));
@@ -435,6 +439,7 @@
                                     }
                               
                                 }
+			}//else
                             },
                             error:function(data){
                             //alert("data in error==="+data);
@@ -939,137 +944,27 @@
                 <div id="tab6" class="tab">
                     <p id="eartab6">
                     <?php //echo form_open_multipart('payrollprofile/payprofile','id="my_id"');?>
-                    <?php   
-			echo $empid;
-			 $whdata=array('sh_type'=>'I');
-                        $shdata['records']= $this->sismodel->get_orderlistspficemore('salary_head','*',$whdata,'');
-                       ?>
-                    
                     <table  width="100%" class="TFtable" >
                         <h3></h3>
                         <tr><thead><th style="background-color:#0099CC;text-align:center;height:30px;color:white;font-size:15px;" colspan="7">Salary Earning Heads</th></thead></tr>
                         <p></p>
-                        <!--<tr><td colspan="5"><hr style="border-top: 3px dotted red;"/></td></tr> -->
                         <thead>
-                        <tr><td colspan="5"><!--<hr style="border-top: 3px dotted  #003bb3;"/>--></td></tr>   
                 <tr>
-                    
                     <th style="font-size:16px;">Sr.No</th>
                     <th style="font-size:16px;">Head Code</th>
                     <th style="font-size:16px;">Head Name</th>
                     <th style="font-size:16px;">Amount</th>
                     <th style="font-size:16px;">Increment</th>
-		   
                 </tr>
             </thead>
-            <tbody>
-                <?php $serial_no=1; $i=0;$m=0;?>
-                    <?php if(count($shdata['records']) ):  ?>
-                   
-                    <?php foreach( $shdata['records'] as $recordin){ ?>
-                            <?php //echo "seema===".  $recordin->sh_tnt."gfdfgdffd====".$empid ;?>
-                     <tr> <?php if($recordin->sh_calc_type == 'Y'){ 
-                                   
-                                        $formula='';
-                                    $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$recordin->sh_id);
-                                    if(!empty($formula1)){
-                                        $formula=$formula1->sf_formula;
-                                    /*    preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
-                                        $strfmla=explode("+",$match[2]);
-                                        $strfmla2=explode("*",$match[3]);*/
-                                        
-                                    } else{
-                                        $formula='';
-                                    } 
-                                }
-                                ?>
-                            <td><?php echo $serial_no++; ?></td>
-                        <?php    if($recordin->sh_tnt == 'Common') : ?>
-                            <td><span id="ehcode<?php echo $i;?>"><?php $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$recordin->sh_id)->sh_code;
-                                echo $hcode; ?></span></td>
-                            <td><span id="ehname<?php echo $i;?>"><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$recordin->sh_id)->sh_name;
-                                echo $shname; 
-                               
-                            ?></span></td>
-                            <td>
-                               <?php  if($recordin->sh_calc_type == 'Y'): ?>
-                                <input type="text" class="headF" name="headamtI<?php echo $i;?>" id="headF<?php echo $i;?>"  value="<?php echo $formula; ?>" readonly>    
-<!--                                <input type="text" class="headamtF" name="headamtI<?php echo $i;?>" id="headamtF<?php echo $i;?>"  value="<?php echo 0; ?>" readonly>--> 
-                                <?php //$m++ ;?> 
-                                <?php else: ;?>
-                                 <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo 0; ?>">   
-                                <?php endif ;?>
-                            </td>
-                            <td>
-                            <?php if($hcode == 'Basic'): ?>
-                                
-                                <input type="text" class="increment" name="increment<?php echo $i;?>" id="increment"  value="<?php echo 0; ?>" >    
-                           
-                            <?php endif; ?>
-                              </td>   
-                          
-                        <!--</tr> -->
-                        <?php else :  /*for TNT case from script*/;?>
-                        <?php //if($recordin->sh_tnt == 'Teaching' || $recordin->sh_tnt == 'Non Teaching'): ?>
-                        <!--<tr> <td colspan="8"><?php //echo "<b> Teaching and Non Teaching Salary Heads</b>"; ?></td></tr> -->
-                       <!-- <tr> -->
-                                                    
-                            <td><span id="ehcode<?php echo $i;?>"><?php $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$recordin->sh_id)->sh_code;
-                                echo $hcode; ?> </span></td>
-                            <td><span id="ehname<?php echo $i;?>"><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$recordin->sh_id)->sh_name;
-                                echo $shname; 
-                               
-                            ?></span></td>
-                            <td>
-                                <?php  if($recordin->sh_calc_type == 'Y'): 
-                                    
-                                   /* $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$recordin->sh_id);
-                                    if(!empty($formula1)){
-                                        $formula=$formula1->sf_formula;*/
-                                       /* preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
-                                        $strfmla=explode("+",$match[2]);
-                                        $strfmla2=explode("*",$match[3]);*/
-                                        
-                                   /* } 
-                                    else{
-                                        $formula='';
-                                    }*/
-                                ?>
-                                <input type="text" class="headF" name="headF<?php echo $i;?>" id="headF<?php echo $i;?>"  value="<?php echo $formula; ?>" readonly>    
-                                <!--<input type="text" class="headamtF" name="headamtI<?php echo $i;?>" id="headamtF<?php echo $i;?>"  value="<?php echo 0; ?>" readonly> -->   
-                                <?php //$m++ ;?>
-                                <?php else: ;?>
-                                 <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo 0; ?>">   
-                                <?php endif ;?>
-                                    
-                            </td>
-                            <td></td>
-                        </tr>
-                    <?php endif;?>    
-                   
-            <!-----------------------------------------------end both------------------------------>
-             <!--------------------------------------teaching heads ---------------------------------->
-             
-                <input type="hidden" name="sheadidin<?php echo $i;?>" id="shidearn<?php echo $i;?>" value= "<?php echo $recordin->sh_id ; ?> ">
-                <?php  $i++;  }; ?>
-                    
-                <?php else : ?>
-			<tr> <td colspan= "7" align="center"> No Records found...!</td></tr>
-                <?php endif;?>
-               
-		</tbody>  
-               
+		<tbody id="ehtest"> </tbody> 
                         <tr>
                             <td colspan="8">   
-				<!--<input type="text" name="empid" id="empid" value="" > -->
-                                <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
-                               <!-- <button name="pwdprofile" id="pwdprofile">Submit</button>-->
                                 <button name="ppearnings" id="ppearnings">Submit</button>
                                 <input type="reset" name="Reset" value="Clear"/>
                             </td>
                         </tr>
                     </table>
-                    
                     <?php // echo form_close(); ?>
                     </p>
                 </div>

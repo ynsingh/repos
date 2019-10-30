@@ -724,15 +724,84 @@ class Jslist extends CI_Controller
         $pfval = $this->input->post('pfshid');
         $parts = explode(',',$pfval);
       //  echo "pfno in tab4=1=".$pfval.$parts[0].$parts[1];
-        $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
          // $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$pfval)->emp_id;
-        
-        $cmonth = date('M');
-        $cyear= date("Y");
+        if(empty($this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1]))){
+            $mess="Please enter the valid PF Number";
+            array_push($values,$mess);
+	} else{
+        	$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
+		$emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+		//if(empty($emppaycom)){
+		if ((strlen($emppaycom) == 0)||($emppaycom == "null")){
+			$mess="Please set the pay commission for this  PF Number";
+		        array_push($values,$mess);
+		}else{
+	        $cmonth = date('M');
+        	$cyear= date("Y");
         
         if($parts[0] == '#tab6'){
-            $wdata = array('seh_empid' =>$empid,'seh_month'=>$cmonth,'seh_year'=>$cyear);
-            $hdval= $this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_headid,seh_headname,seh_headamount',$wdata,''); 
+	        $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+        	$empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+		$wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
+		$shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
+		foreach($shcsalhdid as $row){
+			$listhdid=$row->shc_salheadid;
+		}
+		$hdid_arr = explode (",", $listhdid);
+		$combthree='';
+		$i=0;
+		foreach($hdid_arr as $hid){
+		$hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
+		$hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
+		$sgflag='N';
+		$sgflag=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$hid)->sh_calc_type;
+		$hfor='';
+		$hfor1='';
+		if($sgflag == 'Y'){
+			$hfor2=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$hid);
+			if(!empty($hfor2)){
+				$hfor1=$hfor2->sf_formula;
+			}
+			$hfor=" ( ".$hfor1." )";
+		}
+		//get max value of salary earning head from salary earning head 
+		$hvalue=0;
+		$wdata2=array('seh_empid' =>$empid,'seh_headid'=>$hid);
+		$mrecord=$this->sismodel->get_maxvalue('salary_earnings_head','seh_id',$wdata2);
+		$msehid='';
+		if(!empty($mrecord)){
+		foreach($mrecord as $mr){
+			$msehid=$mr->seh_id;
+		}
+		$hvalue=round($this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$msehid)->seh_headamount,0);
+		}
+	//	$maxrecv=$this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_id,seh_headamount',$wdata2,'seh_id asc');
+	//	foreach($maxrecv as $mrv){
+	//		$hvalue=round($mrv->seh_headamount,0);
+	//	}
+		$hnme='"headamtI'.$i.'"';
+		if(!empty($hfor)){
+			$input1='<input type="text" class="headamtI" name='.$hnme.' id="headamtI'.$i.'" value="'.$hvalue.'" readonly>';
+		}else{
+			$input1='<input type="text" class="headamtI" name='.$hnme.' id="headamtI'.$i.'" value='.$hvalue.'>';
+		}
+//		create box for increment
+		if($hname == "Basic Pay"){
+			$input2='</td><td><input type="text" class="increment" name="increment'.$i.'" id="increment"  value="0" >';
+		}else{
+			$input2='</td><td>';
+		}
+			$input1=$input1.$input2;
+		$hidin='<input type="hidden" name="sheadidin'. $i.'" id="shidearn'.$i.'" value= "'.$hid.'">';
+		$ii=$i+1;
+		$combthree=$combthree.'<tr><td>'.$ii.'</td><td>'.$hcode.'</td><td>'.$hname.' '.$hfor.'</td><td>'.$input1.$hidin.'</td></tr>';
+		$i++;
+		}
+		$hidin2='<input type="hidden" name="totalcount" id="tcount" value="'. $i.'">';
+		$combthree=$combthree.$hidin2;
+		array_push($values,$combthree);
+       //     $wdata = array('seh_empid' =>$empid,'seh_month'=>$cmonth,'seh_year'=>$cyear);
+        //    $hdval= $this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_headid,seh_headname,seh_headamount',$wdata,''); 
         }
         if($parts[0] == '#tab7'){
             $selfield= 'ssdh_headid,ssdh_headname,ssdh_headno,ssdh_headamount,ssdh_totalintall,ssdh_intallmentno,ssdh_installamount ';
@@ -748,13 +817,13 @@ class Jslist extends CI_Controller
         if(!empty($hdval)){
             foreach($hdval as $alldata){
            
-                if($parts[0] == '#tab6'){
-                    $headid=$alldata->seh_headid;
-                    $headname=$alldata->seh_headname;
-                    $headval=round($alldata->seh_headamount,0);
-                    $combthree=$headid."^".$headname."^".$headval;
+              //  if($parts[0] == '#tab6'){
+          //          $headid=$alldata->seh_headid;
+            //        $headname=$alldata->seh_headname;
+              //      $headval=round($alldata->seh_headamount,0);
+                //    $combthree=$headid."^".$headname."^".$headval;
                    //  echo "in if part==id===".$combthree;
-                }
+              //  }
                 if($parts[0] == '#tab7'){
                     $headid=$alldata->ssdh_headid;
                     $headname=$alldata->ssdh_headname;
@@ -777,9 +846,6 @@ class Jslist extends CI_Controller
                     $intalamt=round($alldata->slh_installamount,0); 
                      
                     $combthree=$headid."^".$headname."^".$heano."^".$headval."^".$totalinstall."^".$intalno."^".$intalamt;
-                    
-                   // echo "seema in jslist===".$combthree;
-                    
                 }
                 array_push($values,$combthree);
             }
@@ -788,12 +854,10 @@ class Jslist extends CI_Controller
            // echo "in else part==id===".$empid;
             $mess="Please enter the valid PF Number";
             array_push($values,$mess);
-           // $headval=0;   
         }
-      //  array_push($values,$empid);
-       
+	}//close second else
+      }//close first else 
         echo json_encode($values);
-       // echo json_encode($empid);
     }
     public function getheadfromula(){
       //  echo "seema--- in js"; 

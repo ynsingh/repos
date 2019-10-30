@@ -45,6 +45,8 @@ class Uohome extends CI_Controller
 		}
 		if(!empty($empcode)){
 			$data['name'] =$this->sismodel->get_listspfic1('employee_master','emp_name','emp_code',$empcode)->emp_name;
+	//			print_r($data);
+	//		die();
 			$deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_code',$empcode)->emp_dept_code;
 			$data['deptname'] = $this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name."(".$this->commodel->get_listspfic1('Department', 'dept_code', 'dept_id',$deptid)->dept_code.")";
 			$desigid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_code',$empcode)->emp_desig_code;

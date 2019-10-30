@@ -132,6 +132,9 @@
 				else{
 					echo $name;
 				}
+//				echo "&nbsp;&nbsp;(";
+//				echo $this->session->userdata('id_user');
+//				echo ")";
 //				else get userid
 //	 get empcode from uolist
 // get empdetails from employee master
