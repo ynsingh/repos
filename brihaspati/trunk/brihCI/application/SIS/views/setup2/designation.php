@@ -82,11 +82,29 @@
             <td> <?php echo $row->desig_subtype  ?></td>
 	<?php
 
-		$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$row->desig_payscale)->sgm_name;
-                $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$row->desig_payscale)->sgm_max;
-                $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$row->desig_payscale)->sgm_min;
-                $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$row->desig_payscale)->sgm_gradepay;
-                $gardepayn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$row->desig_payscale)->sgm_level;
+		$payband='';
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$row->desig_payscale))){
+			$payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$row->desig_payscale)->sgm_name;
+		}
+		$pay_max='';
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$row->desig_payscale))){
+			$pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$row->desig_payscale)->sgm_max;
+		}
+		$pay_min='';
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$row->desig_payscale))){
+			$pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$row->desig_payscale)->sgm_min;
+		}
+		$gardepay='';
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$row->desig_payscale))){
+			$gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$row->desig_payscale)->sgm_gradepay;
+		}
+	//	if($gradepay < 1){
+	//		$gardepay='';
+	//	}
+		$gardepayn='';
+		if(!empty($this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$row->desig_payscale))){
+			$gardepayn=$this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$row->desig_payscale)->sgm_level;
+		}
                 $pb=$payband."(".$pay_min."-".$pay_max.")".$gardepay." ".$gardepayn;
 
 		?>

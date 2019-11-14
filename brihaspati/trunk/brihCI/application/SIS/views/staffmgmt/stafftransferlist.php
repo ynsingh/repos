@@ -3,7 +3,7 @@
 
 <html>
     <head>
-        <title>Welcome to TANUVAS</title>
+        <title>Welcome to Staff Tranfer</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
     </head>
     <body> 

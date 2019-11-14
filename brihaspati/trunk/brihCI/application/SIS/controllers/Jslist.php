@@ -127,6 +127,27 @@ class Jslist extends CI_Controller
                 echo json_encode($desig_select_box);
         }
 
+	 /* This function has been created for get list of Pay scales on the basis of  selected working type and group*/
+        public function getwgrppaylist(){
+		$combid= $this->input->post('wgrp');
+                $parts = explode(',',$combid);
+                $datawh=array('sgm_wt'=> $parts[1],'sgm_group'=> $parts[0]);
+	        $ps_data = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_max,sgm_min,sgm_gradepay,sgm_level',$datawh);
+                $ps_select_box ='';
+                $ps_select_box.='<option value="">--Select Payscale--';
+		if(!empty($ps_data)){
+			foreach($ps_data as $psrecord){
+				$sgmgrdpay=$psrecord->sgm_gradepay;
+				if($sgmgrdpay<1){
+					$sgmgrdpay='';
+				}
+        	                $ps_select_box.='<option value='.$psrecord->sgm_id.'>'.$psrecord->sgm_name.'('.$psrecord->sgm_min.' - '.$psrecord->sgm_max.')'.$sgmgrdpay.$psrecord->sgm_level.'' ;
+                	}
+		} //if close
+               // echo json_encode($combid);
+                echo json_encode($ps_select_box);
+        }
+
 	 /* This function has been created for get list of Pay scales on the basis of  selected working type and pay commission*/
         public function getwpcpaylist(){
                 $combid= $this->input->post('wpc');
@@ -404,6 +425,147 @@ class Jslist extends CI_Controller
                         }//foreach
                         
                     }
+                    
+                }
+                echo json_encode($lpb_select_box);
+        }
+
+	public function getpaybandi(){
+                $wtype = $this->input->post('pcwt');
+                $parts = explode(',',$wtype);
+       // echo json_encode("this is testing----".$wtype);
+                if(($parts[0] == 'Teaching')&&($parts[1] == '6th')){
+                   // $datawh=array('sgm_wt' => $parts[0],'sgm_pc' => $parts[1]);
+                  //  $psdata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_level',$datawh);
+                    $pb_select_box ='';
+                    $pb_select_box.='<option value=>-------Select Pay Band--------';
+                   // if(!empty($psdata)){
+                        
+                      //  foreach($psdata as $emppscale){
+                       //     $pb_select_box.='<option value='.$emppscale->sgm_id.'>'.$emppscale->sgm_name.' ';
+                       // }//foreach
+                        
+                        $pb_select_box.='<option value=UGC1> UGC1';
+                        $pb_select_box.='<option value=UGC2> UGC2';
+                        $pb_select_box.='<option value=UGC3> UGC3';
+                        $pb_select_box.='<option value=UGC4> UGC4';
+                        $pb_select_box.='<option value=UGC5> UGC5';
+                        $pb_select_box.='<option value=HGP> HGP';
+                        $pb_select_box.='<option value=Fixed> Fixed';
+                        
+                  //  }
+                }
+                elseif(($parts[0] == 'Non Teaching')&&($parts[1] == '6th')){
+                    
+                  //  $datawh=array('sgm_wt' => $parts[0],'sgm_pc' => $parts[1]);
+                    //$psdatant = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_max,sgm_min,sgm_gradepay,sgm_level',$datawh);
+                    $pb_select_box ='';
+                    $pb_select_box.='<option value= >-------Select Pay Band--------';
+                   // if(!empty($psdatant)){
+                        
+                     //   foreach($psdatant as $emppscalent){
+                       //     $pb_select_box.='<option value='.$emppscalent->sgm_id.'>'.$emppscalent->sgm_name.' ';
+                      //  }//foreach
+                        
+                  //  }
+                        $pb_select_box.='<option value=PB1A> PB1A';
+                        $pb_select_box.='<option value=PB1> PB1';
+                        $pb_select_box.='<option value=PB2> PB2';
+                        $pb_select_box.='<option value=PB3> PB3';
+                        $pb_select_box.='<option value=PB4> PB4';
+       //         }else{
+                //        $pb_select_box ='';
+                }
+                echo json_encode($pb_select_box);
+        }
+
+        public function getlevelpayi(){
+                $wtype = $this->input->post('wt','');
+             //   $parts = explode(',',$wtype);
+                
+               // echo json_encode("this is testing----".$parts[0],$parts[1],$wtype);
+                             
+                $lpb_select_box ='';
+                $lpb_select_box.='<option value=>-------Select Level of Pay -------';
+                if($wtype == 'Teaching'){
+      //                  $lpb_select_box ='';
+//                        $lpb_select_box.='<option value=>-------Select Level of Pay -------';
+  //                      $lpb_select_box.='<option value=Level10> Level10';
+          //              $lpb_select_box.='<option value=Level11> Level11';
+        //                $lpb_select_box.='<option value=Level12> Level12';
+              //          $lpb_select_box.='<option value=Level13A> Level13A';
+            //            $lpb_select_box.='<option value=Level14> Level14';
+                //        $lpb_select_box.='<option value=Level15> Level15';
+                  //      $lpb_select_box.='<option value=Fixed> Fixed';
+ 
+    //            if($parts[1] == 'Teaching'){
+                    //echo json_encode("this is if===testing----".$wtype);
+ 		        $lpb_select_box.='<option value=Level10> Level10';
+                        $lpb_select_box.='<option value=Level11> Level11';
+                        $lpb_select_box.='<option value=Level12> Level12';
+                        $lpb_select_box.='<option value=Level13A> Level13A';
+                        $lpb_select_box.='<option value=Level14> Level14';
+                        $lpb_select_box.='<option value=Level15> Level15';
+                        $lpb_select_box.='<option value=Fixed> Fixed';
+             
+       //             $datawh=array('sgm_pc'=>$parts[0],'sgm_wt' => $parts[1]);
+         //           $leveldata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_level',$datawh);
+                   
+           //         if(!empty($leveldata)){
+                        
+             //           foreach( $leveldata  as $emplevel){
+               //             $lpb_select_box.='<option value='.$emplevel->sgm_id.'>'.$emplevel->sgm_level.' ';
+                 //       }//foreach
+                        
+                   // }
+                    
+                }
+		else{
+                   // echo json_encode("this is else===testing----");
+      //                else{
+        //                $lpb_select_box ='';
+          //              $lpb_select_box.='<option value=>-------Select Level of Pay -------';
+                        $lpb_select_box.='<option value=Level1> Level1';
+                        $lpb_select_box.='<option value=Level2> Level2';
+                        $lpb_select_box.='<option value=Level3> Level3';
+                        $lpb_select_box.='<option value=Level4> Level4';
+                        $lpb_select_box.='<option value=Level5> Level5';
+                        $lpb_select_box.='<option value=Level6> Level6';
+                        $lpb_select_box.='<option value=Level7> Level7';
+                        $lpb_select_box.='<option value=Level8> Level8';
+                        $lpb_select_box.='<option value=Level9> Level9';
+                        $lpb_select_box.='<option value=Level10> Level10';
+                        $lpb_select_box.='<option value=Level11> Level11';
+                        $lpb_select_box.='<option value=Level12> Level12';
+                        $lpb_select_box.='<option value=Level13> Level13';
+                        $lpb_select_box.='<option value=Level14> Level14';
+                        $lpb_select_box.='<option value=Level15> Level15';
+                        $lpb_select_box.='<option value=Level16> Level16';
+                        $lpb_select_box.='<option value=Level17> Level17';
+                        $lpb_select_box.='<option value=Level18> Level18';
+                        $lpb_select_box.='<option value=Level19> Level19';
+                        $lpb_select_box.='<option value=Level20> Level20';
+                        $lpb_select_box.='<option value=Level21> Level21';
+                        $lpb_select_box.='<option value=Level22> Level22';
+                        $lpb_select_box.='<option value=Level23> Level23';
+                        $lpb_select_box.='<option value=Level24> Level24';
+                        $lpb_select_box.='<option value=Level25> Level25';
+                        $lpb_select_box.='<option value=Level26> Level26';
+                        $lpb_select_box.='<option value=Level27> Level27';
+                        $lpb_select_box.='<option value=Level28> Level28';
+                        $lpb_select_box.='<option value=Level29> Level29';
+                        $lpb_select_box.='<option value=Level30> Level30';
+                        $lpb_select_box.='<option value=Level31> Level31';
+                        $lpb_select_box.='<option value=Level32> Level32';
+             
+    //                $datawh=array('sgm_pc'=>$parts[0]);
+  //                  $leveldata = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_level',$datawh);
+//                    if(!empty($leveldata)){
+                       // foreach($leveldata  as $emplevel){
+                      //      $lpb_select_box.='<option value='.$emplevel->sgm_id.'>'.$emplevel->sgm_level.' ';
+                    //    }//foreach
+                        
+                  //  }
                     
                 }
                 echo json_encode($lpb_select_box);

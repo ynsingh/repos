@@ -28,7 +28,7 @@ class Backups extends CI_Controller {
 	* if this array is empty then entire site structure is backed up
 	* public $directories = array("application", "forum", "assets/images", "assets/js", "assets/css", "system");
 	*/
-	private $directories = array("application", "docs","database","config", "assets",  "system","uploads","index.php","slcmsindex.php","bgasindex.php","hrmindex.php","sisindex.php",);
+	private $directories = array("application", "docs","database","config", "assets",  "system","uploads","index.php","slcmsindex.php","bgasindex.php","hrmindex.php","sisindex.php","picoindex.php");
 
 	/**
 	* containts a list of all the directories to ignore, leave empty to backup all
@@ -78,7 +78,8 @@ class Backups extends CI_Controller {
                 $this->logindbbkup();
                 $this->olasdbbkup();
                 $this->payrolldbbkup();
-                $this->session->set_flashdata('success','All database (Payroll,Login,OLAS) Backup taken successfully.');
+                $this->picodbbkup();
+                $this->session->set_flashdata('success','All database (Payroll,Login,OLAS,PICO) Backup taken successfully.');
                 $this->listbkupfile();
         }//close
 	
@@ -121,6 +122,20 @@ class Backups extends CI_Controller {
   //              force_download($dbname,$backup);
 		$this->logger->write_logmessage("insert", "Payroll database backup taken successfully.");
                 $this->logger->write_dblogmessage("insert", "Payroll database backup taken successfully." );
+
+        }//close  functionp
+
+	public function picodbbkup(){
+		$this->db = $this->load->database('pico',TRUE);
+                $this->load->dbutil();
+                $db_format=array('format'=>'zip','filename'=>'pico_db_backup.sql');
+                $backup=$this->dbutil->backup($db_format);
+                $dbname='picodb-backup-on-'.date('Y-m-d').'.zip';
+                $save='backups/db_backup/'.$dbname;
+                write_file($save,$backup);
+//                force_download($dbname,$backup);
+		$this->logger->write_logmessage("insert", "pico database backup taken successfully.");
+                $this->logger->write_dblogmessage("insert", "pico database backup taken successfully." );
 
         }//close  function
 

@@ -818,8 +818,8 @@ function __construct() {
                         }
                         }
                         if($data_bacnumber !=""){
-                        if((strlen($data_bacnumber) < 13)|| (strlen($data_bacnumber) > 20)){
-                                $msg1= 'Bank A/C number should be between 13 and 20 digits.';
+                        if((strlen($data_bacnumber) < 8)|| (strlen($data_bacnumber) > 20)){
+                                $msg1= 'Bank A/C number should be between 8 and 20 digits.';
 				return $msg1;
                         }
                         }
@@ -1222,8 +1222,8 @@ function __construct() {
 			}
 			}
 			if($data_bacnumber !=""){
-			if((strlen($data_bacnumber) < 13) || (strlen($data_bacnumber) > 20)){
-                                $this->messages->add('Bank A/C number should be between 13 and 20 digits.', 'error');
+			if((strlen($data_bacnumber) < 8) || (strlen($data_bacnumber) > 20)){
+                                $this->messages->add('Bank A/C number should be between 8 and 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/edit', $data);
                                 return;
 			}

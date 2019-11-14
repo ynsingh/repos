@@ -40,7 +40,41 @@
                         }
                     });
                 }
-            }); 
+	 });
+	 $('#grp').on('change',function(){
+		  var grp= $('#grp').val();
+                  var wt=$('#tnt').val();
+                  var wtg = grp+","+wt;
+
+             //   var worktype = $(tnt).val();
+           //     var grp = $(this).val();
+//                alert(wtg);
+                if(wtg == ''){
+                    $('#desigpayid').prop('disabled',true);
+                   
+                }
+                else{
+                    $('#desigpayid').prop('disabled',false);
+                    $.ajax({
+                       // url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
+			url: "<?php echo base_url();?>sisindex.php/jslist/getwgrppaylist",
+                        type: "POST",
+                        data: {"wgrp" : wtg},
+                        dataType:"html",
+                        success:function(data){
+                    //        alert("data==1="+data);
+                            $('#desigpayid').html(data.replace(/^"|"$/g, ''));
+                                                 
+                        },
+                        error:function(data){
+                            alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                    });
+                }
+	 });
+
 	});
 </script>
 </head>
@@ -86,12 +120,8 @@
     </table>
     <form action="<?php echo site_url('setup2/adddesignation');?>" method="POST" class="form-inline">
 	<table>
-        	<tr>
-                	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
-                	<td><input type="text" name="desig_code" class="form-control" size="33" /><br></td>
-	     	</tr>	
 		<tr>
-	     		<td>Designation Type</td>
+	     		<td><label for="desig_type" class="control-label">Designation Type</label></td>
                		<td>
 				<select name="tnt" id="tnt" class="my_dropdown" style="width:100%;">
                 			<option value="" disabled selected >------Select----------------</option>
@@ -108,19 +138,35 @@
                         	</select>
                         </td>
 		</tr>
+               <tr>
+                       <td><label for="desig_name" class="control-label">Designation Group :</label></td> 
+                        <td>
+                        <select name="desig_group" id="grp" class="my_dropdown" style="width:100%;">
+                        <option value="" disabled selected >------Select Group------</option>
+                        <option value="A" class="dropdown-item">A</option>
+                        <option value="B" class="dropdown-item">B</option>
+                        <option value="C" class="dropdown-item">C</option>
+                        <option value="D" class="dropdown-item">D</option>
+                        </select>
+                        </td></tr>
+            <tr>
+                    <tr>
 
-                 <td>Designation Payscale: <font color='Red'> *</font> </td>
-                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:100%;">
+                 <td><label for="desig_payscale" class="control-label">Designation Payscale: <font color='Red'> *</font></label> </td>
+                <td><select name="desig_payscale" id="desigpayid" class="my_dropdown" style="width:100%;">
                 <option selected="selected" disabled selected>--------Select-------------</option>
                 <!--         <option value="<?php //echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>"<?php //echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?>><?php //echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?> -->
-                <?php foreach($this->payresult as $datas): ?>
-                         <option value="<?php echo $datas->sgm_id; ?>"><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
+               <!-- <?php //foreach($this->payresult as $datas): ?>
+                         <option value="<?php //echo $datas->sgm_id; ?>"><?php //echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
                           </option>
-                  <?php endforeach; ?>
+			  <?php //endforeach; ?> -->
                 </select></td>
 
-                    <tr>
-                <td></td>
+                </tr>
+        	<tr>
+                	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
+                	<td><input type="text" name="desig_code" class="form-control" size="33" /><br></td>
+	     	</tr>	
                 <tr>
                <td><label for="desig_name" class="control-label">Designation Name:</label></td>
                <td>
@@ -131,18 +177,6 @@
                </td>
             </tr>
               
-               <tr>
-                       <td><label for="desig_name" class="control-label">Designation Group :</label></td> 
-                        <td>
-                        <select name="desig_group" id="" class="my_dropdown" style="width:100%;">
-                        <option value="" disabled selected >------Select Group------</option>
-                        <option value="A" class="dropdown-item">A</option>
-                        <option value="B" class="dropdown-item">B</option>
-                        <option value="C" class="dropdown-item">C</option>
-                        <option value="D" class="dropdown-item">D</option>
-                        </select>
-                        </td></tr>
-            <tr>
 
                       
               <tr>

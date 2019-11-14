@@ -10,7 +10,7 @@
 //                      alert(wt);
                          $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpay",
+                                url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpayi",
                                 data: {"wt" : wt},
                                 dataType:"html",
                                 success: function(data){

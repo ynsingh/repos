@@ -6,7 +6,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
     <head>
-        <title>Welcome to TANUVAS</title>
+        <title>HOD List</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">  
         <style type="text/css" media="print">
             @page {

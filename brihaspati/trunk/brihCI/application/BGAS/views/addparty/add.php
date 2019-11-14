@@ -98,7 +98,7 @@
         echo "<br />";
         echo form_input($bacnumber);
 	echo "</span>";
-	echo "<span id=\"tooltip-content-3\">Bank A/C Number should be between 13 and 20 digit</span>";	
+	echo "<span id=\"tooltip-content-3\">Bank A/C Number should be between 8 and 20 digit</span>";	
 	echo form_upload("bankfile");
         echo "<br />";
         echo "</p>";

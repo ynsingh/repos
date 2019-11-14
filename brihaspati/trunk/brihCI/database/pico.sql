@@ -46,7 +46,7 @@ ALTER TABLE `cover_type`
 -- AUTO_INCREMENT for table `cover_type`
 --
 ALTER TABLE `cover_type`
-  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT AUTO_INCREMENT=5;;
+  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT; 
 
 INSERT INTO `cover_type` (`ct_id`, `ct_coverno`, `ct_coverfixed`, `ct_cover1`, `ct_cover2`, `ct_cover3`, `ct_cover4`, `ct_coveroptional`, `ct_desc`) VALUES
 (1, 'Single Cover', '100', 'Fee or Prequal or Technical or Financial', '', '', '', '', ''),

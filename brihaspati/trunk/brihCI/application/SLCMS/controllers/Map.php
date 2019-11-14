@@ -1411,8 +1411,10 @@ class Map extends CI_Controller
 
         public function authusertype()
         {
-        $data['authuserresult'] = $this->loginmodel->get_list('authorities','id', 'name');
-        $data['result'] = $this->loginmodel->get_userlist('edrpuser','username', 'id');
+        $data['authuserresult'] = $this->loginmodel->get_list('authorities');
+        $data['result'] = $this->loginmodel->get_userlist('edrpuser');
+        //$data['authuserresult'] = $this->loginmodel->get_list('authorities','id', 'name');
+        //$data['result'] = $this->loginmodel->get_userlist('edrpuser','username', 'id');
         //$this->authresult = $this->loginmodel->get_list('authority_map','id','authority_type');                  
 
 
@@ -1422,9 +1424,9 @@ class Map extends CI_Controller
 
         $this->form_validation->set_rules('authorities',' Authority Name','trim|xss_clean|required');
         $this->form_validation->set_rules('edrpuser','User Name','trim|xss_clean|required');
-        $this->form_validation->set_rules('map_date','From Date','trim|xss_clean|required');
-        $this->form_validation->set_rules('till_date','Till Date','trim|xss_clean|required');
         $this->form_validation->set_rules('authority_type','Authority Type','trim|xss_clean|required');
+        $this->form_validation->set_rules('map_date','From Date','trim|xss_clean|required');
+        $this->form_validation->set_rules('till_date','Till Date','trim|xss_clean');
 
 
          if($this->form_validation->run() == TRUE){

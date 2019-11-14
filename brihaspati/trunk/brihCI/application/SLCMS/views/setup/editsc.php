@@ -129,7 +129,11 @@ $('#stname').on('change',function(){
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
-
+                    <?php
+                    };
+                    ?>
+                    <?php if(isset($_SESSION['err_message'])){?>
+                        <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                     <?php
                     };
                     ?>

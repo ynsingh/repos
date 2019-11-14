@@ -123,9 +123,23 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         <td> User Name: </td><td>
                         <select name="edrpuser" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select Name ---------</option>                        
-                        <?php foreach($result as $datas): ?>
-                        <option value="<?php echo $datas->id; ?>"><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $datas->id)->firstname .' '. $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $datas->id)->lastname; ?></option>
-                        <?php endforeach; ?>
+			<?php foreach($result as $datas):
+			$fnme1=$this->loginmodel->get_listspfic1('userprofile','firstname','userid',$datas->id);
+		    	if(!empty($fnme1)){
+			    	$fnme2=$fnme1->firstname;
+		    	}else{
+				$fnme2='';
+			}
+			$lnme1=$this->loginmodel->get_listspfic1('userprofile','lastname','userid',$datas->id);
+		    	if(!empty($lnme1)){
+			    	$lnme2=$lnme1->lastname;
+		    	}else{
+				$lnme2='';
+			}
+			?>
+                       <!-- <option value="<?php echo $datas->id; ?>"><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $datas->id)->firstname .' '. $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $datas->id)->lastname; ?></option>-->
+                        <option value="<?php echo $datas->id; ?>"><?php echo $fnme2 .' '. $lnme2; ?></option>
+                        <?php endforeach ?>
                         </select>
                         </td>
                         </tr>
@@ -146,8 +160,8 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         <td><input type="text"placeholder="From Date" name="map_date" id="StartDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td></tr>
                         
                         <tr>
-                        <td>Till Date:<font color='Red'>*</font></td>
-                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td></tr>
+                        <td>Till Date:<font color='Red'></font></td>
+                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="40" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" /><br> </td></tr>
                         
                         <tr>
                         <td></td>

@@ -37,7 +37,7 @@
 //	                 var val=val;
 	                 $.ajax({
                 		type: "POST",
-		                url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpay",
+		                url: "<?php echo base_url();?>sisindex.php/jslist/getlevelpayi",
                 		data: {"wt" : wt},
 		                dataType:"html",
                 		success: function(data){
@@ -54,7 +54,7 @@
 //	alert(val);
         	        $.ajax({
                 		type: "POST",
-		                url: "<?php echo base_url();?>sisindex.php/jslist/getpayband",
+		                url: "<?php echo base_url();?>sisindex.php/jslist/getpaybandi",
                 		data: {"pcwt" : val},
 		                dataType:"html",
                 		success: function(data){

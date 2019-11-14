@@ -6,7 +6,7 @@
 
 <html>
     <head>
-        <title>Welcome to TANUVAS</title>
+        <title>Personal Profile</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
 	<style type="text/css" media="print">

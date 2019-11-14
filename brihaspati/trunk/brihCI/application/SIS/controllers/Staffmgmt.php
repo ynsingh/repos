@@ -1777,7 +1777,7 @@ class Staffmgmt extends CI_Controller
 
   /*this function has been created for display the record of staff position */
   public function staffposition(){
-        $whdata = '';
+        $whdata = array();
 	//  get role id and user id
 	$rlid=$this->session->userdata('id_role');
         $usrname=$this->session->userdata('username');
@@ -1974,8 +1974,12 @@ class Staffmgmt extends CI_Controller
 				$err_message1='';
 				$err_message2='';
 				$positionflag=true;
+				$positionflag1=true;
 				$positionflag2=true;
-				$positionflag2=true;
+								
+				$duppositionflag=0;
+				$duppositionflag1=0;
+				$duppositionflag2=0;
 
 				if($sptype == "PT"){
 			        $datadupposition1 = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>'Permanent', 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_schemecode'=>$_POST['schemecode'],'sp_org_id'=> '1' );
@@ -2059,7 +2063,7 @@ class Staffmgmt extends CI_Controller
 				        'sp_org_id'=> '1'
 			        );
 				$duppositionflag2 = $this->sismodel->isduplicatemore('staff_position', $datadupposition2) ;
-                                if($duppositionflag1 == 2)
+                                if($duppositionflag1 == 1)
                                 {
                                         $err_message2="Record is already exist with this combination under PT-temp";
                                 }
@@ -2148,13 +2152,14 @@ class Staffmgmt extends CI_Controller
 				  //              $this->logger->write_dblogmessage("insert"," Error in adding Staff Position ", " Data insert error .'Teaching /Non Teaching :' = $sptnt , 'Employee_Post' = $spemppost " );
 //				                $this->session->set_flashdata('err_message','Error in adding Staff Position - ' .  '.', 'error');
 						$this->session->set_flashdata("err_message", $err_message.",  ".$err_message1."  ,".$err_message2);
-				                $this->load->view('staffmgmt/newstaffposition');
+				             //   $this->load->view('staffmgmt/newstaffposition');
         				}
 				        else{
 				    //            $this->logger->write_logmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt , 'Employee_Post :' = $spemppost  " );
 				      //          $this->logger->write_dblogmessage("insert"," Staff Position ", "Record added successfully. 'Teaching /Non Teaching :' = $sptnt, 'Employee_Post :' = $spemppost  " );
 				                $this->session->set_flashdata("success", "Record added successfully...'Teaching /Non Teaching :' = $sptnt, 'Employee_Post : ' = $spemppost ");
-				                redirect('staffmgmt/staffposition');
+						redirect('staffmgmt/staffposition');
+						return;
         				}
       				}//else duplicate
     			}//validation

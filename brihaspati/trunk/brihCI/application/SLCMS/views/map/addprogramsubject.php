@@ -205,6 +205,8 @@ echo "<body>";?>
                 <option value="6" class="dropdown-item">6</option>
                 <option value="7" class="dropdown-item">7</option>
                 <option value="8" class="dropdown-item">8</option>
+                <option value="9" class="dropdown-item">9</option>
+                <option value="10" class="dropdown-item">10</option>
                 </select>
 		</td>
 		</tr>

@@ -116,7 +116,7 @@
 
                                 };
                         else :
-                                echo "<td  =\"17\" align=\"center\"> No Records found...!</td>";
+                                echo "<td colspan=\"17\" align=\"center\"> No Records found...!</td>";
                         endif;
 
                 ?>

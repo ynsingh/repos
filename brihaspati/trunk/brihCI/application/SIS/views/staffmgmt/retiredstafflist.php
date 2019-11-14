@@ -4,7 +4,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-        <title>Welcome to TANUVAS</title>
+        <title>Welcome to Staff Retired</title>
     </head> 
     <body>
         <?php $this->load->view('template/header'); ?>

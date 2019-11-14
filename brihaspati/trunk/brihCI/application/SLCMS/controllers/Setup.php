@@ -2049,7 +2049,7 @@ class Setup extends CI_Controller
                 {
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required');
-                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_isStudyCenterExist');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|callback_isStudyCenterExist');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|alpha_numeric_spaces|required');
                 $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('countries','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
@@ -2331,7 +2331,7 @@ class Setup extends CI_Controller
 
              	$this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric_spaces|required');
-                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean');
@@ -2373,7 +2373,8 @@ class Setup extends CI_Controller
  		       }
                        if ($this->form_validation->run() == FALSE)
                       {
-                      $this->load->view('setup/editsc', $data);
+		              $this->session->set_flashdata('err_message','Error updating Study center -validation ', 'error');
+	                      $this->load->view('setup/editsc', $data);
                       }
                     else{
                 	    $data_orgprofile = $this->input->post('orgprofile', TRUE);
@@ -2404,7 +2405,7 @@ class Setup extends CI_Controller
 				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
                                 $update_data = array(
 
-				   'org_code'=>$data_orgprofile,
+			//	   'org_code'=>$data_orgprofile,
                                    'sc_code'=>$data_institutecode,
                                    'sc_name'=>$data_name,
                                    'sc_nickname'=>$data_nickname,
@@ -2418,12 +2419,13 @@ class Setup extends CI_Controller
                                    'sc_fax'=>$data_fax,
                                    'sc_status'=>$data_status,
                                    'sc_startdate'=>$data_startdate,
-                                   'sc_closedate'=>$data_closedate,
+                        //           'sc_closedate'=>$data_closedate,
                                    'sc_website'=>$data_website,
                                    'sc_incharge'=>$data_incharge,
                                    'sc_mobile'=>$data_mobile,
 
-                        );
+			   );
+			//	print_r($update_data); print_r($id); die();
 			$scflag=$this->common_model->updaterec('study_center', $update_data, 'sc_id', $id);
                         if(!$scflag)
 		                {

@@ -5,7 +5,7 @@
 <html>
     <head>
         
-        <title>Welcome to TANUVAS</title>
+        <title>Welcome to Staff Transfer</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>

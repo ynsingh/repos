@@ -37,10 +37,10 @@ if ( ! function_exists('form_dropdown_payt'))
 {
         function form_dropdown_payt($name, $selected = NULL, $extra = '')
         {
-                $options = array("0" => "select", "1" => "Cheque", "2" => "Cash", "3" => "Bank Transfer","4" => "Credit Card", "5" => "Debit Card" , "6" => "Demand Draft", "7" => "IPO", "8" => "Others" );
+                $options = array("0" => "select", "1" => "Cheque", "2" => "Cash", "3" => "Bank Transfer","4" => "Credit Card", "5" => "Debit Card" , "6" => "Demand Draft", "7" => "IPO", "8" => "Others","9" => "PFMS" );
 
                 // If no selected state was submitted we will attempt to set it automatically
-                if ( ! ($selected == "1" || $selected == "2" || $selected == "3" || $selected == "4"|| $selected == "5" || $selected == "6" || $selected == "7" || $selected == "8"))
+                if ( ! ($selected == "1" || $selected == "2" || $selected == "3" || $selected == "4"|| $selected == "5" || $selected == "6" || $selected == "7" || $selected == "8"|| $selected == "9"))
                 {
                         // If the form name appears in the $_POST array we have a winner!
                         if (isset($_POST[$name]))

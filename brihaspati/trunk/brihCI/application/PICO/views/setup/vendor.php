@@ -20,7 +20,7 @@
 				echo anchor('picosetup/displayvendor/', "View Supplier Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
 			}else{
 
-				echo anchor('welcome/', "Login Page ", array('title' => 'Login Page' ,'class' =>'top_parent'));
+				echo anchor('/', "Login Page ", array('title' => 'Login Page' ,'class' =>'top_parent'));
 			}
 		?>
                 <?php

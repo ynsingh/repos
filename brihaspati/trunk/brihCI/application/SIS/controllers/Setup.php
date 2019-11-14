@@ -1065,7 +1065,7 @@ class Setup extends CI_Controller
 				$authid = $this->input->post("authorities");
 				$authname = $this->login_model->get_listspfic1('authorities','name','id',$authid)-> name;
 		 		$deptbame = $this->input->post("dept_name");
-				$deptcode = strtoupper($this->input->post("dept_name"));
+				$deptcode = strtoupper($this->input->post("dept_code"));
 
                 		if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
                
@@ -1103,7 +1103,7 @@ class Setup extends CI_Controller
                         			else{
 							$deptemail = $this->input->post("dept_mail");
 							if(!empty( $deptemail)){
-								$isdup= $this->lgnmodel->isduplicate('edrpuser','username',$deptemail);
+								$isdup= $this->login_model->isduplicate('edrpuser','username',$deptemail);
 				                                $parts = explode("@", $deptemail);
                                 				$ename = $parts[0];
 				                                $passwd=md5($ename);
@@ -1119,8 +1119,8 @@ class Setup extends CI_Controller
                                         					'is_verified'=>1
 					                                );
                                     						/*insert record in edrpuser table*/
-					                                $userflageu=$this->lgnmodel->insertrec('edrpuser', $dataeu);
-                                    					$userid=$this->lgnmodel->get_listspfic1('edrpuser','id','username',$deptemail)->id;
+					                                $userflageu=$this->login_model->insertrec('edrpuser', $dataeu);
+                                    					$userid=$this->login_model->get_listspfic1('edrpuser','id','username',$deptemail)->id;
 					                                if($userflageu){
 
 					                                       // insert into  user profile db1
@@ -1131,17 +1131,17 @@ class Setup extends CI_Controller
                                             						'mobile' => '',
                                             						'status' => 1
                                         					);
-                                        					$userflagup=$this->lgnmodel->insertrec('userprofile', $dataup);
+                                        					$userflagup=$this->login_model->insertrec('userprofile', $dataup);
 									}
 								}//isdup email
 								else{
-                                        				$userid=$this->lgnmodel->get_listspfic1('edrpuser','id','username',$deptemail)->id;
+                                        				$userid=$this->login_model->get_listspfic1('edrpuser','id','username',$deptemail)->id;
                                 				}
                                         			// check for duplicate in hod list table
 								$campusid = $this->common_model->get_listspfic1('study_center','sc_id','sc_code',$campcode)->sc_id;
 								$deptid = $this->common_model->get_listspfic1('Department','dept_id','dept_code',$deptcode)->dept_id;
                                         			$duphod = array('hl_userid' => $userid, 'hl_scid' => $campusid,'hl_deptid'=> $deptid);
-                                        			$isduphod= $this->sismodel->isduplicatemore('hod_list',$duphod);
+                                        			$isduphod= $this->SIS_model->isduplicatemore('hod_list',$duphod);
                                         			if(!$isduphod){
                                             				$usr =$this->session->userdata('username');
                                             				$datahod = array(
@@ -1158,7 +1158,7 @@ class Setup extends CI_Controller
                                 				                'hl_modifierid'=> $usr,
 				                                                'hl_modifydate'=> date('y-m-d'),
                                 			            	);
-                                            				$hodlistflag=$this->sismodel->insertrec('hod_list', $datahod) ;
+                                            				$hodlistflag=$this->SIS_model->insertrec('hod_list', $datahod) ;
                                             				if($hodlistflag){
 				                                                /* insert into user_role_type */
                                 				                $dataurt = array(
@@ -1168,7 +1168,7 @@ class Setup extends CI_Controller
                                                     					'scid'=>  $campusid,
                                                    					'usertype'=>'HoD'
                                                 				);
-                                                				$userflagurt=$this->sismodel->insertrec('user_role_type', $dataurt) ;
+                                                				$userflagurt=$this->SIS_model->insertrec('user_role_type', $dataurt) ;
                                                 		//		if($userflagurt){
 								//		}
 									}
@@ -2146,7 +2146,7 @@ class Setup extends CI_Controller
                 {
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required|callback_isStudyCenterExist');
-                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|alpha_numeric_spaces|required');
                 $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
@@ -2430,7 +2430,7 @@ class Setup extends CI_Controller
 
              	$this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric_spaces|required');
-                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean');
@@ -2811,7 +2811,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean');
             $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
            // $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash|callback_isSchemeExist');
-            $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean');
 
             if($this->form_validation->run()==TRUE){

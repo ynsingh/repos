@@ -5,7 +5,7 @@
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
  <html>
     <head>
-        <title>Welcome to TANUVAS</title>
+        <title> Staff list</title>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 	<link href="<?php echo base_url(); ?>assets/css/jquery.multiselect.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>assets/js/jquery.multiselect.js"></script>

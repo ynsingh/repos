@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Welcome to TANUVAS</title>
+        <title>Welcome to upload logo</title>
 	<?php $this->load->view('template/header'); ?>
         
     </head>
