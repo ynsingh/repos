@@ -13,33 +13,59 @@
 
 <script>
      $(document).ready(function(){
-     $('#tnt').on('change',function(){
+         $('#tnt').on('change',function(){
                 var worktype = $(this).val();
                 //alert(worktype);
                 if(worktype == ''){
                     $('#grouppost').prop('disabled',true);
-                   
                 }
                 else{
                     $('#grouppost').prop('disabled',false);
                     $.ajax({
                         url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
+                       // url: "<?php echo base_url();?>sisindex.php/staffmgmt/getworkingtype",
                         type: "POST",
                         data: {"groupp" : worktype},
                         dataType:"html",
                         success:function(data){
                             //alert("data==1="+data);
                             $('#grouppost').html(data.replace(/^"|"$/g, ''));
-                                                 
                         },
                         error:function(data){
                             alert("data in error==="+data);
                             alert("error occur..!!");
-                 
                         }
                     });
                 }
-            }); 
+         });
+
+	 $('#grp').on('change',function(){
+                  var grp= $('#grp').val();
+                  var wt=$('#tnt').val();
+                  var wtg = grp+","+wt;
+                if(wtg == ''){
+                    $('#desigpayid').prop('disabled',true);
+                }
+                else{
+                    $('#desigpayid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>slcmsindex.php/setup2/getwgrppaylist",
+                       // url: "<?php echo base_url();?>sisindex.php/jslist/getwgrppaylist",
+                        type: "POST",
+                        data: {"wgrp" : wtg},
+                        dataType:"html",
+                        success:function(data){
+                    //        alert("data==1="+data);
+                            $('#desigpayid').html(data.replace(/^"|"$/g, ''));
+                        },
+                        error:function(data){
+                            alert("data in error==="+data);
+                            alert("error occur..!!");
+                        }
+                    });
+                }
+         });
+
     });
 </script>
 </head>
@@ -77,18 +103,22 @@
            </table>
            <table width="100%">
            <tr><td>
-
-                <div>
+		<div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                <?php if(isset($_SESSION['success'])){?>
+                <?php if(isset($_SESSION['success'])){
+                        if(!empty($_SESSION['success'])){
+                ?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
-
-                if(isset($_SESSION['err_message'])){?>
+                }
+                if(isset($_SESSION['err_message'])){
+                        if(!empty($_SESSION['err_message'])){
+                ?>
                 <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
                 };
+                }
                ?>
              </div>
          </td></tr>
@@ -97,12 +127,8 @@
     <form action="<?php echo site_url('setup2/adddesignation');?>" method="POST" class="form-inline">
         
 	<table>
-        	<tr>
-                	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
-                	<td><input type="text" name="desig_code" class="form-control" size="33" /></td>
-	     	</tr>	
 		<tr>
-	     		<td><label for= "tnt" class="control-label">Designation Type</lable></td>
+	     		<td><label for="tnt" class="control-label">Designation Type </lable></td>
                		<td>
 				<select name="tnt" id="tnt" class="my_dropdown" style="width:100%;">
                 			<option value="" disabled selected >------Select----------------</option>
@@ -119,43 +145,51 @@
                         	</select>
                         </td>
 		</tr>
-
-                 <td><label for= "tnt" class="control-label">Designation Payscale: <font color='Red'> *</font></label></td>
-                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:100%;">
-                <option selected="selected" disabled selected>--------Select-------------</option>
-                <?php foreach($payresult as $datas): ?>
-                         <option value="<?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
-                          </option>
-                  <?php endforeach; ?>
-                </select></td>
-
-                    <tr>
-                <td></td>
-                <tr>
-               <td><label for="desig_name" class="control-label">Designation Name:</label></td>
-               <td>
-               <input type="text" name="desig_name"  class="form-control" size="33%" />
-               </td>
-            </tr>
-              
                <tr>
                        <td><label for="desig_name" class="control-label">Designation Group :</label></td> 
                         <td>
-                        <select name="desig_group" id="" class="my_dropdown" style="width:100%;">
+                        <select name="desig_group" id="grp" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select Group------</option>
                         <option value="A" class="dropdown-item">A</option>
                         <option value="B" class="dropdown-item">B</option>
                         <option value="C" class="dropdown-item">C</option>
                         <option value="D" class="dropdown-item">D</option>
                         </select>
-                        </td></tr>
-            <tr>
-                     
+			</td>
+		</tr>
+		<tr>
+
+                 <td><label for="desig_payscale" class="control-label">Designation Payscale: <font color='Red'> *</font></label> </td>
+                <td><select name="desig_payscale" id="desigpayid" class="my_dropdown" style="width:100%;">
+                <option selected="selected" disabled selected>--------Select-------------</option>
+<!--
+                 <td><label for= "tnt" class="control-label">Designation Payscale: <font color='Red'> *</font></label></td>
+                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:100%;">
+                <option selected="selected" disabled selected>--------Select-------------</option>
+                <?php //foreach($payresult as $datas): ?>
+                         <option value="<?php //echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>"<?php //echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?>><?php //echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
+                          </option>
+		  <?php //endforeach; ?>
+-->
+                </select></td>
+
+                </tr>
+        	<tr>
+                	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
+                	<td><input type="text" name="desig_code" class="form-control" size="33" /></td>
+	     	</tr>	
+                <tr>
+               <td><label for="desig_name" class="control-label">Designation Name:</label></td>
+               <td>
+               <input type="text" name="desig_name"  class="form-control" size="33%" />
+               </td>
+            </tr>
               <tr>
                 <td><label for="desig_short" class="control-label">Designation Short :</label></td>
                 <td>
                 <input type="text" name="desig_short" class="form-control" size="33%" />
                 </td>
+            </tr>
                 <tr>
                 <td><label for="desig_desc" class="control-label">Designation Description :</label></td>
                 <td>

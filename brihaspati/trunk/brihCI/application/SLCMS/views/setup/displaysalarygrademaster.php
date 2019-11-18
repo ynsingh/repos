@@ -18,7 +18,7 @@
 	<tr colspan="2">
          <?php
 	    echo "<td align=\"left\" width=\"33%\">";
-            echo anchor('setup/salarygrademaster/', 'Add Salary Grade', array('class' => 'top_parent'));
+//            echo anchor('setup/salarygrademaster/', 'Add Salary Grade', array('class' => 'top_parent'));
             echo "</td>";
             echo "<td align=\"center\" width=\"34%\">";
             echo "<b>Salary Grade Details</b>";
@@ -50,27 +50,39 @@
             <thead>
                 <tr>
         <th>Sr.No</th>
-        <th>AGP Code </th>
-        <th>Salary Grade Name </th>
+	<th>AGP Code </th>
+	<th>Group </th>
+        <th>Salary Level of Pay </th>
+        <th>Salary Grade Name (Pay Band)</th>
         <th>Salary Grade Max </th>
         <th>Salary Grade Min</th>
-        <th>Salary Grade Pay Band </th>
+        <th>Salary Grade Pay  </th>
         <th> Action </th>
         </thead></tr>
 	<tbody>
 	     <?php
-		$count = 0;
+		$count = 0; $pcom="";
 	        foreach ($result as $row)
-                {
+		{
+			$sgmpc= $row->sgm_pc;
+                        $sgmwt = $row->sgm_wt;
+                        if((strcmp($pcom,$sgmpc))||(strcmp($wt,$sgmwt))){
+                                echo "<tr><td colspan=10><b>". $sgmpc ." Pay commission  - ".$sgmwt."</b></td></tr>";
+                                $pcom = $sgmpc;
+                                $wt = $sgmwt;
+                        }
+
               ?>    
 		<tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $row->sgm_id;?> </td>
+		    <td><?php echo $row->sgm_id;?> </td>
+    		    <td><?php echo $row->sgm_group;?> </td>
+                    <td><?php echo $row->sgm_level;?> </td>
                     <td><?php echo $row->sgm_name;?> </td>
                     <td><?php echo $row->sgm_max ;?> </td>
                     <td><?php echo $row->sgm_min ;?></td>
 		    <td><?php echo $row->sgm_gradepay ?> </td>
-             	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+             	    <td><?php //echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
                </tr>
  	  <?php } ?> 

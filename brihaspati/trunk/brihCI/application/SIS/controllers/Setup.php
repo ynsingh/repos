@@ -3814,10 +3814,10 @@ public function displaysalarygrademaster(){
 
      //   $this->result = $this->SIS_model->get_list('salary_grade_master');
 	$whorder = 'sgm_pc ASC, sgm_wt asc,sgm_name ASC,sgm_level ASC,sgm_id ASC';
-        $this->result = $this->SIS_model->get_orderlistspficemore('salary_grade_master','*','',$whorder);
+        $data['result'] = $this->SIS_model->get_orderlistspficemore('salary_grade_master','*','',$whorder);
         $this->logger->write_logmessage("view"," View ", "Salary Grade Master display successfully..." );
         $this->logger->write_dblogmessage("view"," View Salary Grade Master", "Salary Grade Master successfully..." );
-        $this->load->view('setup/displaysalarygrademaster',$this->result);
+        $this->load->view('setup/displaysalarygrademaster',$data);
     }
 
  /**This function is used for update Salary Grade Master details

@@ -149,8 +149,7 @@
                         <option value="D" class="dropdown-item">D</option>
                         </select>
                         </td></tr>
-            <tr>
-                    <tr>
+                <tr>
 
                  <td><label for="desig_payscale" class="control-label">Designation Payscale: <font color='Red'> *</font></label> </td>
                 <td><select name="desig_payscale" id="desigpayid" class="my_dropdown" style="width:100%;">

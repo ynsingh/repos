@@ -94,7 +94,7 @@
 			$from_date = $date1;
 			$to_date = $date2;
 		}
-			$tot_op_bal='';
+			$tot_op_bal=0;
 			$this->db->select('id, name, code');
 			$this->db->from('ledgers')->where('type', '1');
                 	$op_balance = $this->db->get();

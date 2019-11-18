@@ -915,6 +915,8 @@ class Jslist extends CI_Controller
 		foreach($hdid_arr as $hid){
 		$hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
 		$hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
+		$htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+                if($htype == 'I'){
 		$sgflag='N';
 		$sgflag=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$hid)->sh_calc_type;
 		$hfor='';
@@ -958,6 +960,7 @@ class Jslist extends CI_Controller
 		$ii=$i+1;
 		$combthree=$combthree.'<tr><td>'.$ii.'</td><td>'.$hcode.'</td><td>'.$hname.' '.$hfor.'</td><td>'.$input1.$hidin.'</td></tr>';
 		$i++;
+		}
 		}
 		$hidin2='<input type="hidden" name="totalcount" id="tcount" value="'. $i.'">';
 		$combthree=$combthree.$hidin2;

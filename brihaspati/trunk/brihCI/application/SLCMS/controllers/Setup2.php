@@ -854,7 +854,9 @@ class Setup2 extends CI_Controller
   * @return type
   */
 
-     public function designation() {
+    public function designation() {
+	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
+        $this->session->set_flashdata($array_items);
         $data['result'] = $this->commodel->get_list('designation');
         $this->logger->write_logmessage("view"," View Designation ", "Designation details...");
         $this->logger->write_dblogmessage("view"," View Designation" , "Designation record display successfully..." );
@@ -866,7 +868,10 @@ class Setup2 extends CI_Controller
      */                 
 
     public function adddesignation(){
-	$data['payresult']=$this->sismodel->get_list('salary_grade_master');
+	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
+        $this->session->set_flashdata($array_items);
+
+//	$data['payresult']=$this->sismodel->get_list('salary_grade_master');
     
          if(isset($_POST['adddesignation'])) {
                  $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|callback_isCodeExist');
@@ -878,7 +883,21 @@ class Setup2 extends CI_Controller
                  $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
                  if($this->form_validation->run()==TRUE){
-                 //echo 'form-validated';
+			 //echo 'form-validated';
+			$subtype = $this->input->post("grouppost");
+	                $payband = $this->input->post("desig_payscale");
+        	        $designame = $this->input->post("desig_name");
+
+                	$datacheck = array('desig_subtype'=>$_POST['grouppost'], 'desig_payscale'=>$_POST['desig_payscale'], 'desig_name'=>ucfirst(strtolower($_POST['desig_name'])) );
+			$desigdatadup = $this->commodel->isduplicatemore('designation', $datacheck);
+			if($desigdatadup == 1 ){
+
+                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Designation Sub Type' = $subtype  , 'Pay Band' = $payband , 'Designation Name' = $designame  .");
+                                  redirect('setup2/adddesignation');
+                                  return;
+                       }
+                   else{
+
                         $data = array(
                                 'desig_code'=>$_POST['desig_code'],
 				'desig_type'=>$_POST['tnt'],
@@ -886,7 +905,7 @@ class Setup2 extends CI_Controller
 				'desig_payscale'=>$_POST['desig_payscale'],
                                 'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
                                 'desig_group'=>$_POST['desig_group'],
-                                'desig_short'=>$_POST['desig_short'],
+                                'desig_short'=>strtoupper($_POST['desig_short']),
                                 'desig_desc'=>$_POST['desig_desc'],
                            );
                            $rflag=$this->commodel->insertrec('designation', $data);
@@ -902,11 +921,13 @@ class Setup2 extends CI_Controller
                                 $this->logger->write_dblogmessage("insert","Add designation Setting", "Designation ".$_POST['desig_name']."added  successfully...");
                                 $this->session->set_flashdata("success", "Designation add successfully...");
                                 redirect("setup2/designation");
-                        }
+			}
+		   }
                 }//close if vallidation
         }//  
                
-        $this->load->view('setup2/adddesignation',$data);
+  //      $this->load->view('setup2/adddesignation',$data);
+        $this->load->view('setup2/adddesignation');
     }
 
 /** This function check for duplicate designation
@@ -960,6 +981,9 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function editdesignation($desig_id) {
+	    $array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
+	    $this->session->set_flashdata($array_items);
+
          $data['payresult']=$this->sismodel->get_list('salary_grade_master'); 
         $desig_data_q=$this->commodel->get_listrow('designation','desig_id', $desig_id);
         if ($desig_data_q->num_rows() < 1)
@@ -1075,9 +1099,21 @@ class Setup2 extends CI_Controller
             $desig_name = $this->input->post('desig_name', TRUE);
             $desig_group = $this->input->post('desig_group', TRUE);
             $desig_short = $this->input->post('desig_short', TRUE);
-            $desig_desc= $this->input->post('desig_desc', TRUE);
+	    $desig_desc= $this->input->post('desig_desc', TRUE);
+	    $datacheck = array('desig_subtype'=>$desig_subtype, 'desig_payscale'=>$desig_payscale, 'desig_name'=>ucwords(strtolower($desig_name)) );
+	    $desigdatadup = $this->commodel->isduplicatemore('designation', $datacheck);
+
+            if($desigdatadup == 1 ){
+
+                      $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Designation Sub Type' = $desig_subtype  , 'Pay Band' = $desig_payscale , 'Designation Name' = $desig_name  .");
+
+                      redirect('setup2/designation/');
+                      return;
+                }
+       else{
+
           //  $data_edesig_id = $desg_id;
-           echo $desig_type;
+//           echo $desig_type;
             $logmessage = "";
 	    if($editdesig_data->desig_code != $desig_code)
                 $logmessage = "Edit Designation Code " .$editdesig_data->desig_code. " changed by " .$desig_code;
@@ -1105,7 +1141,7 @@ class Setup2 extends CI_Controller
               'desig_payscale'=> $desig_payscale,
               'desig_name'  => $desig_name,
               'desig_group' => $desig_group,
-              'desig_short' => $desig_short,
+              'desig_short' => strtoupper($desig_short),
               'desig_desc' => $desig_desc,
             );
                //'modifierid'=>$this->session->userdata('username'),
@@ -1125,7 +1161,8 @@ class Setup2 extends CI_Controller
                 $this->logger->write_dblogmessage("update","Edit designation Setting by".$this->session->userdata('username') , "Edit designation Setting details. $logmessage ");
                 $this->session->set_flashdata('success','Designation  detail updated successfully..');
                 redirect('setup2/designation');
-                }
+	    }
+       }//dup else
         }//else
         redirect('setup2/editdesignation');
     }//Edit Designation function end
@@ -1499,6 +1536,28 @@ class Setup2 extends CI_Controller
 	}
        echo json_encode($uco_select_box);
     }
+
+
+     /* This function has been created for get list of Pay scales on the basis of  selected working type and group*/
+        public function getwgrppaylist(){
+                $combid= $this->input->post('wgrp');
+                $parts = explode(',',$combid);
+                $datawh=array('sgm_wt'=> $parts[1],'sgm_group'=> $parts[0]);
+                $ps_data = $this->sismodel->get_listspficemore('salary_grade_master','sgm_id,sgm_name,sgm_max,sgm_min,sgm_gradepay,sgm_level',$datawh);
+                $ps_select_box ='';
+                $ps_select_box.='<option value="">--Select Payscale--';
+                if(!empty($ps_data)){
+                        foreach($ps_data as $psrecord){
+                                $sgmgrdpay=$psrecord->sgm_gradepay;
+                                if($sgmgrdpay<1){
+                                        $sgmgrdpay='';
+                                }
+                                $ps_select_box.='<option value='.$psrecord->sgm_id.'>'.$psrecord->sgm_name.'('.$psrecord->sgm_min.' - '.$psrecord->sgm_max.')'.$sgmgrdpay.$psrecord->sgm_level.'' ;
+                        }
+                } //if close
+               // echo json_encode($combid);
+                echo json_encode($ps_select_box);
+        }
 
 }//end class
 

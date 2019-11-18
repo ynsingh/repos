@@ -100,3 +100,15 @@ define('PAYU_BASE_URL', 'https://test.payu.in');    //Testing url
 define('SUCCESS_URL', 'http://localhost/gst/transaction/order_success');  //have complete url
 define('FAIL_URL', 'http://localhost/gst/transaction/order_fail');    //add complete url 
  */
+/*
+|--------------------------------------------------------------------------
+| Address Head for view report
+|--------------------------------------------------------------------------
+|
+| These modes are used when when prining or download report
+| define('ADDRESSHEAD','Brihaspati General Accounting System');
+|
+*/
+define('ADDRESSHEAD','Brihaspati ERP Group SLCMS System ');
+define('INAME','Brihaspati ERP Group');
+define('ISNAME','BERPG');

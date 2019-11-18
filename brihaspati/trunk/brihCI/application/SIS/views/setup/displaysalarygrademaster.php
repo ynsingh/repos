@@ -62,7 +62,7 @@
 	<tbody>
 	     <?php
 		$count = 0; $pcom="";
-	        foreach ($this->result as $row)
+	        foreach ($result as $row)
                 {
 			$sgmpc= $row->sgm_pc;
 			$sgmwt = $row->sgm_wt;

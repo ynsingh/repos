@@ -46,8 +46,10 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 |
 */
 
-define('ADDRESSHEAD','भारतीय     वन  प्रबंधन  संस्थान  <br>  INDIAN INSTITUTE OF FOREST MANAGEMENT <br> (An autonomous institute of Ministry of Environment, Forest and Climate Change, Govt. of India )');
-
+/*define('ADDRESSHEAD','भारतीय     वन  प्रबंधन  संस्थान  <br>  INDIAN INSTITUTE OF FOREST MANAGEMENT <br> (An autonomous institute of Ministry of Environment, Forest and Climate Change, Govt. of India )'); */
+define('ADDRESSHEAD','Brihaspati ERP Group Accounting System ');
+define('INAME','Brihaspati ERP Group');
+define('ISNAME','BERPG');
 
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */

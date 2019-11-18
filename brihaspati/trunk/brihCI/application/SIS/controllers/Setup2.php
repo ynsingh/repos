@@ -873,7 +873,7 @@ class Setup2 extends CI_Controller
 	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
         $this->session->set_flashdata($array_items);
 
-        $this->payresult=$this->sismodel->get_list('salary_grade_master');
+   //     $this->payresult=$this->sismodel->get_list('salary_grade_master');
 
          if(isset($_POST['adddesignation'])) {
                  $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|callback_isCodeExist');
@@ -1105,7 +1105,7 @@ class Setup2 extends CI_Controller
             $desig_short = $this->input->post('desig_short', TRUE);
             $desig_desc= $this->input->post('desig_desc', TRUE);
           //  $data_edesig_id = $desg_id;
-           echo $desig_type;
+     //      echo $desig_type;
             $logmessage = "";
             if($editdesig_data->desig_code != $desig_code)
                 $logmessage = "Edit Designation Code " .$editdesig_data->desig_code. " changed by " .$desig_code;
