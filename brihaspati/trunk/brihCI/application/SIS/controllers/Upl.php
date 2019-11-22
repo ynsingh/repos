@@ -583,7 +583,7 @@ class Upl extends CI_Controller
                             /******* insert in service detail ************/ 
                             $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$desigto)->desig_code;
                             // $shownap=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$_POST['emppost'])->desig_id;
-                            $this->sismodel->insertsdetail($empid,$scidto,$uocto,$deptto,$desigcode,$schto,$ddoto,$groupto,$agpto,'',$sapto,date('y-m-d'),0000-00-00,0000-00-00,$usono);
+                            $this->sismodel->insertsdetail($empid,$scidto,$uocto,$deptto,$desigcode,$schto,$ddoto,$groupto,$agpto,'',$sapto,date('y-m-d'),1000-01-01,1000-01-01,$usono);
                             
                             /**************update staff position record also *****************/
                             $postfrom=$this->commodel->get_listspfic1('designation','desig_id','desig_name',$sap)->desig_id;

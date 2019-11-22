@@ -59,7 +59,7 @@ class Hodhome extends CI_Controller
 
         if (($loggedrole == "HoD") && ($this->roleid == "5")){
                 $empcode='';
-                $whdata=array('hl_dateto' => '0000-00-00 00:00:00','hl_userid' =>$userid);
+                $whdata=array('hl_dateto' => '1000-01-01 00:00:00','hl_userid' =>$userid);
                 $uodata = $this->sismodel->get_listspficemore('hod_list','hl_empcode',$whdata);
                 foreach($uodata as $uorow){
                         $empcode = $uorow->hl_empcode;

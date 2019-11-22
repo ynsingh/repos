@@ -69,7 +69,7 @@ class Report  extends CI_Controller
 //get all uo empid
 	public function getempuoid(){
 		$selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
 		
                 $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
                 //$emp_data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -84,7 +84,7 @@ class Report  extends CI_Controller
 //get all hod empid
 	public function getemphodid(){
 		$selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
 
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 //$emp_data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -190,7 +190,7 @@ class Report  extends CI_Controller
 	// get list of uo form authority table priority wise
 	$data['uoc']=$this->lgnmodel->get_orderlistspficemore('authorities','priority,name,code','','name ASC');
         $today= date("Y-m-d H:i:s"); 
-	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
 //        $whdata=array('hl_dateto >='=> $today);
 	 if(isset($_POST['filter'])) {
             $uoff  = $this->input->post('uoff');
@@ -211,7 +211,7 @@ class Report  extends CI_Controller
         $today= date("Y-m-d H:i:s");
 	$selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
-	$whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+	$whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
         $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,$whdata,$whorder);
         $this->logger->write_logmessage("view"," view list of UO in report " );
         $this->logger->write_dblogmessage("view"," view list of UO in report");

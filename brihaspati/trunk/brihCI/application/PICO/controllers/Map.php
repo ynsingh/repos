@@ -1950,8 +1950,12 @@ public function schemedept(){
                     $usr =$this->session->userdata('username'); 
                    // $userid=$this->loginmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid'])->id;
 		    $uopid=$this->loginmodel->get_listspfic1('authorities','priority','code',$_POST['uo'])->priority;
-                $jsession = $this->input->post('jsession', TRUE);
-                $tsession = $this->input->post('tsession', TRUE);
+                    $jsession = $this->input->post('jsession', TRUE);
+		    $tsession = $this->input->post('tsession', TRUE);
+		    $dto=$this->input->post('DateTo', TRUE);
+		    if((empty($dto)) || ($dto == '0000-00-00 00:00:00')){
+                                    $dto='1000-01-01 00:00:00';
+                    }
                     $datahod = array(
                         'hl_userid'=> $userid,
                         'hl_empcode'=> $pfno,
@@ -1959,7 +1963,7 @@ public function schemedept(){
                         'hl_scid'=> $_POST['campus'],
 			'hl_uopid'=> $uopid,
                         'hl_datefrom'=> $datefrm,
-                        'hl_dateto'=> $_POST['DateTo'],
+                        'hl_dateto'=> $dto,
 			'hl_fromsession'=>$jsession,
 			'hl_tosession'=>$tsession,
                         'hl_status'=> $_POST['status'],
@@ -2066,7 +2070,10 @@ public function schemedept(){
                 $deptname = $this->input->post('deptname', TRUE);
                 $usrname = $this->input->post('usrname', TRUE);
                 $datefrom = $this->input->post('DateFrom', TRUE);
-                $dateto = $this->input->post('DateTo', TRUE);
+		$dateto = $this->input->post('DateTo', TRUE);
+		if((empty($dateto)) || ($dateto == '0000-00-00 00:00:00')){
+                       $dateto='1000-01-01 00:00:00';
+                }
                 $emailid = $this->input->post('emailid', TRUE);
                 $status = $this->input->post('status', TRUE);
                 $jsession = $this->input->post('jsession', TRUE);
@@ -2227,14 +2234,19 @@ public function schemedept(){
                 // $isdupuo= $this->loginmodel->isduplicatemore('authorities',$dupuo);
               if(!$isdupuo){
                 $jsession = $this->input->post('jsession', TRUE);
-                $tsession = $this->input->post('tsession', TRUE);
+		$tsession = $this->input->post('tsession', TRUE);
+		$dto=$this->input->post('DateTo', TRUE);
+                    if((empty($dto)) || ($dto == '0000-00-00 00:00:00')){
+                                    $dto='1000-01-01 00:00:00';
+                    }
+
                     $usr =$this->session->userdata('username'); 
 		    $datauo = array(
                         'ul_userid'=> $userid,
                         'ul_empcode'=> $pfno,
 			'ul_authuoid'=>$_POST['uo'],                        
                         'ul_datefrom'=> $_POST['DateFrom'],
-                        'ul_dateto'=> $_POST['DateTo'],
+                        'ul_dateto'=> $dto,
                         'ul_status'=> $_POST['status'],
 			'ul_fromsession'=>$jsession,
 			'ul_tosession'=>$tsession,
@@ -2331,7 +2343,10 @@ public function uolist(){
                 $deptname = $this->input->post('deptname', TRUE);
                 $usrname = $this->input->post('usrname', TRUE);
                 $datefrom = $this->input->post('DateFrom', TRUE);
-                $dateto = $this->input->post('DateTo', TRUE);
+		$dateto = $this->input->post('DateTo', TRUE);
+		if((empty($dateto)) || ($dateto == '0000-00-00 00:00:00')){
+                       $dateto='1000-01-01 00:00:00';
+                }
                 $emailid = $this->input->post('emailid', TRUE);
                 $status = $this->input->post('status', TRUE);
                 $jsession = $this->input->post('jsession', TRUE);
@@ -2339,7 +2354,7 @@ public function uolist(){
                 //$pfno = $this->input->post('usrname', TRUE);
 		//date check
 		$frmd = strtotime($datefrom);
-		if($dateto != "0000-00-00 00:00:00"){
+		if($dateto != "1000-01-01 00:00:00"){
 			
 			$tod = strtotime($dateto);	
 			if($tod < $frmd){

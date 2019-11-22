@@ -7,7 +7,7 @@
 
 <html>
   <head>    
-    <title>Edit Department</title>
+    <title>Edit Study Center Details</title>
         <?php $this->load->view('template/header'); ?>
         
 </head>

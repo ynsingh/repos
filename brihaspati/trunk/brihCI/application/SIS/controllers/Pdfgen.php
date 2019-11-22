@@ -347,7 +347,7 @@
         {
             $data['uoc']=$this->lgnmodel->get_orderlistspficemore('authorities','priority,name,code','','name ASC');
             $today= date("Y-m-d H:i:s"); 
-            $whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+            $whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
         
             $selectfield ="hl_userid,hl_empcode,hl_deptid,hl_scid,hl_uopid";
             $whorder = "hl_uopid asc";
@@ -374,7 +374,7 @@
             $today= date("Y-m-d H:i:s");
             $selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
             $whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
-            $whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+            $whdata=array('ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
             //$whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
             $data['allsc']=$this->sismodel->get_orderdistinctrecord('uo_list',$selectfield,$whdata,$whorder);
         

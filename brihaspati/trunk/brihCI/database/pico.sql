@@ -275,11 +275,11 @@ ALTER TABLE `purchase_com_form_rule`
 INSERT INTO `purchase_com_form_rule` (`pcfr_id`, `pcfr_purchasethrough`, `pcfr_estpurchaseprice`, `pcfr_rep1`, `pcfr_rep2`, `pcfr_rep3`, `pcfr_appauth`, `pcfr_reference`, `pcfr_createrid`, `pcfr_creatordate`, `pcfr_modifierid`, `pcfr_modifydate`) VALUES
 (1, 'Purchase Committee', 'Above Rs.50 Lakh', 'Finance Officer', 'Officer-in-charge(S&P)', '', 'Deputy Director/DORD', 'As per DFPR (3.1.1)', 'admin', '2019-06-26', 'admin', '2019-06-27'),
 (2, 'Purchase Committee', 'Above Rs.2.5 Lakh Upto Rs.50 Lakh', 'Officer-in Charge (A/c -I or II) or their nominee', 'Officer-in Charge (I.A) or their nominee', 'Officer-in Charge (S&P) or their nominee', 'Deputy Director/DORD', 'As per DFPR (3.1.2)', 'admin', '2019-06-26', 'admin', '2019-06-27'),
-(3, 'Purchase Committee', 'Above Rs.25000 Upto Rs.2.5 Lakh', 'Officer-in-charge(S&P) or nominee not below Group \'B\'', 'Technical Expert or his nominee not below Group \'B\'', '', 'Head of Department', 'Mentioned in GFR 2017 Rule 155', 'admin', '2019-06-26', '', '0000-00-00'),
-(4, 'GeM', 'Above Rs.50,000.00 Upto Rs.30 Lac', 'S&P Section', '', '', 'Deputy Director/DORD', '', 'admin', '2019-06-26', '', '0000-00-00'),
-(5, 'Import', 'US $2000 or equivalent', 'Officer-in-charge(S&P)', '', '', 'Indenter', 'Rule 12.7', 'admin', '2019-06-26', '', '0000-00-00'),
-(6, 'Import', 'US $10,000 or equivalent foreign currency', 'Officer-in-charge(S&P)', '', '', 'Head of Department', 'Rule 12.9', 'admin', '2019-06-26', '', '0000-00-00'),
-(7, 'Import', 'Above US $10,000 or equivalent foreign currency', 'Officer-in-charge(S&P)', '', '', 'Deputy Director/DORD', 'Rule 13.0', 'admin', '2019-06-26', '', '0000-00-00');
+(3, 'Purchase Committee', 'Above Rs.25000 Upto Rs.2.5 Lakh', 'Officer-in-charge(S&P) or nominee not below Group \'B\'', 'Technical Expert or his nominee not below Group \'B\'', '', 'Head of Department', 'Mentioned in GFR 2017 Rule 155', 'admin', '2019-06-26', '', '1000-01-01'),
+(4, 'GeM', 'Above Rs.50,000.00 Upto Rs.30 Lac', 'S&P Section', '', '', 'Deputy Director/DORD', '', 'admin', '2019-06-26', '', '1000-01-01'),
+(5, 'Import', 'US $2000 or equivalent', 'Officer-in-charge(S&P)', '', '', 'Indenter', 'Rule 12.7', 'admin', '2019-06-26', '', '1000-01-01'),
+(6, 'Import', 'US $10,000 or equivalent foreign currency', 'Officer-in-charge(S&P)', '', '', 'Head of Department', 'Rule 12.9', 'admin', '2019-06-26', '', '1000-01-01'),
+(7, 'Import', 'Above US $10,000 or equivalent foreign currency', 'Officer-in-charge(S&P)', '', '', 'Deputy Director/DORD', 'Rule 13.0', 'admin', '2019-06-26', '', '1000-01-01');
 
 -- --------------------------------------------------------
 
@@ -737,8 +737,8 @@ CREATE TABLE `vendor` (
   `vendor_pre_order` longtext COLLATE utf32_unicode_ci NOT NULL,
   `vendor_item_supply` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_blackliststatus` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
-  `vendor_blacklistdatefrom` date DEFAULT NULL,
-  `vendor_blacklistdateto` date DEFAULT NULL,
+  `vendor_blacklistdatefrom` date DEFAULT '1000-01-01 00:00:00' ,
+  `vendor_blacklistdateto` date DEFAULT '1000-01-01 00:00:00',
   `vendor_blacklistby` varchar(100) COLLATE utf32_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 --
@@ -783,8 +783,8 @@ CREATE TABLE `vendor_archive` (
   `vendor_archive_pre_order` longtext COLLATE utf32_unicode_ci NOT NULL,
   `vendor_archive_item_supply` varchar(500) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_archive_blackliststatus` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
-  `vendor_archive_blacklistdatefrom` date DEFAULT NULL,
-  `vendor_archive_blacklistdateto` date DEFAULT NULL,
+  `vendor_archive_blacklistdatefrom` date DEFAULT '1000-01-01 00:00:00',
+  `vendor_archive_blacklistdateto` date DEFAULT '1000-01-01 00:00:00',
   `vendor_archive_blacklistby` varchar(100) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_archive_updatedby` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
   `vendor_archive_updatedate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -833,7 +833,7 @@ CREATE TABLE `user_role_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into user_role_type values (1,1,1,1,NULL,'Administrator','');
-insert into user_role_type values (2,6,11,NULL,NULL,'PICOAdministrator','');
+insert into user_role_type values (2,6,11,1,NULL,'PICOAdministrator','');
 
 -- --------------------------------------------------------
 --

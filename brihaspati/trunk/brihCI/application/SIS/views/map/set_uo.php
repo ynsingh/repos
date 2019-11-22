@@ -210,9 +210,9 @@
                 </tr>
                 <tr>
                         
-                    <td><label>PF No:</label></td>
+                    <td><label>PF No:<font color='Red'>*</font></label></td>
                     <td>
-                        <select name="usrname" id="usrid" disabled="" style="width:100%;">
+                        <select name="usrname" id="usrid" disabled="" style="width:100%;" required>
                         <option selected="selected" disabled selected>------ Select User------</option> 
                         <!--option value="">Select User</option-->
                         </select>

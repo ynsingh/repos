@@ -37,8 +37,21 @@ echo "<body>";
     echo"</br>";
 */
 ?>
+  		<div>
+                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
+                <?php if(isset($_SESSION['success'])){?>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
+                <?php
+                };
+                ?>
+                <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                <?php
+                };
+                ?>
+            </div>
  <table width="100%">
- <tr colspan="2">
+ <tr>
 <?php 
 	echo "<td align=\"left\" width=\"33%\">";
 	echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
@@ -49,25 +62,8 @@ echo "<body>";
         echo "<td align=\"right\" width=\"33%\">";
 	$help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
 	echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-	?>
-  <div>
-
-                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
-
-                <?php if(isset($_SESSION['success'])){?>
-                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
-
-                <?php
-                };
-                ?>
-                <?php if(isset($_SESSION['err_message'])){?>
-                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
-
-                <?php
-                };
-                ?>
-
-            </div>
+?>
+	</td>
            </tr>
         </table>
         <div class="scroller_sub_page">

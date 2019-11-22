@@ -237,7 +237,7 @@
                                 <td>
                                     <?php 
                                     $date1 = new DateTime($record->empsd_dojoin);
-					if((strcasecmp($record->empsd_dorelev,"0000-00-00" )) == 0){
+					if((strcasecmp($record->empsd_dorelev,"1000-01-01" )) == 0){
 						$date2= new DateTime(date('Y-m-d'));
 					}else{
 	                                    $date2 = new DateTime($record->empsd_dorelev);

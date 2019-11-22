@@ -68,12 +68,12 @@
                                       echo $empname."(" . $pfno .")"; 
                                 ?>
                             </td>
-	<?php			if($record->uit_dateofrelief != '0000-00-00 00:00:00'){
+	<?php			if($record->uit_dateofrelief != '1000-01-01 00:00:00'){
 					$uitdorf =date('d-m-Y H:i:s',strtotime($record->uit_dateofrelief));
 				}else{
 					$uitdorf ='';
 				}
-				if($record->uit_dateofjoining != '0000-00-00 00:00:00'){
+				if($record->uit_dateofjoining != '1000-01-01 00:00:00'){
 					$uitdoj = date('d-m-Y H:i:s',strtotime($record->uit_dateofjoining));
 				}else{
 					$uitdoj = '';

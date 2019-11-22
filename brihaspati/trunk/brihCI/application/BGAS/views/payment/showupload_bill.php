@@ -82,17 +82,17 @@
 				 	echo "<td>" . anchor('payment/billapproval/' .  $row->bill_no , "Approve/Reject", array('title' => 'Approve,reject ' )) . "</td> ";
 					//echo "<td>" . anchor('payment/voucherfilling/' .  $row->bill_no , "VoucherCreation", array('title' => 'VoucherCreation ' )) . " ";
 					//echo "<td>" . anchor('payment/bill_printpreview/' .  $row->bill_no , "PrintPreview", array('title' => 'Bill Print Preview ' )) . "</td> ";
-				}else if(($row->decision=='Approved') && ($row->vc_date=="0000-00-00 00:00:00")){
+				}else if(($row->decision=='Approved') && ($row->vc_date=="1000-01-01 00:00:00")){
 					//echo "<td>".VoucherCreation."</td>";
 					echo "<td>" . anchor('payment/voucherfilling/' .  $row->bill_no , "VoucherCreation", array('title' => 'VoucherCreation ' )) . " ";
 					//echo "<td>" . anchor('payment/bill_printpreview/' .  $row->bill_no , "PrintPreview", array('title' => 'Bill Print Preview ' )) . "</td> ";
 				}
-				else if(($row->decision=='Approved') && ($row->vc_date!="0000-00-00 00:00:00")){
+				else if(($row->decision=='Approved') && ($row->vc_date!="1000-01-01 00:00:00")){
 					//echo "<td>".VoucherCreation."</td>";
 					//echo "<td>" . anchor('payment/voucherfilling/' .  $row->bill_no , "VoucherCreation", array('title' => 'VoucherCreation ' )) . " ";
 					echo "<td>" . anchor('payment/bill_printpreview/' .  $row->bill_no , "PrintPreview", array('title' => 'Bill Print Preview ' )) . "</td> ";
 				}
-				else if(($row->decision=='Rejected') && ($row->vc_date=="0000-00-00 00:00:00")){
+				else if(($row->decision=='Rejected') && ($row->vc_date=="1000-01-01 00:00:00")){
                                         //echo "<td>".VoucherCreation."</td>";
                                         echo "<td>" . anchor('payment/reject_printpreview/' .  $row->bill_no , "PrintPreview", array('title' => 'PrintPreview ' )) . " ";
 					}

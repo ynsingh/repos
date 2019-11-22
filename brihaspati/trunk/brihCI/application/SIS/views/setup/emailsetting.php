@@ -114,7 +114,7 @@
                             <td><label for="modulename" class="control-label">Module Name:</label></td>  
                             <td>
                                 <select name="modulename" id="" class="my_dropdown" style="width:100%;">
-                                    <option value="" disabled selected >------Select Email Protocol------</option>
+                                    <option value="" disabled selected >------Select Module----</option>
                                     <option value="All" class="dropdown-item">Default</option>
                                     <option value="Admission" class="dropdown-item">Admission</option>
                                     <option value="Account" class="dropdown-item">Account</option>

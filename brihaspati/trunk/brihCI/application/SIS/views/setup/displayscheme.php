@@ -26,7 +26,7 @@
 	    echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
             echo "</td>";
          ?>
-       <div align="left" style="margin-left:0%;width:95%">
+       <div align="left" style="margin-left:0%;width:99%">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>

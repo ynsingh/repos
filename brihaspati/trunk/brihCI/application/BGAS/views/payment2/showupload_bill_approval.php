@@ -43,7 +43,7 @@
               		else
                       		echo"<tr style=\"background-color:#AFEEEE;\">";
 	//	echo "<tr>";
-		if(($row->decision=='vchrcrn') && ($row->vc_date!="0000-00-00 00:00:00")){
+		if(($row->decision=='vchrcrn') && ($row->vc_date!="1000-01-01 00:00:00")){
  		echo "<td>" . anchor_popup('payment2/p2bill_printpreview/' .  $row->id , "<font color = #008000>".$row->id."</font>", array('title' => 'Bill Print Preview ', 'width' => '600', 'height' => '600')) . "</td>";}
 		elseif($row->decision == 'Rejected'){
 		echo "<td>" . anchor_popup('payment2/p2reject_printpreview/' .  $row->id , "<font color = #FF0000>".$row->id."</font>", array('title' => 'Bill Print Preview ', 'width' => '600', 'height' => '600')) . "</td>";}
@@ -148,18 +148,18 @@
 			{
 				echo "<td>" . anchor('payment2/p2billapproval/' .  $row->id , "Approve/Reject", array('title' => 'Approve,reject ' )) . "</td> ";
 			}
-			else if(($row->decision=='Approved') && ($row->vc_date=="0000-00-00 00:00:00"))
+			else if(($row->decision=='Approved') && ($row->vc_date=="1000-01-01 00:00:00"))
 			{
                    		echo "<td>" . anchor('payment2/p2billapproval/' .  $row->id , "Approve/Reject", array('title' => 'Approve,reject ' )) . " ";
                         }
-			else if(($row->decision=='vchrcrn') && ($row->vc_date=="0000-00-00 00:00:00")){
+			else if(($row->decision=='vchrcrn') && ($row->vc_date=="1000-01-01 00:00:00")){
 				echo "<td>" . anchor('payment2/p2voucherfilling/' .  $row->id , "VoucherCreation", array('title' => 'VoucherCreation ' )) . " ";
 			}
-			else if(($row->decision=='vchrcrn') && ($row->vc_date!="0000-00-00 00:00:00"))
+			else if(($row->decision=='vchrcrn') && ($row->vc_date!="1000-01-01 00:00:00"))
 			{
 				echo "<td>" . anchor_popup('payment2/p2bill_printpreview/' .  $row->id , 'PrintPreview', array('title' => 'Bill Print Preview ', 'width' => '600', 'height' => '600')) . "</td>";
 			}
-		//	else if(($row->decision=='Rejected') && ($row->vc_date=="0000-00-00 00:00:00"))
+		//	else if(($row->decision=='Rejected') && ($row->vc_date=="1000-01-01 00:00:00"))
 			else if($row->decision=='Rejected') 
 			{
 		        echo "<td><td><td><td><td><td><td><td><td><td><td><td><td>" . anchor('payment2/p2reject_printpreview/' .  $row->id , "PrintPreview", array('title' => 'PrintPreview ' )) . " ";

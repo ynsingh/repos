@@ -74,7 +74,10 @@ class Upl2 extends CI_Controller
                             $dept = trim($datal[3]);
                             $uo = trim($datal[4]);
                             $dfrom = trim($datal[5]);
-                            $dto = trim($datal[6]);
+			    $dto = trim($datal[6]);
+			    if((empty($dto)) || ($dto == '0000-00-00 00:00:00')){
+				    $dto='1000-01-01 00:00:00';
+			    }
                             $status ='Fulltime';
                             
                             
@@ -309,7 +312,10 @@ class Upl2 extends CI_Controller
                             $uocode = trim($datal[2]);
                             $uoname = trim($datal[3]);
                             $dfrom = trim($datal[4]);
-                            $dto = trim($datal[5]);
+			    $dto = trim($datal[5]);
+			    if((empty($dto)) || ($dto == '0000-00-00 00:00:00')){
+                                    $dto='1000-01-01 00:00:00';
+                            }
                             $status ='Fulltime';
                             
                             

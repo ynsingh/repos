@@ -38,7 +38,7 @@ class Uohome extends CI_Controller
 	
 	if (($loggedrole == "Uo") && ($this->roleid == "10")){
 		$empcode='';
-		$whdata=array('ul_dateto' => '0000-00-00 00:00:00','ul_userid' =>$userid);
+		$whdata=array('ul_dateto' => '1000-01-01 00:00:00','ul_userid' =>$userid);
 		$uodata = $this->sismodel->get_listspficemore('uo_list','ul_empcode',$whdata);
 		foreach($uodata as $uorow){
 			$empcode = $uorow->ul_empcode;

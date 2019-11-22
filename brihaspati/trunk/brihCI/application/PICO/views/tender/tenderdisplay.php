@@ -124,7 +124,7 @@ echo "<th>Action</th>";
             </td>
             
             <td>
-                 <?php if(!empty($row->tc_publishingdate && $row->tc_publishingdate != 0000-00-00)){
+                 <?php if(!empty($row->tc_publishingdate && $row->tc_publishingdate != 1000-01-01)){
             			?>
                 
                  <b>Publishing-:</b> <?php echo $row->tc_publishingdate ?><br>
@@ -187,7 +187,7 @@ echo "<th>Action</th>";
                            	
               	
               }
-              elseif($row->tc_publishingdate == 0000-00-00 || $row->tc_publishingdate == null)
+              elseif($row->tc_publishingdate == 1000-01-01 || $row->tc_publishingdate == null)
               {
               echo "&nbsp; ";
             		echo anchor('tender/step4/' . $row->tc_id , "Complete", array('title' => 'Critical Dates Details' , 'class' => 'red-link')); 	

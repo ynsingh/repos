@@ -310,14 +310,14 @@ $(document).ready(function(){
 
 				$cdate = date('Y-m-d');
                                 $headflag="false";
-                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'0000-00-00 00:00:00' );
+                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'1000-01-01 00:00:00' );
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
                                 if(($headflag)||($record->emp_head == "HEAD")){
                                         echo " ( <font color=Red> Head </font>)";
                                 }
 
                                 $uoflag="false";
-                                $uhwdata = array('ul_empcode' =>$record->emp_code, 'ul_dateto ' =>'0000-00-00 00:00:00' );
+                                $uhwdata = array('ul_empcode' =>$record->emp_code, 'ul_dateto ' =>'1000-01-01 00:00:00' );
                                 $uoflag=$this->sismodel->isduplicatemore("uo_list",$uhwdata);
 				if(($uoflag)||($record->emp_head == "UO")){
                                                 echo " & UO";
@@ -456,7 +456,7 @@ $(document).ready(function(){
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name;
                                 $cdate = date('Y-m-d');
                                 $headflag="false";
-                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'0000-00-00 00:00:00');
+                                $hwdata = array('hl_empcode' =>$record->emp_code, 'hl_dateto' =>'1000-01-01 00:00:00');
                                 $headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 
 			//	 echo "empcode ".$record->emp_code." and flag ". $headflag;

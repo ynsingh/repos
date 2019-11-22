@@ -45,7 +45,7 @@
            echo "</td>";
            ?>
  
-                <div align="left" style="margin-left:0%;width:90%;">
+                <div align="left" style="margin-left:0%;width:99%;">
                 <?php echo validation_errors('<div  class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                     <div class="isa_success"><?php echo $_SESSION['success'];?></div>

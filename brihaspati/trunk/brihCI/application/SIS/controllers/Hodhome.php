@@ -61,12 +61,12 @@ class Hodhome extends CI_Controller
         if (($loggedrole == "HoD") && ($this->roleid == "5")){
 		$today = date("Y-m-d H:i:s"); 
                 $empcode='';
-		//$orq="(hl_dateto = '0000-00-00 00:00:00' or hl_dateto >= $today)";
-//		$orq=hl_dateto = '0000-00-00 00:00:00';
+		//$orq="(hl_dateto = '1000-01-01 00:00:00' or hl_dateto >= $today)";
+//		$orq=hl_dateto = '1000-01-01 00:00:00';
                // $whdata=array($orq, 'hl_userid' =>$userid);
                // $whdata=array($orq, 'hl_deptid' =>$deptid);
-                $whdata=array('hl_dateto' => '0000-00-00 00:00:00', 'hl_deptid' =>$deptid);
-                //$whdata=array('hl_dateto' => '0000-00-00 00:00:00', 'hl_userid' =>$userid);
+                $whdata=array('hl_dateto' => '1000-01-01 00:00:00', 'hl_deptid' =>$deptid);
+                //$whdata=array('hl_dateto' => '1000-01-01 00:00:00', 'hl_userid' =>$userid);
                 $uodata = $this->sismodel->get_listspficemore('hod_list','hl_empcode',$whdata);
 //	print_r( $uodata);	
 //		if(empty($uodata)){

@@ -347,7 +347,7 @@ echo "<td>" . convert_dc($row->dc) . "</td>";
         echo "Sanction Letter Date : "."<span class=\"bold\">";
         $sanc_date  = $sanc_letter_date;
         $exp_date=explode(" ",$sanc_letter_date);
-        if($exp_date[0] == "0000-00-00"){
+        if($exp_date[0] == "1000-01-01"){
                 echo" ";
         }
         else{

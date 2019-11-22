@@ -61,9 +61,9 @@ CREATE TABLE `budgetdept` (
 	`consumeamt` DOUBLE NULL , 
 	`description` VARCHAR(255) NULL , 
 	`creatorid` VARCHAR(255) NULL , 
-	`creatordate` DATETIME NULL , 
+	`creatordate` DATETIME '1000-01-01 00:00:00' , 
 	`modifierid` VARCHAR(255) NULL , 
-	`modifierdate` DATETIME NULL , 
+	`modifierdate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT=1;
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS entries (
   modifiedvalue BLOB,	
   secunitid VARCHAR(10) DEFAULT NULL,
   sanc_letter_no VARCHAR(255) DEFAULT NULL,
-  sanc_letter_date datetime DEFAULT NULL,
+  sanc_letter_date datetime DEFAULT '1000-01-01 00:00:00',
   sanc_type VARCHAR(255) DEFAULT NULL,
   sanc_value VARCHAR(255) DEFAULT NULL,
   vendor_voucher_number varchar(55) DEFAULT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS entry_items (
   ledger_id int(11) NOT NULL,
   amount decimal(15,2) NOT NULL DEFAULT '0.00',
   dc char(1) NOT NULL,
-  reconciliation_date datetime NULL,
+  reconciliation_date datetime '1000-01-01 00:00:00',
   update_date datetime NOT NULL,
   forward_refrence_id VARCHAR(55) DEFAULT NULL,
   backward_refrence_id VARCHAR(55) DEFAULT NULL,
@@ -297,11 +297,11 @@ CREATE TABLE IF NOT EXISTS cheque_print (
   amount decimal(15,2) NOT NULL DEFAULT '0.00',
   update_cheque_no VARCHAR (100) DEFAULT NULL,
   secunitid VARCHAR(10) NOT NULL DEFAULT 0,
-  cheque_print_date datetime DEFAULT NULL,
-  cheque_bounce_date datetime DEFAULT NULL,
+  cheque_print_date datetime DEFAULT '1000-01-01 00:00:00',
+  cheque_bounce_date datetime DEFAULT '1000-01-01 00:00:00',
   cheque_print_status int(1) NOT NULL DEFAULT 0,
   cheque_bounce_status int(1) NOT NULL DEFAULT 0,
-  cheque_reprint_date datetime DEFAULT NULL,
+  cheque_reprint_date datetime DEFAULT '1000-01-01 00:00:00',
   No_of_bounce_cheque VARCHAR(15) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;

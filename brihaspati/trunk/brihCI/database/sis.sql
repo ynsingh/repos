@@ -1652,7 +1652,7 @@ CREATE TABLE `user_role_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into user_role_type values (1,1,1,1,NULL,'Administrator','');
-
+insert into user_role_type values (2,5,10,1,NULL,'PayrollAdministrator','');
 -- --------------------------------------------------------
 --
 -- Table structure for table `user_role_type_archive`
@@ -1712,8 +1712,8 @@ CREATE TABLE user_input_transfer (
 	uit_paybandid_to int(11) default NULL,
 	uit_vacanttype_to  varchar(255) default NULL,
         uit_tta_detail blob NOT NULL,
-        uit_dateofrelief datetime default '1970-01-01 00:00:00',
-        uit_dateofjoining datetime default '1970-01-01 00:00:00',
+        uit_dateofrelief datetime default '1000-01-01 00:00:00',
+        uit_dateofjoining datetime default '1000-01-01 00:00:00',
         uit_email_sentto blob default NULL,
 	uit_transfertype varchar(255) default NULL,
         uit_vactype_from VARCHAR(255) NULL ,

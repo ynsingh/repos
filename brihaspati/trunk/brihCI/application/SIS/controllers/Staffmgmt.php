@@ -33,7 +33,9 @@ class Staffmgmt extends CI_Controller
 //get all uoid	 
 	public function getempuoid(){
                 $selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+                //$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
+		 $cdate = date('Y-m-d');
+                $whdata = "emp_leaving = 'NULL' and emp_dor>='".$cdate."' and ul_status='Fulltime' and (ul_dateto='1000-01-01 00:00:00'  or ul_dateto >='".$cdate."')";
 
                 $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
                 //$emp_data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -48,7 +50,7 @@ class Staffmgmt extends CI_Controller
 //get all hod empid
         public function getemphodid(){
                 $selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
 
                 $joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 //$emp_data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -65,11 +67,11 @@ class Staffmgmt extends CI_Controller
 
 		$selectfield='emp_id';
 
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
                 $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
                 $data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
 
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 $data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
     	}
@@ -330,13 +332,13 @@ class Staffmgmt extends CI_Controller
          	$data['records']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
          }
 	if($uname == 'ro@tanuvas.org.in'){
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
 		$joincond = 'employee_master.emp_code = uo_list.ul_empcode';
 		$data['records1']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
 	}
 	$rest = substr($uname, -21);
 	if($rest == 'office@tanuvas.org.in'){
-		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'hl_uopid' =>$uopid,'hl_dateto'=> '0000-00-00 00:00:00');
+		$whdata = array ('emp_leaving' => NULL,'emp_dor>='=>$cdate,'hl_uopid' =>$uopid,'hl_dateto'=> '1000-01-01 00:00:00');
                 $joincond = 'employee_master.emp_code = hod_list.hl_empcode';
 		if(($uname == 'deancppmoffice@tanuvas.org.in')||($uname == 'deanffsoffice@tanuvas.org.in')){
 			$data['records1']='';

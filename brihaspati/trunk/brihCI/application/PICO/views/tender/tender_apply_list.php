@@ -109,7 +109,7 @@ echo "<th>Action</th>";
             </td>
             
             <td>
-                 <?php if(!empty($row->tc_publishingdate && $row->tc_publishingdate != 0000-00-00)){
+                 <?php if(!empty($row->tc_publishingdate && $row->tc_publishingdate != 1000-01-01)){
             			?>
                 
                 

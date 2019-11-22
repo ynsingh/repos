@@ -111,15 +111,15 @@ echo "<th>Action</th>";
             
            
             <td>  <b>Status-:</b><?php echo $row->vendor_blackliststatus ?> <br>
-            		<?php if($row->vendor_blacklistdatefrom != 0000-00-00 && !empty($row->vendor_blacklistdatefrom)){
+            		<?php if($row->vendor_blacklistdatefrom != 1000-01-01 && !empty($row->vendor_blacklistdatefrom)){
             			?>
             		<b>Date Start-:</b><?php echo $row->vendor_blacklistdatefrom ?>
             		<?php } ?>                                       <br>
-            		<?php if($row->vendor_blacklistdateto != 0000-00-00 && !empty($row->vendor_blacklistdateto) ){
+            		<?php if($row->vendor_blacklistdateto != 1000-01-01 && !empty($row->vendor_blacklistdateto) ){
             			?>
             		<b>Date End-:</b><?php echo $row->vendor_blacklistdateto ?>
             		<?php } ?>                                       <br>
-            		<?php if($row->vendor_blacklistdateto != 0000-00-00 && !empty($row->vendor_blacklistdatefrom)){
+            		<?php if($row->vendor_blacklistdateto != 1000-01-01 && !empty($row->vendor_blacklistdatefrom)){
             			?>
             		<b>By-:</b><?php echo $row->vendor_blacklistby ?>
             		<?php } ?>                                       <br>

@@ -68,8 +68,8 @@ CREATE TABLE `authority_archive` (
   `id` int(11) NOT NULL,
   `authority_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `map_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `till_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `map_date` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `till_date` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `authority_type` varchar(10) NOT NULL,
   `creatorid` int(11) NOT NULL,
   `createdate` DATETIME  NOT NULL
@@ -83,8 +83,8 @@ CREATE TABLE `authority_map` (
   `id` int(11) NOT NULL,
   `authority_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `map_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `till_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `map_date` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `till_date` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `authority_type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

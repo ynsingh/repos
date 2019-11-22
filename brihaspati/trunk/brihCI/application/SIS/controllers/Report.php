@@ -57,9 +57,11 @@ class Report  extends CI_Controller
    }
 
 //get all uo empid
-	public function getempuoid(){
+   public function getempuoid(){
+	   	$cdate = date('Y-m-d');
 		$selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '0000-00-00 00:00:00');
+//                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'ul_status'=>'Fulltime','ul_dateto'=> '1000-01-01 00:00:00');
+                $whdata = "emp_leaving = 'NULL' and emp_dor>='".$cdate."' and ul_status='Fulltime' and (ul_dateto='1000-01-01 00:00:00'  or ul_dateto >='".$cdate."')";
 		
                 $joincond = 'employee_master.emp_code = uo_list.ul_empcode';
                 //$emp_data['uoempid']=$this->sismodel->get_jointbrecord('uo_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -74,7 +76,7 @@ class Report  extends CI_Controller
 //get all hod empid
 	public function getemphodid(){
 		$selectfield='emp_id';
-                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+                $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'),'hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
 
 		$joincond = 'employee_master.emp_code = hod_list.hl_empcode';
                 //$emp_data['hodempid']=$this->sismodel->get_jointbrecord('hod_list',$selectfield,'employee_master',$joincond,'LEFT',$whdata);
@@ -390,11 +392,11 @@ class Report  extends CI_Controller
         $empcode =$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id', $emp_id)->emp_code;
 
 	$this->headflag="false";
-        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto' =>'0000-00-00 00:00:00' );
+        $hwdata = array('hl_empcode' =>$empcode, 'hl_dateto' =>'1000-01-01 00:00:00' );
         $this->headflag=$this->sismodel->isduplicatemore("hod_list",$hwdata);
 	
 	$this->uoflag="false";
-        $uhwdata = array('ul_empcode' =>$empcode, 'ul_dateto'=> '0000-00-00 00:00:00');
+        $uhwdata = array('ul_empcode' =>$empcode, 'ul_dateto'=> '1000-01-01 00:00:00');
         $this->uoflag=$this->sismodel->isduplicatemore("uo_list",$uhwdata);
 
 	//get all profile and service data
@@ -461,7 +463,7 @@ class Report  extends CI_Controller
 	$currdate = new DateTime("now");
 //echo $dol->format('Y-m-d H:i:s');
 //echo "==";
-	if((!empty($dol)) && (!((strcasecmp($dol,"0000-00-00" )) == 0))){
+	if((!empty($dol)) && (!((strcasecmp($dol,"1000-01-01" )) == 0))){
 		$enddate = $dol;
 	}else{
 		if($dore >= $currdate){
@@ -1143,7 +1145,7 @@ public function disciplinewiselist(){
 	// get list of uo form authority table priority wise
 	$data['uoc']=$this->lgnmodel->get_orderlistspficemore('authorities','priority,name,code','','name ASC');
         $today= date("Y-m-d H:i:s"); 
-	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '0000-00-00 00:00:00');
+	$whdata=array('hl_status'=>'Fulltime','hl_dateto'=> '1000-01-01 00:00:00');
 //        $whdata=array('hl_dateto >='=> $today);
 	$data['uolt']=''; 
         if(isset($_POST['filter'])) {
@@ -1168,7 +1170,7 @@ public function disciplinewiselist(){
 	$selectfield ="ul_authuoid,ul_userid,ul_empcode, ul_uocode,ul_uoname,ul_id,  ul_modifydate";
 	$whorder="ul_id asc,ul_authuoid ASC,  ul_modifydate DESC";
 	//$whdata=array('ul_status'=>'Fulltime','ul_dateto >='=>$today);
-	$whdata=array('ul_status'=>'Fulltime','ul_dateto '=>'0000-00-00 00:00:00');
+	$whdata=array('ul_status'=>'Fulltime','ul_dateto '=>'1000-01-01 00:00:00');
 //	$grpby="ul_authuoid";
 //	get_orderdistinctrecord($tbname,$selectfield,$whdata,$whorder)
         //$data['allsc']=$this->sismodel->get_distinctrecord('uo_list',$selectfield,'');
