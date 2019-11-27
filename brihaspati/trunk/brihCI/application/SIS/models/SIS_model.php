@@ -116,8 +116,6 @@ class SIS_model extends CI_Model
 	public function get_rundualquery($sel1,$tb1,$sel2, $tb2,$spl,$whdata,$whorder){
 		$this->db2->select($sel1)->from($tb1);
 		$subQuery =  $this->db2->get_compiled_select();
- 
-		// Main Query
 		$this->db2->select($sel2)
 	         ->from($tb2)
         	 ->where("$spl ($subQuery)", NULL, FALSE);
@@ -127,7 +125,19 @@ class SIS_model extends CI_Model
         	if($whorder != ''){
                 	$this->db2->order_by($whorder);
         	}
-
+	        return $this->db2->get()->result();
+	}
+                
+	// $spl = "empid NOT IN";
+	public function get_rundualquery1($sel1,$tb1,$sel2, $spl,$whdata){
+		$this->db2->select($sel1)->from($tb1)->where($whdata);
+		$subQuery =  $this->db2->get_compiled_select();
+		$this->db2->select($sel2)
+	         ->from($tb1)
+        	 ->where("$spl ($subQuery)", NULL, FALSE);
+		if($whdata != ''){
+                	$this->db2->where($whdata);
+	        }
 	        return $this->db2->get()->result();
 	}
 
@@ -156,6 +166,32 @@ class SIS_model extends CI_Model
         return $this->db2->get()->result();
     }
 
+//SELECT * FROM (     SELECT * FROM salary_loan_head ORDER BY slh_id DESC LIMIT 17 ) sub ORDER BY slh_id ASC;
+//$this->db->select('SELECT *      FROM chat      WHERE (userID = $session AND toID = $friendID)      OR (userID = $friendID AND toID = $session)  
+  //   ORDER BY id DESC      LIMIT 10') AS `table` ORDER by id ASC', FALSE); 
+
+    public function get_orderlistspficemorelimit($tbname,$selectfield,$whdata,$whorder,$limit){
+        $this->db2->flush_cache();
+	//$this->db->select(('SELECT $selectfield FROM $tbname WHERE ORDER BY $whorder LIMIT $limit') table ORDER by slh_id asc );
+        $this->db2->from($tbname);
+        $this->db2->select($selectfield);
+        if($whdata != ''){
+                $this->db2->where($whdata);
+        }
+        if($whorder != ''){
+                $this->db2->order_by($whorder);
+        }
+	if(!empty($limit)){
+		$this->db2->limit($limit);
+	}
+//	$subQuery = $this->db2->get_compile_select();
+//	$this->db2->do_reset_select();
+//	$this->db2->select('*');
+//	$this->db2->from("{$subQuery} AS table");
+//	$this->db2->order_by('slh_id', 'ASC');
+
+        return $this->db2->get()->result();
+    }
     //    getting different field from table - $selectfield ('a,b,c');
     //    $whdata = array('name' => $name, 'title' => $title, 'status' => $status);
     //    $whorder = ("column1 asc,column2 desc");
@@ -842,10 +878,11 @@ class SIS_model extends CI_Model
     /********************************get CCA Amount according to Pay Range, Pay Commission and BP ****************/
     public function getcca_amount($basicpay,$paycom) {
      
-        $paycom='6th';
+    //    $paycom='6th';
         $newrange=array();
         $sixcomm=array ("0-8000", "8001-12000", "12001-16000", "16001-inf");
         $comm7= array("0-20600", "20601-30800", "30801-41100", "41101-inf");
+	$newrange[]="0-inf";
         if($paycom == '6th'){
             foreach ($sixcomm as $rangevalsix) {
                 $strange=explode("-",$rangevalsix); 
@@ -920,17 +957,17 @@ class SIS_model extends CI_Model
     /********************************get Rent Grade Percentage Amount according to Pay Range, Pay Commission and BP ****************/
     public function gethraper_amount($basicpay,$paycom) {
      
-        $paycom='6th';
+       // $paycom='6th';
         $newrange=array();
-        $sixcomm=array ("6000-10199", "10200-18599", "18600-inf");
-        $comm7= array("18201-26200", "26201-48700", "48700-inf");
+       
         if($paycom == '6th'){
+            $sixcomm=array ("6000-10199", "10200-18599", "18600-inf");
             foreach ($sixcomm as $rangevalsix) {
                 $strange=explode("-",$rangevalsix); 
-               //  print_r($strange[0]."\n".$strange[1]."\n");
+                // print_r("6th==".$strange[0]."\n".$strange[1]."\n");
                 if(true === in_array($basicpay, range($strange[0], $strange[1])))
                 {
-                   // print_r($strange[0]."\n".$strange[1]."\n");
+                  //  print_r($strange[0]."\n".$strange[1]."\n");
                     $newrange[]=$rangevalsix;
                 } 
 
@@ -939,15 +976,16 @@ class SIS_model extends CI_Model
             
         }
         else{
+             $comm7= array("18201-26200", "26201-48700", "48700-inf");
             foreach ($comm7 as $rangevalseven) {
                 $strange=explode("-",$rangevalseven); 
-                //  print_r($strange[0]."\n".$strange[1]."\n");
+                //  print_r("7th".$strange[0]."\n".$strange[1]."\n");
                 if(true === in_array($basicpay, range($strange[0], $strange[1])))
                 {
-                   // print_r($strange[0]."\n".$strange[1]."\n");
+                //    print_r($strange[0]."\n".$strange[1]."\n");
                     $newrange[]=$rangevalseven;
                 } 
-                //print_r($rangevalsix."\n");    
+              
             }
               
         }
@@ -987,7 +1025,7 @@ class SIS_model extends CI_Model
         //die();
 	$this->genpdf($temp,$pth);
     }
-           
+    
     function __destruct() {
         $this->db2->close();
     }

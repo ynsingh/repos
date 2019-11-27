@@ -77,7 +77,7 @@
                      
                 
                 ?>
-                <form action="<?php echo site_url('setup3/salaryprocess');?>" method="POST" enctype="multipart/form-data"> 
+                <form action="<?php echo site_url('setup3redesign/salaryprocess');?>" method="POST" enctype="multipart/form-data"> 
                 <tr style="font-weight:bold;" >
                     
                     <td>Select Month 
@@ -119,7 +119,7 @@
                      
                     </td>
                    </form>
-                    <form action="<?php echo site_url('setup3/copysalary');?>" method="POST" enctype="multipart/form-data"> 
+                    <form action="<?php echo site_url('setup3redesign/copysalary');?>" method="POST" enctype="multipart/form-data"> 
                     <td> Process Salary for the current month:
                     <input type="submit" name="salcopy" id="salcopy" value="Salary Process" onclick="return confirm('Are you sure you want to copy previous month salary to current month?');"/> 
                     </td>
@@ -144,13 +144,12 @@
                     
                 </tr></thead>
                 <tbody>
-                  
+                <?php //print_r($etranlist);?>  
                     <?php $serial_no = 1;?>
                     <?php if( count($emplist) ):  ?>
                         <?php foreach($emplist as $record){ ?>
+                        <?php // if(!in_array($record->emp_id,$etranlist)){;?>
                             <tr>
-                                
-                                
                                 
                                 <td><?php  echo $serial_no++; ?>&nbsp;
                                 <?php echo $record->emp_name."<br/>" ."("."<b>PF No: </b>".$record->emp_code.")"; ?></td>
@@ -188,18 +187,20 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
-                                <td><?php echo anchor("setup3/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
+                                <td><?php echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3redesign/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
                             </tr>
                         <?php }; ?>
-                        <input type="hidden" name="typecase" value="normal">    
+                        <input type="hidden" name="typecase" value="normal">  
+                        <?php //};?>
                     <?php else : ?>
                         <td colspan= "13" align="center"> No Records found...!</td>
                     <?php endif;?> 
                         
+                        
                    <!--*****Records from ste************************************************** -->     
                      <?php // echo count($etranlist); ?>  
-                    <?php if( !empty(($etranlist)) && count($etranlist)  ):   ?>
+                    <?php if( !empty($etranlist)) :   ?>
                      <tr> <td colspan="13"><?php echo "<b>Employees Salary of Transfer and Leave cases</b>"; ?></td></tr>
                         <?php foreach($etranlist as $recordste){ ?>
                             <tr>
@@ -223,11 +224,20 @@
                                 </td>
                                 <td><?php 
                                         $selectfield ="sallt_netsalary";
-                                        $whdata = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear);
+                                        $whdata = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'from');
                                         $salval= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
+                                        $whdata1 = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'transit');
+                                        $salval1= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata1,'');
+                                        $whdata2 = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'to');
+                                        $salval2= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata2,'');
+                                        
                                         if(!empty($salval)){
                                             $netval=$salval[0]->sallt_netsalary;
-                                            echo (round($netval,2));
+                                            $netval1=$salval1[0]->sallt_netsalary;
+                                            $netval2=$salval2[0]->sallt_netsalary;
+                                            $total=$netval+$netval1+$netval2;
+                                            //print_r($netval.",".$netval1.",".$netval2.",".$total);
+                                            echo (round($total,2));
                                         }
                                         else{
                                             echo 0.0;
@@ -242,8 +252,8 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
-                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3redesign/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3redesign/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
                             <?php }; ?>
                         <?php foreach($empleavelist as $recordsle){ ?> 
@@ -285,14 +295,14 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
-                                <td><?php echo anchor("setup3/salaryslipcopy/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3redesign/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3redesign/salaryslipcopy/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
                                 
                         <?php }; ?>   
-                    <?php else : ?>
-                        <td colspan= "13" align="center"> No Records found...!</td>
-                    <?php endif;?>   
+                    <?php  else : ?>
+                            <td colspan= "13" align="center"> No Records found...!</td> 
+                    <?php  endif;?>   
                         
                 </tbody>    
             </table>

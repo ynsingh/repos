@@ -733,6 +733,7 @@ CREATE TABLE `salary_data` (
   `sald_empid` int(11)  NOT NULL,
   `sald_sheadid`  varchar(250) NOT NULL,
   `sald_shamount` double  Default 0,
+  `sald_installment` VARCHAR(50) NULL,
   `sald_month` varchar(100)  NOT NULL,
   `sald_year` varchar(100) NOT NULL
 
@@ -1803,6 +1804,7 @@ CREATE TABLE `salarydata_lt` (
   `saldlt_empid` int(11)  NOT NULL,
   `saldlt_sheadid`  varchar(250) NOT NULL,
   `saldlt_shamount` double  Default 0,
+ `saldlt_installment` VARCHAR(50) NULL, 
   `saldlt_month` varchar(100)  NOT NULL,
   `saldlt_year` varchar(100) NOT NULL,
   `saldlt_type` varchar(250) Default NULL
