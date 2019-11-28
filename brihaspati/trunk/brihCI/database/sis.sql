@@ -797,6 +797,8 @@ CREATE TABLE `salary_head` (
    UNIQUE (`sh_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `salary_head` (`sh_id`, `sh_code`, `sh_name`, `sh_tnt`, `sh_shortname`, `sh_type`, `sh_calc_type`, `sh_taxable`, `sh_category`, `sh_ledgercode`, `sh_description`, `sh_creatorid`, `sh_creatordate`, `sh_modifierid`, `sh_modifydate`) VALUES
+(1, 'Basic', 'Basic Pay', 'Common', 'Basic', 'I', 'N', 'Y', 'GS', '', 'Basic Pay', 'admin', '2019-11-16 00:00:00', 'admin', '2019-11-16 00:00:00');
 -- -------------------------------------------------------------------
 --
 -- Table structure for table `salary_formula `

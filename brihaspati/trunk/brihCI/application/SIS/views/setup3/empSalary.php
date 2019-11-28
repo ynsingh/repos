@@ -14,8 +14,6 @@
                     alert("please select month and year for load the salary !!");
                     return false;
                 };
-
-
             }  
         </script>    
     </head>
@@ -53,7 +51,6 @@
             </div>
         </tr></table>
            
-            <table width="100%" border="0">
                 <?php
                     //set the month array
                     $cmonth= date('M');
@@ -77,11 +74,27 @@
                      
                 
                 ?>
+            <table width="100%" border="0">
+            <!--    <form action="<?php echo site_url('setup3/salaryprocess');?>" method="POST" enctype="multipart/form-data"> -->
                 <form action="<?php echo site_url('setup3redesign/salaryprocess');?>" method="POST" enctype="multipart/form-data"> 
                 <tr style="font-weight:bold;" >
-                    
-                    <td>Select Month 
-                        <select name="month" id="month" style="width:300px;"> 
+                   <td> Select Depratment<br>
+                        <select name="dept" id="dept" style="width:250px;" required> 
+                            <?php
+				if(!empty($deptsel)){ ?>
+                            <option value="<?php echo "";?>"><?php echo $deptsel;?></option>
+<?php				}else{ ?>
+                            <option value="<?php echo "";?>"><?php echo "Please select department";?></option>
+<?php				}
+                                foreach ($combdata as $rec) {
+                                    echo '<option  value="'.$rec->dept_id.'">'.$rec->dept_name.'</option>';
+                                }
+                            ?>
+                        </select> 
+			
+		   </td> 
+                    <td>Select Month <br>
+                        <select name="month" id="month" style="width:250px;"> 
                             <?php if($selmonth!=$cmonth && (!empty($selmonth))):;?>
                             <option value="<?php echo $selmonth;?>"><?php echo $selmonth;?></option>
                             <?php else:;?>
@@ -96,10 +109,10 @@
                         </select> 
                        
                     </td>   
-                    <td>Select Year
+                    <td>Select Year</br>
                         
                         
-                        <select name="year" id="year" style="width:300px;" > 
+                        <select name="year" id="year" style="width:250px;" > 
                             <?php if($selyear!=$cyear):;?>
                             <option value="<?php echo $selyear;?>"><?php echo $selyear;?></option>
                             <?php else:;?>
@@ -112,28 +125,31 @@
                             ?>          
                         </select> 
                   </td>
-                  
                     
                    <td>                       
                         <input type="submit" name="salpro" id="salpro" value="Load"/> 
                      
                     </td>
                    </form>
+
+                    <!--<form action="<?php echo site_url('setup3/copysalary');?>" method="POST" enctype="multipart/form-data"> -->
                     <form action="<?php echo site_url('setup3redesign/copysalary');?>" method="POST" enctype="multipart/form-data"> 
                     <td> Process Salary for the current month:
                     <input type="submit" name="salcopy" id="salcopy" value="Salary Process" onclick="return confirm('Are you sure you want to copy previous month salary to current month?');"/> 
                     </td>
-                    
                     </form>
-                   
                 </tr>
             </table>
+                   
             <div class="scroller_sub_page">
             <table class="TFtable" >
                 <thead><tr>
                     <!-- <th>Sr.No</th> -->
                     <th>Employee Name</th>
-                    <th>Details</th>
+		<?php  if(empty($deptsel)){
+                    echo "<th>Details</th>";
+		}
+ ?>
                     <th>Designation</th>
                     <th>Total Salary</th>
                     <!--<th>Status</th> -->
@@ -145,25 +161,37 @@
                 </tr></thead>
                 <tbody>
                 <?php //print_r($etranlist);?>  
+                              <?php  if(!empty($deptsel)){
+					echo "<tr><td colspan=7><b>Department : ".$deptsel."</b></td></tr>";
+				}
+                            ?>    
                     <?php $serial_no = 1;?>
                     <?php if( count($emplist) ):  ?>
                         <?php foreach($emplist as $record){ ?>
                         <?php // if(!in_array($record->emp_id,$etranlist)){;?>
                             <tr>
-                                
                                 <td><?php  echo $serial_no++; ?>&nbsp;
-                                <?php echo $record->emp_name."<br/>" ."("."<b>PF No: </b>".$record->emp_code.")"; ?></td>
-                                <td><?php
+                                <?php echo $record->emp_name."<br/>" ."("."<b>PF No: </b>".$record->emp_code.")"; 
+
+                                    if(!empty($record->emp_schemeid)){
+                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+					if(!empty($deptsel)){
+						echo "<br/> "."<b>scheme-: </b>".$schme;
+					}
+                                    }
+				?></td>
+                                <?php
+				 if(empty($deptsel)){
+
                                     $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
                                     $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name;
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
-                                    if(!empty($record->emp_schemeid)){
-                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
-                                        
-                                    }
+				    echo "<td>";
                                     echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+				    echo "</td>";
+				}
                                 ?>
-                                </td>
+                               
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 
@@ -194,7 +222,7 @@
                         <input type="hidden" name="typecase" value="normal">  
                         <?php //};?>
                     <?php else : ?>
-                        <td colspan= "13" align="center"> No Records found...!</td>
+                        <td colspan= "13" align="center"> No Records found...!</td> 
                     <?php endif;?> 
                         
                         

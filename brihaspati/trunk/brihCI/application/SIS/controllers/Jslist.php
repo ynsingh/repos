@@ -934,10 +934,12 @@ class Jslist extends CI_Controller
 		$mrecord=$this->sismodel->get_maxvalue('salary_earnings_head','seh_id',$wdata2);
 		$msehid='';
 		if(!empty($mrecord)){
-		foreach($mrecord as $mr){
-			$msehid=$mr->seh_id;
-		}
-		$hvalue=round($this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$msehid)->seh_headamount,0);
+			foreach($mrecord as $mr){
+				$msehid=$mr->seh_id;
+			}
+			if(!empty($msehid)){
+				$hvalue=round($this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$msehid)->seh_headamount,0);
+			}
 		}
 	//	$maxrecv=$this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_id,seh_headamount',$wdata2,'seh_id asc');
 	//	foreach($maxrecv as $mrv){

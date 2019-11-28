@@ -2437,6 +2437,7 @@ class Staffmgmt extends CI_Controller
             $uco_select_box.='<option value=Officer> Officer';
             $uco_select_box.='<option value=TechnicalOfficer> Technical Officer';
             $uco_select_box.='<option value=SupportingStaff> Supporting Staff';
+            $uco_select_box.='<option value=MedicalStaff> Medical Staff';
             
 	}
        echo json_encode($uco_select_box);

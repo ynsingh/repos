@@ -271,49 +271,39 @@ class Payrollprofile extends CI_Controller
     }
 	
   public function emppayprofile(){
-        $this->hglist= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
-        $this->ccalist= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
-        $this->society= $this->sismodel->get_listspfic2('society_master_list','soc_id','soc_sname');
-
+        $ppmdata['hglist']= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
+        $ppmdata['ccalist']= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
+        $ppmdata['society']= $this->sismodel->get_listspfic2('society_master_list','soc_id','soc_sname');
+	$ppmdata['emppfno']='';
         $dataem=array();
         $dataappems=array();
         /****************************************personal working detail****************************/
         if(isset($_POST['pwdprofile'])) {
-
-
             $this->form_validation->set_rules('dedupf','DeductUPF','trim|xss_clean');
             $this->form_validation->set_rules('pcontri','Pension Contribution','trim|xss_clean');
             $this->form_validation->set_rules('washallw','Washing allowance','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
-                $this->load->view('payrollprofile/payprofileemp');
+                $this->load->view('payrollprofile/payprofileemp',$ppmdata);
                 return;
             }
             else{
-
                 $upfno = $this->input->post('upfno', '');
                 if(empty($upfno)){
                     $cpsno = $this->input->post('cpsno', '');
                     $upfno = $cpsno;
                 }
-
                 $datappems = array(
-
                 /********** personal working detail*********/
-
                 'ems_deductupf'            =>$_POST['dedupf'],
                 'ems_pensioncontri'        =>$_POST['pcontri'],
                 'ems_washingallowance'     =>$_POST['washallw'],
                 );
             }
-
         }//ifpwdbutton
 
         /***********************Employee Pay Scale*****************************************/
        if(isset($_POST['espprofile'])) {
-
-
-
             $this->form_validation->set_rules('pcomm','Pay commission','trim|xss_clean');
             $this->form_validation->set_rules('pscale','Pay Band','trim|xss_clean');
             $this->form_validation->set_rules('pscale1','Academic Level of Pay','trim|xss_clean');
@@ -321,11 +311,10 @@ class Payrollprofile extends CI_Controller
             $this->form_validation->set_rules('pscale3','Academic Grade Pay','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
-                $this->load->view('payrollprofile/payprofileemp');
+                $this->load->view('payrollprofile/payprofileemp',$ppmdata);
                 return;
             }
             else{
-
                 /****************employee pay scale********************************/
                 $paycom=$this->input->post('pcomm', '');
                 $payscle=$this->input->post('pscale', ''); //payband of 6th paycomm
@@ -339,15 +328,11 @@ class Payrollprofile extends CI_Controller
 			$salgrdid=$payscle1;
 			$dataem['emp_salary_grade']=$salgrdid;
 		}
-
-
             }
            //echo $dataem.$paycom.$payscle.$payscle1.$salgrdid;
         }//ifespprofilebutton
 	  /***********************Bank Detail*******************************************************/
         if(isset($_POST['bankprofile'])) {
-
-
             $this->form_validation->set_rules('accno','Account number','trim|xss_clean');
             $this->form_validation->set_rules('bname','Bank name','trim|xss_clean');
             $this->form_validation->set_rules('ifsccode','IFSC code','trim|xss_clean');
@@ -359,11 +344,10 @@ class Payrollprofile extends CI_Controller
             $this->form_validation->set_rules('bbemail','Branch Email','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
-                $this->load->view('payrollprofile/payprofileemp');
+                $this->load->view('payrollprofile/payprofileemp',$ppmdata);
                 return;
             }
             else{
-
                 /****************bank detail**************************************************/
                 $accno =$this->input->post('accno', '');
                 $bankname = $this->input->post('bname', '');
@@ -384,24 +368,19 @@ class Payrollprofile extends CI_Controller
                 if(!empty($bbranch))
                     $dataem['emp_bankbranch']      =$bbranch;
 
-                $datappems = array(
-
                     /********************bank deatil*****************/
+                $datappems = array(
                     'ems_bbmicr'               =>$bbmicr,
                     'ems_acctype'              =>$acctype,
                     'ems_bbadd'                =>$bbadd,
                     'ems_bbphone'              =>$bbphone,
                     'ems_bbemail'              =>$bbemail,
-
                 );
-
-
             }
         } // bankprofile
 
         /***********************HRA/CCA/Rent Detail*******************************************************/
         if(isset($_POST['hcrprofile'])) {
-
 //            echo "hcrprofile tab hra hello in form ";
             $this->form_validation->set_rules('hragrade','HRA grade','trim|xss_clean');
             $this->form_validation->set_rules('ccagrade','CCA grade','trim|xss_clean');
@@ -413,20 +392,16 @@ class Payrollprofile extends CI_Controller
             $this->form_validation->set_rules('qtrtype','Qtrtype','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
-                $this->load->view('payrollprofile/payprofileemp');
+                $this->load->view('payrollprofile/payprofileemp',$ppmdata);
                 return;
             }
             else{
-
                 /****************HRA/CCA/Rent Detail****************************************/
-
                 $exhra=$this->input->post('exhra', '');
                 $rentgrade=$this->input->post('rentgrade', '');
                 $qtrtype = $this->input->post('qtrtype', '');
-
-                $datappems = array(
-
                     /******HRA/CCA/Rent Detail********************/
+                $datappems = array(
                     'ems_hragrade'             =>$_POST['hragrade'],
                     'ems_ccagrade'             =>$_POST['ccagrade'],
                     'ems_erfq'                 =>$_POST['rfqemp'],
@@ -436,47 +411,35 @@ class Payrollprofile extends CI_Controller
                     'ems_house_type'          =>$qtrtype,
                     'ems_house_no'            =>$_POST['qtrno'],
                 );
-
             }
-
         }//hcrprofile
 
 	 /*****************************Others******************************************/
 
         if(isset($_POST['otherprofile'])) {
-
             $this->form_validation->set_rules('panno','PAN No','trim|xss_clean');
             $this->form_validation->set_rules('society','society','trim|xss_clean');
             $this->form_validation->set_rules('socamount','Society Amount','trim|xss_clean');
             $this->form_validation->set_rules('societymember','societymember','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
-                $this->load->view('payrollprofile/payprofileemp');
+                $this->load->view('payrollprofile/payprofileemp',$ppmdata);
                 return;
             }
             else{
-
-
                 $panno =$this->input->post('panno', '');
                 $society = $this->input->post('society', '');
                 $socmem = $this->input->post('societymember', '');
                 $socamount =$this->input->post('socamount', '');
-
-
                 if(!empty($panno))
                     $dataem['emp_pan_no']       =$panno;
-
-                $datappems = array(
-
                     /******Others************************/
+                $datappems = array(
                     'ems_society'              =>$society,
                     'ems_societymember'        =>$socmem,
                     'ems_socamount'            =>$socamount,
                 );
-
             }
-
-
         }//otherprofile
 
         /***********************Salary Earning Heads***************************************************/
@@ -779,7 +742,8 @@ class Payrollprofile extends CI_Controller
 
         // echo "empid---".$empid;
         if(!empty($empid)){
-        $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
+	        $emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
+		$ppmdata['emppfno']=$emppfno;
       //      print_r($empid);
         //    die();
             if(!empty($datappems)){
@@ -795,17 +759,21 @@ class Payrollprofile extends CI_Controller
                 $this->logger->write_logmessage("update","Trying to add updated values in payroll profile ", " payroll profile values are not updated please try again");
                 $this->logger->write_dblogmessage("update","Trying to updated values in payroll profile", " payroll profile values are not updated please try again");
                 $this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '  , 'error');
-                redirect('payrollprofile/emppayprofile');
+        	$this->load->view('payrollprofile/payprofileemp',$ppmdata);
+		return;
+                //redirect('payrollprofile/emppayprofile');
             }
             else{
                 $this->logger->write_logmessage("update","Add updated values in payroll profile", "payroll profile values updated  successfully...");
                 $this->logger->write_dblogmessage("update","Add  updated values in payroll profile", " payroll profile values updated  successfully...");
                 $this->session->set_flashdata("success", " Payroll Profile values updated  successfully. PF No is  " ."[ "  .$emppfno. " ]");
-                redirect('payrollprofile/emppayprofile');
+        	$this->load->view('payrollprofile/payprofileemp',$ppmdata);
+		return;
+//                redirect('payrollprofile/emppayprofile');
             }
         }
         //$this->load->view('payrollprofile/payprofile');
-        $this->load->view('payrollprofile/payprofileemp');
+        $this->load->view('payrollprofile/payprofileemp',$ppmdata);
 
     }
 

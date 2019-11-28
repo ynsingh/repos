@@ -95,7 +95,7 @@
 
 .item-list {
   display: none;
-   
+  } 
         </style>
         
         <script>
@@ -573,13 +573,6 @@
         <input type="hidden" name="currentAttrValue">
     
         <?php $this->load->view('template/header'); ?>
-        <table width="100%"><tr><td>
-        <?php
-           // echo anchor('payrollprofile/payprofile', "Payroll Profile" ,array('title' => 'Payroll Profile' , 'class' => 'top_parent'));
-            
-            ?>
-        </td></tr>
-        </table>
         <div align="left" width="100%">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -603,10 +596,10 @@
                 <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Payroll Profile</th></thead></tr>
                 <tr>
                     <td><label for="emppfno" style="font-size:15px;"><font>Employee PF No</font> <font color='Red'>*</font></label>
-                    <div><input type="text" name="emppfno" id="emppfno" value="" placeholder="Employee PF No..."  required>    
+                    <div><input type="text" name="emppfno" id="emppfno" value="<?php echo $emppfno; ?>" placeholder="Employee PF No"  required>    
                     </td>
 		    <td>
-				<input type="text" name="invalidpf" id="invalidpf" value="" style="text-decoration:none;border:0; font-size:20px;font-weight:bold;color:red; word-break: break-all;width:400px;"   readonly>
+			<input type="text" name="invalidpf" id="invalidpf" value="" style="text-decoration:none;border:0; font-size:20px;font-weight:bold;color:red; word-break: break-all;width:400px;"   readonly>
 		    </td>
                 </tr>
                 </table>
@@ -838,7 +831,7 @@
                                 <div>
                                 <select name="hragrade" id="hragrade" style="width:300px;"> 
                                 <option value="" >------------ HRA GRADE ---------</option>
-                                    <?php foreach($this->hglist as $hgdata): ?>	
+                                    <?php foreach($hglist as $hgdata): ?>	
                                 <option value="<?php echo $hgdata->hgc_id; ?>"><?php echo $hgdata->hgc_gradename;?></option> 
                                     <?php endforeach; ?>
                                 </select>
@@ -847,7 +840,7 @@
                             <td> <b>CCA Grade :</b><br>
                                 <div><select name="ccagrade" id="ccagrade" style="width:300px;"> 
                                     <option value="">------------ CCA GRADE ---------</option>
-                                    <?php foreach($this->ccalist as $hgdata): ?>	
+                                    <?php foreach($ccalist as $hgdata): ?>	
                                     <option value="<?php echo $hgdata->cgc_id; ?>"><?php echo $hgdata->cgc_gradename;?></option> 
                                     <?php endforeach; ?>
                                 </select></div>
@@ -859,7 +852,7 @@
                             <td> <b> Rent Free HRA Grade :</b><br>
                                 <div><select name="exhra" id="exhra" style="width:300px;">
                                 <option value="" >------------ Rent Free HRA GRADE ---------</option>
-                                <?php foreach($this->hglist as $hgdata): ?>
+                                <?php foreach($hglist as $hgdata): ?>
                                 <option value="<?php echo $hgdata->hgc_id; ?>"><?php echo $hgdata->hgc_gradename;?>
                                 </option>
                                 <?php endforeach; ?>
@@ -874,7 +867,7 @@
                             <td colspan=1> <b>Rent Grade:</b><br>
                                 <div><select name="rentgrade" id="rentgrade" style="width:300px;"> 
                                 <option value="null" >------------ RENT GRADE ---------</option>
-                                <?php foreach($this->hglist as $hgdata): ?>	
+                                <?php foreach($hglist as $hgdata): ?>	
                                 <option value="<?php echo $hgdata->hgc_id; ?>"><?php echo $hgdata->hgc_gradename;?></option> 
                                 <?php endforeach; ?>
                                 </select></div>
@@ -916,7 +909,7 @@
                             <td><b> Society:</b><br>
                                 <div><select name="society" id="society" style="width:300px;"> 
                                     <option value="">------------ Society ---------</option>
-                                    <?php foreach($this->society as $socdata): ?>	
+                                    <?php foreach($society as $socdata): ?>	
                                     <option value="<?php echo $socdata->soc_id; ?>"><?php echo $socdata->soc_sname."(".$this->sismodel->get_listspfic1('society_master_list','soc_scode','soc_id',$socdata->soc_id)->soc_scode.")";?>
                                     </option> 
                                     <?php endforeach; ?>
@@ -1081,7 +1074,8 @@
                         <tr><thead><th style="background-color:#0099CC;text-align:center;height:30px;color:white;font-size:15px;" colspan="7">Salary Loan Heads</th></thead></tr>
                        
                         <tr><td colspan="5"></td></tr> 
-                         <?php    $whdata=array('sh_type'=>'L');
+                         <?php    
+			$whdata=array('sh_type'=>'L');
                         $shdata['records']= $this->sismodel->get_orderlistspficemore('salary_head','*',$whdata,'');
                        
                         ;?>
@@ -1160,10 +1154,6 @@
                  <tr>   <td colspan= "13" align="center"> No Records found...!</td></tr>
                 <?php endif;?>
             <!-----------------------------------------------end both------------------------------>
-             <!--------------------------------------teaching heads ---------------------------------->
-             
-               <!--------------------------------------end teaching heads ------------------------------------>      
-               <!---------------------------------NON taeching--------------------------------------> 
 		</tbody>  
                     <tr>
                             <td colspan="8">  

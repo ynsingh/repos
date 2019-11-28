@@ -160,6 +160,8 @@ function __construct() {
    				$text='13';
 			} elseif($text == 'others') {
    				$text='14';
+			} elseif($text == 'research scholors') {
+   				$text='15';
 			} else{
 				 $this->messages->add('Search proper name of Party Type.', 'error');
 			}
@@ -280,6 +282,7 @@ function __construct() {
                         "invites/Speaker" => "Invites/Speaker",
                         "officers" => "Officers",
                         "others" => "Others",
+                        "research scholors" => "Research Scholors",
                 );
 
 		$data['pfnumber'] = array(
@@ -801,6 +804,9 @@ function __construct() {
                         }
                         if($data_partyrole == 'others') {
                                 $secunit_id = '14';
+                        }
+                        if($data_partyrole == 'research scholors') {
+                                $secunit_id = '15';
                         }
 			if($secunit_id == ""){
 				$msg1= 'The party role is invalid.';

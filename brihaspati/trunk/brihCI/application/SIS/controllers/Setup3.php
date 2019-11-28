@@ -855,13 +855,22 @@ class Setup3 extends CI_Controller
         $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
         $whdata = array('sh_type' =>'D');
         $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
-        
+  // must include L      
         $this->emppfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
         $this->emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code ','emp_id',$empid)->emp_type_code;
-        $this->emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$this->emptype)->empt_id;
-//       echo $this->emptypeid; die(); 
-        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$this->emptypeid)->shc_salheadid;
+//	echo $this->emptype; die(); 
+ //       $emptypeid=$this->sismodel->get_listspfic1('employee_type','empt_id','empt_name',$this->emptype)->empt_id;
+ //      echo $emptypeid; die(); 
+//        $strarray=$this->sismodel->get_listspfic1('salaryhead_configuration','shc_salheadid','shc_emptypeid',$emptypeid)->shc_salheadid;
 //	print_r($strarray); die();
+	$emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+        $empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
+        $shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
+        foreach($shcsalhdid as $row){
+                $strarray=$row->shc_salheadid;
+        }
+
         $data['allowedhead']=explode(", ",$strarray);
        // print_r($data['allowedhead']);
         if(isset($_POST['upsalhdval'])){
@@ -1850,8 +1859,10 @@ class Setup3 extends CI_Controller
     
     /*********************  Salary Processing *******************************************/
     public function salaryprocess(){
+	$deptnme='';
         $month = $this->input->post('month', TRUE);
         $year = $this->input->post('year', TRUE);
+	$deptid=$this->input->post('dept', TRUE);
         $cmonth= date('M');
         $cyear= date("Y"); 
        // echo "999==".$month."--------".$year;
@@ -1859,13 +1870,20 @@ class Setup3 extends CI_Controller
             $month=$cmonth;
             $year=$cyear;
         }
-       
+	$datawh='';
+	$whorder='';
+      	$data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder); 
         $data['selmonth']=$cmonth;
         $data['selyear']=$cyear;
-                
         $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_email,"
           . "emp_phone,emp_aadhaar_no,";
         $whdata = array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'));
+	if(!empty($deptid)){
+		$deptnme=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name;
+		$whdata['employee_master.emp_dept_code']=$deptid;
+	}
+        $data['deptsel']=$deptnme;        
+	
         $orfield='employee_master.emp_name ASC';
         $spl='emp_id NOT IN' ;  //AND salary_transfer_entry.ste_month='.$month.' AND salary_transfer_entry.ste_year='.$year;
        // $data['emplist']=$this->sismodel->get_rundualquery('ste_empid','salary_transfer_entry',$selectfield,'employee_master',$spl,$whdata,$orfield);
@@ -1877,6 +1895,9 @@ class Setup3 extends CI_Controller
           . "employee_master.emp_phone,employee_master.emp_aadhaar_no";
         $joincond = 'salary_transfer_entry.ste_empid = employee_master.emp_id';
         $whdata =array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'),'salary_transfer_entry.ste_month'=>$month,'salary_transfer_entry.ste_year'=>$year);
+	if(!empty($deptid)){
+		$whdata['employee_master.emp_dept_code']=$deptid;
+	}
         $whorder ="emp_name asc,emp_dept_code asc,emp_desig_code asc";
         $data['etranlist'] = $this->sismodel->get_jointbrecord('salary_transfer_entry',$selectfield2,'employee_master',$joincond,'left',$whdata);
         
@@ -1887,12 +1908,16 @@ class Setup3 extends CI_Controller
           . "employee_master.emp_phone, employee_master.emp_aadhaar_no";
         $joincond1 = 'salary_leave_entry.sle_empid = employee_master.emp_id';
         $whdata1 =array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'),'salary_leave_entry.sle_month'=>$month,'salary_leave_entry.sle_year'=>$year);
+	if(!empty($deptid)){
+		$whdata1['employee_master.emp_dept_code']=$deptid;
+	}
       //  $whorder1 ="emp_name asc,emp_dept_code asc,emp_desig_code asc";
         $data['empleavelist'] = $this->sismodel->get_jointbrecord('salary_leave_entry',$selectfield3,'employee_master',$joincond1,'left',$whdata1);
        
         if(isset($_POST['salpro'])){
             $data['selmonth']=$month;
             $data['selyear']=$year;
+	    $data['deptsel']=$deptnme;
             if(!empty($data['emplist'])){
                 /**********************************income and deduction head *********************/
                 $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
@@ -1901,11 +1926,11 @@ class Setup3 extends CI_Controller
                 $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
                 $whdata = array('sh_type' =>'D');
                 $data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+                $whdata = array('sh_type' =>'L');
+                $data['loan'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
             }
-             
         } //form
         $this->load->view('setup3/empSalary',$data);
-        
     }
     /*********************  closer Salary Processing  *******************************************/
     
