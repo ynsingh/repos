@@ -584,7 +584,18 @@ class Staffmgmt extends CI_Controller
 			$splsubo='';
 		}
                     //'emp_pnp'                   =>$_POST['pnp'],
-                //-------------------------------------------------------------
+		//-------------------------------------------------------------
+		$phstat=$this->input->get_post('phstatus',TRUE);
+		$phddispln=$this->input->get_post('phddiscipline',TRUE);
+		$maritalstus=$this->input->get_post('maritalstatus',TRUE);
+		$entlpst=$this->input->get_post('elpost',TRUE);
+		$dateofjvc=$_POST['dateofjoiningvc'] ;
+		$dateofhgp=$_POST['dateofhgp'] ;
+		$dateofprob=$_POST['dateofprob'] ;
+		$dateofregu=$_POST['dateofregular'] ;
+		$dateodassrex=$_POST['assrexamdate'];
+		$dateophd=$_POST['dateofphd'];
+
                 $data = array(
                     'emp_code'                  =>$_POST['empcode'],
                    // 'emp_pfno'                =>$_POST['emppfno'],
@@ -645,7 +656,7 @@ class Staffmgmt extends CI_Controller
                     'emp_ddoid'                 =>$_POST['ddo'],
                     'emp_group'                 =>$_POST['group'],
                     'emp_apporderno'            =>$_POST['orderno'],
-                    'emp_phstatus'              =>$_POST['phstatus'],
+                    'emp_phstatus'              =>$phstat,
                     'emp_phdetail'              =>$_POST['phdetail'],
                     'emp_bloodgroup'            =>$_POST['Sabgroup'], 
                     'emp_doprobation'           =>$_POST['dateofprob'], 
@@ -654,7 +665,7 @@ class Staffmgmt extends CI_Controller
                     'emp_remarks'               =>$_POST['remarks'],
                     'emp_grade'			=>$_POST['empgrade'],  
                     'emp_secndemail'            =>$_POST['secndemailid'],
-                    'emp_phddiscipline'         =>$_POST['phddiscipline'],
+                    'emp_phddiscipline'         =>$phddispln,
                     'emp_phdtype'               =>$_POST['phdtype'],
                     'emp_phdinstname'           =>$_POST['phdinstname'],
                     'emp_phdcollege'            =>$_POST['phdcollname'],
@@ -666,11 +677,11 @@ class Staffmgmt extends CI_Controller
                     //'emp_vciregno'              =>$_POST['vciregno'],
                     //'emp_vciregdate'            =>$_POST['vciregdate'],
                     'emp_photoname'             =>$new_name, 
-		    'emp_maritalstatus'		=>$_POST['maritalstatus'],
+		    'emp_maritalstatus'		=>$maritalstus,
 		    'emp_seniortyid'		=>$_POST['seniorityno'],	    
 		    'emp_spousename'		=>$_POST['spousename'],	    
 		    'emp_jsession'		=>$_POST['jsession'],	    
-                    'emp_entrylevelpost'	=> $_POST['elpost'],    
+                    'emp_entrylevelpost'	=> $entlpst,    
                     'emp_entrylevelpayscle' 	=> $_POST['elps'],    
                 );
 		if ((strpos($email, 'temp') === 0)||(strpos($email, $pfno) === 0)) {
@@ -989,7 +1000,7 @@ class Staffmgmt extends CI_Controller
 // enabled by nks
             $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');            
             $this->form_validation->set_rules('emptype','Post Type','trim|xss_clean');
-            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','trim|xss_clean');
 	    $this->form_validation->set_rules('newpayband','New PayBand','trim|xss_clean');
             $this->form_validation->set_rules('dateofjoiningvc','Date of Joining as VC','trim|xss_clean');
 
@@ -2470,36 +2481,40 @@ class Staffmgmt extends CI_Controller
  
  /* This function has been created for calculate position of Post Type */
     public function getsstype(){
-       $emptype = $this->input->post('sstype');
-       $parts = explode(',',$emptype);
+	    $emptype = $this->input->post('sstype');
+	    $parts = explode(',',$emptype);
+	    if(empty($parts[2])){
+	    	$parts[2]=0;
+	    }
+
        if($parts[1]=='Permanent'){
-	 	$p=$parts[0];
+	 	$p=trim($parts[0]);
 		$v=$parts[2]-$parts[0];	
         	$p1=$parts[2];
-        	$p2=$parts[0];
+        	$p2=trim($parts[0]);
         	$p3=$parts[2]-$parts[0];
         	$p4=0;
         	$p5=0;
         	$p6=0;
 	    }
          elseif($parts[1]=='Temporary'){
-	 	$p=$parts[0];
+	 	$p=trim($parts[0]);
 		$v=$parts[2]-$parts[0];	
         	$p1=0;
         	$p2=0;
         	$p3=0;
         	$p4=$parts[2];
-        	$p5=$parts[0];
+        	$p5=trim($parts[0]);
         	$p6=$parts[2]-$parts[0];
 	    }
 	elseif($parts[1]=='PT'){
-		$p=$parts[0];
+		$p=trim($parts[0]);
                 $v=$parts[2]-$parts[0];
                 $p1=$parts[2];
-                $p2=$parts[0];
+                $p2=trim($parts[0]);
                 $p3=$parts[2]-$parts[0];
                 $p4=$parts[2];
-                $p5=$parts[0];
+                $p5=trim($parts[0]);
                 $p6=$parts[2]-$parts[0];
             }
         else{	
@@ -2519,28 +2534,31 @@ class Staffmgmt extends CI_Controller
     public function getsstypeper(){
        $emptype = $this->input->post('sstype');
        $parts = explode(',',$emptype);
+       if(empty($parts[2])){
+                $parts[2]=0;
+            }
        if($parts[1]=='Permanent'){
-                $p=$parts[0];
+                $p=trim($parts[0]);
                 $v=$parts[2]-$parts[0];
                 $p1=$parts[2];
-                $p2=$parts[0];
+                $p2=trim($parts[0]);
                 $p3=$parts[2]-$parts[0];
                 $p4=0;
                 $p5=0;
                 $p6=0;
             }
          elseif($parts[1]=='Temporary'){
-                $p=$parts[0];
+                $p=trim($parts[0]);
                 $v=$parts[2]-$parts[0];
                 $p1=0;
                 $p2=0;
                 $p3=0;
                 $p4=$parts[2];
-                $p5=$parts[0];
+                $p5=trim($parts[0]);
                 $p6=$parts[2]-$parts[0];
             }
         elseif($parts[1]=='PT'){
-                $p=$parts[0];
+                $p=trim($parts[0]);
                 $v=$parts[2]-$parts[0];
                 $p1=$parts[3];
                 $p2=$parts[4];

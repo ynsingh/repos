@@ -586,6 +586,16 @@ class SIS_model extends CI_Model
     
     /************Add employee record in service details table at the time of profile creation*************/
     public function insertsdetail($empid,$campus,$uocid,$deptid,$desigid,$schemeid,$ddoid,$group,$pbid,$gradepay,$sapostid,$pbdate,$joindate,$relvdate,$orderno){
+
+	    if(empty($pbdate)){
+		    $pbdate='1000-01-01 00:00:00';
+	    }
+	    if(empty($joindate)){
+		    $joindate='1000-01-01 00:00:00';
+	    }
+	    if(empty($relvdate)){
+		    $relvdate='1000-01-01 00:00:00';
+	    }
         /* update record in  additional assignments */
         $dupcheck = array(
             'empsd_empid'       =>$empid,   

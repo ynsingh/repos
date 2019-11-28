@@ -941,7 +941,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 
                 <td><label for="phstatus" style="font-size:15px;"><font color='blue'>Whether Physically Handicapped</font><font color='Red'>*</font>  </label>
                 <div><input type="radio" name="phstatus" id="phsty" value="yes">Yes &nbsp;&nbsp;&nbsp;
-                <input type="radio" name="phstatus" id="phstn" value="no">No
+                <input type="radio" name="phstatus" id="phstn" value="no" checked>No
                 </div></td>
                 <td id="phdetail"><label for="phdetail" style="font-size:15px;"><font color='blue'>Details Of PH</font></label>
                 <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo isset($_POST["phdetail"]) ? $_POST["phdetail"] : ''; ?>" placeholder="Details of PH..." size="33">

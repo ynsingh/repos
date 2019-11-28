@@ -986,8 +986,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>    
                 </td> 
             
-                <td><label for="payband" style="font-size:15px;"><font color='Blue'>Pay Band</font><font color='Red'>*</font></label>
-                    <div><select name="payband" id="payband" required style="width:300px;"> 
+                <td><label for="payband" style="font-size:15px;"><font color='Blue'>Pay Band</font><font color='Red'></font></label>
+                    <!--<div><select name="payband" id="payband" required style="width:300px;"> -->
+                    <div><select name="payband" id="payband"  style="width:300px;"> 
 			<?php
                         if(!empty($editdata->emp_salary_grade)){ ?>
                         <option value="<?php echo $editdata->emp_salary_grade;?>">
@@ -1214,7 +1215,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>
                 </td>
                 <td><label for="bankacno" style="font-size:15px;"><font color='Blue'>Bank ACC No</font><font color='Red'></font></label>
-                    <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo $editdata->emp_bank_accno; ?>" placeholder="Bank Acc No..." size="33" required="required"
+                    <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo $editdata->emp_bank_accno; ?>" placeholder="Bank Acc No..." size="33" 
 			<?php if($this->roleid == 5){ ?>
                                 readonly
                         <?php } ?>
@@ -1275,7 +1276,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
 			<?php if(!empty($editdata->emp_maritalstatus)):;?>
                         <option value="<?php echo $editdata->emp_maritalstatus;?>"><?php echo $editdata->emp_maritalstatus;?></option>
                         <?php else:?>
-                        <option selected="" >-------- Marital Status --------</option>
+                        <option selected="disabled" >---- Marital Status ----</option>
                         <?php endif?>
                         <option value="Married">Married</option>
                         <option value="Unmarried">Unmarried</option>
