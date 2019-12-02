@@ -838,15 +838,16 @@ class Setup3redesign extends CI_Controller
         $whdata = array('sh_type' =>'L');
         $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
         $data['deduction']=array_merge($data['ded'], $data['loans']);
-        
+         
         $this->emppfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
-        $this->wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype ','emp_id',$empid)->emp_worktype;
-        $this->paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+	$this->emptype=$this->sismodel->get_listspfic1('employee_master','emp_type_code ','emp_id',$empid)->emp_type_code;
+        $wtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype ','emp_id',$empid)->emp_worktype;
+        $paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
         
        // echo $this->wtype.", ".$this->paycomm;
         
         $self ="shc_salheadid";
-        $whdata = array('shc_paycom'=>$this->paycomm,'shc_wtype'=> $this->wtype);
+        $whdata = array('shc_paycom'=>$paycomm,'shc_wtype'=> $wtype);
         $rawarray=$this->sismodel->get_orderlistspficemore('salaryhead_configuration',$self,$whdata,'');
         $strarray=$rawarray[0]->shc_salheadid;
        // print_r($strarray);
@@ -1843,28 +1844,56 @@ class Setup3redesign extends CI_Controller
     
     /*********************  Salary Processing *******************************************/
     public function salaryprocess(){
+	$deptnme='';
         $month = $this->input->post('month', TRUE);
         $year = $this->input->post('year', TRUE);
+	$deptid=$this->input->post('dept', TRUE);
         $cmonth= date('M');
         $cyear= date("Y"); 
        // echo "999==".$month."--------".$year;
-        if($month=='' && $year==''){
+        if($month==''){
             $month=$cmonth;
+	}
+	if($year==''){
             $year=$cyear;
         }
-       
-        $data['selmonth']=$cmonth;
-        $data['selyear']=$cyear;
+      	$datawh='';
+        $whorder='';
+        $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder); 
+        $data['selmonth']=$month;
+        $data['selyear']=$year;
         $data['etranlist']=array();
-                
+
+	$tlempid=array();
+        $whtempid=array('ste_month'=>$month,'ste_year'=>$year);
+        $tempid=$this->sismodel->get_orderlistspficemore('salary_transfer_entry','ste_empid',$whtempid,'ste_empid asc');
+        foreach($tempid as $row){
+                $tlempid[]=$row->ste_empid;
+        }
+
+	$whlempid=array('sle_month'=>$month,'sle_year'=>$year);
+        $lempid=$this->sismodel->get_orderlistspficemore('salary_leave_entry','sle_empid',$whlempid,'sle_empid asc');
+        foreach($lempid as $row){
+                $tlempid[]=$row->sle_empid;
+        }
+
         $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_email,"
           . "emp_phone,emp_aadhaar_no,";
         $whdata = array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'));
-        $orfield='employee_master.emp_name ASC';
+	if(!empty($deptid)){
+                $deptnme=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name;
+                $whdata['employee_master.emp_dept_code']=$deptid;
+        }
+        $data['deptsel']=$deptnme;
+
+        //$orfield='employee_master.emp_dept_code ASC, employee_master.emp_name ASC';
+        $orfield='emp_desig_code ASC, emp_name ASC';
         $spl='emp_id NOT IN' ;  //AND salary_transfer_entry.ste_month='.$month.' AND salary_transfer_entry.ste_year='.$year;
        // $data['emplist']=$this->sismodel->get_rundualquery('ste_empid','salary_transfer_entry',$selectfield,'employee_master',$spl,$whdata,$orfield);
         
-        $data['emplist']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$orfield);
+        //$data['emplist']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$orfield);
+	$data['emplist']=$this->sismodel->get_orderlistspficemoreorwhnotin('employee_master',$selectfield,$whdata,'emp_id',$tlempid,$orfield);
+
         
         /**************************************employee transfer case************************************/
         $selectfield2 ="salary_transfer_entry.ste_empid,salary_transfer_entry.ste_year, salary_transfer_entry.ste_month,employee_master.emp_id,employee_master.emp_code,employee_master.emp_name,employee_master.emp_scid,"
@@ -1872,6 +1901,9 @@ class Setup3redesign extends CI_Controller
           . "employee_master.emp_phone,employee_master.emp_aadhaar_no";
         $joincond = 'salary_transfer_entry.ste_empid = employee_master.emp_id';
         $whdata =array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'),'salary_transfer_entry.ste_month'=>$month,'salary_transfer_entry.ste_year'=>$year);
+	if(!empty($deptid)){
+                $whdata['employee_master.emp_dept_code']=$deptid;
+        }
         $whorder ="emp_name asc,emp_dept_code asc,emp_desig_code asc";
         
         $data['etranlist'] = $this->sismodel->get_jointbrecord('salary_transfer_entry',$selectfield2,'employee_master',$joincond,'left',$whdata);
@@ -1884,12 +1916,15 @@ class Setup3redesign extends CI_Controller
         $joincond1 = 'salary_leave_entry.sle_empid = employee_master.emp_id';
         $whdata1 =array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'),'salary_leave_entry.sle_month'=>$month,'salary_leave_entry.sle_year'=>$year);
       //  $whorder1 ="emp_name asc,emp_dept_code asc,emp_desig_code asc";
-        
+        if(!empty($deptid)){
+                $whdata1['employee_master.emp_dept_code']=$deptid;
+        }
         $data['empleavelist'] = $this->sismodel->get_jointbrecord('salary_leave_entry',$selectfield3,'employee_master',$joincond1,'left',$whdata1);
        // $data['empleavelist1']=$data['empleavelist']->sle_empid;
         if(isset($_POST['salpro'])){
             $data['selmonth']=$month;
             $data['selyear']=$year;
+	    $data['deptsel']=$deptnme;
             if(!empty($data['emplist'])){
                 /**********************************income and deduction head *********************/
                 $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
@@ -2322,11 +2357,12 @@ class Setup3redesign extends CI_Controller
                                 $intstr=$saldata->sald_installment;
                                 if($intstr != NULL){
                                     $intallstr=explode("-",$intstr);
-                                    if((strcmp($intstr,"0-0")) != 0){
+                                    if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
                                         $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                                     }
-                                    else{
-                                        $intallno=$saldata->sald_installment;   
+                                    else if($intallstr[0] == $intallstr[1]){
+					$intallno="0-0";
+//                                        $intallno=$saldata->sald_installment;   
                                     }
                                 }
                                 else{
@@ -2353,11 +2389,12 @@ class Setup3redesign extends CI_Controller
                                 $intstr=$saldata->sald_installment;
                                 if($intstr != NULL){
                                     $intallstr=explode("-",$intstr);
-                                    if((strcmp($intstr,"0-0")) != 0){
+                                    if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
                                         $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                                     }
-                                    else{
-                                        $intallno=$saldata->sald_installment;   
+                                    else if($intallstr[0] == $intallstr[1]){
+                                        $intallno="0-0";
+//                                        $intallno=$saldata->sald_installment;   
                                     }
                                 }
                                 else{
@@ -2384,11 +2421,12 @@ class Setup3redesign extends CI_Controller
                                 $intallstr=explode('-',$intstr);
                                 //print_r($intallstr[0]."\n".$intallstr[1]."\n");
                               //  die();
-				if((strcmp($intstr,"0-0")) != 0){
+				if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
                                     $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                                 }
-                            	else{
-                                    	$intallno=$saldata->sald_installment;   
+                            	else if($intallstr[0] == $intallstr[1]){
+                                        $intallno="0-0";
+//                                    	$intallno=$saldata->sald_installment;   
                             	}
                             }
 			    else{
@@ -2396,7 +2434,7 @@ class Setup3redesign extends CI_Controller
 			    }
                             $this->getInsertSalarydata($record->emp_id,$saldata->sald_sheadid,$saldata->sald_shamount,$intallno,$cmonth,$cyear);
                         }
-                    }
+                    } // end for head value
                     //die;
                     /**************************insert in salary *****************************************************s********/
                     $selectfield1 ="sal_id";
@@ -2495,8 +2533,8 @@ class Setup3redesign extends CI_Controller
                             $saldata2->sal_emptype,$saldata2->sal_group,$cmonth,$cyear,$saldata2->sal_totalincome,$saldata2->sal_totaldeduction,$saldata2->sal_netsalary,'process');
                             
                         }
-                    }
-                } 
+                    }// end for head vlaues 1 loop
+                } //end exist if llop else part
                   /*************************sending mail with Attachment Salaryslip********************************************/
                 
               //  $uempid=$this->uri->segment(3);

@@ -486,7 +486,25 @@ class Payrollprofile extends CI_Controller
                 );
                 $salEardup = $this->sismodel->isduplicatemore('salary_earnings_head', $dupcheck);
                 if(!$salEardup){
-                    $pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
+			// check the head exist with this emp
+			$dupcheck1 = array(
+        	           'seh_empid'         =>$empid,
+	                   'seh_headid'        =>$headidin,
+			);
+			$salEardup1 = $this->sismodel->isduplicatemore('salary_earnings_head', $dupcheck1);
+			// if no then insert
+			if(!$salEardup1){
+                    		$pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
+			}else{
+			// else
+			// get the max head value of existing hea
+				$maxhdv=$this->sismodel->get_maxvalue('salary_earnings_head','seh_headamount',$dupcheck1);
+				$mhvalue=$maxhdv[0]->seh_headamount;
+			// compare if differ then insert
+				if($mhvalue != $headval){
+                    			$pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
+				}
+			}
                 }
                 else{
 
@@ -620,8 +638,26 @@ class Payrollprofile extends CI_Controller
                 );
                 $ssddup = $this->sismodel->isduplicatemore('salary_subsdeduction_head', $dupcheck);
                 if(!$ssddup){
+			// check the head exist with this emp
+                        $dupcheck1 = array(
+                    		'ssdh_empid'                =>$empid,
+		                'ssdh_headid'               =>$headidD,
+                        );
+                	$ssddup1 = $this->sismodel->isduplicatemore('salary_subsdeduction_head', $dupcheck1);
+                        // if no then insert
+                        if(!$ssddup1){
+                    		$pprofileflag = $this->sismodel->insertrec('salary_subsdeduction_head', $deductdata);
+                        }else{
+                        // else
+                        // get the max head value of existing hea
+                                $maxhdv=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_headamount',$dupcheck1);
+                                $mhvalue=$maxhdv[0]->ssdh_headamount;
+                        // compare if differ then insert
+                                if($mhvalue != $headvald){
+                    			$pprofileflag = $this->sismodel->insertrec('salary_subsdeduction_head', $deductdata);
+                                }
+                        }
 
-                    $pprofileflag = $this->sismodel->insertrec('salary_subsdeduction_head', $deductdata);
                 }
                 else{
 
@@ -696,14 +732,30 @@ class Payrollprofile extends CI_Controller
                     'slh_empid'                =>$empid,
                     'slh_headid'               =>$headidL,
                     'slh_month'                =>$cmonth,
-
                     'slh_year'                 =>$cyear,
 
                 );
                 $sloandup = $this->sismodel->isduplicatemore('salary_loan_head', $dupcheck);
                 if(!$sloandup){
-
-                    $pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+			// check the head exist with this emp
+                        $dupcheck1 = array(
+                    'slh_empid'                =>$empid,
+                    'slh_headid'               =>$headidL,
+                        );
+                        $sloandup1 = $this->sismodel->isduplicatemore('salary_loan_head', $dupcheck1);
+                        // if no then insert
+                        if(!$sloandup1){
+                    		$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+                        }else{
+                        // else
+                        // get the max head value of existing hea
+                                $maxhdv=$this->sismodel->get_maxvalue('salary_loan_head','slh_headamount',$dupcheck1);
+                                $mhvalue=$maxhdv[0]->slh_headamount;
+                        // compare if differ then insert
+                                if($mhvalue != $headvalL){
+		                	$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+                                }
+                        }
                 }
                 else{
 
@@ -799,8 +851,10 @@ class Payrollprofile extends CI_Controller
                 		$empmonth = $this->input->post('month', '');
                 		$empyear = $this->input->post('year', '');
 	//			$empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$emppfno)->emp_id;
+				$deptid= $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
 				$empldata = array(
 					'sle_empid' => $empid,
+					'sle_deptid'=>$deptid,
 					'sle_year' => $empyear,
 					'sle_month' => $empmonth,
 					'sle_pal' => $emppal,
@@ -842,6 +896,9 @@ class Payrollprofile extends CI_Controller
 	public function viewpayleaveentry(){
 		$cyear=	$this->session->flashdata('empyear');
 		$cmonth=$this->session->flashdata('empmonth');
+		$datawh='';
+        	$whorder='';
+	        $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
 		if(empty($cyear)){
 			$cyear= date("Y");
 		}
@@ -853,10 +910,17 @@ class Payrollprofile extends CI_Controller
                         $this->form_validation->set_rules('year','Year','trim|xss_clean');
 			$cmonth = $this->input->post('month', '');
                         $cyear = $this->input->post('year', '');
+			$deptid=$this->input->post('dept', TRUE);
 		} 
+		
 		$data['cyer']=$cyear;
 		$data['cmon']=$cmonth;
 		$whdata = array('sle_year' =>$cyear,'sle_month' =>$cmonth);
+		if(!empty($deptid)){
+	                $deptnme=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name;
+        	        $whdata['sle_deptid']=$deptid;
+		        $data['deptsel']=$deptnme;
+        	}
 		$selectfield='sle_id,sle_empid,sle_pal,sle_eol';
 		$whorder ='sle_empid';
 		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_leave_entry',$selectfield,$whdata,$whorder);
@@ -1020,6 +1084,9 @@ class Payrollprofile extends CI_Controller
 	public function viewpaytransentry(){
 		$cyear= $this->session->flashdata('empyear');
                 $cmonth=$this->session->flashdata('empmonth');
+		$datawh='';
+                $whorder='';
+                $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
                 if(empty($cyear)){
                         $cyear= date("Y");
                 }
@@ -1032,11 +1099,17 @@ class Payrollprofile extends CI_Controller
                         $this->form_validation->set_rules('year','Year','trim|xss_clean');
                         $cmonth = $this->input->post('month', '');
                         $cyear = $this->input->post('year', '');
+			$deptid=$this->input->post('dept', TRUE);
                 }
 
 		$data['cyer']=$cyear;
 		$data['cmon']=$cmonth;
 		$whdata = array('ste_year' =>$cyear,'ste_month' =>$cmonth);
+		if(!empty($deptid)){
+                        $deptnme=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name;
+                        $whdata['ste_deptid']=$deptid;
+                        $data['deptsel']=$deptnme;
+                }
 		$selectfield='ste_id,ste_empid,ste_days,ste_transit,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato';
 		$whorder ='ste_empid';
 		$data['records'] = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$selectfield,$whdata,$whorder);

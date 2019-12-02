@@ -176,6 +176,10 @@
                </td>
             </tr>
               
+        	<tr>
+                	<td><label for="desig_priority" class="control-label">Designation Priority:</label></td>
+                	<td><input type="text" name="desig_priority" class="form-control" size="33" /><br></td>
+	     	</tr>	
 
                       
               <tr>

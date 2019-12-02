@@ -1866,15 +1866,32 @@ class Setup3 extends CI_Controller
         $cmonth= date('M');
         $cyear= date("Y"); 
        // echo "999==".$month."--------".$year;
-        if($month=='' && $year==''){
+	if($month==''){
             $month=$cmonth;
+        }
+        if($year==''){
             $year=$cyear;
         }
+
 	$datawh='';
 	$whorder='';
       	$data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder); 
-        $data['selmonth']=$cmonth;
-        $data['selyear']=$cyear;
+        $data['selmonth']=$month;
+        $data['selyear']=$year;
+
+	$tlempid=array();
+        $whtempid=array('ste_month'=>$month,'ste_year'=>$year);
+        $tempid=$this->sismodel->get_orderlistspficemore('salary_transfer_entry','ste_empid',$whtempid,'ste_empid asc');
+        foreach($tempid as $row){
+                $tlempid[]=$row->ste_empid;
+        }
+
+        $whlempid=array('sle_month'=>$month,'sle_year'=>$year);
+        $lempid=$this->sismodel->get_orderlistspficemore('salary_leave_entry','sle_empid',$whlempid,'sle_empid asc');
+        foreach($lempid as $row){
+                $tlempid[]=$row->sle_empid;
+        }
+
         $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_email,"
           . "emp_phone,emp_aadhaar_no,";
         $whdata = array ('employee_master.emp_leaving'=>NULL,'employee_master.emp_dor >='=> date('Y-m-d'));
@@ -1887,8 +1904,8 @@ class Setup3 extends CI_Controller
         $orfield='employee_master.emp_name ASC';
         $spl='emp_id NOT IN' ;  //AND salary_transfer_entry.ste_month='.$month.' AND salary_transfer_entry.ste_year='.$year;
        // $data['emplist']=$this->sismodel->get_rundualquery('ste_empid','salary_transfer_entry',$selectfield,'employee_master',$spl,$whdata,$orfield);
-        $data['emplist']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$orfield);
-        
+//        $data['emplist']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$orfield);
+       $data['emplist']=$this->sismodel->get_orderlistspficemoreorwhnotin('employee_master',$selectfield,$whdata,'emp_id',$tlempid,$orfield); 
         /**************************************employee transfer case************************************/
         $selectfield2 ="salary_transfer_entry.ste_empid,salary_transfer_entry.ste_year, salary_transfer_entry.ste_month,employee_master.emp_id,employee_master.emp_code,employee_master.emp_name,employee_master.emp_scid,"
           . "employee_master.emp_uocid,employee_master.emp_dept_code,employee_master.emp_schemeid,employee_master.emp_desig_code,employee_master.emp_email,"

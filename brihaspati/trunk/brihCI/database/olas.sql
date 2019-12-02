@@ -824,6 +824,7 @@ CREATE TABLE `designation` (
   `desig_subtype` varchar(255)  NULL,
   `desig_name` varchar(255) NOT NULL,
   `desig_code` varchar(255) NOT NULL,
+  `desig_priority` int(4) default null,
   `desig_short` varchar(255) NOT NULL,
   `desig_payscale` varchar(255)  NULL,
   `desig_group`varchar(5) NOT NULL,

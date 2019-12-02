@@ -183,7 +183,20 @@
                 echo "Example: Faculty, Administrator, etc ";
                 echo "</td>";
                 echo "</tr>";
-              
+          
+					
+                echo "<tr>";
+                echo "<td>";
+                echo form_label('Designation Priority', 'desig_priority');
+                echo "</td>";
+                echo "<td>";
+                echo form_input($desig_priority);
+                echo "</td>";
+                echo "<td>";
+                echo "Example: 10, 8,6 etc ";
+                echo "</td>";
+                echo "</tr>";
+    
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Group', 'desig_group');

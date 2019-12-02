@@ -63,16 +63,17 @@
                 <th> Designation Type</th>
 		<th> Designation Sub Type</th>
 		<th> Designation Payscale</th>
-                <th> Designation Name</th>
                 <th> Designation Group </th>  
+                <th> Designation Name</th>
+                <th> Designation Priority</th>
                 <th> Designation Short</th>
                 <th> Designation Description</th>
                 <th>Action</th></tr></thead>
 <tbody>
  <?php
         $count =0;
-        if( count($this->result) ):
-        foreach ($this->result as $row)
+        if( count($result) ):
+        foreach ($result as $row)
         {
          ?>
              <tr>
@@ -109,8 +110,9 @@
 
 		?>
             <td> <?php echo $pb; ?></td>
-            <td> <?php echo $row->desig_name ?></td>
             <td> <?php echo $row->desig_group ?></td>
+            <td> <?php echo $row->desig_name ?></td>
+            <td> <?php echo $row->desig_priority ?></td>
             <td> <?php echo $row->desig_short  ?></td>
             <td> <?php echo $row->desig_desc ?></td>
             <td>

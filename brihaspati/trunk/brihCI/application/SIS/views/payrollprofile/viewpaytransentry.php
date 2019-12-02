@@ -210,6 +210,21 @@ $(document).ready(function(){
 <form action="<?php //echo site_url('payrollprofile/viewpayleaveentry');?>" id="myForm" method="POST" class="form-inline">
           <table width="100%" border="0">
             <tr style="font-weight:bold;width:100%;">
+		<td> Select Depratment<br>
+                        <select name="dept" id="dept" style="width:250px;" required>
+                            <?php
+                                if(!empty($deptsel)){ ?>
+                            <option value="<?php echo "";?>"><?php echo $deptsel;?></option>
+<?php                           }else{ ?>
+                            <option value="<?php echo "";?>"><?php echo "Please select department";?></option>
+<?php                           }
+                                foreach ($combdata as $rec) {
+                                    echo '<option  value="'.$rec->dept_id.'">'.$rec->dept_name.'</option>';
+                                }
+                            ?>
+                        </select>
+
+                   </td>
 		 <td><b>Select Month</b> <br>
                         <select name="month" id="month" style="width:300px;font-weight:bold;">
                             <option value="" disabled selected>--------Select Month ----------</option>

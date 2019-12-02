@@ -4,7 +4,7 @@
 @ author sumit saxena[sumitsesaxena@gmail.com]
  -->
 <html>
-<title>View Faculty list</title>
+<title>View Service Profile</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         
@@ -15,13 +15,14 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
-<?php $current="service"; ?>
+	<?php $print=false;$current="service"; ?>
         <script>
       
+               // document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
             function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
                 var originalContents = document.body.innerHTML;      
-                document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
+                document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logo1.png' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
                 // document.body.style.fontSize = "x-small";
                 //document.body.style. = "x-small";
                 window.print();  
@@ -49,8 +50,8 @@
     </table>        
     <div id="printme">   
       
-<table style="width:100%;" border=0>
-    <div align="left">
+	<table style="width:100%;" border=0>
+    		<div align="left">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -66,54 +67,14 @@
                 };
                 ?>    
                   
-        </div>
+	        </div>
  
-<tr>
+	<tr>
+		<td>
 <?php
         include  'ptab.php';
 ?>
-
-<?php
-//        $roleid=$this->session->userdata('id_role');
-  //      if($roleid == 5){
-    //            $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-      //          $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-        //        $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-    //    }
-      //  $uname=$this->session->userdata('username');
-        //$rest = substr($uname, -21);
-    //    if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
-
-      //          include 'eprofiletab.php'; 
-        //        echo "</tr><tr>";
-
-      //  }else{
-?>
-<!--<td valign="top" width=170>
-
-                <?php //include 'profiletab.php'; ?>
-
-</td>-->
-<?php //} ?>
-
-<!-- <td valign="top" width=170>
-<?php	
-//	if($roleid == 4){
-//		include 'empprofiletab.php';
-//	}else{
-//		include 'profiletab.php'; 
-//	}
-?>
-	   
-</td> -->
-<?php     
-//	$roleid=$this->session->userdata('id_role');
-//	if($roleid == 5){
-//		$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-//		$hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode; 
-//		$hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id; 
-//	}
-?>
+	</td>
 <td valign="top">		
 		<table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -123,31 +84,7 @@
 				$uname=$this->session->userdata('username');
 				$rest = substr($uname, -21);
 
-/*				$flagffs=false;
-                                 $flagcppm=false;
-                                 $flagro=false;
-                                 $flaguooff =false;
-                                 $flaghod=false;
-                                if(($this->session->userdata('username') == 'deanffsoffice@tanuvas.org.in')&&(!(in_array($emp_id, $uoempid)))){
-                                        $flagffs=true;
-                                }
-                                if(($this->session->userdata('username') == 'deancppmoffice@tanuvas.org.in')&&(!(in_array($emp_id, $uoempid)))){
-                                        $flagcppm=true;
-                                }
-                                if(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid))){
-                                        $flagro=true;
-                                }
-                                if(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid))&&(!(in_array($emp_id, $uoempid)))){
-                                        $flaguooff =true;
-                                }
-                                if(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid)))){
-                                        $flaghod=true;
-                                }
-
-  */                              if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-//				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
+                                if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 
 					echo anchor("empmgmt/add_servicedata/{$emp_id}"," Add ",array('title' => ' Add Service Data' , 'class' => 'red-link'));
 				}
@@ -253,13 +190,8 @@
                                 </td>
                                 <td>
                                 <?php 
-//                                if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-				//   if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-			//	if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
 
-						//								<img src=" '.base_url().'source/image.jpg' '" />
-			//			echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","<img src="'.base_url.'assets/sis/images/edit.png' '"/>",array('title' => ' Edit Service Data' , 'class' => 'red-link'));
 						echo anchor("empmgmt/edit_servicedata/{$record->empsd_id}","Edit",array('title' => ' Edit Service Data' , 'class' => 'red-link'));
 						echo "  <br><br> ";
 						echo anchor("empmgmt/delete_serviceprofile/{$record->empsd_id}","Delete",array('title' => ' Delete Service Data' , 'class' => 'red-link'));
@@ -285,7 +217,6 @@
 	<br>
 </td>
 </tr>
-
 
 </table>
        

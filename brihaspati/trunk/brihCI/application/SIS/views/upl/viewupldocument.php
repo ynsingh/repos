@@ -16,7 +16,7 @@
                 var printContents = document.getElementById(printme).innerHTML; 
                 //alert("printContents==="+printContents);
                 var originalContents = document.body.innerHTML;      
-                document.body.innerHTML = "<html><head><title></title></head><body style='width:100%;' ><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' style='width:100%;height:100px;' >"+" <div style='width:100%;height:100px;'>  " + printContents + "</div>"+"</body>";
+                document.body.innerHTML = "<html><head><title></title></head><body style='width:100%;' ><img src='<?php echo base_url(); ?>uploads/logo/logo1.png' alt='logo' style='width:100%;height:100px;' >"+" <div style='width:100%;height:100px;'>  " + printContents + "</div>"+"</body>";
                 window.print();     
                 document.body.innerHTML = originalContents;
             }

@@ -858,10 +858,10 @@ class Setup2 extends CI_Controller
     public function designation() {
 //	$array_items = array('success' => '', 'error' => '', 'warning' =>'','err_message' => '');
   //      $this->session->set_flashdata($array_items);
-        $this->result = $this->commodel->get_list('designation');
+        $datad['result'] = $this->commodel->get_list('designation');
         $this->logger->write_logmessage("view"," View Designation ", "Designation details...");
         $this->logger->write_dblogmessage("view"," View Designation" , "Designation record display successfully..." );
-        $this->load->view('setup2/designation',$this->result);
+        $this->load->view('setup2/designation',$datad);
        }
 
    /** This function add the designation
@@ -884,6 +884,7 @@ class Setup2 extends CI_Controller
                  $this->form_validation->set_rules('desig_group','Designation Group','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
+                 $this->form_validation->set_rules('desig_priority','Designation Priority','trim|xss_clean');
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
 
@@ -902,6 +903,7 @@ class Setup2 extends CI_Controller
                         'desig_group'=>$_POST['desig_group'],
                         'desig_short'=>strtoupper($_POST['desig_short']),
                         'desig_desc'=>$_POST['desig_desc'],
+                        'desig_priority'=>$_POST['desig_priority'],
                    );
 		$desigdatadup = $this->commodel->isduplicatemore('designation', $datacheck);
 
@@ -1064,6 +1066,15 @@ class Setup2 extends CI_Controller
                 'value' => $editdesig_data->desig_desc,
             
                 );
+
+        $data['desig_priority'] = array(
+                'name' => 'desig_priority',
+                'id' => 'desig_priority',
+                'maxlength' => '4',
+                'size' => '40',
+                'value' => $editdesig_data->desig_priority,
+            
+                );
         $data['desig_id'] = $desig_id;
         /*Form Validation*/
 	$this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
@@ -1086,6 +1097,7 @@ class Setup2 extends CI_Controller
             $data['desig_group']['value'] = $this->input->post('desig_group', TRUE);
             $data['desig_short']['value'] = $this->input->post('desig_short', TRUE);
             $data['desig_desc']['value'] = $this->input->post('desig_desc', TRUE);
+            $data['desig_priority']['value'] = $this->input->post('desig_priority', TRUE);
         }
 
         if ($this->form_validation->run() == FALSE)
@@ -1104,6 +1116,7 @@ class Setup2 extends CI_Controller
             $desig_group = $this->input->post('desig_group', TRUE);
             $desig_short = $this->input->post('desig_short', TRUE);
             $desig_desc= $this->input->post('desig_desc', TRUE);
+            $desig_priority= $this->input->post('desig_priority', TRUE);
           //  $data_edesig_id = $desg_id;
      //      echo $desig_type;
             $logmessage = "";
@@ -1122,6 +1135,8 @@ class Setup2 extends CI_Controller
             if($editdesig_data->desig_desc != $desig_desc)
                 $logmessage = "Edit  Designation desc " .$editdesig_data->desig_desc. " changed by " .$desig_desc;
 
+            if($editdesig_data->desig_priority != $desig_priority)
+                $logmessage = "Edit  Designation priority " .$editdesig_data->desig_priority. " changed by " .$desig_priority;
 	    //'desig_name' => $data_edesignationname,
 	    $datacheck = array('desig_subtype'=>$desig_subtype, 'desig_payscale'=>$desig_payscale, 'desig_name'=>ucwords(strtolower($desig_name)) );
 
@@ -1135,6 +1150,7 @@ class Setup2 extends CI_Controller
               'desig_group' => $desig_group,
               'desig_short' => strtoupper($desig_short),
               'desig_desc' => $desig_desc,
+              'desig_priority' => $desig_priority,
             );
                //'modifierid'=>$this->session->userdata('username'),
                //'modifydate'=>date('y-m-d')

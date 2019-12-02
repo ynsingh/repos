@@ -202,7 +202,7 @@ class SIS_model extends CI_Model
         if($whdata != ''){
                 $this->db2->where($whdata);
         }
-	if($orwhin != ''){
+	if(($orwhin != '') && (!empty($orwhin)) && (count($orwhin) != 0)){
                 $this->db2->where_not_in($orfield, $orwhin);
         }
         if($whorder != ''){

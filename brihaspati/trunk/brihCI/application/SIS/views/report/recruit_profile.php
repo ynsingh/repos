@@ -22,7 +22,7 @@
             function printDiv(printme) {
                 var printContents = document.getElementById(printme).innerHTML; 
                 var originalContents = document.body.innerHTML;      
-                document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logotanuvas.jpeg' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
+                document.body.innerHTML = "<html><head><title></title></head><body><img src='<?php echo base_url(); ?>uploads/logo/logo1.png' alt='logo' align='left' style='width:70%;height:100px;'>"+" <div style='width:70%;height:100%;'> " + printContents + "</div>"+"</body>";
                 // document.body.style.fontSize = "x-small";
                 //document.body.style. = "x-small";
                 window.print();  
@@ -69,10 +69,11 @@
                   
         </div>
  
-<tr>
+<tr><td>
 <?php
         include  'ptab.php';
 ?>
+</td>
  <?php
 //	$roleid=$this->session->userdata('id_role');
   //      if($roleid == 5){

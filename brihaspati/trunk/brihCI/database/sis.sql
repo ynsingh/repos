@@ -865,6 +865,7 @@ CREATE TABLE `salary_grade_master_archive` (
 CREATE TABLE `salary_leave_entry` (
   `sle_id` int(11) NOT NULL,
   `sle_empid` int(11) NOT NULL,
+  `sle_deptid` int(3) default null
   `sle_year` int(5) DEFAULT NULL,
   `sle_month` varchar(50) DEFAULT NULL,
   `sle_pal` int(4) DEFAULT NULL,
@@ -899,6 +900,7 @@ CREATE TABLE `salary_leave_entry_archive` (
   `slea_id` int(11) NOT NULL,
   `slea_sleid` int(11) NOT NULL,
   `slea_empid` int(11) NOT NULL,
+  `slea_deptid` int(3) default null
   `slea_year` int(5) DEFAULT NULL,
   `slea_month` varchar(50) DEFAULT NULL,
   `slea_pal` int(4) DEFAULT NULL,
@@ -930,6 +932,7 @@ ALTER TABLE `salary_leave_entry_archive`
 CREATE TABLE `salary_transfer_entry` ( 
 	`ste_id` INT(11) NOT NULL AUTO_INCREMENT , 
 	`ste_empid` INT(11) NOT NULL , 
+	`ste_deptid` int(3) default null,
 	`ste_year` INT(4) NOT NULL , 
 	`ste_month` VARCHAR(50) NOT NULL , 
 	`ste_days` VARCHAR(4) NULL , 
@@ -944,7 +947,8 @@ CREATE TABLE `salary_transfer_entry` (
 	`ste_modifydate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
 	PRIMARY KEY (`ste_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
-
+alter table salary_leave_entry add `sle_deptid` int(3) default null after `sle_empid`;
+alter table salary_transfer_entry add `ste_deptid` int(3) default null after `ste_empid`;
 -- --------------------------------------------------------
 --
 -- Table structure for table `salary_transfer_entry_archive`
@@ -954,6 +958,7 @@ CREATE TABLE `salary_transfer_entry_archive` (
 	`stea_id` INT(11) NOT NULL AUTO_INCREMENT ,
 	`stea_steid` INT(11) NOT NULL , 
 	`stea_empid` INT(11) NOT NULL , 
+	`stea_deptid` int(3) default null
 	`stea_year` INT(4) NOT NULL , 
 	`stea_month` VARCHAR(50) NOT NULL , 
 	`stea_days` VARCHAR(4) NULL , 
