@@ -883,145 +883,177 @@ class Jslist extends CI_Controller
     public function getppdetail(){
       //  echo "seema--- in js"; 
         $values=array();
+        $combthree='';
         $pfval = $this->input->post('pfshid');
         $parts = explode(',',$pfval);
-      //  echo "pfno in tab4=1=".$pfval.$parts[0].$parts[1];
+       // echo "pfno in  part0===".$parts[0]."part1===".$parts[1];
          // $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$pfval)->emp_id;
         if(empty($this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1]))){
             $mess="Please enter the valid PF Number";
             array_push($values,$mess);
-	} else{
-        	$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
-		$emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+	}
+        else{
+            $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
+            $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+           // echo "seema2===".$empid.$emppaycom;
 		//if(empty($emppaycom)){
-		if ((strlen($emppaycom) == 0)||($emppaycom == "null")){
-			$mess="Please set the pay commission for this  PF Number";
-		        array_push($values,$mess);
-		}else{
+            if ((strlen($emppaycom) == 0)||($emppaycom == "null")){
+		$mess="Please set the pay commission for this  PF Number";
+	        array_push($values,$mess);
+            }
+            else{
 	        $cmonth = date('M');
         	$cyear= date("Y");
         
-        if($parts[0] == '#tab6'){
-	        $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
-        	$empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
-		$wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
-		$shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
-		foreach($shcsalhdid as $row){
+               //if($parts[0] == '#tab6'){
+                    $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+                    $empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+                    $wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
+                    $shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
+                    foreach($shcsalhdid as $row){
 			$listhdid=$row->shc_salheadid;
-		}
-		$hdid_arr = explode (",", $listhdid);
-		$combthree='';
-		$i=0;
-		foreach($hdid_arr as $hid){
-		$hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
-		$hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
-		$htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
-                if($htype == 'I'){
-		$sgflag='N';
-		$sgflag=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$hid)->sh_calc_type;
-		$hfor='';
-		$hfor1='';
-		if($sgflag == 'Y'){
-			$hfor2=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$hid);
-			if(!empty($hfor2)){
-				$hfor1=$hfor2->sf_formula;
-			}
-			$hfor=" ( ".$hfor1." )";
-		}
-		//get max value of salary earning head from salary earning head 
-		$hvalue=0;
-		$wdata2=array('seh_empid' =>$empid,'seh_headid'=>$hid);
-		$mrecord=$this->sismodel->get_maxvalue('salary_earnings_head','seh_id',$wdata2);
-		$msehid='';
-		if(!empty($mrecord)){
-			foreach($mrecord as $mr){
-				$msehid=$mr->seh_id;
-			}
-			if(!empty($msehid)){
-				$hvalue=round($this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$msehid)->seh_headamount,0);
-			}
-		}
+                    }
+                    $hdid_arr = explode (",", $listhdid);
+                   // print_r($hdid_arr);
+                   
+                    $i=0;
+                    if($parts[0] == '#tab6'){
+                    foreach($hdid_arr as $hid){
+                        $hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
+                        $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
+                        $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+                       
+                        if($htype == 'I'){
+                            $sgflag='N';
+                            $sgflag=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$hid)->sh_calc_type;
+                            $hfor='';
+                            $hfor1='';
+                            if($sgflag == 'Y'){
+                                $hfor2=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$hid);
+                                if(!empty($hfor2)){
+                                    $hfor1=$hfor2->sf_formula;
+                                }
+                                $hfor=" ( ".$hfor1." )";
+                            }
+                            //get max value of salary earning head from salary earning head 
+                            $hvalue=0;
+                            $wdata2=array('seh_empid' =>$empid,'seh_headid'=>$hid);
+                            $mrecord=$this->sismodel->get_maxvalue('salary_earnings_head','seh_id',$wdata2);
+                            $msehid='';
+                            if(!empty($mrecord)){
+                                foreach($mrecord as $mr){
+                                    $msehid=$mr->seh_id;
+                                }
+                                if(!empty($msehid)){
+                                    $hvalue=round($this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$msehid)->seh_headamount,0);
+                                }
+                            }
 	//	$maxrecv=$this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_id,seh_headamount',$wdata2,'seh_id asc');
 	//	foreach($maxrecv as $mrv){
 	//		$hvalue=round($mrv->seh_headamount,0);
 	//	}
-		$hnme='"headamtI'.$i.'"';
-		if(!empty($hfor)){
-			$input1='<input type="text" class="headamtI" name='.$hnme.' id="headamtI'.$i.'" value="'.$hvalue.'" readonly>';
-		}else{
-			$input1='<input type="text" class="headamtI" name='.$hnme.' id="headamtI'.$i.'" value='.$hvalue.'>';
-		}
+                            $hnme='"headamtI'.$i.'"';
+                            if(!empty($hfor)){
+                                $input1='<input type="text" class="headamtI" name='.$hnme.' id="headamtI'.$i.'" value="'.$hvalue.'" readonly>';
+                            }else{
+                                $input1='<input type="text" class="headamtI" name='.$hnme.' id="headamtI'.$i.'" value='.$hvalue.'>';
+                            }
 //		create box for increment
-		if($hname == "Basic Pay"){
-			$input2='</td><td><input type="text" class="increment" name="increment'.$i.'" id="increment"  value="0" >';
-		}else{
-			$input2='</td><td>';
-		}
-			$input1=$input1.$input2;
-		$hidin='<input type="hidden" name="sheadidin'. $i.'" id="shidearn'.$i.'" value= "'.$hid.'">';
-		$ii=$i+1;
-		$combthree=$combthree.'<tr><td>'.$ii.'</td><td>'.$hcode.'</td><td>'.$hname.' '.$hfor.'</td><td>'.$input1.$hidin.'</td></tr>';
-		$i++;
-		}
-		}
-		$hidin2='<input type="hidden" name="totalcount" id="tcount" value="'. $i.'">';
-		$combthree=$combthree.$hidin2;
-		array_push($values,$combthree);
-       //     $wdata = array('seh_empid' =>$empid,'seh_month'=>$cmonth,'seh_year'=>$cyear);
-        //    $hdval= $this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_headid,seh_headname,seh_headamount',$wdata,''); 
-        }
-        if($parts[0] == '#tab7'){
-            $selfield= 'ssdh_headid,ssdh_headname,ssdh_headno,ssdh_headamount,ssdh_totalintall,ssdh_intallmentno,ssdh_installamount ';
-            $wdata = array('ssdh_empid' =>$empid,'ssdh_month'=>$cmonth,'ssdh_year'=>$cyear);
-            $hdval= $this->sismodel->get_orderlistspficemore('salary_subsdeduction_head',$selfield,$wdata,'');     
-        }
-        if($parts[0] == '#tab8'){
-            $selfield='slh_headid,slh_headname,slh_headno,slh_headamount,slh_totalintall,slh_intallmentno,slh_installamount';
-            $wdata = array('slh_empid' =>$empid,'slh_month'=>$cmonth,'slh_year'=>$cyear);
-            $hdval= $this->sismodel->get_orderlistspficemore('salary_loan_head',$selfield,$wdata,'');
-            // echo "seema in jslist===".count($hdval);
-        }
-        if(!empty($hdval)){
-            foreach($hdval as $alldata){
-           
-              //  if($parts[0] == '#tab6'){
-          //          $headid=$alldata->seh_headid;
-            //        $headname=$alldata->seh_headname;
-              //      $headval=round($alldata->seh_headamount,0);
-                //    $combthree=$headid."^".$headname."^".$headval;
-                   //  echo "in if part==id===".$combthree;
-              //  }
-                if($parts[0] == '#tab7'){
-                    $headid=$alldata->ssdh_headid;
-                    $headname=$alldata->ssdh_headname;
-                    $heano=$alldata->ssdh_headno;
-                    $headval=round($alldata->ssdh_headamount,0);
-                    $totalinstall=$alldata->ssdh_totalintall;
-                    $intalno=$alldata->ssdh_intallmentno;
-                    $intalamt=$alldata->ssdh_installamount ;        
-                    $combthree=$headid."^".$headname."^".$heano."^".$headval."^".$totalinstall."^".$intalno."^".$intalamt;
+                            if($hname == "Basic Pay"){
+                                $input2='</td><td><input type="text" class="increment" name="increment'.$i.'" id="increment"  value="0" >';
+                            }else{
+                                $input2='</td><td>';
+                            }
+                            $input1=$input1.$input2;
+                            $hidin='<input type="hidden" name="sheadidin'. $i.'" id="shidearn'.$i.'" value= "'.$hid.'">';
+                            $ii=$i+1;
+                            $combthree=$combthree.'<tr><td>'.$ii.'</td><td>'.$hcode.'</td><td>'.$hname.' '.$hfor.'</td><td>'.$input1.$hidin.'</td></tr>';
+                            $i++;
+                        }//closer I
+                    }//closerforeach
+                    $hidin2='<input type="hidden" name="totalcount" id="tcount" value="'. $i.'">';
+                    $combthree=$combthree.$hidin2;
+                    array_push($values,$combthree);
+                   // }//closerforeach//tab6
+            //     $wdata = array('seh_empid' =>$empid,'seh_month'=>$cmonth,'seh_year'=>$cyear);
+             //    $hdval= $this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_headid,seh_headname,seh_headamount',$wdata,''); 
+                
                     
-                }
-                if($parts[0] == '#tab8'){
-                    
-                    $headid=$alldata->slh_headid;
-                    $headname=$alldata->slh_headname;
-                    $heano=$alldata->slh_headno;
-                    $headval=round($alldata->slh_headamount,0);
-                    $totalinstall=$alldata->slh_totalintall;
-                    $intalno=$alldata->slh_intallmentno;
-                    $intalamt=round($alldata->slh_installamount,0); 
-                     
-                    $combthree=$headid."^".$headname."^".$heano."^".$headval."^".$totalinstall."^".$intalno."^".$intalamt;
-                }
-                array_push($values,$combthree);
+                }//closer tab6 
+               
+            if($parts[0]== '#tab7'){
+                foreach($hdid_arr as $hid){
+                    $hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
+                    $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
+                    $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+                    if($htype == 'D'){
+                       // print_r("dd===".$hid);
+                        $wdata2=array('ssdh_empid' =>$empid,'ssdh_headid'=>$hid);
+                        $mdrecord=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_id',$wdata2);
+                        $mssdhid='';
+                        if(!empty($mdrecord)){
+                            foreach($mdrecord as $mr){
+                                $mssdhid=$mr->ssdh_id;
+                                
+                            }
+                            if(!empty($mssdhid)){
+                                $hno1=$this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headno','ssdh_id',$mssdhid);
+                                if(!empty($hno1)){
+                                    $hno=$hno1->ssdh_headno;
+                                }
+                                else{
+                                    $hno=0;    
+                                }
+                                $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                            }
+                        }
+                        $combthree=$hno."^".$hvalue;
+                       // print_r($combthree);
+                        array_push($values,$combthree);
+                        
+                    }
+                }//forachhidarr        
+                 
+            }//closer of tab7  
+            if($parts[0]== '#tab8'){
+            foreach($hdid_arr as $hid){
+                    $hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
+                    $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
+                    $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+                    if($htype == 'L'){
+                       // print_r("dd===".$hid);
+                        $wdata2=array('slh_empid' =>$empid,'slh_headid'=>$hid);
+                        $mdrecord=$this->sismodel->get_maxvalue('salary_loan_head','slh_id',$wdata2);
+                        $mslhid='';
+                        if(!empty($mdrecord)){
+                            foreach($mdrecord as $mr){
+                                $mslhid=$mr->slh_id;
+                                
+                            }
+                            if(!empty($mslhid)){
+                                $hno1=$this->sismodel->get_listspfic1('salary_loan_head','slh_headno','slh_id',$mslhid);
+                                if(!empty($hno1)){
+                                    $hno=$hno1->slh_headno;
+                                }
+                                else{
+                                    $hno=0;    
+                                }
+                                $hvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_headamount','slh_id',$mslhid)->slh_headamount,0);
+                                $intlttno=$this->sismodel->get_listspfic1('salary_loan_head','slh_totalintall','slh_id',$mslhid)->slh_totalintall;
+                                $intlno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$mslhid)->slh_intallmentno;
+                                $intlhvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_installamount','slh_id',$mslhid)->slh_installamount,0);
+                                
+                            }
+                        }
+                        $combthree=$hno."^".$hvalue."^".$intlttno."^".$intlno."^".$intlhvalue;
+                       // print_r($combthree);
+                        array_push($values,$combthree);
+                        
+                    }
+                }//forachhidarr     
+                 
             }
-        }
-        else{
-           // echo "in else part==id===".$empid;
-            $mess="Please enter the valid PF Number";
-            array_push($values,$mess);
-        }
+    
 	}//close second else
       }//close first else 
         echo json_encode($values);

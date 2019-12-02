@@ -405,12 +405,14 @@
                             data: {"pfshid" : combval},
                             dataType:"html",
                             success:function(data){
-                               // alert("data=success=="+data);
+                                //alert("data=success=="+data);
                                 if(currentAttrValue === '#tab6'){
 					$('#ehtest').html(data.replace(/\\/gi,""));
                                 }
-				else{	
+				else{
+                               // alert("data=success=in else part="+data) ;   
                                 var empinput=data.split(",");
+                                //alert("data=success=in else part="+empinput) ;  
                                 
                                 for (var i=0; i < empinput.length;i++){ 
                                     
@@ -422,20 +424,20 @@
                             //        }
                                     if(currentAttrValue ==='#tab7'){
                                         
-                                        $('#headnumber'+i).val(token[2].replace(/[[\]"|"]/g,""));
-                                        $('#headamt'+i).val(token[3].replace(/[[\]"|"]/g,""));
-                                        $('#totalinstall'+i).val(token[4].replace(/[[\]"|"]/g,""));
-                                        $('#installno'+i).val(token[5].replace(/[[\]"|"]/g,""));
-                                        $('#installamount'+i).val(token[6].replace(/[[\]"|"]/g,""));
+                                        $('#headnumber'+i).val(token[0].replace(/[[\]"|"]/g,""));
+                                        $('#headamt'+i).val(token[1].replace(/[[\]"|"]/g,""));
+                                       // $('#totalinstall'+i).val(token[4].replace(/[[\]"|"]/g,""));
+                                       // $('#installno'+i).val(token[5].replace(/[[\]"|"]/g,""));
+                                        //$('#installamount'+i).val(token[6].replace(/[[\]"|"]/g,""));
                                     }
                                     
                                     if(currentAttrValue ==='#tab8'){
                                         
-                                        $('#headnumberL'+i).val(token[2].replace(/[[\]"|"]/g,""));
-                                        $('#headamtL'+i).val(token[3].replace(/[[\]"|"]/g,""));
-                                        $('#totalinstallL'+i).val(token[4].replace(/[[\]"|"]/g,""));
-                                        $('#installnoL'+i).val(token[5].replace(/[[\]"|"]/g,""));
-                                        $('#installamountL'+i).val(token[6].replace(/[[\]"|"]/g,""));
+                                        $('#headnumberL'+i).val(token[0].replace(/[[\]"|"]/g,""));
+                                        $('#headamtL'+i).val(token[1].replace(/[[\]"|"]/g,""));
+                                        $('#totalinstallL'+i).val(token[2].replace(/[[\]"|"]/g,""));
+                                        $('#installnoL'+i).val(token[3].replace(/[[\]"|"]/g,""));
+                                        $('#installamountL'+i).val(token[4].replace(/[[\]"|"]/g,""));
                                     }
                               
                                 }
