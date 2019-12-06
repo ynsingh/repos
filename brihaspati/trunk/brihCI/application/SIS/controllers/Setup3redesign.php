@@ -2279,7 +2279,7 @@ class Setup3redesign extends CI_Controller
         if(isset($_POST['salcopy'])){
             foreach($data['emplist'] as $record){
                 /* checking in table that employee data of previous month is exists or not */
-                $empexist=$this->sismodel->isduplicate('salary_data','sald_empid',$record->emp_id);
+            //    $empexist=$this->sismodel->isduplicate('salary_data','sald_empid',$record->emp_id);
               //  print_r("rrr====".$empexist);
                 /*******************employee transfer case*********************************************/
                 $transdata=array(
@@ -2302,7 +2302,7 @@ class Setup3redesign extends CI_Controller
                 //print_r("\nleave".$record->emp_id);
                 //die;
                                 
-                if(!$empexist){
+            //    if(!$empexist){
                     /*********************************Default Salary***************************************************/
                     if((!empty($emptrans)) || (!empty($empleave))){
                       
@@ -2327,7 +2327,12 @@ class Setup3redesign extends CI_Controller
                         
                         //echo"in default case===".$record->emp_id;
                     }
-                }
+              //  }
+                
+                /*********this part is commented for checking always updated data no need to use this part************/
+                
+                /*                
+                
                 else{
                     
                     //select sald_id,sald_empid,sald_sheadid,sald_shamount,sald_month from salary_data
@@ -2348,9 +2353,9 @@ class Setup3redesign extends CI_Controller
                     $headvalues = $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,'');
                     
                   //  die;
-                    foreach($headvalues as $saldata){
+                    foreach($headvalues as $saldata){*/
                     /*********************check entry existst in transfer case*****/
-                        if((!empty($emptrans)) || (!empty($empleave))){
+                    /*    if((!empty($emptrans)) || (!empty($empleave))){
                                                         
                             if($emptrans == 1){
                                 
@@ -2436,7 +2441,11 @@ class Setup3redesign extends CI_Controller
                         }
                     } // end for head value
                     //die;
+                    
+                */    
                     /**************************insert in salary *****************************************************s********/
+                    /*
+                   
                     $selectfield1 ="sal_id";
                     $whdata1 = array('sal_empid'=>$record->emp_id);
                     $salmaxid1= $this->sismodel->get_maxvalue('salary',$selectfield1,$whdata1); 
@@ -2447,25 +2456,24 @@ class Setup3redesign extends CI_Controller
                         sal_worktype,sal_emptype,sal_group,sal_totalincome,sal_totaldeduction,sal_netsalary";
                     $whdata1 = array('sal_empid' =>$record->emp_id,'sal_month'=>$salmonth1,'sal_year'=>$salyear1);
                     $headvalues1= $this->sismodel->get_orderlistspficemore('salary',$selectfield1,$whdata1,''); 
-                   // print_r("valuesof max=yyyy===".$headvalues1->sal_totalincome."\n"."===am---".$headvalues1->sal_totaldeduction); 
-                   // die;
+                  
                     foreach($headvalues1 as $saldata2){
                         
                         if((!empty($emptrans)) || (!empty($empleave))){
-                            if($emptrans == 1){
+                            if($emptrans == 1){*/
                                 /*******************detail of transfer table ************************************/
                               //  echo "part  transfer salary====".$record->emp_id."\n";
-                                $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+                               /* $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
                                 $wstfsal = array ('ste_empid'=>$record->emp_id,'ste_month'=>$cmonth,'ste_year'=>$cyear);
                                 $stfvalsal = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffieldsal,$wstfsal,'');
-                            
+                            */
                                 /***************************total income, deduction, netincome according to days***************************/
-                                $titday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$stfvalsal[0]->ste_days);
+                              /*  $titday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$stfvalsal[0]->ste_days);
                                 $tdedtday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totaldeduction,$stfvalsal[0]->ste_days);
                                 $tnettday=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_netsalary,$stfvalsal[0]->ste_days);
-                            
+                            */
                                 /************************from employee uit details***********************/
-                                $input=$cnomonth.'-'.$cmonth.'-'.'00'.'00:00:00';
+                            /*    $input=$cnomonth.'-'.$cmonth.'-'.'00'.'00:00:00';
                                 $date = strtotime($input);
                                 $cdate=date('Y-M-D h:i:s', $date); 
                                 // echo "cdddd===".$cdate;
@@ -2480,9 +2488,9 @@ class Setup3redesign extends CI_Controller
                                 $stvalemp[0]->uit_desig_from,$stvalemp[0]->uit_workingpost_from,$stvalemp[0]->uit_ddoid_from,$stvalemp[0]->uit_schm_from,
                                 $stvalemp[0]->uit_paybandid_to,$saldata2->sal_bankaccno,$stvalemp[0]->uit_emptype,$stvalemp[0]->uit_vactype_from,
                                 $stvalemp[0]->uit_group_from,$cmonth,$cyear,(round($titday,2)),(round($tdedtday,2)),(round($tnettday,2)),'process','from');
-                            
+                            */
                                 /***************************total income, deduction, netincome according to transit***************************/
-                                $titran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$stfvalsal[0]->ste_transit);
+                            /*    $titran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totalincome,$stfvalsal[0]->ste_transit);
                                 $tdedtran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_totaldeduction,$stfvalsal[0]->ste_transit);
                                 $tnetttran=$this->transferfmlatotal($record->emp_id,$cyear,$cnomonth,$saldata2->sal_netsalary,$stfvalsal[0]->ste_transit);
                             
@@ -2490,10 +2498,10 @@ class Setup3redesign extends CI_Controller
                                 $stvalemp[0]->uit_desig_from,$stvalemp[0]->uit_workingpost_from,$stvalemp[0]->uit_ddoid_from,$stvalemp[0]->uit_schm_from,
                                 $stvalemp[0]->uit_paybandid_to,$saldata2->sal_bankaccno,$stvalemp[0]->uit_emptype,$stvalemp[0]->uit_vactype_from,
                                 $stvalemp[0]->uit_group_from,$cmonth,$cyear,(round($titran,2)),(round($tdedtran,2)),(round($tnetttran,2)),'process','transit');
-                            
+                            */
                                 /***************************getting total income, deduction, netincome of new study center(days - transit )********************/
                             
-                                $totaldt=$stfvalsal[0]->ste_days + $stfvalsal[0]->ste_transit; 
+                            /*    $totaldt=$stfvalsal[0]->ste_days + $stfvalsal[0]->ste_transit; 
                                 $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$cnomonth,$cyear);
                                 $todays= $nodaysmonth - $totaldt; 
                             
@@ -2534,7 +2542,10 @@ class Setup3redesign extends CI_Controller
                             
                         }
                     }// end for head vlaues 1 loop
+               
                 } //end exist if llop else part
+                
+                */
                   /*************************sending mail with Attachment Salaryslip********************************************/
                 
               //  $uempid=$this->uri->segment(3);
@@ -2631,7 +2642,9 @@ class Setup3redesign extends CI_Controller
                 }
             //}   
                 
-                /**********************************intallment details*****************/    
+                /**********************************intallment details*****************/  
+                
+                /*
                 $selectfield="slh_id";
                 $whdata = array('slh_empid'=>$empid,'slh_headid' =>$record2->sh_id);
                // $instloan= $this->sismodel->get_maxvalue('salary_loan_head',$selectfield,$whdata,'');
@@ -2653,6 +2666,9 @@ class Setup3redesign extends CI_Controller
                 else{
                     $installdetl =NULL;   
                 }  
+                
+                */
+                $installdetl=$this->updateintlmtno($empid,$record2->sh_id);
             
                 $this->getInsertSalarydata($empid,$record2->sh_id,$this->dheadval,$installdetl,$cmonth,$cyear);
                 $sumdeduct+=$this->dheadval;
@@ -2942,6 +2958,7 @@ class Setup3redesign extends CI_Controller
                     $finalhval=0; 
                 }
             //}
+            /* comment intallment part for change in copy method 
                 
                 $selectfield="slh_id";
                 $whdata = array('slh_empid'=>$empid,'slh_headid' =>$record2->sh_id);
@@ -2964,6 +2981,11 @@ class Setup3redesign extends CI_Controller
                 else{
                     $installdetl =NULL;   
                 }
+                
+                */
+                $installdetl=$this->updateintlmtno($empid,$record2->sh_id);
+                
+                
                 $this->Salarydata_lt($empid,$record2->sh_id,(round($finalhval,2)),$installdetl,$cmonth,$cyear,'from');    
           //  $this->getInsertSalarydata($empid,$record2->sh_id,$this->dheadval,$cmonth,$cyear);
                 $sumdeduct+=$finalhval;
@@ -3080,6 +3102,7 @@ class Setup3redesign extends CI_Controller
                     $finalhval=0; 
                 }
                 
+                /*
                 $selectfield="slh_id";
                 $whdata = array('slh_empid'=>$empid,'slh_headid' =>$record2->sh_id);
                 //$instloan= $this->sismodel->get_maxvalue('salary_loan_head',$selectfield,$whdata,'');
@@ -3101,8 +3124,12 @@ class Setup3redesign extends CI_Controller
                 else{
                     $installdetl =NULL;   
                 }
+                
+                 */
              
             //}
+            $installdetl=$this->updateintlmtno($empid,$record2->sh_id);
+            
             $this->Salarydata_lt($empid,$record2->sh_id,(round($finalhval,2)),$installdetl,$cmonth,$cyear,'transit');    
           
             $sumdeduct+=$finalhval;
@@ -3216,7 +3243,7 @@ class Setup3redesign extends CI_Controller
                 else{
                     $finalhval=0; 
                 }
-                
+                /*
                 $selectfield="slh_id";
                 $whdata = array('slh_empid'=>$empid,'slh_headid' =>$record2->sh_id);
                 //$instloan= $this->sismodel->get_maxvalue('salary_loan_head',$selectfield,$whdata,'');
@@ -3238,8 +3265,12 @@ class Setup3redesign extends CI_Controller
                 else{
                     $installdetl =NULL;   
                 }
+                 
+                 */
                 
             //}
+            $installdetl=$this->updateintlmtno($empid,$record2->sh_id);
+                
             $this->Salarydata_lt($empid,$record2->sh_id,(round($finalhval,2)),$installdetl,$cmonth,$cyear,'to');    
           
             $sumdeduct+=$finalhval;
@@ -3931,7 +3962,7 @@ class Setup3redesign extends CI_Controller
                 else{
                     $finalhval=0; 
                 }
-                
+            /*    
                 $selectfield="slh_id";
                 $whdata = array('slh_empid'=>$empid,'slh_headid' =>$record2->sh_id);
                 //$instloan= $this->sismodel->get_maxvalue('salary_loan_head',$selectfield,$whdata,'');
@@ -3954,6 +3985,9 @@ class Setup3redesign extends CI_Controller
                     $installdetl =NULL;   
                 }    
            
+            */  
+                
+            $installdetl=$this->updateintlmtno($empid,$record2->sh_id);    
             $this->Salarydata_lt($empid,$record2->sh_id,(round($finalhval,2)),$installdetl,$cmonth,$cyear,'leave');    
             $sumdeduct+=$finalhval;
             
@@ -4019,5 +4053,82 @@ class Setup3redesign extends CI_Controller
         $this->pdf->stream("salaryslipcopy.pdf");
         
     }
+    public function updateintlmtno($empid,$shid){
+        $intallno=NULL;
+        $empexist=$this->sismodel->isduplicate('salary_data','sald_empid',$empid);
+        if(!$empexist){
+            $selectfield="slh_id";
+            $whdata = array('slh_empid'=>$empid,'slh_headid' =>$shid);
+            $instloan=$this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$selectfield,'slh_modifydate=',$whdata);
+            if(!empty($instloan[0]->slh_id)){
+                $totalinstall=$this->sismodel->get_listspfic1('salary_loan_head','slh_totalintall','slh_id',$instloan[0]->slh_id)->slh_totalintall; 
+                $installno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$instloan[0]->slh_id)->slh_intallmentno;
+                if($totalinstall!= 0){
+                    $intallno=$installno +1 ."-".$totalinstall;
+                }
+                else if($installno == $totalinstall){
+                    $intallno="0-0";
+                }
+                else{
+                    $intallno="0-0";
+                }
+            }
+            else{
+                $intallno =NULL;   
+            }
+            
+        }
+        else{
+            $intstr ='';
+            $selectfield ="sald_installment";
+            $wdata2=array('sald_empid' =>$empid,'sald_sheadid'=>$shid);
+            $maxrecord=$this->sismodel->get_maxvalue('salary_data','sald_installment',$wdata2);
+            if(!empty($maxrecord)){
+                $intstr=$maxrecord[0]->sald_installment;
+              
+            }
+            if(!empty($intstr)){
+                $intallstr=explode("-",$intstr);
+                if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
+                    $intallno=$intallstr[0]+1 ."-".$intallstr[1];
+                }
+                else if($intallstr[0] == $intallstr[1] && (strcmp($intstr,"0-0")) != 0){
+                
+                    $intallno="0-0";
+                }
+                else{
+                    $selectfield="slh_id";
+                    $whdata = array('slh_empid'=>$empid,'slh_headid' =>$shid);
+                    $instloan=$this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$selectfield,'slh_modifydate=',$whdata);
+                    if(!empty($instloan[0]->slh_id)){
+                        $totalinstall=$this->sismodel->get_listspfic1('salary_loan_head','slh_totalintall','slh_id',$instloan[0]->slh_id)->slh_totalintall;
+                        $installno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$instloan[0]->slh_id)->slh_intallmentno;
+                        if($totalinstall!= 0){
+                            $intallno=$installno +1 ."-".$totalinstall;
+                        }
+                    }
+                
+                }
+                            
+            }
+            else{
+                $selectfield="slh_id";
+            	$whdata = array('slh_empid'=>$empid,'slh_headid' =>$shid);
+            	$instloan=$this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$selectfield,'slh_modifydate=',$whdata);
+            	if(!empty($instloan[0]->slh_id)){
+                $totalinstall=$this->sismodel->get_listspfic1('salary_loan_head','slh_totalintall','slh_id',$instloan[0]->slh_id)->slh_totalintall;
+                $installno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$instloan[0]->slh_id)->slh_intallmentno;
+		if($totalinstall!= 0){
+                    $intallno=$installno +1 ."-".$totalinstall;
+                }else{
+                	$intallno=$maxrecord[0]->sald_installment;  
+		}
+            }
+           } 
+        }
+        return $intallno;
+    
+    }    
+        
     
 }//class    
