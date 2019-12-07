@@ -828,7 +828,7 @@ class Setup3redesign extends CI_Controller
         $empid=$this->uri->segment(3);
         $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
         $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
-        $whorder = " sh_name asc";
+        $whorder = "sh_id asc,sh_name asc";
        // $whdata = array ('saq_empid' => $emp_id,'saq_dgree NOT LIKE ' => 'B%','saq_dgree NOT LIKE ' => 'M%');
 	$whdata = array('sh_type' =>'I');// 'sh_tnt' => $this->emptnt,'sh_tnt' => NULL);
         $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
@@ -849,9 +849,14 @@ class Setup3redesign extends CI_Controller
         $self ="shc_salheadid";
         $whdata = array('shc_paycom'=>$paycomm,'shc_wtype'=> $wtype);
         $rawarray=$this->sismodel->get_orderlistspficemore('salaryhead_configuration',$self,$whdata,'');
-        $strarray=$rawarray[0]->shc_salheadid;
+	if(!empty($rawarray)){
+        	$strarray=$rawarray[0]->shc_salheadid;
+        	$data['allowedhead']=explode(", ",$strarray);
+	}
+	else{
+		$data['allowedhead']=array();
+	}
        // print_r($strarray);
-        $data['allowedhead']=explode(", ",$strarray);
         //print_r($data['allowedhead']);
        // die();
         if(isset($_POST['upsalhdval'])){
@@ -906,9 +911,6 @@ class Setup3redesign extends CI_Controller
                     'sald_installment'  =>$installdetl,
                     'sald_month'        =>$month,
                     'sald_year'         =>$year,
-                
-                
-                
                 );
                 $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
                 $totaldeduction+=$headvald;
@@ -1886,6 +1888,7 @@ class Setup3redesign extends CI_Controller
         }
         $data['deptsel']=$deptnme;
 
+        /**************************************employee normal case without transfer and leave************************************/
         //$orfield='employee_master.emp_dept_code ASC, employee_master.emp_name ASC';
         $orfield='emp_desig_code ASC, emp_name ASC';
         $spl='emp_id NOT IN' ;  //AND salary_transfer_entry.ste_month='.$month.' AND salary_transfer_entry.ste_year='.$year;
@@ -1894,6 +1897,15 @@ class Setup3redesign extends CI_Controller
         //$data['emplist']=$this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$orfield);
 	$data['emplist']=$this->sismodel->get_orderlistspficemoreorwhnotin('employee_master',$selectfield,$whdata,'emp_id',$tlempid,$orfield);
 
+        /**************************************employee both transfer and leave case************************************/
+	$whtlempid=array('ste_month'=>$month,'ste_year'=>$year,'sle_month'=>$month,'sle_year'=>$year);
+	$joincond2 = 'salary_transfer_entry.ste_empid = salary_leave_entry.sle_empid';
+	$tlempid=$this->sismodel->get_jointbrecord('salary_transfer_entry','ste_empid', 'salary_leave_entry',$joincond2, 'left',$whtlempid);
+	if(!empty($tlempid)){
+		$data['tlemplist']=$this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_id',$tlempid,$orfield);
+	}else{
+		$data['tlemplist']='';
+	}
         
         /**************************************employee transfer case************************************/
         $selectfield2 ="salary_transfer_entry.ste_empid,salary_transfer_entry.ste_year, salary_transfer_entry.ste_month,employee_master.emp_id,employee_master.emp_code,employee_master.emp_name,employee_master.emp_scid,"
@@ -1905,8 +1917,11 @@ class Setup3redesign extends CI_Controller
                 $whdata['employee_master.emp_dept_code']=$deptid;
         }
         $whorder ="emp_name asc,emp_dept_code asc,emp_desig_code asc";
-        
-        $data['etranlist'] = $this->sismodel->get_jointbrecord('salary_transfer_entry',$selectfield2,'employee_master',$joincond,'left',$whdata);
+        if(!empty($tlempid)){
+        	$data['etranlist'] = $this->sismodel->get_jointbrecord1('salary_transfer_entry',$selectfield2,'employee_master',$joincond,'left',$whdata,'employee_master.emp_id',$tlempid);
+	}else{
+	        $data['etranlist'] = $this->sismodel->get_jointbrecord('salary_transfer_entry',$selectfield2,'employee_master',$joincond,'left',$whdata);
+	}
       //  $data['etranlist1'] =$data['etranlist']->ste_empid;
         /***********************************employee  leave case*************************************************/  
         $selectfield3 ="salary_leave_entry.sle_empid,salary_leave_entry.sle_year, salary_leave_entry.sle_month,salary_leave_entry.sle_pal,salary_leave_entry.sle_eol,"
@@ -1919,7 +1934,11 @@ class Setup3redesign extends CI_Controller
         if(!empty($deptid)){
                 $whdata1['employee_master.emp_dept_code']=$deptid;
         }
-        $data['empleavelist'] = $this->sismodel->get_jointbrecord('salary_leave_entry',$selectfield3,'employee_master',$joincond1,'left',$whdata1);
+	if(!empty($tlempid)){
+        	$data['empleavelist'] = $this->sismodel->get_jointbrecord1('salary_leave_entry',$selectfield3,'employee_master',$joincond1,'left',$whdata1,'employee_master.emp_id',$tlempid);
+	}else{
+        	$data['empleavelist'] = $this->sismodel->get_jointbrecord('salary_leave_entry',$selectfield3,'employee_master',$joincond1,'left',$whdata1);
+	}
        // $data['empleavelist1']=$data['empleavelist']->sle_empid;
         if(isset($_POST['salpro'])){
             $data['selmonth']=$month;
@@ -2362,9 +2381,11 @@ class Setup3redesign extends CI_Controller
                                 $intstr=$saldata->sald_installment;
                                 if($intstr != NULL){
                                     $intallstr=explode("-",$intstr);
+//				    if((strcmp($intstr,"0-0")) != 0){
                                     if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
                                         $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                                     }
+//				    else{
                                     else if($intallstr[0] == $intallstr[1]){
 					$intallno="0-0";
 //                                        $intallno=$saldata->sald_installment;   
@@ -2394,9 +2415,11 @@ class Setup3redesign extends CI_Controller
                                 $intstr=$saldata->sald_installment;
                                 if($intstr != NULL){
                                     $intallstr=explode("-",$intstr);
+//				    if((strcmp($intstr,"0-0")) != 0){
                                     if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
                                         $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                                     }
+//				else{
                                     else if($intallstr[0] == $intallstr[1]){
                                         $intallno="0-0";
 //                                        $intallno=$saldata->sald_installment;   
@@ -2426,9 +2449,11 @@ class Setup3redesign extends CI_Controller
                                 $intallstr=explode('-',$intstr);
                                 //print_r($intallstr[0]."\n".$intallstr[1]."\n");
                               //  die();
+//				    if((strcmp($intstr,"0-0")) != 0){
 				if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
                                     $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                                 }
+//				else{
                             	else if($intallstr[0] == $intallstr[1]){
                                         $intallno="0-0";
 //                                    	$intallno=$saldata->sald_installment;   
@@ -3309,7 +3334,7 @@ class Setup3redesign extends CI_Controller
         $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
         
         $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
-        $whorder = " sh_name asc";
+        $whorder = "sh_id asc, sh_name asc";
        
 	$whdata = array('sh_type' =>'I');// 'sh_tnt' => $this->emptnt,'sh_tnt' => NULL);
         $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
@@ -3688,7 +3713,7 @@ class Setup3redesign extends CI_Controller
         $empid=$this->uri->segment(3);
         $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
         $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
-        $whorder = " sh_name asc";
+        $whorder = "sh_id asc, sh_name asc";
        
 	$whdata = array('sh_type' =>'I');// 'sh_tnt' => $this->emptnt,'sh_tnt' => NULL);
         $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);

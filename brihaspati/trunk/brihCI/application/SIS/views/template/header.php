@@ -40,6 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         if($role == 10){
                 $this->load->view('template/uomenu');
         }
+        if($role == 14){
+                $this->load->view('template/payadminmenu');
+        }
         if (($this->session->userdata('username')) !=''){
 ?>
 <?php //echo $this->session->userdata('id_emp'); ?>

@@ -165,8 +165,9 @@
 					echo "<tr><td colspan=7><b>Department : ".$deptsel."</b></td></tr>";
 				}
                             ?>    
-                    <?php $serial_no = 1;?>
-                    <?php if( count($emplist) ):  ?>
+                    <?php $serial_no = 1;
+		//	print_r($emplist);
+                     if( count($emplist) ):  ?>
                         <?php foreach($emplist as $record){ ?>
                         <?php // if(!in_array($record->emp_id,$etranlist)){;?>
                             <tr>
@@ -225,19 +226,91 @@
                         <td colspan= "13" align="center"> No Records found...!</td> 
                     <?php endif;?> 
                         
+                   <!--*****start Records from ste and sle both************************************************** -->     
+
+		<?php if( !empty($tlemplist)) :   ?>
+                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of both (Transfer and Leave) cases</b>"; ?></td></tr>
+		<?php	foreach($tlemplist as $record){ ?>
+                            <tr>
+                                <td><?php  echo $serial_no++; ?>&nbsp;
+                                <?php echo $record->emp_name."<br/>" ."("."<b>PF No: </b>".$record->emp_code.")"; 
+
+                                    if(!empty($record->emp_schemeid)){
+                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+					if(!empty($deptsel)){
+						echo "<br/> "."<b>scheme-: </b>".$schme;
+					}
+                                    }
+				?></td>
+                                <?php
+				 if(empty($deptsel)){
+
+                                    $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name;
+                                    $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name;
+                                    $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name;
+				    echo "<td>";
+                                    echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+				    echo "</td>";
+				}
+                                ?>
+                               
+                                <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?>
+                                </td>
+                                <td><?php 
+                                        $selectfield ="sal_netsalary";
+                                        $whdata = array('sal_empid' =>$record->emp_id,'sal_month' =>$selmonth,'sal_year' =>$selyear);
+                                        $salval= $this->sismodel->get_orderlistspficemore('salary',$selectfield,$whdata,'');
+                                        if(!empty($salval)){
+                                            echo $netval=$salval[0]->sal_netsalary;
+                                        }
+                                        else{
+                                            echo 0.0;
+                                        }
+                                    ;?>
+                                </td>
+                               <td></td>
+                               
+                                <td><?php
+					$adhaar=$record->emp_aadhaar_no; 
+                                        echo "<b>email Id-: </b>".$record->emp_email."<br/>"."<b>contact no-: </b>".$record->emp_phone."<br/>"."<b> aadhaar no-: </b>".$this->sismodel->mask($adhaar,null,strlen($adhaar)-4);
+                                        
+                                    ?>
+                                    
+                                </td> 
+                                <td><?php 
+					//create new function for both trf and leave
+					//echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+                                <td><?php echo anchor("setup3redesign/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
+                            </tr>
+                        <?php }; ?>
+
+		<?php endif;?>
+
+
+                   <!--*****end Records from ste and sle both************************************************** -->     
                         
                    <!--*****Records from ste************************************************** -->     
                      <?php // echo count($etranlist); ?>  
                     <?php if( !empty($etranlist)) :   ?>
-                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of Transfer and Leave cases</b>"; ?></td></tr>
+                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of Transfer cases</b>"; ?></td></tr>
                         <?php foreach($etranlist as $recordste){ ?>
                             <tr>
                                 
                                 
                                 
                                 <td><?php  echo $serial_no++; ?>&nbsp;
-                                <?php echo "". $recordste->emp_name."<br/>" ."("."<b>PF No: </b>".$recordste->emp_code.")"; ?></td>
-                                <td><?php
+                                <?php echo "". $recordste->emp_name."<br/>" ."("."<b>PF No: </b>".$recordste->emp_code.")";
+					if(!empty($record->emp_schemeid)){
+                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+                                        if(!empty($deptsel)){
+                                                echo "<br/> "."<b>scheme-: </b>".$schme;
+                                        }
+                                    }
+
+				 ?></td>
+                                <?php
+				
+                                 if(empty($deptsel)){
                                     $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$recordste->emp_scid)->sc_name;
                                     $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$recordste->emp_uocid)->name;
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$recordste->emp_dept_code)->dept_name;
@@ -245,9 +318,12 @@
                                         $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$recordste->emp_schemeid)->sd_name;
                                         
                                     }
+				    echo "<td>";
                                     echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+				    echo "</td>";
+				}
                                 ?>
-                                </td>
+                                
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$recordste->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 
@@ -283,13 +359,27 @@
                                 <td><?php echo anchor("setup3redesign/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
                                 <td><?php echo anchor("setup3redesign/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
-                            <?php }; ?>
-                        <?php foreach($empleavelist as $recordsle){ ?> 
+                            <?php }; 
+				if(!empty($empleavelist)){
+			?>
+                     <tr> <td colspan="13"><?php echo "<b>Employees Salary of Leave cases</b>"; ?></td></tr>
+                        <?php }
+				foreach($empleavelist as $recordsle){ ?> 
                             <tr>
                              
                                 <td><?php  echo $serial_no++; ?>&nbsp;
-                                <?php echo $recordsle->emp_name."<br/>" ."("."<b>PF No: </b>".$recordsle->emp_code.")"; ?></td>
-                                <td><?php
+                                <?php echo $recordsle->emp_name."<br/>" ."("."<b>PF No: </b>".$recordsle->emp_code.")";
+					if(!empty($record->emp_schemeid)){
+                                        $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name;
+                                        if(!empty($deptsel)){
+                                                echo "<br/> "."<b>scheme-: </b>".$schme;
+                                        }
+                                    }
+
+				 ?></td>
+                                <?php
+					
+                                 if(empty($deptsel)){
                                     $sc=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$recordsle->emp_scid)->sc_name;
                                     $uo=$this->lgnmodel->get_listspfic1('authorities','name','id' ,$recordsle->emp_uocid)->name;
                                     $dept=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$recordsle->emp_dept_code)->dept_name;
@@ -297,9 +387,12 @@
                                         $schme=$this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$recordsle->emp_schemeid)->sd_name;
                                         
                                     }
+				echo "<td>";
                                     echo "<b>campus-: </b>".$sc."<br/> "."<b>uo-: </b>".$uo."<br/> "."<b>dept-: </b>".$dept."<br/> "."<b>scheme-: </b>".$schme;
+				echo "</td>";
+				}
                                 ?>
-                                </td>
+                               
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$recordsle->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 

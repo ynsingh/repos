@@ -1240,12 +1240,11 @@ INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (6, 'COE', 'Resp
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (7, 'AccountOfficer', 'Responsible for Account related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (8, 'EntranceAdmin', 'Responsible for Entrance related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (9, 'AdmissionAdmin', 'Responsible for Admission related job');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (10, 'PayrollAdmin', 'Responsible for Payroll related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (10, 'UO', 'Responsible for Dean/UO related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (11, 'PicoAdmin', 'Responsible for PICO related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (12, 'Supplier', 'Responsible for Supplier/vendor related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (13, 'Indenter', 'Responsible for required item related job');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (14, 'UO', 'Responsible for Dean/UO related job');
-
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (14, 'PayrollAdmin', 'Responsible for Payroll related job');
 -- --------------------------------------------------------
 
 --

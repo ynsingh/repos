@@ -140,7 +140,12 @@
                     <td><b>Scheme:</b><?php $shmid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
                     echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$shmid)->sd_name;?></td>
                     <td><b>DDO:</b><?php $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
-                    echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$ddoid)->ddo_name;?></td>
+			if(!empty($ddoid)){
+                    		echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$ddoid)->ddo_name;
+			}else{
+				echo '';
+			}
+			?></td>
                     <td colspan="1"><b>Designation:</b><?php $deptid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
                     echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$deptid)->desig_name;?></td>
                 </tr>
@@ -270,7 +275,12 @@
                                 $wdata = array('seh_empid' =>$empid,'seh_headid' =>$tok1id);
                                 //$headval1= $this->sismodel->get_maxvalue('salary_earnings_head',$sfield,$wdata,'');  
                                 $headval1=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
-                                $headval1=$headval1[0]->seh_headamount;
+				if(!empty($headval1)){
+	                                $headval1=$headval1[0]->seh_headamount;
+				}else{
+                                        $headval1=0;
+                                }
+
                             }
                             else{
                                 $headval1=0;
@@ -280,7 +290,11 @@
                                 $wdata = array('seh_empid' =>$empid,'seh_headid'=> $tok2id);
                                 //$headval2= $this->sismodel->get_maxvalue('salary_earnings_head',$sfield,$wdata,''); 
                                 $headval2=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
-                                $headval2=$headval2[0]->seh_headamount;
+				if(!empty($headval2)){
+                                	$headval2=$headval2[0]->seh_headamount;
+				}else{
+					$headval2=0;
+				}
                             }
                             else{
                                $headval2=0; 
@@ -390,15 +404,14 @@
                             
                             
                         ?>
-                        
-                        <input type="text"  class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo $finalval;  ?>" >
-                        <?php  $sumincome+=$finalval; // endif;?> 
+                        <input type="text"  class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo (round($finalval,0));  ?>" >
+                        <?php  $sumincome+=(round($finalval,0)); // endif;?> 
                         <?php else :?>
                         <?php // endif; ?>
                         <?php $finalval=$headval[0]->seh_headamount; // if($incomedata->sh_calc_type == 'N' && $headval[0]->shdv_defaultvalue != 0):?>
-                        <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo $finalval;  ?>" >
+                        <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,0));  ?>" >
                         <?php // $sumincome+=$headval[0]->shdv_defaultvalue;
-                             $sumincome+=$finalval;
+                             $sumincome+=(round($finalval,0));
                         ?>
                         <?php endif;?>
                     <?php else :
@@ -613,8 +626,8 @@
                             
                         ?>
                         
-                        <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
-                        <?php  $sumdeduction+=$finalval; // endif;?> 
+                        <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
+                        <?php  $sumdeduction+=(round($finalval,0)); // endif;?> 
                         <?php else : //echo "in  without dowm11 formula=="?>
                             <?php if($deductdata->sh_type == 'D'){
                                     $finalval=$headvalDed[0]->ssdh_headamount;
@@ -628,13 +641,13 @@
                                     $installno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$headvalDed[0]->slh_id)->slh_intallmentno; 
                                 }
                                 ?>
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
                             <?php if($deductdata->sh_type == 'L' && $finalval != 0.00){
                                     echo $installno."/".$totalinstall;
                                         
                                 } 
                             ;?>
-                            <?php $sumdeduction+=$finalval; //$sumdeduction+=$headval[0]->shdv_defaultvalue;?>
+                            <?php $sumdeduction+=(round($finalval,0)); //$sumdeduction+=$headval[0]->shdv_defaultvalue;?>
                         <?php endif;?>    
                             <?php else : //echo "in  without dowm12 formula=not allowed case="?>
                             
@@ -661,7 +674,7 @@
                  
                 <?php }  //closer if employee not exists in that year -->
                     else{ ?>
-                        <?php echo " case 5 else empnodata"; //max value part ;?>
+                        <?php //echo " case 5 else empnodata"; //max value part ;?>
                         <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
                     
                         foreach($incomes as $incomedata){ ?>
@@ -687,8 +700,8 @@
                                 ?>
                                 <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
                                 <?php $finalval=$headval[0]->sald_shamount;?>      
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo $finalval;  ?>" >
-                                <?php $sumincome+=$finalval;?>
+                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,0));  ?>" >
+                                <?php $sumincome+=(round($finalval,0));?>
                                 
                                 <?php else : ?>
                                 <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI"  value="<?php echo 0; ?>" >    
@@ -731,8 +744,8 @@
                             ?>
                             <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
                             <?php $finalval=$headval[0]->sald_shamount;?>   
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" >
-                            <?php $sumdeduction+=$finalval; ?>
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
+                            <?php $sumdeduction+=(round($finalval,0)); ?>
                             <?php else : ?>
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" >
                             <?php endif;?>
@@ -796,8 +809,8 @@
                                 ?>
                                 <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
                                 <?php $finalval=$headval[0]->sald_shamount;?>      
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo $finalval;  ?>" readonly >
-                                <?php $sumincome+=$finalval;?>
+                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,0));  ?>" readonly >
+                                <?php $sumincome+=(round($finalval,0));?>
                                 
                                 <?php else : ?>
                                 <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI"  value="<?php echo 0; ?>" readonly>    
@@ -819,8 +832,6 @@
                    
                 </tr>
                 <tr>
-                    
-                    
                      <?php foreach($deduction as $deductdata){ ?>
                    
                         <tr>
@@ -840,8 +851,8 @@
                             ?>
                             <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
                             <?php $finalval=$headval[0]->sald_shamount;?>   
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo $finalval;  ?>" readonly>
-                            <?php $sumdeduction+=$finalval; ?>
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" readonly>
+                            <?php $sumdeduction+=(round($finalval,0)); ?>
                             <?php else : ?>
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" readonly>
                             <?php endif;?>

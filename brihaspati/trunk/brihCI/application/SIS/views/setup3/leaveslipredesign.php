@@ -3,7 +3,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
     <head>
-        <title>Welcome to TANUVAS</title>
+        <title>Leave salary slip</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
@@ -130,8 +130,8 @@
             
            
         ;?>
-       
-        <table border="1" cellpadding=10 width="100%" bgcolor="lsightgray"><tr><td>  
+ 
+        <table border="1" cellpadding=10 width="100%" bgcolor="lightgray"><tr><td>  
             <table  cellspacing="10" width="100%" bgcolor="#d5dbdb"> 
                
                 <input type="hidden" name="empid" value="<?php $empid; ?>">
@@ -155,7 +155,14 @@
                     <td><b>Scheme:</b><?php $shmid=$this->sismodel->get_listspfic1('employee_master','emp_schemeid','emp_id',$empid)->emp_schemeid;
                     echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$shmid)->sd_name;?></td>
                     <td><b>DDO:</b><?php $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
-                    echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$ddoid)->ddo_name;?></td>
+				if(!empty($ddoid)){
+                    		echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$ddoid)->ddo_name;
+			}else{
+				echo '';
+			}
+
+//                    echo $this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$ddoid)->ddo_name;?>
+			</td>
                     <td colspan="1"><b>Designation:</b><?php $deptid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
                     echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$deptid)->desig_name;?></td>
                 </tr>
@@ -395,9 +402,9 @@
                         <?php $finalval=$headval[0]->seh_headamount * $leftdays/$nodaysmonth; 
                              //   echo "seema===90==".$finalval."djhgjhse ee==94==".$headval[0]->seh_headamount;
                         // if($incomedata->sh_calc_type == 'N' && $headval[0]->shdv_defaultvalue != 0):?>
-                        <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,2));  ?>" >
+                        <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,0));  ?>" >
                         <?php // $sumincome+=$headval[0]->shdv_defaultvalue;
-                             $sumincome+=$finalval;
+                             $sumincome+=(round($finalval,0));
                         ?>
                         <?php endif; // endif  if h_calc_type == 'N' default value exists part; ?>
                     <?php else :
@@ -413,7 +420,7 @@
                       <?php  //$sumincome+=$finalval; // endif;?> 
                     <?php  $i++; }?>
                     
-                    <tr><td><b>Total Earning </b></td><td> <input type="text" id="Tincome" value="<?php echo (round($sumincome,2));?>" size="10" readonly></span></td></tr> 
+                    <tr><td><b>Total Earning </b></td><td> <input type="text" id="Tincome" value="<?php echo (round($sumincome,0));?>" size="10" readonly></span></td></tr> 
                 </table>
                 
                 <table class="dggh" border=1 width="50%" heignt="50%" cellpadding=10 style="float:right;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor="#95a5a6">     
@@ -600,8 +607,8 @@
                             
                         ?>
                         
-                        <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,2));  ?>" >
-                        <?php  $sumdeduction+=$finalval; // endif;?> 
+                        <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
+                        <?php  $sumdeduction+=(round($finalval,0)); // endif;?> 
                         <?php else :?>
                             <?php
                                 if($deductdata->sh_type == 'D'){
@@ -615,14 +622,14 @@
                                     $installno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$headvalDed[0]->slh_id)->slh_intallmentno;  
                                 }
                             ?>
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,2));  ?>" >
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
                            
                             <?php if($deductdata->sh_type == 'L' && $finalval != 0.00){
                                     echo $installno."/".$totalinstall;
                                         
                                 } 
                             ;?>
-                            <?php $sumdeduction+=$finalval; //$sumdeduction+=$headval[0]->shdv_defaultvalue;?>
+                            <?php $sumdeduction+=(round($finalval,0)); //$sumdeduction+=$headval[0]->shdv_defaultvalue;?>
                         <?php endif;?>    
                             <?php else : ?>
                             
@@ -634,13 +641,13 @@
                         </tr>
                           <input type="hidden" name="sheadidded<?php echo $j;?>" value="<?php echo $deductdata->sh_id ; ?>">   
                     <?php $j++; };?>
-                    <tr><td><b>Total Deduction:</b></td><td><input type="text" id="Tdeduction" value="<?php echo (round($sumdeduction,2));?>" size="10" readonly></td></tr>  
+                    <tr><td><b>Total Deduction:</b></td><td><input type="text" id="Tdeduction" value="<?php echo (round($sumdeduction,0));?>" size="10" readonly></td></tr>  
                 </tr> 
                 </table>
-                <tr><td><b>Net Pay:</b><input type="text" id="netPay" value="<?php $sum_total = $sumincome - $sumdeduction; echo (round($sum_total,2))?>" readonly >
-                        <input type="hidden" name="incometotal" value="<?php echo (round($sumincome,2));?>">  
-                        <input type="hidden" name="deductiontotal" value="<?php echo (round($sumdeduction,2));?>">
-                        <input type="hidden" name="netpay" value="<?php echo (round($sum_total,2));?>" >
+                <tr><td><b>Net Pay:</b><input type="text" id="netPay" value="<?php $sum_total = $sumincome - $sumdeduction; echo (round($sum_total,0))?>" readonly >
+                        <input type="hidden" name="incometotal" value="<?php echo (round($sumincome,0));?>">  
+                        <input type="hidden" name="deductiontotal" value="<?php echo (round($sumdeduction,0));?>">
+                        <input type="hidden" name="netpay" value="<?php echo (round($sum_total,0));?>" >
                  <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
                  <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>">
                  &nbsp;

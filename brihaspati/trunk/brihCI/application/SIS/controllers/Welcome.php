@@ -41,9 +41,13 @@ class Welcome extends CI_Controller {
 
             if($_POST) {
                 $result = $this->login->validate_user($_POST);
+		$empid='';
                 /*get role by using model class and set templates according to role*/
                 //$roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
-		$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_email', $result->username)->emp_id;
+		$empidres=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_email', $result->username);
+		if(!empty($empidres)){
+			$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_email', $result->username)->emp_id;
+		}
                 $wharray=array('userid'=>$result->id);
 		$roles=$this->sismodel->get_listspficemore('user_role_type','roleid,deptid',$wharray);
                 if(!empty($result)) {
@@ -130,6 +134,16 @@ class Welcome extends CI_Controller {
 			                                ];
                         			        $this->session->set_userdata($data);
 			                                redirect('uohome'); 
+                        			}
+                            			if($row->roleid == 14){
+			                                $data = [
+							'id_emp' => $empid,
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('payhome'); 
                         			}
                         		endforeach;   
                     		}else{

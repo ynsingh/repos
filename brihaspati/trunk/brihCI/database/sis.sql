@@ -799,6 +799,10 @@ CREATE TABLE `salary_head` (
 
 INSERT INTO `salary_head` (`sh_id`, `sh_code`, `sh_name`, `sh_tnt`, `sh_shortname`, `sh_type`, `sh_calc_type`, `sh_taxable`, `sh_category`, `sh_ledgercode`, `sh_description`, `sh_creatorid`, `sh_creatordate`, `sh_modifierid`, `sh_modifydate`) VALUES
 (1, 'Basic', 'Basic Pay', 'Common', 'Basic', 'I', 'N', 'Y', 'GS', '', 'Basic Pay', 'admin', '2019-11-16 00:00:00', 'admin', '2019-11-16 00:00:00');
+INSERT INTO `salary_head` (`sh_id`, `sh_code`, `sh_name`, `sh_tnt`, `sh_shortname`, `sh_type`, `sh_calc_type`, `sh_taxable`, `sh_category`, `sh_ledgercode`, `sh_description`, `sh_creatorid`, `sh_creatordate`, `sh_modifierid`, `sh_modifydate`) VALUES
+(2, 'GP', 'Grade Pay', 'Non Teaching', 'GP', 'I', 'N', 'Y', 'GS', '', 'Grade Pay', 'admin', '2019-11-16 00:00:00', 'admin', '2019-11-16 00:00:00');
+INSERT INTO `salary_head` (`sh_id`, `sh_code`, `sh_name`, `sh_tnt`, `sh_shortname`, `sh_type`, `sh_calc_type`, `sh_taxable`, `sh_category`, `sh_ledgercode`, `sh_description`, `sh_creatorid`, `sh_creatordate`, `sh_modifierid`, `sh_modifydate`) VALUES
+(3, 'AGP', 'Academic Grade Pay', 'Teaching', 'AGP', 'I', 'N', 'Y', 'GS', '', 'Academic Grade Pay', 'admin', '2019-11-16 00:00:00', 'admin', '2019-11-16 00:00:00');
 -- -------------------------------------------------------------------
 --
 -- Table structure for table `salary_formula `
@@ -1660,7 +1664,7 @@ CREATE TABLE `user_role_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into user_role_type values (1,1,1,1,NULL,'Administrator','');
-insert into user_role_type values (2,5,10,1,NULL,'PayrollAdministrator','');
+insert into user_role_type values (2,5,14,1,NULL,'PayrollAdministrator','');
 -- --------------------------------------------------------
 --
 -- Table structure for table `user_role_type_archive`
