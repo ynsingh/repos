@@ -200,7 +200,7 @@
                     if(!$dupexists){
                       //  echo "case 1 if dupexists";
                         if($selmonyear < $currentyd){
-                            echo " case 2 if selmonyear currentyd";
+                          //  echo " case 2 if selmonyear currentyd";
                             echo "<font color=\"red\"><font size=\"4\">Salary data does not exists....for the month ".( $month )."</font>";
                         }
                     else{
@@ -438,13 +438,9 @@
                 <tr>
                     <th>Head</th>
                     <th>Amount</th>
-                   
                 </tr>
                 <tr>
-                    
-                    
                      <?php foreach($deduction as $deductdata){ ?>
-                   
                         <tr>
                          <?php if($deductdata->sh_tnt == $worktype || $deductdata->sh_tnt == 'Common'): ?>       
                         <td><?php echo $deductdata->sh_name/*."=for==".$deductdata->sh_id*/;
@@ -459,7 +455,7 @@
                                 $selectfield='ssdh_headamount';
                                 $whdata = array('ssdh_empid' =>$empid,'ssdh_headid' =>$deductdata->sh_id);
                                 $headvalDed= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$selectfield,'ssdh_modifydate=',$whdata);
-                               //echo "seema==".$headvalDed[0]->ssdh_headamount.$empid.$deductdata->sh_id;
+                            //   echo "seema==".$headvalDed[0]->ssdh_headamount.$empid.$deductdata->sh_id;
                                
                             }
                             else{
@@ -467,7 +463,7 @@
                                 $whdata = array('slh_empid' =>$empid,'slh_headid' =>$deductdata->sh_id);
                                 $headvalDed= $this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$selectfield,'slh_modifydate=',$whdata);
                                 //$headvalDed= $this->sismodel->get_orderlistspficemore('salary_loan_head',$selectfield,$whdata,'');
-                               // echo "seema==lll===".$empid.$deductdata->sh_id;
+                              //  echo "seema==lll===".$empid.$deductdata->sh_id;
                                
                             }
                            
@@ -481,11 +477,16 @@
                                  $formula=$formula1->sf_formula;
                                 //  echo "formula inside===".$formula.$deductdata->sh_id.$deductdata->sh_name;
                                 preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
-                                //echo "in parenthesis inside: " . $match[2];
-                                //echo "before and after inside: " . $match[1] . $match[3] . "\n";
-                            
-                                $strfmla=explode("+",$match[2]);
-                                $strfmla2=explode("*",$match[3]);
+                              //  echo "in parenthesis inside: " . $match[2];
+                              //  echo "before and after inside: " . $match[1] . $match[3] . "\n";
+                           	if(!empty($match[2])){ 
+	                                $strfmla=explode("+",$match[2]);
+				}else{
+					$strfmla='';
+				}
+				if(!empty($match[3])){
+	                                $strfmla2=explode("*",$match[3]);
+				}
                               //  echo "===token==0==".$strfmla[0]."===token2==".$strfmla[1]."===mjjh===".$strfmla2[1];
                              
                                 if(!empty($strfmla[0])){
@@ -499,7 +500,7 @@
                                         $headval1=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
                                        // $headval1= $this->sismodel->get_maxvalue('salary_earnings_head',$sfield,$wdata,'');
                                         $headval1=$headval1[0]->seh_headamount;
-                                        //echo "hval1inside===".$headval1. "\n";
+       //                                 echo "hval1insideI===".$headval1. "\n";
                                         
                                     }
                                     elseif($shtypetok1id == 'D'){
@@ -509,7 +510,7 @@
                                         $headval1= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfield,'ssdh_modifydate=',$wdata);
                                         //$headval1= $this->sismodel->get_maxvalue('salary_subsdeduction_head',$sfield,$wdata,'');
                                         $headval1=$headval1[0]->ssdh_headamount;
-                                        //echo "hval1inside===".$headval1. "\n";
+         //                               echo "hval1insideiD===".$headval1. "\n";
                                     }
                                     else{
                                     
@@ -519,6 +520,7 @@
                                         $headvalDed= $this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$sfield,'slh_modifydate=',$wdata);
                                         // $headval1= $this->sismodel->get_maxvalue('salary_loan_head',$sfield,$wdata,'');
                                         $headval1=$headval1[0]->slh_headamount;
+           //                             echo "hval1insideL===".$headval1. "\n";
                                     }
                                 }
                                 else{
@@ -531,10 +533,10 @@
                                         $sfield ="seh_headamount";    
                                         $tok2id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[1])->sh_id;
                                         $wdata = array('seh_empid' =>$empid,'seh_headid' =>$tok2id);
-                                        $headval1=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$whdata);
+                                        $headval1=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
                                        // $headval1= $this->sismodel->get_maxvalue('salary_earnings_head',$sfield,$wdata,'');
                                         $headval1=$headval1[0]->seh_headamount;
-                                        //echo "hval1inside===".$headval1. "\n";
+             //                           echo "hval1insideI token 1===".$headval1. "\n";
                                         
                                     }
                                     elseif($shtypetok2id == 'D' ){
@@ -542,20 +544,20 @@
                                         $tok2id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[1])->sh_id;
                                         // echo "tokwen2----".$tok2id;
                                         $wdata = array('ssdh_empid' =>$empid,'ssdh_headid'=> $tok2id);
-                                        $headval2= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfield,'ssdh_modifydate=',$whdata);
+                                        $headval2= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfield,'ssdh_modifydate=',$wdata);
                                       //  $headval2= $this->sismodel->get_maxvalue('salary_subsdeduction_head',$sfield,$wdata,''); 
                                         $headval2=$headval2[0]->ssdh_headamount;
-                                        //echo "hval2inside===".$headval2. "\n";
+               //                         echo "hval2insideD token 1===".$headval2. "\n";
                                     }
                                     else{
                                         $sfield ="slh_headamount";
                                         $tok2id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[1])->sh_id;
                                         // echo "tokwen2----".$tok2id;
                                         $wdata = array('slh_empid' =>$empid,'slh_headid'=> $tok2id);
-                                        $headval2= $this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$sfield,'slh_modifydate=',$whdata);
+                                        $headval2= $this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$sfield,'slh_modifydate=',$wdata);
                                         //$headval2= $this->sismodel->get_maxvalue('salary_loan_head',$sfield,$wdata,''); 
                                         $headval2=$headval2[0]->slh_headamount;
-                                        //echo "hval2inside===".$headval2. "\n"; 
+                 //                       echo "hval2insideL token 1===".$headval2. "\n"; 
                                     }
                                 }
                                 else{
@@ -720,11 +722,8 @@
                 <tr>
                     <th>Head</th>
                     <th>Amount</th>
-                   
                 </tr>
                 <tr>
-                    
-                    
                      <?php foreach($deduction as $deductdata){ ?>
                    
                         <tr>
@@ -773,16 +772,11 @@
                              
                  <tr>
                     <th colspan="2">Earnings </th>
-                   
                 </tr>
-                
                 <tr>
                     <th>Head</th>
                     <th>Amount</th>
-                   
                 </tr>
-                
-                   
                         <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
                     
                         foreach($incomes as $incomedata){ ?>
@@ -809,11 +803,13 @@
                                 ?>
                                 <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
                                 <?php $finalval=$headval[0]->sald_shamount;?>      
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,0));  ?>" readonly >
+                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php  echo (round($finalval,0));  ?>" >
+                              <!--  <input type="text" class="headamtI" name="headamtI<?php //echo $i;?>" id="headamtI<?php //echo $i;?>"  value="<?php  //echo (round($finalval,0));  ?>" readonly >-->
                                 <?php $sumincome+=(round($finalval,0));?>
                                 
                                 <?php else : ?>
-                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI"  value="<?php echo 0; ?>" readonly>    
+                                <input type="text" class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI"  value="<?php echo 0; ?>" >    
+<!--                                <input type="text" class="headamtI" name="headamtI<?php //echo $i;?>" id="headamtI"  value="<?php //echo 0; ?>" readonly>    -->
                                 <?php endif;?>
                             </td>
                             <?php endif;?> 
@@ -851,10 +847,12 @@
                             ?>
                             <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
                             <?php $finalval=$headval[0]->sald_shamount;?>   
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" readonly>
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
+<!--                            <input type="text"  class="headamtD" name="headamtD<?php //echo $j;?>" id="headamtD<?php //echo $j;?>"  value="<?php //echo (round($finalval,0));  ?>" readonly> -->
                             <?php $sumdeduction+=(round($finalval,0)); ?>
                             <?php else : ?>
-                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" readonly>
+                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" >
+<!--                            <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" readonly>-->
                             <?php endif;?>
                         </td>
                         <?php endif;?>
@@ -872,9 +870,10 @@
                         <input type="hidden" name="netpay" value="<?php echo $sum_total;?>" >
                  <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
                  <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>">    
-                <?php } ;?>
-               
+                <?php } ;
+		if($selmonyear > $currentyd){               ?>
                 <button name="upsalhdval" id="btnUpload" style="align:right" onclick="return confirm('Are you sure you want to process salary?');">Update</button></span></td>   
+		<?php } ?>
                 </tr> 
                
                 </td></tr>

@@ -69,7 +69,7 @@
             <td> <?php echo $row->role_desc ?></td>
 	    <td>
             <?php  
-		if ($row->role_id > 13){
+		if ($row->role_id > 14){
 	    		//echo anchor('setup/delete_role/' . $row->role_id , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 	    		echo "&nbsp; ";
             		echo anchor('setup/editrole/' . $row->role_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";

@@ -277,6 +277,7 @@ class Payrollprofile extends CI_Controller
 	$ppmdata['emppfno']='';
         $dataem=array();
         $dataappems=array();
+	$pprofileflag = false;
         /****************************************personal working detail****************************/
         if(isset($_POST['pwdprofile'])) {
             $this->form_validation->set_rules('dedupf','DeductUPF','trim|xss_clean');
@@ -459,8 +460,17 @@ class Payrollprofile extends CI_Controller
           // echo "seema id==controller=".$empid;
           // die;
             for ($i=0; $i<$tcount ;$i++){
+		$incrementamt = 0;
+		$headval = 0;
+
                 $headidin = $this->input->post('sheadidin'.$i, TRUE);
                 $headval = $this->input->post('headamtI'.$i, TRUE);
+
+            	$headcode= $this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$headidin)->sh_code;
+            	if($headcode == 'Basic'){
+        	    	$incrementamt = $this->input->post('increment'.$i, TRUE);
+			$headval = $headval + $incrementamt;
+		}
 
                 $headname= $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$headidin)->sh_name;
                 $earningdata = array(
@@ -474,7 +484,6 @@ class Payrollprofile extends CI_Controller
                     'seh_createdate'    =>date('y-m-d'),
                     'seh_modifier'      =>$this->session->userdata('username'),
                     'seh_modifydate'    =>date('y-m-d'),
-
                 );
 
                 $dupcheck = array(
@@ -482,7 +491,6 @@ class Payrollprofile extends CI_Controller
                    'seh_headid'        =>$headidin,
                    'seh_month'         =>$cmonth,
                    'seh_year'          =>$cyear,
-
                 );
                 $salEardup = $this->sismodel->isduplicatemore('salary_earnings_head', $dupcheck);
                 if(!$salEardup){
@@ -498,8 +506,10 @@ class Payrollprofile extends CI_Controller
 			}else{
 			// else
 			// get the max head value of existing hea
-				$maxhdv=$this->sismodel->get_maxvalue('salary_earnings_head','seh_headamount',$dupcheck1);
-				$mhvalue=$maxhdv[0]->seh_headamount;
+				$maxhdv=$this->sismodel->get_maxvalue('salary_earnings_head','seh_id',$dupcheck1);
+				$maxhdvid=$maxhdv[0]->seh_id;
+                                $mhvalue = $this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$maxhdvid)->seh_headamount;
+//				$mhvalue=$maxhdv[0]->seh_headamount;
 			// compare if differ then insert
 				if($mhvalue != $headval){
                     			$pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
@@ -507,7 +517,6 @@ class Payrollprofile extends CI_Controller
 			}
                 }
                 else{
-
                     $earupdata = array(
                     //'seh_empid'         =>$empid,
                     //'seh_headid'        =>$headidin,
@@ -519,81 +528,67 @@ class Payrollprofile extends CI_Controller
                     //'seh_createdate'    =>date('y-m-d'),
                     'seh_modifier'      =>$this->session->userdata('username'),
                     'seh_modifydate'    =>date('y-m-d'),
-
                     );
-
                     $datawh=array('seh_empid' =>$empid,'seh_headid' =>$headidin,'seh_month'=>$cmonth,'seh_year'=>$cyear);
                     $cdata = $this->sismodel->get_listspficemore('salary_earnings_head','seh_id',$datawh);
                     $sehid=$cdata[0]->seh_id;
-
                     $pprofileflag=$this->sismodel->updaterec('salary_earnings_head',$earupdata, 'seh_id', $sehid);
                 }
-
            // } //tcount
-
 		 /****************************Increment****************************************************************/
             $headcode= $this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$headidin)->sh_code;
             if($headcode == 'Basic'){
-
-            $headval = $this->input->post('headamtI'.$i, TRUE);
-            $incrementamt = $this->input->post('increment'.$i, TRUE);
+	            $headval = $this->input->post('headamtI'.$i, TRUE);
+        	    $incrementamt = $this->input->post('increment'.$i, TRUE);
            //d echo "seema ---in ccc". $headval.$incrementamt;
-            $incrementdata = array(
-                'esi_empid'         =>$empid,
-                'esi_bpamount'      =>$headval,
-                'esi_increment'     =>$incrementamt,
-                'esi_month'         =>$cmonth,
-                'esi_year'          =>$cyear,
-                'esi_creator'       =>$this->session->userdata('username'),
-                'esi_createdate'    =>date('y-m-d'),
+		    if($incrementamt >0){
+        		    $incrementdata = array(
+		                'esi_empid'         =>$empid,
+                		'esi_bpamount'      =>$headval,
+		                'esi_increment'     =>$incrementamt,
+                		'esi_month'         =>$cmonth,
+		                'esi_year'          =>$cyear,
+                		'esi_creator'       =>$this->session->userdata('username'),
+		                'esi_createdate'    =>date('y-m-d'),
+		                'esi_modifier'      =>$this->session->userdata('username'),
+                		'esi_modifydate'    =>date('y-m-d'),
+				);
+            		
+		            $dupcheck = array(
+                		'esi_empid'         =>$empid,
+		               // 'esi_bpamount'      =>$headval,
+                		//'esi_increment'     =>$incrementamt,
+		                'esi_month'         =>$cmonth,
+                		'esi_year'          =>$cyear,
+		                );
+		            $icremtdup = $this->sismodel->isduplicatemore('employee_salary_increment', $dupcheck);
+		            if(!$icremtdup){
 
-                'esi_modifier'      =>$this->session->userdata('username'),
-                'esi_modifydate'    =>date('y-m-d'),
-
-            );
-
-            $dupcheck = array(
-                'esi_empid'         =>$empid,
-               // 'esi_bpamount'      =>$headval,
-                //'esi_increment'     =>$incrementamt,
-                'esi_month'         =>$cmonth,
-                'esi_year'          =>$cyear,
-
-                );
-            $icremtdup = $this->sismodel->isduplicatemore('employee_salary_increment', $dupcheck);
-            if(!$icremtdup){
-
-                $pprofileflag = $this->sismodel->insertrec('employee_salary_increment', $incrementdata);
-            }
-            else{
-
-                $incrmtupdata = array(
-                    //'esi_empid'         =>$empid,
-                    'esi_bpamount'      =>$headval,
-                    'esi_increment'     =>$incrementamt,
-                    //'esi_month'         =>$cmonth,
-                    //'esi_year'          =>$cyear,
-                    //'esi_creator'       =>$this->session->userdata('username'),
-                    //'esi_createdate'    =>date('y-m-d'),
-
-                    'esi_modifier'      =>$this->session->userdata('username'),
-                    'esi_modifydate'    =>date('y-m-d'),
-
-                );
-
-                $datawh=array('esi_empid' =>$empid,'esi_month'=>$cmonth,'esi_year'=>$cyear);
-                $cdata = $this->sismodel->get_listspficemore('employee_salary_increment','esi_id',$datawh);
-                $esiid=$cdata[0]->esi_id;
-
-                $pprofileflag=$this->sismodel->updaterec('employee_salary_increment',$incrmtupdata, 'esi_id',$esiid);
-
-            }
-            }//ifcode
+                		$pprofileflag = $this->sismodel->insertrec('employee_salary_increment', $incrementdata);
+            		    }
+		            else{
+                			$incrmtupdata = array(
+		                	//'esi_empid'         =>$empid,
+                		    	'esi_bpamount'      =>$headval,
+		                    	'esi_increment'     =>$incrementamt,
+                    			//'esi_month'         =>$cmonth,
+			                    //'esi_year'          =>$cyear,
+                    			//'esi_creator'       =>$this->session->userdata('username'),
+			                    //'esi_createdate'    =>date('y-m-d'),
+                    			'esi_modifier'      =>$this->session->userdata('username'),
+                    			'esi_modifydate'    =>date('y-m-d'),
+                			);
+	                		$datawh=array('esi_empid' =>$empid,'esi_month'=>$cmonth,'esi_year'=>$cyear);
+        	        		$cdata = $this->sismodel->get_listspficemore('employee_salary_increment','esi_id',$datawh);
+        		        	$esiid=$cdata[0]->esi_id;
+	                		$pprofileflag=$this->sismodel->updaterec('employee_salary_increment',$incrmtupdata, 'esi_id',$esiid);
+            			}
+			}//if increment >0
+            	}//ifcode
         } //tcount
 
         /************************************Increment******************************************************/
        }
-
 	 /***********************  end Salary Earning Heads***************************************************/
 
         /************************* start Salary Subscription Deduction Heads********************************/
@@ -650,8 +645,10 @@ class Payrollprofile extends CI_Controller
                         }else{
                         // else
                         // get the max head value of existing hea
-                                $maxhdv=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_headamount',$dupcheck1);
-                                $mhvalue=$maxhdv[0]->ssdh_headamount;
+                                $maxhdv=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_id',$dupcheck1);
+				$maxhdvid=$maxhdv[0]->ssdh_id;
+                                $mhvalue = $this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$maxhdvid)->ssdh_headamount;	
+//                                $mhvalue=$maxhdv[0]->ssdh_headamount;
                         // compare if differ then insert
                                 if($mhvalue != $headvald){
                     			$pprofileflag = $this->sismodel->insertrec('salary_subsdeduction_head', $deductdata);
@@ -748,11 +745,14 @@ class Payrollprofile extends CI_Controller
                     		$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
                         }else{
                         // else
-                        // get the max head value of existing hea
-                                $maxhdv=$this->sismodel->get_maxvalue('salary_loan_head','slh_headamount',$dupcheck1);
-                                $mhvalue=$maxhdv[0]->slh_headamount;
+                        // get the max head value of existing head
+                                $maxhdv=$this->sismodel->get_maxvalue('salary_loan_head','slh_id',$dupcheck1);
+				$maxhdvid=$maxhdv[0]->slh_id;
+				$mhvalue = $this->sismodel->get_listspfic1('salary_loan_head','slh_headamount','slh_id',$maxhdvid)->slh_headamount;
+				$mhvalueinstallno = $this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$maxhdvid)->slh_intallmentno;
+//                                $mhvalue=$maxhdv[0]->slh_headamount;
                         // compare if differ then insert
-                                if($mhvalue != $headvalL){
+                                if(($mhvalue != $headvalL)||($mhvalueinstallno != $instalnoL)){
 		                	$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
                                 }
                         }
@@ -967,6 +967,23 @@ class Payrollprofile extends CI_Controller
                 		$empeol = $this->input->post('eol', '');
                 		$empmonth = $this->input->post('month', '');
                 		$empyear = $this->input->post('year', '');
+
+				$empldataar = array(
+					'slea_sleid'=>$id,
+                                        'slea_empid' => $empid,
+                                        'slea_year' => $data['empyear'],
+                                        'slea_month' => $data['empmon'],
+                                        'slea_pal' => $data['emppal'],
+                                        'slea_eol' => $data['empeol'],
+                                        'slea_creatorid' => $this->session->userdata('username'),
+                                        'slea_creationdate' => date('Y-m-d H:i:s'),
+                                        'slea_modifierid' => $this->session->userdata('username'),
+                                        'slea_modifidate' => date('Y-m-d H:i:s')
+                                );
+                                if(!empty($empid)){
+                                        $insflag=$this->sismodel->insertrec('salary_leave_entry_archive', $empldataar);
+				}
+	
 				$empldata = array(
 					'sle_year' => $empyear,
 					'sle_month' => $empmonth,
@@ -1173,6 +1190,27 @@ class Payrollprofile extends CI_Controller
                 		$empccato = $this->input->post('ccato', '');
                 		$empmonth = $this->input->post('month', '');
                 		$empyear = $this->input->post('year', '');
+
+				$empldataar = array(
+                                        'stea_steid'=>$id,
+                                        'stea_empid' => $empid,
+                                        'stea_year' => $data['empyear'],
+                                        'stea_month' => $data['empmon'],
+                                        'stea_days' => $data['empdays'],
+                                        'stea_hrafrom' => $data['emphrafrom'],
+					'stea_hrato' => $data['emphrato'],
+                                        'stea_ccafrom' => $data['empccafrom'],
+                                        'stea_ccato' => $data['empccato'],
+					'stea_transit' => $data['emptransit'],
+                                        'stea_creatorid' => $this->session->userdata('username'),
+                                        'stea_creationdate' => date('Y-m-d H:i:s'),
+                                        'stea_modifierid' => $this->session->userdata('username'),
+                                        'stea_modifidate' => date('Y-m-d H:i:s')
+                                );
+                                if(!empty($empid)){
+                                        $insflag=$this->sismodel->insertrec('salary_transfer_entry_archive', $empldataar);
+                                }
+
 				$empldata = array(
 					'ste_year' => $empyear,
 					'ste_month' => $empmonth,
