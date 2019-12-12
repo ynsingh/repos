@@ -3609,7 +3609,7 @@ class Setup3redesign extends CI_Controller
         }
         $hraamt=$this->sismodel->gethra_amount($bpamt,$paycomm);
         
-        if(!empty($hragrade) || !empty($rfhragrade)){
+        if((!empty($hragrade)) || (!empty($rfhragrade))){
             if($rfhragrade->ems_erfq == 'yes'){
                 $hragrade= $hragrade->ems_erfqhra;   
                 $sfield="rfh_amount";
@@ -4079,7 +4079,7 @@ class Setup3redesign extends CI_Controller
         
     }
     public function updateintlmtno($empid,$shid){
-        $intallno=NULL;
+        $intallno=0;
         $empexist=$this->sismodel->isduplicate('salary_data','sald_empid',$empid);
         if(!$empexist){
             $selectfield="slh_id";
@@ -4101,27 +4101,32 @@ class Setup3redesign extends CI_Controller
             else{
                 $intallno =NULL;   
             }
-            
         }
         else{
             $intstr ='';
-            $selectfield ="sald_installment";
+            $maxslhid='';
+ //           $selectfield ="sald_installment";
             $wdata2=array('sald_empid' =>$empid,'sald_sheadid'=>$shid);
-            $maxrecord=$this->sismodel->get_maxvalue('salary_data','sald_installment',$wdata2);
+            $maxrecord=$this->sismodel->get_maxvalue('salary_data','sald_id',$wdata2);
             if(!empty($maxrecord)){
-                $intstr=$maxrecord[0]->sald_installment;
-              
+                $maxslhid=$maxrecord[0]->sald_id;
+		$intstr=$this->sismodel->get_listspfic1('salary_data','sald_installment','sald_id',$maxslhid)->sald_installment;
+//                $intstr=$maxrecord[0]->sald_installment;
+         //    print_r("empid ".$empid. " installment".$intstr); 
             }
             if(!empty($intstr)){
                 $intallstr=explode("-",$intstr);
                 if(((strcmp($intstr,"0-0")) != 0)&&($intallstr[0] != $intallstr[1])){
+            //        echo "case1";
                     $intallno=$intallstr[0]+1 ."-".$intallstr[1];
                 }
-                else if($intallstr[0] == $intallstr[1] && (strcmp($intstr,"0-0")) != 0){
-                
-                    $intallno="0-0";
+                else if(($intallstr[0] == $intallstr[1]) && (strcmp($intstr,"0-0")) != 0){
+              //      echo "case2";
+                    $this->updatecreateintlmno($empid,$shid,$intallstr[0],$intallstr[1]);
+                    $intallno="0-0"; 
                 }
                 else{
+                //    echo "case3";
                     $selectfield="slh_id";
                     $whdata = array('slh_empid'=>$empid,'slh_headid' =>$shid);
                     $instloan=$this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$selectfield,'slh_modifydate=',$whdata);
@@ -4132,9 +4137,7 @@ class Setup3redesign extends CI_Controller
                             $intallno=$installno +1 ."-".$totalinstall;
                         }
                     }
-                
                 }
-                            
             }
             else{
                 $selectfield="slh_id";
@@ -4146,14 +4149,63 @@ class Setup3redesign extends CI_Controller
 		if($totalinstall!= 0){
                     $intallno=$installno +1 ."-".$totalinstall;
                 }else{
-                	$intallno=$maxrecord[0]->sald_installment;  
+			$maxslhid=$maxrecord[0]->sald_id;
+                	$intallno=$this->sismodel->get_listspfic1('salary_data','sald_installment','sald_id',$maxslhid)->sald_installment;
+                	//$intallno=$maxrecord[0]->sald_installment;  
 		}
             }
            } 
         }
-        return $intallno;
-    
-    }    
+        return $intallno;    
+    }
+
+    public function updatecreateintlmno($empid,$shid,$instno,$ttlinstno){
+        $selectfield ="slh_id";
+        $wdata=array('slh_empid' =>$empid,'slh_headid'=>$shid);
+        $maxrecord=$this->sismodel->get_maxvalue('salary_loan_head','slh_id',$wdata);
+        $maxhid='';
+        if(!empty($maxrecord)){
+            $maxhid=$maxrecord[0]->slh_id;
+              
+        }
+        $edit_data = array(
+            'slh_totalintall'   =>$ttlinstno,
+            'slh_intallmentno'  =>$instno,
+            'slh_modifier'      =>$this->session->userdata('username'),
+            'slh_modifydate'    =>date('y-m-d')
+                    
+        );
+        $editslhflag=$this->sismodel->updaterec('salary_loan_head', $edit_data, 'slh_id',$maxhid);
+        if (!$editslhflag){ 
+            $logmessage='problem in updation salary loan head ';
+            $this->logger->write_logmessage("error","salary loan head  error", "update Salary loan head. $logmessage ");
+            $this->logger->write_dblogmessage("error","salary loan head error", "update salary loan head formula. $logmessage ");
+            $this->session->set_flashdata('err_message','Error in updating salary loan head - ' . $logmessage . '.', 'error');
+            //$this->load->view('setup3redesign/salaryprocess', $edit_data);
+        }
+        $headname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$shid)->sh_name; 
+        $cmonth = date('M');
+        $cyear= date("Y");
+        $loandata = array(
+            'slh_empid'                =>$empid,
+            'slh_headid'               =>$shid,
+            'slh_headname'             =>$headname,
+            'slh_headno'               =>'',
+            'slh_headamount'           =>0,
+            'slh_totalintall'          =>0,
+            'slh_intallmentno'         =>0,
+            'slh_installamount'        =>0,
+            'slh_month'                =>$cmonth,
+            'slh_year'                 =>$cyear,
+            'slh_creator'              =>$this->session->userdata('username'),
+            'slh_createdate'           =>date('y-m-d'),
+            'slh_modifier'             =>$this->session->userdata('username'),
+            'slh_modifydate'           =>date('y-m-d'),
+
+        );
+        $loanentflag= $this->sismodel->insertrec('salary_loan_head', $loandata);
+                
+    }
         
     
 }//class    
