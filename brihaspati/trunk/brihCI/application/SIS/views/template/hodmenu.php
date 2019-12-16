@@ -111,7 +111,7 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('payrollprofile/viewpaytransentry', 'Payroll Transfer Entry', array('title' => 'Payroll Transfer Entry'));
                                         echo "</li>";
                                         echo "<li>";
-                                 //               echo anchor('setup3redesign/salaryprocess', 'Salary Processing', array('title' => 'Salary Processing'));
+                                                echo anchor('setup3redesign/salaryprocess', 'Salary Processing', array('title' => 'Salary Processing'));
                                         echo "</li>";
 
                                 echo "</ul>";

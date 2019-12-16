@@ -1861,19 +1861,29 @@ class Setup3redesign extends CI_Controller
         }
       	$datawh='';
         $whorder='';
+	$ssiondeptid=$this->session->userdata('id_dept');
+	if(!empty($ssiondeptid)){
+		$deptid = $ssiondeptid;
+		$datawh['dept_id']=$deptid;
+	}
         $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder); 
         $data['selmonth']=$month;
         $data['selyear']=$year;
         $data['etranlist']=array();
-
 	$tlempid=array();
         $whtempid=array('ste_month'=>$month,'ste_year'=>$year);
+	if(!empty($deptid)){
+		$whtempid['ste_deptid']=$deptid;
+	}
         $tempid=$this->sismodel->get_orderlistspficemore('salary_transfer_entry','ste_empid',$whtempid,'ste_empid asc');
         foreach($tempid as $row){
                 $tlempid[]=$row->ste_empid;
         }
 
 	$whlempid=array('sle_month'=>$month,'sle_year'=>$year);
+	if(!empty($deptid)){
+		$whlempid['sle_deptid']=$deptid;
+	}
         $lempid=$this->sismodel->get_orderlistspficemore('salary_leave_entry','sle_empid',$whlempid,'sle_empid asc');
         foreach($lempid as $row){
                 $tlempid[]=$row->sle_empid;
@@ -1900,7 +1910,11 @@ class Setup3redesign extends CI_Controller
         /**************************************employee both transfer and leave case************************************/
 	$whtlempid=array('ste_month'=>$month,'ste_year'=>$year,'sle_month'=>$month,'sle_year'=>$year);
 	$joincond2 = 'salary_transfer_entry.ste_empid = salary_leave_entry.sle_empid';
-	$tlempid=$this->sismodel->get_jointbrecord('salary_transfer_entry','ste_empid', 'salary_leave_entry',$joincond2, 'left',$whtlempid);
+	$tlempid1=$this->sismodel->get_jointbrecord('salary_transfer_entry','ste_empid', 'salary_leave_entry',$joincond2, 'left',$whtlempid);
+	$tlempid=array();
+	foreach($tlempid1 as $row){
+		$tlempid[]=$row->ste_empid;
+	}
 	if(!empty($tlempid)){
 		$data['tlemplist']=$this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_id',$tlempid,$orfield);
 	}else{
@@ -2288,6 +2302,11 @@ class Setup3redesign extends CI_Controller
         $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_post,emp_worktype,emp_type_code,"
                 . "emp_email,emp_phone,emp_salary_grade,emp_bank_accno,emp_ddoid,emp_group,emp_aadhaar_no";
         $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));
+	$ssiondeptid=$this->session->userdata('id_dept');
+        if(!empty($ssiondeptid)){
+                $whdata['emp_dept_code']=$ssiondeptid;
+        }
+
       //  $whorder = "emp_name asc,emp_dept_code asc,emp_desig_code asc";
         $data['emplist'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,'');
         $cmonth= date('M');
@@ -2335,7 +2354,6 @@ class Setup3redesign extends CI_Controller
                             //default salary generate employee leave case
                             $this->Defalutleavesalary($record->emp_id,$cmonth,$cyear);
                         }
-                        
                     }
                     else{
                         //  echo "with default values salary generate without transfer case";
