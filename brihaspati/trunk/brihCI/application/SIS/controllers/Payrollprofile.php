@@ -842,7 +842,6 @@ class Payrollprofile extends CI_Controller
                 		return;
             		}    
             		else{
-                
 //                		$emppfno = $this->input->post('emppfno', '');
                 		$empid = $this->input->post('empid', '');
 	//			echo "I".$emppfno."and id is ".$empid ; die();
@@ -852,6 +851,13 @@ class Payrollprofile extends CI_Controller
                 		$empyear = $this->input->post('year', '');
 	//			$empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$emppfno)->emp_id;
 				$deptid= $this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id',$empid)->emp_dept_code;
+	//			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
+			        $uname=$this->session->userdata('username');
+			        $ssiondeptid=$this->session->userdata('id_dept');
+			      if(($deptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+			              $mess="You do not have the right to access detial of this PF Number";
+			                array_push($values,$mess);
+			      }else{
 				$empldata = array(
 					'sle_empid' => $empid,
 					'sle_deptid'=>$deptid,
@@ -886,7 +892,7 @@ class Payrollprofile extends CI_Controller
  		       	                redirect('payrollprofile/viewpayleaveentry');
 					return;
                 	    	}
-
+			}//dept check elase end
 
 			}
 		}
@@ -896,7 +902,13 @@ class Payrollprofile extends CI_Controller
 	public function viewpayleaveentry(){
 		$cyear=	$this->session->flashdata('empyear');
 		$cmonth=$this->session->flashdata('empmonth');
-		$datawh='';
+		$ssiondeptid=$this->session->userdata('id_dept');
+		if(!empty($ssiondeptid)){
+			$datawh=array('dept_id' =>$ssiondeptid);
+			$deptid=$ssiondeptid;
+		}else{
+			$datawh='';
+		}
         	$whorder='';
 	        $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
 		if(empty($cyear)){
@@ -971,6 +983,7 @@ class Payrollprofile extends CI_Controller
 				$empldataar = array(
 					'slea_sleid'=>$id,
                                         'slea_empid' => $empid,
+                                        'slea_deptid' => $empdeptid,
                                         'slea_year' => $data['empyear'],
                                         'slea_month' => $data['empmon'],
                                         'slea_pal' => $data['emppal'],
@@ -1062,8 +1075,17 @@ class Payrollprofile extends CI_Controller
                 		$empmonth = $this->input->post('month', '');
                 		$empyear = $this->input->post('year', '');
 //				$empid= $this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$emppfno)->emp_id;
+
+				$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$empid)->emp_dept_code;
+                                $uname=$this->session->userdata('username');
+                                $ssiondeptid=$this->session->userdata('id_dept');
+                              if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+                                      $mess="You do not have the right to access detial of this PF Number";
+                                        array_push($values,$mess);
+                              }else{
 				$empldata = array(
 					'ste_empid' => $empid,
+					'ste_deptid' => $empdeptid,
 					'ste_year' => $empyear,
 					'ste_month' => $empmonth,
 					'ste_days' => $empdays,
@@ -1091,8 +1113,7 @@ class Payrollprofile extends CI_Controller
 	                        	$this->session->set_flashdata("success", " Payroll Profile transfer values inserted  successfully. PF No is  " ."[ "  .$emppfno. " ]");
  		       	                redirect('payrollprofile/viewpaytransentry');
                 	    	}
-
-
+			} //end of dept check
 			}
 		}
 		$this->load->view('payrollprofile/paytransentry',$data);
@@ -1101,7 +1122,15 @@ class Payrollprofile extends CI_Controller
 	public function viewpaytransentry(){
 		$cyear= $this->session->flashdata('empyear');
                 $cmonth=$this->session->flashdata('empmonth');
-		$datawh='';
+		$ssiondeptid=$this->session->userdata('id_dept');
+                if(!empty($ssiondeptid)){
+                        $datawh=array('dept_id' =>$ssiondeptid);
+                        $deptid=$ssiondeptid;
+                }else{
+                        $datawh='';
+                }
+
+//		$datawh='';
                 $whorder='';
                 $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
                 if(empty($cyear)){
@@ -1194,6 +1223,7 @@ class Payrollprofile extends CI_Controller
 				$empldataar = array(
                                         'stea_steid'=>$id,
                                         'stea_empid' => $empid,
+                                        'stea_deptid' => $empdeptid,
                                         'stea_year' => $data['empyear'],
                                         'stea_month' => $data['empmon'],
                                         'stea_days' => $data['empdays'],

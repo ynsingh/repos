@@ -25,6 +25,11 @@
                             success:function(data){
                           //  alert("datat==="+data);
                             var empinput=data.split(",");
+				if(empinput.length < 2){
+                                $('#error').val(empinput[0].replace(/[[\]"|"]/g,""));
+                                empinput.length = 0;
+                            }else{
+
                             var valm=empinput[0].replace(/[[\]"|"]/g,"");
                             var n=(valm.trim()).startsWith("<div ");                            
                             if(n){
@@ -43,7 +48,7 @@
                             $('#desig').val(empinput[6].replace(/"|"/g,""));
                             $('#empname').val(empinput[7].replace(/"|"/g,""));
                             $('#empid').val(empinput[10].replace(/[[\]"|"]/g,""));
-                            
+				}                            
 
 				 } 				
                         },
@@ -68,7 +73,7 @@
         <?php
 		$roleid=$this->session->userdata('id_role');
         	$uname=$this->session->userdata('username');
-        	if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')){
+        	if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')||($roleid == 5)||($roleid == 14)){
                 	echo anchor('payrollprofile/viewpayleaveentry', "View Leave Entry" ,array('title' => 'View staff Leave Entry ' , 'class' => 'top_parent'));
         	}
             
@@ -116,7 +121,7 @@
                     <div><input type="text" name="emppfno" id="emppfno" value="" placeholder="Employee PF No..."  required>   </div> 
                     </td>
 			 <td>
-                                <input type="text" id="error" value="" style="text-decoration:none;border:0; font-size:25px;font-weight:bold;color:red; word-break: break-all;width:400px;" readonly>
+                                <input type="text" id="error" value="" style="text-decoration:none;border:0; font-size:25px;font-weight:bold;color:red; word-break: break-all;width:800px;" readonly>
                         </td>
                 </tr>
                 </table>

@@ -7,6 +7,35 @@
     </head>
     <body>
 
+	<table width="100%">
+            <tr colspan="2">
+                <td>
+                   <div>
+			<?php
+			if($this->session->flashdata('flash_data')){
+			echo "<b>";
+		        echo $this->session->flashdata('flash_data');
+			echo "</b>";
+			}
+?>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
+                    <?php if(isset($_SESSION['success'])){?>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <?php
+                    };
+                    ?>
+                    <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <?php
+                    };
+                ?>
+                </div>
+            </td>
+     </tr>
+</table>
+
+
 <?php
 /*
 	echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";

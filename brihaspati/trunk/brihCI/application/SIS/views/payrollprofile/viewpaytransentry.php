@@ -162,7 +162,7 @@ $(document).ready(function(){
         echo "<td align=\"left\" width=\"33%\">";
 	$roleid=$this->session->userdata('id_role');
 	$uname=$this->session->userdata('username');
-        if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')){
+        if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')||($roleid == 5)||($roleid == 14)){
 		echo anchor('payrollprofile/paytransentry', "Add Transfer Entry" ,array('title' => 'Add staff Transfer Entry ' , 'class' => 'top_parent'));
 	}
         echo "</td>";
@@ -343,8 +343,10 @@ $(document).ready(function(){
 				?>
                             </td>
                             <td> <?php
-				if(($roleid == 1)){
+				if(($roleid == 1)||($roleid == 14)){
 					echo anchor("payrollprofile/deletepaytrans/{$record->ste_id}","Delete",array('title' => 'Delete Details' , 'class' => 'red-link'));
+				}
+				 if(($roleid == 1)||($roleid == 14)||(($roleid == 5)&&($hdeptid == $record->ste_deptid ))){
 					 echo " | ";
                                         echo anchor("payrollprofile/editpaytransentry/{$record->ste_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link'));
 				}

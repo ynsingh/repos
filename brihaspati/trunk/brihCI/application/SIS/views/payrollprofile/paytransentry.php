@@ -26,6 +26,10 @@
                             success:function(data){
                          //   alert("datat==="+data);
                             var empinput=data.split(",");
+			    if(empinput.length < 2){
+                                $('#error').val(empinput[0].replace(/[[\]"|"]/g,""));
+                                empinput.length = 0;
+                            }else{
 			    var valm=empinput[0].replace(/[[\]"|"]/g,"");
 			    var n=(valm.trim()).startsWith("<div ");				
 			    if(n){
@@ -34,7 +38,6 @@
 				else{
                             $('#error').val("");
                             $('#campus').val(empinput[0].replace(/[[\]"|"]/g,""));
-				
                             $('#uo').val(empinput[1].replace(/"|"/g,""));
                             $('#dept').val(empinput[2].replace(/"|"/g,""));
                             $('#schm').val(empinput[3].replace(/"|"/g,""));
@@ -46,10 +49,10 @@
                             $('#ccafrom').val(empinput[9].replace(/[[\]"|"]/g,""));
                             $('#empid').val(empinput[10].replace(/[[\]"|"]/g,""));
 				}			
+				}
                         },
                         error:function(data){
                             alert("error occur..!!");
-                 
                         }
                     });
                 }    
@@ -68,7 +71,7 @@
         <?php
 		$roleid=$this->session->userdata('id_role');
         $uname=$this->session->userdata('username');
-        if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')){
+        if(($roleid == 1)||($uname == 'rsection@tanuvas.org.in')||($roleid == 5)||($roleid == 14)){
                 echo anchor('payrollprofile/viewpaytransentry', "View Transfer Entry" ,array('title' => 'View staff Transfer Entry ' , 'class' => 'top_parent'));
         }
             
@@ -116,7 +119,7 @@
                     <div><input type="text" name="emppfno" id="emppfno" value="" placeholder="Employee PF No..."  required>   </div> 
                     </td>
 			<td>
-				<input type="text" id="error" value="" style="text-decoration:none;border:0; font-size:25px;font-weight:bold;color:red; word-break: break-all;width:400px;" readonly>
+				<input type="text" id="error" value="" style="text-decoration:none;border:0; font-size:25px;font-weight:bold;color:red; word-break: break-all;width:800px;" readonly>
 			</td>
                 </tr>
                 </table>

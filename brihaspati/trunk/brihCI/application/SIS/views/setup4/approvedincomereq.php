@@ -92,7 +92,7 @@
                                         <?php
                                         }}
                                         else {
-                    echo "<td colspan=\"10\" align=\"center\"> No Records found...!</td>";
+                    echo "<td colspan=\"15\" align=\"center\"> No Records found...!</td>";
                     }?>
                 </tbody>
    </table>

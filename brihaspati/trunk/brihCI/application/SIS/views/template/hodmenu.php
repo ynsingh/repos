@@ -92,6 +92,31 @@ echo "<ul class=\"sf-menu\">";
 					
 				echo "</ul>";
 			echo "</li>";*/
+			 echo "<li>";
+                                echo "<a href=" . ">Payroll Management</a>";
+                                echo "<ul>";
+                                        echo "<li>";
+                                                echo anchor('setup4/pendingincomereq', 'Saving Master Request', array('title' => 'Saving Master Request'));
+                                        echo "</li>";
+                                     //   echo "<li>";
+                                       //         echo anchor('payrollprofile/payprofile', 'Payroll Profile', array('title' => 'Payroll Profile'));
+                                      //  echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('payrollprofile/emppayprofile', 'Payroll Profile', array('title' => 'Payroll Profile'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('payrollprofile/viewpayleaveentry', 'Payroll Leave Entry', array('title' => 'Payroll Leave Entry'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('payrollprofile/viewpaytransentry', 'Payroll Transfer Entry', array('title' => 'Payroll Transfer Entry'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                 //               echo anchor('setup3redesign/salaryprocess', 'Salary Processing', array('title' => 'Salary Processing'));
+                                        echo "</li>";
+
+                                echo "</ul>";
+                        echo "</li>";
+
 			echo "<li>";
 				echo "<a href=" . ">Upload</a>";
 				echo "<ul>";

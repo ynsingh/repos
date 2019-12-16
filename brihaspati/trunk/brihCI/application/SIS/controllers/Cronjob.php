@@ -45,6 +45,7 @@ class Cronjob extends CI_Controller
         $selectfield ="emp_id,emp_code,emp_userid,emp_desig_code,emp_dob,emp_dor,emp_doj,emp_leaving,emp_email";
         $whdata = array ('emp_leaving' => NULL,'emp_dor <=' =>$today);
         $dordata = $this->sismodel->get_listspficemore('employee_master',$selectfield,$whdata);
+	$message='';
         if(!empty($dordata)){ 
             foreach($dordata as $combdata){
                 $empdata = array(
@@ -66,6 +67,7 @@ class Cronjob extends CI_Controller
                 {
                     $this->logger->write_logmessage("error"," Trying to insert in  staff retirement record", "staff retirement record is not added. Employee PF No' = ".$combdata->emp_code  );
                     $this->logger->write_dblogmessage("error","Trying to insert in  staff retirement record", "staff retirement record is not added. Employee PF No' = ".$combdata->emp_code  );
+			$message = $message . "staff retirement record is not added. Employee PF No' = ".$combdata->emp_code ."<br>";
                 }    
                 $empup_data = array(
                   'emp_leaving' => 'superannuation' 
@@ -74,6 +76,7 @@ class Cronjob extends CI_Controller
                 if(!$empmasterflag){
                     $this->logger->write_logmessage("error","Error in update employee profile ", "Error in employee profile updation".$combdata->emp_code );
                     $this->logger->write_dblogmessage("error","Error in update employee profile", "Error in employee profile updation".$combdata->emp_code);
+			$message = $message . "Error in employee profile updation. Employee PF No' = ".$combdata->emp_code ."<br>";
                 }    
            	/*update staff position table on staff retirement*/
                 $dept=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$combdata->emp_id)->emp_dept_code;
@@ -98,10 +101,12 @@ class Cronjob extends CI_Controller
                 if(!$upspdata_flag){
                     $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" .$combdata->emp_code);
                     $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update".$combdata->emp_code);
+			$message = $message . "Error in staff position record update. Employee PF No' = ".$combdata->emp_code ."<br>";
                 }
                 else{
                     $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ".$combdata->emp_code);
                     $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully".$combdata->emp_code);
+			$message = $message . "staff position record updated successfully. Employee PF No' = ".$combdata->emp_code ."<br>";
                 }
  
             }//foreach
@@ -109,7 +114,10 @@ class Cronjob extends CI_Controller
         else{
             $this->logger->write_logmessage("error"," Trying to insert in  staff retirement record", "staff retirement record is not added may be list is empty.");
             $this->logger->write_dblogmessage("error","Trying to insert in  staff retirement record", "staff retirement record is not added may be list is empty.");
+			$message = $message . "staff retirement record is not added may be list is empty. <br>";
         }
+		$this->session->set_flashdata('flash_data', $message);	
+		redirect('home');
         
     }
 

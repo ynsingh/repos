@@ -101,7 +101,7 @@ public function savingmaster(){
         $this->load->view('setup4/dispsavingmaster',$this->savresult);
     }
 
-public function editsavingmaster($id){
+    public function editsavingmaster($id){
 	$savingmasterrow=$this->sismodel->get_listrow('saving_master','sm_id', $id);
         if ($savingmasterrow->num_rows() < 1)
         {
@@ -260,100 +260,123 @@ public function editsavingmaster($id){
                 }//else
         }//end edit saving master function
 
-/*View Pending User Master Requests*/
-public function pendingincomereq(){
-	$id=$this->session->userdata('id_user');
-	$whdata = array('usm_status'=>0);
-	$record= $this->sismodel->get_listspficemore('user_saving_master','usm_id,usm_fyear,usm_empid,usm_pfno,usm_80C,usm_80CCD,usm_80D,usm_80DD,usm_80E,usm_80G,usm_80GGA,usm_80U,usm_24B,usm_other',$whdata);
-	$i=0;
-foreach ($record as $row){
-	$smdata['usmid'] =  $row->usm_id;
-	$smdata['usmfyear'] =  $row->usm_fyear;
-	$smdata['userid'] = $row->usm_empid;
-	$smdata['usmpfno'] = $row->usm_pfno;
-	$smdata['usm80C'] =  $row->usm_80C;
-	$smdata['usm80CCD'] = $row->usm_80CCD;
-	$smdata['usm80D'] =  $row->usm_80D;
-	$smdata['usm80DD'] =  $row->usm_80DD;
-	$smdata['usm80E'] = $row->usm_80E;
-	$smdata['usm80G'] =  $row->usm_80G;
-	$smdata['usm80GGA'] =  $row->usm_80GGA;
-	$smdata['usm80U'] =  $row->usm_80U;
-	$smdata['usm24B'] =  $row->usm_24B;
-	$smdata['usmother'] = $row->usm_other;
-
-	$this->usmresult[$i] = $smdata;
-		$i++;
+	/*View Pending User Master Requests*/
+	public function pendingincomereq(){
+		$id=$this->session->userdata('id_user');
+		$idrole=$this->session->userdata('id_role');
+		$iddept=$this->session->userdata('id_dept');
+		$whdata = array('usm_status'=>0);
+		if($idrole == 5){
+			$whdata['usm_deptid']=$iddept;
 		}
-$this->load->view('setup4/pendingincomereq');
-}
+		$record= $this->sismodel->get_listspficemore('user_saving_master','usm_id,usm_fyear,usm_empid,usm_pfno,usm_80C,usm_80CCD,usm_80D,usm_80DD,usm_80E,usm_80G,usm_80GGA,usm_80U,usm_24B,usm_other',$whdata);
+		$i=0;
+		foreach ($record as $row){
+			$smdata['usmid'] =  $row->usm_id;
+			$smdata['usmfyear'] =  $row->usm_fyear;
+			$smdata['userid'] = $row->usm_empid;
+			$smdata['usmpfno'] = $row->usm_pfno;
+			$smdata['usm80C'] =  $row->usm_80C;
+			$smdata['usm80CCD'] = $row->usm_80CCD;
+			$smdata['usm80D'] =  $row->usm_80D;
+			$smdata['usm80DD'] =  $row->usm_80DD;
+			$smdata['usm80E'] = $row->usm_80E;
+			$smdata['usm80G'] =  $row->usm_80G;
+			$smdata['usm80GGA'] =  $row->usm_80GGA;
+			$smdata['usm80U'] =  $row->usm_80U;
+			$smdata['usm24B'] =  $row->usm_24B;
+			$smdata['usmother'] = $row->usm_other;
 
-/*Approve User Master Request*/
-public function approve($usm_id){
-if(isset($_POST['approve']))
-                $data['usm_status']['value'] = $this->input->post('usm_status', TRUE);
- 		$usm_status = $this->input->post('usm_status', TRUE);
-                $logmessage = "";
-                if($apply_data_q->usm_status != $usm_status)
-                $logmessage = "User Saving Master Status " .$apply_data_q->usm_status. " changed by " .$usm_status;
+			$this->usmresult[$i] = $smdata;
+			$i++;
+		}
+		$this->load->view('setup4/pendingincomereq');
+	}
+
+	/*Approve User Master Request*/
+	public function approve($usm_id){
+		if(isset($_POST['approve'])){
+	       	        $data['usm_status']['value'] = $this->input->post('usm_status', TRUE);
+ 			$usm_status = $this->input->post('usm_status', TRUE);
+                	$logmessage = "";
+
+			$iddept=$this->session->userdata('id_dept');
+			$idrole=$this->session->userdata('id_role');
+			$empdeptid=$this->sismodel->get_listspfic1('user_saving_master','usm_deptid','usm_id', $usm_id)->usm_deptid;
+			if(($idrole == 1)||($idrole == 14)||(($idrole == 5)&&($iddept == $empdeptid))){
+	                if($apply_data_q->usm_status != $usm_status)
+        		        $logmessage = "User Saving Master Status " .$apply_data_q->usm_status. " changed by " .$usm_status;
  
-		$update_data = array(              
-    		'usm_status' =>  1,
-	        );
-	        $saflag=$this->sismodel->updaterec('user_saving_master', $update_data, 'usm_id', $usm_id);
-	        if(!$saflag)
-            	{
-                $this->logger->write_logmessage("error","Error in updating User Saving Master Approved ", "Error in User Saving Master Approved. $logmessage . " );
-                $this->logger->write_dblogmessage("error","Error in updating User Saving Master Approved ", "Error in User Saving Master Approved. $logmessage ." );
-                $this->session->set_flashdata('err_message','Error in updating User Saving Master - ' . $logmessage . '.', 'error');
-                $this->load->view('setup4/pendingincomereq', $data);
-            	}
-            	else{
-                $this->logger->write_logmessage("update","User Saving Master Approved", "User Saving Master approved... $logmessage . " );
-                $this->logger->write_dblogmessage("update","User Saving Master Approved", "User Saving MasterUser Saving Master approved... $logmessage ." );
-                $this->session->set_flashdata('success','User Saving Master approved');	
-		redirect('setup4/approvedincomereq/');
-                }
+			$update_data = array(              
+    				'usm_status' =>  1,
+	        	);
+	        	$saflag=$this->sismodel->updaterec('user_saving_master', $update_data, 'usm_id', $usm_id);
+	        	if(!$saflag)
+            		{
+		                $this->logger->write_logmessage("error","Error in updating User Saving Master Approved ", "Error in User Saving Master Approved. $logmessage . " );
+                		$this->logger->write_dblogmessage("error","Error in updating User Saving Master Approved ", "Error in User Saving Master Approved. $logmessage ." );
+		                $this->session->set_flashdata('err_message','Error in updating User Saving Master - ' . $logmessage . '.', 'error');
+                		$this->load->view('setup4/pendingincomereq', $data);
+            		}
+	            	else{
+        		        $this->logger->write_logmessage("update","User Saving Master Approved", "User Saving Master approved... $logmessage . " );
+		                $this->logger->write_dblogmessage("update","User Saving Master Approved", "User Saving MasterUser Saving Master approved... $logmessage ." );
+                		$this->session->set_flashdata('success','User Saving Master approved');	
+				redirect('setup4/approvedincomereq/');
+                	}
+			}
+			else{
+				$this->logger->write_logmessage("update","User Saving Master invalid access", "User Saving Master invalid access.. $logmessage . " );
+                                $this->logger->write_dblogmessage("update","User Saving Master invalid access", "User Saving Master invalid access.. $logmessage ." );
+                                $this->session->set_flashdata('success','You do not have the access for this user'); 
+                                redirect('setup4/approvedincomereq/');
+
+			}
+		}
             } //end approve function 
 /*View Approved Leave Requests*/
-public function approvedincomereq(){
-        $id=$this->session->userdata('id_user');
-        $whdata = array('usm_status'=>1);
-        $record= $this->sismodel->get_listspficemore('user_saving_master','usm_id,usm_fyear,usm_empid,usm_pfno,usm_80C,usm_80CCD,usm_80D,usm_80DD,usm_80E,usm_80G,usm_80GGA,usm_80U,usm_24B,usm_other',$whdata);
-        $i=0;
-foreach ($record as $row){
-        $smdata['usmid'] =  $row->usm_id;
-        $smdata['usmfyear'] =  $row->usm_fyear;
-        $smdata['userid'] = $row->usm_empid;
-        $smdata['usmpfno'] = $row->usm_pfno;
-        $smdata['usm80C'] =  $row->usm_80C;
-        $smdata['usm80CCD'] = $row->usm_80CCD;
-        $smdata['usm80D'] =  $row->usm_80D;
-        $smdata['usm80DD'] =  $row->usm_80DD;
-        $smdata['usm80E'] = $row->usm_80E;
-        $smdata['usm80G'] =  $row->usm_80G;
-        $smdata['usm80GGA'] =  $row->usm_80GGA;
-        $smdata['usm80U'] =  $row->usm_80U;
-        $smdata['usm24B'] =  $row->usm_24B;
-        $smdata['usmother'] = $row->usm_other;
+	public function approvedincomereq(){
+        	$id=$this->session->userdata('id_user');
+		$idrole=$this->session->userdata('id_role');
+		$iddept=$this->session->userdata('id_dept');
+	        $whdata = array('usm_status'=>1);
+		if($idrole == 5){
+			$whdata['usm_deptid']=$iddept;
+		}
+        	$record= $this->sismodel->get_listspficemore('user_saving_master','usm_id,usm_fyear,usm_empid,usm_pfno,usm_80C,usm_80CCD,usm_80D,usm_80DD,usm_80E,usm_80G,usm_80GGA,usm_80U,usm_24B,usm_other',$whdata);
+        	$i=0;
+		foreach ($record as $row){
+		        $smdata['usmid'] =  $row->usm_id;
+		        $smdata['usmfyear'] =  $row->usm_fyear;
+		        $smdata['userid'] = $row->usm_empid;
+		        $smdata['usmpfno'] = $row->usm_pfno;
+		        $smdata['usm80C'] =  $row->usm_80C;
+		        $smdata['usm80CCD'] = $row->usm_80CCD;
+		        $smdata['usm80D'] =  $row->usm_80D;
+		        $smdata['usm80DD'] =  $row->usm_80DD;
+		        $smdata['usm80E'] = $row->usm_80E;
+		        $smdata['usm80G'] =  $row->usm_80G;
+		        $smdata['usm80GGA'] =  $row->usm_80GGA;
+		        $smdata['usm80U'] =  $row->usm_80U;
+		        $smdata['usm24B'] =  $row->usm_24B;
+		        $smdata['usmother'] = $row->usm_other;
 
-        $this->usmresult[$i] = $smdata;
-                $i++;
+		        $this->usmresult[$i] = $smdata;
+                	$i++;
                 }
-$this->load->view('setup4/approvedincomereq');
+		$this->load->view('setup4/approvedincomereq');
 
-}//end view approve function
+	}//end view approve function
 
-/*Reject User Master Request*/
+	/*Reject User Master Request*/
+	public function reject ($usm_id) {
 
-public function reject ($usm_id) {
-
-        $usmrej=$this->sismodel->get_listrow('user_saving_master','usm_id', $usm_id);
-        if ($usmrej->num_rows() < 1)
-        {
-           redirect('setup4/pendingincomereq');
-        }
-        $usersavdata = $usmrej->row();
+	        $usmrej=$this->sismodel->get_listrow('user_saving_master','usm_id', $usm_id);
+        	if ($usmrej->num_rows() < 1)
+        	{
+           		redirect('setup4/pendingincomereq');
+        	}
+        	$usersavdata = $usmrej->row();
 
              $data['usm_rejres'] = array(
             'name' => 'usm_rejres',
@@ -381,6 +404,11 @@ public function reject ($usm_id) {
                   $this->load->view('setup4/reject', $data);
                   return;
         }
+		$iddept=$this->session->userdata('id_dept');
+                $idrole=$this->session->userdata('id_role');
+                $empdeptid=$this->sismodel->get_listspfic1('user_saving_master','usm_deptid','usm_id', $usm_id)->usm_deptid;
+                if(($idrole == 1)||($idrole == 14)||(($idrole == 5)&&($iddept == $empdeptid))){
+
 
             $logmessage = "";
             if($Leavedata->usm_rejres != $usm_rejres)
@@ -406,36 +434,47 @@ public function reject ($usm_id) {
                 $this->session->set_flashdata('err_message','User Saving Master Rejected');
                 redirect('setup4/rejectedincomereq/');
                 }
+		}
+		else{
+			$this->logger->write_logmessage("update","User Saving Master invalid access", "User Saving Master invalid access.. $logmessage . " );
+                        $this->logger->write_dblogmessage("update","User Saving Master invalid access", "User Saving Master invalid access.. $logmessage ." );
+                        $this->session->set_flashdata('success','You do not have the access for this user'); 
+                	redirect('setup4/rejectedincomereq/');
+		}
         redirect('setup4/reject');
-}
+	}
 
-/*View Rejected User Master Requests*/
-public function rejectedincomereq(){
-        $id=$this->session->userdata('id_user');
-        $whdata = array('usm_status'=>2);
-        $record= $this->sismodel->get_listspficemore('user_saving_master','usm_id,usm_fyear,usm_empid,usm_pfno,usm_80C,usm_80CCD,usm_80D,usm_80DD,usm_80E,usm_80G,usm_80GGA,usm_80U,usm_24B,usm_other',$whdata);
-        $i=0;
-    foreach ($record as $row){  
-        $smdata['usmid'] =  $row->usm_id;
-        $smdata['usmfyear'] =  $row->usm_fyear;
-        $smdata['userid'] = $row->usm_empid;
-        $smdata['usmpfno'] = $row->usm_pfno;
-        $smdata['usm80C'] =  $row->usm_80C;
-        $smdata['usm80CCD'] = $row->usm_80CCD;
-        $smdata['usm80D'] =  $row->usm_80D;
-        $smdata['usm80DD'] =  $row->usm_80DD;
-        $smdata['usm80E'] = $row->usm_80E;
-        $smdata['usm80G'] =  $row->usm_80G;
-        $smdata['usm80GGA'] =  $row->usm_80GGA;
-        $smdata['usm80U'] =  $row->usm_80U;
-        $smdata['usm24B'] =  $row->usm_24B;
-        $smdata['usmother'] = $row->usm_other;
+	/*View Rejected User Master Requests*/
+	public function rejectedincomereq(){
+	        $id=$this->session->userdata('id_user');
+		$idrole=$this->session->userdata('id_role');
+		$iddept=$this->session->userdata('id_dept');
+        	$whdata = array('usm_status'=>2);
+		if($idrole == 5){
+			$whdata['usm_deptid']=$iddept;
+		}
+	        $record= $this->sismodel->get_listspficemore('user_saving_master','usm_id,usm_fyear,usm_empid,usm_pfno,usm_80C,usm_80CCD,usm_80D,usm_80DD,usm_80E,usm_80G,usm_80GGA,usm_80U,usm_24B,usm_other',$whdata);
+        	$i=0;
+		foreach ($record as $row){  
+		        $smdata['usmid'] =  $row->usm_id;
+		        $smdata['usmfyear'] =  $row->usm_fyear;
+		        $smdata['userid'] = $row->usm_empid;
+		        $smdata['usmpfno'] = $row->usm_pfno;
+		        $smdata['usm80C'] =  $row->usm_80C;
+		        $smdata['usm80CCD'] = $row->usm_80CCD;
+		        $smdata['usm80D'] =  $row->usm_80D;
+		        $smdata['usm80DD'] =  $row->usm_80DD;
+		        $smdata['usm80E'] = $row->usm_80E;
+		        $smdata['usm80G'] =  $row->usm_80G;
+		        $smdata['usm80GGA'] =  $row->usm_80GGA;
+		        $smdata['usm80U'] =  $row->usm_80U;
+		        $smdata['usm24B'] =  $row->usm_24B;
+		        $smdata['usmother'] = $row->usm_other;
 
-        $this->usmresult[$i] = $smdata;
-                $i++;
-        }
-	$this->load->view('setup4/rejectedincomereq');
-
+		        $this->usmresult[$i] = $smdata;
+                	$i++;
+        	}
+		$this->load->view('setup4/rejectedincomereq');
 	}//end view rejected function
 
 	public function displaypaymatrix(){

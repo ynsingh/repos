@@ -46,6 +46,7 @@ class Incometax extends CI_Controller
  			$fyear=$this->usermodel->getcurrentFyYear();
 		    	// get the empid
 		    	$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;	
+		    	$deptid=$this->sismodel->get_listspfic1('employee_master','emp_dept_code','emp_id', $empid)->emp_dept_code;	
                     
 		     	$data = array(
 		    		'usm_80C'=>$_POST['usm_80C'],
@@ -66,6 +67,7 @@ class Incometax extends CI_Controller
 			if(!$dup){
 				$data['usm_pfno']=$pfno;
 				$data['usm_empid']=$empid;
+				$data['usm_deptid']=$deptid;
 				$data['usm_fyear']=$fyear;
 				$data['usm_creatorid']=$this->session->userdata('username');
 				$data['usm_creatordate']=date('Y-m-d');

@@ -64,6 +64,8 @@
                                 </thead>
                                 <tbody>
 <?php
+			$iddept=$this->session->userdata('id_dept');
+                        $idrole=$this->session->userdata('id_role');
         			$count =0;
 					if(!empty($this->usmresult))
 					 {
@@ -93,9 +95,14 @@
 
 <td>
 
-		<?php echo anchor('setup4/approve/' . $row['usmid'] , "Approve",array('onclick' => "return confirm('Are you sure you want to approve leave request')")) . " ";?>
-
-                                   <?php echo anchor('setup4/reject/' . $row['usmid'] , "Reject", array('title' => 'Reject Leave Requests' ,'class' =>'top_parent'));?>
+		<?php 
+                        $empdeptid=$this->sismodel->get_listspfic1('user_saving_master','usm_deptid','usm_empid', $row['userid'])->usm_deptid;
+                        if(($idrole == 1)||($idrole == 14)||(($idrole == 5)&&($iddept == $empdeptid))){
+				echo anchor('setup4/approve/' . $row['usmid'] , "Approve",array('onclick' => "return confirm('Are you sure you want to approve leave request')")) . " ";
+				echo " | ";
+                         	echo anchor('setup4/reject/' . $row['usmid'] , "Reject", array('title' => 'Reject Leave Requests' ,'class' =>'top_parent'));
+			}
+?>
                                         </td>
 
                                         </tr>

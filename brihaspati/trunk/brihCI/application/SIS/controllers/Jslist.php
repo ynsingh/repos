@@ -589,6 +589,15 @@ class Jslist extends CI_Controller
 	public function getemppdata(){
 	        $values=array();
         	$pfno= $this->input->post('emplypfno');
+
+		$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
+        	$uname=$this->session->userdata('username');
+        	$ssiondeptid=$this->session->userdata('id_dept');
+	      	if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+        	      	$mess="You do not have the right to access detial of this PF Number";
+                	array_push($values,$mess);
+	      	}else{
+
 	        $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
        // echo "pfno---".$pfno;
         	$emp_data=$this->sismodel->get_listrow('employee_master','emp_code',$pfno);
@@ -611,6 +620,7 @@ class Jslist extends CI_Controller
 			$mess="Please enter the valid PF Number";
 			array_push($values,$mess);
 		}
+		}//dept check else
 		//implode("+",$values);
 		echo json_encode($values);
 	}
@@ -667,33 +677,32 @@ class Jslist extends CI_Controller
                 $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$detail->emp_salary_grade)->sgm_gradepay;
                 
                 $pgbox='<option value='.$detail->emp_salary_grade.'>'.$payband."(".$pay_min."-".$pay_max.")".$gardepay.' ';
-                
-                
-                
                // array_push($values,$campusbox,$uocbox,$deptbox,$schmbox,$detail->emp_worktype,$desigbox,
                 $values=$campusbox."^".$uocbox."^".$deptbox."^".$schmbox."^".$detail->emp_worktype."^".$desigbox.
                 "^".$empbox."^".$detail->emp_post."^".$detail->emp_type_code."^".$ddobox."^".$groupbox."^".$pgbox;
                     //    ."^".$ddobox."^".$pgbox."^".$groupbox;
-               
-                                
             }
             echo json_encode($values);
-                       
         }            
-              
     }
     /****************************************closer employee detail by pf no *********************************/
     
-    
-    
      /***** This function has been created for get the employee detail by pf no for payroll profile ********************************/
-    
     public function getempdata2(){
         $values=array();
         $pfno= $this->input->post('emplypfno');
  //       echo "pfno---".$pfno;
 //	$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
 	$empiddata=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno);
+
+	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
+	$uname=$this->session->userdata('username');	
+	$ssiondeptid=$this->session->userdata('id_dept');
+      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+		$mess="You do not have the right to access detial of this PF Number";
+               array_push($values,$mess);
+	}else{
+
 	if(!empty($empiddata)){
 	$empid=	$empiddata->emp_id;
 	$sel1="emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_name,emp_post,emp_bank_ifsc_code,emp_bankname,emp_bankbranch,emp_bank_accno,emp_phone,emp_address,emp_secndemail,emp_ddoid,emp_dor,emp_doj,emp_dob,emp_salary_grade,emp_aadhaar_no,emp_paycomm,emp_pan_no,emp_nhisidno,emp_worktype,emp_group,emp_type_code";
@@ -782,9 +791,7 @@ class Jslist extends CI_Controller
 
 //		array_push($values, $campus,$uocname,$deptname,$schme,$ddo,$detail->emp_worktype,$detail->emp_group,$designame,$detail->emp_type_code,
   //              $doj,$empname,$accno,$aadhaarno,$dob, $address,$detail->emp_phone,$dor."16",$payscale."17",$ifcbank.'181920',$paycomm.'21');
-
             }
-            
         } 
 	$sel2="ems_house_type,ems_house_no,ems_pensioncontri,ems_upfno,ems_universityemp,ems_washingallowance,ems_deductupf,ems_hragrade,ems_ccagrade,ems_inclsummary,ems_lic1no,ems_lic1amount,ems_lic2no,ems_lic2amount,ems_lic3no,ems_lic3amount,ems_lic4no,ems_lic4amount,ems_lic5no,ems_lic5amount,ems_prdno1,ems_prdno2,ems_prdno3,ems_plino1,ems_plino2,ems_society,ems_societymember,ems_erfq,ems_erfqhra,ems_qoccupai,ems_rentgrade,ems_spfcgs,ems_spfcgs2000,ems_fsfno,ems_fsfamount,ems_bbmicr,ems_acctype,ems_bbadd,ems_bbphone,ems_bbemail,ems_nhisamount,ems_socamount,ems_pli2amount,ems_pli1amount,ems_prd3amount,ems_prd2amount,ems_prd1amount,ems_fsfamount,ems_spfcgs2amount,ems_spfcgsamount";
 	$whdata2=array('ems_code'=>$pfno);
@@ -862,6 +869,7 @@ class Jslist extends CI_Controller
 		$mess="Please enter the valid PF Number";
                 array_push($values,$mess);
 	}
+	}//end for dept check
        // echo "values in controller===".$values;
         echo json_encode($values);
     }
@@ -886,6 +894,15 @@ class Jslist extends CI_Controller
         $combthree='';
         $pfval = $this->input->post('pfshid');
         $parts = explode(',',$pfval);
+
+	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$parts[1])->emp_dept_code;
+        $uname=$this->session->userdata('username');
+        $ssiondeptid=$this->session->userdata('id_dept');
+      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+              $mess="You do not have the right to access detial of this PF Number";
+                array_push($values,$mess);
+      }else{
+
        // echo "pfno in  part0===".$parts[0]."part1===".$parts[1];
          // $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$pfval)->emp_id;
         if(empty($this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1]))){
@@ -977,8 +994,6 @@ class Jslist extends CI_Controller
                    // }//closerforeach//tab6
             //     $wdata = array('seh_empid' =>$empid,'seh_month'=>$cmonth,'seh_year'=>$cyear);
              //    $hdval= $this->sismodel->get_orderlistspficemore('salary_earnings_head','seh_headid,seh_headname,seh_headamount',$wdata,''); 
-                
-                    
                 }//closer tab6 
                
             if($parts[0]== '#tab7'){
@@ -986,15 +1001,16 @@ class Jslist extends CI_Controller
                     $hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
                     $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
                     $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+           //             print_r("dd===".$hid);
+	//		print_r("dd===".$htype);
                     if($htype == 'D'){
-                       // print_r("dd===".$hid);
+          //              print_r("dd===".$hid);
                         $wdata2=array('ssdh_empid' =>$empid,'ssdh_headid'=>$hid);
                         $mdrecord=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_id',$wdata2);
                         $mssdhid='';
                         if(!empty($mdrecord)){
                             foreach($mdrecord as $mr){
                                 $mssdhid=$mr->ssdh_id;
-                                
                             }
                             if(!empty($mssdhid)){
                                 $hno1=$this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headno','ssdh_id',$mssdhid);
@@ -1008,9 +1024,8 @@ class Jslist extends CI_Controller
                             }
                         }
                         $combthree=$hno."^".$hvalue;
-                       // print_r($combthree);
+//                        print_r($combthree);
                         array_push($values,$combthree);
-                        
                     }
                 }//forachhidarr        
                  
@@ -1028,7 +1043,6 @@ class Jslist extends CI_Controller
                         if(!empty($mdrecord)){
                             foreach($mdrecord as $mr){
                                 $mslhid=$mr->slh_id;
-                                
                             }
                             if(!empty($mslhid)){
                                 $hno1=$this->sismodel->get_listspfic1('salary_loan_head','slh_headno','slh_id',$mslhid);
@@ -1042,20 +1056,18 @@ class Jslist extends CI_Controller
                                 $intlttno=$this->sismodel->get_listspfic1('salary_loan_head','slh_totalintall','slh_id',$mslhid)->slh_totalintall;
                                 $intlno=$this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$mslhid)->slh_intallmentno;
                                 $intlhvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_installamount','slh_id',$mslhid)->slh_installamount,0);
-                                
                             }
                         }
                         $combthree=$hno."^".$hvalue."^".$intlttno."^".$intlno."^".$intlhvalue;
                        // print_r($combthree);
                         array_push($values,$combthree);
-                        
                     }
                 }//forachhidarr     
-                 
-            }
+            }// close if if tab8
     
 	}//close second else
       }//close first else 
+	}// close dept check else
         echo json_encode($values);
     }
     public function getheadfromula(){
@@ -1066,13 +1078,8 @@ class Jslist extends CI_Controller
       //  echo "pfno in tab4=1=".$pfval.$parts[0].$parts[1];
         $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[2])->emp_id;
         /*
-        
         if(!empty($hdval)){
             foreach($hdval as $alldata){
-           
-              
-                    
-                
                 array_push($values,$combthree);
             }
         }
@@ -1082,9 +1089,7 @@ class Jslist extends CI_Controller
             array_push($values,$mess);
            // $headval=0;   
         }*/
-        
       //  array_push($values,$empid);
-       
         echo json_encode($values);
        // echo json_encode($empid);
     }

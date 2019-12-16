@@ -195,6 +195,7 @@ CREATE TABLE `user_saving_master` (
   `usm_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `usm_fyear` varchar(10)  NOT NULL,
   `usm_empid` int(11)  NOT NULL,
+  `usm_deptid` int(4)  default NULL,
   `usm_pfno` varchar(30)  NOT NULL,
   `usm_80C` DECIMAL (15, 2) NOT NULL,
   `usm_80CCD` DECIMAL (15, 2) DEFAULT 0.00,
