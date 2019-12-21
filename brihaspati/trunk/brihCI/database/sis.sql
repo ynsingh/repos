@@ -1946,3 +1946,16 @@ CREATE TABLE `employee_salary_increment` (
         `esi_modifydate` TIMESTAMP NOT NULL ,
         PRIMARY KEY (`esi_id`)
 ) ENGINE = InnoDB;
+
+CREATE TABLE `salary_lock_data` ( 
+	`sld_id` INT NOT NULL AUTO_INCREMENT , 
+	`sld_month` VARCHAR(50) NOT NULL , 
+	`sld_year` INT(5) NOT NULL , 
+	`sld_deptid` INT(3) NOT NULL , 
+	`sld_status` INT(1) NOT NULL DEFAULT '0' , 
+	`sld_creator` VARCHAR(255) NOT NULL , 
+	`sld_creationdate` DATE NOT NULL , 
+	`sld_modifier` VARCHAR(255) NOT NULL , 
+	`sld_modifidate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+	PRIMARY KEY (`sld_id`)
+) ENGINE = InnoDB; 

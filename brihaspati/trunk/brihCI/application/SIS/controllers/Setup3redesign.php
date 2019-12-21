@@ -966,7 +966,7 @@ class Setup3redesign extends CI_Controller
                 $this->logger->write_logmessage("insert","Trying to add  salary data head wise", "  salary data head wise value is not added ".$this->emppfno);
                 $this->logger->write_dblogmessage("insert","Trying to add salary data head wise ", " salary data head wise value is not added ".$this->emppfno);
                 $this->session->set_flashdata('err_message','Error in  salary data head wise value - '  , 'error');
-                redirect('setup3/salaryslip',$data);
+                redirect('setup3redesign/salaryslip',$data);
             }
             else{
             
@@ -983,8 +983,8 @@ class Setup3redesign extends CI_Controller
                 $ucase=$this->uri->segment(6);
                 
                 $this->mailmodel->mailAttachment($uempid,$this->emppfno,$umonth,$uyear,$ucase);
-                
-                redirect("setup3/salaryprocess",$data);
+		$this->session->set_flashdata('fldeptid', $deptid);
+                redirect("setup3redesign/salaryprocess",$data);
             }
             
         }//for button
@@ -1846,10 +1846,16 @@ class Setup3redesign extends CI_Controller
     
     /*********************  Salary Processing *******************************************/
     public function salaryprocess(){
+	
 	$deptnme='';
+	$deptid=$this->session->flashdata('fldeptid');
+//		echo $deptid; //die();
         $month = $this->input->post('month', TRUE);
         $year = $this->input->post('year', TRUE);
-	$deptid=$this->input->post('dept', TRUE);
+	
+	if(empty($deptid)){
+		$deptid=$this->input->post('dept', TRUE);
+	}
         $cmonth= date('M');
         $cyear= date("Y"); 
        // echo "999==".$month."--------".$year;
@@ -1884,6 +1890,7 @@ class Setup3redesign extends CI_Controller
         $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder); 
         $data['selmonth']=$month;
         $data['selyear']=$year;
+	
         $data['etranlist']=array();
 	$tlempid=array();
         $whtempid=array('ste_month'=>$month,'ste_year'=>$year);
@@ -2443,7 +2450,6 @@ class Setup3redesign extends CI_Controller
                    'sle_empid'                =>$record->emp_id,
                    'sle_month'                =>$cmonth,
                    'sle_year'                 =>$cyear   
-                   
                 );
                 $empleave=$this->sismodel->isduplicatemore('salary_leave_entry',$leavedata);
                // print_r("sleave\n".$empleave."\nnestvalempis====");
@@ -2453,7 +2459,6 @@ class Setup3redesign extends CI_Controller
             //    if(!$empexist){
                     /*********************************Default Salary***************************************************/
                     if((!empty($emptrans)) || (!empty($empleave))){
-                      
                         if($emptrans == 1){
                             $this->Defaluttranfr_days($record->emp_id,$cmonth,$cyear);
                             $this->Defaluttranfr_transit($record->emp_id, $cmonth, $cyear);
@@ -2467,15 +2472,12 @@ class Setup3redesign extends CI_Controller
                     }
                     else{
                         //  echo "with default values salary generate without transfer case";
-                          
-                          //die();
+                        //die();
                         //echo "part not leave and transfer====".$record->emp_id;
                         $this->DefalutSalaryPro($record->emp_id,$cmonth,$cyear); 
-                        
                         //echo"in default case===".$record->emp_id;
                     }
               //  }
-                
                 /*********this part is commented for checking always updated data no need to use this part************/
                 
                 /*                

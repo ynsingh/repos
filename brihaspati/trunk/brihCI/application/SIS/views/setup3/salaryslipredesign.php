@@ -112,8 +112,6 @@
          <?php $empid=$this->uri->segment(3);
                $month=$this->uri->segment(4);
                $year=$this->uri->segment(5);
-         
-          
          ?>
        
             <table border="1"  cellpadding=10  width="100%" bgcolor="#95a5a6"><tr><td>  
@@ -152,12 +150,14 @@
                 <tr>
                     <td><b>Bank Ac No:</b><?php echo $this->sismodel->get_listspfic1('employee_master','emp_bank_accno','emp_id',$empid)->emp_bank_accno;?></td>
                     <td><b>Pay Scale:</b><?php $pbid=$this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+			    if(!empty($pbid)){
                             $payband=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$pbid)->sgm_name;
                             $pay_max=$this->sismodel->get_listspfic1('salary_grade_master','sgm_max','sgm_id',$pbid)->sgm_max;
                             $pay_min=$this->sismodel->get_listspfic1('salary_grade_master','sgm_min','sgm_id',$pbid)->sgm_min;
                             $gardepay=$this->sismodel->get_listspfic1('salary_grade_master','sgm_gradepay','sgm_id',$pbid)->sgm_gradepay;
                             $paycomm=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
                             echo $payband."(".$pay_min."-".$pay_max.")".$gardepay."/".$paycomm;
+				}
                             ;?>
                             
                     </td>
@@ -196,7 +196,8 @@
                     
                     $selmonth = date("m",strtotime($month));
                     $selyear=$year;
-                    $selmonyear=$selyear.$selmonth; //echo "both=3=".$selmonyear."==".$month;
+                    $selmonyear=$selyear.$selmonth; //echo "both=3=".$selmonyear."==".$month;	
+//			echo "deplicate".$dupexists;
                     if(!$dupexists){
                       //  echo "case 1 if dupexists";
                         if($selmonyear < $currentyd){
@@ -230,8 +231,7 @@
                         
                         ?>
                
-                <tr>
-                    
+                <tr>                    
                    
                     
                     <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
@@ -871,9 +871,13 @@
                  <input type="hidden" name="totalcount" id="tcount" value="<?php echo $i;?>">   
                  <input type="hidden" name="totalded" id="tcount" value="<?php echo $j;?>">    
                 <?php } ;
-		if($selmonyear > $currentyd){               ?>
+		$sessrolid=$this->session->userdata('id_role');
+		if(($sessrolid == 1)||($sessrolid == 14)||(($sessrolid == 5)&&($selmonyear == $currentyd))){
+//		if($dupexists){
+//		if($selmonyear > $currentyd){               ?>
                 <button name="upsalhdval" id="btnUpload" style="align:right" onclick="return confirm('Are you sure you want to process salary?');">Update</button></span></td>   
-		<?php } ?>
+		<?php //}
+		} ?>
                 </tr> 
                
                 </td></tr>
