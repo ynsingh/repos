@@ -1860,8 +1860,23 @@ class Setup3redesign extends CI_Controller
             $year=$cyear;
         }
       	$datawh='';
-        $whorder='';
+	$whorder='';
+	$lstatus='';
+
 	$ssiondeptid=$this->session->userdata('id_dept');
+	$sessionroleid=$this->session->userdata('id_role');
+	$data['sroleid']= $sessionroleid;
+	if($sessionroleid == 5){
+		$ldatawh =array("sld_month" =>$month, "sld_year"=>$year,"sld_deptid"=>$ssiondeptid);
+		$lockdata=$this->sismodel->get_orderlistspficemore('salary_lock_data','sld_status',$ldatawh,'');
+		if(!empty($lockdata)){
+			$lstatus=$lockdata[0]->sld_status;
+		}else{
+			$lstatus="N";
+		}
+		$data['lckstus']=$lstatus;
+	}
+
 	if(!empty($ssiondeptid)){
 		$deptid = $ssiondeptid;
 		$datawh['dept_id']=$deptid;
@@ -2297,6 +2312,81 @@ class Setup3redesign extends CI_Controller
         $data['incomes'] = $this->sismodel->get_orderlistspficemore('salaryhead_configuration',$selectfield,$whdata,$whorder);
                
     }*/
+    /******************************lock salary month by head**************************************************************************/
+    public function locksalary(){
+	    $ssiondeptid=$this->session->userdata('id_dept');
+	    $cmonth= date('M');
+	    $cyear= date("Y");
+	    if(isset($_POST['sallock'])){
+		    $lockdata=array(
+			    'sld_month' => $cmonth,
+			    'sld_year' => $cyear,
+			    'sld_deptid' => $ssiondeptid,
+			    'sld_status' => 'Y',
+			    'sld_creator' => date('y-m-d'),
+			    'sld_creationdate' => $this->session->userdata('username'),
+			    'sld_modifier' => date('y-m-d'),
+			    'sld_modifidate' => $this->session->userdata('username'),
+		    );
+		    $selflag=$this->sismodel->insertrec('salary_lock_data',  $lockdata);
+		    if (! $selflag   )
+		    {
+			    $this->logger->write_logmessage("insert","Trying to add salary lock ", "Error in insert lock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->logger->write_dblogmessage("insert", "Trying to add salary lock ","Error in insert lock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->session->set_flashdata("err_message","Error in insert lock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    redirect('setup3redesign/salaryprocess');
+		    }
+		    else{
+			    $this->logger->write_logmessage("insert", "Add salary lock ","Insert lock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->logger->write_dblogmessage("insert","Add salary lock ", "Insert lock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->session->set_flashdata("success", "Insert lock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]" );
+			    redirect('setup3redesign/salaryprocess');
+
+	            }
+	    }
+    }
+
+    /******************************unlock salary month by head**************************************************************************/
+    public function unlocksalary(){
+	    $sessionunme=$this->session->userdata('username');
+	    if(($sessionunme == "admin") || ($sessionunme == "payadmin")){
+		    //get the month year and department
+	    $cmonth= date('M');
+	    $cyear= date("Y");
+	    $deptid='';
+	    if(isset($_POST['salunlock'])){
+		    $unlockdata=array(
+			    'sld_month' => $cmonth,
+			    'sld_year' => $cyear,
+			    'sld_deptid' => $deptid,
+			    'sld_status' => 'N',
+			    'sld_creator' => date('y-m-d'),
+			    'sld_creationdate' => $this->session->userdata('username'),
+			    'sld_modifier' => date('y-m-d'),
+			    'sld_modifidate' => $this->session->userdata('username'),
+		    );
+		    $selflag=$this->sismodel->insertrec('salary_lock_data',  $unlockdata);
+		    if (! $selflag   )
+		    {
+			    $this->logger->write_logmessage("insert","Trying to add salary unlock ", "Error in insert unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->logger->write_dblogmessage("insert", "Trying to add salary unlock ","Error in insert unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->session->set_flashdata("err_message","Error in insert unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    redirect('setup3redesign/salaryprocess');
+		    }
+		    else{
+			    $this->logger->write_logmessage("insert", "Add salary unlock ","Insert unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->logger->write_dblogmessage("insert","Add salary unlock ", "Insert unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]");
+			    $this->session->set_flashdata("success", "Insert unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]" );
+			    redirect('setup3redesign/salaryprocess');
+
+	            }
+	    }
+	    }else{
+		    $this->session->set_flashdata("err_message", "Try to unlock record" . " [Dept id:" . $ssiondeptid . " Month :".$cmonth." Year :".$cyear."]" );
+                            redirect('setup3redesign/salaryprocess');
+	    }
+    }
+
     /******************************copy previous month salary to next month**************************************************************************/
     public function copysalary(){
         $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_post,emp_worktype,emp_type_code,"
@@ -2313,7 +2403,27 @@ class Setup3redesign extends CI_Controller
         $cyear= date("Y"); 
         $data['selmonth']=$cmonth;
         $data['selyear']=$cyear;
-        $cnomonth= date("m",strtotime($cmonth));
+	$cnomonth= date("m",strtotime($cmonth));
+
+	$sessionroleid=$this->session->userdata('id_role');
+        if($sessionroleid == 5){
+                $ldatawh =array("sld_month" =>$cmonth, "sld_year"=>$cyear,"sld_deptid"=>$ssiondeptid);
+                $lockdata=$this->sismodel->get_orderlistspficemore('salary_lock_data','sld_status',$ldatawh,'');
+                if(!empty($lockdata)){
+                        $lstatus=$lockdata[0]->sld_status;
+                }else{
+                        $lstatus="N";
+                }
+        }
+	
+	if(($sessionroleid == 5)&&($lstatus == "Y")){
+            $this->logger->write_logmessage("insert", " Salary data copy locked"."Salary data copy is locked for deptid :".$ssiondeptid." Month: ".$cmonth." Year : ".$cyear);
+            $this->logger->write_dblogmessage("insert"," Salary data copy locked"."Salary data copy is locked for deptid :".$ssiondeptid." Month: ".$cmonth." Year : ".$cyear);
+            $this->session->set_flashdata("success", "Salary data copy is locked for deptid :".$ssiondeptid." Month: ".$cmonth." Year : ".$cyear );
+
+	}else{
+
+
         if(isset($_POST['salcopy'])){
             foreach($data['emplist'] as $record){
                 /* checking in table that employee data of previous month is exists or not */
@@ -2603,9 +2713,9 @@ class Setup3redesign extends CI_Controller
             $this->logger->write_logmessage("insert", " Salary data copy "."Salary data copy");
             $this->logger->write_dblogmessage("insert"," Salary data copy "."Salary data copy");
             $this->session->set_flashdata("success", 'Salary data copy successfully ...' );
-            
                  
-        }
+	}
+	}
         $this->load->view('setup3/empSalary',$data);
     
     }

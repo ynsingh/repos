@@ -131,13 +131,21 @@
                      
                     </td>
                    </form>
-
+		<?php  if(($sroleid == 5)&&($lckstus == 'N')){ ?>
+                    <form name="lockfrm" action="<?php echo site_url('setup3redesign/locksalary');?>" method="POST" enctype="multipart/form-data"> 
+		    <td> 
+		    <input type="submit" name="sallock" id="sallock" value="Salary Lock" onclick="return confirm('Are you sure you want to Lock salary?');"/> 
+                    </td>
+		    </form>
+		<?php }
+		    if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){ ?>
                     <!--<form action="<?php echo site_url('setup3/copysalary');?>" method="POST" enctype="multipart/form-data"> -->
                     <form action="<?php echo site_url('setup3redesign/copysalary');?>" method="POST" enctype="multipart/form-data"> 
                     <td> Process Salary for the current month:
                     <input type="submit" name="salcopy" id="salcopy" value="Salary Process" onclick="return confirm('Are you sure you want to copy previous month salary to current month?');"/> 
                     </td>
                     </form>
+		<?php } ?>
                 </tr>
             </table>
                    
@@ -216,7 +224,13 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+				<td><?php 
+
+					if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){
+						echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  
+					}
+				?></td>
+
                                 <td><?php echo anchor("setup3redesign/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
                             </tr>
                         <?php }; ?>
@@ -279,7 +293,10 @@
                                 </td> 
                                 <td><?php 
 					//create new function for both trf and leave
-					//echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+					if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){
+						//echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link')); 
+					}
+				?></td>
                                 <td><?php echo anchor("setup3redesign/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
                             </tr>
                         <?php }; ?>
@@ -356,7 +373,11 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3redesign/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+				<td><?php 
+					if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){
+						echo anchor("setup3redesign/transfersalaryslip/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  
+					}
+				?></td>
                                 <td><?php echo anchor("setup3redesign/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
                             <?php }; 
@@ -416,7 +437,11 @@
                                     ?>
                                     
                                 </td> 
-                                <td><?php echo anchor("setup3redesign/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  ;?></td>
+				<td><?php 
+					if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){
+						echo anchor("setup3redesign/leavesalaryslip/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('title' => 'update salary slip' , 'class' => 'red-link'));  
+					}
+				?></td>
                                 <td><?php echo anchor("setup3redesign/salaryslipcopy/".$recordsle->emp_id."/".$selmonth."/".$selyear."/leavcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
                                 
