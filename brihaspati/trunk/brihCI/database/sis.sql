@@ -1952,7 +1952,7 @@ CREATE TABLE `salary_lock_data` (
 	`sld_month` VARCHAR(50) NOT NULL , 
 	`sld_year` INT(5) NOT NULL , 
 	`sld_deptid` INT(3) NOT NULL , 
-	`sld_status` INT(1) NOT NULL DEFAULT '0' , 
+	`sld_status` VARCHAR(1) NOT NULL DEFAULT 'N' , 
 	`sld_creator` VARCHAR(255) NOT NULL , 
 	`sld_creationdate` DATE NOT NULL , 
 	`sld_modifier` VARCHAR(255) NOT NULL , 

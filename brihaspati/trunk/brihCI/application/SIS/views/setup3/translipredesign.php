@@ -77,7 +77,7 @@
             <tr>
                 <?php
                     echo "<td align=\"left\" width=\"33%\">";
-                    echo anchor('setup3/salaryprocess/', "View Salary Processing Staff List" ,array('title' => 'View View Salary Processing Staff List' , 'class' => 'top_parent'));
+                    echo anchor('setup3redesign/salaryprocess/', "View Salary Processing Staff List" ,array('title' => 'View View Salary Processing Staff List' , 'class' => 'top_parent'));
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
                     echo "<b>Salary Slip</b>";

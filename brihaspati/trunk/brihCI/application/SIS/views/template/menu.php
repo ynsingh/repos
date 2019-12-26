@@ -243,6 +243,9 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                                 echo anchor('setup3redesign/salaryprocess', 'Salary Processing', array('title' => 'Salary Processing'));
                                         echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('setup3redesign/unlocksalary', 'Unlock Salary ', array('title' => 'Unlock Salary'));
+                                        echo "</li>";
                                         
                                 echo "</ul>";
 			echo "</li>";
