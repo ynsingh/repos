@@ -114,7 +114,7 @@ class Cronjob extends CI_Controller
         else{
             $this->logger->write_logmessage("error"," Trying to insert in  staff retirement record", "staff retirement record is not added may be list is empty.");
             $this->logger->write_dblogmessage("error","Trying to insert in  staff retirement record", "staff retirement record is not added may be list is empty.");
-			$message = $message . "staff retirement record is not added may be list is empty. <br>";
+	    $message = $message . "staff retirement record is not added may be list is empty. <br>";
         }
 		$this->session->set_flashdata('flash_data', $message);	
 		redirect('home');

@@ -98,6 +98,7 @@
                         <tr>
                             <th>Campus Details</th>
                             <th>Designation Details</th>
+                            <th>Working Place</th>
                             <th>AGP/Grade Pay Details</th>
                             <th>From/To</th>
                             <th colspan="2">Total service (YY/MM/DD)</th>
@@ -145,6 +146,17 @@
 				    echo "<br/> "."<b>Show Again Post-: </b>".$showagpost;
 					echo "<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
                                     ?>
+                               </td>
+<td>
+				<?php
+				 if ($record->empsd_wdeptid != 0) {
+					$wdept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_wdeptid)->dept_name;
+				 	echo "<b>Dept-: </b>".$wdept;
+				}
+				//else{
+				//	$wdept='';
+			//	}
+				?> 
                                </td>
 <td> 
                                     <?php

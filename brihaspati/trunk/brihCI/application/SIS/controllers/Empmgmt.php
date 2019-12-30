@@ -724,6 +724,11 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
             $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
+            $this->form_validation->set_rules('wcampus','Working Campus','trim|xss_clean');
+	    $this->form_validation->set_rules('wuocontrol','Working UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('wdepartment','Working Department','trim|xss_clean');
+            $this->form_validation->set_rules('workdept','Is Working same dept','trim|xss_clean');
+
             if($this->form_validation->run() == FALSE){
                 
                 redirect('empmgmt/add_sevicedata');
@@ -777,7 +782,14 @@ public function disciplin_profile() {
 		    'empsd_dorelev'         =>$_POST['Dateto'],
 		    'empsd_tsession'	    =>$ts,
 		    'empsd_filename'	    => $name,
+                    'empsd_wcampid'      =>$_POST['wcampus'],
+                    'empsd_wuoid'           =>$_POST['wuocontrol'],
+                    'empsd_wdeptid'          =>$_POST['wdepartment'],
+                    'empsd_creatorid'           =>$this->session->userdata('username'),
+                    'empsd_creatordate'          =>date('Y-m-d'),
+		    
                 );
+                  //  'empsd_wdeptid'          =>$_POST['workdept'],
                 $servdataflag=$this->sismodel->insertrec('employee_servicedetail', $data) ;
 		$uplflag=false;
                 if(!empty($name)){
@@ -1115,6 +1127,10 @@ public function disciplin_profile() {
             $this->form_validation->set_rules('Datefrom','Date From','trim|xss_clean|required');
             $this->form_validation->set_rules('Dateto','Date To','trim|xss_clean');
 	    $this->form_validation->set_rules('userfile','Select File','trim|xss_clean');
+            $this->form_validation->set_rules('wcampus','Working Campus','trim|xss_clean');
+	    $this->form_validation->set_rules('wuocontrol','Working UniversityOfficerControl','trim|xss_clean');
+            $this->form_validation->set_rules('wdepartment','Working Department','trim|xss_clean');
+            $this->form_validation->set_rules('workdept','Is Working same dept','trim|xss_clean');
 
             if($this->form_validation->run() == FALSE){
                 
@@ -1140,44 +1156,55 @@ public function disciplin_profile() {
                 $dataofagp = $this->input->post('DateofAGP', TRUE);
                 $datefrom = $this->input->post('Datefrom', TRUE);
                 $dateto = $this->input->post('Dateto', TRUE);
+		$wcampid =$this->input->post('wcampus', TRUE);
+                $wuoid   =$this->input->post('wuocontrol', TRUE);
+                $wdeptid =$this->input->post('wdepartment', TRUE);
+
                 
                 $logmessage = "";
                 if($eds_data['servicedata']->empsd_campuscode != $campus)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_campuscode. " changed by " .$campus;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_campuscode. " changed by " .$campus;
 		if($eds_data['servicedata']->empsd_ucoid != $uocontrol)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_ucoid. " changed by " .$uocontrol;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_ucoid. " changed by " .$uocontrol;
 		if($eds_data['servicedata']->empsd_deptid != $department)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_deptid. " changed by " .$department;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_deptid. " changed by " .$department;
 		 if($eds_data['servicedata']->empsd_schemeid != $schemecode)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_schemeid. " changed by " .$schemecode;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_schemeid. " changed by " .$schemecode;
 		if($eds_data['servicedata']->empsd_ddoid != $ddo)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_ddoid. " changed by " .$ddo;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_ddoid. " changed by " .$ddo;
 		if($eds_data['servicedata']->empsd_worktype != $worktype)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_worktype. " changed by " .$worktype;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_worktype. " changed by " .$worktype;
 		if($eds_data['servicedata']->empsd_grade != $empgrade)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_grade. " changed by " .$empgrade;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_grade. " changed by " .$empgrade;
 		if($eds_data['servicedata']->empsd_group != $group)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_group. " changed by " .$group;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_group. " changed by " .$group;
                 if($eds_data['servicedata']->empsd_desigcode != $desigcode)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_desigcode. " changed by " .$desigc;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_desigcode. " changed by " .$desigc;
 		if($eds_data['servicedata']-> empsd_shagpstid != $emppost)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_shagpstid. " changed by " .$emppost;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_shagpstid. " changed by " .$emppost;
 		if($eds_data['servicedata']->empsd_level != $level)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_level. " changed by " .$level;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_level. " changed by " .$level;
                 if($eds_data['servicedata']->empsd_pbid != $payb)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbid. " changed by " .$payb;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbid. " changed by " .$payb;
                 if($eds_data['servicedata']->empsd_gradepay != $gradepay)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_gradepay. " changed by " .$gradepay;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_gradepay. " changed by " .$gradepay;
                 if($eds_data['servicedata']->empsd_orderno != $orderno)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_orderno. " changed by " .$orderno;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_orderno. " changed by " .$orderno;
                 if($eds_data['servicedata']->empsd_authority != $huoauth)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_authority. " changed by " .$huoauth;
+                        $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_authority. " changed by " .$huoauth;
                 if($eds_data['servicedata']->empsd_pbdate != $dataofagp)
-                    $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbdate. " changed by " .$dataofagp;
+                    $logmessage =$logmessage. "Edit Staff Service Data " .$eds_data['servicedata']->empsd_pbdate. " changed by " .$dataofagp;
                 if($eds_data['servicedata']->empsd_dojoin != $datefrom)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_dojoin. " changed by " .$datefrom;
+                        $logmessage = $logmessage."Edit Staff Service Data " .$eds_data['servicedata']->empsd_dojoin. " changed by " .$datefrom;
                 if($eds_data['servicedata']->empsd_dorelev != $dateto)
-                        $logmessage = "Edit Staff Service Data " .$eds_data['servicedata']->empsd_dorelev. " changed by " .$dateto;
+                        $logmessage = $logmessage."Edit Staff Service Data " .$eds_data['servicedata']->empsd_dorelev. " changed by " .$dateto;
+
+                if($eds_data['servicedata']->empsd_wcampid != $wcampid)
+                        $logmessage = $logmessage."Edit Staff Service Data " .$eds_data['servicedata']->empsd_wcampid. " changed by " .$wcampid;
+                if($eds_data['servicedata']->empsd_wuoid != $wuoid)
+                        $logmessage = $logmessage."Edit Staff Service Data " .$eds_data['servicedata']->empsd_wuoid. " changed by " .$wuoid;
+                if($eds_data['servicedata']->empsd_wdeptid != $wdeptid)
+                        $logmessage = $logmessage."Edit Staff Service Data " .$eds_data['servicedata']->empsd_wdeptid. " changed by " .$wdeptid;
                $new_name='';
                 if(!empty($_FILES['userfile']['name'])){
                     
@@ -1208,6 +1235,12 @@ public function disciplin_profile() {
 		    'empsd_fsession'	    =>$_POST['fsession'],
 		    'empsd_dorelev'         =>$dateto,
 		    'empsd_tsession'	    =>$_POST['tsession'],
+		    'empsd_wcampid'      =>$wcampid,
+                    'empsd_wuoid'           =>$wuoid,
+                    'empsd_wdeptid'          =>$wdeptid,
+                    'empsd_modifierid'           =>$this->session->userdata('username'),
+                    'empsd_modifierdate'          =>date('Y-m-d H:i:s'),
+
 //		    'empsd_filename'	    => $new_name,
                 );
 		if(!empty($new_name)){

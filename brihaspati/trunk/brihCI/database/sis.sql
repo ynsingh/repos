@@ -220,7 +220,6 @@ CREATE TABLE `user_saving_master` (
 --
 -- Table structure for table `employee_servicedetail`
 --
-
 CREATE TABLE  employee_servicedetail(
         empsd_id INT(11) NOT NULL AUTO_INCREMENT ,
         empsd_empid  INT(11) NOT NULL,
@@ -229,6 +228,9 @@ CREATE TABLE  employee_servicedetail(
         empsd_campuscode  varchar(255) NOT NULL ,
         empsd_ucoid INT(11) NOT NULL,
         empsd_deptid INT(11) NOT NULL,
+	empsd_wcampid INT(4) NULL,
+	empsd_wuoid INT(4) NULL,
+	empsd_wdeptid INT(4) NULL,
 	empsd_schemeid int(9) DEFAULT NULL,
 	empsd_ddoid int(9) DEFAULT NULL,
 	empsd_group varchar(9) DEFAULT NULL,
@@ -245,6 +247,10 @@ CREATE TABLE  employee_servicedetail(
 	empsd_fsession varchar(100) default null,
 	empsd_tsession varchar(100) default null,
 	empsd_grade VARCHAR(255) NULL,
+	empsd_creatorid VARCHAR(255) NULL,
+	empsd_creatordate DATE NULL,
+	empsd_modifierid VARCHAR(255) NULL,
+	empsd_modifierdate DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (empsd_id)
 )ENGINE = InnoDB;
 -- ---------------------------------------------------------

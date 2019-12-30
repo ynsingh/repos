@@ -80,7 +80,7 @@ If you make any change in this file then you must change same file in report dir
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="color:white;text-decoration: none">Performance Details</a></b> </td>
+			<b>  <a href='<?php echo site_url()."/report/performance_profile/abs/".$emp_id?>' style="color:white;text-decoration: none">Performance Details</a></b> </td>
 			<?php if($roleid == 1){ ?>
 			<?php if($current == 'leave') { ?>
 				<td class=btn active>

@@ -15,7 +15,54 @@
                 margin:0;  /* this affects the margin in the printer settings */
             }
         </style>
-<?php $current="perform"; ?>
+	<style>
+	.tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                //  background-color: #f1f1f1;
+                 background-color:#2a8fcf;
+        }
+	.tab-links li {
+                margin:0px 5px;
+                margin-left:40px;
+                float:left;
+                list-style:none;
+
+        }
+	.tab-links a {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 6px 0px;
+                transition: 0.3s;
+                font-size: 16px;
+            }
+
+            .tab-links a:hover {
+                //background:#a7cce5;
+                text-decoration:none;
+            }
+	 .tab.active {
+                display:block;
+            }
+            .tabcolor{
+                text-decoration:none;
+                color:black;
+                font-weight:bold;
+
+            }
+
+
+	.bgli{
+                background-color:whitesmoke;
+        }
+        .bgli2:hover{
+                background-color:whitesmoke;
+        }
+	</style>
+	<?php $current="perform"; ?>
 
         <script>
       
@@ -33,6 +80,7 @@
         		window.history.go(-2);
 	        }
 
+	
         </script>
 
     </head>
@@ -47,7 +95,8 @@
         <a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a>
 	</td>
         </tr>
-    </table>        
+    </table>       
+ 
     <div id="printme">   
       
 <table style="width:100%;" border=0>
@@ -73,6 +122,60 @@
 <?php 
 	include  'ptab.php';
 ?>
+	<table style="margin-left:0%;border:1px solid gray;width:100%;">
+		<div class="tab">
+                <ul class="tab-links">
+
+                <?php if($this->uri->segment(3)== 'publication'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/publication/'.$emp_id, "Publication",array('title' => 'Publication','id'=>'tab1','class' => 'top_parent','class' => 'tabcolor')); ?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/publication/'.$emp_id, "Publication",array('title' => 'Publication','id'=>'tab1','class' => 'top_parent')); ?></li>
+                <?php endif ?>
+                <?php if($this->uri->segment(3)== 'trainingattend'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/trainingattend/'.$emp_id,"Training Attended",array('title' => 'Training Attended','id'=>'tab2','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/trainingattend/'.$emp_id,"Training Attended",array('title' => 'Training Attended','id'=>'tab2','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+                <?php if($this->uri->segment(3)== 'trainingorgna'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/trainingorgna/'.$emp_id,"Training Oraganised",array('title' => 'Training Oraganised','id'=>'tab3','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/trainingorgna/'.$emp_id,"Training Oraganised",array('title' => 'Training Oraganised','id'=>'tab3','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+                <?php if($this->uri->segment(3)== 'awards'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/awards/'.$emp_id,"Awards",array('title' => 'Awards','id'=>'tab4','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/awards/'.$emp_id,"Awards",array('title' => 'Awards','id'=>'tab4','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+                <?php if($this->uri->segment(3)== 'projects'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/projects/'.$emp_id,"Projects",array('title' => 'Projects','id'=>'tab5','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/projects/'.$emp_id,"Projects",array('title' => 'Projects','id'=>'tab5','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+		<?php if($this->uri->segment(3)== 'stuguided'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/stuguided/'.$emp_id,"Student Guided",array('title' => 'Student Guided','id'=>'tab6','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/stuguided/'.$emp_id,"Student Guided",array('title' => 'Student Guided','id'=>'tab6','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+		<?php if($this->uri->segment(3)== 'guestlect'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/guestlect/'.$emp_id,"Guest Lectures Delivered",array('title' => 'Guest Lectures Delivered','id'=>'tab7','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/guestlect/'.$emp_id,"Guest Lectures Delivered",array('title' => 'Guest Lectures Delivered','id'=>'tab7','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+		<?php if($this->uri->segment(3)== 'patents'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/patents/'.$emp_id,"Patents",array('title' => 'Patents','id'=>'tab8','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/patents/'.$emp_id,"Patents",array('title' => 'Patents','id'=>'tab8','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+		<?php if($this->uri->segment(3)== 'abs'):?>
+                <li class="bgli"><?php echo anchor('report/performance_profile/abs/'.$emp_id,"Abstract",array('title' => 'Abstract','id'=>'tab9','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <?php else :?>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/abs/'.$emp_id,"Abstract",array('title' => 'Abstract','id'=>'tab9','class' => 'top_parent')) ;?></li>
+                <?php endif ?>
+
+                </ul>
+                </div>
+	</table>
+<br>
 </td>
 <?php
        // $roleid=$this->session->userdata('id_role');

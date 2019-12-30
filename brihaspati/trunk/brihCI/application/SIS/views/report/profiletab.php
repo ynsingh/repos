@@ -108,7 +108,7 @@
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php echo site_url()."/report/performance_profile/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
+			<b>  <a href='<?php echo site_url()."/report/performance_profile/abs/".$emp_id?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
 		</tr>
 		<?php if($roleid == 1){ ?>
                 <tr>

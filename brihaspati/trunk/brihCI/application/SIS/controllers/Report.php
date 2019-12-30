@@ -520,7 +520,8 @@ public function promotional_profile() {
   public function performance_profile() {
 
         //get id for employee to show data      
-        $emp_id = $this->uri->segment(3);
+        $tab_id = $this->uri->segment(3);
+        $emp_id = $this->uri->segment(4);
         $emp_data['emp_id']=$emp_id;
 
         //for adding head next to designation
@@ -1615,33 +1616,39 @@ public function disciplinewiselist(){
         $whorder = "emp_dor desc,emp_uocid asc, emp_dept_code  asc, emp_desig_code asc, emp_post asc";
 	$cdate = date('Y-m-d');
         //$whdata = array ('emp_leaving ' =>NULL ,'emp_dor>=' =>$cdate); 
-        $whdata = array ('emp_leaving !=' =>NULL); 
+        //$whdata = array ('emp_dor <='=>$cdate,'emp_leaving !=' =>NULL); 
+        $whdata = array ('emp_dor <='=>$cdate, 'emp_leaving '=> 'superannuation');
         
         $this->wtyp='';
         $this->uolt='';
         $this->deptmt='';
         $this->year='';
         $this->month='';
+        $this->ftyp='';
         
         $wtype='';
         $uoff='';
         $dept='';
         $year='';
         $month='';
-        
+        $strfild='';
+	$strng ='';
         if(isset($_POST['filter'])) {
             //echo "ifcase post of filter";
-            $wtype  = $this->input->post('wtype');
-            $uoff   = $this->input->post('uoff');
-            $dept[] = $this->input->post('dept');
-            $year   = $this->input->post('year');
-            $month   = $this->input->post('month');
-           
+            $wtype  = $this->input->post('wtype',TRUE);
+            $uoff   = $this->input->post('uoff',TRUE);
+            $dept[] = $this->input->post('dept',TRUE);
+            $year   = $this->input->post('year',TRUE);
+            $month   = $this->input->post('month',TRUE);
+            $strfild   = $this->input->post('ftype',TRUE);
+            $strng   = $this->input->post('strin',TRUE);
 		 
 	    $this->wtyp = $wtype;
             $this->uolt = $uoff;
             $this->year=$year;
             $this->month=$month;
+	    $this->ftyp = $strfild;
+
 	    $whdata['emp_worktype']=$wtype;
                        
             if($uoff !="All"){
@@ -1663,12 +1670,14 @@ public function disciplinewiselist(){
 		else{       
                 	$whdata['SUBSTRING(emp_dor,1,4)  LIKE']=$year.'%';
 		}
-            
-            }       
-//		print_r($whdata); die();
+            }
+	    // for string search
+                    if((!empty($strfild))&&(!empty($strng))) {
+                        $whdata[$strfild.' LIKE ' ] ='%'.$strng.'%';
+                    }       
+//		print_r($whdata); //die();
 	    if(!empty($names)){
 			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
-	
             }else{
 			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'','',$whorder);
             }
@@ -1676,16 +1685,17 @@ public function disciplinewiselist(){
         else{
 	    //$names = array('Dismissed','Expired','Resigned','VRS');	
 	    $names = array('superannuation');	
-            $whdata = array ('emp_dor <='=>$cdate, 'emp_leaving IS NULL'=> null);
+           // $whdata = array ('emp_dor <='=>$cdate, 'emp_leaving IS NULL'=> null);
+          //  $whdata = array ('emp_dor <='=>$cdate, 'emp_leaving !='=> null);
+            $whdata = array ('emp_dor <='=>$cdate, 'emp_leaving '=> 'superannuation');
             $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
 //            $data['records'] = $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_leaving',$names,$whorder);
-						
         }
         $this->logger->write_logmessage("view"," view departmentt employee list" );
         $this->logger->write_dblogmessage("view"," view department employee list");
         $this->load->view('report/retiredemplist',$data);
-        
     }
+
     public function getdeptlist_multisel(){
         $combid= $this->input->post('worktypeuo');
         $parts = explode(',',$combid); 

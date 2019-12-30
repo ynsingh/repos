@@ -306,6 +306,75 @@
                         }
                   });
 
+/**********************************************************************************************/
+		 $('#workdeptid').on('change',function(){
+                        var recmthd = $(this).val();
+                        if(recmthd == 'No'){
+                            $('#wcamp,#wuocid,#wdeptid').prop('disabled',false);
+                        }
+                        else{
+                            $('#wcamp,#wuocid,#wdeptid').prop('disabled',true);
+                        }
+                });
+
+                $('#wcamp').on('change',function(){
+                var sc_code = $(this).val();
+                //alert(sc_code);
+                if(sc_code == ''){
+                    $('#wuocid').prop('disabled',true);
+                }
+                else{
+                    $('#wuocid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getuoclist",
+                        type: "POST",
+                        data: {"campusname" : sc_code},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#wuocid').html(data.replace(/^"|"$/g, ''));
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                        }
+                    });
+                }
+                }); 
+
+		 $('#wuocid').on('change',function(){
+                var sc_code = $('#wcamp').val();
+                var uoc_id = $('#wuocid').val();
+                var combid = sc_code+","+uoc_id;
+               //alert("combid=="+combid);
+                if(uoc_id == ''){
+                    $('#wdeptid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#wdeptid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getnewdeptlist",
+                        type: "POST",
+                        data: {"campuoc" : combid},
+                        dataType:"html",
+                        success:function(data){
+                            
+                            $('#wdeptid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            });
+
+
+/**********************************************************************************************/
 
 
 
@@ -469,6 +538,39 @@
                         </select>
                     </td>
                 </tr>
+<tr>
+                        <td>Is Working in Same Department<font color='Red'>*</font></td>
+                        <td><select id="workdeptid" name="workdept" required style="width:350px;">
+                        <option selected="selected" disabled selected>------------- Is Working in Same Department -------------</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+                </tr>
+                <tr>
+                    <td>Working Campus Name <font color='Red'></font></td>
+                        <td><select id="wcamp" style="width:350px;" name="wcampus" >
+                            <option selected="selected" disabled selected>--------Campus Name-----</option>
+                            <?php foreach($this->campus as $camdata): ?>
+                             <option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                <td>Working University Officer Control<font color='Red'></font></td>
+                <td><select name="wuocontrol" style="width:350px;"id="wuocid" >
+                <option selected="selected" disabled selected>--------University Officer Control -----</option>
+                </select>
+                </td>
+                </tr>
+                <tr>
+                <td>Working Department<font color='Red'></font></td>
+                <td><select name="wdepartment" style="width:350px;"id="wdeptid" >
+                <option selected="selected" disabled selected>--------Department-----</option>
+                </select>
+                </td>
+        </tr>
 
                 <tr id="satp">
                 <td>Shown Against The Post<font color='Red'></font></td>

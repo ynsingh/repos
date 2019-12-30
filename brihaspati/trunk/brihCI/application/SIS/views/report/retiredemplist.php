@@ -119,7 +119,7 @@
             <table width="100%" border="0">
                 <tr style="font-weight:bold;">
                     <td>  Select Type <br/>
-                        <select name="wtype" id="wtype" style="width:200px;" > 
+                        <select name="wtype" id="wtype" style="width:130px;" > 
                             <?php if(!empty($this->wtyp)){ ?>
                                 <option value="<?php echo $this->wtyp; ?>" > <?php echo $this->wtyp; ?></option>
                             <?php  }else{ ?>
@@ -132,7 +132,7 @@
                                     
                     </td> 
                     <td>  Select UO<br/>
-                        <select name="uoff" id="uoff" style="width:300px;"> 
+                        <select name="uoff" id="uoff" style="width:200px;"> 
                             <?php if((!empty($this->uolt))&&($this->uolt != 'All')){ ?>
                                 <option value="<?php echo $this->uolt; ?>" > <?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$this->uolt)->name ." ( ". $this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$this->uolt)->code ." )"; ?></option>
                             <?php  }else{ ?>
@@ -150,7 +150,7 @@
                     ?>
                     <?php //echo "year===".$this->year;?>
                     <td>Select Year </br> 
-                        <select name="year" id="year" style="width:200px;"> 
+                        <select name="year" id="year" style="width:150px;"> 
                             <?php if((!empty($this->year))&&($this->year != 'All')){ ?>
                                 <option value="<?php echo $this->year; ?>" > <?php echo $this->year; ?></option>
                             <?php  }else{ ?>
@@ -187,6 +187,23 @@
 				}
     			?>
 			</select>
+			</td>
+			<td>
+				 Select Search Field <br/>
+                        <select name="ftype" id="ftype" style="width:130px;" >
+                            <?php if(!empty($this->ftyp)){ ?>
+                                <option value="<?php echo $this->ftyp; ?>" > <?php echo $this->ftyp; ?></option>
+                            <?php  }else{ ?>
+
+                                <option value="" disabled selected>Select Search Field</option>
+                            <?php  } ?>
+                            <option value="emp_name">Name</option>
+                            <option value="emp_code"> UPF/CPS Number</option>
+                        </select>
+			</td>
+			<td>
+				Enter String <br>
+				 <input type="text" name="strin" id="strin" style="width:100" placeholder="Enter String" value="<?php echo isset($_POST["empname"]) ? $_POST["emppf"] :  ''; ?>">
 			</td>
                     <td><br><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
                 </tr>    
