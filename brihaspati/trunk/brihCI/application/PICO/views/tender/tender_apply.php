@@ -115,6 +115,12 @@
                 
            </tr>
            <tr>      
+                <td><label for="" class="control-label">Guarantee Statement  <font color="red">*</font>:-</label></td>
+                <td><input type="text" name="a_guarantee"  class="form-control" style="width:300 ;" /><br></td>
+                
+                
+           </tr>
+           <tr>      
                 <td><label for="" class="control-label">Payment Statement  <font color="red">*</font>:-</label></td>
                 <td><input type="text" name="a_payment"  class="form-control" style="width:300 ;" /><br></td>
                 

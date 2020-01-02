@@ -233,6 +233,13 @@
                <td><input  type="text"  name="tc_tendersubclass"  class="form-control" value="<?php echo $tc_tendersubclass['value'] ;?>" style="width:200;" /></td>  
         
         </tr>
+        <tr> 
+        
+               <td><b>Quantity:</b></td>
+               <td colspan="5"><input  type="text"  name="tc_quantity"  class="form-control" value="<?php echo $tc_quantity['value'] ;?>" style="width:200;" /></td>
+                       
+        
+        </tr>
        </table>
          
           <br> <br>

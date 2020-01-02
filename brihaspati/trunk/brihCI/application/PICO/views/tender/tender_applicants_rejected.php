@@ -32,8 +32,9 @@
        <tr>
                 <?php 
 		 echo "<td align=\"left\"width=\"33%\">";
+		
 	         echo anchor('tender/tender_applied', "View Tenders Requests", array('title' => 'Tender Detail','class' =>'top_parent'));
-                 echo "</td>";
+             echo "</td>";
 		 ?>
                  <?php
 		 echo "<td align=\"center\" width=\"34%\">";

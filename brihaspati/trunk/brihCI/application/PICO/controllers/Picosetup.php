@@ -13,12 +13,12 @@ class Picosetup extends CI_Controller
     function __construct() {
         parent::__construct();
         $this->load->model('login_model','lgnmodel'); 
-	$this->load->model('common_model'); //,'commodel'
+		  $this->load->model('common_model','commodel'); //,'commodel'
         $this->load->model('PICO_model');   //changed to PICO insted of
         $this->load->model('SIS_model'); 
-       	$this->load->model('dependrop_model','depmodel');
+        $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
-        	$this->load->model("Mailsend_model","mailmodel");
+        $this->load->model("Mailsend_model","mailmodel");
         $this->db4=$this->load->database('pico', TRUE);
         if(empty($this->session->userdata('id_user'))) {
         $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -1469,7 +1469,7 @@ class Picosetup extends CI_Controller
     /** This function opens purchase proposal form**/
     public function openpurchaseproposalform(){
         $typeofmat['material']=  $this->PICO_model->get_list('material_type');
-        $typeofmat['dept']= $this->common_model->get_list('Department');
+        $typeofmat['dept']= $this->commodel->get_list('Department');
         $typeofmat['ven']= $this->PICO_model->get_list('vendor');
         $this->load->view('setup/purchaseproposalform',$typeofmat);
     }
@@ -1809,7 +1809,7 @@ else  redirect('picosetup/displaytypeoftender');
             {
           //code here from sis
                  	//generate 10 digit random password
-			$passwd=$this->common_model->randNum(10);
+			$passwd=$this->commodel->randNum(10);
 			
           $isdupl= $this->lgnmodel->isduplicate('edrpuser','username',$_POST['vendor_email']);
 		    if(!$isdupl){
@@ -2558,7 +2558,7 @@ else {
 
     /*** This Function is used to open form ***/
     public function opencommitteeselection(){
-        $data['dept']= $this->common_model->get_list('Department');
+        $data['dept']= $this->commodel->get_list('Department');
         $data['result']= $this->PICO_model->get_list('purchase_com_form_rule');
         $this->load->view('setup/committeeselectionform',$data);
     }	

@@ -22,9 +22,11 @@
                         var pt= $('.approve').val();
                       //  alert(pt);
                         if(pt != null){
-                            $("#offpayrowl").show();}
+                            $("#offpayrowl").show();
+                            }
                         else{
-                            $("#offpayrowl").hide();}
+                            $("#offpayrowl").hide();
+                            }
                });
                
                       
@@ -212,9 +214,21 @@ L1
 			           $whdata = array('vendor_id'=>$a,  );
 					     $field='vendor_companyname,vendor_name,vendor_phone ,vendor_address,vendor_website' ;
 					     $data=$this->PICO_model->get_orderlistspficemore('vendor',$field,$whdata,'');  
-					         
+					     $whd = array('ta_tcid' => $row->ta_tcid,'ta_status'=>'Approved');
+					     $minamt=$this->PICO_model->get_minvalue('tender_apply','ta_totalprice',$whd);
+					     //$minamtsize=($minamt);//size of array if size is 1 then select 
+					     $small=0; 
+					     foreach ($minamt as $rmin){ 
+					     $small=$rmin->ta_totalprice ;
+					     }
+ 
+					     //echo $small; for details of t id
+					     //print_r($whd);
+					     //print_r($minamt);
+					     
                     foreach ($data as $r)
                     {
+                   
              ?><br>
                                                                                  
             
@@ -326,8 +340,18 @@ L1
           
             ?>
            
-            <td>
-             <input type="radio" class="approve" name="aradio" value="<?php echo $row->ta_id ?>" />ID:<?php echo $row->ta_id ?>            
+            <td> 
+            <?php 
+            if($row->ta_totalprice==$small) {
+            ?>
+             <input type="radio"  checked="true" name="aradio" value="<?php echo $row->ta_id ?>" />ID:<?php echo $row->ta_id ?> 
+                     <?php
+          
+            } else {   ?>
+             <input type="radio"   name="aradio" value="<?php echo $row->ta_id ?>" />ID:<?php echo $row->ta_id ?> 
+           <?php    }
+                      ?>
+          
             </td>            
             </tr>
             
@@ -339,11 +363,24 @@ L1
 </tbody>
 </table>
 <br>
-<?php if(empty($comingfrom) )
+<?php //if(empty($comingfrom) ) //to show proposal form when cs is also coming but hide the other above options
 		 { ?>
 <table class="TFtable" style="border-color:transparent;">
-<tr id="offpayrowl" >
+<?php //<tr id="offpayrowl" >?>
+<tr>
+<td><b>Remarks</b><br><br><br> </td>
 <td>
+<input type="hidden" name="creator" value="<?php echo $suname ?>">
+<textarea class="approve" style="width:100%;height:200px;" name="comment" >
+
+
+</textarea>
+
+ </td>
+</tr>
+<tr id="offpayrowl">
+
+<td colspan="2">
 <button name="push" style="float:right;">Go For Purchase Proposal Form</button>
 </td>
 </tr>

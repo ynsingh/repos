@@ -31,19 +31,26 @@
      
        <tr>
                 <?php 
-		 echo "<td align=\"left\"width=\"33%\">";
-	         echo anchor('tender/tenderdisplay', "View Tenders", array('title' => 'Tender Detail','class' =>'top_parent'));
-                 echo "</td>";
-		 ?>
-                 <?php
-		 echo "<td align=\"center\" width=\"34%\">";
+                                
+                  echo "<td align=\"left\"width=\"33%\">";
+                  $suname=$this->session->userdata['username'];
+                  if((strcasecmp($suname,"admin"))==0)
+                  {
+                   echo anchor('tender/tenderdisplay', "View Tenders", array('title' => 'Tender Detail','class' =>'top_parent'));
+                  }  
+                  echo "</td>";
+		      
+		           ?>
+                <?php
+		           echo "<td align=\"center\" width=\"34%\">";
                  echo "<b><big> Tender </big></b>";
                  echo "</td>";
                  echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
-		 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
-		 echo "</td>";
+		           echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		           echo "</td>";
                  ?>
+	
 		<div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -253,6 +260,12 @@
                <td><?php echo $res->tc_tendersubclass ; ?></td>  
         
         </tr>
+         <tr>
+
+         <td><b>Quantity:</b></td>
+         <td colspan="5"><?php echo $res->tc_quantity ; ?></td>
+         
+         </tr>        
        </table>
          
           <br> <br>

@@ -43,7 +43,7 @@
     <form id="myform" action="<?php echo site_url('tender/proposal_entry');?>" method="POST" class="form-inline" autocomplete="OFF" enctype="multipart/form-data">
 			<table class="TFtable" >
 			    <tr>  <?php  foreach ($tcresult as $t) { ?>
-					<td><label for="pp_gemrefno" class="control-label">Tender Ref No.: </label></td>
+					<td><label for="pp_refno" class="control-label">Tender Ref No.: </label></td>
                 	<td>
                 	<input type="text" name="pp_refno"  value="<?php echo $t->tc_refno ?>" class="form-control" size="30" placeholder="" /><br>
                 	<input type="hidden" name="pp_tid" value="<?php echo $t->tc_id ?>" />
@@ -52,6 +52,12 @@
                     <td><input type="text" name="pp_ddate" id="Date" value="<?php echo date('d-m-Y'); ?>"  
                         size="30" ></td>
                      <?php } ?>   
+                </tr>
+                 <tr>
+                 <td><label for="pp_gemrefno" class="control-label">Proposal Ref No.: </label></td>
+                 <td colspan="3">
+                 <input type="text" name="pp_gemrefno"   class="form-control" size="30" placeholder="Proposal Reference No." /><br>
+                 </td>
                 </tr>
                 <tr><td colspan="4"><u><strong>(A) To be filled by Indenter</strong></u></td></tr>
                 <tr>
@@ -72,13 +78,10 @@
                                 ?>
                         </select>
                     </td>
-                <tr>
-                    <td><label for="IndentDate">Indent Date:<font color='Red'>*</font></label></td>
-                    <td colspan="3"><input type="text" name="pp_indentdate" id="IndentDate" value="<?php echo date('d-m-Y'); ?>" size="30" ></td>
-                </tr>
+               
                 </tr>
                  <th colspan="4">
-                    Intender's Details: 
+                    Indenter's Details: 
                 </th>
             <!--     <?php  foreach ($tcresult as $t) { ?> -->
                
@@ -94,9 +97,12 @@
                 </tr>
                 <tr>
                     <td><label for="pp_indenteremail" class="control-label">E-mail ID: </label></td>
-                    <td colspan="3">
+                    <td >
                     <input type="email" name="pp_indenteremail"  class="form-control" size="30" placeholder="yourname@email.com" /><br>  <!-- value="<?php echo $t->tc_invitngoffemail ?>" -->
                     </td>
+                     <td><label for="IndentDate">Indent Date:<font color='Red'>*</font></label></td>
+                    <td ><input type="text" name="pp_indentdate" id="IndentDate" value="<?php echo date('d-m-Y'); ?>" size="30" ></td>
+            
 
                 </tr> 
               <!--    <?php } ?> -->
@@ -145,24 +151,25 @@
                        ?>
                     
                        </textarea>
+                    
+                    
+                    
+                    </td>
+             
+               
+                    <td><input type="text" name="quantity" id="quantity" size="10" value="<?php echo $t->tc_quantity ?>" ></td>
                       
                       <?php
                         }
                         ?>
-                    
-                    
-                    </td>
-                 <?php  foreach ($taresult as $tt) { ?> 
-                 <input type="hidden" name="pp_taid" value="<?php echo $tt->ta_id ?>" />
-                    <td><input type="text" name="quantity" id="quantity" size="10"></td>
+                        <?php  foreach ($taresult as $tt) { ?> 
+                          <input type="hidden" name="pp_taid" value="<?php echo $tt->ta_id ?>" />
                     <td><input type="text" name="price" value="<?php echo $tt->ta_baseprice ?>"    id="price" size="5"></td>
                     <td><input type="text" name="gst"  value="<?php echo $tt->ta_gsttax ?>"     id="gst" size="3"></td>
                     <td><input type="text" name="pp_total"  value="<?php echo $tt->ta_totalprice ?>"    id="total" size="8"></td>
                     
                    
-                      <?php
-                        }
-                        ?>
+                   
                 </tr>
                 
             </tbody>
@@ -208,34 +215,39 @@
                     <td><label for="fp_typeofpurch" class="control-label">Delivery Period: </label></td>
                     
                     <td>  
-                        <input type="text" name="pp_Date" id="Date"   
+                        <input type="text" name="pp_Date" id="Date"  value="<?php echo $tt->ta_delivery ?> Days"
                         size="30" placeholder="Period">&nbsp;&nbsp;
                          FROM:
-                        <input type="date" name="pp_DateFrom" id="DateFrom"  
+                        <input type="text" name="pp_DateFrom" id="DateFrom" size="20" value="<?php echo date('d-m-Y') ?>"
                         size="30" placeholder="From Date">&nbsp;&nbsp;
                          TO:                        
-                        <input type="date" name="pp_DateTo" id="DateTo"   
+                        <input type="text" name="pp_DateTo" id="DateTo"  size="20" value="<?php echo date('d-m-Y',strtotime('+'.$tt->ta_delivery.' days')) ?>"
                         size="30" placeholder="To Date">
                     </td>
                 </tr>
                 <tr >
                     <td><label for="pp_warranty">Warranty:</label></td>
                     <td>
-                        <textarea name="pp_warranty" style="width:100%;height:100px;" placeholder="Give Warranty/Guarantee Descriptions here..."></textarea>
+                        <textarea name="pp_warranty" style="width:100%;height:100px;"  placeholder="Give Warranty/Guarantee Descriptions here..."><?php echo $tt->ta_warranty ?></textarea>
                     </td>
                 </tr>
                 <tr >
                     <td><label for="pp_guarantee">Guarantee:</label></td>
                     <td>
-                        <textarea name="pp_guarantee" style="width:100%;height:100px;" placeholder="Give Warranty/Guarantee Descriptions here..."></textarea>
+                        <textarea name="pp_guarantee" style="width:100%;height:100px;" placeholder="Give Warranty/Guarantee Descriptions here..."><?php echo $tt->ta_guarantee ?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td><label for="pp_payterm" class="control-label">Payment Terms: </label></td>
                     <td>
-                         <textarea name="pp_payterm" style="width:100%;height:100px;" placeholder="Give Payment terms here..."></textarea>
+                         <textarea name="pp_payterm" style="width:100%;height:100px;" placeholder="Give Payment terms here..."><?php echo $tt->ta_payment ?></textarea>
                     </td>
                 </tr>
+                   <?php
+                        }
+                        ?>
+                
+                
             </table>    
 
         </table> 
@@ -262,7 +274,9 @@
                 </td>
            		</tr>
 
-			
+			<input type="hidden" name="ld_id" value="<?php echo $ld_id;
+			                                            ; 	
+			                                             ?>" />
     </form>
 
         <br>

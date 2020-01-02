@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * @name: Picosetup
+ * @name: Tender
  * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author: Abhay Singh (abhay831877@gmail.com)
 **/
@@ -167,6 +167,7 @@ class Tender extends CI_Controller
                
                  $this->form_validation->set_rules('wid_wit','Work item Details..','trim|xss_clean|required|alpha_dash');
                  $this->form_validation->set_rules('wid_wd',' Work Description..','trim|xss_clean|required|alpha_numeric_spaces');
+                 $this->form_validation->set_rules('wid_q','Pincode..','trim|xss_clean|required|numeric');
                  $this->form_validation->set_rules('wid_pd','Prequal Details..','trim|xss_clean|required|alpha_numeric_spaces');
                  $this->form_validation->set_rules('wid_pc','Product category..','trim|xss_clean|required');
                  $this->form_validation->set_rules('wid_psc','Product Sub Category..','trim|xss_clean|required|alpha_numeric_spaces');
@@ -231,7 +232,7 @@ class Tender extends CI_Controller
                 'tc_completionm'=>$_POST['wid_cpm'],
                 'tc_location'=>$_POST['wid_l'],
                 'tc_pincode'=>$_POST['wid_p'],
-                  
+                'tc_quantity'=>$_POST['wid_q'],
                 'tc_prebidmeeting'=>$pbm,
                 'tc_prebidmeetplace'=>$pbmp,
                 'tc_prebidmeetadd'=>$pbma,                    
@@ -759,7 +760,7 @@ return;
 public function tenderdisplay() 
        {
 	   	
-	     $selectfield='tc_id,tc_refno,tc_tentype,tc_contractform,tc_category,tc_workitemtitle,tc_workdesc,tc_prodcatid,tc_prodsubcat,tc_tenderfees,tc_processingfees,tc_surcharge
+	     $selectfield='tc_id,tc_refno,tc_tentype,tc_contractform,tc_category,tc_workitemtitle,tc_workdesc,tc_quantity,tc_prodcatid,tc_prodsubcat,tc_tenderfees,tc_processingfees,tc_surcharge
 	     ,tc_emdfeesmode,tc_emdamount,tc_emdpercentage,tc_emdexemption,tc_publishingdate,tc_docsalestartdate ,tc_seekclailstartdate,tc_bidsubstartdate,tc_approvedstatus,tc_approvedbyname
 	     ,tc_bidsubenddate,tc_bidopeningdate,tc_nitdocfilename,tc_nitdocfilesize,tc_nitdoctype ,tbos_boname ,tbos_bodesig,tbos_boemail  ';
 	     $joincond='tender_bid_openers_selection.tbos_tcid=tender_create.tc_id';
@@ -838,6 +839,7 @@ public function tenderedit($id)
 		$data['tc_completionm'] = array('name' => 'tc_completionm','id' => 'tc_completionm','size' => '40','value' => $tender->tc_completionm,);
 		$data['tc_location'] = array('name' => 'tc_location','id' => 'tc_location','size' => '40','value' => $tender->tc_location,);
 		$data['tc_pincode'] = array('name' => 'tc_pincode','id' => 'tc_pincode','size' => '40','value' => $tender->tc_pincode,);
+		$data['tc_quantity'] = array('name' => 'tc_quantity','id' => 'tc_quantity','size' => '40','value' => $tender->tc_quantity,);
 		$data['tc_prebidmeeting'] = array('name' => 'tc_prebidmeeting','id' => 'tc_prebidmeeting','size' => '40','value' => $tender->tc_prebidmeeting,);
 		$data['tc_prebidmeetplace'] = array('name' => 'tc_prebidmeetplace','id' => 'tc_prebidmeetplace','size' => '40','value' => $tender->tc_prebidmeetplace,);
 		$data['tc_prebidmeetadd'] = array('name' => 'tc_prebidmeetadd','id' => 'tc_prebidmeetadd','size' => '40','value' => $tender->tc_prebidmeetadd,);
@@ -906,6 +908,7 @@ public function tenderedit($id)
 	  $this->form_validation->set_rules('tc_completionm','Completion Period (Months)','trim|xss_clean|required|numeric');
 	  $this->form_validation->set_rules('tc_location',' Location..','trim|xss_clean|required|alpha_numeric_spaces');
 	  $this->form_validation->set_rules('tc_pincode','Pincode..','trim|xss_clean|required|numeric|exact_length[6]');
+	   $this->form_validation->set_rules('tc_quantity','quantity..','trim|xss_clean|required|numeric');
 	  $this->form_validation->set_rules('tc_prebidmeeting','Pre Bid Meeting..','trim|xss_clean|required');
 	  $this->form_validation->set_rules('tc_prebidmeetplace','Pre Bid Meeting place..','trim|xss_clean');
 	  $this->form_validation->set_rules('tc_prebidmeetadd','Pre Bid Meeting address..','trim|xss_clean');
@@ -1028,6 +1031,7 @@ public function tenderedit($id)
 		$tc_completionm = $_POST[ 'tc_completionm'];
 		$tc_location = $_POST[ 'tc_location'];
 		$tc_pincode = $_POST[ 'tc_pincode'];
+		$tc_quantity = $_POST[ 'tc_quantity'];
 		$tc_prebidmeeting = $_POST[ 'tc_prebidmeeting']; 
 		$tc_prebidmeetplace = $_POST[ 'tc_prebidmeetplace'];
 		$tc_prebidmeetadd = $_POST[ 'tc_prebidmeetadd']; 
@@ -1118,6 +1122,7 @@ public function tenderedit($id)
 		$data_u = $tc_completionm;
 		$data_v = $tc_location;
 		$data_w = $tc_pincode;
+		$data_ww = $tc_quantity;
 		$data_x = $tc_prebidmeeting; 
 		$data_y = $tc_prebidmeetplace;
 		
@@ -1215,6 +1220,8 @@ public function tenderedit($id)
                 $logmessage = "Update Tender " .$tender->tc_location. " changed by " .$data_v;
             if($tender->tc_pincode != $data_w)
                 $logmessage = "Update Tender " .$tender->tc_pincode. " changed by " .$data_w;
+           if($tender->tc_quantity != $data_ww)
+                $logmessage = "Update Tender " .$tender->tc_quantity. " changed by " .$data_ww;
             if($tender->tc_prebidmeeting != $data_x)
                 $logmessage = "Update Tender " .$tender->tc_prebidmeeting. " changed by " .$data_x;
             if($tender->tc_prebidmeetplace != $data_y)
@@ -1328,6 +1335,7 @@ public function tenderedit($id)
 						'tc_completionm'=>$data_u,
 						'tc_location'=>$data_v,
 						'tc_pincode'=>$data_w,
+						'tc_quantity'=>$data_ww,
 						'tc_prebidmeeting'=>$data_x ,
 						'tc_prebidmeetplace'=>$data_y,
 						
@@ -1746,6 +1754,7 @@ public function tender_apply()
                  $this->form_validation->set_rules('a_gst' ,'GST','trim|xss_clean|required');
                  $this->form_validation->set_rules('a_total',' total Cost','trim|xss_clean|required');    
                  $this->form_validation->set_rules('a_warranty'  ,'Warranty Statement ','trim|xss_clean|required');
+                 $this->form_validation->set_rules('a_guarantee'  ,'Guarantee Statement ','trim|xss_clean|required');
                  $this->form_validation->set_rules('a_payment' ,'Payment Statement','trim|required');
                  $this->form_validation->set_rules('a_delivery','Delivery Days','trim|xss_clean|required|numeric');                        
                  $this->form_validation->set_rules('a_validity','Validity Days','trim|xss_clean|numeric');                 
@@ -1767,6 +1776,7 @@ public function tender_apply()
                 'ta_gsttax'=>$_POST['a_gst'],
                 'ta_totalprice'=>$_POST['a_total'],
                 'ta_warranty'=>$_POST['a_warranty'],
+                'ta_guarantee'=>$_POST['a_guarantee'],
                 'ta_payment'=>$_POST['a_payment'],
                 'ta_validity'=>$a,
                 'ta_delivery'=>$_POST['a_delivery'],
@@ -2072,7 +2082,7 @@ public function tender_applicants_approved($id,$cf="")
 		   $fieldems="ta_id,ta_tcid,ta_vendorid,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_payment,ta_delivery,ta_validity,ta_updoc1,ta_updoc2,ta_updoc3,ta_updoc4,ta_updoc5,ta_status,ta_approvedby";
          $whorderems = '';
          $data['result'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);   
-		   
+		   //$data['small'] = $this->PICO_model->get_minvalue('tender_apply','ta_totalprice',$whdata);
 		   
 		   $this->logger->write_logmessage("view"," View specific  tender", "tender  detail...");
          $this->logger->write_dblogmessage("view"," View specific tender", "tender  detail...");
@@ -2109,6 +2119,30 @@ public function tender_applicants_rejected($id)
 
 }
 
+public function l1_applicants()
+{
+             $whdata = array('tc_approvedstatus'=>'Approved','tc_l1status'=>'');
+				 $fieldems="tc_id,tc_refno";
+				 $whorderems = '';
+				 $typeofmat['dept'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
+             
+             $whdata1 = array('');
+				 $fieldems1="ld_tcid,ld_vendorid,ld_tenrefno,ld_remark,ld_taid,ld_comparativeflag,ld_id";//,ld_status
+				 $whorderems1 = '';
+             $typeofmat['l1'] = $this->PICO_model->get_orderlistspficemore('l1_details',$fieldems1,$whdata1,$whorderems1);
+           
+                          
+             $this->load->view('tender/l1_applicants',$typeofmat);
+
+}
+
+public function l1()
+{
+	$a=$_POST['id'];
+	$this->tender_applicants_approved($a,"cs");//set this empty if u want to load page
+	
+}
+
 public function proposal(){
   
   
@@ -2128,27 +2162,92 @@ public function proposal(){
 				 $typeofmat['dept']= $this->common_model->get_list('Department');
    
              $k=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
-				 
+				 $f=$this->PICO_model->get_listspfic1('tender_create','tc_refno','tc_id',$k)->tc_refno;
 				 $whdata = array('tc_id' => $k);
-				 $fieldems="tc_id,tc_refno,tc_workitemtitle,tc_workdesc ";
+				 $fieldems="tc_id,tc_refno,tc_workitemtitle,tc_workdesc,tc_quantity ";
 				 $whorderems = '';
 				 $typeofmat['tcresult'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
            
              $whdata = array('ta_id' => $ta_id);
-				 $fieldems="ta_id,ta_baseprice,ta_gsttax,ta_totalprice";
+				 $fieldems="ta_id,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_guarantee,ta_payment,ta_delivery";
 				 $whorderems = '';
 				 $typeofmat['taresult'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);
              
+           //entry into the table l1_details
            
            
+             
+                 $data = array(
+                'ld_tcid'=>$k,
+                'ld_tenrefno'=>$f,
+                'ld_taid'=>$ta_id,
+                'ld_vendorid'=>$n,               
+                'ld_remark'=>$_POST['comment'],
+                //'ld_gsttax'=>$_POST['a_gst'],                       pc id is missing 
+                //'ld_totalprice'=>$_POST['a_total'],
+                //'ld_warranty'=>$_POST['a_warranty'],
+                //'ld_guarantee'=>$_POST['a_guarantee'],
+                //'ld_payment'=>$_POST['a_payment'],
+                //'ld_validity'=>$a,
+                //'ld_delivery'=>$_POST['a_delivery'],
+                'ld_preparedby'=>$_POST['creator'],   
+                'ld_preparationdate'=>date('Y-m-d'),
+                );
+            
+            $duplicate= $this->PICO_model->isduplicatemore('l1_details',$data);
+                if(!$duplicate){              
+            $entryid=$this->PICO_model->insertdata('l1_details',$data);
+                               }     else { $entryid=$this->PICO_model->get_listspfic1('l1_details','ld_id','ld_tcid',$k)->ld_id; }       
+            //end;
            
+           //status entry in the tender create
+             $update_data = array(
+               'tc_l1status' => 'L1 Created',
+             
+               'tc_modifierid'=> $this->session->userdata('username'),
+               'tc_modifierdate'=>date('Y-m-d')
+            );
+            $r=$this->PICO_model->updaterec('tender_create', $update_data,' tc_id', $k);
+            $typeofmat['ld_id']=$entryid;
             $this->load->view('tender/proposalform',$typeofmat);
-   
+  
   }
 
                          }
 
+public function complete_proposal($i) {
+	          $ta_id=$i;
 
+             $n=$this->PICO_model->get_listspfic1('tender_apply','ta_vendorid','ta_id',$ta_id)->ta_vendorid;
+				 
+				 $whdata = array('vendor_id' => $n);
+				 $fieldems="vendor_id,vendor_companyname,vendor_address";
+				 $whorderems = '';
+				 $typeofmat['result'] = $this->PICO_model->get_orderlistspficemore('vendor',$fieldems,$whdata,$whorderems); 
+				 
+				 $typeofmat['material']=  $this->PICO_model->get_list('material_type');
+				 $typeofmat['dept']= $this->common_model->get_list('Department');
+   
+             $k=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+				 $f=$this->PICO_model->get_listspfic1('tender_create','tc_refno','tc_id',$k)->tc_refno;
+				 $whdata = array('tc_id' => $k);
+				 $fieldems="tc_id,tc_refno,tc_workitemtitle,tc_workdesc,tc_quantity ";
+				 $whorderems = '';
+				 $typeofmat['tcresult'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
+           
+             $whdata = array('ta_id' => $ta_id);
+				 $fieldems="ta_id,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_guarantee,ta_payment,ta_delivery";
+				 $whorderems = '';
+				 $typeofmat['taresult'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);
+				 
+				
+           
+            $entryid=$this->PICO_model->get_listspfic1('l1_details','ld_id','ld_tcid',$k)->ld_id;            
+            $typeofmat['ld_id']=$entryid;
+            $this->load->view('tender/proposalform',$typeofmat);
+	
+	
+}
 public function proposal_entry() 
 {
             if(isset($_POST['press'])) {
@@ -2169,12 +2268,12 @@ public function proposal_entry()
                 $this->form_validation->set_rules('pp_budgethead',' budgethead','trim|xss_clean|required');
                 $this->form_validation->set_rules('pp_budgetamount',' budgetamount','trim|xss_clean|required');
                 $this->form_validation->set_rules('pp_Date',' period','trim|xss_clean|required');
-               $this->form_validation->set_rules('pp_DateFrom',' DateFrom','trim|xss_clean|required');
+                $this->form_validation->set_rules('pp_DateFrom',' DateFrom','trim|xss_clean|required');
                 $this->form_validation->set_rules('pp_DateTo','DateTo ','trim|xss_clean|required');
                 $this->form_validation->set_rules('pp_warranty',' warranty','trim|xss_clean|required');
                 $this->form_validation->set_rules('pp_guarantee','guarantee ','trim|xss_clean|required');
                 $this->form_validation->set_rules('pp_payterm','payterm','required');
-                //$this->form_validation->set_rules('pp_','Tender Maker ','required');
+                $this->form_validation->set_rules('pp_gemrefno','proposal ref no ','required');
                   
               
      //*/
@@ -2185,7 +2284,7 @@ public function proposal_entry()
 				   'pp_tcid'=>$_POST['pp_tid'],	
 					'pp_taid'=>$_POST['pp_taid'],  
 				   'pp_purchasefrom'=>'Non-Gem',
-					//'pp_gemrefno'=>$_POST['pp_'],	
+				   'pp_gemrefno'=>$_POST['pp_gemrefno'],	
 					'pp_tenrefno'=>$_POST['pp_refno'],	
 					'pp_dddate'=>$_POST['pp_ddate'],	
 					'pp_deptindentno'=>$_POST['pp_deptindentno'],	
@@ -2199,7 +2298,7 @@ public function proposal_entry()
 					'pp_budgetdept'=>$_POST['pp_budgetprojno'],	
 					'pp_budgetprojno'=>$_POST['pp_budgetprojno'],	
 					'pp_budgethead'=>$_POST['pp_budgethead'],	
-					'pp_budgethead2'=>$_POST['pp_budgetamount'],	
+					'pp_budgetamt'=>$_POST['pp_budgetamount'],	
 					'pp_vendorid'=>$_POST['pp_vid'],	
 					'pp_deliveryperiod'=>$_POST['pp_Date'],	
 					'pp_deliveryperiodfrom'=>$_POST['pp_DateFrom'],	
@@ -2233,6 +2332,7 @@ public function proposal_entry()
 					   );
 				   
 				   $entryid=$this->PICO_model->insertdata('purchase_proposal', $data);
+				   
                 
                 $data['id']=$entryid;
               
@@ -2253,11 +2353,23 @@ public function proposal_entry()
 
                 }
                 else{
+                	  $k=$_POST['ld_id']; 
+                  $update_data = array(
+                  'ld_comparativeflag' => 'Purchase Proposal Created',
+                  'ld_modifiedby'=> $this->session->userdata('username'),
+             
+                  'ld_modificationdate'=>date('Y-m-d')
+                                   );
+                    $r=$this->PICO_model->updaterec('l1_details', $update_data,' ld_id', $k);
+             
+                	
+                	
+                	
                     $this->logger->write_logmessage("insert","Add Tender basic details Setting", "Tender basic details".$_POST['bd_trn']." added  successfully...");
                     $this->logger->write_dblogmessage("insert","Add Tender basic details Setting", "Tender basic details".$_POST['bd_trn']."added  successfully...");
                     $this->session->set_flashdata("success", " details add successfully...");
                   
-                     redirect('tender/tender_applied');
+                     redirect('tender/purchaseproposals');
                    
                   
                      return;
@@ -2272,23 +2384,325 @@ public function proposal_entry()
 echo 'hiii';
 }
 
-public function l1_applicants()
+
+
+public function purchaseproposals()
 {
-             $whdata = array('tc_approvedstatus'=>'Approved');
-				 $fieldems="tc_id,tc_refno";
+             $whdata = array('pp_purchasefrom'=>'Non-Gem','pp_orderstatus'=>'');
+				 $fieldems="pp_id,pp_gemrefno,pp_tcid,pp_tenrefno";
 				 $whorderems = '';
-				 $typeofmat['dept'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
-             $this->load->view('tender/l1_applicants',$typeofmat);
+				 $typeofmat['dept'] = $this->PICO_model->get_orderlistspficemore('purchase_proposal',$fieldems,$whdata,$whorderems);
+             	
+            //  
+            //  $typeofmat['result']=$this->PICO_model->get_orderlistspficemore('purchase_proposal','*','',$whorder);	
+            $whorder='pp_id desc';  
+        $joincond='purchase_proposal.pp_id=purchase_order.po_ppid';
+        $typeofmat['result'] = $this->PICO_model->get_jointbrecord('purchase_order','','purchase_proposal',$joincond,'LEFT',''); 
+                    
+             $this->load->view('tender/orderproposals',$typeofmat);
 
 }
 
-public function l1()
+public function order()
 {
-	$a=$_POST['id'];
-	$this->tender_applicants_approved($a,"cs");
+	          $a=$_POST['id'];//pp id
+             $m=$this->PICO_model->get_listspfic1('purchase_proposal','pp_tcid','pp_id',$a)->pp_tcid;	          // tender create id
+	          $n=$this->PICO_model->get_listspfic1('purchase_proposal','pp_taid','pp_id',$a)->pp_taid;	           //tender apply id
+	          $o=$this->PICO_model->get_listspfic1('purchase_proposal','pp_vendorid','pp_id',$a)->pp_vendorid;        //vender id   
+	          $p=$this->PICO_model->get_listspfic1('purchase_proposal','pp_tenrefno','pp_id',$a)->pp_tenrefno;         //tender reference id 
+	          $q=$this->PICO_model->get_listspfic1('purchase_proposal','pp_materialtypeid','pp_id',$a)->pp_materialtypeid;  //material id
+	          $whorderems = ''; 
+	          
+	          //material details
+	          $whd= array('mt_id'=>$q);		   
+	          $field="mt_name,mt_desc ";		   
+	          $data['material']=$this->PICO_model->get_orderlistspficemore('material_type',$field,$whd,$whorderems);	   
+	          		   
+	          //vendor details
+	          $whd1= array('vendor_id'=>$o);		   
+	          $field1="vendor_name,vendor_address ";		   
+	          $data['vendor']=$this->PICO_model->get_orderlistspficemore('vendor',$field1,$whd1,$whorderems);
+	          
+	          //tender details
+	          $whd2= array('ta_id'=>$n);		   
+	          $field2=" ta_gsttax,ta_baseprice";		   
+	          $data['tender']=$this->PICO_model->get_orderlistspficemore('tender_apply',$field2,$whd2,$whorderems);		   
+	          
+	          //purchase proposal table elements
+             $whd3 = array('pp_id'=>$a);
+				 $field3="pp_id,pp_tcid,pp_tenrefno,pp_taid, pp_gemrefno,
+				 pp_purchasefrom,pp_dddate,pp_deptindentno,pp_deptid,pp_indentername,pp_indenteremail,pp_indentdate,pp_indenterid,pp_materialtypeid,pp_itemtotcost,pp_budgetdept,
+				 pp_budgetprojno,pp_budgethead,pp_budgetamt,pp_vendorid,pp_deliveryperiod,pp_deliveryperiodfrom,pp_deliveryperiodto,pp_warranty,pp_guarantee,pp_payterm";
+			    $data['proposal']=$this->PICO_model->get_orderlistspficemore('purchase_proposal',$field3,$whd3,$whorderems);
+	          
+	           //tender create details
+	          $whd4= array('tc_id'=>$m);		   
+	          $field4=" tc_workitemtitle,tc_workdesc,tc_quantity";		   
+	          $data['tender_c']=$this->PICO_model->get_orderlistspficemore('tender_create',$field4,$whd4,$whorderems);		   
+	          
+	          
+	          
+	          $this->load->view('tender/purchaseproposals',$data);
 	
 }
+ 
+public function proposals()
+{
+$whd4= array('pp_purchasefrom'=>'Non-Gem');
+$whorder='pp_id desc';
+$data['result']=$this->PICO_model->get_orderlistspficemore('purchase_proposal','*',$whd4,$whorder);		
+$this->load->view('tender/proposals',$data);
 
+}
+
+
+
+public function proposal_order($i)
+{	
+			$a=$i;
+             $m=$this->PICO_model->get_listspfic1('purchase_proposal','pp_tcid','pp_id',$a)->pp_tcid;	          // tender create id
+	          $n=$this->PICO_model->get_listspfic1('purchase_proposal','pp_taid','pp_id',$a)->pp_taid;	           //tender apply id
+	          $o=$this->PICO_model->get_listspfic1('purchase_proposal','pp_vendorid','pp_id',$a)->pp_vendorid;        //vender id   
+	          $p=$this->PICO_model->get_listspfic1('purchase_proposal','pp_tenrefno','pp_id',$a)->pp_tenrefno;         //tender reference id 
+	          $q=$this->PICO_model->get_listspfic1('purchase_proposal','pp_materialtypeid','pp_id',$a)->pp_materialtypeid;  //material id
+	          $whorderems = ''; 
+	          
+	          //material details
+	          $whd= array('mt_id'=>$q);		   
+	          $field="mt_name,mt_desc ";		   
+	          $data['material']=$this->PICO_model->get_orderlistspficemore('material_type',$field,$whd,$whorderems);	   
+	          		   
+	          //vendor details
+	          $whd1= array('vendor_id'=>$o);		   
+	          $field1="vendor_name,vendor_address ";		   
+	          $data['vendor']=$this->PICO_model->get_orderlistspficemore('vendor',$field1,$whd1,$whorderems);
+	          
+	          //tender details
+	          $whd2= array('ta_id'=>$n);		   
+	          $field2=" ta_gsttax,ta_baseprice";		   
+	          $data['tender']=$this->PICO_model->get_orderlistspficemore('tender_apply',$field2,$whd2,$whorderems);		   
+	          
+	          //purchase proposal table elements
+             $whd3 = array('pp_id'=>$a);
+				 $field3="pp_id,pp_tcid,pp_tenrefno,pp_taid, pp_gemrefno,
+				 pp_purchasefrom,pp_dddate,pp_deptindentno,pp_deptid,pp_indentername,pp_indenteremail,pp_indentdate,pp_indenterid,pp_materialtypeid,pp_itemtotcost,pp_budgetdept,
+				 pp_budgetprojno,pp_budgethead,pp_budgetamt,pp_vendorid,pp_deliveryperiod,pp_deliveryperiodfrom,pp_deliveryperiodto,pp_warranty,pp_guarantee,pp_payterm";
+			    $data['proposal']=$this->PICO_model->get_orderlistspficemore('purchase_proposal',$field3,$whd3,$whorderems);
+	          
+	           //tender create details
+	          $whd4= array('tc_id'=>$m);		   
+	          $field4=" tc_workitemtitle,tc_workdesc,tc_quantity";		   
+	          $data['tender_c']=$this->PICO_model->get_orderlistspficemore('tender_create',$field4,$whd4,$whorderems);		   
+	          
+	          
+	          
+	          $this->load->view('tender/purchaseproposals',$data);
+
+
+}
+
+public function proposal_view($i)
+{	
+			$id=$i;
+		   $this->logger->write_logmessage("view"," View specific  proposal id=$id", "proposal  detail...");
+         $this->logger->write_dblogmessage("view"," View specific proposal id=$id", "proposal  detail...");
+         $ii=$this->PICO_model->get_listspfic1('purchase_proposal','pp_taid','pp_id',$id)->pp_taid;
+         $ta_id=$ii;
+
+             $n=$this->PICO_model->get_listspfic1('tender_apply','ta_vendorid','ta_id',$ta_id)->ta_vendorid;
+				 
+				 $whdata = array('vendor_id' => $n);
+				 $fieldems="vendor_id,vendor_companyname,vendor_address";
+				 $whorderems = '';
+				 $typeofmat['result'] = $this->PICO_model->get_orderlistspficemore('vendor',$fieldems,$whdata,$whorderems); 
+				 
+				 $typeofmat['material']=  $this->PICO_model->get_list('material_type');
+				 $typeofmat['dept']= $this->common_model->get_list('Department');
+   
+             $k=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+				 $f=$this->PICO_model->get_listspfic1('tender_create','tc_refno','tc_id',$k)->tc_refno;
+				 $whdata = array('tc_id' => $k);
+				 $fieldems="tc_id,tc_refno,tc_workitemtitle,tc_workdesc,tc_quantity ";
+				 $whorderems = '';
+				 $typeofmat['tcresult'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
+           
+             $whdata = array('ta_id' => $ta_id);
+				 $fieldems="ta_id,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_guarantee,ta_payment,ta_delivery";
+				 $whorderems = '';
+				 $typeofmat['taresult'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);
+				 
+				 $whdata = array('pp_id' => $id);
+				 $fieldems="pp_budgethead,pp_budgetdept,pp_budgetprojno,pp_budgetamt,pp_deptindentno,pp_indenterid,pp_deptid,pp_indentdate,pp_materialtypeid,pp_indentername";
+				 $whorderems = '';
+				 $typeofmat['proposal'] = $this->PICO_model->get_orderlistspficemore('purchase_proposal',$fieldems,$whdata,$whorderems);
+				 
+				  $typeofmat['from']=$this->PICO_model->get_listspfic1('purchase_proposal','pp_deliveryperiodfrom','pp_id',$id)->pp_deliveryperiodfrom;
+				  $typeofmat['to']=$this->PICO_model->get_listspfic1('purchase_proposal','pp_deliveryperiodto','pp_id',$id)->pp_deliveryperiodto;
+				
+           
+            $entryid=$this->PICO_model->get_listspfic1('l1_details','ld_id','ld_tcid',$k)->ld_id;            
+            $typeofmat['ld_id']=$entryid;
+            
+     
+     
+     
+        $this->load->view('tender/purchase_proposal',$typeofmat);
+}
+
+
+public function orderconfirm()
+{
+
+           if(isset($_POST['push'])) {
+
+            
+            
+              $this->form_validation->set_rules('date',' Date','required');
+              $this->form_validation->set_rules('comment',' terms','trim|xss_clean|required');
+              $this->form_validation->set_rules('po_no','order no ','trim|xss_clean|required');
+             
+                  
+              
+    
+               if($this->form_validation->run()==TRUE)
+               { 
+           
+             $pp_id=$_POST['pp_id'];
+             $po_no=$_POST['po_no'];
+             $date=$_POST['date'];
+             $comment=$_POST['comment']; 
+             $n=$this->PICO_model->get_listspfic1('purchase_proposal','pp_vendorid','pp_id',$pp_id)->pp_vendorid;
+				 $k=$this->PICO_model->get_listspfic1('purchase_proposal','pp_tcid','pp_id',$pp_id)->pp_tcid;
+				 $f=$this->PICO_model->get_listspfic1('purchase_proposal','pp_taid','pp_id',$pp_id)->pp_taid;
+			    $ff=$this->PICO_model->get_listspfic1('purchase_proposal','pp_materialtypeid','pp_id',$pp_id)->pp_materialtypeid;
+			    $fff=$this->PICO_model->get_listspfic1('tender_create','tc_quantity','tc_id',$k)->tc_quantity;
+                 //entry into the table proposal order
+           
+             
+             
+                 $data = array(
+                'po_tcid'=>$k,
+                'po_ppid'=>$pp_id,
+                'po_taid'=>$f,
+                'po_vendorid'=>$n,               
+                'po_no'=>$po_no,
+                'po_term'=>$comment,                  
+                'po_date'=>$date,
+                // 'po_requisition'=>$_POST[''],
+                'po_itemid'=>$ff,
+                'po_orderqty'=>$fff,
+                'po_createdby'=>$this->session->userdata('username'),
+                'po_creationdate'=>date('Y-m-d'),
+                );
+            
+             $duplicate= $this->PICO_model->isduplicatemore('purchase_order',$data);
+                if(!$duplicate){              
+             $entryid=$this->PICO_model->insertdata('purchase_order',$data);
+                               }     else { $entryid=$this->PICO_model->get_listspfic1('purchase_order','po_id','po_ppid',$pp_id)->po_id; }       
+            //end;
+           
+           //status entry in the tender create
+             $update_data = array(
+               'pp_orderstatus' => 'Purchase Order Created',
+             
+               'pp_updateby'=> $this->session->userdata('username'),
+               'pp_updatedate'=>date('Y-m-d')
+            );
+            $r=$this->PICO_model->updaterec('purchase_proposal', $update_data,' pp_id', $pp_id);
+         
+            redirect('tender/purchaseproposals');
+  
+  }
+     $this->session->set_flashdata("err_message",' All Entry need to be filled.....' );
+     redirect('tender/purchaseproposals');
+}
+
+}	
+
+public function order_view($i)
+{	
+			$id=$i;
+		
+        $this->logger->write_logmessage("view"," View specific  proposal id=$id", "proposal  detail...");
+        $this->logger->write_dblogmessage("view"," View specific proposal id=$id", "proposal  detail...");
+            
+            $ii=$this->PICO_model->get_listspfic1('purchase_proposal','pp_taid','pp_id',$id)->pp_taid;
+            $ta_id=$ii;
+
+             $n=$this->PICO_model->get_listspfic1('tender_apply','ta_vendorid','ta_id',$ta_id)->ta_vendorid;
+				 
+				 $whdata = array('vendor_id' => $n);
+				 $fieldems="vendor_id,vendor_companyname,vendor_address";
+				 $whorderems = '';
+				 $typeofmat['result'] = $this->PICO_model->get_orderlistspficemore('vendor',$fieldems,$whdata,$whorderems); 
+				 
+				 
+             $k=$this->PICO_model->get_listspfic1('tender_apply','ta_tcid','ta_id',$ta_id)->ta_tcid;
+				 $f=$this->PICO_model->get_listspfic1('tender_create','tc_refno','tc_id',$k)->tc_refno;
+				 $whdata = array('tc_id' => $k);
+				 $fieldems="tc_id,tc_refno,tc_workitemtitle,tc_workdesc,tc_quantity ";
+				 $whorderems = '';
+				 $typeofmat['tcresult'] = $this->PICO_model->get_orderlistspficemore('tender_create',$fieldems,$whdata,$whorderems);
+           
+             $whdata = array('ta_id' => $ta_id);
+				 $fieldems="ta_id,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_guarantee,ta_payment,ta_delivery";
+				 $whorderems = '';
+				 $typeofmat['taresult'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);
+				 
+				 $whdata = array('po_ppid' => $id);
+				 $fieldems="po_no";
+				 $whorderems = '';
+				 $typeofmat['proposal'] = $this->PICO_model->get_orderlistspficemore('purchase_order',$fieldems,$whdata,$whorderems);
+				 
+				 $whdata = array('pp_id' => $id);
+				 $fieldems="pp_indenterid,pp_indentername,pp_budgethead,pp_materialtypeid,pp_deptid ";
+				 $whorderems = '';
+				 $typeofmat['orrder'] = $this->PICO_model->get_orderlistspficemore('purchase_proposal',$fieldems,$whdata,$whorderems);
+				
+           
+            $entryid=$this->PICO_model->get_listspfic1('l1_details','ld_id','ld_tcid',$k)->ld_id;            
+            $typeofmat['ld_id']=$entryid;
+            
+     
+     
+     
+        $this->load->view('tender/purchase_order',$typeofmat);
+}
+
+public function comparative_view($i)
+{	
+			$ld_id=$i;
+		   $cf='hii';
+         $id=$this->PICO_model->get_listspfic1('l1_details','ld_tcid','ld_id',$ld_id)->ld_tcid;     
+         $data['tcidlink']=$id;
+         $tid=$id;
+			$whdata = array('tc_id'=>$tid);
+		   $selectfield='tc_id,tc_refno,tc_workitemtitle,tc_tenderprepby,tc_prepbydesig,tc_prepbydate,tc_approvedstatus,tc_bidsubstartdate,tc_bidsubenddate,tc_bidsubstartdatet,tc_bidsubenddatet' ;
+			$data['tcresult']=$this->PICO_model->get_orderlistspficemore('tender_create',$selectfield,$whdata,'');  
+		   
+		   
+		   $data['comingfrom']=$cf;
+		   $data['ld']=$ld_id;
+		  
+		   $whdata = array('ta_tcid' => $tid,'ta_status'=>'Approved');
+		   $fieldems="ta_id,ta_tcid,ta_vendorid,ta_baseprice,ta_gsttax,ta_totalprice,ta_warranty,ta_payment,ta_delivery,ta_validity,ta_updoc1,ta_updoc2,ta_updoc3,ta_updoc4,ta_updoc5,ta_status,ta_approvedby";
+         $whorderems = '';
+         $data['result'] = $this->PICO_model->get_orderlistspficemore('tender_apply',$fieldems,$whdata,$whorderems);   
+         $t=$this->PICO_model->get_listspfic1('l1_details','ld_vendorid','ld_id',$ld_id)->ld_vendorid;  		  
+		   $data['s']=$t;  
+		   
+         $whdata = array('ld_id'=>$ld_id);
+		   $selectfield='ld_preparedby,ld_preparationdate,ld_remark' ;
+			$data['ld']=$this->PICO_model->get_orderlistspficemore('l1_details',$selectfield,$whdata,'');  
+		   		   
+		   
+		   $this->logger->write_logmessage("view"," View specific  tender", "tender  detail...");
+         $this->logger->write_dblogmessage("view"," View specific tender", "tender  detail...");
+     
+         $this->load->view('tender/purchase_comparative',$data);
+     
+     
+}
 } 
     ?>
        

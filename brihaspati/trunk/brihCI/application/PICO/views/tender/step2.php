@@ -300,12 +300,17 @@
             <tr>
                    
                      <td><label for="wid_bop" class="control-label">BID Opening Place :</label></td>
-                <td><input type="text" name="wid_bop"  class="form-control" style="width:300px ;" />
-                <br></td>
-                <td colspan="4">
-                    <?php echo form_error('wid_bop')?>
-                </td>         
-            
+                     <td><input type="text" name="wid_bop"  class="form-control" style="width:300px ;" />
+                                                                                                           <br></td>
+                     <td>
+                     <?php echo form_error('wid_bop')?>
+                     </td>         
+                     <td><label for="wid_q" class="control-label"> Quantity.:</label></td>
+                     <td><input type="text" name="wid_q"  class="form-control" style="width:300px ;" /><br></td>
+                     <td>
+                     <?php echo form_error('wid_q')?>
+                     </td>
+        
             </tr>
         
 

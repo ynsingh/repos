@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
 <head>
-<title>Tender|View</title>
-  
+<title>Comparative|View</title>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
      <?php $this->load->view('template/header');
      
@@ -13,32 +13,41 @@
 
 </head>
 <body>
- <script type="text/javascript">
-        function goBack() {
-        window.history.back();
-        
-        
-        
-        }
-        
-        
-        
-
+ 
+<script>
+               $(document).ready(function(){
+                            $("#offpayrowl").hide();
+    		              
+    		      $('.approve').on('change',function(){
+                        var pt= $('.approve').val();
+                      //  alert(pt);
+                        if(pt != null){
+                            $("#offpayrowl").show();
+                            }
+                        else{
+                            $("#offpayrowl").hide();
+                            }
+               });
+               
+                      
+               });
 
 </script>
+
 
      <table width="100%">
      
        <tr>
                 <?php 
 		 echo "<td align=\"left\"width=\"33%\">";
-	
-	         echo anchor('tender/tender_applied', "View Tenders Requests", array('title' => 'Tender Detail','class' =>'top_parent'));
-             echo "</td>";
+		 if(empty($comingfrom) )
+		 {
+	         echo anchor('tender/tender_applied', "View Tenders Requests", array('title' => 'Comparative Detail','class' =>'top_parent'));
+                } echo "</td>";
 		 ?>
                  <?php
 		 echo "<td align=\"center\" width=\"34%\">";
-                 echo "<b><big> Tender </big></b>";
+                 echo "<b><big>  </big></b>";
                  echo "</td>";
                  echo "<td align=\"right\" width=\"33%\">";
                  $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
@@ -62,6 +71,7 @@
          
         </table>
  
+<form action="<?php echo site_url('tender/proposal');?>" method="POST" class="form-inline">
 
    <?php //print_r($tcresult);
 		foreach($tcresult as $res){   
@@ -127,9 +137,9 @@
          <?php  } ?>
          </table>
          <br> 
-         
-         
-       <table width="100%">
+        <?php  if(empty($comingfrom) )
+		 { ?>
+           <table width="100%">
        <tr> 
        <td> <?php   echo anchor('tender/tender_applicants/' . $tcidlink, "Full List", array('title' => 'Complete List' , 'class' => 'red-link' ))." ";              		
            	 ?></td>    
@@ -143,10 +153,12 @@
       </td>      
        </tr>
        </table>
-      <br>
+         <?php } ?>
          
+         <br>
+       
          
-   <table class="TFtable" >
+   <table class="TFtable">
             <tr> <td colspan="7">
                <h2 class="title">Supplier Details</h2>
                   
@@ -166,16 +178,10 @@
                     ?>
 <thead><th>Sr.No</th><th> Firm </th><th>Prices</th><th>Other Info</th><th>Support Document</th>
 
-<?php
-$suname=$this->session->userdata['username'];
-if((strcasecmp($suname,"admin"))==0)
-{
-echo "<th>Action</th>";
- } //admin check close..
- 
- }//empty check close,..
-?>
-
+ <?php } ?>
+<th>
+L1
+</th>
 </tr></thead>
 <tbody>
    <?php
@@ -200,9 +206,21 @@ echo "<th>Action</th>";
 			           $whdata = array('vendor_id'=>$a,  );
 					     $field='vendor_companyname,vendor_name,vendor_phone ,vendor_address,vendor_website' ;
 					     $data=$this->PICO_model->get_orderlistspficemore('vendor',$field,$whdata,'');  
-					         
+					     $whd = array('ta_tcid' => $row->ta_tcid,'ta_status'=>'Approved');
+					     $minamt=$this->PICO_model->get_minvalue('tender_apply','ta_totalprice',$whd);
+					     //$minamtsize=($minamt);//size of array if size is 1 then select 
+					     $small=0; 
+					     foreach ($minamt as $rmin){ 
+					     $small=$rmin->ta_totalprice ;
+					     }
+ 
+					     //echo $small; for details of t id
+					     //print_r($whd);
+					     //print_r($minamt);
+					     
                     foreach ($data as $r)
                     {
+                   
              ?><br>
                                                                                  
             
@@ -220,7 +238,7 @@ echo "<th>Action</th>";
                   <br><br><br>
           
             </td>
-            <td> <b>Warranty-:</b> <?php echo $row->ta_warranty ?><br>
+             <td> <b>Warranty-:</b> <?php echo $row->ta_warranty ?><br>
                  <b>Payment-:</b><?php echo $row->ta_payment ?><br>
                  <b>Delivery(Days)-:</b><?php echo $row->ta_delivery ?><br> 
                  <b>Validity(Days)-:</b><?php echo $row->ta_validity ?><br> 
@@ -228,7 +246,6 @@ echo "<th>Action</th>";
                             <br><br>
           
             </td>
-            
             <td> 
              <?php if(!empty($row->ta_updoc1)){ ?>
                    <b>Document 1-:</b>  
@@ -260,65 +277,67 @@ echo "<th>Action</th>";
             
 	         
 	        
-            <?php  
-		       $suname=$this->session->userdata['username'];
-	          if((strcasecmp($suname,"admin"))==0)
-	    	   {	
-     	    	   echo "<td>";
-
-            if($row->ta_status== 'Approved') {  echo "Approved" ; 
-            echo "<br>";
-            echo "BY:<b>".$row->ta_approvedby ;
-            echo "</b><br><br>";
-            echo "&nbsp; ";
-            		echo anchor('tender/vendor_dismiss/' . $row->ta_id , "Dismiss", array('title' => 'Dismiss' , 'class' => 'red-link' , 'onclick' => "return confirm('Are you sure you want to --Remove Approved Status-- ?');"))." ";
-            
-            
-                                                     }  
-              
-              
-	    	   else
-	    	   {
-	    	   
-            echo "&nbsp; ";
-               if($row->ta_status== null ||  $row->ta_status== 'Dismissed')               
-               {echo anchor('tender/vendor_approve/' . $row->ta_id , "Approve", array('title' => 'Approve' , 'class' => 'red-link' , 'onclick' => "return confirm('Are you sure you want to --Approve This Supplier-- ?');"))." ";              		
-           		}
-           		
-            }	
-            
-            
-            if($row->ta_status== 'Rejected') {  echo "Rejected" ; 
-            echo "<br>";
-            echo "BY:<b>".$row->ta_approvedby ;
-            echo "</b><br><br>";
-            echo "&nbsp; ";
-            		echo anchor('tender/vendor_approve/' . $row->ta_id , "Re-approve", array('title' => 'Dismiss' , 'class' => 'red-link' , 'onclick' => "return confirm('Are you sure you want to --Re-add Approved Status-- ?');"))." ";
-            
-            
-                                                     }  
-              
-              
-	    	   else
-	    	   {
-	    	   
-            echo "&nbsp; ";
-               if($row->ta_status== null ||  $row->ta_status== 'Re-approve')               
-               {echo anchor('tender/vendor_reject/' . $row->ta_id , "Reject", array('title' => 'Approve' , 'class' => 'red-link' , 'onclick' => "return confirm('Are you sure you want to --Reject This Supplier-- ?');"))." ";              		
-           		}
-           		
-            }	
-
-	    	  
-		
-            echo "</td>";
-            echo "</tr>";
+           
+            <td> 
+            <?php 
+             
+            if($a==$s) {
+            ?>
+             <input type="radio"   checked="true" name="aradio" value="<?php echo $row->ta_id ?>" />ID:<?php echo $row->ta_id ?> 
+                     <?php
           
-            }}
+            } else {   ?>
+             <input type="radio" name="aradio" value="<?php echo $row->ta_id ?>" />ID:<?php echo $row->ta_id ?> 
+           <?php    }
+                      ?>
+          
+            </td>            
+            </tr>
+            
+            <?php
+          
+            }
           ?>
           
 </tbody>
 </table>
+<br>
+<?php //if(empty($comingfrom) ) //to show proposal form when cs is also coming but hide the other above options
+		 { ?>
+<table class="TFtable" style="border-color:transparent;">
+<?php foreach($ld as $l) { ?>
+<th colspan="6">Comparative Statement Prepared by:<?php echo $l->ld_preparedby  ?> &nbsp; &nbsp;  Date:<?php echo $l->ld_preparationdate  ?></th>
+<tr>
+<td><b>Remarks</b><br><br><br> </td>
+<td colspan="5">
+
+<textarea class="approve" style="width:100%;height:200px;" readonly name="comment" >
+<?php echo $l->ld_remark; ?>
+
+</textarea>
+<?php  } ?>
+ </td>
+</tr>
+<th colspan="6">Signatures of Purchasing Committee </th>
+   <tr>
+               
+                <td><br><br><br>
+                    <b>Chairman</b><br></td>
+                <td><br><br><br>
+                    <b>Member</b><br></td>
+                <td><br><br><br>
+                    <b>Member</b><br></td>
+                <td><br><br><br>
+                    <b>Member</b><br></td>
+                <td><br><br><br>
+                    <b>HOD</b><br></td>
+                    
+                   
+                   
+                </tr>
+</table>
+<?php } ?>
+</form>
 </div><!------scroller div------>
      <br> <br>
          

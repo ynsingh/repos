@@ -110,6 +110,15 @@ class PICO_model extends CI_Model
             return $this->db4->get()->result();
     }
 
+     // get the max values of selected field
+    public function get_minvalue($tbname,$selectfield,$whdata){
+            $this->db4->flush_cache();
+            $this->db4->select_min($selectfield);
+            $this->db4->from($tbname);
+            $this->db4->where($whdata);
+            return $this->db4->get()->result();
+    }
+
     //get the list of all records with  two specific fields for specific values
     public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue='',$grpby=''){
                 $this->db4->flush_cache();

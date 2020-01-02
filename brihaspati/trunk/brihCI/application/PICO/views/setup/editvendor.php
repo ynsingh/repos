@@ -251,7 +251,7 @@
                <td>
                               
                 
-                <label for="vendor_blacklistdatefrom" class="control-label">Blacklist To:</label> 
+                <label for="vendor_blacklistdatefrom" class="control-label">Blacklist From:</label> 
                 
                  
                </td>
