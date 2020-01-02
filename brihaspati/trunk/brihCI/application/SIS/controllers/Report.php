@@ -536,9 +536,20 @@ public function promotional_profile() {
         $emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id,$selempfield)->row();
         //$emp_data['data'] = $this->sismodel->get_listrow('employee_master','emp_id',$emp_id)->row();
         $selectfield="*";
-        $whdata = array ('empsd_empid' => $emp_id);
+
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
 
+        $whdata = array ('spbd_empid' => $emp_id);
+	$whorder = 'spbd_id desc';
+	$emp_data['emppubdata'] = $this->sismodel->get_orderlistspficemore('staff_pub_data',$selectfield,$whdata,$whorder);
+
+        $whdata = array ('sta_empid' => $emp_id);
+	$whorder = 'sta_id desc';
+	$emp_data['empstadata'] = $this->sismodel->get_orderlistspficemore('staff_training_attended',$selectfield,$whdata,$whorder);
+
+        $whdata = array ('sto_empid' => $emp_id);
+	$whorder = 'sto_id desc';
+	$emp_data['empstodata'] = $this->sismodel->get_orderlistspficemore('staff_training_organised',$selectfield,$whdata,$whorder);
 
 	$emp_data['uoempid']=$this->getempuoid();
 	$emp_data['hodempid']=$this->getemphodid();

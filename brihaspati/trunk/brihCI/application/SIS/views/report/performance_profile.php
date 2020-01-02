@@ -177,58 +177,424 @@
 	</table>
 <br>
 </td>
-<?php
-       // $roleid=$this->session->userdata('id_role');
-//        if($roleid == 5){
-  //              $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-    //            $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-      //          $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-       // }
-       // $uname=$this->session->userdata('username');
-       // $rest = substr($uname, -21);
-       // if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
-
-         //       include 'eprofiletab.php'; 
-           //     echo "</tr><tr>";
-
-      //  }else{
-?>
-<!--<td valign="top" width=170>
-
-                <?php //include 'profiletab.php'; ?>
-
-</td>-->
-<?php //} ?>
-
-<!--<td valign="top" width=170>
-
-		<?php //include 'profiletab.php'; ?>
-	   
-</td>-->
-<?php     
-//	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid; 
-//	$roleid=$this->session->userdata('id_role');
-//	$roleid=$this->session->userdata('id_role');
-//        if($roleid == 5){
-            //    $hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
-          //      $hempcode=$this->sismodel->get_listspfic1('hod_list','hl_empcode','hl_userid',$this->session->userdata('id_user'))->hl_empcode;
-        //        $hempid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$hempcode)->emp_id;
-      //  }
-	
-?>
 <td valign="top">
+
+        <?php if($this->uri->segment(3)== 'publication'):?>
                 <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
-                            <td align=left colspan=4><b>Performance Details</b></td>
+                            <td align=left colspan=4><b>Performance Details-Publications</b></td>
                             <td colspan="5" align="right">
                             <?php
 				 $uname=$this->session->userdata('username');
                                 $rest = substr($uname, -21);
-	//			if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code))||($roleid == 4)){
-//				   if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid))){
-//				if(($roleid == 1)||(($roleid == 5)&&($hdept == $data->emp_dept_code)&&($emp_id != $hempid)&&(!(in_array($emp_id, $uoempid))))||(($this->session->userdata('username') == 'ro@tanuvas.org.in') && (in_array($emp_id, $uoempid)))||(($rest == 'office@tanuvas.org.in') && (in_array($emp_id, $hodempid)))){
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-
+//                                	if(count($performancedata)){
+                                	echo anchor("empmgmt/add_pubdata/{$emp_id}"," Add ",array('title' => ' Add Publication Data' , 'class' => 'red-link'));  
+  //                              	}
+    //                                	else{
+//                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+      //                          	}    
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php 
+			$srno=1;
+			if(count($emppubdata)):;?>
+		    	<tr>
+			<th>Sr. No.</th>
+			<th>Publication Type/ Title/ Authors/ Author Type</th>
+			<th>Journal/Book Name/ Month/ Year/ Venue</th>
+			<th>ISSN/ ISBN/ Volume/ Issue/ Page No.</th>
+			<th>Journal Metric/ Metric Value/ Pulisher/ Publication Level/ Language</th>
+			<th> Available Action</th>
+			</tr>
+			<?php
+//      spbd_chapno     spbd_pageno     spbd_progrmname         spbd_bookname   spbd_bookchapternme //need to be removed from database later
+//			spbd_empid 	spbd_pubtype 	spbd_title 	spbd_authors 	spbd_authortype 	spbd_journalname 	spbd_month 	spbd_year 	spbd_issnno 	spbd_chapno 	spbd_pageno 	spbd_metrictype 	spbd_metricvalue 	spbd_publevel 	spbd_progrmname 	spbd_progrmvenue 	spbd_bookname 	spbd_bookchapternme 	spbd_publishername 	spbd_language 	spbd_creatorname 	spbd_creationdate 
+                        foreach ($emppubdata as $pubres){
+                        echo "<tr>";
+                        echo "<td>";  echo $srno++ ; echo "</td>";
+                        echo "<td>";
+			if($pubres->spbd_pubtype == "Journals" ){
+				$pubtype= "Research Papers published in Journals";
+			}
+			if($pubres->spbd_pubtype == "Conference"){
+				$pubtype="Research Papers presented  in seminar/Workshop/conference etc";
+			}
+			if($pubres->spbd_pubtype == "Book"){
+				$pubtype="Book";
+			}
+			if($pubres->spbd_pubtype == "Chapter"){
+				$pubtype="Book Chapter";
+			}
+			if($pubres->spbd_pubtype == "Articles"){
+				$pubtype="Popular Articles";
+			}
+			if($pubres->spbd_pubtype == "Review"){
+				$pubtype="Review Articles";
+			}
+			if($pubres->spbd_pubtype == "Notes"){
+				$pubtype="Research Notes/Research Short Notes";
+			}
+			if($pubres->spbd_pubtype == "Monograph"){
+				$pubtype="Monograph/Manual";
+			}
+			if($pubres->spbd_authortype == "FA" ){
+				$authtype="First Author";
+			}
+			if($pubres->spbd_authortype == "SA"){
+				$authtype="Second Author";
+			}
+			if($pubres->spbd_authortype == "Others"){
+				$authtype="Others";
+			}
+                        echo $pubtype." <br>".$pubres->spbd_title."".$pubres->spbd_bookchapternme."<br>".$pubres->spbd_authors."<br>".$authtype;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $pubres->spbd_journalname."" .$pubres->spbd_bookname."".$pubres->spbd_progrmname ."<br>".$pubres->spbd_month." - ".$pubres->spbd_year."<br>".$pubres->spbd_progrmvenue;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $pubres->spbd_issnno."<br> ".$pubres->spbd_chapno."<br>".$pubres->spbd_pageno;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $pubres->spbd_metrictype." ".$pubres->spbd_metricvalue." ". $pubres->spbd_publishername ."<br>".$pubres->spbd_publevel."<br>".$pubres->spbd_language;
+                        echo "</td>";
+                        echo "<td>";
+                        if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                        //      echo anchor("empmgmt/edit_stadata/{$pubres->spbd_id}","Edit",array('title' => ' Edit Publication  Data' , 'class' => 'red-link'));
+                                echo " <br><br> ";
+                                echo anchor("empmgmt/delete_pubdata/{$pubres->spbd_id}","Delete",array('title' => ' Delete Publication Data' , 'class' => 'red-link'));
+                        }
+                        echo "</td>";
+                        echo "</tr>";
+                        }
+                        else : ?>
+                        <tr><td colspan= "6" align="center"> No Records found...!</td></tr>
+                        <?php endif;?>
+		</table>
+        <?php endif ?>
+        <?php if($this->uri->segment(3)== 'trainingattend'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Training Attended</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				$uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                              		echo anchor("empmgmt/add_stadata/{$emp_id}"," Add ",array('title' => ' Add Staff Training Attended Data' , 'class' => 'red-link'));
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php 
+			$srno=1;
+			if(count($empstadata)):;?>
+		    	<tr>
+			<th>Sr.NO.</th>
+			<th>Program Type/Level/Title</th>
+			<th>Program Duration/Venue</th>
+			<th>Program Organised/Sponsored By</th>
+			<th> Available Actions </th> 
+			</tr>
+			<?php 
+			foreach ($empstadata as $stares){
+		    	echo "<tr>";
+			echo "<td>";  echo $srno++ ; echo "</td>";
+			echo "<td>";
+			echo $stares->sta_prgtype." ".$stares->sta_prgsubtype."<br>".$stares->sta_prglevel."<br>".$stares->sta_prgtitle;
+			echo "</td>";
+			echo "<td>";
+ 			echo $stares->sta_prgduration ." Days<br>".$stares->sta_prgfrmdate." - ".$stares->sta_prgtodate."<br>".$stares->sta_prgvenue;
+			echo "</td>";
+			echo "<td>";
+ 			echo $stares->sta_prgorganisedby."<br>".$stares->sta_sponceredby ;
+			echo "</td>";
+			echo "<td>";
+			if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                        //	echo anchor("empmgmt/edit_stadata/{$stares->sta_id}","Edit",array('title' => ' Edit STA  Data' , 'class' => 'red-link'));
+                                echo " <br><br> ";
+                                echo anchor("empmgmt/delete_stadata/{$stares->sta_id}","Delete",array('title' => ' Delete STA Data' , 'class' => 'red-link'));
+                        }
+			echo "</td>";
+			echo "</tr>";
+			}
+                    	else : ?>
+                    	<tr><td colspan= "5" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+        <?php if($this->uri->segment(3)== 'trainingorgna'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Training Organised</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				$uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                	echo anchor("empmgmt/add_stodata/{$emp_id}"," Add ",array('title' => ' Add Staff Training Organised Data' , 'class' => 'red-link'));
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php 
+			$srno=1;
+			if(count($empstodata)):;?>
+		    	<tr>
+			<th>Sr.NO.</th>
+			<th>Program Type/Level/Title</th>
+			<th>Program Duration/Venue</th>
+			<th>Program Capacity/Participant</th>
+			<th>Program Organised/Sponsored By</th>
+			<th> Available Actions </th> 
+			</tr>
+			<?php 
+			foreach ($empstodata as $stores){
+		    	echo "<tr>";
+			echo "<td>";  echo $srno++ ; echo "</td>";
+			echo "<td>";
+			echo $stores->sto_prgtype." ".$stores->sto_prgsubtype."<br>".$stores->sto_prglevel."<br>".$stores->sto_prgtitle;
+			echo "</td>";
+			echo "<td>";
+ 			echo $stores->sto_prgduration ." Days<br>".$stores->sto_prgfrmdate." - ".$stores->sto_prgtodate."<br>".$stores->sto_prgvenue;
+			echo "</td>";
+			echo "<td>";
+			echo $stores->sto_capacity."<br>".$stores->sto_participantno."<br>".$stores->sto_participantnature;
+			echo "</td>";
+			echo "<td>";
+ 			echo $stores->sto_prgorganisedby."<br>".$stores->sto_sponceredby ;
+			echo "</td>";
+			echo "<td>";
+			if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                        //	echo anchor("empmgmt/edit_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
+                                echo " <br><br> ";
+                                echo anchor("empmgmt/delete_stodata/{$stores->sto_id}","Delete",array('title' => ' Delete STO Data' , 'class' => 'red-link'));
+                        }
+			echo "</td>";
+			echo "</tr>";
+			}
+                    	else : ?>
+                    	<tr><td colspan= "6" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+        <?php if($this->uri->segment(3)== 'awards'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Awards</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                	if(count($performancedata)){
+  //                                  		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                	}
+                                    	else{
+//                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                	}    
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php if(count($emppubdata)):;?>
+		    	<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+		    	<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+			
+                    	<?php else : ?>
+                    	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+        <?php if($this->uri->segment(3)== 'projects'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Projects</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                	if(count($performancedata)){
+  //                                  		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                	}
+                                    	else{
+//                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                	}    
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php if(count($emppubdata)):;?>
+		    	<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+		    	<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+			
+                    	<?php else : ?>
+                    	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+	<?php if($this->uri->segment(3)== 'stuguided'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Student Guided</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                	if(count($performancedata)){
+  //                                  		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                	}
+                                    	else{
+//                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                	}    
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php if(count($emppubdata)):;?>
+		    	<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+		    	<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+			
+                    	<?php else : ?>
+                    	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+	<?php if($this->uri->segment(3)== 'guestlect'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Guest Lecture Delivered</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                	if(count($performancedata)){
+    //                                		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                	}
+                                    	else{
+      //                              		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                	}    
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php if(count($emppubdata)):;?>
+		    	<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+		    	<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+			
+                    	<?php else : ?>
+                    	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+	<?php if($this->uri->segment(3)== 'patents'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Patents</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                	if(count($performancedata)){
+//                                    		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+                                	}
+                                    	else{
+  //                                  		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+                                	}    
+				}
+                            ?>
+                        </td>
+                    </tr>
+		</table>
+                <table class="TFtable">
+                    	<?php if(count($emppubdata)):;?>
+		    	<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+		    	<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+			
+                    	<?php else : ?>
+                    	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                    	<?php endif;?>
+		</table>
+        <?php endif ?>
+	<?php if($this->uri->segment(3)== 'abs'):?>
+                <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
+                            <td align=left colspan=4><b>Performance Details-Abstract</b></td>
+                            <td colspan="5" align="right">
+                            <?php
+				 $uname=$this->session->userdata('username');
+                                $rest = substr($uname, -21);
+				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
                                 	if(count($performancedata)){
                                     		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
                                 	}
@@ -238,12 +604,10 @@
 				}
                             ?>
                         </td>
-                        
                     </tr>
-                
 		</table>
+
                 <table class="TFtable">
-                    
                     <?php if(count($performancedata)):;?>
                     <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Awards and Medals : </b></td></tr>
                     <tr>
@@ -392,11 +756,11 @@
         	</td>
         	</tr>
     		</table>
+	<?php endif ?>
+
 	<br>
 </td>
 </tr>
-
-
 </table>
        
    </div>      

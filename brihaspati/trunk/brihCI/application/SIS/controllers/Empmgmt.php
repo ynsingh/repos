@@ -691,7 +691,226 @@ public function disciplin_profile() {
             
         }//closeissetform 
     }//function close
-    
+  
+//	spbd_chapno 	spbd_pageno 	spbd_progrmname 	spbd_bookname 	spbd_bookchapternme 	 
+	public function add_pubdata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addpubdata'])) {
+			//form validation
+            		$this->form_validation->set_rules('prgtype','Publication Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('prgtitle','Title','trim|xss_clean');
+            		$this->form_validation->set_rules('author','Author','trim|xss_clean');
+            		$this->form_validation->set_rules('authtype','Author Type','trim|xss_clean');
+            		$this->form_validation->set_rules('publevel','Publication Level','trim|xss_clean');
+            		$this->form_validation->set_rules('issn','ISSN','trim|xss_clean');
+            		$this->form_validation->set_rules('month','Month','trim|xss_clean');
+            		$this->form_validation->set_rules('year','Year','trim|xss_clean');
+            		$this->form_validation->set_rules('venue','Venue','trim|xss_clean');
+            		$this->form_validation->set_rules('conf','Conference','trim|xss_clean');
+            		$this->form_validation->set_rules('jmoption','JM Option','trim|xss_clean');
+            		$this->form_validation->set_rules('userrating','User Rating','trim|xss_clean');
+            		$this->form_validation->set_rules('publisher','Publisher','trim|xss_clean');
+            		$this->form_validation->set_rules('publang','Language','trim|xss_clean');
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_pubdata');
+            		}//formvalidation
+            		else{
+				$publang = $this->input->post('publang', TRUE);
+				$jmoption = $this->input->post('jmoption', TRUE);
+				$month = $this->input->post('month', TRUE);
+				$year = $this->input->post('year', TRUE);
+				$pubdata = array(
+	                    		'spbd_empid'           	 =>$empid,
+	                    		'spbd_pubtype'            =>$_POST['prgtype'],
+	                    		'spbd_title'         =>$_POST['prgtitle'],
+	                    		'spbd_authors'         =>$_POST['author'],
+	                    		'spbd_authortype'         =>$_POST['authtype'],
+	                    		'spbd_journalname'         =>$_POST['conf'],
+	                    		'spbd_month'         =>$month,
+	                    		'spbd_year'         =>$year,
+	                    		'spbd_issnno'         =>$_POST['issn'],
+	                    		'spbd_metrictype'         =>$jmoption,
+	                    		'spbd_metricvalue'         =>$_POST['userrating'],
+	                    		'spbd_publevel'         =>$_POST['publevel'],
+	                    		'spbd_progrmvenue'         =>$_POST['venue'],
+	                    		'spbd_publishername'         =>$_POST['publisher'],
+	                    		'spbd_language'         =>$publang,
+	                    		'spbd_creatorname'        =>$this->session->userdata('username'),
+	                    		'spbd_creationdate'       =>date('Y-m-d'),
+				);
+				$pubdataflag=$this->sismodel->insertrec('staff_pub_data', $pubdata) ;
+				if(!$pubdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff Publication record", "Error in insert staff Publication record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff Publication record ", "Error in insert staff Publication record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff Publication record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_pubdata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/publication/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff Publication Data", "Staff Publication record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff Publication Data", "Staff Publication record insert successfully ." );
+                    			$this->session->set_flashdata('success','Publication Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/publication/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_pubdata');
+	}
+
+
+	public function add_stadata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addstadata'])) {
+			//form validation
+            		$this->form_validation->set_rules('prgtype','Programme Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('dsubgrp','Programme Sub Type','trim|xss_clean');
+            		$this->form_validation->set_rules('prglevel','Programme Level','trim|xss_clean');
+            		$this->form_validation->set_rules('prgtitle','Programme Title','trim|xss_clean');
+            		$this->form_validation->set_rules('duration','Duration','trim|xss_clean');
+            		$this->form_validation->set_rules('fdate','From Date','trim|xss_clean');
+            		$this->form_validation->set_rules('todate','To Date','trim|xss_clean');
+            		$this->form_validation->set_rules('venue','Venue','trim|xss_clean');
+            		$this->form_validation->set_rules('oby','Organised By','trim|xss_clean');
+            		$this->form_validation->set_rules('sby','Sponsored By','trim|xss_clean');
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_stadata');
+            		}//formvalidation
+            		else{
+				$stadata = array(
+	                    		'sta_empid'           	 =>$empid,
+	                    		'sta_prgtype'            =>$_POST['prgtype'],
+	                    		'sta_prgsubtype'         =>$_POST['dsubgrp'],
+	                    		'sta_prglevel'           =>$_POST['prglevel'],
+	                    		'sta_prgtitle'           =>$_POST['prgtitle'],
+	                    		'sta_prgduration'        =>$_POST['duration'],
+	                    		'sta_prgfrmdate'         =>$_POST['fdate'],
+	                    		'sta_prgtodate'          =>$_POST['todate'],
+	                    		'sta_prgvenue'           =>$_POST['venue'],
+	                    		'sta_prgorganisedby'     =>$_POST['oby'],
+	                    		'sta_sponceredby'        =>$_POST['sby'],
+	                    		'sta_creatorname'        =>$this->session->userdata('username'),
+	                    		'sta_creationdate'       =>date('Y-m-d'),
+				);
+				$stadataflag=$this->sismodel->insertrec('staff_training_attended', $stadata) ;
+				if(!$stadataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff sta record", "Error in insert staff sta record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff sta record ", "Error in insert staff sta record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff sta record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_stadata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/trainingattend/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff STA Data", "Staff STA record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff STA Data", "Staff STA record insert successfully ." );
+                    			$this->session->set_flashdata('success','STA Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/trainingattend/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_stadata');
+	}
+
+	public function add_stodata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addstodata'])) {
+			//form validation
+            		$this->form_validation->set_rules('prgtype','Programme Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('dsubgrp','Programme Sub Type','trim|xss_clean');
+            		$this->form_validation->set_rules('prglevel','Programme Level','trim|xss_clean');
+            		$this->form_validation->set_rules('prgtitle','Programme Title','trim|xss_clean');
+            		$this->form_validation->set_rules('duration','Duration','trim|xss_clean');
+            		$this->form_validation->set_rules('fdate','From Date','trim|xss_clean');
+            		$this->form_validation->set_rules('todate','To Date','trim|xss_clean');
+            		$this->form_validation->set_rules('venue','Venue','trim|xss_clean');
+//            		$this->form_validation->set_rules('oby','Organised By','trim|xss_clean');
+            		$this->form_validation->set_rules('sby','Sponsored By','trim|xss_clean');
+            		$this->form_validation->set_rules('capacity','Capacity','trim|xss_clean');
+            		$this->form_validation->set_rules('partno','No of Participant','trim|xss_clean');
+            		$this->form_validation->set_rules('naturep','Nature Of Participant','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_stodata');
+            		}//formvalidation
+            		else{
+				$stodata = array(
+	                    		'sto_empid'           	=>$empid,
+	                    		'sto_prgtype'           =>$_POST['prgtype'],
+	                    		'sto_prgsubtype'        =>$_POST['dsubgrp'],
+	                    		'sto_prglevel'          =>$_POST['prglevel'],
+	                    		'sto_prgtitle'          =>$_POST['prgtitle'],
+	                    		'sto_prgduration'       =>$_POST['duration'],
+	                    		'sto_prgfrmdate'        =>$_POST['fdate'],
+	                    		'sto_prgtodate'         =>$_POST['todate'],
+	                    		'sto_prgvenue'          =>$_POST['venue'],
+	                    		'sto_sponceredby'       =>$_POST['sby'],
+					'sto_capacity' 		=> $_POST['capacity'],
+					'sto_participantno' 	=>$_POST['partno'],
+					'sto_participantnature' =>$_POST['naturep'],
+	                    		'sto_creatorname'       =>$this->session->userdata('username'),
+	                    		'sto_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$stodataflag=$this->sismodel->insertrec('staff_training_organised', $stodata) ;
+				if(!$stodataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff sto record", "Error in insert staff sto record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff sto record ", "Error in insert staff sto record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff sto record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_stodata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/trainingorgna/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff STO Data", "Staff STO record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff STO Data", "Staff STO record insert successfully ." );
+                    			$this->session->set_flashdata('success','STO Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/trainingorgna/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_stodata');
+	}
+ 
     /***********************************Start Add service detail******************************************/
     public function add_servicedata($empid) {
         $this->roleid=$this->session->userdata('id_role');
@@ -3585,6 +3804,125 @@ public function add_addionalassigndata($empid) {
                 $this->load->view('report/addionalassign_profile/'.$this->emp_id);
         }//closer 
 
+   	  /**This function Delete records */
+        public function delete_pubdata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_pub_data', 'spbd_empid', 'spbd_id',$id)->spbd_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_pub_data','spbd_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_publication details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_publication_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_publication_details record - ');
+                                redirect('report/performance_profile/publication/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_publication_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_publication_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Publication Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/publication/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_publication_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff publication_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee publication record.' );
+                                redirect('report/performance_profile/publication/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/publication/'.$this->emp_id);
+        }//closer 
+
+   	  /**This function Delete records */
+        public function delete_stadata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_training_attended', 'sta_empid', 'sta_id',$id)->sta_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_training_attended','sta_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_training_attended details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_training_attended_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_training_attended_details record - ');
+                                redirect('report/performance_profile/trainingattend/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_training_attended_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_training_attended_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'training_attended Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/trainingattend/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_training_attended_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff training_attended_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee training_attended record.' );
+                                redirect('report/performance_profile/trainingattend/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/trainingattend/'.$this->emp_id);
+        }//closer 
+
+   	  /**This function Delete records */
+        public function delete_stodata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_training_organised', 'sto_empid', 'sto_id',$id)->sto_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_training_organised','sto_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_training_organised details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_training_organised_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_training_organised_details record - ');
+                                redirect('report/performance_profile/trainingorgna/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_training_organised_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_training_organised_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'training_organised Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/trainingorgna/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_training_organised_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff training_organised_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee training_organised record.' );
+                                redirect('report/performance_profile/trainingorgna/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/trainingorgna/'.$this->emp_id);
+        }//closer 
 
 }//classcloser    
     
