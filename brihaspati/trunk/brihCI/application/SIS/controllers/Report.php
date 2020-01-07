@@ -551,6 +551,14 @@ public function promotional_profile() {
 	$whorder = 'sto_id desc';
 	$emp_data['empstodata'] = $this->sismodel->get_orderlistspficemore('staff_training_organised',$selectfield,$whdata,$whorder);
 
+        $whdata = array ('spad_empid' => $emp_id);
+	$whorder = 'spad_id desc';
+	$emp_data['empawarddata'] = $this->sismodel->get_orderlistspficemore('staff_perform_award_data',$selectfield,$whdata,$whorder);
+        
+	$whdata = array ('sppd_empid' => $emp_id);
+	$whorder = 'sppd_id desc';
+	$emp_data['empprojdata'] = $this->sismodel->get_orderlistspficemore('staff_perform_project_data',$selectfield,$whdata,$whorder);
+	
 	$emp_data['uoempid']=$this->getempuoid();
 	$emp_data['hodempid']=$this->getemphodid();
 

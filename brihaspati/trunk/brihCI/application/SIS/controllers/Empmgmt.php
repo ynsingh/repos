@@ -70,6 +70,7 @@ public function academic_profile() {
         $currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -105,6 +106,7 @@ public function technical_profile() {
         $currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 	
 	//for adding head next to designation
         $cdate=date('Y-m-d');
@@ -131,6 +133,7 @@ public function service_profile() {
 	$emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
 //        $emp_id = $this->uri->segment(3);
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -155,6 +158,7 @@ public function promotional_profile() {
         $currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
       //  $cdate=date('Y-m-d');
@@ -178,11 +182,11 @@ public function promotional_profile() {
 public function performance_profile() {
 
         //get id for employee to show data      
-  //      $emp_id = $this->uri->segment(3);
+        $tab_id = $this->uri->segment(3);
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
-
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
         //for adding head next to designation
         $cdate=date('Y-m-d');
         $this->headflag="false";
@@ -195,6 +199,18 @@ public function performance_profile() {
         $selectfield="*";
         $whdata = array ('empsd_empid' => $emp_id);
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
+	
+	$whdata = array ('spbd_empid' => $emp_id);
+        $whorder = 'spbd_id desc';
+        $emp_data['emppubdata'] = $this->sismodel->get_orderlistspficemore('staff_pub_data',$selectfield,$whdata,$whorder);
+
+        $whdata = array ('sta_empid' => $emp_id);
+        $whorder = 'sta_id desc';
+        $emp_data['empstadata'] = $this->sismodel->get_orderlistspficemore('staff_training_attended',$selectfield,$whdata,$whorder);
+
+        $whdata = array ('sto_empid' => $emp_id);
+        $whorder = 'sto_id desc';
+        $emp_data['empstodata'] = $this->sismodel->get_orderlistspficemore('staff_training_organised',$selectfield,$whdata,$whorder);	
 
         $this->load->view('empmgmt/performance_profile',$emp_data);
   }
@@ -204,6 +220,7 @@ public function leave_profile() {
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -238,6 +255,7 @@ public function deputation_profile() {
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -261,6 +279,7 @@ public function deptexam_profile() {
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -284,6 +303,7 @@ public function workorder_profile() {
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -307,6 +327,7 @@ public function recruit_profile() {
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -329,6 +350,7 @@ public function disciplin_profile() {
 	$currentuser=$this->session->userdata('username');
         $emp_id = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
         $emp_data['emp_id']=$emp_id;
+	$emp_data['emp_photoname']=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_email', $currentuser)->emp_photoname;
 
         //for adding head next to designation
         $cdate=date('Y-m-d');
@@ -694,6 +716,7 @@ public function disciplin_profile() {
   
 //	spbd_chapno 	spbd_pageno 	spbd_progrmname 	spbd_bookname 	spbd_bookchapternme 	 
 	public function add_pubdata($empid) {
+		
         	$this->roleid=$this->session->userdata('id_role');
         	$this->emp_id = $empid;
 		if(isset($_POST['addpubdata'])) {
@@ -713,7 +736,7 @@ public function disciplin_profile() {
             		$this->form_validation->set_rules('publisher','Publisher','trim|xss_clean');
             		$this->form_validation->set_rules('publang','Language','trim|xss_clean');
 			if($this->form_validation->run() == FALSE){
-                		redirect('empmgmt/add_pubdata');
+                		redirect('empmgmt/add_pubdata/'.$empid);
             		}//formvalidation
             		else{
 				$publang = $this->input->post('publang', TRUE);
@@ -746,7 +769,7 @@ public function disciplin_profile() {
                     			$this->logger->write_dblogmessage("error","Error in insert staff Publication record ", "Error in insert staff Publication record" );
                     			$this->session->set_flashdata('err_message','Error in insert staff Publication record ');
 					if($this->roleid == 4){
-	                        		redirect("empmgmt/add_pubdata");
+	                        		redirect("empmgmt/add_pubdata/".$empid);
                     			}
                     			else{
                         			redirect("report/performance_profile/publication/".$empid);
@@ -788,7 +811,7 @@ public function disciplin_profile() {
             		$this->form_validation->set_rules('oby','Organised By','trim|xss_clean');
             		$this->form_validation->set_rules('sby','Sponsored By','trim|xss_clean');
 			if($this->form_validation->run() == FALSE){
-                		redirect('empmgmt/add_stadata');
+                		redirect('empmgmt/add_stadata/'.$empid);
             		}//formvalidation
             		else{
 				$stadata = array(
@@ -858,7 +881,7 @@ public function disciplin_profile() {
             		$this->form_validation->set_rules('naturep','Nature Of Participant','trim|xss_clean');
 
 			if($this->form_validation->run() == FALSE){
-                		redirect('empmgmt/add_stodata');
+                		redirect('empmgmt/add_stodata/'.$empid);
             		}//formvalidation
             		else{
 				$stodata = array(
@@ -909,6 +932,130 @@ public function disciplin_profile() {
 			}//end form validation
 		}//end isset		
 		$this->load->view('empmgmt/add_stodata');
+	}
+ 
+	public function add_awarddata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addawarddata'])) {
+			//form validation
+            		$this->form_validation->set_rules('awardtype','Award Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('awardedby','Awarded By','trim|xss_clean');
+            		$this->form_validation->set_rules('awardtitle','Award  Title','trim|xss_clean');
+            		$this->form_validation->set_rules('year','year','trim|xss_clean');
+            		$this->form_validation->set_rules('details','Details','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_awarddata/'.$empid);
+            		}//formvalidation
+            		else{
+				$awarddata = array(
+	                    		'spad_empid'           	=>$empid,
+	                    		'spad_awardtype'           =>$_POST['awardtype'],
+	                    		'spad_awardtitle'        =>$_POST['awardtitle'],
+	                    		'spad_awardby'          =>$_POST['awardedby'],
+	                    		'spad_year'          =>$_POST['year'],
+	                    		'spad_details'       =>$_POST['details'],
+	                    		'spad_creatorname'       =>$this->session->userdata('username'),
+	                    		'spad_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$awarddataflag=$this->sismodel->insertrec('staff_perform_award_data', $awarddata) ;
+				if(!$awarddataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff award record", "Error in insert staff award record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff award record ", "Error in insert staff award record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff award record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_awarddata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/awards/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff award Data", "Staff award record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff award Data", "Staff award record insert successfully ." );
+                    			$this->session->set_flashdata('success','award Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/awards/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_awarddata');
+	}
+ 
+	public function add_projdata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addprojdata'])) {
+			//form validation
+            		$this->form_validation->set_rules('projtitle','Project Title','trim|required|xss_clean');
+            		$this->form_validation->set_rules('role','Role in Project','trim|xss_clean');
+            		$this->form_validation->set_rules('fundname','Funding Agency Name','trim|xss_clean');
+            		$this->form_validation->set_rules('fundtype','Funding Agency Type','trim|xss_clean');
+            		$this->form_validation->set_rules('duration','Duration','trim|xss_clean');
+            		$this->form_validation->set_rules('budget','Budget','trim|xss_clean');
+            		$this->form_validation->set_rules('fdate','From Date','trim|xss_clean');
+            		$this->form_validation->set_rules('todate','To Date','trim|xss_clean');
+            		$this->form_validation->set_rules('remark','Remark','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_projdata/'.$empid);
+            		}//formvalidation
+            		else{
+				$projdata = array(
+	                    		'sppd_empid'           	=>$empid,
+	                    		'sppd_ptitle'           =>$_POST['projtitle'],
+	                    		'sppd_prole'           =>$_POST['role'],
+	                    		'sppd_pfundagency'           =>$_POST['fundname'],
+	                    		'sppd_agendytype'           =>$_POST['fundtype'],
+	                    		'sppd_budget'           =>$_POST['budget'],
+	                    		'sppd_duration'       =>$_POST['duration'],
+	                    		'sppd_fromdate'        =>$_POST['fdate'],
+	                    		'sppd_todate'         =>$_POST['todate'],
+	                    		'sppd_remark'           =>$_POST['remark'],
+	                    		'sppd_creatorname'           =>$this->session->userdata('username'),
+	                    		'sppd_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$projdataflag=$this->sismodel->insertrec('staff_perform_project_data', $projdata) ;
+				if(!$projdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff project record", "Error in insert staff project record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff project record ", "Error in insert staff project record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff project record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_projdata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/projects/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff project Data", "Staff project record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff project  Data", "Staff project record insert successfully ." );
+                    			$this->session->set_flashdata('success','Project Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/projects/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_projdata');
 	}
  
     /***********************************Start Add service detail******************************************/
@@ -3923,6 +4070,86 @@ public function add_addionalassigndata($empid) {
                 }
                 $this->load->view('report/performance_profile/trainingorgna/'.$this->emp_id);
         }//closer 
+
+   	  /**This function Delete records */
+        public function delete_awardata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_perform_award_data', 'spad_empid', 'spad_id',$id)->spad_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_perform_award_data','spad_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_award details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_award_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_award_details record - ');
+                                redirect('report/performance_profile/awards/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_award_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_award_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Award Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/awards/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_award_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff award_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee award record.' );
+                                redirect('report/performance_profile/awards/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/awards/'.$this->emp_id);
+	}
+
+   	  /**This function Delete records */
+        public function delete_projdata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_perform_project_data', 'sppd_empid', 'sppd_id',$id)->sppd_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_perform_project_data','sppd_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_Projects details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_projects_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_projects_details record - ');
+                                redirect('report/performance_profile/projects/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_project_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_project_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Project Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/projects/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_project_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff project_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee project record.' );
+                                redirect('report/performance_profile/projects/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/projects/'.$this->emp_id);
+	}
 
 }//classcloser    
     

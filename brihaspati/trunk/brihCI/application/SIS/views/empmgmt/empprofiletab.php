@@ -33,8 +33,12 @@
 	<table border=1 class="TFtable">
 		<tr>
                                 <td align="center" colspan="10">
-                                    <?php if(!empty($record->emp_photoname)):;?>
-                                        <img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" >
+                                    <?php 
+					if(!empty($record->emp_photoname)){
+						$emp_photoname=$record->emp_photoname;
+					}
+					if((!empty($record->emp_photoname))||(!empty($emp_photoname))):;?>
+                                        <img src="<?php echo base_url('uploads/SIS/empphoto/'.$emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" >
                                     <?php else:?>
                                         <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>
                                     <?php endif?>
@@ -112,7 +116,7 @@
 			<?php }else{ ?>
 				<td class=btn1>
 			<?php } ?>
-			<b>  <a href='<?php echo site_url()."/empmgmt/performance_profile"?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
+			<b>  <a href='<?php echo site_url()."/empmgmt/performance_profile/abs"?>' style="font-size:17px;color:#0099CC;text-decoration: none">Performance Details</a></b> </td>
 		</tr>
 <!--
                 <tr>

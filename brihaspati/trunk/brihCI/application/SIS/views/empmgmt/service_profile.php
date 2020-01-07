@@ -102,6 +102,7 @@
                         <tr>
                             <th>Campus Details</th>
                             <th>Designation Details</th>
+                            <th>Working Place</th>
                             <th>AGP/Grade Pay Details</th>
                             <th>From/To</th>
                             <th colspan="2">Total service (YY/MM/DD)</th>
@@ -141,7 +142,15 @@
 				    echo "<b>Designation-: </b>".$desig."<br/> "."<b>Show Again Post-: </b>".$showagpost."<br/> "."<b>Group-: </b>".$group."<br/> "."<b>Worktype-: </b>".$worktype;
                                     ?>
                                </td>
-<td> 
+				<td>
+                                <?php
+                                 if ($record->empsd_wdeptid != 0) {
+                                        $wdept=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $record->empsd_wdeptid)->dept_name;
+                                        echo "<b>Dept-: </b>".$wdept;
+                                }
+                                ?>
+                               </td>
+				<td> 
                                     <?php
 					if(!empty($record->empsd_pbid)){
                                     $pbname=$this->sismodel->get_listspfic1('salary_grade_master','sgm_name','sgm_id',$record->empsd_pbid)->sgm_name; 
