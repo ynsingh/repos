@@ -21,6 +21,14 @@ SET time_zone = "+00:00";
 --
 -- Database: `pico`
 --
+CREATE TABLE `budget_details` (
+  `bd_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `bd_ppid` int(11) NOT NULL,
+  `bd_budgetdept` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `bd_budgetprojno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `bd_budgethead` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `bd_budgetamount` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 --
@@ -115,6 +123,7 @@ CREATE TABLE `items` (
   `item_challandate` DATE NOT NULL,
   `item_transport` VARCHAR(255) COLLATE utf8_unicode_ci NULL,
   `item_receivername` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `item_irstatus` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL ,
   `item_creatorname` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `item_creatordate` DATE NOT NULL,
   `item_modifiername` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -291,7 +300,7 @@ CREATE TABLE `purchase_order` (
   `po_ppid` int(11) NOT NULL,
   `po_tcid` int(11) NOT NULL,
   `po_taid` int(11) NOT NULL,
-  `po_no` int(1) NOT NULL,
+  `po_no` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `po_requisition` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `po_vendorid` int(11) NOT NULL,
   `po_itemid` int(11) NOT NULL,
@@ -323,21 +332,22 @@ CREATE TABLE `purchase_proposal` (
   `pp_deptid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_indentername` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_indenteremail` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `pp_indentdate` date NOT NULL,
+  `pp_indentdate` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_indenterid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_materialtypeid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_itemtotcost` int(15) NOT NULL,
   `pp_budgetdept` int(15) NOT NULL,
   `pp_budgetprojno` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `pp_budgethead` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `pp_budgethead2` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `pp_budgetamt` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pp_vendorid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `pp_deliveryperiod` date NOT NULL,
-  `pp_deliveryperiodfrom` date NOT NULL,
-  `pp_deliveryperiodto` date NOT NULL,
+  `pp_deliveryperiod` VARCHAR(255) COLLATE utf8_unicode_ci NOT NUL,
+  `pp_deliveryperiodfrom` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `pp_deliveryperiodto` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_warranty` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_guarantee` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_payterm` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `pp_orderstatus` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_hodapproved` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `pp_hodapproveddate` date NOT NULL,
   `pp_budgetcomment` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -439,6 +449,7 @@ CREATE TABLE `tender_apply` (
   `ta_gsttax` int(20) NOT NULL,
   `ta_totalprice` int(20) NOT NULL,
   `ta_warranty` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ta_guarantee` VARCHAR(255) COLLATE utf8_unicode_ci  NULL,
   `ta_payment` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_delivery` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `ta_validity` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -532,6 +543,7 @@ CREATE TABLE `tender_create` (
   `tc_nitdoctype` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_workitemtitle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_workdesc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tc_quantity` INT NOT NULL, 
   `tc_prequaldetails` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_prodcatid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_prodsubcat` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -587,6 +599,7 @@ CREATE TABLE `tender_create` (
   `tc_approvedbyname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_approvedbydesig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_approvedbydate` datetime NOT NULL,
+  `tc_l1status` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_creatorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tc_creationdate` date NOT NULL,
   `tc_modifierid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -1125,6 +1138,22 @@ CREATE TABLE `item_index` (
 	PRIMARY KEY (`id`), 
 	UNIQUE (`itemno`)
 ) ENGINE = InnoDB;
+
+CREATE TABLE `l1_details` (
+  `ld_id` int(11) NOT NULL  AUTO_INCREMENT,
+  `ld_tcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_taid` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_vendorid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_tenrefno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_remark` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_pcid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_preparedby` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_preparationdate` date NOT NULL,
+  `ld_comparativeflag` VARCHAR(255) NOT NULL,
+  `ld_modifiedby` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ld_modificationdate` date NOT NULL,
+  PRIMARY KEY (`ld_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 COMMIT;
 
