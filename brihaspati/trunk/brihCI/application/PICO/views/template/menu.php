@@ -292,12 +292,11 @@ echo "<nav>";
 			echo "</li>";
 			echo "<li>";
                                 echo "<a href=" . ">Help</a>";
-                        echo "<ul>";
+                        	echo "<ul>";
                                         echo "<li>";
-			/*          echo anchor('help/helpdoc', 'User Manual', array('title' => 'User Manual'));*/
+                                                echo anchor('help/helpdoc', 'User Manual', array('title' => 'User Manual'));
                                         echo "</li>";
-                                        echo "</ul>";
-
+                                echo "</ul>";
 			echo "<li>";
 			echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 			echo "</li>";
