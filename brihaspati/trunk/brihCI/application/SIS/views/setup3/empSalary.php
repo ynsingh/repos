@@ -206,7 +206,8 @@
                                 <td><?php 
                                         $selectfield ="sal_netsalary";
                                         $whdata = array('sal_empid' =>$record->emp_id,'sal_month' =>$selmonth,'sal_year' =>$selyear);
-                                        $salval= $this->sismodel->get_orderlistspficemore('salary',$selectfield,$whdata,'');
+					$whorder="sal_id desc";
+                                        $salval= $this->sismodel->get_orderlistspficemore('salary',$selectfield,$whdata,$whorder);
                                         if(!empty($salval)){
                                             echo $netval=$salval[0]->sal_netsalary;
                                         }

@@ -396,16 +396,41 @@
                     </tr>
                 </table>
                 <table class="TFtable">
-                        <?php if(count($emppubdata)):;?>
+			<?php $srno=1;
+                         if(count($empawarddata)):;?>
                         <tr>
-                        <th></th>
+                        <th>Sr.NO.</th>
+                        <th>Award Title/Type</th>
+                        <th>Awarded By/Year</th>
+                        <th>Remark</th>
+                        <th>Available Actions </th>
                         </tr>
-                        <tr>
-                        <td></td>
-                        </tr>
-                        <?php else : ?>
-                        <tr><td colspan= "7" align="center"> No Records found...!</td></tr>
+                        <?php
+                        foreach ($empawarddata as $awardres){
+                        echo "<tr>";
+                        echo "<td>";  echo $srno++ ; echo "</td>";
+                        echo "<td>";
+                        echo $awardres->spad_awardtitle."<br>".$awardres->spad_awardtype;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $awardres->spad_awardby ."<br>".$awardres->spad_year;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $awardres->spad_details ;
+                        echo "</td>";
+                //        echo "<td>";
+                  //      if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                        //      echo anchor("empmgmt/edit_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
+                    //            echo " <br><br> ";
+                      //          echo anchor("empmgmt/delete_awarddata/{$awardres->spad_id}","Delete",array('title' => ' Delete Award Data' , 'class' => 'red-link'));
+                       // }
+                      //  echo "</td>";
+                        echo "</tr>";
+                        }
+                        else : ?>
+                        <tr><td colspan= "6" align="center"> No Records found...!</td></tr>
                         <?php endif;?>
+
                 </table>
         <?php endif ?>
 	<?php if($this->uri->segment(3)== 'projects'):?>
@@ -429,16 +454,47 @@
                     </tr>
                 </table>
                 <table class="TFtable">
-                        <?php if(count($emppubdata)):;?>
+			<?php $srno=1;
+                         if(count($empprojdata)):;?>
                         <tr>
-                        <th></th>
+                        <th>Sr.NO.</th>
+                        <th>Project Title/Role</th>
+                        <th>Funding Agency Name /Type</th>
+                        <th>Budget</th>
+                        <th>Duration / From - To</th>
+                        <th>Remarks</th>
+                        <th>Available Actions </th>
                         <th></th>
                         </tr>
-                        <tr>
-                        <td></td>
-                        <td></td>
-                        </tr>
-                        <?php else : ?>
+                        <?php
+                        foreach ($empprojdata as $projres){
+                        echo "<tr>";
+                        echo "<td>";  echo $srno++ ; echo "</td>";
+                        echo "<td>";
+                        echo $projres->sppd_ptitle."<br>".$projres->sppd_prole;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $projres->sppd_pfundagency ."<br>".$projres->sppd_agendytype;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $projres->sppd_budget ." L <br>";
+                        echo "</td>";
+                        echo "<td>";
+                        echo $projres->sppd_duration ." Years <br>".$projres->sppd_fromdate." - ".$projres->sppd_todate;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $projres->sppd_remark;
+                        echo "</td>";
+                      //  echo "<td>";
+                      //  if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+				 //      echo anchor("empmgmt/edit_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
+                        //        echo " <br><br> ";
+                        //        echo anchor("empmgmt/delete_projdata/{$projres->sppd_id}","Delete",array('title' => ' Delete Project Data' , 'class' => 'red-link'));
+                      //  }
+                     //   echo "</td>";
+                        echo "</tr>";
+                        }
+                        else : ?>
                         <tr><td colspan= "7" align="center"> No Records found...!</td></tr>
                         <?php endif;?>
                 </table>

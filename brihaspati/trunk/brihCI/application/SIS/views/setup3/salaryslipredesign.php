@@ -676,7 +676,7 @@
                  
                 <?php }  //closer if employee not exists in that year -->
                     else{ ?>
-                        <?php //echo " case 5 else empnodata"; //max value part ;?>
+                        <?php //echo "I am in second case 5 else empnodata"; //max value part ;?>
                         <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
                     
                         foreach($incomes as $incomedata){ ?>
@@ -694,11 +694,11 @@
                             <td><?php 
                           
                                 $selectfield ="sald_shamount";
-                                //$whorder = "shc_id asc";
-                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id);
-                                $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);  
-                                //$headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,''); 
-                          
+                                //$whorder = "shc_id asc"; add month and year also in whdata
+                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
+				$whorder="sald_id desc";
+                              //  $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);  
+                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,$whorder); 
                                 ?>
                                 <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
                                 <?php $finalval=$headval[0]->sald_shamount;?>      
@@ -737,9 +737,11 @@
                         <td>
                             <?php 
                                 $selectfield ="sald_shamount";
+				$whorder="sald_id desc";
                                 //$whorder = "shc_id asc";
-                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id);
-                                $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);        
+                                $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
+                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,$whorder); 
+                                //$headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);        
                             ?>
                             <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
                             <?php $finalval=$headval[0]->sald_shamount;?>   
@@ -768,7 +770,8 @@
                  <?php  //closer max value part ;?>
                 <?php  } /*closer of else year compare(<>) */ ;?> 
                 <?php } //closer of if dup not exists  -->
-                else{ //echo "else dupexistss" ?>
+                else{ 
+		//echo "I am in third else dupexistss" ?>
                              
                  <tr>
                     <th colspan="2">Earnings </th>
@@ -798,7 +801,8 @@
                                 //$whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id);
                                // $headval= $this->sismodel->get_maxvalue('salary_data',$selectfield,$whdata);  
                                 $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$incomedata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
-                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,''); 
+				$whorder="sald_id desc";
+                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,$whorder); 
                           
                                 ?>
                                 <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
@@ -841,12 +845,14 @@
                         <td>
                             <?php 
                                 $selectfield ="sald_shamount";
+				$whorder="sald_id desc";
                                 //$whorder = "shc_id asc";
                                 $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
-                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,'');        
+                                $headval= $this->sismodel->get_orderlistspficemore('salary_data',$selectfield,$whdata,$whorder);        
                             ?>
-                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
-                            <?php $finalval=$headval[0]->sald_shamount;?>   
+                            <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):
+	//			print_r($headval);
+                              $finalval=$headval[0]->sald_shamount;?>   
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
 <!--                            <input type="text"  class="headamtD" name="headamtD<?php //echo $j;?>" id="headamtD<?php //echo $j;?>"  value="<?php //echo (round($finalval,0));  ?>" readonly> -->
                             <?php $sumdeduction+=(round($finalval,0)); ?>
