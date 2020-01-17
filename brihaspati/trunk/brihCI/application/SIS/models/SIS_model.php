@@ -215,10 +215,11 @@ class SIS_model extends CI_Model
         if($whdata != ''){
                 $this->db2->where($whdata);
         }
-	if(($orwhin != '') && (!empty($orwhin)) && (count($orwhin) != 0)){
 //	if($orwhin != ''){
-		$this->db2->where_in($orfield, $orwhin);
 //		$this->db2->where_in($orwhin);
+	if(($orwhin != '') && (!empty($orwhin)) && (count($orwhin) != 0)){
+	//if((!empty($orwhin)) && (count($orwhin) != 0)){
+		$this->db2->where_in($orfield, $orwhin);
 	}
         if($whorder != ''){
                 $this->db2->order_by($whorder);
@@ -1045,6 +1046,179 @@ class SIS_model extends CI_Model
         //echo $month.$year.$empid.$desired_dir.$pth;      
         //die();
 	$this->genpdf($temp,$pth);
+    }
+    
+    public function gettotalloan($empid){
+        $ttlloan=0;
+        $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+        $empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
+        $shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
+        foreach($shcsalhdid as $row){
+            $listhdid=$row->shc_salheadid;
+        }
+        $hdid_arr = explode (",", $listhdid);
+        foreach($hdid_arr as $hid){
+            $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+            if($htype == 'L'){
+                $wdata2=array('slh_empid' =>$empid,'slh_headid'=>$hid);
+                $mdrecord=$this->sismodel->get_maxvalue('salary_loan_head','slh_id',$wdata2);
+                $mslhid='';
+                if(!empty($mdrecord)){
+                    foreach($mdrecord as $mr){
+                        $mslhid=$mr->slh_id;
+                    }
+                    if(!empty($mslhid)){
+                       //$hvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_headamount','slh_id',$mslhid)->slh_headamount,0); 
+                        $intlhvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_installamount','slh_id',$mslhid)->slh_installamount,0);
+                        $ttlloan+=(round($intlhvalue,0));
+                    }
+                }    
+                
+            }
+        }  
+        return $ttlloan;
+        
+    }
+    public function gettotaldeduction($empid){
+        $ttdeduct=0;
+        $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+        $empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+        $wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
+        $shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
+        foreach($shcsalhdid as $row){
+            $listhdid=$row->shc_salheadid;
+        }
+        $hdid_arr = explode (",", $listhdid);
+        foreach($hdid_arr as $hid){
+            $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+            if($htype == 'D'){
+                $wdata2=array('ssdh_empid' =>$empid,'ssdh_headid'=>$hid);
+                $mdrecord=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_id',$wdata2);
+                $mssdhid='';
+                if(!empty($mdrecord)){
+                    foreach($mdrecord as $mr){
+                        $mssdhid=$mr->ssdh_id;
+                        
+                    }
+                    if(!empty($mssdhid)){
+                        $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                        $ttdeduct+=(round($hvalue,0));
+                        
+                    }
+                }
+            }    
+            
+        } 
+        return $ttdeduct;
+    }
+    
+    public function getfromtransto($empid,$month,$year) {
+        
+       /* $empid=$this->uri->segment(3,0);
+        $month=$this->uri->segment(4,0);
+        $year=$this->uri->segment(5,0);*/
+       // $case=$this->uri->segment(6,0);
+        //echo "cases===".$empid.$month.$year.$case;
+        $valdays=array();       
+        $fromdays=''; $trnasitdays=''; $todays='';$toflag='';
+               
+        $cnomonth= date("m",strtotime($month));
+        $nodaysmonth=cal_days_in_month(CAL_GREGORIAN,$cnomonth,$year);
+               
+        $stffieldsal ="ste_days,ste_hrafrom,ste_hrato,ste_ccafrom,ste_ccato,ste_transit";
+        $wstfsal = array ('ste_empid'=>$empid,'ste_month'=>$month,'ste_year'=>$year);
+        $stfvalsal = $this->sismodel->get_orderlistspficemore('salary_transfer_entry',$stffieldsal,$wstfsal,'');
+        if(!empty($stfvalsal)){
+            $fromdays= $stfvalsal[0]->ste_days;
+            $trnasitdays= $stfvalsal[0]->ste_transit;
+            $totaldt= $fromdays +  $trnasitdays; 
+            $todays= $nodaysmonth - $totaldt; 
+            
+            $valdays['fromd']=$fromdays;
+            $valdays['transitd']=$trnasitdays;
+            $valdays['todaysd']=$todays;
+            
+        }            
+               
+        $sllfield ="sle_pal,sle_eol";
+        $wsllsal = array ('sle_empid'=>$empid,'sle_month'=>$month,'sle_year'=>$year);
+        $sllvalsal = $this->sismodel->get_orderlistspficemore('salary_leave_entry',$sllfield,$wsllsal,'');
+        if(!empty($sllvalsal)){
+            $paldays= $sllvalsal[0]->sle_pal;
+            $eoldays= $sllvalsal[0]->sle_eol;
+            $ttldl= $paldays +  $eoldays; 
+            $leftdays= $nodaysmonth - $ttldl;
+        }  
+
+        if(!empty($paldays) || !empty($eoldays)){
+            $totaldl= $paldays +  $eoldays;     
+            if($fromdays > $ttldl){
+                $fromdays=$fromdays - $ttldl;
+                $valdays['fromd']=$fromdays;
+                        //$leftfrmdays=$fromdays - $ttldl;
+            }
+            else{
+                // $leftfrmdays= $fromdays;   
+                $fromdays= $fromdays; 
+                $valdays['fromd']=$fromdays;
+                $fromflag=true;
+            }
+            if($fromflag == true){
+                if($trnasitdays > $ttldl){
+                    $trnasitdays=$trnasitdays - $ttldl;
+                    $valdays['transitd']=$trnasitdays;
+                            //$lefttrsitdays=$trnasitdays - $ttldl;
+                }
+                else{
+                    $trnasitdays= $trnasitdays; 
+                    $valdays['transitd']=$trnasitdays;
+                    //$lefttrsitdays= $trnasitdays;
+                    $transitflag=true;
+                           
+                }
+                        
+            }
+            if($fromflag == true && $transitflag==true){
+                if($todays > $ttldl){
+                    $todays = $todays - $ttldl;
+                    $valdays['todaysd']=$todays;
+                            
+                }
+                else{
+                    $todays=$leftdays;
+                    $valdays['todaysd']=$todays;
+                    $toflag=true;
+                }
+                        
+            }
+            if($fromflag == true && $transitflag==true && $toflag==true){
+                $frmtransit = $fromdays + $trnasitdays;
+                if($frmtransit >= $ttldl){
+                    $leftboth = $frmtransit - $ttldl;
+                    if($leftboth!=0){
+                        $trnasitdays=$leftboth;
+                        $valdays['transitd']=$trnasitdays;
+                        //$lefttrsitdays=$leftboth;
+                                
+                    }
+                }
+                else{
+                    $ftt=$fromdays + $trnasitdays+$todays;
+                    $todays = $ftt - $ttldl;
+                    $valdays['todaysd']=$todays;
+                    //$leftfrmdays=0;
+                    //$lefttrsitdays=0;	
+                    $fromdays=0;
+                    $trnasitdays=0;
+                    $valdays['fromd']=$fromdays;
+                    $valdays['transitd']=$trnasitdays;
+                    
+                } 
+            }
+        }
+        return $valdays;
+        
     }
     
     function __destruct() {

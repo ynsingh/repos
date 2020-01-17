@@ -131,7 +131,7 @@
            
         ;?>
  
-        <table border="1" cellpadding=10 width="100%" bgcolor="lightgray"><tr><td>  
+        <table border="1" cellpadding=10 width="100%" bgcolor="#95a5a6"><tr><td>  
             <table  cellspacing="10" width="100%" bgcolor="#d5dbdb"> 
                
                 <input type="hidden" name="empid" value="<?php $empid; ?>">
@@ -424,8 +424,7 @@
                 </table>
                 
                 <table class="dggh" border=1 width="50%" heignt="50%" cellpadding=10 style="float:right;border-width: thin;border-spacing: 2px;border-style: none;" bgcolor="#95a5a6">     
-                    
-                   <tr>
+                <tr>
                     <th colspan="2">Deductions</th>
                     </tr>
                 <tr>

@@ -204,12 +204,18 @@
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 
-                                        $selectfield ="sal_netsalary";
+                                        $selectfield ="sal_netsalary,sal_status";
                                         $whdata = array('sal_empid' =>$record->emp_id,'sal_month' =>$selmonth,'sal_year' =>$selyear);
 					$whorder="sal_id desc";
                                         $salval= $this->sismodel->get_orderlistspficemore('salary',$selectfield,$whdata,$whorder);
                                         if(!empty($salval)){
-                                            echo $netval=$salval[0]->sal_netsalary;
+                                          
+                                            if($salval[0]->sal_status != 'pending'){
+                                                echo $netval=$salval[0]->sal_netsalary;
+                                            }
+                                            else{
+                                                echo "<font color=\"red\"><b> pending</b>";
+                                            }
                                         }
                                         else{
                                             echo 0.0;
@@ -272,15 +278,32 @@
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 
-                                        $selectfield ="sal_netsalary";
-                                        $whdata = array('sal_empid' =>$record->emp_id,'sal_month' =>$selmonth,'sal_year' =>$selyear);
-                                        $salval= $this->sismodel->get_orderlistspficemore('salary',$selectfield,$whdata,'');
+                                        $selectfield ="sallt_netsalary,sallt_status";
+                                        $whdata = array('sallt_empid' =>$record->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'from');
+                                        $salval= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
+                                        $whdata1 = array('sallt_empid' =>$record->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'transit');
+                                        $salval1= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata1,'');
+                                        $whdata2 = array('sallt_empid' =>$record->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'to');
+                                        $salval2= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata2,'');
+                                        
                                         if(!empty($salval)){
-                                            echo $netval=$salval[0]->sal_netsalary;
+                                            if($salval[0]->sallt_status != 'pending'){
+                                                $netval=$salval[0]->sallt_netsalary;
+                                                $netval1=$salval1[0]->sallt_netsalary;
+                                                $netval2=$salval2[0]->sallt_netsalary;
+                                                $total=$netval+$netval1+$netval2;
+                                            //print_r($netval.",".$netval1.",".$netval2.",".$total);
+                                                echo (round($total,2));
+                                            }  
+                                            else{
+                                                echo "<font color=\"red\"><b> pending</b>";
+                                            }
+                                            
                                         }
                                         else{
                                             echo 0.0;
                                         }
+                                                                
                                     ;?>
                                 </td>
                                <td></td>
@@ -295,10 +318,14 @@
                                 <td><?php 
 					//create new function for both trf and leave
 					if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){
-						//echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link')); 
-					}
+                                        echo anchor("setup3redesign/tlsalaryslip/".$record->emp_id."/".$selmonth."/".$selyear."/tlcase",img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link')); 
+                                        }
+                                    ;?>
+                                
+				<?php		// echo anchor("setup3redesign/salaryslip/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/edit.png','border'=>'0','alt'=>'update')),array('src'=>'assests/sis/images/edit.png','title' => 'update salary slip' , 'class' => 'red-link')); 
+					//}
 				?></td>
-                                <td><?php echo anchor("setup3redesign/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear,img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
+                                <td><?php echo anchor("setup3redesign/salaryslipcopy/".$record->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td>
                             </tr>
                         <?php }; ?>
 
@@ -345,7 +372,7 @@
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$recordste->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 
-                                        $selectfield ="sallt_netsalary";
+                                        $selectfield ="sallt_netsalary,sallt_status";
                                         $whdata = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'from');
                                         $salval= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
                                         $whdata1 = array('sallt_empid' =>$recordste->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear,'sallt_type'=>'transit');
@@ -354,12 +381,19 @@
                                         $salval2= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata2,'');
                                         
                                         if(!empty($salval)){
-                                            $netval=$salval[0]->sallt_netsalary;
-                                            $netval1=$salval1[0]->sallt_netsalary;
-                                            $netval2=$salval2[0]->sallt_netsalary;
-                                            $total=$netval+$netval1+$netval2;
+                                            if($salval[0]->sallt_status != 'pending'){
+                                                $netval=$salval[0]->sallt_netsalary;
+                                                $netval1=$salval1[0]->sallt_netsalary;
+                                                $netval2=$salval2[0]->sallt_netsalary;
+                                                $total=$netval+$netval1+$netval2;
                                             //print_r($netval.",".$netval1.",".$netval2.",".$total);
-                                            echo (round($total,2));
+                                                
+                                                echo (round($total,2));
+                                            }    
+                                            else{
+                                                echo "<font color=\"red\"><b> pending</b>";
+                                            }
+                                            
                                         }
                                         else{
                                             echo 0.0;
@@ -418,12 +452,17 @@
                                 <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$recordsle->emp_desig_code)->desig_name; ?>
                                 </td>
                                 <td><?php 
-                                        $selectfield ="sallt_netsalary";
+                                        $selectfield ="sallt_netsalary,sallt_status";
                                         $whdata = array('sallt_empid' =>$recordsle->emp_id,'sallt_month' =>$selmonth,'sallt_year' =>$selyear);
                                         $salval= $this->sismodel->get_orderlistspficemore('salary_lt',$selectfield,$whdata,'');
                                         if(!empty($salval)){
-                                            $netval=$salval[0]->sallt_netsalary;
-                                            echo (round($netval,2));
+                                            if($salval[0]->sallt_status != 'pending'){
+                                                $netval=$salval[0]->sallt_netsalary;
+                                                echo (round($netval,2));
+                                            } 
+                                            else{
+                                                echo "<font color=\"red\"><b> pending</b>";
+                                            }
                                         }
                                         else{
                                             echo 0.0;
