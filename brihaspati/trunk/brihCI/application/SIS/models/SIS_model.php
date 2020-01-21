@@ -1025,8 +1025,13 @@ class SIS_model extends CI_Model
        // $whorder = " sh_name asc";
         $whdata = array('sh_type' =>'I');
         $spec_data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
-        $whdata = array('sh_type' =>'D');
-        $spec_data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+//        $whdata = array('sh_type' =>'D');
+//        $spec_data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+	$whdata = array('sh_type' =>'D');
+        $data['ded'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        $whdata = array('sh_type' =>'L');
+        $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        $spec_data['deduction']=array_merge($data['ded'], $data['loans']);
         // move file to directory code for photo
 	$desired_dir = 'uploads/SIS/Payslip/'.$year.'/'.$month;
         
@@ -1036,10 +1041,12 @@ class SIS_model extends CI_Model
         }
         $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
         if($case == "transcase"){
-           $temp= $this->load->view('setup3/salaryslipcopy2',$spec_data, TRUE);
+          // $temp= $this->load->view('setup3/salaryslipcopy2',$spec_data, TRUE);
+           $temp= $this->load->view('setup3/salaryslipcopy2new',$spec_data, TRUE);
         }
         else{
-            $temp=$this->load->view('setup3/salaryslipcopy',$spec_data, TRUE);   
+          // $temp=$this->load->view('setup3/salaryslipcopy',$spec_data, TRUE);   
+           $temp=$this->load->view('setup3/salaryslipcopynew',$spec_data, TRUE);   
         }
        	//add pdf code to store and view pdf file
 	$pth=$desired_dir.'/'.$emp_pf.'.pdf';

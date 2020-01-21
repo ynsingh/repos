@@ -78,7 +78,7 @@ class Mailsend_model extends CI_Model
         public function mailAttachment($empid,$emppfno,$month,$year,$case){
             $sub=" Monthly Pay Slip";
             $mess="Dear Madam / Sir, "."\r\n"." Please find ".$month." " . $year." pay slip as attachment"." \r\n"
-                . " this is computer generated pay slip if found, any data mismatched \r\n please contact Payroll Admin"." \r\n \r\n \r\n"
+                . " This is computer generated pay slip if found, any data mismatched \r\n please contact Payroll Admin"." \r\n \r\n \r\n"
                 . " Regards "."\r\n"." Payroll Admin";
          
             $dwlattachment=$this->sismodel->payslipAttachment($empid,$month,$year,$case);

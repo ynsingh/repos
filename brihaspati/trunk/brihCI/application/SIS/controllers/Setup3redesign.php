@@ -870,18 +870,42 @@ class Setup3redesign extends CI_Controller
             for ($i=0; $i<$tcount ;$i++){
                 $headidin = $this->input->post('sheadidin'.$i, TRUE);
                 $headval = $this->input->post('headamtI'.$i, TRUE);
-              
-                $saldata = array(
-                
-                    'sald_empid'        =>$empid,
-                    'sald_sheadid'      =>$headidin,
-                    'sald_shamount'     =>$headval,
-                    'sald_installment'  => NULL,
-                    'sald_month'        =>$month,
-                    'sald_year'         =>$year,
-                
-                );
-                $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
+
+        	$dupdata=array('sald_empid'=>$empid, 'sald_sheadid'=>$headidin,'sald_month'=>$month,'sald_year'=>$year);
+                $existf=$this->sismodel->isduplicatemore('salary_data', $dupdata);
+                if($existf){
+			$irawarray=$this->sismodel->get_orderlistspficemore('salary_data','sald_id,sald_shamount',$dupdata,'sald_id desc');
+			if(!empty($irawarray)){
+				$entryid=$irawarray[0]->sald_id;
+				$prvamt=$irawarray[0]->sald_shamount;
+				//update record
+				$iupdata=array('sald_shamount'=>$headval);
+				$iupflag=$this->sismodel->updaterec('salary_data', $iupdata, 'sald_id', $entryid);	
+				$upsaldataflag = $iupflag;
+				//insert into archive
+				$saldataa = array(
+	                            'salda_saldid'        =>$entryid,
+	                            'salda_empid'        =>$empid,
+        	                    'salda_sheadid'      =>$headidin,
+                	            'salda_shamount'     =>$prvamt,
+                        	    'salda_installment'  => NULL,
+	                            'salda_month'        =>$month,
+        	                    'salda_year'         =>$year,
+                	        );
+                        	$saldataarflag = $this->sismodel->insertrec('salary_data_archive', $saldataa);
+			}
+			
+		}else{      
+                	$saldata = array(
+	                    'sald_empid'        =>$empid,
+        	            'sald_sheadid'      =>$headidin,
+                	    'sald_shamount'     =>$headval,
+	                    'sald_installment'  => NULL,
+        	            'sald_month'        =>$month,
+                	    'sald_year'         =>$year,
+	                );
+        	        $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
+		}
                 $totalincome+=$headval;
             } //tcount
             /*******************************Deductions***********************************/
@@ -902,16 +926,43 @@ class Setup3redesign extends CI_Controller
                 else{
                     $installdetl =NULL;   
                 }
-                $saldata = array(
-                
-                    'sald_empid'        =>$empid,
-                    'sald_sheadid'      =>$headidD,
-                    'sald_shamount'     => $headvald,
-                    'sald_installment'  =>$installdetl,
-                    'sald_month'        =>$month,
-                    'sald_year'         =>$year,
-                );
-                $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
+
+        	$dupdata=array('sald_empid'=>$empid, 'sald_sheadid'=>$headidD,'sald_month'=>$month,'sald_year'=>$year);
+                $existdf=$this->sismodel->isduplicatemore('salary_data', $dupdata);
+                if($existdf){
+			$drawarray=$this->sismodel->get_orderlistspficemore('salary_data','sald_id,sald_shamount,sald_installment',$dupdata,'sald_id desc');
+			if(!empty($drawarray)){
+				$entryid=$drawarray[0]->sald_id;
+				$prvamt=$drawarray[0]->sald_shamount;
+				$prvinstallno=$drawarray[0]->sald_installment;
+				//update record
+				$updatad=array('sald_shamount'=>$headvald);
+				$upflagd=$this->sismodel->updaterec('salary_data', $updatad, 'sald_id', $entryid);	
+				$upsaldataflag = $upflagd;
+				//insert into archive
+				$saldataa = array(
+	                            'salda_saldid'        =>$entryid,
+	                            'salda_empid'        =>$empid,
+        	                    'salda_sheadid'      =>$headidD,
+                	            'salda_shamount'     =>$prvamt,
+                        	    'salda_installment'  =>$prvinstallno,
+	                            'salda_month'        =>$month,
+        	                    'salda_year'         =>$year,
+                	        );
+                        	$saldataarflag = $this->sismodel->insertrec('salary_data_archive', $saldataa);
+			}			
+		}else{      
+                	$saldata = array(
+	                    'sald_empid'        =>$empid,
+        	            'sald_sheadid'      =>$headidD,
+                	    'sald_shamount'     => $headvald,
+	                    'sald_installment'  =>$installdetl,
+        	            'sald_month'        =>$month,
+                	    'sald_year'         =>$year,
+                	);
+	                $upsaldataflag = $this->sismodel->insertrec('salary_data', $saldata);
+		}
+
                 $totaldeduction+=$headvald;
                // print_r("seema===".$instloan[0]->slh_id."\n".$installdetl."\n".$empid."\n". $headidD);
                // die();
@@ -957,7 +1008,6 @@ class Setup3redesign extends CI_Controller
                'sal_creationdate'       =>date('y-m-d'),
                'sal_updatedate'        =>date('y-m-d'),    
                'sal_modifierid'        =>$this->session->userdata('username'),
-           
             );
               
             if (!$upsaldataflag)
@@ -968,8 +1018,53 @@ class Setup3redesign extends CI_Controller
                 redirect('setup3redesign/salaryslip',$data);
             }
             else{
-            
-                $upsalaryflag = $this->sismodel->insertrec('salary', $saldata1);
+           	// check record exist
+        	$sdupdata=array('sal_empid'=>$empid, 'sal_month'=>$month,'sal_year'=>$year);
+                $existf=$this->sismodel->isduplicatemore('salary', $sdupdata);
+                if($existf){
+			$srawarray=$this->sismodel->get_orderlistspficemore('salary','sal_id,sal_totalincome,sal_totaldeduction,sal_netsalary',$sdupdata,'sal_id desc');
+			if(!empty($srawarray)){
+				//if yes then get old value
+				$entryid=$srawarray[0]->sal_id;
+				$prviamt=$srawarray[0]->sal_totalincome;
+				$prvdamt=$srawarray[0]->sal_totaldeduction;
+				$prvnamt=$srawarray[0]->sal_totalsalary;
+				
+				//update record
+				$supdata=array('sal_totalincome'=>$totalincome,'sal_totaldeduction'=>$totaldeduction,'sal_netsalary'=>$netpay);
+				$supflag=$this->sismodel->updaterec('salary', $supdata, 'sal_id', $entryid);	
+				//insert into archive
+				$sala = array(
+			               'sala_salid'             =>$entryid,
+			               'sala_empid'             =>$empid,
+			               'sala_scid'              =>$scid,
+			               'sala_uoid'              =>$uoccid,
+			               'sala_deptid'            =>$deptid,
+			               'sala_desigid'           =>$desigid,
+			               'sala_sapost'            =>$sopost,
+			               'sala_ddoid'             =>$ddoid,
+			               'sala_schemeid'          =>$schmid,
+			               'sala_payscaleid'        =>$payscaleid,
+			               'sala_bankaccno'         =>$bankaccno,
+			               'sala_worktype'          =>$wtype,
+			               'sala_emptype'           =>$emptype,
+			               'sala_group'             =>$group,
+			               'sala_month'             =>$month,
+			               'sala_year'              =>$year,
+			               'sala_totalincome'       =>$prviamt,
+			               'sala_totaldeduction'    =>$prvdamt,
+			               'sala_netsalary'         =>$prvnamt,
+			               'sala_status'            =>'archive paid',
+			               'sala_paiddate'          =>date('y-m-d'),
+			               'sala_creatorid'         =>$this->session->userdata('username'),
+			               'sala_creationdate'       =>date('y-m-d'),
+                	        );
+                        	$saldataarflag = $this->sismodel->insertrec('salary_archive', $sala);
+			}
+		}else{      
+			//if no insert salary  
+        	        $upsalaryflag = $this->sismodel->insertrec('salary', $saldata1);
+		}
                 $this->logger->write_logmessage("insert"," salary data head wise value  ", " salary data head wise value added  successfully...");
                 $this->logger->write_dblogmessage("insert"," salary data head wise value ", "salary data head wise value added  successfully...");
                 $this->session->set_flashdata("success", "   salary data head wise value updated successfully... PF NO [ " .$this->emppfno. " ]");
@@ -2521,20 +2616,26 @@ class Setup3redesign extends CI_Controller
             //    if(!$empexist){
                     /*********************************Default Salary***************************************************/
                     if((!empty($emptrans)) || (!empty($empleave))){
+                            //default salary generate employee transfer case
                         if($emptrans == 1 && $empleave != 1){
                             $this->Defaluttranfr_days($record->emp_id,$cmonth,$cyear);
                             $this->Defaluttranfr_transit($record->emp_id, $cmonth, $cyear);
                             $this->Defaluttranfr_dayto($record->emp_id, $cmonth, $cyear);
+				$ucase = "transcase";
                         }
+                            //default salary generate employee leave case
                         if($empleave == 1 && $emptrans != 1){
                             //  echo "part leave====".$record->emp_id."\n";
                             //default salary generate employee leave case
                             $this->Defalutleavesalary($record->emp_id,$cmonth,$cyear);
+				$ucase = "leavecase";
                         }
+                            //default salary generate employee leave and transfer case
                         if($emptrans == 1 && $empleave == 1){
                             $this->Defaluttranfr_days($record->emp_id,$cmonth,$cyear);
                             $this->Defaluttranfr_transit($record->emp_id, $cmonth, $cyear);
                             $this->Defaluttranfr_dayto($record->emp_id, $cmonth, $cyear);
+				$ucase = "transcase";
                             
                         }
                     }
@@ -2543,6 +2644,7 @@ class Setup3redesign extends CI_Controller
                         //die();
                         //echo "part not leave and transfer====".$record->emp_id;
                         $this->DefalutSalaryPro($record->emp_id,$cmonth,$cyear); 
+				$ucase = "defltcase";
                         //echo"in default case===".$record->emp_id;
                     }
               //  }
@@ -2770,13 +2872,7 @@ class Setup3redesign extends CI_Controller
                 
                 */
                   /*************************sending mail with Attachment Salaryslip********************************************/
-                
-              //  $uempid=$this->uri->segment(3);
-               // $umonth=$this->uri->segment(4);
-               // $uyear=$this->uri->segment(5);
-                //$ucase=$this->uri->segment(6,0);
-                
-               // $this->mailmodel->mailAttachment($record->emp_id,$record->emp_code,$cmonth,$cyear,$ucase);
+                $this->mailmodel->mailAttachment($record->emp_id,$record->emp_code,$cmonth,$cyear,$ucase);
                 
             
             }//emplistloop

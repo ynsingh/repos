@@ -1326,10 +1326,12 @@ class Payrollprofile extends CI_Controller
                 $this->load->library('pdf');
                 $this->pdf->set_paper("A4", "portrait");
                 if(!$dupexists){
-                    $this->pdf->load_view('setup3/salaryslipcopy',$spec_data);
+                  //  $this->pdf->load_view('setup3/salaryslipcopy',$spec_data);
+                    $this->pdf->load_view('setup3/salaryslipcopynew',$spec_data);
                 }
                 else{
-                    $this->pdf->load_view('setup3/salaryslipcopy2',$spec_data);  
+                   // $this->pdf->load_view('setup3/salaryslipcopy2',$spec_data);  
+                    $this->pdf->load_view('setup3/salaryslipcopy2new',$spec_data);  
                 }
                 $this->pdf->render();
                 $this->pdf->stream("salaryslipcopy.pdf");
