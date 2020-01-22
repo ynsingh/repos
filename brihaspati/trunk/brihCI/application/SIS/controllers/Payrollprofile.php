@@ -278,6 +278,7 @@ class Payrollprofile extends CI_Controller
         $dataem=array();
         $dataappems=array();
 	$pprofileflag = false;
+	$message='';
         /****************************************personal working detail****************************/
         if(isset($_POST['pwdprofile'])) {
             $this->form_validation->set_rules('dedupf','DeductUPF','trim|xss_clean');
@@ -647,10 +648,11 @@ class Payrollprofile extends CI_Controller
                         // get the max head value of existing hea
                                 $maxhdv=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_id',$dupcheck1);
 				$maxhdvid=$maxhdv[0]->ssdh_id;
-                                $mhvalue = $this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$maxhdvid)->ssdh_headamount;	
+                                $mhvalue = $this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$maxhdvid)->ssdh_headamount;
+				$mhedno = $this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headno','ssdh_id',$maxhdvid)->ssdh_headno;	
 //                                $mhvalue=$maxhdv[0]->ssdh_headamount;
                         // compare if differ then insert
-                                if($mhvalue != $headvald){
+                                if(($mhvalue != $headvald)||($mhedno != $headnoD )){
                     			$pprofileflag = $this->sismodel->insertrec('salary_subsdeduction_head', $deductdata);
                                 }
                         }
@@ -742,7 +744,14 @@ class Payrollprofile extends CI_Controller
                         $sloandup1 = $this->sismodel->isduplicatemore('salary_loan_head', $dupcheck1);
                         // if no then insert
                         if(!$sloandup1){
-                    		$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+				$curtotamt=$instamtL *  $instaltotL;
+				if($headvalL == $curtotamt){
+                    			$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+				}
+				else{
+					$message="The total amount computation error if first";
+					$pprofileflag = false;
+				}
                         }else{
                         // else
                         // get the max head value of existing head
@@ -750,10 +759,20 @@ class Payrollprofile extends CI_Controller
 				$maxhdvid=$maxhdv[0]->slh_id;
 				$mhvalue = $this->sismodel->get_listspfic1('salary_loan_head','slh_headamount','slh_id',$maxhdvid)->slh_headamount;
 				$mhvalueinstallno = $this->sismodel->get_listspfic1('salary_loan_head','slh_intallmentno','slh_id',$maxhdvid)->slh_intallmentno;
-//                                $mhvalue=$maxhdv[0]->slh_headamount;
+				$mhedno = $this->sismodel->get_listspfic1('salary_loan_head','slh_headno','slh_id',$maxhdvid)->slh_headno;
+				$mhvaltotintallno = $this->sismodel->get_listspfic1('salary_loan_head','slh_totalintall','slh_id',$maxhdvid)->slh_totalintall;
+				$mhvalintallamt = $this->sismodel->get_listspfic1('salary_loan_head','slh_installamount','slh_id',$maxhdvid)->slh_installamount;
+//                              $mhvalue=$maxhdv[0]->slh_headamount;
                         // compare if differ then insert
-                                if(($mhvalue != $headvalL)||($mhvalueinstallno != $instalnoL)){
-		                	$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+                                if(($mhvalue != $headvalL)||($mhvalueinstallno != $instalnoL)||($mhedno != $headnoL)||($mhvaltotintallno != $instaltotL)||($mhvalintallamt != $instamtL)){
+					$curtotamt=$instamtL *  $instaltotL;
+					if($headvalL == $curtotamt){
+		                		$pprofileflag = $this->sismodel->insertrec('salary_loan_head', $loandata);
+					}
+					else{
+						$message="The total amount computation error";
+						$pprofileflag = false;
+					}
                                 }
                         }
                 }
@@ -782,8 +801,15 @@ class Payrollprofile extends CI_Controller
                     $datawh=array('slh_empid' =>$empid,'slh_headid' => $headidL,'slh_month'=>$cmonth,'slh_year'=>$cyear);
                     $cdata = $this->sismodel->get_listspficemore('salary_loan_head','slh_id',$datawh);
                     $slhid=$cdata[0]->slh_id;
-
-                    $pprofileflag=$this->sismodel->updaterec('salary_loan_head', $uploandata,'slh_id', $slhid);
+			$curtotamt=$instamtL *  $instaltotL;
+			echo $curtotamt;
+                        if($headvalL == $curtotamt){
+                    		$pprofileflag=$this->sismodel->updaterec('salary_loan_head', $uploandata,'slh_id', $slhid);
+			}
+			else{
+				$message="The total amount computation error in else part of loan";
+				$pprofileflag = false;
+			}
 
                 }
 
@@ -810,7 +836,7 @@ class Payrollprofile extends CI_Controller
             {
                 $this->logger->write_logmessage("update","Trying to add updated values in payroll profile ", " payroll profile values are not updated please try again");
                 $this->logger->write_dblogmessage("update","Trying to updated values in payroll profile", " payroll profile values are not updated please try again");
-                $this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '  , 'error');
+                $this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '.$message  , 'error');
         	$this->load->view('payrollprofile/payprofileemp',$ppmdata);
 		return;
                 //redirect('payrollprofile/emppayprofile');
