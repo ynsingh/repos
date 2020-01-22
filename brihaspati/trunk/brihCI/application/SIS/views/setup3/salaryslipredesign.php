@@ -736,7 +736,7 @@
                         </td>
                         <td>
                             <?php 
-                                $selectfield ="sald_shamount";
+                                $selectfield ="sald_shamount,sald_installment";
 				$whorder="sald_id desc";
                                 //$whorder = "shc_id asc";
                                 $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
@@ -746,6 +746,13 @@
                             <?php if(!empty($headval) && in_array($deductdata->sh_id,$allowedhead)):?>
                             <?php $finalval=$headval[0]->sald_shamount;?>   
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
+                                 <?php if($deductdata->sh_type == 'L' && $finalval != 0.00 && $finalval != NULL){
+                                    $installno=$headval[0]->sald_installment;
+                                    $installnonew=str_replace("-","/",$installno);
+                                   // $totalinstall=$headval[0]->sald_shamount;
+                                    echo $installnonew;
+                                        
+                                 } ?>
                             <?php $sumdeduction+=(round($finalval,0)); ?>
                             <?php else : ?>
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD" value="<?php echo 0; ?>" >
@@ -844,7 +851,7 @@
                         </td>
                         <td>
                             <?php 
-                                $selectfield ="sald_shamount";
+                                $selectfield ="sald_shamount,sald_installment";
 				$whorder="sald_id desc";
                                 //$whorder = "shc_id asc";
                                 $whdata = array('sald_empid' =>$empid,'sald_sheadid' =>$deductdata->sh_id,'sald_month'=>$month,'sald_year'=>$year);
@@ -854,6 +861,15 @@
 	//			print_r($headval);
                               $finalval=$headval[0]->sald_shamount;?>   
                             <input type="text"  class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
+                             <?php if($deductdata->sh_type == 'L' && $finalval != 0.00){
+                                    $installno=$headval[0]->sald_installment;
+                                    $installnonew=str_replace("-","/",$installno);
+                                   // $totalinstall=$headval[0]->sald_shamount;
+                                    echo $installnonew;
+                                        
+                                } ?>
+                            
+                            
 <!--                            <input type="text"  class="headamtD" name="headamtD<?php //echo $j;?>" id="headamtD<?php //echo $j;?>"  value="<?php //echo (round($finalval,0));  ?>" readonly> -->
                             <?php $sumdeduction+=(round($finalval,0)); ?>
                             <?php else : ?>

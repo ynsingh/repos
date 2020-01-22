@@ -90,12 +90,13 @@
             
             
             .input-wrapper {
-  width: 300px;
-}
+                width: 300px;
+            }
 
-.item-list {
-  display: none;
-  } 
+            .item-list {
+                display: none;
+            }
+            
         </style>
         
         <script>
@@ -531,6 +532,26 @@
               //  }) ;
                 
                  /******************************************end formula calculation on run time**********/
+                 
+                 
+                $('#tab8').on('change',function(){
+                    var tcountloan=$.trim($('#tcount').val());
+                    for (var i=0; i < tcountloan;i++){
+                        var ttlintno =  $.trim($('#totalinstallL'+i).val());
+                        if(ttlintno >0){
+                            var headamt= $.trim($('#headamtL'+i).val());
+                            var intallamt=$.trim($('#installamountL'+i).val());
+                            var calck= ttlintno * intallamt;
+                            if(calck != headamt){
+                                alert("please check total intallment number.");
+                                $('#totalinstallL'+i).css('border-color', 'red');
+                                return false;
+                            }    
+                        }
+                        
+                    }
+                });
+                 
                  
             });
             
