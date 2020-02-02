@@ -252,19 +252,19 @@ echo "<ul class=\"sf-menu\" >";
                                         		echo "<li>";
                                                 		echo anchor('payrollreport/bulkSalaryslip', 'Salary Slip ', array('title' => 'Salary Slip'));
                                         		echo "</li>";
-                                        /*		echo "<li>";
-                                                		echo anchor('', 'Dept. Wise Abstract ', array('title' => 'Dept. Wise Abstract'));
+                                        		echo "<li>";
+                                                		echo anchor('payrollreport/deptAbstract', 'Dept. Wise Abstract ', array('title' => 'Dept. Wise Abstract'));
                                         		echo "</li>";
                                         		echo "<li>";
-                                                		echo anchor('', 'DDO Wise Abstract ', array('title' => 'DDO Wise Abstract'));
+                                                		echo anchor('payrollreport/ddoAbstract', 'DDO Wise Abstract ', array('title' => 'DDO Wise Abstract'));
                                         		echo "</li>";
                                         		echo "<li>";
-                                                		echo anchor('', 'Dept. Wise Schedule ', array('title' => 'Dept. Wise Schedule'));
-                                        		echo "</li>";
+                                                		echo anchor('payrollreport/bankStmtReport', 'DDO Wise Schedule-Bank Statement ', array('title' => 'DDO Wise Schedule-Bank Statement'));
+  	                                     		echo "</li>";
                                         		echo "<li>";
-                                                		echo anchor('', 'DDO Wise Schedule ', array('title' => 'DDO Wise Schedule'));
+                                                		echo anchor('payrollreport/allSchedule', 'DDO Wise Schedule ', array('title' => 'DDO Wise Schedule'));
                                         		echo "</li>";
-					*/
+					
                                 		echo "</ul>";
                                         echo "</li>";
                                         

@@ -93,7 +93,9 @@ class SIS_model extends CI_Model
             $this->db2->flush_cache();
             $this->db2->select_max($selectfield);
             $this->db2->from($tbname);
-            $this->db2->where($whdata);
+	    if($whdata != ''){
+            	$this->db2->where($whdata);
+	    }
             return $this->db2->get()->result();
     }
 

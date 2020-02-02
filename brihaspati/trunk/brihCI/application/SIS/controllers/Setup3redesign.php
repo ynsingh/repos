@@ -1985,7 +1985,8 @@ class Setup3redesign extends CI_Controller
         $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,'dept_name asc'); 
         $data['selmonth']=$month;
         $data['selyear']=$year;
-	
+	$data['emplist']='';	
+        if(isset($_POST['salpro'])){
         $data['etranlist']=array();
 	$tlempid=array();
 //	$tlempid='';
@@ -2075,12 +2076,12 @@ class Setup3redesign extends CI_Controller
         	$data['empleavelist'] = $this->sismodel->get_jointbrecord('salary_leave_entry',$selectfield3,'employee_master',$joincond1,'left',$whdata1);
 	}
        // $data['empleavelist1']=$data['empleavelist']->sle_empid;
-        if(isset($_POST['salpro'])){
+     //   if(isset($_POST['salpro'])){
             $data['selmonth']=$month;
             $data['selyear']=$year;
 	    $data['deptsel']=$deptnme;
-            if(!empty($data['emplist'])){
-                /**********************************income and deduction head *********************/
+        /**    if(!empty($data['emplist'])){
+                /**********************************income and deduction head *********************
                 $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
                 $whorder = " sh_name asc";
                 $whdata = array('sh_type' =>'I');
@@ -2094,7 +2095,7 @@ class Setup3redesign extends CI_Controller
                 $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
                 $data['deduction']=array_merge($data['ded'], $data['loans']);    
             }
-             
+      **/       
         } //form
         $this->load->view('setup3/empSalary',$data);
         

@@ -94,5 +94,5 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 |
 */
 define('ADDRESSHEAD','Brihaspati ERP Group SIS System ');
-define('INAME','Brihaspati ERP Group');
-define('ISNAME','BERPG');
+define('INAME','TAMILNADU VETERINARY AND ANIMAL SCIENCES UNIVERSITY');
+define('ISNAME','TANUVAS');

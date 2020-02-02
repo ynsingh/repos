@@ -175,8 +175,9 @@
                             ?>    
                     <?php $serial_no = 1;
 		//	print_r($emplist);
-                     if( count($emplist) ):  ?>
-                        <?php foreach($emplist as $record){ ?>
+                  //   if( count($emplist) ):  
+                     if( !empty($emplist) ):  
+                         foreach($emplist as $record){ ?>
                         <?php // if(!in_array($record->emp_id,$etranlist)){;?>
                             <tr>
                                 <td><?php  echo $serial_no++; ?>&nbsp;
@@ -244,7 +245,7 @@
                         <input type="hidden" name="typecase" value="normal">  
                         <?php //};?>
                     <?php else : ?>
-                        <td colspan= "13" align="center"> No Records found...!</td> 
+                        <td colspan= "13" align="center">Either department is not selected or  no employee records found. So please try with department selection.!</td> 
                     <?php endif;?> 
                         
                    <!--*****start Records from ste and sle both************************************************** -->     
@@ -415,11 +416,13 @@
 				?></td>
                                 <td><?php echo anchor("setup3redesign/salaryslipcopy/".$recordste->emp_id."/".$selmonth."/".$selyear."/transcase",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));  ;?></td>
                             </tr>
-                            <?php }; 
-				if(!empty($empleavelist)){
+                    <?php } //else : ?>
+                           <!-- <tr><td colspan= "13" align="center"> No Employee Transfer  Records found...!</td></tr> -->
+                            <?php endif; 
+				if(!empty($empleavelist)):
 			?>
                      <tr> <td colspan="13"><?php echo "<b>Employees Salary of Leave cases</b>"; ?></td></tr>
-                        <?php }
+                        <?php //}
 				foreach($empleavelist as $recordsle){ ?> 
                             <tr>
                              
@@ -486,8 +489,8 @@
                             </tr>
                                 
                         <?php }; ?>   
-                    <?php  else : ?>
-                            <td colspan= "13" align="center"> No Records found...!</td> 
+                    <?php // else : ?>
+                         <!--   <tr><td colspan= "13" align="center"> No Employee Leave Records found...!</td></tr> --> 
                     <?php  endif;?>   
                         
                 </tbody>    
