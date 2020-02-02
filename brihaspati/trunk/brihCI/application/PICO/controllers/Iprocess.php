@@ -25,7 +25,7 @@ class Iprocess extends CI_Controller
 	public function specification()
 	{
 		
-		$this->load->view('iprocess/specification',);
+		$this->load->view('iprocess/specification');
 	}
 	
 	

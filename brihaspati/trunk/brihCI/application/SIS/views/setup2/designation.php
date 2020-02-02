@@ -112,7 +112,11 @@
             <td> <?php echo $pb; ?></td>
             <td> <?php echo $row->desig_group ?></td>
             <td> <?php echo $row->desig_name ?></td>
-            <td> <?php echo $row->desig_priority ?></td>
+	    <td> <?php 
+			if(!empty($row->desig_priority)){
+				echo $row->desig_priority;
+			}
+	    ?></td>
             <td> <?php echo $row->desig_short  ?></td>
             <td> <?php echo $row->desig_desc ?></td>
             <td>

@@ -32,7 +32,13 @@
 
                     <?php
                     };
-                    ?>
+			?>
+			<?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                <?php
+                };
+               ?>
+
                 </div> </br> 
         </td></tr>  
         </table>
@@ -60,7 +66,7 @@
                 	   Example: Category of Purchase
                 	</td>
                 </tr>
-
+<!--
                 <tr>
 					<td><label for="fp_subtypepurch" class="control-label">Sub Purchase Type: </label></td>
                 	<td>
@@ -69,7 +75,8 @@
                 	<td>
                 	   Example: Sub category of Purchase
                 	</td>
-                </tr>
+		</tr>
+-->
                 <tr>
 					<td><label for="fp_authority" class="control-label">Authority:<font color='Red'>*</font> </label></td>
                 	<td>
@@ -99,7 +106,7 @@
                 	   Example: 50500.00
                 	</td>
                 </tr>
-                <tr>
+  <!--              <tr>
 					<td><label for="fp_desc" class="control-label">Item Description: </label></td>
                 	<td>
                 	<input type="text" name="fp_desc"  class="form-control" size="30"  placeholder="Item Description" />
@@ -107,10 +114,9 @@
                 	   Example: Describe the type of item
                 	</td>
                 </tr>
-                
+      -->          
                <tr>
-                <td></td>
-                <td> <button name="fp_power">Submit Details</button></td>
+                <td colspan=3> <button name="fp_power">Submit Details</button></td>
                </tr>
                
                

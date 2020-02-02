@@ -21,7 +21,7 @@
              
                     $('#scid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/map/getdeptlist",
+                        url: "<?php echo base_url();?>picoindex.php/map/getdeptlist",
                         type: "POST",
                         data: {"campusname" : sc_code},
                         dataType:"html",
@@ -50,7 +50,7 @@
              
                     $('#usrid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/map/getempdetail",
+                        url: "<?php echo base_url();?>picoindex.php/map/getempdetail",
                         type: "POST",
                         data: {"campdept" : campdept},
                         dataType:"html",

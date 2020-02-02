@@ -88,10 +88,8 @@ foreach ($this->result as $row)
         <td><?php echo $srno;?></td>
 	<td>
 <?php
-		if ($row->campusid != 0) {	
-		$sc=$this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->campusid)->sc_name.
-		"&nbsp;"."(".$this->common_model->get_listspfic1('study_center', 'sc_code', 'sc_id', $row->campusid)->sc_code.")";
-	}else{$sc="";}
+		if ($row->campusid != 0) {$sc=$this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->campusid)->sc_name;}
+    else{ $sc='';}
 	echo $sc;
 		echo "<br>";
 if ($row->ucoid != 0) {$uo=$this->login_model->get_listspfic1('authorities', 'name', 'id', $row->ucoid)->name; }else{ $uo='';}

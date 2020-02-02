@@ -58,7 +58,11 @@
 	?>    
 			<tr>
 			    <td><?php echo ++$count; ?> </td>
-			    <td><?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->scuo_scid)->sc_name; ?> </td>
+			    <td><?php 
+			 	if(!empty($this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->scuo_scid))){
+					echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->scuo_scid)->sc_name;
+				}
+			?> </td>
 			    <td><?php echo $this->loginmodel->get_listspfic1('authorities', 'name', 'id', $row->scuo_uoid)->name; ?> </td>
 			    <td><?php echo anchor('map/updatescuo/' . $row->scuo_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ." " ?> </td>	
 			</tr>

@@ -341,7 +341,7 @@ CREATE TABLE `purchase_proposal` (
   `pp_budgethead` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pp_budgetamt` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pp_vendorid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `pp_deliveryperiod` VARCHAR(255) COLLATE utf8_unicode_ci NOT NUL,
+  `pp_deliveryperiod` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_deliveryperiodfrom` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_deliveryperiodto` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `pp_warranty` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

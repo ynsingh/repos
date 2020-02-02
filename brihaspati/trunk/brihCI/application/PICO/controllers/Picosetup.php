@@ -258,43 +258,53 @@ class Picosetup extends CI_Controller
         {
             if(isset($_POST['fp_power'])) {
             $this->form_validation->set_rules('fp_typeofpurch','Type of Purchase','trim|xss_clean|required');
-            $this->form_validation->set_rules('fp_subtypepurch','Sub Purchase Type','trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('authority','Authority','required|callback_isAuthorityExist');
+       //     $this->form_validation->set_rules('fp_subtypepurch','Sub Purchase Type','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('authority','Authority','required|trim');
             $this->form_validation->set_rules('fp_limit','Limit','trim|required');
-            $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required');
+//            $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required');
                 if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
                  
                 
-                 $data = array(   
+                 $dupdata = array(   
                 'fp_typeofpurch'=>$_POST['fp_typeofpurch'],
-                'fp_subtypepurch'=>$_POST['fp_subtypepurch'],
+               // 'fp_subtypepurch'=>$_POST['fp_subtypepurch'],
                 'fp_authority'=>$_POST['authority'],
-                'fp_limit'=>$_POST['fp_limit'],
-                'fp_desc'=>$_POST['fp_desc'],
-                'fp_creatorid'=> $this->session->userdata('username'),
-                'fp_creatordate'=>date('Y-m-d')
+                //'fp_limit'=>$_POST['fp_limit'],
+                //'fp_desc'=>$_POST['fp_desc'],
+                //'fp_creatorid'=> $this->session->userdata('username'),
+                //'fp_creatordate'=>date('Y-m-d')
                  );
 
 
-                $duplicate= $this->PICO_model->isduplicatemore('financial_power',$data);
+                $duplicate= $this->PICO_model->isduplicatemore('financial_power',$dupdata);
                 if(!$duplicate){
-                    $rflag=$this->PICO_model->insertrec('financial_power', $data);
-                    if (!$rflag){
+                	$data = array(   
+		                'fp_typeofpurch'=>$_POST['fp_typeofpurch'],
+               			// 'fp_subtypepurch'=>$_POST['fp_subtypepurch'],
+		                'fp_authority'=>$_POST['authority'],
+                		'fp_limit'=>$_POST['fp_limit'],
+		              //  'fp_desc'=>$_POST['fp_desc'],
+                		'fp_creatorid'=> $this->session->userdata('username'),
+		                'fp_creatordate'=>date('Y-m-d')
+                	 );
 
-                    $this->logger->write_logmessage("insert","Trying to add Financial Authority type", "Financial Authority is not added ".$fp_authority);
-                    $this->logger->write_dblogmessage("insert","Trying to add Financial Authority description", "Financial Authority is not added ".$fp_desc);
-                    $this->session->set_flashdata('err_message','Error in adding Financial Authority setting - '  , 'error');
-                    redirect('picosetup/openfinancialpower');
+                    	$rflag=$this->PICO_model->insertrec('financial_power', $data);
+                    	if (!$rflag){
 
-                    }
-                    else{
+	                    $this->logger->write_logmessage("insert","Trying to add Financial Authority type", "Financial Authority is not added ".$fp_authority);
+        	            $this->logger->write_dblogmessage("insert","Trying to add Financial Authority description", "Financial Authority is not added ".$fp_desc);
+                	    $this->session->set_flashdata('err_message','Error in adding Financial Authority setting - '  , 'error');
+                    	    redirect('picosetup/openfinancialpower');
 
-                    $this->logger->write_logmessage("insert","Add Financial Authority Setting", "Financial Authority".$_POST['authority']." added  successfully...");
-                    $this->logger->write_dblogmessage("insert","Add Financial Authority Setting", "Financial Authority Description ".$_POST['fp_desc']."added  successfully...");
-                    $this->session->set_flashdata("success", "Financial Authority added successfully...");
-                    redirect("picosetup/financialpowerdetails");
-                    } 
+                    	}
+                    	else{
+
+	                    $this->logger->write_logmessage("insert","Add Financial Authority Setting", "Financial Authority".$_POST['authority']." added  successfully...");
+        	            $this->logger->write_dblogmessage("insert","Add Financial Authority Setting", "Financial Authority Description ".$_POST['fp_desc']."added  successfully...");
+                	    $this->session->set_flashdata("success", "Financial Authority added successfully...");
+                    	    redirect("picosetup/financialpowerdetails");
+                    	} 
                 }
                 else{
                     $this->logger->write_logmessage("insert","Duplicate Financial Authority exist","Financial Authority is not added ".$fp_authority);
@@ -372,13 +382,14 @@ class Picosetup extends CI_Controller
                 'value' => $editeset_data->fp_typeofpurch,
 
                 );
-                $data['fp_subtypepurch'] = array(
+/*                $data['fp_subtypepurch'] = array(
                 'name' => 'fp_subtypepurch',
                 'id' => 'fp_subtypepurch',
                 'size' => '40',
                 'value' => $editeset_data->fp_subtypepurch,
 
-                );
+	);
+ */
                 $data['authority'] = array(
                 'name' => 'fp_authority',
                 'id' => 'fp_authority',
@@ -393,29 +404,30 @@ class Picosetup extends CI_Controller
                 'value' => $editeset_data->fp_limit,
 
                 );
-                $data['fp_desc'] = array(
+       /*         $data['fp_desc'] = array(
                 'name' => 'fp_desc',
                 'id' => 'fp_desc',
                 'size' => '40',
                 'value' => $editeset_data->fp_desc,
 
-        );
+	);
+	*/
         $data['id'] = $id;
         /*Form Validation*/
         $this->form_validation->set_rules('fp_typeofpurch','Type of Purchase','trim|xss_clean|required');
-        $this->form_validation->set_rules('fp_subtypepurch','Sub Purchase Type','trim|xss_clean|required|alpha_numeric_spaces');
+   //     $this->form_validation->set_rules('fp_subtypepurch','Sub Purchase Type','trim|xss_clean|required|alpha_numeric_spaces');
         $this->form_validation->set_rules('fp_authority','Authority','trim|xss_clean|required');
         $this->form_validation->set_rules('fp_limit','Limit','trim|required');
-        $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required');
+     //   $this->form_validation->set_rules('fp_desc','Item Description','trim|xss_clean|required');
 
         /* Re-populating form */
         if ($_POST)
         {
             $data['fp_typeofpurch']['value'] = $this->input->post('fp_typeofpurch', TRUE);
-            $data['fp_subtypepurch']['value'] = $this->input->post('fp_subtypepurch', TRUE);
+     //       $data['fp_subtypepurch']['value'] = $this->input->post('fp_subtypepurch', TRUE);
             $data['fp_authority']['value'] = $this->input->post('fp_authority', TRUE);
             $data['fp_limit']['value'] = $this->input->post('fp_limit', TRUE);
-            $data['fp_desc']['value'] = $this->input->post('fp_desc', TRUE);
+          //  $data['fp_desc']['value'] = $this->input->post('fp_desc', TRUE);
         }
 
         if ($this->form_validation->run() == FALSE)
@@ -426,7 +438,7 @@ class Picosetup extends CI_Controller
         else{
 
             $data_typeofpurch = $this->input->post('fp_typeofpurch', TRUE);
-            $data_subtypepurch = $this->input->post('fp_subtypepurch', TRUE);
+       //     $data_subtypepurch = $this->input->post('fp_subtypepurch', TRUE);
             $data_authority = $this->input->post('fp_authority', TRUE);
             $data_limit = $this->input->post('fp_limit', TRUE);
             $data_desc = $this->input->post('fp_desc', TRUE);
@@ -435,8 +447,8 @@ class Picosetup extends CI_Controller
             if($editeset_data->fp_typeofpurch != $data_typeofpurch)
                 $logmessage = "Type of Purchase " .$editeset_data->fp_typeofpurch. " changed by " .$data_typeofpurch;
 
-            if($editeset_data->fp_subtypepurch!= $data_subtypepurch)
-                $logmessage = "Sub Purchase Type" .$editeset_data->fp_subtypepurch. " changed by " .$data_subtypepurch;
+         //   if($editeset_data->fp_subtypepurch!= $data_subtypepurch)
+           //     $logmessage = "Sub Purchase Type" .$editeset_data->fp_subtypepurch. " changed by " .$data_subtypepurch;
 
             if($editeset_data->fp_authority != $data_authority)
                 $logmessage = "Authority " .$editeset_data->fp_authority. " changed by " .$data_authority;
@@ -444,20 +456,31 @@ class Picosetup extends CI_Controller
             if($editeset_data->fp_limit != $data_limit)
                 $logmessage = "Financial Limit " .$editeset_data->fp_limit. " changed by " .$data_limit;
 
-            if($editeset_data->fp_desc != $data_desc)
-                $logmessage = "Add Role " .$editeset_data->fp_desc. " changed by " .$data_desc;
+         //   if($editeset_data->fp_desc != $data_desc)
+           //     $logmessage = "Add Role " .$editeset_data->fp_desc. " changed by " .$data_desc;
 
             $update_data = array(
                'fp_typeofpurch' => $data_typeofpurch,
-               'fp_subtypepurch'=> $data_subtypepurch,
+             //  'fp_subtypepurch'=> $data_subtypepurch,
                'fp_authority' => $data_authority,
                'fp_limit' => $data_limit,
-               'fp_desc' => $data_desc,
+            //   'fp_desc' => $data_desc,
                'fp_modifierid'=> $this->session->userdata('username'),
                'fp_modifierdate'=>date('Y-m-d')
             );
+	    
+	    $dupdata = array(
+               'fp_typeofpurch' => $data_typeofpurch,
+             //  'fp_subtypepurch'=> $data_subtypepurch,
+               'fp_authority' => $data_authority,
+               'fp_limit' => $data_limit,
+             //  'fp_desc' => $data_desc,
+             //  'fp_modifierid'=> $this->session->userdata('username'),
+             //  'fp_modifierdate'=>date('Y-m-d')
+            );
 
-            $duplicate= $this->PICO_model->isduplicatemore('financial_power',$update_data);
+
+            $duplicate= $this->PICO_model->isduplicatemore('financial_power',$dupdata);
             if(!$duplicate){
                 $roledflag=$this->PICO_model->updaterec('financial_power', $update_data,' fp_id', $data_eid);
                 if(!$roledflag)
@@ -1723,6 +1746,7 @@ else  redirect('picosetup/displaytypeoftender');
                 if(!$entryid)
                 {
                 $rflag=false;  }
+                
                 else
                 {
 					 $rflag=true;   }

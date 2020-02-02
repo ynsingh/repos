@@ -51,7 +51,11 @@
       <table class="TFtable" >
                 <tr>
                     <thead>
-                      <th>Sr.No</th><th>Type of Purchase</th><th>Sub Purchase Type</th><th>Authority</th><th>Financial Limit<br>(Rs)</th><th>Item Description</th><th>Action</th>
+		      <th>Sr.No</th><th>Type of Purchase</th>
+	<!--		<th>Sub Purchase Type</th> -->
+<th>Authority</th><th>Financial Limit<br>(Rs)</th>
+<!--<th>Item Description</th> -->
+<th>Action</th>
                     </thead>
                 </tr>
 <tbody>
@@ -64,10 +68,10 @@
              <tr>
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->fp_typeofpurch ?></td>
-            <td> <?php echo $row->fp_subtypepurch ?></td>
+     <!--       <td> <?php //echo $row->fp_subtypepurch ?></td> -->
             <td> <?php echo $row->fp_authority ?></td>
             <td> <?php echo $row->fp_limit ?></td>
-            <td> <?php echo $row->fp_desc ?></td>
+<!--            <td> <?php //echo $row->fp_desc ?></td> -->
 
       <td>
          <?php  

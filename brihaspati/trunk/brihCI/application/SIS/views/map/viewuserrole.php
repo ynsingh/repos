@@ -83,8 +83,16 @@
 				}  ?></td> 
                     <td><?php echo $record->usertype; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name; ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid)->sc_name; ?></td>
+		    <td><?php 
+				if (!empty($this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid))){
+					echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;
+				}
+		?></td>
+		    <td><?php 
+				if(!empty($this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid))){					
+					echo $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$record->scid)->sc_name;
+				}
+		?></td>
                      <?php if($record->userid==1 && $record->roleid ==1): ?> 
                     <td> <?php  //echo anchor(current_url().'/#', "Delete",array('title' => 'Details' , 'class' => 'tag_color')); ?>&nbsp;
                     &nbsp;<?php  //echo anchor(current_url().'/#',"Edit",array('title' => 'Details' , 'class' => 'tag_color')); ?></td>

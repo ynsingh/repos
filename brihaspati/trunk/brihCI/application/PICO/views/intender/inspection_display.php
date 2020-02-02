@@ -85,7 +85,7 @@ if((strcasecmp($suname,"admin"))==0)
             </td>
             
             <td>
-                 <?php {
+                 <?php //{
             			?>
             
                  <b>Indenter No-:</b> <?php echo $row->inr_indentno ?><br>
@@ -94,12 +94,12 @@ if((strcasecmp($suname,"admin"))==0)
                                                 echo $row->inr_indentdept ?><br> 
                    <br><br><br>
                  
-                 	<?php } ?>  
+                 	<?php //} ?>  
           
             </td>
             
             <td> 
-                 <?php {
+                 <?php //{
             			?>
             
                    <b>Supplier-:</b> <?php echo $row->inr_suppliername ?><br>
@@ -110,7 +110,7 @@ if((strcasecmp($suname,"admin"))==0)
                      <br> 
                      <br>
           
-          			<?php } ?>  
+          			<?php //} ?>  
             </td>
             
             <td>
@@ -125,7 +125,7 @@ if((strcasecmp($suname,"admin"))==0)
                  <br>
                  <br>
                  
-                 	<?php } ?>  
+                 	<?php// } ?>  
                                    
             </td>    
             <td>  
@@ -140,6 +140,8 @@ if((strcasecmp($suname,"admin"))==0)
            
 	         
 	      <td></td>
+      </tr>
+  <?php } ?>
 	    	  
           
 </tbody>

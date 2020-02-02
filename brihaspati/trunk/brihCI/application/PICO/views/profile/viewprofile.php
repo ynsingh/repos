@@ -84,10 +84,14 @@
                     <td >University Name :</td>
                     <td><?php if(!empty($this->orgname->org_name)){
 				echo $this->orgname->org_name ;
-				}else{
-				echo $orgname;
+		    }else{
+			    	if(!empty($orgname)){
+					echo $orgname;
 				}
-			?></td>
+				}
+			?>
+				
+			</td>
                  </tr>
                  <tr>
                      <td >Campus Name :</td>
@@ -98,16 +102,22 @@
 				echo $campusname;
 			}
 			else{
-				echo $scname;
+				if(!empty($sc_name)){
+					echo $sc_name;
+				}
 			}
-		?></td>
+				?>
+
+			
+		</td>
                  </tr>
-	         </div>
-                 </div>
-                <!-- </div> -->
+	        </div>
+	    </div>
+              
 	  </td>
      </tr>
 </table>
+
 <?php $empid=$this->session->userdata('id_emp'); ?>
 <table style="width:100%;" class="heading1" border=0>
 		<tr>

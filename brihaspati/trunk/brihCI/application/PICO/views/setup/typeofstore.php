@@ -54,7 +54,8 @@
  		 				<option name="" disabled selected>----Select Category----</option>
  		 				<option value="Non-Consumable Store(NCS)">Non-Consumable Store(NCS)</option>
  		 				<option value="Limited Time Asset Stores(LTAS)">Limited Time Asset Stores(LTAS)</option>
- 		 				<option value="Consumable Stores(CS)">Consumable Stores(CS)</option>	
+ 		 				<option value="Consumable Stores(CS)">Consumable Stores(CS)</option>
+                        <option value="Temporary Contigent Advance for Equipment">Temporary Contigent Advance for Equipment (TCAE) </option>	
  		 				</select>
 
  		 			</td>

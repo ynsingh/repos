@@ -18,7 +18,7 @@
 		var val=val;
 	   	$.ajax({
 		type: "POST",
-		url: "<?php echo base_url();?>sisindex.php/map/getdeptlist",
+		url: "<?php echo base_url();?>picoindex.php/map/getdeptlist",
 		data: {"campusname" : val},
 		dataType:"html",
 		success: function(data){
@@ -31,7 +31,7 @@
                 var val=val;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>sisindex.php/map/getdeptschemelist",
+                url: "<?php echo base_url();?>picoindex.php/map/getdeptschemelist",
                 data: {"deptid" : val},
                 dataType:"html",
                 success: function(data){

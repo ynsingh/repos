@@ -30,7 +30,7 @@
                 else{
                     $('#uo').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getuoclist",
+                        url: "<?php echo base_url();?>picoindex.php/Pjslist/getuoclist",
                         type: "POST",
                         data: {"campusname" : sc_code},
                         dataType:"html",
@@ -63,7 +63,7 @@
              
                     $('#scid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getnewdeptlist",
+                        url: "<?php echo base_url();?>picoindex.php/Pjslist/getnewdeptlist",
                         type: "POST",
                         data: {"campuoc" : campuoc},
                         dataType:"html",
@@ -96,7 +96,7 @@
              
                     $('#usrid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/map/getempdetail",
+                        url: "<?php echo base_url();?>picoindex.php/map/getempdetail",
                         type: "POST",
                         data: {"campdept" : campdept},
                         dataType:"html",

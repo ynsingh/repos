@@ -36,6 +36,7 @@
 	<?php
 	};
 	?>
+
    </div>
    </td></tr>
    </table>
@@ -59,12 +60,28 @@
 	 ?>    
 	   <tr>
 	        <td><?php echo ++$count; ?> </td>
-	        <td><?php echo $this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->ddo_scid)->sc_name; ?> </td>
-	        <td><?php echo $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $row->ddo_deptid)->dept_name; ?> </td>
-		<td><?php echo $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->ddo_schid)->sd_name . "( ".$this->SIS_model->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->ddo_schid)->sd_code .")"; ?> </td>
-		<td><?php echo $row->ddo_code ?> </td>
-		<td><?php echo $row->ddo_name ?> </td>
-		<td><?php echo anchor('setup/updateddo/' . $row->ddo_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ." " ?> </td>	
+	        <td><?php 
+        if(!empty($this->common_model->get_listspfic1('study_center','sc_name','sc_id', $row->ddo_scid))){
+          echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id', $row->ddo_scid)->sc_name;
+        }
+           ?> </td>
+
+
+
+	        <td><?php
+
+          if(!empty($this->common_model->get_listspfic1('Department','dept_name','dept_id', $row->ddo_deptid))){ echo $this->common_model->get_listspfic1('Department','dept_name','dept_id', $row->ddo_deptid)->dept_name; 
+              }
+            ?> </td>
+
+
+
+
+
+		      <td><?php echo $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $row->ddo_schid)->sd_name . "( ".$this->SIS_model->get_listspfic1('scheme_department', 'sd_code', 'sd_id', $row->ddo_schid)->sd_code .")"; ?> </td>
+		      <td><?php echo $row->ddo_code ?> </td>
+		      <td><?php echo $row->ddo_name ?> </td>
+		      <td><?php echo anchor('setup/updateddo/' . $row->ddo_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ." " ?> </td>	
 	   </tr>
 	   <?php } 
 	   }else{

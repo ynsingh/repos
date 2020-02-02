@@ -54,7 +54,7 @@
                 echo "</td>";
                
             echo "</tr>";
-
+/*
             echo "<tr>";
                 echo "<td>";
                     echo form_label(' Sub Type of Purchase', 'fp_subtypepurch');
@@ -64,7 +64,7 @@
                 echo "</td>";
                
             echo "</tr>";
-
+ */
             echo "<tr>";
                 echo "<td>";
                     echo form_label('Authority', 'authority');
@@ -86,7 +86,7 @@
             echo "</tr>";
 
 
-           
+  /*         
             echo "<tr>";
                 echo "<td>";
                     echo form_label('Item Description', 'fp_desc');
@@ -97,10 +97,10 @@
                 echo "</td>";
                
             echo "</tr>";
-        
-                echo "<td>";
+   */    
+            echo "<tr>";
+                echo "<td colspan=2>";
                     echo form_hidden('fp_id', $id);
-                   echo"<td>";
                     echo form_submit('submit', 'Update');
                    echo " ";
        
@@ -108,7 +108,6 @@
             echo "<button onclick=\"goBack()\" >Back</button>";
             echo "</td>";
             echo "</tr>";
-            echo"</td>";
  ?>
  
        </table> 

@@ -28,7 +28,7 @@
                 else{
                     $('#uocid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getuoclist",
+                        url: "<?php echo base_url();?>picoindex.php/pjslist/getuoclist",
                         type: "POST",
                         data: {"campusname" : sc_code},
                         dataType:"html",
@@ -59,7 +59,7 @@
              
                     $('#scid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/empmgmt/getnewdeptlist",
+                        url: "<?php echo base_url();?>picoindex.php/pjslist/getnewdeptlist",
                         type: "POST",
                         data: {"campuoc" : combid},
                         dataType:"html",
@@ -93,7 +93,7 @@
              
                     $('#schmid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getnewdeptschemelist",
+                        url: "<?php echo base_url();?>picoindex.php/pjslist/getnewdeptschemelist",
                         type: "POST",
                        // data: {"combthree" : campuocdept},
                          data: {"combdept" : dept_id},
@@ -289,7 +289,7 @@
 
             </tr>
             <tr>
-                <td><label for="account name" class="control-label">Account Name :</label></td>
+                <td><label for="account name" class="control-label">Account Holder Name :</label></td>
                 <td>
                 <input type="text" name="account_name" class="form-control"  size="40" value= "<?php echo isset($_POST["account_name"]) ? $_POST["account_name"] : ''; ?>" /><br>
 
