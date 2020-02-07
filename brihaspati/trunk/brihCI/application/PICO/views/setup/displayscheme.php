@@ -63,7 +63,7 @@
               ?>    
 		<tr>
                     <td><?php echo ++$count; ?> </td>
-                    <td><?php echo $this->common_model->get_listspfic1('Department','dept_name', 'dept_id',$row->sd_deptid)->dept_name;?></td>
+                    <td><?php echo $this->common_model->get_listspfic1('Department','dept_name','dept_id',$row->sd_deptid)->dept_name;?></td>
                     <td><?php echo $row->sd_name ;?>
 	<!--		 </td>
                 	    <td> -->

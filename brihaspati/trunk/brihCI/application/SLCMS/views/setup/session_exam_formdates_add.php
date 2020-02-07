@@ -86,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</tr>
 	<tr>
 		<td align=left><label>Session Start Date</label></td>
-		<td>
+		<td align=left>
 		
         			<input type="text" name="session_sdate" placeholder="Session Start Date" value="<?php echo isset($_POST["session_sdate"]) ? $_POST["session_sdate"] : ''; ?>" id="sdate" style="height:20px;font-size:18px;" size=20 />
         

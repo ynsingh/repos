@@ -41,15 +41,21 @@
               </td></tr>
             <div>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
-                <?php if(isset($_SESSION['success'])){?>
-                <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+<?php 
+		 if(!empty($_SESSION['success'])){
+			if(isset($_SESSION['success'])){?>
+	                <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
-                };
+                	}
+		 }
                 ?>
-                <?php if(isset($_SESSION['err_message'])){?>
-                <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+		<?php 
+		 if(!empty($_SESSION['err_message'])){
+			if(isset($_SESSION['err_message'])){?>
+		                <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
-                };
+                	}
+		 }
                 ?>
             </div>
             </td></tr>
@@ -100,10 +106,10 @@
 //			echo  $prgname;
 			//echo $row->fm_programid;
             //print_r($datawh);
-            //$p_name=$this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
-            //$p_branch=$this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->fm_programid)->prg_branch;
-            $p_name=$row->fm_programid;
-            $p_branch=$row->fm_programid;
+            $p_name=$this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
+            $p_branch=$this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->fm_programid)->prg_branch;
+            //$p_name=$row->fm_programid;
+            //$p_branch=$row->fm_programid;
             echo "<tr>";?>
            
             <?php if(!($pre2==$p_name && $pre3==$p_branch)||$flag==1){

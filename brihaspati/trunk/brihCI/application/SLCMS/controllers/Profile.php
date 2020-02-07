@@ -93,13 +93,15 @@ public function viewprofile(){
 	$this->secmail=$this->logmodel->get_listspfic1('userprofile','secmail','userid',$this->session->userdata('id_user'));
         $this->mobile=$this->logmodel->get_listspfic1('userprofile','mobile','userid',$this->session->userdata('id_user'));
         $this->email=$this->logmodel->get_listspfic1('edrpuser','email','id',$this->session->userdata('id_user'));
-	$this->campusid=$this->commodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
-	$this->campusname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
-        $this->orgcode=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
+	$campusid=$this->commodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
+	$this->campusname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$campusid);
+        $orgcode=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$campusid);
        // $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
-        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode);
+        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$orgcode->org_code);
         $this->load->view('profile/viewprofile');
 }//end function
+
+
 /* this function is used for update user profile */
 	public function editprofile(){
 		$id=$this->session->userdata('id_user');

@@ -27,11 +27,11 @@ class Home extends CI_Controller
 	$selectfield = 'prg_scid,prg_category,prg_name,prg_branch,prg_seat';
 	$whorder = "prg_scid,prg_category asc,prg_name asc,prg_branch asc";
 	//get_orderlistspficemore($tbname,$selectfield,$whdata,$whorder)
-	$this->prgseat=$this->commodel->get_orderlistspficemore('program',$selectfield,'',$whorder);
+	$data['prgseat']=$this->commodel->get_orderlistspficemore('program',$selectfield,'',$whorder);
 	//$this->prgseat=$this->commodel->get_listmore('program',$selectfield);
 	// get the values of university 
-	$this->result = $this->universitym->get_udetails();
-	$contcode=$this->result->org_countrycode;
+	$data['result'] = $this->universitym->get_udetails();
+	$contcode=$data['result']->org_countrycode;
 	$this->contryname = $this->universitym->get_countryname($contcode);
 	//get values of fees record
 	

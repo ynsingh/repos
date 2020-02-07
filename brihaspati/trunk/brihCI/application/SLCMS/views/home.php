@@ -84,33 +84,33 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 
 
       	echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>Institute Code</b></td><td>";
-	echo $this->result->org_code;
+	echo $result->org_code;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>Institute Name</b></td><td>";
-	echo $this->result->org_name;
+	echo $result->org_name;
 	echo "</td></tr>";
      	echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>Institute Type</b></td><td>";
-	echo $this->result->org_type;
+	echo $result->org_type;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>Institute Address</b></td><td>";
-	echo $this->result->org_address1;
+	echo $result->org_address1;
 	echo "\t";
-	echo $this->result->org_address2;echo ",";echo $this->result->org_city;echo "";echo $this->result->org_state;echo ","; echo $this->contryname->name; echo ","; echo $this->result->org_pincode;
+	echo $result->org_address2;echo ",";echo $result->org_city;echo "";echo $result->org_state;echo ","; echo $this->contryname->name; echo ","; echo $result->org_pincode;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>Institute Email</b></td><td>";
-	echo $this->result->org_email;
+	echo $result->org_email;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>Institute Fax</b></td><td>";
-	echo $this->result->org_fax;
+	echo $result->org_fax;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>Institute Phone</b></td><td>";
-	echo $this->result->org_phone;
+	echo $result->org_phone;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>Institute Affilation</b></td><td>";
-	echo $this->result->org_affiliation;
+	echo $result->org_affiliation;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>Institute Administrator</b></td><td>";
-	echo $this->result->org_adminfn;echo "\t";echo $this->result->org_adminln;echo ",";echo "\t";echo $this->result->org_admindesig;
+	echo $result->org_adminfn;echo "\t";echo $result->org_adminln;echo ",";echo "\t";echo $result->org_admindesig;
 	echo "</td></tr>";
      	echo "</tbody>";
 	echo "</table>";
@@ -139,9 +139,13 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 	$flag=0;
 	$pre="";
 //print_r($this->prgseat);	
-	foreach($this->prgseat as $row){
-		
-		$scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;
+	foreach($prgseat as $row){
+		$scres=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid);
+		if(!empty($scres)){
+			$scname=$scres->sc_name;
+		}else{
+			$scname="";
+		}
 		if(!($scname==$pre))
 		{ echo " <td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px; text-align:center;\">$scname <br>";
 	}
@@ -184,13 +188,18 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 				$h=$ta["prgname"];
 			//	echo $h;
 				if(!empty($h)){
-					//$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
-					$hname=$h;
-			//		$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h)->prg_branch;
-					$hbranch=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h)->prg_branch;
+					$hname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$h)->prg_name;
+					//$hname=$h;
+					$hbranch1=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$h);
+			//		$hbranch1=$this->commodel->get_listspfic1('program','prg_branch','prg_name',$h);
+					if(!empty($hbranch1)){
+						$hbranch=$hbranch1->prg_branch;
+					}else{
+						$hbranch ="";
+					}
 				}else{
 	//				$hname='';
-					$hbranch =='';
+					$hbranch ="";
 				}
 				echo "<tr>";
 			echo "<td class=\"light\" colspan=\"4\" style=\"padding: 8px 8px 8px 8px;text-align:center;\">".$hname." ( ".$hbranch. " )  <br>";

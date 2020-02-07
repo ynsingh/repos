@@ -2138,7 +2138,7 @@ class Setup extends CI_Controller
      * @return type
      */
     public function viewsc() {
-        $data['result'] = $this->common_model->get_orderlistspficemore('study_center','*','','');
+        $data['result'] = $this->common_model->get_orderlistspficemore('study_center','*','','org_code  asc');
         $this->logger->write_logmessage("view"," View Study center list", "study center list display");
         $this->logger->write_dblogmessage("view"," View Study center list", "study center list display");
 	   $this->load->view('setup/viewsc',$data);
