@@ -22,7 +22,7 @@
 
 		$('#prgtype').on('change',function(){
                         var pc= $('#prgtype').val();
-//			alert(pc);
+			//alert(pc);
                         if(pc == "CJournals"){
 				$("#conf1").show();		
 				$("#month1").show();		
@@ -151,12 +151,12 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/performance_profile/publication/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/performance_profile/publication/'.$emppubdata->spbd_empid, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Add Staff Publications Details</b>";
+                    echo "<b>Update Staff Publications Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -186,21 +186,65 @@
                          "5" => "May", "6" => "Jun", "7" => "Jul", "8" => "Aug",
                         "9" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec",
                     );
-
+		//	print_r($emppubdata);
                     // set start and end year range
                     $cyear= date("Y");
                     $yearArray = range(1952,  $cyear);
 ?>
         <div> 
-            <form id="myform" action="<?php echo site_url('empmgmt/add_pubdata/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="empid" value="<?php echo  $this->emp_id ; ?>">
+            <form id="myform" action="<?php echo site_url('empmgmt/update_pubdata/'.$id);?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="empid" value="<?php echo  $emppubdata->spbd_empid ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Staff Publications Details</th></thead></tr>
+                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Update Staff Publications Details</th></thead></tr>
                 <tr></tr><tr></tr>
+<?php
+			if(!empty($emppubdata->spbd_pubtype)):;
+                        if($emppubdata->spbd_pubtype == "ABook"){
+                                $pubtype="Book";
+                        }
+                        if($emppubdata->spbd_pubtype == "BChapter"){
+                                $pubtype="Book Chapter";
+                        }
+			if($emppubdata->spbd_pubtype == "CJournals" ){
+                                $pubtype= "Research Papers published in Journals";
+                        }
+                        if($emppubdata->spbd_pubtype == "DConference"){
+                                $pubtype="Research Papers presented  in seminar/Workshop/conference etc";
+                        }
+                        if($emppubdata->spbd_pubtype == "EArticles"){
+                                $pubtype="Popular Articles";
+                        }
+                        if($emppubdata->spbd_pubtype == "FReview"){
+                                $pubtype="Review Articles";
+                        }
+                        if($emppubdata->spbd_pubtype == "GNotes"){
+                                $pubtype="Research Notes/Research Short Notes";
+                        }
+                        if($emppubdata->spbd_pubtype == "HMonograph"){
+                                $pubtype="Monograph/Manual";
+                        }
+                            endif;
+			if(!empty($emppubdata->spbd_authortype)):;
+                        if($emppubdata->spbd_authortype == "FA" ){
+                                $authtype="First Author";
+                        }
+                        if($emppubdata->spbd_authortype == "SA"){
+                                $authtype="Second Author";
+                        }
+			if($emppubdata->spbd_authortype == "Others"){
+                                $authtype="Others";
+                        }
+                            endif;
+?>
 		<tr>
 			<td>Type Of Publication<font color='Red'>*</font></td>
                         <td><select id="prgtype" name="prgtype" required style="width:350px;">
+			<?php if(!empty($emppubdata->spbd_pubtype)):;?>
+                            <option value="<?php echo $emppubdata->spbd_pubtype;?>"><?php echo $pubtype;?></option>
+                            <?php else:?>
                         <option selected="selected" disabled selected>------------- Type Of Publication ---------</option>
+                            <?php endif;?>
+
                         <option value="ABook">Book</option>
                         <option value="BChapter">Book Chapter</option>
                         <option value="CJournals">Research Papers published in Journals</option>
@@ -215,20 +259,24 @@
                 <tr>
                     <td>Title <font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="prgtitle" id="prgtitle" value="" size="40" >
+                            <input type="text" name="prgtitle" id="prgtitle" value="<?php echo $emppubdata->spbd_title; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Authors <font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="author" id="author" value="" size="40" >
+                            <input type="text" name="author" id="author" value="<?php echo $emppubdata->spbd_authors; ?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Author Type<font color='Red'></font></td>
 		    <td>
 			<select id="authtype" name="authtype" required style="width:350px;">
+			<?php if(!empty($emppubdata->spbd_authortype)):;?>
+                            <option value="<?php echo $emppubdata->spbd_authortype;?>"><?php echo $authtype;?></option>
+                            <?php else:?>
                         <option selected="selected" disabled selected>------------- Author Type ---------</option>
+                            <?php endif;?>
                         <option value="FA">First Author</option>
                         <option value="SA">Second Author</option>
                         <option value="Others">Others</option>
@@ -238,7 +286,7 @@
                 <tr id="conf1">
                     <td>Name of Book/Journal/Seminar/Workshop/Conference etc<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="conf" id="conf" value="" size="40" >
+                            <input type="text" name="conf" id="conf" value="<?php echo $emppubdata->spbd_title; ?>" size="40" >
                     </td>
                 </tr>
                 <tr id="month1">
@@ -246,7 +294,11 @@
                     </td>
 		    <td>
                         <select name="month" id="month" style="width:300px;font-weight:bold;">
+			<?php if(!empty($emppubdata->spbd_month)):;?>
+                            <option value="<?php echo $emppubdata->spbd_month;?>"><?php echo $emppubdata->spbd_month;?></option>
+                            <?php else:?>
                             <option value="" disabled selected>--------Select Month ----------</option>
+                            <?php endif;?>
                             <?php
                                 foreach ($formattedMonthArray as $month) {
                                     $selected = ($month == $cmonth) ? 'selected' : '';
@@ -261,7 +313,11 @@
                     </td>
 		    <td>
                         <select name="year" id="year" style="width:300px;font-weight:bold;">
+			<?php if(!empty($emppubdata->spbd_year)):;?>
+                            <option value="<?php echo $emppubdata->spbd_year;?>"><?php echo $emppubdata->spbd_year;?></option>
+                            <?php else:?>
                             <option value="" disabled selected>--------Select Year ----------</option>
+                            <?php endif;?>
                             <?php
                                 foreach ($yearArray as $year) {
                                 // if you want to select a particular year
@@ -276,20 +332,24 @@
                 <tr>
                     <td>ISSN/ISBN/Volume/Issue/Page No./Session<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="issn" id="issn" value="" size="40" >
+                            <input type="text" name="issn" id="issn" value="<?php echo $emppubdata->spbd_issnno; ?>" size="40" >
                     </td>
                 </tr>
                 <tr id="venue1">
                     <td>Venue<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="venue" id="venue" value="" size="40" >
+                            <input type="text" name="venue" id="venue" value="<?php echo $emppubdata->spbd_progrmvenue; ?>" size="40" >
                     </td>
                 </tr>
 		
 		<tr id="jmoption1">
                 <td>Journal Metric options<font color='Red'></font></td>
                 <td><select name="jmoption" style="width:350px;" id="jmoption" >
+			<?php if(!empty($emppubdata->spbd_metrictype)):;?>
+                            <option value="<?php echo $emppubdata->spbd_metrictype;?>"><?php echo $emppubdata->spbd_metrictype;?></option>
+                            <?php else:?>
 		<option selected="selected" disabled selected>------------ Journal Metric options ---------</option>
+                            <?php endif;?>
                         <option value="Naas Rating">Naas Rating</option>
                         <option value="Impact Factor">Impact Factor</option>
                         <option value="Scopus Rank">Scopus Rank</option>
@@ -299,19 +359,23 @@
                 <tr id="userrating1">
                     <td>Get Rating input from user<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="userrating" id="userrating" value="" size="40" >
+                            <input type="text" name="userrating" id="userrating" value="<?php echo $emppubdata->spbd_metricvalue; ?>" size="40" >
                     </td>
                 </tr>
                 <tr id="publisher1">
                     <td>Source of Publication/Publisher<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="publisher" id="publisher" value="" size="40" >
+                            <input type="text" name="publisher" id="publisher" value="<?php echo $emppubdata->spbd_publishername; ?>" size="40" >
                     </td>
                 </tr>
 		<tr>
                 <td>Publication Level<font color='Red'></font></td>
                 <td><select name="publevel" style="width:350px;" id="publevel" >
+			<?php if(!empty($emppubdata->spbd_publevel)):;?>
+                            <option value="<?php echo $emppubdata->spbd_publevel;?>"><?php echo $emppubdata->spbd_publevel;?></option>
+                            <?php else:?>
 		<option selected="selected" disabled selected>------------ Publication Level ---------</option>
+                            <?php endif;?>
                         <option value="University">University</option>
                         <option value="State">State</option>
                         <option value="National">National</option>
@@ -322,8 +386,12 @@
         	</tr>
 		<tr id="publang1">
                 <td>Language <font color='Red'></font></td>
-                <td><select name="publang" style="width:350px;" id="publang" >
-		<option selected="selected" disabled selected>------------ Language  ---------</option>
+                <td><select name="publang" style="width:350px;" id="publang"  >
+			<?php if(!empty($emppubdata->spbd_language)):;?>
+                            <option value="<?php echo $emppubdata->spbd_language;?>"><?php echo $emppubdata->spbd_language;?></option>
+                            <?php else:?>
+                        <option selected="selected" disabled selected>-------------Select Language ---------</option>
+                            <?php endif;?>
                         <option value="Local">Local</option>
                         <option value="Vernacular">Vernacular</option>
                         <option value="English">English</option>
@@ -334,7 +402,7 @@
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">
-                    <button name="addpubdata" >Submit</button>
+                    <button name="editpubdata" >Submit</button>
 		    <!--input type="reset" name="Reset" value="Clear"/-->
 			<button type="button" onclick="history.back();">Back</button>
                     </td>

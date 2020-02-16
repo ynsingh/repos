@@ -593,7 +593,7 @@ class Jslist extends CI_Controller
 		$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
         	$uname=$this->session->userdata('username');
         	$ssiondeptid=$this->session->userdata('id_dept');
-	      	if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+	      	if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
         	      	$mess="You do not have the right to access detial of this PF Number";
                 	array_push($values,$mess);
 	      	}else{
@@ -698,7 +698,7 @@ class Jslist extends CI_Controller
 	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
 	$uname=$this->session->userdata('username');	
 	$ssiondeptid=$this->session->userdata('id_dept');
-      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
 		$mess="You do not have the right to access detial of this PF Number";
                array_push($values,$mess);
 	}else{
@@ -898,7 +898,7 @@ class Jslist extends CI_Controller
 	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$parts[1])->emp_dept_code;
         $uname=$this->session->userdata('username');
         $ssiondeptid=$this->session->userdata('id_dept');
-      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
               $mess="You do not have the right to access detial of this PF Number";
                 array_push($values,$mess);
       }else{

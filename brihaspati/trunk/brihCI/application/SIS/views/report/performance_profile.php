@@ -137,9 +137,9 @@
                 <li class="bgli2"><?php echo anchor('report/performance_profile/trainingattend/'.$emp_id,"Training Attended",array('title' => 'Training Attended','id'=>'tab2','class' => 'top_parent')) ;?></li>
                 <?php endif ?>
                 <?php if($this->uri->segment(3)== 'trainingorgna'):?>
-                <li class="bgli"><?php echo anchor('report/performance_profile/trainingorgna/'.$emp_id,"Training Oraganised",array('title' => 'Training Oraganised','id'=>'tab3','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
+                <li class="bgli"><?php echo anchor('report/performance_profile/trainingorgna/'.$emp_id,"Training Organised",array('title' => 'Training Organised','id'=>'tab3','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
                 <?php else :?>
-                <li class="bgli2"><?php echo anchor('report/performance_profile/trainingorgna/'.$emp_id,"Training Oraganised",array('title' => 'Training Oraganised','id'=>'tab3','class' => 'top_parent')) ;?></li>
+                <li class="bgli2"><?php echo anchor('report/performance_profile/trainingorgna/'.$emp_id,"Training Organised",array('title' => 'Training Organised','id'=>'tab3','class' => 'top_parent')) ;?></li>
                 <?php endif ?>
                 <?php if($this->uri->segment(3)== 'awards'):?>
                 <li class="bgli"><?php echo anchor('report/performance_profile/awards/'.$emp_id,"Awards",array('title' => 'Awards','id'=>'tab4','class' => 'top_parent','class' => 'tabcolor')) ;?></li>
@@ -200,10 +200,10 @@
 			if(count($emppubdata)):;?>
 		    	<tr>
 			<th>Sr. No.</th>
-			<th>Publication Type/ Title/ Authors/ Author Type</th>
-			<th>Journal/Book Name/ Month/ Year/ Venue</th>
-			<th>ISSN/ ISBN/ Volume/ Issue/ Page No.</th>
-			<th>Journal Metric/ Metric Value/ Pulisher/ Publication Level/ Language</th>
+			<th>Publication Type<br> Title/Chapter Name<br> Authors<br> Author Type</th>
+			<th>Journal Name<br>Book Name<br> Month - Year<br> Venue</th>
+			<th>ISSN/ ISBN/ Volume/ Issue<br> Page No.</th>
+			<th>Journal Metric/ Metric Value/<br> Pulisher/ Publication Level<br> Language</th>
 			<th> Available Action</th>
 			</tr>
 			<?php
@@ -213,28 +213,28 @@
                         echo "<tr>";
                         echo "<td>";  echo $srno++ ; echo "</td>";
                         echo "<td>";
-			if($pubres->spbd_pubtype == "Journals" ){
+			if($pubres->spbd_pubtype == "CJournals" ){
 				$pubtype= "Research Papers published in Journals";
 			}
-			if($pubres->spbd_pubtype == "Conference"){
+			if($pubres->spbd_pubtype == "DConference"){
 				$pubtype="Research Papers presented  in seminar/Workshop/conference etc";
 			}
-			if($pubres->spbd_pubtype == "Book"){
+			if($pubres->spbd_pubtype == "ABook"){
 				$pubtype="Book";
 			}
-			if($pubres->spbd_pubtype == "Chapter"){
+			if($pubres->spbd_pubtype == "BChapter"){
 				$pubtype="Book Chapter";
 			}
-			if($pubres->spbd_pubtype == "Articles"){
+			if($pubres->spbd_pubtype == "EArticles"){
 				$pubtype="Popular Articles";
 			}
-			if($pubres->spbd_pubtype == "Review"){
+			if($pubres->spbd_pubtype == "FReview"){
 				$pubtype="Review Articles";
 			}
-			if($pubres->spbd_pubtype == "Notes"){
+			if($pubres->spbd_pubtype == "GNotes"){
 				$pubtype="Research Notes/Research Short Notes";
 			}
-			if($pubres->spbd_pubtype == "Monograph"){
+			if($pubres->spbd_pubtype == "HMonograph"){
 				$pubtype="Monograph/Manual";
 			}
 			if($pubres->spbd_authortype == "FA" ){
@@ -255,11 +255,11 @@
                         echo $pubres->spbd_issnno."<br> ".$pubres->spbd_chapno."<br>".$pubres->spbd_pageno;
                         echo "</td>";
                         echo "<td>";
-                        echo $pubres->spbd_metrictype." ".$pubres->spbd_metricvalue." ". $pubres->spbd_publishername ."<br>".$pubres->spbd_publevel."<br>".$pubres->spbd_language;
+                        echo $pubres->spbd_metrictype." ".$pubres->spbd_metricvalue."<br> ". $pubres->spbd_publishername ." - ".$pubres->spbd_publevel."<br>".$pubres->spbd_language;
                         echo "</td>";
                         echo "<td>";
                         if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                        //      echo anchor("empmgmt/edit_stadata/{$pubres->spbd_id}","Edit",array('title' => ' Edit Publication  Data' , 'class' => 'red-link'));
+                                echo anchor("empmgmt/edit_pubdata/{$pubres->spbd_id}","Edit",array('title' => ' Edit Publication  Data' , 'class' => 'red-link'));
                                 echo " <br><br> ";
                                 echo anchor("empmgmt/delete_pubdata/{$pubres->spbd_id}","Delete",array('title' => ' Delete Publication Data' , 'class' => 'red-link'));
                         }
@@ -292,9 +292,9 @@
 			if(count($empstadata)):;?>
 		    	<tr>
 			<th>Sr.NO.</th>
-			<th>Program Type/Level/Title</th>
-			<th>Program Duration/Venue</th>
-			<th>Program Organised/Sponsored By</th>
+			<th>Program Type<br>Level<br>Title</th>
+			<th>Program Duration<br>From Date - To Date<br>Venue</th>
+			<th>Program Organised<br>Sponsored By</th>
 			<th> Available Actions </th> 
 			</tr>
 			<?php 
@@ -312,7 +312,7 @@
 			echo "</td>";
 			echo "<td>";
 			if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                        //	echo anchor("empmgmt/edit_stadata/{$stares->sta_id}","Edit",array('title' => ' Edit STA  Data' , 'class' => 'red-link'));
+                        	echo anchor("empmgmt/update_stadata/{$stares->sta_id}","Edit",array('title' => ' Edit STA  Data' , 'class' => 'red-link'));
                                 echo " <br><br> ";
                                 echo anchor("empmgmt/delete_stadata/{$stares->sta_id}","Delete",array('title' => ' Delete STA Data' , 'class' => 'red-link'));
                         }
@@ -345,10 +345,10 @@
 			if(count($empstodata)):;?>
 		    	<tr>
 			<th>Sr.NO.</th>
-			<th>Program Type/Level/Title</th>
-			<th>Program Duration/Venue</th>
-			<th>Program Capacity/Participant</th>
-			<th>Program Organised/Sponsored By</th>
+			<th>Program Type<br>Level<br>Title</th>
+			<th>Program Duration<br>From Date - To Date<br>Venue</th>
+			<th>Program Capacity<br>Participant<br>Nature</th>
+			<th>Program Organised<br>Sponsored By</th>
 			<th> Available Actions </th> 
 			</tr>
 			<?php 
@@ -369,7 +369,7 @@
 			echo "</td>";
 			echo "<td>";
 			if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                        //	echo anchor("empmgmt/edit_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
+                        	echo anchor("empmgmt/update_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
                                 echo " <br><br> ";
                                 echo anchor("empmgmt/delete_stodata/{$stores->sto_id}","Delete",array('title' => ' Delete STO Data' , 'class' => 'red-link'));
                         }
@@ -401,8 +401,8 @@
                     	 if(count($empawarddata)):;?>
 		    	<tr>
 			<th>Sr.NO.</th>
-			<th>Award Title/Type</th>
-			<th>Awarded By/Year</th>
+			<th>Award Title<br>Type</th>
+			<th>Awarded By<br>Year</th>
 			<th>Remark</th>
 			<th>Available Actions </th> 
 			</tr>
@@ -421,7 +421,7 @@
                         echo "</td>";
                         echo "<td>";
                         if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                        //      echo anchor("empmgmt/edit_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
+                              echo anchor("empmgmt/update_awarddata/{$awardres->spad_id}","Edit",array('title' => ' Edit Award  Data' , 'class' => 'red-link'));
                                 echo " <br><br> ";
                                 echo anchor("empmgmt/delete_awarddata/{$awardres->spad_id}","Delete",array('title' => ' Delete Award Data' , 'class' => 'red-link'));
                         }
@@ -454,12 +454,12 @@
                     	 if(count($empprojdata)):;?>
 		    	<tr>
 			<th>Sr.NO.</th>
-			<th>Project Title/Role</th>
-			<th>Funding Agency Name /Type</th>
-			<th>Budget</th>
-			<th>Duration / From - To</th>
+			<th>Project Title<br>Role</th>
+			<th>Funding Agency  <br>Type</th>
+			<th>Budget (in Lakhs)</th>
+			<th>Duration <br> From - To</th>
 			<th>Remarks</th>
-			<th>Available Actions </th> 
+			<th> Actions </th> 
 			<th></th>
 			</tr>
 			<?php
@@ -473,7 +473,7 @@
                         echo $projres->sppd_pfundagency ."<br>".$projres->sppd_agendytype;
                         echo "</td>";
                         echo "<td>";
-                        echo $projres->sppd_budget ." L <br>";
+                        echo $projres->sppd_budget ."  <br>";
                         echo "</td>";
                         echo "<td>";
                         echo $projres->sppd_duration ." Years <br>".$projres->sppd_fromdate." - ".$projres->sppd_todate;
@@ -483,7 +483,7 @@
                         echo "</td>";
                         echo "<td>";
                         if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                        //      echo anchor("empmgmt/edit_stodata/{$stores->sto_id}","Edit",array('title' => ' Edit STO  Data' , 'class' => 'red-link'));
+                              	echo anchor("empmgmt/update_projdata/{$projres->sppd_id}","Edit",array('title' => ' Edit Project  Data' , 'class' => 'red-link'));
                                 echo " <br><br> ";
                                 echo anchor("empmgmt/delete_projdata/{$projres->sppd_id}","Delete",array('title' => ' Delete Project Data' , 'class' => 'red-link'));
                         }
@@ -502,32 +502,50 @@
                             <td align=left colspan=4><b>Performance Details-Student Guided</b></td>
                             <td colspan="5" align="right">
                             <?php
-				 $uname=$this->session->userdata('username');
+				$uname=$this->session->userdata('username');
                                 $rest = substr($uname, -21);
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                                	if(count($performancedata)){
-  //                                  		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
-                                	}
-                                    	else{
-//                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
-                                	}    
+                                	echo anchor("empmgmt/add_stuguidata/{$emp_id}","Add",array('title' => 'Add Student Guide Data','class'=>'red-link'));
 				}
                             ?>
                         </td>
                     </tr>
 		</table>
                 <table class="TFtable">
-                    	<?php if(count($emppubdata)):;?>
+                    	<?php if(count($empstuguidata)):?>
 		    	<tr>
-			<th></th>
-			<th></th>
+			<th>Sr.NO.</th>
+			<th>Student Name<br>College/University</th>
+			<th>Degree-Year<br>Discipline</th>
+			<th>Role</th>
+			<th>Actions</th>
 			</tr>
-		    	<tr>
-			<td></td>
-			<td></td>
-			</tr>
-			
-                    	<?php else : ?>
+			<?php
+			$srno=1;
+			//print_r($empstuguidata);
+                        foreach ($empstuguidata as $stuguires){
+                        echo "<tr>";
+                        echo "<td>";  echo $srno++ ; echo "</td>";
+                        echo "<td>";
+			echo $stuguires->spsgd_sname."<br>".$stuguires->spsgd_scollege;
+			echo "</td>";
+			echo "<td>";
+			echo $stuguires->spsgd_sdegree." - ".$stuguires->spsgd_syear."<br>".$stuguires->spsgd_sdiscipine; 
+			echo "</td>";
+			echo "<td>";
+			echo $stuguires->spsgd_role;
+			echo "</td>";
+			echo "<td>";
+
+                        if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                              echo anchor("empmgmt/update_stuguidata/{$stuguires->spsgd_id}","Edit",array('title' => ' Edit Student Guided  Data' , 'class' => 'red-link'));
+                                echo " <br><br> ";
+                                echo anchor("empmgmt/delete_stuguidata/{$stuguires->spsgd_id}","Delete",array('title' => ' Delete Student Guided Data' , 'class' => 'red-link'));
+                        }
+			echo "</td>";
+			echo "</tr>";
+		}	
+                    	 else : ?>
                     	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
                     	<?php endif;?>
 		</table>
@@ -541,29 +559,47 @@
 				 $uname=$this->session->userdata('username');
                                 $rest = substr($uname, -21);
 				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                                	if(count($performancedata)){
-    //                                		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
-                                	}
-                                    	else{
-      //                              		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
-                                	}    
+                                    		echo anchor("empmgmt/add_guestlectdata/{$emp_id}"," Add ",array('title' => ' Add Guest lecture Data' , 'class' => 'red-link'));
 				}
                             ?>
                         </td>
                     </tr>
 		</table>
                 <table class="TFtable">
-                    	<?php if(count($emppubdata)):;?>
+                    	<?php if(count($empguestlectdata)):;?>
 		    	<tr>
-			<th></th>
-			<th></th>
+			<th>Sr.NO.</th>
+			<th>Guest Lecture Title</th>
+			<th>Month - Year</th>
+			<th>Delivered Details</th>
+			<th>Actions</th>
 			</tr>
-		    	<tr>
-			<td></td>
-			<td></td>
-			</tr>
-			
-                    	<?php else : ?>
+			<?php
+                        $srno=1;
+                        //print_r($empguestlectdata);
+                        foreach ($empguestlectdata as $guestlectres){
+                        echo "<tr>";
+                        echo "<td>";  echo $srno++ ; echo "</td>";
+                        echo "<td>";
+			echo $guestlectres->spgld_gtitle;
+			echo "</td>";
+                        echo "<td>";
+			echo $guestlectres->spgld_month ." - ".$guestlectres->spgld_year;
+			echo "</td>";
+                        echo "<td>";
+			echo $guestlectres->spgld_details;
+			echo "</td>";
+                        echo "<td>";
+
+                        if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+                                echo anchor("empmgmt/update_guestlectdata/{$guestlectres->spgld_id}","Edit",array('title' => ' Edit Guest Lecture  Data' , 'class' => 'red-link'));
+                                echo " <br><br> ";
+                                echo anchor("empmgmt/delete_guestlectdata/{$guestlectres->spgld_id}","Delete",array('title' => ' Delete Guest Lecture Data' , 'class' => 'red-link'));
+                        }
+                        echo "</td>";
+                        echo "</tr>";
+                	}
+                    	 else : ?>
                     	<tr><td colspan= "7" align="center"> No Records found...!</td></tr>
                     	<?php endif;?>
 		</table>
@@ -612,14 +648,14 @@
                             <?php
 				 $uname=$this->session->userdata('username');
                                 $rest = substr($uname, -21);
-				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
-                                	if(count($performancedata)){
-                                    		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
-                                	}
-                                    	else{
-                                    		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
-                                	}    
-				}
+//				if(($roleid == 1)||($flagffs)||($flagcppm)||($flagro)||($flaguooff)||($flaghod)){
+  //                              	if(count($performancedata)){
+                                    //		echo anchor("empmgmt/editextstaffpro/{$emp_id}"," Edit ",array('title' => ' Edit Performance Data' , 'class' => 'red-link'));  
+      ///                          	}
+    //                                	else{
+                                    //		echo anchor("empmgmt/extstaffpro/{$emp_id}"," Add ",array('title' => ' Add Performance Data' , 'class' => 'red-link'));
+         //                       	}    
+		//		}
                             ?>
                         </td>
                     </tr>

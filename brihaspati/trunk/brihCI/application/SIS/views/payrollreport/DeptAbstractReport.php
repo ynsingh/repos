@@ -174,7 +174,7 @@
 			echo "<td>";
 				echo "<b>".$irow->sh_name. "   </b> ";
 			echo "</td>";
-			echo "<td align=right>";
+			echo "<td style='text-align:right;'>";
 			 	echo  ${"d".$irow->sh_id};
 				$itot=$itot +${"d".$irow->sh_id};
 			echo "</td>";
@@ -190,7 +190,7 @@
 			echo "<td>";
 				echo "<b>".$drow->sh_name. "   </b> ";
 			echo "</td>";
-			echo "<td align=right>";
+			echo "<td style='text-align:right;'>";
  				echo  ${"d".$drow->sh_id};
 				$dtot=$dtot +${"d".$drow->sh_id};
 //				echo "<br>";
@@ -206,7 +206,7 @@
 			echo "<td>";
 				echo "<b>". $lrow->sh_name. "   </b> " ;
 			echo "</td>";
-			echo "<td align=right>";
+			echo "<td style='text-align:right;'>";
 				echo  ${"d".$lrow->sh_id};
 				$ltot=$ltot +${"d".$lrow->sh_id};
 //				echo "<br>";

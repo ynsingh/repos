@@ -64,7 +64,9 @@
                             <option value="<?php echo "";?>"><?php echo "Please select DDO";?></option>
 <?php                           }
                                 foreach ($combdata as $rec) {
-                                    echo '<option  value="'.$rec->ddo_code.'">'.$rec->ddo_name.'</option>';
+					if(!empty($rec->ddo_code)){
+                                    echo '<option  value="'.$rec->ddo_code.'">'.$rec->ddo_name.' ( '.$rec->ddo_code.' )</option>';
+	                                }
                                 }
                             ?>
                         </select>
@@ -164,7 +166,7 @@
                         echo "<td>";
                                 echo "<b>".$irow->sh_name. "   </b> ";
                         echo "</td>";
-                        echo "<td align=right>";
+                        echo "<td style='text-align:right;'>";
                                 echo  ${"d".$irow->sh_id};
                                 $itot=$itot +${"d".$irow->sh_id};
                         echo "</td>";
@@ -180,7 +182,7 @@
                         echo "<td>";
                                 echo "<b>".$drow->sh_name. "   </b> ";
                         echo "</td>";
-                        echo "<td align=right>";
+                        echo "<td style='text-align:right;'>";
                                 echo  ${"d".$drow->sh_id};
                                 $dtot=$dtot +${"d".$drow->sh_id};
 //                              echo "<br>";
@@ -196,7 +198,7 @@
                         echo "<td>";
                                 echo "<b>". $lrow->sh_name. "   </b> " ;
                         echo "</td>";
-                        echo "<td align=right>";
+                        echo "<td style='text-align:right;'>";
                                 echo  ${"d".$lrow->sh_id};
                                 $ltot=$ltot +${"d".$lrow->sh_id};
 //                              echo "<br>";

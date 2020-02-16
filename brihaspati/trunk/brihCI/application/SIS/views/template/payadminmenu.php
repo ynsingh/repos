@@ -144,7 +144,31 @@ echo "<ul class=\"sf-menu\" >";
                                         echo "<li>";
                                                 echo anchor('setup3redesign/salaryprocess', 'Salary Processing', array('title' => 'Salary Processing'));
                                         echo "</li>";
-                                        
+                                        echo "<li>";
+                                                echo anchor('setup3redesign/unlocksalary', 'Unlock Salary ', array('title' => 'Unlock Salary'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo "<a href=" . ">Report</a>";
+                                                echo "<ul>";
+                                                        echo "<li>";
+                                                                echo anchor('payrollreport/bulkSalaryslip', 'Salary Slip ', array('title' => 'Salary Slip'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('payrollreport/deptAbstract', 'Dept. Wise Abstract ', array('title' => 'Dept. Wise Abstract'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('payrollreport/ddoAbstract', 'DDO Wise Abstract ', array('title' => 'DDO Wise Abstract'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('payrollreport/bankStmtReport', 'DDO Wise Schedule-Bank Statement ', array('title' => 'DDO Wise Schedule-Bank Statement'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('payrollreport/allSchedule', 'DDO Wise Schedule ', array('title' => 'DDO Wise Schedule'));
+                                                        echo "</li>";
+
+                                                echo "</ul>";
+                                        echo "</li>";
+ 
                                 echo "</ul>";
 			echo "</li>";
 			echo "<li>";

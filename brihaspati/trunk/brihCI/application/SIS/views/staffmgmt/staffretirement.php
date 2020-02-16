@@ -234,7 +234,7 @@
                     </select> 
                     
                 </td>
-                <td><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
+                <td><br><input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/></td>
             </tr>
             </table>
             <?php if($search =='Search'):?>

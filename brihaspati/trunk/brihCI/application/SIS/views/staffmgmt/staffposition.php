@@ -233,7 +233,7 @@
                      <!-- <option value="All" >All</option> -->
                     </select>
                <!-- </td>-->
-                <td>
+                <td><br>
                     <input type="submit" name="filter" id="crits" value="Search"  onClick="return verify()"/>
                 </td>
             </tr>

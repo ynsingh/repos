@@ -220,6 +220,14 @@ public function performance_profile() {
 	$whorder = 'sppd_id desc';
 	$emp_data['empprojdata'] = $this->sismodel->get_orderlistspficemore('staff_perform_project_data',$selectfield,$whdata,$whorder);	
 
+	$whdata = array ('spsgd_empid' => $emp_id);
+	$whorder = 'spsgd_id desc';
+	$emp_data['empstuguidata'] = $this->sismodel->get_orderlistspficemore('staff_perform_stugui_data',$selectfield,$whdata,$whorder);	
+
+	$whdata = array ('spgld_empid' => $emp_id);
+	$whorder = 'spgld_id desc';
+	$emp_data['empguestlectdata'] = $this->sismodel->get_orderlistspficemore('staff_perform_guest_lect_data',$selectfield,$whdata,$whorder);	
+
         $this->load->view('empmgmt/performance_profile',$emp_data);
   }
 
@@ -803,7 +811,6 @@ public function disciplin_profile() {
 		$this->load->view('empmgmt/add_pubdata');
 	}
 
-
 	public function add_stadata($empid) {
         	$this->roleid=$this->session->userdata('id_role');
         	$this->emp_id = $empid;
@@ -1067,6 +1074,121 @@ public function disciplin_profile() {
 		$this->load->view('empmgmt/add_projdata');
 	}
  
+	public function add_stuguidata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addstuguidata'])) {
+			//form validation
+            		$this->form_validation->set_rules('degree','Degree','trim|required|xss_clean');
+            		$this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
+            		$this->form_validation->set_rules('stuname','Student Name','trim|xss_clean');
+            		$this->form_validation->set_rules('year','year','trim|xss_clean');
+            		$this->form_validation->set_rules('college','College','trim|xss_clean');
+            		$this->form_validation->set_rules('role','Role','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_stuguidata/'.$empid);
+            		}//formvalidation
+            		else{
+				$stuguidata = array(
+	                    		'spsgd_empid'           	=>$empid,
+	                    		'spsgd_sdegree'           =>$_POST['degree'],
+	                    		'spsgd_sdiscipine'        =>$_POST['discipline'],
+	                    		'spsgd_sname'          =>$_POST['stuname'],
+	                    		'spsgd_syear'          =>$_POST['year'],
+	                    		'spsgd_role'          =>$_POST['role'],
+	                    		'spsgd_scollege'       =>$_POST['college'],
+	                    		'spsgd_creator'       =>$this->session->userdata('username'),
+	                    		'spsgd_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$stuguidataflag=$this->sismodel->insertrec('staff_perform_stugui_data', $stuguidata) ;
+				if(!$stuguidataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff Student Guided record", "Error in insert staff Student Guided record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff Student Guided record ", "Error in insert staff Student Guided record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff Student Guided record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_stuguidata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/stuguided/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff Student Guided Data", "Staff Student Guided record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff Student Guided Data", "Staff Student Guided record insert successfully ." );
+                    			$this->session->set_flashdata('success','Student Guided Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/stuguided/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_stuguidata');
+	}
+
+	public function add_guestlectdata($empid) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$this->emp_id = $empid;
+		if(isset($_POST['addguestlectdata'])) {
+			//form validation
+            		$this->form_validation->set_rules('guestlecttitle','Guest lecture Title','trim|required|xss_clean');
+            		$this->form_validation->set_rules('month','Month','trim|xss_clean');
+            		$this->form_validation->set_rules('details','Details','trim|xss_clean');
+            		$this->form_validation->set_rules('year','year','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/add_guestlectdata/'.$empid);
+            		}//formvalidation
+            		else{
+				$guestlectdata = array(
+	                    		'spgld_empid'           	=>$empid,
+	                    		'spgld_gtitle'           =>$_POST['guestlecttitle'],
+	                    		'spgld_month'        =>$_POST['month'],
+	                    		'spgld_year'          =>$_POST['year'],
+	                    		'spgld_details'          =>$_POST['details'],
+	                    		'spgld_creator'       =>$this->session->userdata('username'),
+	                    		'spgld_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$guestlectdataflag=$this->sismodel->insertrec('staff_perform_guest_lect_data', $guestlectdata) ;
+				if(!$guestlectdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in insert staff Guest Lecture record", "Error in insert staff Guest Lecture record." );
+                    			$this->logger->write_dblogmessage("error","Error in insert staff Guest Lecture record ", "Error in insert staff Guest Lecture record" );
+                    			$this->session->set_flashdata('err_message','Error in insert staff Guest Lecture record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/add_guestlectdata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/guestlect/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Add Staff Guest Lecture Data", "Staff Guest Lecture record insert successfully." );
+                    			$this->logger->write_dblogmessage("insert","Add Staff Guest Lecture Data", "Staff Guest Lecture record insert successfully ." );
+                    			$this->session->set_flashdata('success','Guest Lecture Data insert successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/guestlect/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/add_guestlectdata');
+	}
     /***********************************Start Add service detail******************************************/
     public function add_servicedata($empid) {
         $this->roleid=$this->session->userdata('id_role');
@@ -1106,10 +1228,21 @@ public function disciplin_profile() {
 
             if($this->form_validation->run() == FALSE){
                 
-                redirect('empmgmt/add_sevicedata');
+                redirect('empmgmt/add_servicedata/'.$empid);
             }//formvalidation
             else{
-		 $name='';
+		$date2=$this->input->post('Datefrom');
+		$date1=$this->input->post('Dateto');
+		$date3=date('Y-m-d');
+		$datefrom = strtotime($date1); 
+		$dateto = strtotime($date2); 
+		$datec=strtotime($date3);
+		if(($datefrom > $datec)||($dateto > $datec)){
+			$this->session->set_flashdata('err_message','Error in insert staff service record because you are choosing wrong date');
+			redirect('empmgmt/add_servicedata/'.$empid);
+			
+		}else{
+		$name='';
                 if(!empty($_FILES['userfile']['name'])){
 
                     $newFileName = $_FILES['userfile']['name'];
@@ -1223,6 +1356,7 @@ public function disciplin_profile() {
                     }
                                        
                 }
+		}//date check with current date
             }//else
            
         }//ifpost button
@@ -1459,7 +1593,801 @@ public function disciplin_profile() {
   		endforeach;
     }
 
-    /*get employee service detail*/
+    /****************************  START UPDATE DATA *************************/
+    
+    	public function edit_pubdata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+	        $data['id'] = $id;
+        	$data['emppubdata'] = $this->sismodel->get_listrow('staff_pub_data','spbd_id',$id)->row();
+	        $this->load->view('empmgmt/edit_pubdata',$data);
+    	}
+
+	public function update_pubdata($id) {		
+        	$this->roleid=$this->session->userdata('id_role');
+        	$emppubdata = $this->sismodel->get_listrow('staff_pub_data','spbd_id',$id)->row();
+        
+		if(isset($_POST['editpubdata'])) {
+			//form validation
+            		$this->form_validation->set_rules('prgtype','Publication Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('prgtitle','Title','trim|xss_clean');
+            		$this->form_validation->set_rules('author','Author','trim|xss_clean');
+            		$this->form_validation->set_rules('authtype','Author Type','trim|xss_clean');
+            		$this->form_validation->set_rules('publevel','Publication Level','trim|xss_clean');
+            		$this->form_validation->set_rules('issn','ISSN','trim|xss_clean');
+            		$this->form_validation->set_rules('month','Month','trim|xss_clean');
+            		$this->form_validation->set_rules('year','Year','trim|xss_clean');
+            		$this->form_validation->set_rules('venue','Venue','trim|xss_clean');
+            		$this->form_validation->set_rules('conf','Conference','trim|xss_clean');
+            		$this->form_validation->set_rules('jmoption','JM Option','trim|xss_clean');
+            		$this->form_validation->set_rules('userrating','User Rating','trim|xss_clean');
+            		$this->form_validation->set_rules('publisher','Publisher','trim|xss_clean');
+            		$this->form_validation->set_rules('publang','Language','trim|xss_clean');
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/edit_pubdata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_pub_data','spbd_empid','spbd_id',$id)->spbd_empid;
+				$prgtype = $this->input->post('prgtype', TRUE);
+				$prgtitle = $this->input->post('prgtitle', TRUE);
+				$author = $this->input->post('author', TRUE);
+				$authtype = $this->input->post('authtype', TRUE);
+				$conf = $this->input->post('conf', TRUE);
+				$issn = $this->input->post('issn', TRUE);
+				$userrating = $this->input->post('userrating', TRUE);
+				$publevel = $this->input->post('publevel', TRUE);
+				$venue = $this->input->post('venue', TRUE);
+				$publisher = $this->input->post('publisher', TRUE);
+				$publang = $this->input->post('publang', TRUE);
+				$jmoption = $this->input->post('jmoption', TRUE);
+				$month = $this->input->post('month', TRUE);
+				$year = $this->input->post('year', TRUE);
+
+		                $logmessage = "";
+                		if($emppubdata->spbd_pubtype != $prgtype)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_pubtype. " changed by " .$prgtype;
+                		if($emppubdata->spbd_title != $prgtitle)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_title. " changed by " .$prgtitle;
+                		if($emppubdata->spbd_authors != $author)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_authors. " changed by " .$author;
+                		if($emppubdata->spbd_authortype != $authtype)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_authortype. " changed by " .$authtype;
+                		if($emppubdata->spbd_journalname != $conf)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_journalname. " changed by " .$conf;
+                		if($emppubdata->spbd_issnno != $issn)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_issnno. " changed by " .$issn;
+                		if($emppubdata->spbd_metricvalue != $userrating)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_metricvalue. " changed by " .$userrating;
+                		if($emppubdata->spbd_publevel != $publevel)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_publevel. " changed by " .$publevel;
+                		if($emppubdata->spbd_progrmvenue != $venue)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_progrmvenue. " changed by " .$venue;
+                		if($emppubdata->spbd_publishername != $publisher)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_publishername. " changed by " .$publisher;
+                		if($emppubdata->spbd_language != $publang)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_language. " changed by " .$publang;
+                		if($emppubdata->spbd_metrictype != $jmoption)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_metrictype. " changed by " .$jmoption;
+                		if($emppubdata->spbd_month != $month)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_month. " changed by " .$month;
+                		if($emppubdata->spbd_year != $year)
+		                	$logmessage =$logmessage. "Edit Staff Publication Data " .$emppubdata->spbd_year. " changed by " .$year;
+
+				$pubdataar = array(
+	                    		'spbda_spbdid'            =>$id,
+	                    		'spbda_empid'            =>$empid,
+	                    		'spbda_pubtype'            =>$emppubdata->spbd_pubtype,
+	                    		'spbda_title'         =>$emppubdata->spbd_title,
+	                    		'spbda_authors'         =>$emppubdata->spbd_authors,
+	                    		'spbda_authortype'         =>$emppubdata->spbd_authortype,
+	                    		'spbda_journalname'         =>$emppubdata->spbd_journalname,
+	                    		'spbda_month'         =>$emppubdata->spbd_month,
+	                    		'spbda_year'         =>$emppubdata->spbd_year,
+	                    		'spbda_issnno'         =>$emppubdata->spbd_issnno,
+	                    		'spbda_metrictype'         =>$emppubdata->spbd_metrictype,
+	                    		'spbda_metricvalue'         =>$emppubdata->spbd_metricvalue,
+	                    		'spbda_publevel'         =>$emppubdata->spbd_publevel,
+	                    		'spbda_progrmvenue'         =>$emppubdata->spbd_progrmvenue,
+	                    		'spbda_publishername'         =>$emppubdata->spbd_publishername,
+	                    		'spbda_language'         =>$emppubdata->spbd_language,
+	                    		'spbda_creatorname'        =>$this->session->userdata('username'),
+	                    		'spbda_creationdate'       =>date('Y-m-d'),
+				);
+				$pubdataflagar=$this->sismodel->insertrec('staff_pub_data_archive', $pubdataar) ;
+
+				$pubdata = array(
+	                    		'spbd_pubtype'            =>$prgtype,
+	                    		'spbd_title'         =>$prgtitle,
+	                    		'spbd_authors'         =>$author,
+	                    		'spbd_authortype'         =>$authtype,
+	                    		'spbd_journalname'         =>$conf,
+	                    		'spbd_month'         =>$month,
+	                    		'spbd_year'         =>$year,
+	                    		'spbd_issnno'         =>$issn,
+	                    		'spbd_metrictype'         =>$jmoption,
+	                    		'spbd_metricvalue'         =>$userrating,
+	                    		'spbd_publevel'         =>$publevel,
+	                    		'spbd_progrmvenue'         =>$venue,
+	                    		'spbd_publishername'         =>$publisher,
+	                    		'spbd_language'         =>$publang,
+	                    		'spbd_modifiername'        =>$this->session->userdata('username'),
+	                    		'spbd_modifidate'       =>date('Y-m-d'),
+				);
+				$pubdataflag=$this->sismodel->updaterec('staff_pub_data', $pubdata,'spbd_id',$id) ;
+				if(!$pubdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in Update staff Publication record", "Error in update staff Publication record." );
+                    			$this->logger->write_dblogmessage("error","Error in Update staff Publication record ", "Error in update staff Publication record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff Publication record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/edit_pubdata/".$id);
+                    			}
+                    			else{
+						
+                        			redirect("report/performance_profile/publication/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff Publication Data", "Staff Publication record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff Publication Data", "Staff Publication record update successfully .".$logmessage );
+                    			$this->session->set_flashdata('success','Publication Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/publication/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+	}
+
+	public function update_stadata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+		$data['id']=$id;
+        	$data['empstadata'] = $this->sismodel->get_listrow('staff_training_attended','sta_id',$id)->row();
+		if(isset($_POST['editstadata'])) {
+			//form validation
+            		$this->form_validation->set_rules('prgtype','Programme Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('dsubgrp','Programme Sub Type','trim|xss_clean');
+            		$this->form_validation->set_rules('prglevel','Programme Level','trim|xss_clean');
+            		$this->form_validation->set_rules('prgtitle','Programme Title','trim|xss_clean');
+            		$this->form_validation->set_rules('duration','Duration','trim|xss_clean');
+            		$this->form_validation->set_rules('fdate','From Date','trim|xss_clean');
+            		$this->form_validation->set_rules('todate','To Date','trim|xss_clean');
+            		$this->form_validation->set_rules('venue','Venue','trim|xss_clean');
+            		$this->form_validation->set_rules('oby','Organised By','trim|xss_clean');
+            		$this->form_validation->set_rules('sby','Sponsored By','trim|xss_clean');
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/update_stadata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_training_attended','sta_empid','sta_id',$id)->sta_empid;
+				$prgtype = $this->input->post('prgtype', TRUE);
+				$dsubgrp = $this->input->post('dsubgrp', TRUE);
+				$prglevel = $this->input->post('prglevel', TRUE);
+				$prgtitle = $this->input->post('prgtitle', TRUE);
+				$duration = $this->input->post('duration', TRUE);
+				$fdate = $this->input->post('fdate', TRUE);
+				$todate = $this->input->post('todate', TRUE);
+				$venue = $this->input->post('venue', TRUE);
+				$oby = $this->input->post('oby', TRUE);
+				$sby = $this->input->post('sby', TRUE);
+
+		                $logmessage = "";
+                		if($data['empstadata']->sta_prgtype != $prgtype)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgtype. " changed by " .$prgtype;
+                		if($data['empstadata']->sta_prgsubtype != $dsubgrp)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgsubtype. " changed by " .$dsubgrp;
+                		if($data['empstadata']->sta_prglevel != $prglevel)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prglevel. " changed by " .$prglevel;
+                		if($data['empstadata']->sta_prgtitle != $prgtitle)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgtitle. " changed by " .$prgtitle;
+                		if($data['empstadata']->sta_prgduration != $duration)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgduration. " changed by " .$duration;
+                		if($data['empstadata']->sta_prgfrmdate != $fdate)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgfrmdate. " changed by " .$fdate;
+                		if($data['empstadata']->sta_prgtodate != $todate)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgtodate. " changed by " .$todate;
+                		if($data['empstadata']->sta_prgvenue != $venue)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgvenue. " changed by " .$venue;
+                		if($data['empstadata']->sta_prgorganisedby != $oby)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_prgorganisedby. " changed by " .$oby;
+                		if($data['empstadata']->sta_sponceredby != $sby)
+		                	$logmessage =$logmessage. "Edit Staff Training Attended  Data " .$data['empstadata']->sta_sponceredby. " changed by " .$sby;
+
+				$stadataar = array(
+					'staa_staid'		=>$id,
+					'staa_empid'		=>$empid,
+	                    		'staa_prgtype'            =>$data['empstadata']->sta_prgtype,
+	                    		'staa_prgsubtype'         =>$data['empstadata']->sta_prgsubtype,
+	                    		'staa_prglevel'           =>$data['empstadata']->sta_prglevel,
+	                    		'staa_prgtitle'           =>$data['empstadata']->sta_prgtitle,
+	                    		'staa_prgduration'        =>$data['empstadata']->sta_prgduration,
+	                    		'staa_prgfrmdate'         =>$data['empstadata']->sta_prgfrmdate,
+	                    		'staa_prgtodate'          =>$data['empstadata']->sta_prgtodate,
+	                    		'staa_prgvenue'           =>$data['empstadata']->sta_prgvenue,
+	                    		'staa_prgorganisedby'     =>$data['empstadata']->sta_prgorganisedby,
+	                    		'staa_sponceredby'        =>$data['empstadata']->sta_sponceredby,
+	                    		'staa_creatorname'        =>$this->session->userdata('username'),
+	                    		'staa_creationdate'       =>date('Y-m-d'),
+				);
+				$stadataflagar=$this->sismodel->insertrec('staff_training_attended_archive', $stadataar) ;
+
+				$stadata = array(
+	                    		'sta_prgtype'            =>$prgtype,
+	                    		'sta_prgsubtype'         =>$dsubgrp,
+	                    		'sta_prglevel'           =>$prglevel,
+	                    		'sta_prgtitle'           =>$prgtitle,
+	                    		'sta_prgduration'        =>$duration,
+	                    		'sta_prgfrmdate'         =>$fdate,
+	                    		'sta_prgtodate'          =>$todate,
+	                    		'sta_prgvenue'           =>$venue,
+	                    		'sta_prgorganisedby'     =>$oby,
+	                    		'sta_sponceredby'        =>$sby,
+	                    		'sta_modifiername'        =>$this->session->userdata('username'),
+	                    		'sta_modifierdate'       =>date('Y-m-d'),
+				);
+				$stadataflag=$this->sismodel->updaterec('staff_training_attended', $stadata,'sta_id',$id) ;
+				if(!$stadataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in update staff sta record", "Error in update staff sta record." );
+                    			$this->logger->write_dblogmessage("error","Error in update staff sta record ", "Error in update staff sta record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff sta record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/update_stadata");
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/trainingattend/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff STA Data", "Staff STA record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff STA Data", "Staff STA record update successfully .".$logmessage );
+                    			$this->session->set_flashdata('success','STA Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/trainingattend/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/edit_stadata',$data);
+	}
+
+	public function update_stodata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$data['id'] = $id;
+		$data['empstodata'] = $this->sismodel->get_listrow('staff_training_organised','sto_id',$id)->row();
+		if(isset($_POST['editstodata'])) {
+			//form validation
+            		$this->form_validation->set_rules('prgtype','Programme Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('dsubgrp','Programme Sub Type','trim|xss_clean');
+            		$this->form_validation->set_rules('prglevel','Programme Level','trim|xss_clean');
+            		$this->form_validation->set_rules('prgtitle','Programme Title','trim|xss_clean');
+            		$this->form_validation->set_rules('duration','Duration','trim|xss_clean');
+            		$this->form_validation->set_rules('fdate','From Date','trim|xss_clean');
+            		$this->form_validation->set_rules('todate','To Date','trim|xss_clean');
+            		$this->form_validation->set_rules('venue','Venue','trim|xss_clean');
+//            		$this->form_validation->set_rules('oby','Organised By','trim|xss_clean');
+            		$this->form_validation->set_rules('sby','Sponsored By','trim|xss_clean');
+            		$this->form_validation->set_rules('capacity','Capacity','trim|xss_clean');
+            		$this->form_validation->set_rules('partno','No of Participant','trim|xss_clean');
+            		$this->form_validation->set_rules('naturep','Nature Of Participant','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/update_stodata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_training_organised','sto_empid','sto_id',$id)->sto_empid;
+				$prgtype = $this->input->post('prgtype', TRUE);
+				$dsubgrp = $this->input->post('dsubgrp', TRUE);
+				$prglevel = $this->input->post('prglevel', TRUE);
+				$prgtitle = $this->input->post('prgtitle', TRUE);
+				$duration = $this->input->post('duration', TRUE);
+				$fdate = $this->input->post('fdate', TRUE);
+				$todate = $this->input->post('todate', TRUE);
+				$venue = $this->input->post('venue', TRUE);
+				$sby = $this->input->post('sby', TRUE);
+				$capacity = $this->input->post('capacity', TRUE);
+				$partno = $this->input->post('partno', TRUE);
+				$naturep = $this->input->post('naturep', TRUE);
+
+		                $logmessage = "";
+                		if($data['empstodata']->sto_prgtype != $prgtype)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgtype. " changed by " .$prgtype;
+                		if($data['empstodata']->sto_prgsubtype != $dsubgrp)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgsubtype. " changed by " .$dsubgrp;
+                		if($data['empstodata']->sto_prglevel != $prglevel)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prglevel. " changed by " .$prglevel;
+                		if($data['empstodata']->sto_prgtitle != $prgtitle)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgtitle. " changed by " .$prgtitle;
+                		if($data['empstodata']->sto_prgduration != $duration)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgduration. " changed by " .$duration;
+                		if($data['empstodata']->sto_prgfrmdate != $fdate)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgfrmdate. " changed by " .$fdate;
+                		if($data['empstodata']->sto_prgtodate != $todate)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgtodate. " changed by " .$todate;
+                		if($data['empstodata']->sto_prgvenue != $venue)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_prgvenue. " changed by " .$venue;
+                		if($data['empstodata']->sto_sponceredby != $sby)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_sponceredby. " changed by " .$sby;
+                		if($data['empstodata']->sto_capacity != $capacity)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_capacity. " changed by " .$capacity;
+                		if($data['empstodata']->sto_participantno != $partno)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_participantno. " changed by " .$partno;
+                		if($data['empstodata']->sto_participantnature != $naturep)
+		                	$logmessage =$logmessage. "Edit Staff Training organised  Data " .$data['empstodata']->sto_participantnature. " changed by " .$naturep;
+
+				$stodataar = array(
+	                    		'stoa_stoid'           =>$id,
+	                    		'stoa_empid'           =>$empid,
+	                    		'stoa_prgtype'           =>$data['empstodata']->sto_prgtype,
+	                    		'stoa_prgsubtype'        =>$data['empstodata']->sto_prgsubtype,
+	                    		'stoa_prglevel'          =>$data['empstodata']->sto_prglevel,
+	                    		'stoa_prgtitle'          =>$data['empstodata']->sto_prgtitle,
+	                    		'stoa_prgduration'       =>$data['empstodata']->sto_prgduration,
+	                    		'stoa_prgfrmdate'        =>$data['empstodata']->sto_prgfrmdate,
+	                    		'stoa_prgtodate'         =>$data['empstodata']->sto_prgtodate,
+	                    		'stoa_prgvenue'          =>$data['empstodata']->sto_prgvenue,
+	                    		'stoa_sponceredby'       =>$data['empstodata']->sto_sponceredby,
+					'stoa_capacity' 		=> $data['empstodata']->sto_capacity,
+					'stoa_participantno' 	=>$data['empstodata']->sto_participantno,
+					'stoa_participantnature' =>$data['empstodata']->sto_participantnature,
+	                    		'stoa_creatorname'       =>$this->session->userdata('username'),
+	                    		'stoa_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$stodataflagar=$this->sismodel->insertrec('staff_training_organised_archive', $stodataar) ;
+
+				$stodata = array(
+	                    		'sto_prgtype'           =>$prgtype,
+	                    		'sto_prgsubtype'        =>$dsubgrp,
+	                    		'sto_prglevel'          =>$prglevel,
+	                    		'sto_prgtitle'          =>$prgtitle,
+	                    		'sto_prgduration'       =>$duration,
+	                    		'sto_prgfrmdate'        =>$fdate,
+	                    		'sto_prgtodate'         =>$todate,
+	                    		'sto_prgvenue'          =>$venue,
+	                    		'sto_sponceredby'       =>$sby,
+					'sto_capacity' 		=> $capacity,
+					'sto_participantno' 	=>$partno,
+					'sto_participantnature' =>$naturep,
+	                    		'sto_modifiername'       =>$this->session->userdata('username'),
+	                    		'sto_modifierdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$stodataflag=$this->sismodel->updaterec('staff_training_organised', $stodata,'sto_id',$id) ;
+				if(!$stodataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in update staff sto record", "Error in update staff sto record." );
+                    			$this->logger->write_dblogmessage("error","Error in update staff sto record ", "Error in update staff sto record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff sto record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/update_stodata/".$id);
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/trainingorgna/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff STO Data", "Staff STO record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff STO Data", "Staff STO record update successfully .".$logmessage );
+                    			$this->session->set_flashdata('success','STO Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/trainingorgna/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/edit_stodata',$data);
+	}
+ 
+ 
+	public function update_awarddata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$data['id'] = $id;
+		$data['empawarddata'] = $this->sismodel->get_listrow('staff_perform_award_data','spad_id',$id)->row();
+		if(isset($_POST['editawarddata'])) {
+			//form validation
+            		$this->form_validation->set_rules('awardtype','Award Type','trim|required|xss_clean');
+            		$this->form_validation->set_rules('awardedby','Awarded By','trim|xss_clean');
+            		$this->form_validation->set_rules('awardtitle','Award  Title','trim|xss_clean');
+            		$this->form_validation->set_rules('year','year','trim|xss_clean');
+            		$this->form_validation->set_rules('details','Details','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/update_awarddata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_perform_award_data','spad_empid','spad_id',$id)->spad_empid;
+				$awardtype = $this->input->post('awardtype', TRUE);
+				$awardtitle = $this->input->post('awardtitle', TRUE);
+				$awardedby = $this->input->post('awardedby', TRUE);
+				$year = $this->input->post('year', TRUE);
+				$details = $this->input->post('details', TRUE);
+
+		                $logmessage = "";
+                		if($data['empawarddata']->spad_awardtype != $awardtype)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empawarddata']->spad_awardtype. " changed by " .$awardtype;
+                		if($data['empawarddata']->spad_awardtitle != $awardtitle)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empawarddata']->spad_awardtitle. " changed by " .$awardtitle;
+                		if($data['empawarddata']->spad_awardby != $awardedby)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empawarddata']->spad_awardby. " changed by " .$awardedby;
+                		if($data['empawarddata']->spad_year != $year)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empawarddata']->spad_year. " changed by " .$year;
+                		if($data['empawarddata']->spad_details != $details)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empawarddata']->spad_details. " changed by " .$details;
+				
+				$awarddataar = array(
+	                    		'spada_spadid'           =>$id,
+	                    		'spada_empid'           =>$empid,
+	                    		'spada_awardtype'           =>$data['empawarddata']->spad_awardtype,
+	                    		'spada_awardtitle'        =>$data['empawarddata']->spad_awardtitle,
+	                    		'spada_awardby'          =>$data['empawarddata']->spad_awardby,
+	                    		'spada_year'          =>$data['empawarddata']->spad_year,
+	                    		'spada_details'       =>$data['empawarddata']->spad_details,
+	                    		'spada_creatorname'       =>$this->session->userdata('username'),
+	                    		'spada_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$awarddataflagar=$this->sismodel->insertrec('staff_perform_award_data_archive', $awarddataar) ;
+
+				$awarddata = array(
+	                    		'spad_awardtype'           =>$awardtype,
+	                    		'spad_awardtitle'        =>$awardtitle,
+	                    		'spad_awardby'          =>$awardedby,
+	                    		'spad_year'          =>$year,
+	                    		'spad_details'       =>$details,
+	                    		'spad_modifiername'       =>$this->session->userdata('username'),
+	                    		'spad_modifidate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$awarddataflag=$this->sismodel->updaterec('staff_perform_award_data', $awarddata,'spad_id',$id) ;
+				if(!$awarddataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in update staff award record", "Error in update staff award record." );
+                    			$this->logger->write_dblogmessage("error","Error in update staff award record ", "Error in update staff award record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff award record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/update_awarddata/".$id);
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/awards/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff award Data", "Staff award record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff award Data", "Staff award record update successfully .".$logmessage );
+                    			$this->session->set_flashdata('success','award Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/awards/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/edit_awarddata',$data);
+	}
+ 
+ 
+	public function update_projdata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$data['id'] = $id;
+		$data['empprojdata'] = $this->sismodel->get_listrow('staff_perform_project_data','sppd_id',$id)->row();
+		if(isset($_POST['editprojdata'])) {
+			//form validation
+            		$this->form_validation->set_rules('projtitle','Project Title','trim|required|xss_clean');
+            		$this->form_validation->set_rules('role','Role in Project','trim|xss_clean');
+            		$this->form_validation->set_rules('fundname','Funding Agency Name','trim|xss_clean');
+            		$this->form_validation->set_rules('fundtype','Funding Agency Type','trim|xss_clean');
+            		$this->form_validation->set_rules('duration','Duration','trim|xss_clean');
+            		$this->form_validation->set_rules('budget','Budget','trim|xss_clean');
+            		$this->form_validation->set_rules('fdate','From Date','trim|xss_clean');
+            		$this->form_validation->set_rules('todate','To Date','trim|xss_clean');
+            		$this->form_validation->set_rules('remark','Remark','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/update_projdata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_perform_project_data','sppd_empid','sppd_id',$id)->sppd_empid;
+				$projtitle = $this->input->post('projtitle', TRUE);
+				$role = $this->input->post('role', TRUE);
+				$fundname = $this->input->post('fundname', TRUE);
+				$fundtype = $this->input->post('fundtype', TRUE);
+				$budget = $this->input->post('budget', TRUE);
+				$duration = $this->input->post('duration', TRUE);
+				$fdate = $this->input->post('fdate', TRUE);
+				$todate = $this->input->post('todate', TRUE);
+				$remark = $this->input->post('remark', TRUE);
+
+		                $logmessage = "";
+                		if($data['empprojdata']->sppd_ptitle != $projtitle)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_ptitle. " changed by " .$projtitle;
+                		if($data['empprojdata']->sppd_prole != $role)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_prole. " changed by " .$role;
+                		if($data['empprojdata']->sppd_pfundagency != $fundname)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_pfundagency. " changed by " .$fundname;
+                		if($data['empprojdata']->sppd_agendytype != $fundtype)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_agendytype. " changed by " .$fundtype;
+                		if($data['empprojdata']->sppd_budget != $budget)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_budget. " changed by " .$budget;
+                		if($data['empprojdata']->sppd_duration != $duration)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_duration. " changed by " .$duration;
+                		if($data['empprojdata']->sppd_fromdate != $fdate)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_fromdate. " changed by " .$fdate;
+                		if($data['empprojdata']->sppd_todate != $todate)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_todate. " changed by " .$todate;
+                		if($data['empprojdata']->sppd_remark != $remark)
+		                	$logmessage =$logmessage. "Edit Staff award_data  Data " .$data['empprojdata']->sppd_remark. " changed by " .$remark;
+
+				$projdataar = array(
+					'sppda_sppdid'		=>$id,
+					'sppda_empid'		=>$empid,
+	                    		'sppda_ptitle'           =>$data['empprojdata']->sppd_ptitle,
+	                    		'sppda_prole'           =>$data['empprojdata']->sppd_prole,
+	                    		'sppda_pfundagency'           =>$data['empprojdata']->sppd_pfundagency,
+	                    		'sppda_agendytype'           =>$data['empprojdata']->sppd_agendytype,
+	                    		'sppda_budget'           =>$data['empprojdata']->sppd_budget,
+	                    		'sppda_duration'       =>$data['empprojdata']->sppd_duration,
+	                    		'sppda_fromdate'        =>$data['empprojdata']->sppd_fromdate,
+	                    		'sppda_todate'         =>$data['empprojdata']->sppd_todate,
+	                    		'sppda_remark'           =>$data['empprojdata']->sppd_remark,
+	                    		'sppda_creatorname'           =>$this->session->userdata('username'),
+	                    		'sppda_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$projdataflagar=$this->sismodel->insertrec('staff_perform_project_data_archive', $projdataar) ;
+
+				$projdata = array(
+	                    		'sppd_ptitle'           =>$projtitle,
+	                    		'sppd_prole'           =>$role,
+	                    		'sppd_pfundagency'           =>$fundname,
+	                    		'sppd_agendytype'           =>$fundtype,
+	                    		'sppd_budget'           =>$budget,
+	                    		'sppd_duration'       =>$duration,
+	                    		'sppd_fromdate'        =>$fdate,
+	                    		'sppd_todate'         =>$todate,
+	                    		'sppd_remark'           =>$remark,
+	                    		'sppd_modifiername'           =>$this->session->userdata('username'),
+	                    		'sppd_modifidate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$projdataflag=$this->sismodel->updaterec('staff_perform_project_data', $projdata,'sppd_id',$id) ;
+				if(!$projdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in update staff project record", "Error in update staff project record." );
+                    			$this->logger->write_dblogmessage("error","Error in update staff project record ", "Error in update staff project record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff project record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/update_projdata/".$id);
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/projects/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff project Data", "Staff project record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff project  Data", "Staff project record update successfully ." .$logmessage);
+                    			$this->session->set_flashdata('success','Project Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/projects/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/edit_projdata',$data);
+	}
+ 
+ 
+	public function update_stuguidata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$data['id'] = $id;
+		$data['empstuguidata'] = $this->sismodel->get_listrow('staff_perform_stugui_data','spsgd_id',$id)->row();
+		if(isset($_POST['editstuguidata'])) {
+			//form validation
+            		$this->form_validation->set_rules('degree','Degree','trim|required|xss_clean');
+            		$this->form_validation->set_rules('discipline','Discipline','trim|xss_clean');
+            		$this->form_validation->set_rules('stuname','Student Name','trim|xss_clean');
+            		$this->form_validation->set_rules('year','year','trim|xss_clean');
+            		$this->form_validation->set_rules('college','College','trim|xss_clean');
+            		$this->form_validation->set_rules('role','Role','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/update_stuguidata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_perform_stugui_data','spsgd_empid','spsgd_id',$id)->spsgd_empid;
+                                $degree = $this->input->post('degree', TRUE);
+                                $discipline = $this->input->post('discipline', TRUE);
+                                $stuname = $this->input->post('stuname', TRUE);
+                                $year = $this->input->post('year', TRUE);
+                                $role = $this->input->post('role', TRUE);
+                                $college = $this->input->post('college', TRUE);
+		                
+				$logmessage = "";
+                		if($data['empstuguidata']->spsgd_sdegree != $degree)
+		                	$logmessage =$logmessage. "Edit Staff Student Guided  Data " .$data['empstuguidata']->spsgd_sdegree. " changed by " .$degree;
+                		if($data['empstuguidata']->spsgd_sdiscipine != $discipline)
+		                	$logmessage =$logmessage. "Edit Staff Student Guided  Data " .$data['empstuguidata']->spsgd_sdiscipine. " changed by " .$discipline;
+                		if($data['empstuguidata']->spsgd_sname != $stuname)
+		                	$logmessage =$logmessage. "Edit Staff Student Guided  Data " .$data['empstuguidata']->spsgd_sname. " changed by " .$stuname;
+                		if($data['empstuguidata']->spsgd_syear != $year)
+		                	$logmessage =$logmessage. "Edit Staff Student Guided  Data " .$data['empstuguidata']->spsgd_syear. " changed by " .$year;
+                		if($data['empstuguidata']->spsgd_role != $role)
+		                	$logmessage =$logmessage. "Edit Staff Student Guided  Data " .$data['empstuguidata']->spsgd_role. " changed by " .$role;
+                		if($data['empstuguidata']->spsgd_scollege != $college)
+		                	$logmessage =$logmessage. "Edit Staff Student Guided  Data " .$data['empstuguidata']->spsgd_scollege. " changed by " .$college;
+
+				$stuguidataar = array(
+					'spsgda_spsgdid'                  =>$id,
+	                    		'spsgda_empid'           	=>$empid,
+	                    		'spsgda_sdegree'           =>$data['empstuguidata']->spsgd_sdegree,
+	                    		'spsgda_sdiscipine'        =>$data['empstuguidata']->spsgd_sdiscipine,
+	                    		'spsgda_sname'          =>$data['empstuguidata']->spsgd_sname,
+	                    		'spsgda_syear'          =>$data['empstuguidata']->spsgd_syear,
+	                    		'spsgda_role'          =>$data['empstuguidata']->spsgd_role,
+	                    		'spsgda_scollege'       =>$data['empstuguidata']->spsgd_scollege,
+	                    		'spsgda_creator'       =>$this->session->userdata('username'),
+	                    		'spsgda_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$stuguidataflagar=$this->sismodel->insertrec('staff_perform_stugui_data_archive', $stuguidataar) ;
+
+				$stuguidata = array(
+	                    		'spsgd_sdegree'           =>$degree,
+	                    		'spsgd_sdiscipine'        =>$discipline,
+	                    		'spsgd_sname'          =>$stuname,
+	                    		'spsgd_syear'          =>$year,
+	                    		'spsgd_role'          =>$role,
+	                    		'spsgd_scollege'       =>$college,
+	                    		'spsgd_modifier'       =>$this->session->userdata('username'),
+	                    		'spsgd_modidate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$stuguidataflag=$this->sismodel->updaterec('staff_perform_stugui_data', $stuguidata,'spsgd_id',$id) ;
+				if(!$stuguidataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in update staff Student Guided record", "Error in update staff Student Guided record." );
+                    			$this->logger->write_dblogmessage("error","Error in update staff Student Guided record ", "Error in update staff Student Guided record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff Student Guided record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/update_stuguidata/".$id);
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/stuguided/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff Student Guided Data", "Staff Student Guided record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff Student Guided Data", "Staff Student Guided record update successfully .".$logmessage );
+                    			$this->session->set_flashdata('success','Student Guided Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/stuguided/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/edit_stuguidata',$data);
+	}
+
+	public function update_guestlectdata($id) {
+        	$this->roleid=$this->session->userdata('id_role');
+        	$data['id'] = $id;
+		$data['empguestlectdata'] = $this->sismodel->get_listrow('staff_perform_guest_lect_data','spgld_id',$id)->row();
+		if(isset($_POST['editguestlectdata'])) {
+			//form validation
+            		$this->form_validation->set_rules('guestlecttitle','Guest lecture Title','trim|required|xss_clean');
+            		$this->form_validation->set_rules('month','Month','trim|xss_clean');
+            		$this->form_validation->set_rules('details','Details','trim|xss_clean');
+            		$this->form_validation->set_rules('year','year','trim|xss_clean');
+
+			if($this->form_validation->run() == FALSE){
+                		redirect('empmgmt/update_guestlectdata/'.$id);
+            		}//formvalidation
+            		else{
+				$empid = $this->sismodel->get_listspfic1('staff_perform_guest_lect_data','spgld_empid','spgld_id',$id)->spgld_empid;
+                                $guestlecttitle = $this->input->post('guestlecttitle', TRUE);
+                                $month = $this->input->post('month', TRUE);
+                                $year = $this->input->post('year', TRUE);
+                                $details = $this->input->post('details', TRUE);
+
+		                $logmessage = "";
+                		if($data['empguestlectdata']->spgld_gtitle != $guestlecttitle)
+		                	$logmessage =$logmessage. "Edit Staff Guest Lecture  Data " .$data['empguestlectdata']->spgld_gtitle. " changed by " .$guestlecttitle;
+                		if($data['empguestlectdata']->spgld_month != $month)
+		                	$logmessage =$logmessage. "Edit Staff Guest Lecture  Data " .$data['empguestlectdata']->spgld_month. " changed by " .$month;
+                		if($data['empguestlectdata']->spgld_year != $year)
+		                	$logmessage =$logmessage. "Edit Staff Guest Lecture  Data " .$data['empguestlectdata']->spgld_year. " changed by " .$year;
+                		if($data['empguestlectdata']->spgld_details != $details)
+		                	$logmessage =$logmessage. "Edit Staff Guest Lecture  Data " .$data['empguestlectdata']->spgld_details. " changed by " .$details;
+
+				$guestlectdataar = array(
+					'spglda_spgldid' 	=>$id,
+	                    		'spglda_empid'           	=>$empid,
+	                    		'spglda_gtitle'           =>$data['empguestlectdata']->spgld_gtitle,
+	                    		'spglda_month'        =>$data['empguestlectdata']->spgld_month,
+	                    		'spglda_year'          =>$data['empguestlectdata']->spgld_year,
+	                    		'spglda_details'          =>$data['empguestlectdata']->spgld_details,
+	                    		'spglda_creator'       =>$this->session->userdata('username'),
+	                    		'spglda_creationdate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$guestlectdataflagar=$this->sismodel->insertrec('staff_perform_guest_lect_data_archive', $guestlectdataar) ;
+
+				$guestlectdata = array(
+	                    		'spgld_gtitle'           =>$guestlecttitle,
+	                    		'spgld_month'        =>$month,
+	                    		'spgld_year'          =>$year,
+	                    		'spgld_details'          =>$details,
+	                    		'spgld_modifier'       =>$this->session->userdata('username'),
+	                    		'spgld_modidate'      =>date('Y-m-d'),
+				);
+	                    		//'sto_prgorganisedby'           =>$_POST['oby'],
+				$guestlectdataflag=$this->sismodel->updaterec('staff_perform_guest_lect_data', $guestlectdata,'spgld_id',$id) ;
+				if(!$guestlectdataflag)
+                		{
+                    			$this->logger->write_logmessage("error","Error in update staff Guest Lecture record", "Error in update staff Guest Lecture record." );
+                    			$this->logger->write_dblogmessage("error","Error in update staff Guest Lecture record ", "Error in update staff Guest Lecture record" );
+                    			$this->session->set_flashdata('err_message','Error in update staff Guest Lecture record ');
+					if($this->roleid == 4){
+	                        		redirect("empmgmt/update_guestlectdata/".$id);
+                    			}
+                    			else{
+                        			redirect("report/performance_profile/guestlect/".$empid);
+                    			}
+                		}
+                		else{
+//                    			$this->roleid=$this->session->userdata('id_role');
+                    			$empcode=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+                    			$empemail=$this->sismodel->get_listspfic1('employee_master','emp_email','emp_id',$empid)->emp_email;
+                    			$this->logger->write_logmessage("insert","Update Staff Guest Lecture Data", "Staff Guest Lecture record update successfully.".$logmessage );
+                    			$this->logger->write_dblogmessage("insert","Update Staff Guest Lecture Data", "Staff Guest Lecture record update successfully .".$logmessage );
+                    			$this->session->set_flashdata('success','Guest Lecture Data update successfully.'."["." "."Employee PF NO:"." ".$empcode." and "."Username:"." ".$empemail." "."]");
+                    			if($this->roleid == 4){
+                        			redirect('empmgmt/viewempprofile');
+                    			}
+                    			else{
+                        			redirect('report/performance_profile/guestlect/'.$empid);
+                    			}
+				}
+			}//end form validation
+		}//end isset		
+		$this->load->view('empmgmt/edit_guestlectdata',$data);
+	}
+
+/*get employee service detail*/
     
     public function edit_servicedata($id) {
         $this->roleid=$this->session->userdata('id_role');
@@ -1509,9 +2437,21 @@ public function disciplin_profile() {
 
             if($this->form_validation->run() == FALSE){
                 
-                redirect('empmgmt/edit_sevicedata');
+                redirect('empmgmt/edit_servicedata/'.$id);
             }//formvalidation
             else{
+		$date2=$this->input->post('Datefrom');
+                $date1=$this->input->post('Dateto');
+                $date3=date('Y-m-d');
+                $datefrom = strtotime($date1);
+                $dateto = strtotime($date2);
+                $datec=strtotime($date3);
+                if(($datefrom > $datec)||($dateto > $datec)){
+                        $this->session->set_flashdata('err_message','Error in update staff service record because you are choosing wrong date');
+                        redirect('empmgmt/edit_servicedata/'.$id);
+
+                }else{
+
                 $campus = $this->input->post('campus', TRUE);
 		$uocontrol=$this->input->post('uocontrol', TRUE);
                 $department=$this->input->post('department', TRUE);
@@ -1678,7 +2618,7 @@ public function disciplin_profile() {
                     }
                                         
                 }
-                
+                }//date check with current date
             }//formtrue
          
         }   
@@ -4081,7 +5021,7 @@ public function add_addionalassigndata($empid) {
         }//closer 
 
    	  /**This function Delete records */
-        public function delete_awardata($id) {
+        public function delete_awarddata($id) {
                 $roleid=$this->session->userdata('id_role');
                 $usrid=$this->session->userdata('id_user');
                 $this->emp_id=$this->sismodel->get_listspfic1('staff_perform_award_data', 'spad_empid', 'spad_id',$id)->spad_empid;
@@ -4160,6 +5100,85 @@ public function add_addionalassigndata($empid) {
                 $this->load->view('report/performance_profile/projects/'.$this->emp_id);
 	}
 
+   	  /**This function Delete records */
+        public function delete_stuguidata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_perform_stugui_data', 'spsgd_empid', 'spsgd_id',$id)->spsgd_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_perform_stugui_data','spsgd_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff_Student Guided details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_Student Guided_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_Student Guided_details record - ');
+                                redirect('report/performance_profile/stuguided/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_Student Guided_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_Student Guided_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Student Guided Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/stuguided/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_Student Guided_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff Student Guided_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee Student Guided record.' );
+                                redirect('report/performance_profile/stuguided/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/stuguided/'.$this->emp_id);
+	}
+
+   	  /**This function Delete records */
+        public function delete_guestlectdata($id) {
+                $roleid=$this->session->userdata('id_role');
+                $usrid=$this->session->userdata('id_user');
+                $this->emp_id=$this->sismodel->get_listspfic1('staff_perform_guest_lect_data', 'spgld_empid', 'spgld_id',$id)->spgld_empid;
+		$hflag=false;
+		if($roleid == 5){
+                	$hdept=$this->sismodel->get_listspfic1('user_role_type','deptid','userid',$this->session->userdata('id_user'))->deptid;
+			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$this->emp_id)->emp_dept_code;
+			if($hdept == $empdeptid){
+				$hflag=true;
+			}
+        	}
+
+                if(( $roleid == 1)||($hflag)){
+                        $delflag=$this->sismodel->deleterow('staff_perform_guest_lect_data','spgld_id',$id);
+                        if (! delflag   )
+                        {
+                                $this->logger->write_logmessage("delete", "Error in deleting staff Guest Lecture details record" . " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Error in deleting staff_Guest Lecture_details record" . " [id:" . $id . "]");
+                                $this->session->set_flashdata("err_message",'Error in deleting deleting staff_Guest Lecture_details record - ');
+                                redirect('report/performance_profile/guestlect/'.$this->emp_id);
+                        }
+                        else{
+                                $this->logger->write_logmessage("delete", " Deleted staff_Guest Lecture_details Record  ". " [id:" . $id . "]");
+                                $this->logger->write_dblogmessage("delete", "Deleted staff_Guest Lecture_details Record  " . " [id:" . $id . "]");
+                                $this->session->set_flashdata("success", 'Guest Lecture Record  Deleted successfully ...' );
+                                redirect('report/performance_profile/guestlect/'.$this->emp_id);
+                        }
+                }
+                else{
+                        $lemail = $this->lgnmodel->get_listspfic1('edrpuser', 'username', 'id',$usrid)->username;
+                        $this->logger->write_logmessage("delete", " User ". $lemail ." ( ".$usrid .") want to Delete staff_Guest Lecture_details Record  ". " [id:" . $id . "]");
+                        $this->logger->write_dblogmessage("delete", " User " .  $lemail ." ( ".$usrid .") want to Delete staff Guest Lecture_details Record  " . " [id:" . $id . "]");
+                        $this->session->set_flashdata("err_message", 'Sorry. You do not have the right to delete the employee Guest Lecture record.' );
+                                redirect('report/performance_profile/guestlect/'.$this->emp_id);
+                }
+                $this->load->view('report/performance_profile/guestlect/'.$this->emp_id);
+	}
+
+
 }//classcloser    
-    
-    

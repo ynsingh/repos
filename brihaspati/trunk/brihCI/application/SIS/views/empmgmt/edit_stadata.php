@@ -47,12 +47,12 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/performance_profile/trainingattend/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/performance_profile/trainingattend/'.$empstadata->sta_empid, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Add Staff Training Attended Details</b>";
+                    echo "<b>Update Staff Training Attended Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -74,15 +74,19 @@
             </td></tr>
         </table>
         <div> 
-            <form id="myform" action="<?php echo site_url('empmgmt/add_stadata/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="empid" value="<?php echo  $this->emp_id ; ?>">
+            <form id="myform" action="<?php echo site_url('empmgmt/update_stadata/'.$id);?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="empid" value="<?php echo  $empstadata->sta_empid ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Staff Training Attended Details</th></thead></tr>
+                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Update Staff Training Attended Details</th></thead></tr>
                 <tr></tr><tr></tr>
 		<tr>
 			<td>Type Of Programme<font color='Red'>*</font></td>
                         <td><select id="prgtype" name="prgtype" required style="width:350px;">
+			<?php if(!empty($empstadata->sta_prgtype)):;?>
+                            <option value="<?php echo $empstadata->sta_prgtype;?>"><?php echo $empstadata->sta_prgtype;?></option>
+                            <?php else:?>
                         <option selected="selected" disabled selected>------------- Type Of Programme ---------</option>
+                            <?php endif;?>
                         <option value="Training">Training</option>
                         <option value="Symposium">Symposium</option>
                         <option value="Conference">Conference</option>
@@ -95,7 +99,11 @@
 	<tr>
                 <td>Sub Type Of Programme<font color='Red'></font></td>
                 <td><select name="dsubgrp" style="width:350px;" id="dsubgrpid" >
+			<?php if(!empty($empstadata->sta_prgsubtype)):;?>
+                            <option value="<?php echo $empstadata->sta_prgsubtype;?>"><?php echo $empstadata->sta_prgsubtype;?></option>
+                            <?php else:?>
 		<option selected="selected" disabled selected>------------ Select Sub Type of Programme ---------</option>
+                            <?php endif;?>
                         <option value="Training">Training</option>
                         <option value="CAFT">CAFT</option>
                         <option value="Orientation">Orientation</option>
@@ -110,7 +118,11 @@
                     <td>Level Of Programme<font color='Red'></font></td>
 		    <td>
 			<select id="prglevel" name="prglevel" required style="width:350px;">
+			<?php if(!empty($empstadata->sta_prglevel)):;?>
+                            <option value="<?php echo $empstadata->sta_prglevel;?>"><?php echo $empstadata->sta_prglevel;?></option>
+                            <?php else:?>
                         <option selected="selected" disabled selected>------------- Level Of Programme ---------</option>
+                            <?php endif;?>
                         <option value="International">International</option>
                         <option value="National">National</option>
                         <option value="State">State</option>
@@ -123,50 +135,50 @@
                     <td>Title Of Programme<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="prgtitle" id="prgtitle" value="" size="40" >
+                            <input type="text" name="prgtitle" id="prgtitle" value="<?php echo $empstadata->sta_prgtitle;?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Duration in Days<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="duration" id="duration" value="" size="40" >
+                            <input type="text" name="duration" id="duration" value="<?php echo $empstadata->sta_prgduration;?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>From Date<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="fdate" id="fdate" value="" size="40" readonly>
+                            <input type="text" name="fdate" id="fdate" value="<?php echo $empstadata->sta_prgfrmdate;?>" size="40" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>To date<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="todate" id="todate" value="" size="40" readonly>
+                            <input type="text" name="todate" id="todate" value="<?php echo $empstadata->sta_prgtodate;?>" size="40" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>Venue<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="venue" id="venue" value="" size="40" >
+                            <input type="text" name="venue" id="venue" value="<?php echo  $empstadata->sta_prgvenue;?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Organised By<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="oby" id="oby" value="" size="40" >
+                            <input type="text" name="oby" id="oby" value="<?php echo $empstadata->sta_prgorganisedby;?>" size="40" >
                     </td>
                 </tr>
                 <tr>
                     <td>Sponsored By<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="sby" id="sby" value="" size="40" >
+                            <input type="text" name="sby" id="sby" value="<?php echo $empstadata->sta_sponceredby;?>" size="40" >
                     </td>
                 </tr>
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">
-                    <button name="addstadata" >Submit</button>
+                    <button name="editstadata" >Submit</button>
 		    <!--input type="reset" name="Reset" value="Clear"/-->
 			<button type="button" onclick="history.back();">Back</button>
                     </td>

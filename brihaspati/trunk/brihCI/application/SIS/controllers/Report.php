@@ -540,7 +540,7 @@ public function promotional_profile() {
         $emp_data['performancedata'] = $this->sismodel->get_listrow('Staff_Performance_Data','spd_empid',$emp_id)->row();
 
         $whdata = array ('spbd_empid' => $emp_id);
-	$whorder = 'spbd_id desc';
+	$whorder = 'spbd_pubtype asc,spbd_id desc';
 	$emp_data['emppubdata'] = $this->sismodel->get_orderlistspficemore('staff_pub_data',$selectfield,$whdata,$whorder);
 
         $whdata = array ('sta_empid' => $emp_id);
@@ -558,6 +558,15 @@ public function promotional_profile() {
 	$whdata = array ('sppd_empid' => $emp_id);
 	$whorder = 'sppd_id desc';
 	$emp_data['empprojdata'] = $this->sismodel->get_orderlistspficemore('staff_perform_project_data',$selectfield,$whdata,$whorder);
+
+	$whdata = array ('spsgd_empid' => $emp_id);
+        $whorder = 'spsgd_id desc';
+        $emp_data['empstuguidata'] = $this->sismodel->get_orderlistspficemore('staff_perform_stugui_data',$selectfield,$whdata,$whorder);
+
+        $whdata = array ('spgld_empid' => $emp_id);
+        $whorder = 'spgld_id desc';
+        $emp_data['empguestlectdata'] = $this->sismodel->get_orderlistspficemore('staff_perform_guest_lect_data',$selectfield,$whdata,$whorder);
+
 	
 	$emp_data['uoempid']=$this->getempuoid();
 	$emp_data['hodempid']=$this->getemphodid();
@@ -1666,13 +1675,14 @@ public function disciplinewiselist(){
             $this->uolt = $uoff;
             $this->year=$year;
             $this->month=$month;
-	    $this->ftyp = $strfild;
-
-	    $whdata['emp_worktype']=$wtype;
-                       
-            if($uoff !="All"){
-	    	$whdata['emp_uocid']=$uoff;
-	    }
+//	    $this->ftyp = $strfild;
+	   
+		if(!empty($wtype)){ 
+			$whdata['emp_worktype']=$wtype;
+                }    
+        	if(($uoff !="All")&&(!empty($uoff))){
+	    		$whdata['emp_uocid']=$uoff;
+	    	}
 	    $i=0;
 	    if((!empty($dept))&&($dept != "null")){
                 foreach($dept as $row){
@@ -1691,10 +1701,10 @@ public function disciplinewiselist(){
 		}
             }
 	    // for string search
-                    if((!empty($strfild))&&(!empty($strng))) {
-                        $whdata[$strfild.' LIKE ' ] ='%'.$strng.'%';
-                    }       
-//		print_r($whdata); //die();
+            if((!empty($strfild))&&(!empty($strng))) {
+                   $whdata[$strfild.' LIKE ' ] ='%'.$strng.'%';
+            }       
+//		print_r($whdata); die();
 	    if(!empty($names)){
 			$data['records']= $this->sismodel->get_orderlistspficemoreorwh('employee_master',$selectfield,$whdata,'emp_dept_code',$names,$whorder);
             }else{

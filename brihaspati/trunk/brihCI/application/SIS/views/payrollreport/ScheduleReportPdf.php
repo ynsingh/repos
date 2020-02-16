@@ -44,26 +44,34 @@
 	</style>
     </head>
     <body>
+<!--
 	 <div id="page-footer">
-              <!--  <p>Page <span class="page-number"/> of <span class="page-count"/></p>-->
-        </div>
-	<div >
+                <p>Page <span class="page-number"/> of <span class="page-count"/></p>
+        </div>-->
 	<?php
-	$totamt=0;$dtotamt=0;$ii=0;	
+/*
+	echo "<div id=\"page-header\">";
+	echo "<p>";
 	echo "<table class='TFtable'>";		
 	echo "<tr>";
 	echo "<td align=center colspan=4>";
 		echo INAME;
 	echo "</td>";
 	echo "</tr>";
+	echo "<tr align=center>";
+	echo "<td colspan=4 style='text-align:center;'>";
+	echo "<hr>";
+	$ddocode =$this->sismodel->get_listspfic1('ddo','ddo_code','ddo_name',$ddosel)->ddo_code;
+	echo "<b> DDO :</b> ".$ddosel." ( ".$ddocode. " )";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";		
+	echo "</p>";
+        echo "</div>";
+*/
+	echo "<div id=\"page-content\">";
+	$totamt=0;$dtotamt=0;$ii=0;	
 	if(!empty($ddosel)){
-		echo "<tr align=center>";
-		echo "<td colspan=4 style='text-align:center;'>";
-		echo "<hr>";
-		$ddocode =$this->sismodel->get_listspfic1('ddo','ddo_code','ddo_name',$ddosel)->ddo_code;
-		echo "<b> DDO :</b> ".$ddosel." ( ".$ddocode. " )";
-		echo "</td>";
-		echo "</tr>";
 		if(!empty($listd)){
 			$i=1;$tdept=0;$shn='';$ii=1;
 			foreach($listd as $lrow){
@@ -82,18 +90,36 @@
 						$i--;
 						echo " <b>Total Employee :</b> ". $i;
 						echo "</td>";
-						echo "<td align=right>";
+						echo "<td style='text-align:right;'>";
 					//	echo "<hr>";
 						echo "<b>Total Amount :<b>".$dtotamt;
 						echo "</td>";
 						echo "</tr>";
 						$i++;
 ?>
+					</table>
+					</p>
+					<p style="page-break-before:always;"></p>
+					
 	<!--				<div style="page-break-after:always;"/> -->
 <?php
 					}	
 				}
 				if($shn != $lshn){
+					echo "<p>";
+					echo "<table class='TFtable'>";		
+	echo "<tr>";
+	echo "<td align=center colspan=4>";
+		echo INAME;
+	echo "</td>";
+	echo "</tr>";
+	echo "<tr align=center>";
+	echo "<td colspan=4 style='text-align:center;'>";
+	echo "<hr>";
+	$ddocode =$this->sismodel->get_listspfic1('ddo','ddo_code','ddo_name',$ddosel)->ddo_code;
+	echo "<b> DDO :</b> ".$ddosel." ( ".$ddocode. " )";
+	echo "</td>";
+	echo "</tr>";
 					echo "<tr>";
 					echo "<td colspan=4 align=center>";
 					echo "<hr><b>";
@@ -139,7 +165,7 @@
 				echo "<td>";
 				echo $lrow['name'];
 				echo "</td>";
-				echo "<td>";
+				echo "<td style='text-align:right;'>";
 				echo $lrow['amount'];
 				$totamt=$totamt +$lrow['amount'];
 				$dtotamt=$dtotamt +$lrow['amount'];
@@ -172,7 +198,7 @@
                 $i--;
                 echo " <b>Total Employee :</b> ". $i;
                 echo "</td>";
-                echo "<td align=right colspan=2>";
+                echo "<td style='text-align:right;' colspan=2>";
                 echo "<b>Total Amount :<b>".$dtotamt;
                 echo "</td>";
                 echo "</tr>";
@@ -182,7 +208,7 @@
 		$ii--;
 		echo "<b> No of Records : </b>".max( $ii,0) ." of ". $empcount;
 	echo "</td>";
-	echo "<td align=right colspan=2>";
+	echo "<td style='text-align:right;' colspan=2>";
 		echo "<b>Grand Total :</b> ";
 		echo $totamt;
 	echo "</td>";

@@ -2474,7 +2474,7 @@ class Setup3redesign extends CI_Controller
                 $whorder='dept_name asc';
                 $ulsdata['deptdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
 	    	$sessionunme=$this->session->userdata('username');
-	    	if(($sessionunme == "admin") || ($sessionunme == "payadmin")){
+	    	if(($sessionunme == "admin") || ($sessionunme == "payrolladmin")){
 		    //get the month year and department
 	    		$cmonth= date('M');
 	    		$cyear= date("Y");

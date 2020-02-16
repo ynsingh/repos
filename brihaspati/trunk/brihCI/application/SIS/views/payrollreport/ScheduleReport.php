@@ -98,7 +98,9 @@
                             <option value="<?php echo "";?>"><?php echo "Please select DDO";?></option>
 <?php                           }
                                 foreach ($combdata as $rec) {
-                                    echo '<option  value="'.$rec->ddo_code.'">'.$rec->ddo_name.'</option>';
+					if(!empty($rec->ddo_code)){
+                                    echo '<option  value="'.$rec->ddo_code.'">'.$rec->ddo_name.' ( '.$rec->ddo_code.' )</option>';
+					}
                                 }
                             ?>
                         </select>
@@ -178,14 +180,18 @@
 						$i--;
 						echo " <b>Total Employee :</b> ". $i;
 						echo "</td>";
-						echo "<td align=right>";
+						echo "<td style='text-align:right;'>";
 					//	echo "<hr>";
 						echo "<b>Total Amount :<b>".$dtotamt;
 						echo "</td>";
 						echo "</tr>";
 						$i++;
 ?>
-					<div style="page-break-after:always;"></div>
+					<p style="page-break-after:always;"/>
+<!--					</div>
+					<div style="page-break-after:always;">
+					</div>					<div>
+-->
 <?php
 					}	
 				}
@@ -235,7 +241,7 @@
 				echo "<td>";
 				echo $lrow['name'];
 				echo "</td>";
-				echo "<td>";
+				echo "<td style='text-align:right;'>";
 				echo $lrow['amount'];
 				$totamt=$totamt +$lrow['amount'];
 				$dtotamt=$dtotamt +$lrow['amount'];
@@ -269,7 +275,7 @@
                 $i--;
                 echo " <b>Total Employee :</b> ". $i;
                 echo "</td>";
-                echo "<td align=right>";
+                echo "<td style='text-align:right;'>";
                 echo "<b>Total Amount :<b>".$dtotamt;
                 echo "</td>";
                 echo "</tr>";
@@ -279,7 +285,7 @@
 		$ii--;
 		echo "<b> No of Records : </b>". max($ii,0) ." of ". $empcount;
 	echo "</td>";
-	echo "<td align=right>";
+	echo "<td style='text-align:right;'>";
 		echo "<b>Grand Total :</b> ";
 		echo $totamt;
 	echo "</td>";

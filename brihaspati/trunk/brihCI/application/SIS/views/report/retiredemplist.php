@@ -103,12 +103,15 @@
             function verify(){
                 var x=document.getElementById("wtype").value;
                 var y=document.getElementById("uoff").value;
-                if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
-                     
-                    alert("please select at least any two combination for search !!");
-                    return false;
-                };
-            
+		var z=document.getElementById("ftype").value;
+		var w=document.getElementById("strin").value;
+
+                if((w == 'null' && z == 'null') || (w == '' && z == '')||(w == 'null')||(z == 'null')){
+                	if((x == 'null' && y == 'null') || (x == '' && y == '')||(y == 'null')||(x == 'null')){
+                    		alert("please select at least any two combination for search !!");
+                    		return false;
+                	};
+            	}
             }
         </script>
     </head>

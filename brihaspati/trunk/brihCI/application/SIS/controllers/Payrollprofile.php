@@ -458,8 +458,9 @@ class Payrollprofile extends CI_Controller
 
        if(isset($_POST['ppearnings'])){
            $empid = $this->input->post('empid', '');
-          // echo "seema id==controller=".$empid;
-          // die;
+//           echo "emp  id==controller=".$empid;
+         //  die;
+		if($empid >0){
             for ($i=0; $i<$tcount ;$i++){
 		$incrementamt = 0;
 		$headval = 0;
@@ -494,6 +495,8 @@ class Payrollprofile extends CI_Controller
                    'seh_year'          =>$cyear,
                 );
                 $salEardup = $this->sismodel->isduplicatemore('salary_earnings_head', $dupcheck);
+//		echo $salEardup;
+//die();
                 if(!$salEardup){
 			// check the head exist with this emp
 			$dupcheck1 = array(
@@ -501,19 +504,28 @@ class Payrollprofile extends CI_Controller
 	                   'seh_headid'        =>$headidin,
 			);
 			$salEardup1 = $this->sismodel->isduplicatemore('salary_earnings_head', $dupcheck1);
+	//		echo " in side duplicate more ".$salEardup1;
 			// if no then insert
 			if(!$salEardup1){
                     		$pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
+	//			echo "I am here if no insert";
+	//			die();
 			}else{
 			// else
 			// get the max head value of existing hea
 				$maxhdv=$this->sismodel->get_maxvalue('salary_earnings_head','seh_id',$dupcheck1);
 				$maxhdvid=$maxhdv[0]->seh_id;
                                 $mhvalue = $this->sismodel->get_listspfic1('salary_earnings_head','seh_headamount','seh_id',$maxhdvid)->seh_headamount;
+	//			echo "the values are ".$maxhdvid." and amt ".$mhvalue;
+	//			die();
 //				$mhvalue=$maxhdv[0]->seh_headamount;
 			// compare if differ then insert
 				if($mhvalue != $headval){
                     			$pprofileflag = $this->sismodel->insertrec('salary_earnings_head', $earningdata);
+	//			echo "I am here if no insert else and value differetn";
+	//			die();
+				}else{
+					$message=$message."No difference found in older value".$headname." "; 
 				}
 			}
                 }
@@ -531,9 +543,13 @@ class Payrollprofile extends CI_Controller
                     'seh_modifydate'    =>date('y-m-d'),
                     );
                     $datawh=array('seh_empid' =>$empid,'seh_headid' =>$headidin,'seh_month'=>$cmonth,'seh_year'=>$cyear);
+//			echo " I am in else part".$datawh;
                     $cdata = $this->sismodel->get_listspficemore('salary_earnings_head','seh_id',$datawh);
                     $sehid=$cdata[0]->seh_id;
+//			echo " I am in else part".$datawh." and " . $sehid;
+//			die();
                     $pprofileflag=$this->sismodel->updaterec('salary_earnings_head',$earupdata, 'seh_id', $sehid);
+			
                 }
            // } //tcount
 		 /****************************Increment****************************************************************/
@@ -587,6 +603,7 @@ class Payrollprofile extends CI_Controller
 			}//if increment >0
             	}//ifcode
         } //tcount
+	}//empid >0
 
         /************************************Increment******************************************************/
        }
@@ -802,7 +819,7 @@ class Payrollprofile extends CI_Controller
                     $cdata = $this->sismodel->get_listspficemore('salary_loan_head','slh_id',$datawh);
                     $slhid=$cdata[0]->slh_id;
 			$curtotamt=$instamtL *  $instaltotL;
-			echo $curtotamt;
+//			echo $curtotamt;
                         if($headvalL == $curtotamt){
                     		$pprofileflag=$this->sismodel->updaterec('salary_loan_head', $uploandata,'slh_id', $slhid);
 			}
@@ -836,7 +853,7 @@ class Payrollprofile extends CI_Controller
             {
                 $this->logger->write_logmessage("update","Trying to add updated values in payroll profile ", " payroll profile values are not updated please try again");
                 $this->logger->write_dblogmessage("update","Trying to updated values in payroll profile", " payroll profile values are not updated please try again");
-                $this->session->set_flashdata('err_message','Error in adding updated values in payroll profile - '.$message  , 'error');
+                $this->session->set_flashdata('err_message','Error in adding updated values in payroll profile because - '.$message  , 'error');
         	$this->load->view('payrollprofile/payprofileemp',$ppmdata);
 		return;
                 //redirect('payrollprofile/emppayprofile');
@@ -880,7 +897,7 @@ class Payrollprofile extends CI_Controller
 	//			$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
 			        $uname=$this->session->userdata('username');
 			        $ssiondeptid=$this->session->userdata('id_dept');
-			      if(($deptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+			      if(($deptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
 			              $mess="You do not have the right to access detial of this PF Number";
 			                array_push($values,$mess);
 			      }else{
@@ -1105,7 +1122,7 @@ class Payrollprofile extends CI_Controller
 				$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_id',$empid)->emp_dept_code;
                                 $uname=$this->session->userdata('username');
                                 $ssiondeptid=$this->session->userdata('id_dept');
-                              if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payadmin"))!=0)){
+                              if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
                                       $mess="You do not have the right to access detial of this PF Number";
                                         array_push($values,$mess);
                               }else{

@@ -85,7 +85,7 @@
 				echo "<td>";
 				echo $lrow['bankacc'];
 				echo "</td>";
-				echo "<td>";
+				echo "<td style='text-align:right;'>";
 				echo $lrow['amount'];
 				$totamt=$totamt +$lrow['amount'];
 				echo "</td>";
@@ -111,13 +111,13 @@
 		echo "<b> No of Employee : </b>".$empcount;
 		echo "<hr>";
 	echo "</td>";
-	echo "<td colspan=2 align=right>";
+	echo "<td colspan=3 style='text-align:right;'>";
 		echo "<hr>";
 		echo "<b>Total :</b> ";
-		echo "<hr>";
-	echo "</td>";
-	echo "<td>";
-		echo "<hr>";
+//		echo "<hr>";
+//	echo "</td>";
+//	echo "<td>";
+//		echo "<hr>";
 		echo $totamt;
 		echo "<hr>";
 	echo "</td>";

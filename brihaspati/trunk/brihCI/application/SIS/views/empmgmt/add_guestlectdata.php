@@ -1,7 +1,7 @@
 <!--@name add_recmethddata.php  @author Nagendra Kumar Singh(nksinghiitk@gmail.com) -->
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
  <html>
-    <title>Staff Project Details</title>
+    <title>Staff Guest Lecture Details</title>
     <head>
         <?php $this->load->view('template/header'); ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
@@ -23,18 +23,6 @@
                     $(this).datepicker('hide');
                 });
 
-		 $('#prgtype').on('change',function(){
-                var recmthd = $(this).val();
-               // alert("redioval===="+redioval);
-                if(recmthd != 'Training'){
-                    $('#dsubgrpid').prop('disabled',true);
-                }
-                else{
-                    $('#dsubgrpid').prop('disabled',false);
-                }
-            });
-
-
                   });
 </script> 
     </head>
@@ -47,12 +35,12 @@
                         echo anchor('empmgmt/viewempprofile', 'View Profile ', array('class' => 'top_parent'));
                     }
                     else{
-                        echo anchor('report/performance_profile/projects/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
+                        echo anchor('report/performance_profile/guestlect/'.$this->emp_id, 'View Profile ', array('class' => 'top_parent'));
                     }
                     echo "</td>";
             
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Add Staff Projects Details</b>";
+                    echo "<b>Add Staff Guest Lecture Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -73,79 +61,64 @@
             </div>
             </td></tr>
         </table>
+		 <?php
+                    //set the month array
+                    $cmonth= date('M');
+                    $formattedMonthArray = array(
+                         "1" => "Jan", "2" => "Feb", "3" => "Mar", "4" => "Apr",
+                         "5" => "May", "6" => "Jun", "7" => "Jul", "8" => "Aug",
+                        "9" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec",
+                    );
+                    // set start and end year range
+                    $cyear= date("Y");
+                    $yearArray = range(2015,  $cyear);
+                ?>
+
         <div> 
-            <form id="myform" action="<?php echo site_url('empmgmt/add_projdata/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
+            <form id="myform" action="<?php echo site_url('empmgmt/add_guestlectdata/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="empid" value="<?php echo  $this->emp_id ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Staff Project Details</th></thead></tr>
+                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Staff Guest Lecture Details</th></thead></tr>
                 <tr></tr><tr></tr>
                 <tr>
-                    <td>Title Of Project<font color='Red'>*</font></td>
+                    <td>Title Of Guest Lecture<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="projtitle" id="projtitle" value="" size="40" required>
+                            <input type="text" name="guestlecttitle" id="guestlecttitle" value="" size="40" >
                     </td>
                 </tr>
+
                 <tr>
-                    <td>Role In Project<font color='Red'></font></td>
-		    <td>
-                            <input type="text" name="role" id="role" value="" size="40" >
+		 <td>Select Month </td>
+		<td>
+                        <select name="month" id="month" style="width:250px;">
+                            <?php
+                                foreach ($formattedMonthArray as $month) {
+                                    echo '<option  value="'.$month.'">'.$month.'</option>';
+                                }
+                            ?>
+
+                        </select>
                     </td>
+
                 </tr>
+
                 <tr>
-                    <td>Funding Agency Name<font color='Red'></font></td>
-		    <td>
-                            <input type="text" name="fundname" id="fundname" value="" size="40" >
-                    </td>
-                </tr>
-		<tr>
-			<td>Funding Agency Type<font color='Red'></font></td>
-                        <td><select id="fundtype" name="fundtype"  style="width:350px;">
-                        <option selected="selected" disabled selected>-------------Funding Agency Type ---------</option>
-                        <option value="DBT">DBT</option>
-                        <option value="ICAR">ICAR</option>
-                        <option value="DST">DST</option>
-                        <option value="GOI">GOI</option>
-                        <option value="ICMR">ICMR</option>
-                        <option value="TNGOVT">TNGOVT</option>
-                        <option value="TNSCST">TNSCST</option>
-                    </select>
-                </td>
-                </tr>
-                <tr>
-                    <td>Budget (in Lakhs)<font color='Red'></font></td>
-		    <td>
-                            <input type="text" name="budget" id="budget" value="" size="40" >
-                    </td>
-                </tr>
-                <tr>
-                    <td>Duration in Years<font color='Red'></font></td>
+                    <td>Year<font color='Red'></font></td>
 
 		    <td>
-                            <input type="text" name="duration" id="duration" value="" size="40" >
+                            <input type="text" name="year" id="year" value="" size="40" >
                     </td>
                 </tr>
                 <tr>
-                    <td>From Date<font color='Red'></font></td>
+                    <td>Details<font color='Red'></font></td>
 		    <td>
-                            <input type="text" name="fdate" id="fdate" value="" size="40" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>To date<font color='Red'></font></td>
-		    <td>
-                            <input type="text" name="todate" id="todate" value="" size="40" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Remarks<font color='Red'></font></td>
-		    <td>
-                            <input type="text" name="remark" id="remark" value="" size="40" >
+                            <input type="text" name="details" id="details" value="" size="40" >
                     </td>
                 </tr>
                 <tr></tr><tr></tr>
                 <tr style="color:white;background-color:#0099CC; text-align:left; height:30px;">
                     <td colspan="3">
-                    <button name="addprojdata" >Submit</button>
+                    <button name="addguestlectdata" >Submit</button>
 		    <!--input type="reset" name="Reset" value="Clear"/-->
 			<button type="button" onclick="history.back();">Back</button>
                     </td>

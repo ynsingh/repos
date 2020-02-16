@@ -1,7 +1,7 @@
 <!--@name add_recmethddata.php  @author Nagendra Kumar Singh(nksinghiitk@gmail.com) -->
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
  <html>
-    <title>Staff Training Oraganised Details</title>
+    <title>Staff Training Organised Details</title>
     <head>
         <?php $this->load->view('template/header'); ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
@@ -52,7 +52,7 @@
                     echo "</td>";
             
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Add Staff Training Oraganised Details</b>";
+                    echo "<b>Add Staff Training Organised Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
 
@@ -77,7 +77,7 @@
             <form id="myform" action="<?php echo site_url('empmgmt/add_stodata/'.$this->emp_id);?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="empid" value="<?php echo  $this->emp_id ; ?>">
             <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
-                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Staff Training Oraganised Details</th></thead></tr>
+                <tr><thead><th  style="color:white;background-color:#0099CC; text-align:left; height:30px;" colspan=63">&nbsp;&nbsp; Add Staff Training Organised Details</th></thead></tr>
                 <tr></tr><tr></tr>
 		<tr>
 			<td>Type Of Programme<font color='Red'>*</font></td>
@@ -96,6 +96,7 @@
                 <td>Sub Type Of Programme<font color='Red'></font></td>
                 <td><select name="dsubgrp" style="width:350px;" id="dsubgrpid" >
 		<option selected="selected" disabled selected>------------ Select Sub Type of Programme ---------</option>
+                        <option value="Training">Training</option>
                         <option value="CAFT">CAFT</option>
                         <option value="Orientation">Orientation</option>
                         <option value="Refresher Course">Refresher Course</option>
@@ -110,8 +111,11 @@
 		    <td>
 			<select id="prglevel" name="prglevel" required style="width:350px;">
                         <option selected="selected" disabled selected>------------- Level Of Programme ---------</option>
-                        <option value="National">National</option>
                         <option value="International">International</option>
+                        <option value="National">National</option>
+                        <option value="State">State</option>
+                        <option value="University">University</option>
+                        <option value="Others">Others</option>
                     </select>
                     </td>
                 </tr>

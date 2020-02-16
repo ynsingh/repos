@@ -371,7 +371,7 @@ class Payrollreport extends CI_Controller
 		// get all employee id on the basis of dept
 		$whdata=array('emp_dept_code'=>$deptid);
 		$selectfield='emp_id,emp_code,emp_name,emp_bankname,emp_bank_accno';
-		$emplist= $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,'emp_desig_code asc');
+		$emplist= $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,'emp_desig_code asc,emp_code asc');
 		$totemp=$totemp + count($emplist);
 		//get head on the basis of employee id
 		foreach($emplist as $row){
@@ -392,13 +392,16 @@ class Payrollreport extends CI_Controller
 					}
 				}
 			}
+			if($ir>0){
 			$lsdata=array('id'=>$lempid,'code'=>$row->emp_code,'name'=>$row->emp_name,'bankname'=>$row->emp_bankname,'bankacc'=>$row->emp_bank_accno,'amount'=>$ir,'dept'=>$deptid);
 			$fdata[$i]=$lsdata;
 			$i++;
+			}
 		}
 	}
 	$data['listd']=$fdata;
-	$data['empcount']=$totemp;
+	//$data['empcount']=$totemp;
+	$data['empcount']=$i;
 	}
 	if((strcasecmp($type,"pdf" )) == 0){
                 $this->load->library('pdf');
@@ -468,6 +471,7 @@ class Payrollreport extends CI_Controller
 	$data['ddocode']=$ddocode;
 	$data['deptid']=$deptid;
 	$data['ddosel']=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_code',$ddocode)->ddo_name;
+	$fdata='';
 	$totemp=0;
 	$totamt=0;
 	//get all dept on the basis of ddo code
@@ -485,9 +489,9 @@ class Payrollreport extends CI_Controller
 		// get all employee id on the basis of dept
 		$whdata=array('emp_dept_code'=>$deptid);
 		$selectfield='emp_id,emp_code,emp_name';
-		$emplist= $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,'emp_desig_code asc');
+		$emplist= $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,'emp_desig_code asc, emp_code asc');
 		$totemp=$totemp + count($emplist);
-		//get head on the basis of employee id
+		//get head value on the basis of employee id
 		foreach($emplist as $row){
 			$ir=0;
 			$lempid=$row->emp_id;

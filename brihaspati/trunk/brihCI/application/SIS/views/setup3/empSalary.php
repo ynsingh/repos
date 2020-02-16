@@ -126,14 +126,14 @@
                         </select> 
                   </td>
                     
-                   <td>                       
+                   <td><br>
                         <input type="submit" name="salpro" id="salpro" value="Load"/> 
                      
                     </td>
                    </form>
 		<?php  if(($sroleid == 5)&&($lckstus == 'N')){ ?>
                     <form name="lockfrm" action="<?php echo site_url('setup3redesign/locksalary');?>" method="POST" enctype="multipart/form-data"> 
-		    <td> 
+		    <td> <br>
 		    <input type="submit" name="sallock" id="sallock" value="Salary Lock" onclick="return confirm('Are you sure you want to Lock salary?');"/> 
                     </td>
 		    </form>
@@ -141,7 +141,7 @@
 		    if(($sroleid == 14)||($sroleid == 1)||(($sroleid == 5)&&($lckstus == 'N'))){ ?>
                     <!--<form action="<?php echo site_url('setup3/copysalary');?>" method="POST" enctype="multipart/form-data"> -->
                     <form action="<?php echo site_url('setup3redesign/copysalary');?>" method="POST" enctype="multipart/form-data"> 
-                    <td> Process Salary for the current month:
+                    <td><br> Process Salary for the current month:
                     <input type="submit" name="salcopy" id="salcopy" value="Salary Process" onclick="return confirm('Are you sure you want to copy previous month salary to current month?');"/> 
                     </td>
                     </form>
