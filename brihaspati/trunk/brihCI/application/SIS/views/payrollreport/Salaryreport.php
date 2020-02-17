@@ -2,6 +2,7 @@
 
 <!--@name Salary Report.php 
   @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
+  @author Manorama Pal (palseema30@gmail.com)  
  -->
 <html>
 <title>View Salary Report</title>
@@ -53,9 +54,9 @@
                 ?>
 
 		<table width="100%" border="0">
-                <form action="<?php echo site_url('payrollreport/bulkSalaryslip');?>" method="POST" enctype="multipart/form-data">
+                <form action="<?php echo site_url('payrollreport/salaryslipreport');?>" method="POST" enctype="multipart/form-data">
                 <tr style="font-weight:bold;" >
-                   <td> Select Depratment<br>
+                   <td> Select Department<br>
                         <select name="dept" id="dept" style="width:250px;" required>
                             <?php
                                 if(!empty($deptsel)){ ?>
@@ -107,8 +108,12 @@
                         <input type="submit" name="bulksal" id="bulksal" value="Search"/>
 
                     </td>
-                   </form>
+                                      
 		</tr>
+                <tr>
+                     </form> 
+                <!--    <td><?php // echo anchor("payrollreport/salaryslipreport",img(array('src'=>'assets/sis/images/pdf.jpeg','border'=>'0.1px','alt'=>'view ')),array('title' => 'save salary slip' , 'class' => 'red-link'));?></td> -->
+                </tr>
 	</table>
 
 	<?php //include "../setup3/salaryslipcopynew.php"; ?>
