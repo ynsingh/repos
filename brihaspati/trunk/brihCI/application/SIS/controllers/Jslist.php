@@ -893,6 +893,7 @@ class Jslist extends CI_Controller
         $values=array();
         $combthree='';
         $pfval = $this->input->post('pfshid');
+      //  echo "pfval===".$pfval;
         $parts = explode(',',$pfval);
 
 	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$parts[1])->emp_dept_code;
@@ -1005,6 +1006,9 @@ class Jslist extends CI_Controller
 	//		print_r("dd===".$htype);
                     if($htype == 'D'){
           //              print_r("dd===".$hid);
+                        $hno=0;
+                        $hvalue=0;
+                        $uchname='';
                         $wdata2=array('ssdh_empid' =>$empid,'ssdh_headid'=>$hid);
                         $mdrecord=$this->sismodel->get_maxvalue('salary_subsdeduction_head','ssdh_id',$wdata2);
                         $mssdhid='';
@@ -1020,8 +1024,46 @@ class Jslist extends CI_Controller
                                 else{
                                     $hno=0;    
                                 }
-                                $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                                if(strpos($parts[1],'V') === 0){
+                                    //$uchid=$this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headno','ssdh_id',$mssdhid);
+                                    $uchname=$this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headname','ssdh_id',$mssdhid)->ssdh_headname;
+                                  //  echo "unmcv==".$uchname."mssid==".$mssdhid;
+                                    if(strpos($uchname,'UPF Subscription')!== false){
+                                    //    echo "case1";
+                                        $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                                    }
+                                    elseif(strpos($uchname,'CPS Subscription')!== false){
+                                      //  echo "case2";
+                                        $hvalue=0;
+                                    }
+                                    else{
+                                       // echo "case3";
+                                        $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);    
+                                    }
+                                }
+                                elseif(strpos($parts[1],'C') === 0){
+                                    $uchname=$this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headname','ssdh_id',$mssdhid)->ssdh_headname;
+                                    if(strpos($uchname,'UPF Subscription')!== false){
+                                      //  echo "case4";
+                                        $hvalue=0;
+                                    }
+                                    elseif(strpos($uchname,'CPS Subscription')!== false){
+                                       // echo "case5";
+                                        $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                                        
+                                    }
+                                    else{
+                                        //echo "case6";
+                                        $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                                    }
+                                    
+                                }
+                                else{
+                                    $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
+                                }
                             }
+                           // die;
+                            
                         }
                         $combthree=$hno."^".$hvalue;
 //                        print_r($combthree);
@@ -1037,6 +1079,7 @@ class Jslist extends CI_Controller
                     $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
                     if($htype == 'L'){
                        // print_r("dd===".$hid);
+                        $hno=0;
                         $wdata2=array('slh_empid' =>$empid,'slh_headid'=>$hid);
                         $mdrecord=$this->sismodel->get_maxvalue('salary_loan_head','slh_id',$wdata2);
                         $mslhid='';

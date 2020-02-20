@@ -30,14 +30,14 @@ class Payrollreport extends CI_Controller
 
     public function bulkSalaryslip(){
 	$deptnme='';
-        $deptid=$this->session->flashdata('fldeptid');
-//              echo $deptid; //die();
+     	$deptid=$this->session->flashdata('fldeptid');
         $month = $this->input->post('month', TRUE);
         $year = $this->input->post('year', TRUE);
 
         if(empty($deptid)){
                 $deptid=$this->input->post('dept', TRUE);
         }
+        
         $cmonth= date('M');
         $cyear= date("Y");
         if($month==''){
@@ -58,37 +58,16 @@ class Payrollreport extends CI_Controller
         $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,'dept_name asc');
         $data['selmonth']=$month;
         $data['selyear']=$year;
-
-	// get all employee id on the basis of dept
-        $selemp='sal_empid';
-        $whdemp = array('sal_deptid' =>$deptid,'sal_month' =>$month,'sal_year'=>$year);
-        $data['emprecord']=$this->sismodel->get_orderlistspficemore('salary',$selemp,$whdemp,'');
+        $data['deptid']=0;
+       // $data['totalemp']=0;
         
-        $selemplt='sallt_empid';
-        $whdemplt = array('sallt_deptid' =>$deptid,'sallt_month' =>$month,'sallt_year'=>$year);
-        $data['emprecordlt']=$this->sismodel->get_orderlistspficemore('salary_lt',$selemplt,$whdemplt,'');
-        
-        $data['totalemp']=array_merge($data['emprecord'],$data['emprecordlt']);
-        
-	//get head on the basis of employee id
-	$selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
-       // $whorder = " sh_name asc";
-        $whdata = array('sh_type' =>'I');
-        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
-
-        $whdata = array('sh_type' =>'D');
-        $data['ded'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
-
-        $whdata = array('sh_type' =>'L');
-        $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
-        $data['deduction']=array_merge( $data['ded'],  $data['loans']);
-        
-
         $this->load->view('payrollreport/Salaryreport',$data);
     }
     public function salaryslipreport(){
         
         $deptnme='';
+        $data['totalemp']='';
+        $pdsubmit = false;
         $deptid=$this->session->flashdata('fldeptid');
 //              echo $deptid; //die();
         $month = $this->input->post('month', TRUE);
@@ -97,6 +76,25 @@ class Payrollreport extends CI_Controller
         if(empty($deptid)){
                 $deptid=$this->input->post('dept', TRUE);
         }
+        
+        $type=$this->uri->segment(3,0);
+        
+        if((strcasecmp($type,"pdf" )) == 0){
+          //  echo "inside loop pdf1";
+            $deptid=$this->uri->segment(4,0);
+            //echo $deptid;
+             
+            if($deptid < 1){
+		$message="Please select the dept first and serach Then use pdf button";
+		$this->session->set_flashdata('err_message',$message  , 'error');
+    		redirect("payrollreport/salaryslipreport");
+		return;
+            }
+            $month = $this->uri->segment(6,0);
+            $year = $this->uri->segment(5,0);
+            $pdsubmit = true; 
+	}
+        
         $cmonth= date('M');
         $cyear= date("Y");
         if($month==''){
@@ -117,74 +115,57 @@ class Payrollreport extends CI_Controller
         $data['combdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,'dept_name asc');
         $data['selmonth']=$month;
         $data['selyear']=$year;
+        $data['deptid']=0;
         
+       
                   
         // get all employee id on the basis of dept
-     //   $selemp='sal_empid';
-       // $whdemp = array('sal_deptid' =>$deptid,'sal_month' =>$month,'sal_year'=>$year);
-        //$data['emprecord']=$this->sismodel->get_orderlistspficemore('salary',$selemp,$whdemp,'');
+        if((isset($_POST['bulksal']))||($pdsubmit)){
+            
+            $data['deptsel']=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$deptid)->dept_name;
+            $data['deptid']=$deptid;
+            //  echo     
+       
+            $selemp='emp_id';
+            $whdemp = array('sal_deptid' =>$deptid,'sal_month' =>$month,'sal_year'=>$year);
+            $joincond2 = 'salary.sal_empid = employee_master.emp_id';
+            $data['emprecord']=$this->sismodel->get_jointbrecord('employee_master',$selemp, 'salary',$joincond2, 'left',$whdemp);;
         
+            $whdemplt = array('sallt_deptid' =>$deptid,'sallt_month' =>$month,'sallt_year'=>$year);
+            // $data['emprecordlt']=$this->sismodel->get_orderlistspficemore('salary_lt',$selemplt,$whdemplt,'');
+            $joincond = 'salary_lt.sallt_empid = employee_master.emp_id';
+            $data['emprecordlt']=$this->sismodel->get_jointbrecord('employee_master',$selemp, 'salary_lt',$joincond, 'left',$whdemplt);;
+            //  $data['totalemp']=0;
+            $data['totalemp']=array_merge($data['emprecord'],$data['emprecordlt']);
         
-        $selemp='emp_id';
-        $whdemp = array('sal_deptid' =>$deptid,'sal_month' =>$month,'sal_year'=>$year);
-        $joincond2 = 'salary.sal_empid = employee_master.emp_id';
-        $data['emprecord']=$this->sismodel->get_jointbrecord('employee_master',$selemp, 'salary',$joincond2, 'left',$whdemp);;
-        
-             
-        //$data['totalemp']=json_decode(json_encode($data['emprecord']),true);
-        // print_r( $data['emprecord']);
-        
-        //$selemplt='sallt_empid';
-        $whdemplt = array('sallt_deptid' =>$deptid,'sallt_month' =>$month,'sallt_year'=>$year);
-       // $data['emprecordlt']=$this->sismodel->get_orderlistspficemore('salary_lt',$selemplt,$whdemplt,'');
-        $joincond = 'salary_lt.sallt_empid = employee_master.emp_id';
-        $data['emprecordlt']=$this->sismodel->get_jointbrecord('employee_master',$selemp, 'salary_lt',$joincond, 'left',$whdemplt);;
-        
-        $data['totalemp']=array_merge($data['emprecord'],$data['emprecordlt']);
-        
-       // print_r($data['totalemp']); //die;
-        
-        //get head on the basis of employee id
+            //get head on the basis of employee id
                 
-	$selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
-       // $whorder = " sh_name asc";
-        $whdata = array('sh_type' =>'I');
-        $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+            $selectfield ="sh_id,sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
+            // $whorder = " sh_name asc";
+            $whdata = array('sh_type' =>'I');
+            $data['incomes'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
 
-        $whdata = array('sh_type' =>'D');
-        $data['ded'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+            $whdata = array('sh_type' =>'D');
+            $data['ded'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
 
-        $whdata = array('sh_type' =>'L');
-        $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
-        $data['deduction']=array_merge( $data['ded'],  $data['loans']);
-        
-     //   $cmonth= date('M');
-       // $cyear= date("Y");
+            $whdata = array('sh_type' =>'L');
+            $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
+            $data['deduction']=array_merge( $data['ded'],  $data['loans']);
       
+        }
+        if((strcasecmp($type,"pdf" )) == 0){
+            echo "case22";
+            $this->load->library('pdf');
+            $this->pdf->set_paper("A4", "portrait");
+            //  $this->pdf->set_option('enable_html5_parser', true);
+            $this->pdf->load_view('payrollreport/salaryslipreport',$data);
+            $this->pdf->render();
+            $this->pdf->stream("salaryslipreport.pdf");
+        }
+        else{
         
-       // $desired_dir = 'uploads/SIS/Payslip/'.$cyear.'/'.$cmonth;
-        
-        // Create directory if it does not exist
-      /*  if(is_dir($desired_dir)==false){
-            mkdir($desired_dir, 0777,true);
-        }*/
-       
-       // $tmp=$this->load->view('payrollreport/salaryslipreport',$data,TRUE);
-       	//add pdf code to store and view pdf file
-	//$pth=$desired_dir.'/salaryslipreport.pdf';
-      //  echo $cmonth.$cyear.$empid.$desired_dir.$pth;      
-        //die();
-//	$this->sismodel->genpdf($tmp,$pth);
-        //}
-       
-        $this->load->library('pdf');
-        $this->pdf->set_paper("A4", "portrait");
-      //  $this->pdf->set_option('enable_html5_parser', true);
-        $this->pdf->load_view('payrollreport/salaryslipreport',$data);
-        $this->pdf->render();
-        $this->pdf->stream("salaryslipreport.pdf");
-        
-    	$this->load->view('payrollreport/Salaryreport',$data);
+            $this->load->view('payrollreport/Salaryreport',$data);
+        }
     }
 
     public function deptAbstract(){
