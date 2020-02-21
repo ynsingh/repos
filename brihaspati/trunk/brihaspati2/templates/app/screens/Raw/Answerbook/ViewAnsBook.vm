@@ -1,0 +1,127 @@
+#*
+ * @(#) View.vm
+ * Copyright (c) 2005,2009-2010 2020 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+*#
+
+<link type="text/css" href="$content.getURI("/scrpts/fixedstyle.css")" rel="stylesheet"></script>
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+$page.setBgColor($ui.bgcolor)
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in the corresponding screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString()) 
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td>
+	<font face="$ui.sansSerifFonts">
+	#if($isAdmin=="true"||$isInstructor=="true")
+		$page.setTitle("Home | $course | Course Content | View Content")
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | $course | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_Content</a> |
+			#if($lang == "hindi")
+				  $brih_answer $brih_copy  $brih_view
+			#else
+				 $brih_view $brih_answer $brih_copy
+			#end
+	#elseif ($isInstructor=="true")
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
+			#if($lang == "hindi")
+				  $brih_answer $brih_copy  $brih_view
+			#else
+				 $brih_view $brih_answer $brih_copy
+			#end
+	#else
+ 		$page.setTitle("Home | $course | Course Content | View Content")
+        	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
+			#if($lang == "hindi")
+				  $brih_answer $brih_copy  $brih_view
+			#else
+				 $brih_view $brih_answer $brih_copy
+			#end
+	#end
+	</font>
+</td>
+</tr>
+</table>
+#if($Mode=="NoBlank")
+<form method="post" enctype="multipart/form-data" >
+
+#set($userName = $data.getUser().getName())
+
+#if($userName == "guest")
+	<div style="background-color:$ui.menuColor">
+#else
+	<div style="background-color:$ui.tableColor">
+#end
+		<table bgcolor="$ui.tableColor" width=100%>
+		<tr><td>   
+		<table width=100% bgcolor="$ui.tableColor" cellpadding="5">
+              		#if ($errorTemplate)
+			<tr>
+			<td colspan="4">
+				<table bgcolor="$ui.bgcolor">
+			        <tr>
+			        <td>
+			        	<img src="$ui.image($ui.alertImage,$data)">
+			        </td>
+			        <td>
+			        	#parse ($errorTemplate)
+			        </td>
+			        </tr>
+			        </table>
+			</td>
+			</tr>
+			#end
+	                <tr>
+			<td colspan="4">
+  			<div style="background-color:$ui.menuColor;text-align:left">
+                                       <left><H3>
+			#if($lang == "hindi")
+				  $brih_answer $brih_copy  $brih_view
+			#else
+				 $brih_view $brih_answer $brih_copy
+			#end
+                                       /$brih_download </H3>
+  			</div>
+			</td>
+	
+			</tr>	
+				#set ( $count=1 )
+				#foreach($file in $dirContent)
+				#if($file.toLowerCase().endsWith("pdf"))
+				#if($velocityCount%2==0)
+				<tr bgcolor="$ui.menuColor">
+				#else
+				<tr bgcolor="$ui.tableColor">
+				#end
+				<td>$count.</td>
+				<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$topic).addPathInfo("type","AnsCopy").addPathInfo("filename",$file)","newWin"); style=text-decoration:none>$file</a></td>
+				<td> <a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$topic).addPathInfo("dl",1).addPathInfo("type","AnsCopy").addPathInfo("filename",$file) style=text-decoration:none>$brih_download</a></td>
+				</tr>	
+				#set ( $count= $count+1)
+				#end
+		                #end
+	</table>
+	</td></tr></table>
+  </div>
+</form>
+#else
+##No Publish File in the $topic Topic of $course
+	#if($lang == "hindi")
+		<font color="blue"></font> $brih_answer $brih_copy $brih_publishFileMsg
+	#else
+		$brih_publishFileMsg $brih_answer $brih_copy <font color="blue"></font>
+	#end
+#end
+<SCRIPT language="JavaScript">
+function popupWin(urlName,popupName)
+{
+         window.open(urlName,popupName,"toolbar=yes,scrollbars=yes,resizable=yes");
+}
+</SCRIPT>

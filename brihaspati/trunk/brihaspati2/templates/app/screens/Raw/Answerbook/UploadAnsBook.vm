@@ -1,0 +1,159 @@
+#*
+ * @(#) Upload Answer Book.vm
+ * Copyright (c) 2020 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+*#
+
+$page.setBgColor($ui.bgcolor)
+$page.setTitle("File Upload")
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
+
+<table bgcolor="$ui.tableColor" width=100%>
+<tr>
+<td>
+	<font face="$ui.sansSerifFonts"><b>
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+ 	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_course $brih_mgmt</a> | 
+	#if($lang=="hindi")
+		$brih_answer $brih_copy $brih_upload
+	#else
+		$brih_upload $brih_answer $brih_copy
+	#end
+	</font>
+</td>
+</tr>
+</table>
+$!data.getMessage()
+<table width=100%>
+<tr>
+<td align=right>
+	<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati/docs/Upload.html","newWin");>$brih_help</a>
+</td>
+</tr>
+</table>
+<table width="100%">
+<tr><td><b>$brih_space $!aSize $quota_sze</b></td><td align=right ><b>$brih_usedspace   $!TUSize $quota_sze </b></td></tr>
+<table>
+##################
+<table border="1" bgcolor="$ui.tableColor">
+#if($errorMess!="")
+     <tr>
+	   <td><b>$brih_uploadingError </b>$!errorMess </td>
+     </tr>
+#else
+	<tr >
+        #if($uploadStatus=="full")
+                <td>
+		#if($pub=="Publish")
+		$brih_uploadSucessfully  &  $brih_publish  
+		#else
+		$brih_uploadSucessfully 
+		#end
+                </td>
+        #else
+                #if($uploadStatus=="partial")
+                        <td>
+                       ## Some of the files have been uploaded
+			$brih_uploadSomeFile  <br>
+			
+                       ## Following files already existed, so were not uploaded :
+			$brih_uploadFileExist $brih_commaexist<br>
+
+                #elseif($totalFilesEntries.Count>0)
+                        <td>
+                        ##None of the files were Uploaded <br>
+                        ##All of the following  Existed at Server :
+			$brih_uploadNonefile <br>
+			$brih_uploadFileOnServer $brih_commaexist<br>
+                #elseif($uploadStatus!="")
+                        <td>
+                        ##There is nothing to Upload
+			$brih_uploadNothin <br>
+                #end
+                <br>
+                #set($count=1)
+                #foreach($File in $failedFiles)
+			<tr>
+                       <td> $count.  $File</td> 
+			</tr>
+                        #set($count=$count+1)
+                #end
+                </td>
+        #end
+	</tr>
+#end
+</table>
+
+<script LANGUAGE="JAVASCRIPT">
+	function validate(uploadform,field)
+	{	
+		var tList=uploadform.file1.value;
+		if(tList != "")
+		{
+			uploadform.actionName.value=field.name;
+                        uploadform.submit();
+		}
+		else
+		{
+			alert("File must be selected !!");
+			return;
+		}
+	
+	}
+</script>
+
+<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Answerbook,UploadAnsBook.vm").setAction("UploadAnsAction")">
+  <div align="left">
+
+    <table align=center bgcolor="$ui.bgcolor" cellpadding="0">
+      #if ($errorTemplate)
+      <tr>
+        <td colspan="4">
+          <table bgcolor="$ui.bgcolor">
+            <tr>
+              <td>
+                <img src="$ui.image($ui.alertImage,$data)">
+              </td>
+              <td>
+                #parse ($errorTemplate)
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      #end
+	<tr>
+		<img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
+	</tr>
+<br><br>
+      <tr>
+      <tr>
+              #fileUpload (" &nbsp; $brih_at_file " "file1")</td> 
+      </tr>
+
+      <tr>
+        <td colspan=5 align="center" bgcolor="$ui.buttonBoxColor">
+
+          <font face="$ui.sansSerifFonts">
+
+          <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp; 
+        ##  <input type="submit" name="eventSubmit_doUpload" value="$brih_upload" />
+	##<input type="hidden" name="actionName" value="eventSubmit_doUpload">
+	<input type="hidden" name="actionName" value="">
+    
+          </font>
+        </td>
+      </tr>
+      
+    </table>
+  </div>
+</form>
+<SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"scrollbars=1,height=400,width=400");
+        }
+</SCRIPT>

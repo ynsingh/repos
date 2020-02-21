@@ -271,7 +271,12 @@ public class ViewFileContent extends SecureScreen
 				String topic=pp.getString("topic","");
 				String msg_id=pp.getString("msgid","");
 				filePath= data.getServletContext().getRealPath("/UserArea")+"/fromFAQ/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
-                        }else{
+			}else if(Type.equals("AnsCopy")) {
+				String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
+                       		String dir=(String)data.getUser().getTemp("course_id")+"/";
+				filePath=docRoot+dir+"AnsCopy/"+fileID;
+			}
+                        else{
 				String msg="Error in Raw Page for display contains !!";
                         	ErrorDumpUtil.ErrorLog(msg);
 			}

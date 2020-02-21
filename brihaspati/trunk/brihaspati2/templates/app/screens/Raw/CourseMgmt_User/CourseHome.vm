@@ -294,6 +294,22 @@ $!data.getMessage()
 			*#
 			</tr>
 			## inner row 5 close
+			## inner row 6 open	
+			<tr>
+				<td align=center>
+					<table>
+					    <tr><td align=center><a href=$link.setPage("call,Answerbook,UploadAnsBook.vm").addPathInfo("count","1").addPathInfo("cname",$groupName) style=text-decoration:none><img border=0 src="$content.getURI("/images/ecopy.png")" class="img" ></a></td></tr>
+
+					    <tr><td align=center><a href=$link.setPage("call,Answerbook,UploadAnsBook.vm").addPathInfo("count","1").addPathInfo("cname",$groupName) style=text-decoration:none>$brih_upload $brih_answer $brih_copy</a><br></td></tr>
+					
+					</table>
+				</td>
+				<td align=center>
+				</td>
+				<td align=center>
+				</td>
+			</tr>
+			## inner row 6 close
 
 	## Condition for STUDENT
 
@@ -447,6 +463,13 @@ $!data.getMessage()
                                             <tr><td align=center><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
 
                                             <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none>$brih_attend $brih_mgmt </a><br></td></tr>
+                                        </table>
+                                </td>
+				<td align=center>
+                                        <table>
+                                            <tr><td align=center><a href=$link.setPage("call,Answerbook,ViewAnsBook.vm").addPathInfo("count","1").addPathInfo("cname",$groupName) style=text-decoration:none><img border=0 src="$content.getURI("/images/ecopy.png")" class="img" ></a></td></tr>
+
+                                            <tr><td align=center><a href=$link.setPage("call,Answerbook,ViewAnsBook.vm").addPathInfo("count","1").addPathInfo("cname",$groupName) style=text-decoration:none>$brih_view $brih_answer $brih_copy</a><br></td></tr>
                                         </table>
                                 </td>
                                 </tr>
