@@ -100,7 +100,10 @@ echo "</table>";
                                         echo " </td>";
                                         echo "</td>";
 					echo " <td align=\"center\">";
-					echo $row->jeeapplication_no;
+				
+                    If(!empty($jeeapplication_no)){
+                        echo $row->jeeapplication_no;
+                    }
                                         echo " </td>";
                                         echo " <td align=\"center\">";
                                         echo $row->entexamname;

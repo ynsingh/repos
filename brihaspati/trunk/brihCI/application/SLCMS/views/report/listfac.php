@@ -8,6 +8,8 @@
  -->
 <html>
 <title>View Faculty list</title>
+<!--<link rel="shortcut icon" href="<?php //echo base_url('assets/images'); ?>/index.jpg">-->
+	<link rel="icon" href="<?php echo base_url('uploads/logo'); ?>/nitsindex.png" type="image/png">	
     <head>    
         <?php $this->load->view('template/header'); ?>
         <?php //$this->load->view('template/menu');?>
@@ -39,25 +41,25 @@
                 <th>Faculty Name</th>
                 <th>Email Id</th>
                 <th>Mobile</th>
-                <th>Campus Name</th>
+                <!--<th>Campus Name</th>-->
                 <th>Department Name</th>
                 <!-- <th></th>-->
                 </tr>
                 <?php
-                $orgid=0;
-                        if( count($tresult) ):
-                                foreach($tresult as $row){
+			$orgid=0;
+                        if( count($this->tresult) ){
+                                foreach($this->tresult as $row){
    				if(!empty($row->userid)){
-                    if($orgid != $row->scid){
-                        echo "<tr>";
-                        echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
-                        echo "<b>Institute Name : </b>";
-                                    echo $this->commodel->get_listspfic1('org_profile','org_name','org_id','')->org_name;
-                        echo "</td>";
-                        echo "</tr>";
-                        $orgid = $row->scid; 
-                                    
-                    }
+					if($orgid != $row->scid){
+						echo "<tr>";
+						echo "<td colspan=13 style='text-align:center;font-size:18px;'>";
+						echo "<b>Institute Name : </b>";
+                      				echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$row->scid)->org_name;
+						echo "</td>";
+						echo "</tr>";
+						$orgid = $row->scid; 
+									
+					}
                                         echo "<tr>";
 					echo "<td align=\"center\">";
                     if(!empty($this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname))
@@ -74,17 +76,19 @@
                     if(!empty($this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile))
 					{echo $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;}
 					echo "</td>";
-					echo " <td align=\"center\">";
-					echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
-					echo "</td>";
+					//echo " <td align=\"center\">";
+					//echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
+					//echo $this->commodel->get_listspfic1('org_profile','org_name','org_id',$row->scid)->org_name;
+					//echo "</td>";
 					echo " <td align=\"center\">";
 				        echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
 					echo "</td>";
                                         echo "</tr>";
 				}
                                 };
-                        else :
+                        else {
                                 echo "<td colspan=\"6\" align=\"center\"> No Records found...!</td>";
+                            }
                         endif;
 
                 ?>

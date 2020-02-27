@@ -83,7 +83,7 @@
                 </td>
            
             </tr>
-             <tr>
+            <tr>
                 <td><label for="vendor_hqaddress" class="control-label">Head Office Address: </label></td>
                 <td><input type="text" name="vendor_hqaddress" size="30" placeholder="HQ & Postal Is Same Address ,Copy it.." class="form-control" /><br></td>
                 <td>
@@ -271,15 +271,15 @@
                 <td>
                     <input type="checkbox" name="vendor_supply[]"  value="Computer" />Computer             
                     <input type="checkbox" name="vendor_supply[]"  value="Glassware" />Glassware
-                     <input type="checkbox" name="vendor_supply[]"  value="Liveries" />Liveries
+                    <input type="checkbox" name="vendor_supply[]"  value="Liveries" />Liveries
                    
                    <br>
                     <input type="checkbox" name="vendor_supply[]"  value="Stationery" />Stationery
-                   <input type="checkbox" name="vendor_supply[]"  value="Electronics" />Electronics
+                    <input type="checkbox" name="vendor_supply[]"  value="Electronics" />Electronics
                     <input type="checkbox" name="vendor_supply[]" value="Chemical"  />Chemical
                      
                     <br>
-                     <input type="checkbox" name="vendor_supply[]" value="Furniture"  />Furniture.
+                    <input type="checkbox" name="vendor_supply[]" value="Furniture"  />Furniture.
                    
                     <input type="checkbox" name="vendor_supply[]"  value="Medicines" />Medicines
                     <input type="checkbox" name="vendor_supply[]"  value="Scientific Equipment" />Scientific Equip.<br>
