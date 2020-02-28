@@ -565,9 +565,48 @@
                                 }
                                                           
                                 $rawfor=$headval1 + $headval2 ;
+                               // $finalval=$rawfor * $strfmla2[1]. "\n";
                                 // echo "rawval===".$rawfor. "\n";
                                 //echo "==val1===".$headval1."==val2===".$headval2. "\n";
-                                $finalval=$rawfor * $strfmla2[1]. "\n";
+                                                               
+                                if($deductdata->sh_code == 'UPFsub'){
+                                    $finalval=$rawfor * $strfmla2[1];
+                                    $upfsubid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','UPFsub')->sh_id;
+                                    $sfupfsub ="ssdh_headamount";   
+                                    $wdatausub = array('ssdh_empid' =>$empid,'ssdh_headid'=>$upfsubid);
+                                    $headval2= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfupfsub,'ssdh_modifydate=',$wdatausub);
+                                    if(!empty($headval2)){
+                                        $headvalfnl=$headval2[0]->ssdh_headamount;
+                                        if($headvalfnl > $finalval){
+                                           $finalval= $headvalfnl;
+                                        }
+                                        else{
+                                            $finalval=$finalval;
+                                        }
+                                    }
+                                                                 
+                                }//upfsubcription closer
+                                elseif($deductdata->sh_code == 'CPS'){
+                                    $finalval=$rawfor * $strfmla2[1];
+                                    $cpssubid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CPS')->sh_id;
+                                    $sfcpssub ="ssdh_headamount";   
+                                    $wdatacssub = array('ssdh_empid' =>$empid,'ssdh_headid'=>$cpssubid);
+                                    $hvalcps= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfcpssub,'ssdh_modifydate=',$wdatacssub);
+                                    if(!empty($hvalcps)){
+                                        $hvalcpsfnl=$hvalcps[0]->ssdh_headamount;
+                                        if($hvalcpsfnl > $finalval){
+                                           $finalval= $hvalcpsfnl;
+                                        }
+                                        else{
+                                            $finalval=$finalval;
+                                        }
+                                    }
+                                    
+                                }//cpssubcription closer
+                                else{
+                                    $finalval=$rawfor * $strfmla2[1]. "\n"; 
+                                }
+                                
                                 // echo "finalval==".$finalval;
                                 
                             }//if close check for formula notempty

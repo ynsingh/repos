@@ -2250,9 +2250,53 @@ class Setup3redesign extends CI_Controller
             }
             $rawfor = (int)$headval1 + (int)$headval2 ;
             //$rawfor=$headval1[0]->shdv_defaultvalue + $headval2[0]->shdv_defaultvalue ;
-            $this->finalval=$rawfor * $strfmla2[1];
+          //  $this->finalval=$rawfor * $strfmla2[1];
+            
+            //part for upfsubcription and cps subscription-------------------
+            $upfsubcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$shid)->sh_code;
+            if($upfsubcode == 'UPFsub'){
+                $this->finalval=$rawfor * $strfmla2[1];
+                $upfsubid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','UPFsub')->sh_id;
+                $sfupfsub ="ssdh_headamount";   
+                $wdatausub = array('ssdh_empid' =>$empid,'ssdh_headid'=>$upfsubid);
+                $headval2= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfupfsub,'ssdh_modifydate=',$wdatausub);
+                if(!empty($headval2)){
+                    $headvalfnl=$headval2[0]->ssdh_headamount;
+                    if($headvalfnl > $this->finalval){
+                        $this->finalval= $headvalfnl;
+                    }
+                    else{
+                        $this->finalval=$this->finalval;
+                    }
+                }
+                                                                
+            }//upfsubcription closer
+            elseif($upfsubcode == 'CPS'){
+                $this->finalval=$rawfor * $strfmla2[1];
+                $cpssubid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CPS')->sh_id;
+                $sfcpssub ="ssdh_headamount";   
+                $wdatacssub = array('ssdh_empid' =>$empid,'ssdh_headid'=>$cpssubid);
+                $hvalcps= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfcpssub,'ssdh_modifydate=',$wdatacssub);
+                if(!empty($hvalcps)){
+                    $hvalcpsfnl=$hvalcps[0]->ssdh_headamount;
+                    if($hvalcpsfnl > $this->finalval){
+                        $this->finalval= $hvalcpsfnl;
+                    }
+                    else{
+                        $this->finalval=$this->finalval;
+                    }
+                }
+                                    
+            }//cpssubcription closer
+            else{
+                $this->finalval=$rawfor * $strfmla2[1];    
+            }
+            
+            
+            
            // echo "in formula method==="."---headval1===". $headval1."headval2==".$headval2."finalval===".$this->finalval."shid==".$shid."empid===".$empid;
         }//emptyformulacheck  
+        
         else{
             $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
             $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
@@ -2281,7 +2325,7 @@ class Setup3redesign extends CI_Controller
             else{
                 $this->finalval=0;
             }    
-        }
+        } //else part closer
         return $this->finalval;
         
     }

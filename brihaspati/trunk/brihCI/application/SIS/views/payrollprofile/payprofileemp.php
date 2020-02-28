@@ -424,7 +424,7 @@
                           //              $('#headamtI'+i).val(token[2].replace(/[[\]"|"]/g,""));
                             //        }
                                     if(currentAttrValue ==='#tab7'){
-                                        
+                                     //   alert ("value of token0====="+token[0]);
                                         $('#headnumber'+i).val(token[0].replace(/[[\]"|"]/g,""));
                                         $('#headamt'+i).val(token[1].replace(/[[\]"|"]/g,""));
                                        // $('#totalinstall'+i).val(token[4].replace(/[[\]"|"]/g,""));
@@ -1019,19 +1019,35 @@
                     <?php foreach( $shdata['records'] as $recordded){ ?>
                    
                         <tr>
-                        
+                        <?php if($recordded->sh_calc_type == 'Y'){ 
+                                   
+                                    $formula='';
+                                    $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$recordded->sh_id);
+                                    if(!empty($formula1)){
+                                        $formula=$formula1->sf_formula;
+                                    
+                                    } else{
+                                        $formula='';
+                                    } 
+                                }
+                        ?>
                         <td><?php echo $serial_no++; ?></td>
                         <?php    if($recordded->sh_tnt == 'Common') : ?>    
                             <!--<td><?php //$hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$recordded>sh_id)->sh_code;
                                // echo $hcode; ?></td> -->
                             <td><?php $shname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$recordded->sh_id)->sh_name;
-                                echo $shname; 
+                                echo $shname;
+                                        if(($recordded->sh_calc_type == 'Y') && !empty($formula)){
+                                            echo "<font color=\"blue\">   ( $formula ) ";
+                                                    
+                                        }
                             ?></td>
                             <td>
                                 <input type="text" class="headnumber" name="headnumber<?php echo $j;?>" id="headnumber<?php echo $j;?>"  value="<?php  ?>" >  
                             </td>
                             <td>
                                 <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamt<?php echo $j;?>"  value="<?php echo 0; ?>" >    
+                                
                             </td>
                        <!--     <td>
                                 <input type="text" class="totalinstall" name="totalinstall<?php echo $j;?>" id="totalinstall<?php echo $j;?>"  value="<?php echo 0; ?>" >  
