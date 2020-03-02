@@ -110,7 +110,7 @@
 		$(".6thdisp").hide();
             /**********************************Start of empdetail by  PF NOscript*********************************/
                 
-                $("#emppfno").on('change',function(){
+                $("#emppfno").on('click',function(){
                     var pfno = $("#emppfno").val();
                     if(pfno!=''){
                       //  alert("23==="+pfno);
@@ -120,7 +120,7 @@
                             data: {"emplypfno" : pfno},
                             dataType:"html",
                             success:function(data){
-   //                        alert("datat==="+data);
+               //            alert("datat==="+data);
                             var empinput=data.split(",");
                             
 			    if(empinput.length < 2){

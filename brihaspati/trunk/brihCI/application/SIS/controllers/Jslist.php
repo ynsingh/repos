@@ -694,13 +694,16 @@ class Jslist extends CI_Controller
  //       echo "pfno---".$pfno;
 //	$empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno)->emp_id;
 	$empiddata=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_code',$pfno);
-
+	if(empty($empiddata)){
+		$mess="Please enter the valid PF Number";
+                array_push($values,$mess);
+        }else{
 	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$pfno)->emp_dept_code;
 	$uname=$this->session->userdata('username');	
 	$ssiondeptid=$this->session->userdata('id_dept');
-      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
+      	if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
 		$mess="You do not have the right to access detial of this PF Number";
-               array_push($values,$mess);
+               	array_push($values,$mess);
 	}else{
 
 	if(!empty($empiddata)){
@@ -870,6 +873,7 @@ class Jslist extends CI_Controller
                 array_push($values,$mess);
 	}
 	}//end for dept check
+	}//end pf exist else
        // echo "values in controller===".$values;
         echo json_encode($values);
     }
@@ -889,70 +893,74 @@ class Jslist extends CI_Controller
     }
     
     public function getppdetail(){
-      //  echo "seema--- in js"; 
         $values=array();
         $combthree='';
         $pfval = $this->input->post('pfshid');
+//	if(empty($pfval){
+//		$pfval= $this->session->flashdata('emppfval');
+//	}
       //  echo "pfval===".$pfval;
         $parts = explode(',',$pfval);
-
-	$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$parts[1])->emp_dept_code;
-        $uname=$this->session->userdata('username');
-        $ssiondeptid=$this->session->userdata('id_dept');
-      if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
-              $mess="You do not have the right to access detial of this PF Number";
-                array_push($values,$mess);
-      }else{
-
-       // echo "pfno in  part0===".$parts[0]."part1===".$parts[1];
-         // $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$pfval)->emp_id;
-        if(empty($this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1]))){
-            $mess="Please enter the valid PF Number";
-            array_push($values,$mess);
+	if(empty($this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$parts[1]))){
+         	$mess="Please enter the valid PF Number";
+            	array_push($values,$mess);
 	}
         else{
-            $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
-            $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
-           // echo "seema2===".$empid.$emppaycom;
-		//if(empty($emppaycom)){
-            if ((strlen($emppaycom) == 0)||($emppaycom == "null")){
-		$mess="Please set the pay commission for this  PF Number";
-	        array_push($values,$mess);
-            }
-            else{
-	        $cmonth = date('M');
-        	$cyear= date("Y");
+		$empdeptid=$this->sismodel->get_listspfic1('employee_master', 'emp_dept_code', 'emp_code',$parts[1])->emp_dept_code;
+	        $uname=$this->session->userdata('username');
+        	$ssiondeptid=$this->session->userdata('id_dept');
+	      	if(($empdeptid != $ssiondeptid)&&((strcasecmp($uname,"admin"))!=0)&&((strcasecmp($uname,"payrolladmin"))!=0)){
+              		$mess="You do not have the right to access detial of this PF Number";
+                	array_push($values,$mess);
+      		}else{
+       			// echo "pfno in  part0===".$parts[0]."part1===".$parts[1];
+         		// $empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$pfval)->emp_id;
+        		if(empty($this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1]))){
+            			$mess="Please enter the valid PF Number";
+            			array_push($values,$mess);
+			}
+        		else{
+            			$empid=$this->sismodel->get_listspfic1('employee_master','emp_id','emp_code',$parts[1])->emp_id;
+            			$emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+           			// echo "seema2===".$empid.$emppaycom;
+				//if(empty($emppaycom)){
+            			if ((strlen($emppaycom) == 0)||($emppaycom == "null")){
+					$mess="Please set the pay commission for this  PF Number";
+	        			array_push($values,$mess);
+            			}
+            			else{
+	        			$cmonth = date('M');
+        				$cyear= date("Y");
         
                //if($parts[0] == '#tab6'){
-                    $emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
-                    $empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
-                    $wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
-                    $shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
-                    foreach($shcsalhdid as $row){
-			$listhdid=$row->shc_salheadid;
-                    }
-                    $hdid_arr = explode (",", $listhdid);
+                    			$emppaycom=$this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+                    			$empwtype=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+                    			$wdata1=array('shc_paycom'=>$emppaycom, 'shc_wtype'=>$empwtype);
+                    			$shcsalhdid=$this->sismodel->get_orderlistspficemore('salaryhead_configuration','shc_salheadid',$wdata1,'');
+                    			foreach($shcsalhdid as $row){
+						$listhdid=$row->shc_salheadid;
+                    			}
+                    			$hdid_arr = explode (",", $listhdid);
                    // print_r($hdid_arr);
-                   
-                    $i=0;
-                    if($parts[0] == '#tab6'){
-                    foreach($hdid_arr as $hid){
-                        $hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
-                        $hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
-                        $htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
+                    			$i=0;
+                    			if($parts[0] == '#tab6'){
+                    				foreach($hdid_arr as $hid){
+                        				$hname=$this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$hid)->sh_name;
+                        				$hcode=$this->sismodel->get_listspfic1('salary_head','sh_code','sh_id',$hid)->sh_code;
+                        				$htype=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_id',$hid)->sh_type;
                        
-                        if($htype == 'I'){
-                            $sgflag='N';
-                            $sgflag=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$hid)->sh_calc_type;
-                            $hfor='';
-                            $hfor1='';
-                            if($sgflag == 'Y'){
-                                $hfor2=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$hid);
-                                if(!empty($hfor2)){
-                                    $hfor1=$hfor2->sf_formula;
-                                }
-                                $hfor=" ( ".$hfor1." )";
-                            }
+                        				if($htype == 'I'){
+                            					$sgflag='N';
+                            					$sgflag=$this->sismodel->get_listspfic1('salary_head','sh_calc_type','sh_id',$hid)->sh_calc_type;
+                            					$hfor='';
+                            					$hfor1='';
+                            					if($sgflag == 'Y'){
+                                					$hfor2=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$hid);
+                                					if(!empty($hfor2)){
+                                    						$hfor1=$hfor2->sf_formula;
+                                					}
+                                					$hfor=" ( ".$hfor1." )";
+                            					}
                             //get max value of salary earning head from salary earning head 
                             $hvalue=0;
                             $wdata2=array('seh_empid' =>$empid,'seh_headid'=>$hid);
@@ -1050,7 +1058,6 @@ class Jslist extends CI_Controller
                                     elseif(strpos($uchname,'CPS Subscription')!== false){
                                        // echo "case5";
                                         $hvalue=round($this->sismodel->get_listspfic1('salary_subsdeduction_head','ssdh_headamount','ssdh_id',$mssdhid)->ssdh_headamount,0);
-                                        
                                     }
                                     else{
                                         //echo "case6";
@@ -1063,7 +1070,6 @@ class Jslist extends CI_Controller
                                 }
                             }
                            // die;
-                            
                         }
                         $combthree=$hno."^".$hvalue;
 //                        print_r($combthree);
@@ -1101,16 +1107,17 @@ class Jslist extends CI_Controller
                                 $intlhvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_installamount','slh_id',$mslhid)->slh_installamount,0);
                             }
                         }
-                        $combthree=$hno."^".$hvalue."^".$intlttno."^".$intlno."^".$intlhvalue;
-                       // print_r($combthree);
-                        array_push($values,$combthree);
-                    }
-                }//forachhidarr     
-            }// close if if tab8
+                        					$combthree=$hno."^".$hvalue."^".$intlttno."^".$intlno."^".$intlhvalue;
+                       						// print_r($combthree);
+                        					array_push($values,$combthree);
+                    					}
+                				}//forachhidarr     
+            				}// close if if tab8
     
-	}//close second else
-      }//close first else 
-	}// close dept check else
+				}//close second else
+      			}//close first else 
+		}// close dept check else
+	}
         echo json_encode($values);
     }
     public function getheadfromula(){

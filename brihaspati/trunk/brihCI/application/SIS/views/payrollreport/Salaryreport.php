@@ -142,7 +142,7 @@
             </tr>
         </table>
         <table style="width:100%;" class="TFtable">
-            <?php// if($countno == 1){ ?>
+            <?php // if($countno == 1){ ?>
              <?php 
              
                     
@@ -172,7 +172,11 @@
                     $deptcode=$this->commodel->get_listspfic1('Department','dept_code','dept_id',$deptid)->dept_code;
                    
                     $ddoid=$this->sismodel->get_listspfic1('employee_master','emp_ddoid','emp_id',$empid)->emp_ddoid;
+		if(!empty($ddoid)){
                     $ddoname=$this->sismodel->get_listspfic1('ddo','ddo_name','ddo_id',$ddoid)->ddo_name; 
+			}else{
+				$ddoname="";
+			}
                     $degid=$this->sismodel->get_listspfic1('employee_master','emp_desig_code','emp_id',$empid)->emp_desig_code;
                     $designame=$this->commodel->get_listspfic1('designation','desig_name','desig_id',$degid)->desig_name;
                     $desigcode=$this->commodel->get_listspfic1('designation','desig_code','desig_id',$degid)->desig_code;

@@ -866,7 +866,9 @@ class Payrollprofile extends CI_Controller
 		return;
 //                redirect('payrollprofile/emppayprofile');
             }
+	$this->session->set_flashdata('emppfval', '#tab6,'.$emppfno);
         }
+//	$this->jslist->getppdetail();
         //$this->load->view('payrollprofile/payprofile');
         $this->load->view('payrollprofile/payprofileemp',$ppmdata);
 
