@@ -1030,9 +1030,9 @@ class SIS_model extends CI_Model
 //        $whdata = array('sh_type' =>'D');
 //        $spec_data['deduction'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
 	$whdata = array('sh_type' =>'D');
-        $data['ded'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        $data['ded'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
         $whdata = array('sh_type' =>'L');
-        $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,$whorder);
+        $data['loans'] = $this->sismodel->get_orderlistspficemore('salary_head',$selectfield,$whdata,'');
         $spec_data['deduction']=array_merge($data['ded'], $data['loans']);
         // move file to directory code for photo
 	$desired_dir = 'uploads/SIS/Payslip/'.$year.'/'.$month;
@@ -1229,6 +1229,19 @@ class SIS_model extends CI_Model
         return $valdays;
         
     }
+    
+    public function getcountabstract($tbname,$whdata){
+        $this->db2->flush_cache();
+        $this->db2->select('count(*)');
+        $this->db2->from($tbname);
+        if($whdata != ''){
+            $this->db2->where($whdata);
+        }
+        $query= $this->db2->get();
+        $cnt = $query->row_array();
+        return $cnt['count(*)'];
+    }
+    
     
     function __destruct() {
         $this->db2->close();

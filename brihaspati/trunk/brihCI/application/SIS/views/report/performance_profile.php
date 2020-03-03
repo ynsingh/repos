@@ -197,7 +197,7 @@
                 <table class="TFtable">
                     	<?php 
 			$srno=1;
-			if(count($emppubdata)):;?>
+			if(count($emppubdata)): ;?>
 		    	<tr>
 			<th>Sr. No.</th>
 			<th>Publication Type<br> Title/Chapter Name<br> Authors<br> Author Type</th>
@@ -271,6 +271,7 @@
                         <?php endif;?>
 		</table>
         <?php endif ?>
+        
         <?php if($this->uri->segment(3)== 'trainingattend'):?>
                 <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
@@ -640,7 +641,7 @@
                     	<?php endif;?>
 		</table>
         <?php endif ?>
-	<?php if($this->uri->segment(3)== 'abs'):?>
+	<?php if($this->uri->segment(3)== 'abs'): ?>
                 <table style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
 			<tr style="color:white;background:none repeat scroll 0 0 #0099CC;width:100%;">
                             <td align=left colspan=4><b>Performance Details-Abstract</b></td>
@@ -662,146 +663,932 @@
 		</table>
 
                 <table class="TFtable">
-                    <?php if(count($performancedata)):;?>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Awards and Medals : </b></td></tr>
+                    <?php
+                    
+                    
+                   // if(count($performancedata)):
+                   // if(count($empawarddata)): ;?>
+                                     
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Publications : </b></td></tr>
                     <tr>
                         <th>Description</th>
-                        <th > Number of Awards</th>
-                        <th colspan="4"> Number of Medals</th>
-                        
-                        <tbody>
-                            <tr>
-                                <td><?php echo "International";?></td>
-                                <td ><?php echo $performancedata->spd_int_award;?></td>
-                                <td colspan="5"><?php echo $performancedata->spd_int_medal;?></td>
-                            </tr>
-                            <tr>
-                                <td><?php echo "National";?></td>
-                                <td ><?php echo $performancedata->spd_nat_award;?></td>
-                                <td colspan="5"><?php echo $performancedata->spd_nat_medal;?></td>
-                            </tr> 
-                            <tr>
-                                <td><?php echo "University";?></td>
-                                <td ><?php echo $performancedata->spd_uni_award;?></td>
-                                <td colspan="5"><?php echo $performancedata->spd_uni_medal;?></td>
-                            </tr>   
-                        </tbody>     
-                    </tr>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Publications : </b></td></tr>
-                    <tr>
-                        <th>Description</th>
+                        <th> International</th>
                         <th> National</th>
-                        <th colspan="4"> International</th>
+                        <th> State</th>
+                        <th colspan="6"> University</th>
                         <tbody>
                             <tr>
-                                <td><?php echo "Research";?></td>
-                                <td><?php echo $performancedata->spd_res_pub_nat;?></td>
-                                <td colspan="3"><?php echo $performancedata->spd_res_pub_int;?></td>
+                                <td><?php echo "Book";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'ABook');    
+                                    $intbook=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intbook;
+                                ?></td>
+                                <td ><?php  
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'ABook');    
+                                    $ntbook=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntbook;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'ABook');    
+                                    $stbook=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $stbook;
+                                
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata2 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'ABook');    
+                                    $unibook=$this->sismodel->getcountabstract('staff_pub_data',$whdata2);
+                                    //print_r($unibook);
+                                    echo $unibook;
+                                ?></td>
+                               
                             </tr>
                             <tr>
-                                <td><?php echo "Popular";?></td>
-                                <td><?php echo $performancedata->spd_pop_pub_nat;?></td>
-                                <td colspan="3"><?php echo $performancedata->spd_pop_pub_int; ?></td>
+                                <td><?php echo "Book Chapter";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'BChapter');    
+                                    $intbchpter=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intbook;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'BChapter');    
+                                    $ntbchpter=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntbchpter;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'BChapter');    
+                                    $stbchpter=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $stbchpter;
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata2 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'BChapter');    
+                                    $unibchpter=$this->sismodel->getcountabstract('staff_pub_data',$whdata2);
+                                    //print_r($unibook);
+                                    echo $unibchpter;
+                                ?></td>
+                                 
                             </tr> 
                             <tr>
-                                <td><?php echo "Presentation";?></td>
-                                <td><?php echo $performancedata->spd_pre_pub_nat; ?></td>
-                                <td colspan="3"><?php echo $performancedata->spd_pre_pub_int; ?></td>
-                            </tr>   
+                                <td><?php echo "Reaserch Papers Published in Journals";?></td>
+                                <td><?php 
+                                     $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'CJournals');    
+                                    $intjournl=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intjournl;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'CJournals');    
+                                    $ntjournl=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntjournl;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'CJournals');    
+                                    $stjournl=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $stjournl; 
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'CJournals');    
+                                    $unijournl=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $unijournl;
+                                ?></td>
+                            </tr> 
+                            <tr>
+                                <td><?php echo "Reaserch Papers presented in Senimar/workshop/conference";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'DConference');    
+                                    $intconfrn=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intconfrn;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'DConference');    
+                                    $ntconfrn=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntconfrn;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'DConference');    
+                                    $stconfrn=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $stconfrn; 
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'DConference');    
+                                    $uniconfrn=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $uniconfrn;
+                                ?></td>
+                                 
+                            </tr>
+                            <tr>
+                                <td><?php echo "Popular Articles";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'EArticles');    
+                                    $intarticl=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intarticl;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'EArticles');    
+                                    $ntarticl=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntarticl;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'EArticles');    
+                                    $starticl=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $starticl; 
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'EArticles');    
+                                    $uniarticl=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $uniarticl;
+                                ?></td>
+                               
+                            </tr>
+                            <tr>
+                                <td><?php echo "Review Articles";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'FReview');    
+                                    $intreviw=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intreviw;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'FReview');    
+                                    $ntreviw=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntreviw;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'FReview');    
+                                    $streviw=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $streviw; 
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'FReview');    
+                                    $unireviw=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $unireviw;
+                                ?></td>  
+                            </tr>
+                            <tr>
+                                <td><?php echo "Research Notes/ Reasearch Short Notes";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'GNotes');    
+                                    $intnotes=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intnotes;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'GNotes');    
+                                    $ntnotes=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntnotes;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'GNotes');    
+                                    $stnotes=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $stnotes; 
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'GNotes');    
+                                    $uninotes=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $uninotes;
+                                ?></td>  
+                            </tr>
+                            <tr>
+                                <td><?php echo "Monograph/Manual";?></td>
+                                <td><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'International','spbd_pubtype'=>'HMonograph');    
+                                    $intmmgrp=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $intmmgrp;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'National','spbd_pubtype'=>'HMonograph');    
+                                    $ntmmgrp=$this->sismodel->getcountabstract('staff_pub_data',$whdata);
+                                    echo $ntmmgrp;
+                                ?></td>
+                                <td ><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'State','spbd_pubtype'=>'HMonograph');    
+                                    $stmmgrp=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $stmmgrp; 
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spbd_empid' =>$emp_id,'spbd_publevel'=>'University','spbd_pubtype'=>'HMonograph');    
+                                    $unimmgrp=$this->sismodel->getcountabstract('staff_pub_data',$whdata1);
+                                    echo $unimmgrp;
+                                ?></td>
+                            </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Project handled : </b></td></tr>
+                                       
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Training attended (Number of Trainings attended) : </b></td></tr>
                     <tr>
-                        <th>Number of Projects handled</th>
-                        <th colspan="4"> Fund outlay</th>
+                        <th>Description</th>
+                        <th> International</th>
+                        <th> National</th>
+                        <th> State</th>
+                        <th> University</th> 
+                        <th> Others</th> 
+                        <tbody>
+                            <tr>
+                                <td><?php echo "Training"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'International','sta_prgtype'=>'Training');    
+                                    $inttrain=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $inttrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'National','sta_prgtype'=>'Training');    
+                                    $nttrain=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $nttrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'State','sta_prgtype'=>'Training');    
+                                    $stattrain=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $stattrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'University','sta_prgtype'=>'Training');    
+                                    $unitrain=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $unitrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'Others','sta_prgtype'=>'Training');    
+                                    $othtrain=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $othtrain;
+                                ;?></td>
+                                
+                            </tr>
+                            <tr>
+                                <td><?php echo "Symposium"; ?></td>
+                                 <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'International','sta_prgtype'=>'Symposium');    
+                                    $intsysm=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $intsysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'National','sta_prgtype'=>'Symposium');    
+                                    $ntsysm=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $ntsysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'State','sta_prgtype'=>'Symposium');    
+                                    $statsysm=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $statsysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'University','sta_prgtype'=>'Symposium');    
+                                    $unisysm=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $unisysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'Others','sta_prgtype'=>'Symposium');    
+                                    $othsysm=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $othsysm;
+                                ;?></td>
+                               
+                            </tr>
+                            <tr>
+                               <td><?php echo "Conference"; ?></td>
+                               <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'International','sta_prgtype'=>'Conference');    
+                                    $intconf=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $intconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'National','sta_prgtype'=>'Conference');    
+                                    $ntconf=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $ntconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'State','sta_prgtype'=>'Conference');    
+                                    $statconf=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $statconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'University','sta_prgtype'=>'Conference');    
+                                    $uniconf=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $uniconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'Others','sta_prgtype'=>'Conference');    
+                                    $othconf=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $othconf;
+                                ;?></td>
+                          
+                            </tr>
+                            <tr>
+                                <td><?php echo "Seminar"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'International','sta_prgtype'=>'Seminar');    
+                                    $intsem=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $intsem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'National','sta_prgtype'=>'Seminar');    
+                                    $ntsem=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $ntsem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'State','sta_prgtype'=>'Seminar');    
+                                    $statsem=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $statsem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'University','sta_prgtype'=>'Seminar');    
+                                    $unisem=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $unisem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'Others','sta_prgtype'=>'Seminar');    
+                                    $othsem=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $othsem;
+                                ;?></td>
+                                
+                            </tr>
+                            <tr>
+                                <td><?php echo "Workshop"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'International','sta_prgtype'=>'Workshop');    
+                                    $intwor=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $intwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'National','sta_prgtype'=>'Workshop');    
+                                    $ntwor=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $ntwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'State','sta_prgtype'=>'Workshop');    
+                                    $statwor=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $statwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'University','sta_prgtype'=>'Workshop');    
+                                    $uniwor=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $uniwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'Others','sta_prgtype'=>'Workshop');    
+                                    $othwor=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $othwor;
+                                ;?></td>
+                                
+                            </tr>
+                            <tr>
+                                <td><?php echo "Meeting"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'International','sta_prgtype'=>'Meeting');    
+                                    $intmet=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $intmet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'National','sta_prgtype'=>'Meeting');    
+                                    $ntmet=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $ntmet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'State','sta_prgtype'=>'Meeting');    
+                                    $statmet=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $statmet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'University','sta_prgtype'=>'Meeting');    
+                                    $unimet=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $unimet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sta_empid' =>$emp_id,'sta_prglevel'=>'Others','sta_prgtype'=>'Meeting');    
+                                    $othmet=$this->sismodel->getcountabstract('staff_training_attended',$whdata1);
+                                    echo $othmet;
+                                ;?></td>
+                                
+                            </tr>
+                        </tbody>     
+                    </tr>
+                    
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Training Organised(Number of Trainings Organised) : </b></td></tr>
+                    <tr>
+                        <th>Description</th>
+                        <th> International</th>
+                        <th> National</th>
+                        <th> State</th>
+                        <th> University</th> 
+                        <th> Others</th> 
                        
                         <tbody>
                             <tr>
-                                <td><?php echo $performancedata->spd_noof_project; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_fund_outly_ofproject; ?></td>
+                             <td><?php echo "Training"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'International','sto_prgtype'=>'Training');    
+                                    $inttrain=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $inttrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'National','sto_prgtype'=>'Training');    
+                                    $nttrain=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $nttrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'State','sto_prgtype'=>'Training');    
+                                    $stattrain=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $stattrain;
+                                ;?></td>
+                                
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'University','sto_prgtype'=>'Training');    
+                                    $unitrain=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $unitrain;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'Others','sto_prgtype'=>'Training');    
+                                    $othtrain=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $othtrain;
+                                ;?></td>
+                            </tr>
+                            <tr>
+                             <td><?php echo "Symposium"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'International','sto_prgtype'=>'Symposium');    
+                                    $intsysm=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $intsysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'National','sto_prgtype'=>'Symposium');    
+                                    $ntsysm=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $ntsysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'State','sto_prgtype'=>'Symposium');    
+                                    $statsysm=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $statsysm;
+                                ;?></td>
+                                
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'University','sto_prgtype'=>'Symposium');    
+                                    $unisysm=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $unisysm;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'Others','sto_prgtype'=>'Symposium');    
+                                    $othsysm=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $othsysm;
+                                ;?></td>
+                            </tr>
+                            <tr>
+                             <td><?php echo "Conference"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'International','sto_prgtype'=>'Conference');    
+                                    $intconf=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $intconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'National','sto_prgtype'=>'Conference');    
+                                    $ntconf=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $ntconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'State','sto_prgtype'=>'Conference');    
+                                    $statconf=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $statconf;
+                                ;?></td>
+                                
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'University','sto_prgtype'=>'Conference');    
+                                    $uniconf=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $uniconf;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'Others','sto_prgtype'=>'Conference');    
+                                    $othconf=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $othconf;
+                                ;?></td>
+                            </tr>
+                            <tr>
+                            <td><?php echo "Seminar"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'International','sto_prgtype'=>'Seminar');    
+                                    $intsem=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $intsem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'National','sto_prgtype'=>'Seminar');    
+                                    $ntsem=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $ntsem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'State','sto_prgtype'=>'Seminar');    
+                                    $statsem=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $statsem;
+                                ;?></td>
+                                
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'University','sto_prgtype'=>'Seminar');    
+                                    $unisem=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $unisem;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'Others','sto_prgtype'=>'Seminar');    
+                                    $othsem=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $othsem;
+                                ;?></td>
+                            </tr>
+                            <tr>
+                            <td><?php echo "Workshop"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'International','sto_prgtype'=>'Workshop');    
+                                    $intwor=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $intwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'National','sto_prgtype'=>'Workshop');    
+                                    $ntwor=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $ntwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'State','sto_prgtype'=>'Workshop');    
+                                    $statwor=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $statwor;
+                                ;?></td>
+                                
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'University','sto_prgtype'=>'Workshop');    
+                                    $uniwor=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $uniwor;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'Others','sto_prgtype'=>'Workshop');    
+                                    $othwor=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $othwor;
+                                ;?></td>
+                            </tr>
+                            <tr>
+                            <td><?php echo "Meeting"; ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'International','sto_prgtype'=>'Meeting');    
+                                    $intmet=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $intmet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'National','sto_prgtype'=>'Meeting');    
+                                    $ntmet=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $ntmet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'State','sto_prgtype'=>'Meeting');    
+                                    $statmet=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $statmet;
+                                ;?></td>
+                                
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'University','sto_prgtype'=>'Meeting');    
+                                    $unimet=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $unimet;
+                                ;?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sto_empid' =>$emp_id,'sto_prglevel'=>'Others','sto_prgtype'=>'Meeting');    
+                                    $othmet=$this->sismodel->getcountabstract('staff_training_organised',$whdata1);
+                                    echo $othmet;
+                                ;?></td>
+                            </tr>
+                        </tbody>     
+                    </tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Awards and Medals : </b></td></tr>
+                    <tr>
+                        <th>Description</th>
+                        <th> Number of Awards</th>
+                        <th colspan="6"> Number of Medals</th>
+                        <?php //foreach($empawarddata as $awardrec){;?>
+                        <tbody>
+                            <tr>
+                               
+                                <td><?php echo "International";?></td>
+                                <?php // if($awardrec->spad_awardby =='International'): ;?>
+                                <?php
+                                  //  $selfield='count(*)';
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'International','spad_awardtype!='=>'Medal');    
+                                    $intawrd=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                                                       
+                                 ;?>
+                                <td ><?php echo $intawrd;?></td>
+                                <td colspan="5"><?php
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'International','spad_awardtype'=>'Medal');    
+                                    $intmedl=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $intmedl;?></td>
+                             
+                            </tr>
+                            <tr>
+                                <td><?php echo "National";?></td>
+                                <td><?php
+                                    //$selfield='count(*)';
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'National','spad_awardtype!='=>'Medal');    
+                                    $ntawrd=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $ntawrd;
+                                ;?></td>
+                                <td colspan="5"><?php
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'National','spad_awardtype'=>'Medal');    
+                                    $ntmedl=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $ntmedl;
+                                //echo ;?></td>
+                            </tr> 
+                            <tr>
+                                <td><?php echo "State";?></td>
+                                <td ><?php 
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'State','spad_awardtype!='=>'Medal');    
+                                    $stawrd=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $stawrd;
+                                
+                                    ?></td>
+                                <td colspan="5"><?php 
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'State','spad_awardtype'=>'Medal');    
+                                    $stmedl=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $stmedl;  ?></td>
+                            </tr>  
+                            <tr>
+                                <td><?php echo "University";?></td>
+                                <td ><?php 
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'University','spad_awardtype!='=>'Medal');    
+                                    $uniawrd=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $uniawrd;
+                                ?></td>
+                                <td colspan="5"><?php 
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'University','spad_awardtype'=>'Medal');    
+                                    $unimedl=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $unimedl; 
+                                ?></td>
+                            </tr> 
+                            <tr>
+                                <td><?php echo "College";?></td>
+                                <td ><?php
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'College','spad_awardtype!='=>'Medal');    
+                                    $colawrd=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $colawrd;
+                                ?></td>
+                                <td colspan="5"><?php 
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'College','spad_awardtype'=>'Medal');    
+                                    $colmedl=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $colmedl; 
+                                ?></td>
+                            </tr> 
+                            <tr>
+                                <td><?php echo "Professional Body";?></td>
+                                <td ><?php
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'Professional Body','spad_awardtype!='=>'Medal');    
+                                    $pbawrd=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $pbawrd;
+                                
+                                    ?></td>
+                                <td colspan="5"><?php 
+                                    $whdata = array ('spad_empid' => $emp_id,'spad_awardby'=>'Professional Body','spad_awardtype'=>'Medal');    
+                                    $pbmedl=$this->sismodel->getcountabstract('staff_perform_award_data',$whdata);
+                                    echo $pbmedl;
+                                ?></td>
+                            </tr> 
+                        </tbody>  
+                        <?php //};?>
+                    </tr>
+                    <?php //endif ;?>
+                    
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Project handled : </b></td></tr>
+                    <tr>
+                        <th>Funding Agency</th>
+                        <th>Number of Projects handled</th>
+                        <th colspan="4"> Fund outlay (in Lakhs)</th>
+                       
+                        <tbody>
+                            <tr>
+                                <td><?php echo "DBT" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'DBT');    
+                                    $dbtnop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $dbtnop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'DBT');
+                                    $dbtbudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($dbtbudget as $row){
+                                                $ttbudget=$row->sppd_budget;
+                                        }
+                                    echo $ttbudget;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "ICAR" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'ICAR');    
+                                    $icarnop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $icarnop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'ICAR');
+                                    $icarbudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($icarbudget as $row){
+                                        $ttbudget=$row->sppd_budget;
+                                    }
+                                    echo $ttbudget;
+                                   
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "DST" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'DST');    
+                                    $dstnop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $dstnop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'DST');
+                                    $dstbudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($dstbudget as $row){
+                                        $ttbudget=$row->sppd_budget;
+                                    }
+                                    echo $ttbudget;
+                                    
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "GOI" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'GOI');    
+                                    $goinop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $goinop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'GOI');
+                                    $goibudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($goibudget as $row){
+                                        $ttbudget=$row->sppd_budget;
+                                    }
+                                    echo $ttbudget;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "ICMR" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'ICMR');    
+                                    $icmrnop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $dbtnop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'ICMR');
+                                    $icmrbudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($icmrbudget as $row){
+                                        $ttbudget=$row->sppd_budget;
+                                    }
+                                    echo $ttbudget;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "TNGOVT" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'TNGOVT');    
+                                    $tngovtnop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $tngovtnop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'TNGOVT');
+                                    $tngovtbudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($tngovtbudget as $row){
+                                        $ttbudget=$row->sppd_budget;
+                                    }
+                                    echo $ttbudget;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "TNSCST" ?></td>
+                                <td><?php 
+                                    $whdata1 = array ('sppd_empid' =>$emp_id,'sppd_agendytype'=>'TNSCST');    
+                                    $tnscstnop=$this->sismodel->getcountabstract('staff_perform_project_data',$whdata1);
+                                    echo $tnscstnop;
+                                ?></td>
+                                <td colspan="4"><?php 
+                                    $selectfield='sppd_budget';
+                                    $whdata=array('sppd_empid' =>$emp_id,'sppd_agendytype'=>'TNSCST');
+                                    $tnscstbudget=$this->sismodel->get_sumofvalue('staff_perform_project_data',$selectfield,$whdata);
+                                    foreach($tnscstbudget as $row){
+                                        $ttbudget=$row->sppd_budget;
+                                    }
+                                    echo $ttbudget;
+                                ?></td>
                             </tr>
                            
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Training attended (Seminar / Symposium / Workshop etc.) : </b></td></tr>
+                    
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Students Guided : </b></td></tr>
                     <tr>
-                        <th></th>
-                        <th colspan="4"> Number of Trainings attended</th>
+                        <th>Degree</th>
+                        <th colspan="6"> Number of students guided</th>
                        
                         <tbody>
                             <tr>
-                                <td><?php echo "National"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_tr_att_nat; ?></td>
+                                <td><?php echo "M.V.Sc"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'M.V.Sc');    
+                                    $mvsc=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $mvsc;
+                                ?></td>
                             </tr>
                             <tr>
-                                <td><?php echo "International"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_tr_att_int; ?></td>
-                            </tr>
-                        </tbody>     
-                    </tr>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Training conducted (Seminar / Symposium / Workshop etc.) : </b></td></tr>
-                    <tr>
-                        <th></th>
-                        <th colspan="4"> Number of Trainings conducted</th>
-                       
-                        <tbody>
-                            <tr>
-                                <td><?php echo "National"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_tr_con_nat; ?></td>
+                                <td><?php echo "M.Sc"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'M.Sc');    
+                                    $msc=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $msc;
+                                ?></td>
                             </tr>
                             <tr>
-                                <td><?php echo "International"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_tr_con_int; ?></td>
-                            </tr>
-                        </tbody>     
-                    </tr>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Students Guided : </b></td></tr>
-                    <tr>
-                        <th></th>
-                        <th colspan="4"> Number of students guided</th>
-                       
-                        <tbody>
-                            <tr>
-                                <td><?php echo "MVSc"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_mvsc_stu_guided; ?></td>
+                                <td><?php echo "M.Tech"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'M.Tech');    
+                                    $mtech=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $mtech;
+                                ?></td>
                             </tr>
                             <tr>
-                                <td><?php echo "Phd"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_phd_stu_guided; ?></td>
+                                <td><?php echo "M.Phil"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'M.Phil');    
+                                    $mphil=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $mphil;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "PhD"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'PhD');    
+                                    $phd=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $phd;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "PG Diploma"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'PG Diploma');    
+                                    $pgdiplma=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $pgdiplma;
+                                ?></td>
                             </tr>
                             <tr>
                                 <td><?php echo "Others"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_others_stu_guided; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spsgd_empid' =>$emp_id,'spsgd_sdegree'=>'Others');    
+                                    $others=$this->sismodel->getcountabstract('staff_perform_stugui_data',$whdata1);
+                                    echo $others;
+                                ?></td>
                             </tr>
                         </tbody>     
                     </tr>
-                    <tr style=" background-color:gray;width:100%;"><td colspan="5"><b>Guest lecture delivered : </b></td></tr>
+                    <tr style=" background-color:gray;width:100%;"><td colspan="6"><b>Guest lecture delivered : </b></td></tr>
                     <tr>
                         <tbody>
                             <tr>
-                                <td><?php echo "Number of Guest lecture delivered"; ?></td>
-                                <td colspan="4"><?php echo $performancedata->spd_no_ofguestlecture; ?></td>
+                                <td><?php echo " Total Number of Guest lecture delivered"; ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spgld_empid' =>$emp_id);    
+                                    $ttlnoguestlec=$this->sismodel->getcountabstract('staff_perform_guest_lect_data',$whdata1);
+                                    echo $ttlnoguestlec;
+                                ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php 
+                                    $selectfield='spgld_year';
+                                    $whdata= array ('spgld_empid' =>$emp_id);    
+                                    $whorder='spgld_year DESC';
+                                    $lastyear=$this->sismodel->get_orderlistspficemorelimit('staff_perform_guest_lect_data',$selectfield,$whdata,$whorder,'2');
+                                   // print_r($lastyear);
+                                                      
+                                    echo $lastyear[0]->spgld_year;
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spgld_empid' =>$emp_id,'spgld_year'=>$lastyear[0]->spgld_year);    
+                                    $lastguestlec=$this->sismodel->getcountabstract('staff_perform_guest_lect_data',$whdata1);
+                                    echo $lastguestlec;
+                                ?></td>
+                            </tr>
+                             <tr>
+                                <td><?php 
+                                    echo $lastyear[1]->spgld_year;
+                                ?></td>
+                                <td colspan="6"><?php 
+                                    $whdata1 = array ('spgld_empid' =>$emp_id,'spgld_year'=>$lastyear[1]->spgld_year);    
+                                    $prelastguestlec=$this->sismodel->getcountabstract('staff_perform_guest_lect_data',$whdata1);
+                                    echo $prelastguestlec;
+                                ?></td>
                             </tr>
                         </tbody>     
                     </tr>
                     <tr></tr>
-                    <tr><td><b>File Name</b></td>
-                        <td colspan="4">
-			<?php  if (!empty($performancedata->spd_per_filename)){ ?>
-                            <a href="<?php echo base_url().'uploads/SIS/perfattachment/'.$performancedata->spd_per_filename ; ?>"
-                               target="_blank" type="application/octet-stream" download="<?php echo $performancedata->spd_per_filename ?>">Download the pdf</a>
-			<?php } 
-				else{
-                                echo " No attachment found";
-                                }
+<!--                    <tr><td><b>File Name</b></td>
+                        <td colspan="6">
+			<?php  //if (!empty($performancedata->spd_per_filename)){ ?>
+                            <a href="<?php //echo base_url().'uploads/SIS/perfattachment/'.$performancedata->spd_per_filename ; ?>"
+                               target="_blank" type="application/octet-stream" download="<?php //echo $performancedata->spd_per_filename ?>">Download the pdf</a>
+			<?php //} 
+				//else{
+                               // echo " No attachment found";
+                               // }
 			?>
                         </td>
                     </tr>
-                    <?php else : ?>
-                    <td colspan= "7" align="center"> No Records found...!</td>
-                    <?php endif;?>
-                    
-		</table>
+    -->                                 
+		</table> 
 		<?php //include 'other_profile_perticulars.php'; ?>
 		<table style="width:100%;">
         	<tr>
@@ -809,7 +1596,7 @@
 		<a href="#" onclick="goBack()"><img src='<?php echo base_url(); ?>uploads/icons/back1.png' title="Back"></a>
         	</td>
         	</tr>
-    		</table>
+    		</table> 
 	<?php endif ?>
 
 	<br>
