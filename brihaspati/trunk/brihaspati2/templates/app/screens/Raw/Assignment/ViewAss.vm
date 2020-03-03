@@ -157,26 +157,27 @@ $!data.getMessage()
 	## #if($user_role ==  "instructor")
 	#if(($user_role ==  "instructor")||($user_role ==  "teacher_assistant"))
 	<tr><td colspan=6>The $brih_instruction / $brih_assignment is 
+		 #set ($stlp = 0)
+		 #foreach($news in $detail)
+			#if($stlp == 0)
+                        <a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none"> $brih_instruction</a>
+			#set ($stlp = $stlp + 1)
+			#end
+		 #end
+
 		#set ($stlp = 0)
                 #foreach($e in $Assignmentlist )
 
                         #if(($e.getAssignmentfile()!= "") && ($stlp == 0))
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a> 
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">, $brih_assignment </a> 
  			#set ($stlp = $stlp + 1)
                         #end
 
                 #end
-		 #set ($stlp = 0)
-		 #foreach($news in $detail)
-			#if($stlp == 0)
-                        <a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none">$brih_instruction</a>
-			#set ($stlp = $stlp + 1)
-			#end
-		 #end
 		
 		##downloading assignments
 		#if($studentfilecheck == "ok")
-        		<a href="$link.setPage("call,Zipcreate.vm").addPathInfo("dest_folder",$str1)" style="text-decoration:none">/$brih_download $brih_assignment</a>
+        		<a href="$link.setPage("call,Zipcreate.vm").addPathInfo("dest_folder",$str1)" style="text-decoration:none">/ $brih_download $brih_assignment</a>
 		#end
 	</td></tr> 
 	<tr bgcolor="$ui.menuColor">

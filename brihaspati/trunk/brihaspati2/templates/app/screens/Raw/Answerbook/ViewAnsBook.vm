@@ -87,7 +87,8 @@ $page.setBgColor($ui.bgcolor)
 			#else
 				 $brih_view $brih_answer $brih_copy
 			#end
-                                       /$brih_download </H3>
+                                ##       /$brih_download 
+				</H3>
   			</div>
 			</td>
 	
@@ -102,7 +103,7 @@ $page.setBgColor($ui.bgcolor)
 				#end
 				<td>$count.</td>
 				<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$topic).addPathInfo("type","AnsCopy").addPathInfo("filename",$file)","newWin"); style=text-decoration:none>$file</a></td>
-				<td> <a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$topic).addPathInfo("dl",1).addPathInfo("type","AnsCopy").addPathInfo("filename",$file) style=text-decoration:none>$brih_download</a></td>
+	##			<td> <a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$topic).addPathInfo("dl",1).addPathInfo("type","AnsCopy").addPathInfo("filename",$file) style=text-decoration:none>$brih_download</a></td>
 				</tr>	
 				#set ( $count= $count+1)
 				#end
@@ -114,9 +115,9 @@ $page.setBgColor($ui.bgcolor)
 #else
 ##No Publish File in the $topic Topic of $course
 	#if($lang == "hindi")
-		<font color="blue"></font> $brih_answer $brih_copy $brih_publishFileMsg
+		<font color="blue"></font>$brih_your $brih_answer $brih_copy $brih_available1 
 	#else
-		$brih_publishFileMsg $brih_answer $brih_copy <font color="blue"></font>
+		<font color="blue">$brih_your $brih_answer $brih_copy $brih_arenotexists . </font>
 	#end
 #end
 <SCRIPT language="JavaScript">

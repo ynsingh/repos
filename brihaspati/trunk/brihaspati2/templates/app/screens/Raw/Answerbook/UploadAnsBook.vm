@@ -16,7 +16,7 @@ $page.setTitle("File Upload")
 	<font face="$ui.sansSerifFonts"><b>
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
- 	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_course $brih_mgmt</a> | 
+ ##	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_course $brih_mgmt</a> | 
 	#if($lang=="hindi")
 		$brih_answer $brih_copy $brih_upload
 	#else
@@ -30,7 +30,7 @@ $!data.getMessage()
 <table width=100%>
 <tr>
 <td align=right>
-	<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati/docs/Upload.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati/docs/Uploadansbook.html","newWin");>$brih_help</a>
 </td>
 </tr>
 </table>
@@ -86,10 +86,11 @@ $!data.getMessage()
 	</tr>
 #end
 </table>
-
 <script LANGUAGE="JAVASCRIPT">
 	function validate(uploadform,field)
-	{	
+	{
+		if(uploadform.ENAME.value!="")
+		{	
 		var tList=uploadform.file1.value;
 		if(tList != "")
 		{
@@ -101,6 +102,11 @@ $!data.getMessage()
 			alert("File must be selected !!");
 			return;
 		}
+		}
+		else
+                {
+                        alert("Please fill the Mandatory(*) Fields !!");
+                }
 	
 	}
 </script>
@@ -130,6 +136,8 @@ $!data.getMessage()
 	</tr>
 <br><br>
       <tr>
+	#formCell ("$brih_exam $brih_name <font color=red>*</font>" "ENAME" "")
+      </tr>
       <tr>
               #fileUpload (" &nbsp; $brih_at_file " "file1")</td> 
       </tr>

@@ -48,6 +48,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 
@@ -59,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor_Student;
 
 public class ViewAnsBook extends SecureScreen_Instructor_Student{
+		String rollno1="",rollno2="";
+		Vector<String> fileType=new Vector<String>();
 	/**
 	 * This is the default method that builds the template page
 	 * @param data Rundata
@@ -66,7 +69,6 @@ public class ViewAnsBook extends SecureScreen_Instructor_Student{
 	 */
 	public void doBuildTemplate(RunData data,Context context) 
 	{
-		String rollno1="",rollno2="";
 	        List lv=null;
 		Vector v=new Vector();
 		User user=data.getUser();
@@ -76,8 +78,6 @@ public class ViewAnsBook extends SecureScreen_Instructor_Student{
 		
 		String topic=data.getParameters().getString("topic","");
 		context.put("topic",topic);
-		String status=data.getParameters().getString("status","");
-		String username=data.getParameters().getString("uname","");
 		String cName=data.getParameters().getString("cName","");
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		/**
@@ -117,7 +117,7 @@ public class ViewAnsBook extends SecureScreen_Instructor_Student{
 			context.put("isAuthor","true");
 		}
 		String topicDesc="";
-		Vector fileType=new Vector();
+		Vector<String> fileType1=new Vector<String>();
 			/**
                          * Get rollno from table
                          */
@@ -147,41 +147,60 @@ public class ViewAnsBook extends SecureScreen_Instructor_Student{
                         ErrorDumpUtil.ErrorLog("Error inside getting roll no value in view answer book"+e);
                 }
 		try{
-	//		String rollno="123456";
+			String vabmsg=" Roll No 1 is  "+rollno1 +" and mail id is "+user.getName() +" Roll no 2 is "+rollno2;
+			ErrorDumpUtil.ErrorLog("\nThe person goes to view answer copy (ViewAnsBook) "+vabmsg, TurbineServlet.getRealPath("/logs/ViewAnsCopy.txt"));
 			File folder = new File(filePath);
 			if((rollno1 != null) && !(rollno1.trim().isEmpty())){
-			//      File[] files = folder.listFiles();
-				String[] files = folder.list();
-				if(files.length >0){
-					for (String file : files){	
-						if(file.startsWith(rollno1)){
-							fileType.add(file);
-		//					ErrorDumpUtil.ErrorLog(file);
-						}
-						if((rollno2 != null) && !(rollno2.trim().isEmpty())){
-							if(file.startsWith(rollno2)){
-								fileType.add(file);
-		//						ErrorDumpUtil.ErrorLog(file);
-							}
-        					}
-					}
-		//        		System.out.println(file);
-        			}
+				fileType=new Vector<String>();
+				fileType1=listAllFiles(folder);
 			}
-		 	context.put("dirContent",fileType);
-		 	//context.put("dirContent",files);
-//		 	if(files.length >0){
-		       if(fileType.size() >0){		
+		 	context.put("dirContent",fileType1);
+		       if(fileType1.size() >0){		
 				context.put("Mode","NoBlank");
 		 	}
 			
 		}//try
 		catch(Exception e)
 		{
-			data.setMessage("The error in viewing/getting file list !!"+e);
+			data.setMessage("Your answer copy does not exist on the server. Contact to Instructor. !!"+e);
 		}
 
 	}
+	/**
+	 * @param data file
+	 * @return list
+	 */
+	public Vector listAllFiles(File folder){
+		File[] files = folder.listFiles();
+        	if(files.length >0){
+                	for (File file : files){
+                        	if(file.isDirectory()){
+                                        listAllFiles(file);
+                                }else{
+                                      //  ErrorDumpUtil.ErrorLog(file.toString());
+					String fdnme=file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("AnsCopy")+8);
+//					ErrorDumpUtil.ErrorLog("The fd name is "+fdnme);
+					String filenme=file.getName();
+//					ErrorDumpUtil.ErrorLog(filenme);
+                                       // if(filenme.startsWith(rollno1)){
+                                        if(filenme.equals(rollno1+".pdf")){
+                                	        fileType.add(fdnme);
+                                            //          ErrorDumpUtil.ErrorLog("Inside loop"+fdnme);
+                                        }
+                                        if((rollno2 != null) && !(rollno2.trim().isEmpty())){
+                                               // if(filenme.startsWith(rollno2)){
+                                                if(filenme.equals(rollno2+".pdf")){
+                                                        fileType.add(fdnme);
+                //                                            ErrorDumpUtil.ErrorLog(file);
+                                                }
+                                        }
+                                }
+                        }
+//			ErrorDumpUtil.ErrorLog(fileType);
+                }
+		return fileType;
+     	}
+
 
 	/**
 	 * This method checks the authorization of the user

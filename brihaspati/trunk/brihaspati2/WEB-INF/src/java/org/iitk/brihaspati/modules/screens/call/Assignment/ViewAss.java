@@ -96,6 +96,7 @@ public class ViewAss extends  SecureScreen
                 {
                         User user=data.getUser();
                         String UserName=data.getUser().getName();
+			String LangFile=data.getUser().getTemp("LangFile").toString();
                         ParameterParser pp=data.getParameters();
                         context.put("coursename",(String)user.getTemp("course_name"));
                         String courseid=(String)user.getTemp("course_id");
@@ -375,7 +376,6 @@ public class ViewAss extends  SecureScreen
 			}
 			else
 			{
-				String LangFile=data.getUser().getTemp("LangFile").toString();
 				data.setMessage(MultilingualUtil.ConvertedString("assignment_msg17",LangFile));
 			}
 		}	

@@ -82,6 +82,7 @@ public class UploadAnsAction extends SecureAction_Instructor
                 LangFile=(String)user.getTemp("LangFile");
 		String dir=(String)user.getTemp("course_id");
                 ParameterParser pp=data.getParameters();
+		String examName=pp.getString("ENAME");
 		FileItem file = pp.getFileItem("file1");
 		ErrorDumpUtil.ErrorLog(" The error is "+file.toString());
                 String fileName=file.getName();
@@ -89,13 +90,16 @@ public class UploadAnsAction extends SecureAction_Instructor
 		if(fileName.endsWith("zip"))
                 {
 			try{
-				File filePath=new File(uploadRealPath+"/AnsCopy/");
+				File filePath=new File(uploadRealPath+"/AnsCopy/"+examName);
 				filePath.mkdirs();
 				File filePath1=new File(filePath+"/"+fileName);
         	                file.write(filePath1);
 				unzip(filePath1.toString(),filePath.toString());
+
 	                        msg1=MultilingualUtil.ConvertedString("c_msg5",LangFile);
                                 data.setMessage(msg1);
+//				File zofile = new File(filePath.toString()+fileName);
+				filePath1.delete();
 			}
 			catch(Exception ex){data.setMessage("The Error in Uploading!! "+ex);}
 		} 
