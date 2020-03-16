@@ -70,7 +70,7 @@ echo "</table>";
 		</thead>
 		<tbody>
 <?php
-//			print_r($admission);
+	
 			$count=1;
                          if( count($admission) ):
                                 foreach($admission as $row){

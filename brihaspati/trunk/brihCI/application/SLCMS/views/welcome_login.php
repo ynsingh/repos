@@ -59,6 +59,8 @@ echo "</center>"; ?>
 <?php //$this->load->view('enterence/enterence_head');?>
 
 </br>
+
+
 <table style="width:100%;border:0px solid black;"align=center border=0> 
 	
 	<tr>
@@ -89,9 +91,10 @@ echo "</center>"; ?>
  				echo "</tr>";
 				}
 				?>
-</div>
+			</table>
+		</div>
 	      </td>
-</table>
+
 	
 		<td align=right style="width:30%;" valign="top">
 		<form action="<?= site_url('welcome') ?>" method="post">
@@ -99,27 +102,33 @@ echo "</center>"; ?>
 			<tr>
 			<td align=left colspan=2>	
 				<label>Username</label></br>	
-        			<input type="text" name="username" size="33%" />
+        			<input type="text" name="username" style="width:94%" />
 			</td>
 			</tr>
 			<tr>
 				<td align=left colspan=2><label>Password</label></br>
-        			<input type="password" name="password" size="33%"  placeholder="********"/></td>
+        			<input type="password" name="password" style="width:94%"  placeholder="********"/></td>
 			</tr>
+
 			<tr>
 				<td>
         			<input type="submit"  style="width:100%" id="button" value="Login" name="login"><b></b>
 				</td>
-				<td align=right>
+				<td align=left>
 				<a href="<?php echo site_url('Student/student_step0');?>" style="text-decoration:none;" title="Click to open student detail form">
 				<input type="button" style="width:100%;font-weight:normal;" id="button" value="New Student"></button></a>
 				</td>
 			</tr>
+
 			<tr>
-               			<td colspan=2 align=right>
-				<a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
+               <td  align=left>
+            <a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
                 		<font size=4>Forgot Password</font></a></td>
+			
+				<td align="right">
+		 <a href="<?php echo site_url('help/admissionhelpdoc');?>"style="text-decoration:none;" title="New Student" > <font size=4> New Student<br>-help Manual </a></font></td>
 			</tr>
+			
 				
 			</table>
     			</form>	
@@ -134,3 +143,5 @@ echo "</center>"; ?>
 </div>
 </body>
 </html>
+
+      

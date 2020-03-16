@@ -85,7 +85,7 @@ function filladd()
 <div>
  	<div id="body">
 	<?php $this->load->view('template/header2'); ?>
-	<div class="welcome"><h2>Welcome : <?php echo $email?></h2></div></br>
+	<div class="welcome"><h2>Welcome : <?php echo $name?></h2></div></br>
 	<?php $this->load->view('student/stuStepshead');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 

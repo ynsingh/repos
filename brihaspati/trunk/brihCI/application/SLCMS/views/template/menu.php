@@ -399,6 +399,12 @@ echo "<ul class=\"sf-menu\">";
                                         echo "<li>";
                                                 echo anchor('help/helpdoc', 'User Manual', array('title' => 'User Manual'));
                                         echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('help/admissionhelpdoc', 'Admission Student Manual', array('title' => 'Admission Student Manual'));
+                                        echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('help/enterancehelpdoc', 'Enterance Student Manual', array('title' => 'Enterance Student Manual'));
+                                        echo "</li>";
                                         echo "</ul>";
 
 			echo "<li>";

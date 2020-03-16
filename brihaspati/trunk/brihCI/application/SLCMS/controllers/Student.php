@@ -68,14 +68,15 @@ class Student extends CI_Controller {
 							//'course_name'    => $this->input->post('Sprogramname'),
 							//'branchname'     => $this->input->post('Sbranchname'),
 							//'student_email'  => $this->input->post('Semail')
-							'jee_mainno' => $this->input->post('Sanumber'),
-							'jeeapplication_no'    => $this->input->post('Sjeeanumber'),
+							'entexamrollno' => $this->input->post('Sanumber'),
+							'application_no'    => $this->input->post('Sjeeanumber'),
 							'student_dob'  => $this->input->post('Sdateofbirth')						
 						);
 						
+
 						//verify the data existance filled by user 
 						$result = $this->commodel->isduplicatemore("admissionmeritlist",$data);
-						//	print_r($result);
+							
 						//$result = $this->stumodel->login($data);
 						if ($result == true) {
 							//$number = $this->input->post('Sanumber');
@@ -277,7 +278,8 @@ class Student extends CI_Controller {
 		$data['stu_depresult'] = $this->commodel->get_list('Department');
 		$data['stu_program'] = $this->commodel->get_list('program');
 		//$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','entexamrollno',$number)->row();
-		$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','jeeapplication_no',$number)->row();
+
+	$stu_addmisdata = $this->commodel->get_listrow('admissionmeritlist','application_no',$number)->row();
 		if(!empty($stu_addmisdata)) {
 			$prgname = $stu_addmisdata->course_name;	
 			$data['email'] = $stu_addmisdata->student_email;
@@ -293,7 +295,7 @@ class Student extends CI_Controller {
 		}
 	//check admission last date for student
 	//$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','entexamrollno',$number)->lastdate_admission;
-	$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','jeeapplication_no',$number)->lastdate_admission;
+	$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$number)->lastdate_admission;
 
 	$admidate = $this->datmodel->comparedate($ldate);
 	if($admidate)
@@ -307,43 +309,43 @@ class Student extends CI_Controller {
             			$this->form_validation->set_rules('stu_addabgroup','Blood group','trim|xss_clean');
            			$this->form_validation->set_rules('stu_addreligion','Religion','trim|xss_clean|required');
             			$this->form_validation->set_rules('stu_addmobile','Mobile number','trim|xss_clean|is_numeric|max_length[12]|required');
-	    			$this->form_validation->set_rules('stu_addemail','Email-id','trim|xss_clean|required|valid_email');
+	    			$this->form_validation->set_rules('stu_addemail','Email-id','trim|xss_clean|required|valid_emails');
 				$this->form_validation->set_rules('stu_addcourse','Program/Course name','trim|xss_clean');
 				$this->form_validation->set_rules('stu_addcenter','Study center','trim|xss_clean|required');
-          			//$this->form_validation->set_rules('','Program/Course type','trim|xss_clean|required');
+          		//$this->form_validation->set_rules('','Program/Course type','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_adddepart','Departmnet not select','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_addprgcate','Program Category not select','trim|xss_clean|required');
 
 				$this->form_validation->set_rules('stu_addmothername','Mother name','trim|xss_clean|required');
-          			$this->form_validation->set_rules('stu_addfathername','Father name','trim|xss_clean|required');
+          		$this->form_validation->set_rules('stu_addfathername','Father name','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_addfathermono','Father mobile number','trim|xss_clean|required|numeric');
-          			$this->form_validation->set_rules('stu_addmothermono','Mother mobile number','trim|xss_clean|required|numeric');
+          		$this->form_validation->set_rules('stu_addmothermono','Mother mobile number','trim|xss_clean|required|numeric');
 				$this->form_validation->set_rules('stu_addfatheroccu','Father occupation','trim|xss_clean|required');
-          			$this->form_validation->set_rules('stu_addmotheroccu','Mother occupation','trim|xss_clean|required');
+          		$this->form_validation->set_rules('stu_addmotheroccu','Mother occupation','trim|xss_clean|required');
 
-           			$this->form_validation->set_rules('stu_addcate','Category','trim|xss_clean|required');
-           			$this->form_validation->set_rules('stu_addpstreet','Postal address','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_addcate','Category','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_addpstreet','Postal address','trim|xss_clean|required');
 				//$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required');
 				//$this->form_validation->set_rules('Spost','Post office','trim|xss_clean|required');
 	   			$this->form_validation->set_rules('stu_addpcity','City','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_addpstate','State','trim|xss_clean|required');
-          			$this->form_validation->set_rules('stu_addpcountry','Country','trim|xss_clean|required');
-           			$this->form_validation->set_rules('stu_addpcode','Postal Code','trim|xss_clean|required|numeric');
+          		$this->form_validation->set_rules('stu_addpcountry','Country','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_addpcode','Postal Code','trim|xss_clean|required|numeric');
 
 				$this->form_validation->set_rules('stu_hcname','High School Class Name','trim|xss_clean|required');
-          			$this->form_validation->set_rules('stu_hinstitute','High School Institute Name','trim|xss_clean|required');
-           			$this->form_validation->set_rules('stu_hboard','High School Board','trim|xss_clean|required');
-           			$this->form_validation->set_rules('stu_hsubject','High School Subject','trim|xss_clean|required');
+          		$this->form_validation->set_rules('stu_hinstitute','High School Institute Name','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_hboard','High School Board','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_hsubject','High School Subject','trim|xss_clean|required');
 	   			$this->form_validation->set_rules('stu_hpassed','High School Passed/Appeared','trim|xss_clean|required');
 	   			$this->form_validation->set_rules('stu_hmmarks','High School Max Marks','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_hmobtain','High School Marks Obtained','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_hpercentage','High School Percentage','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_hyear','High School Passing Year','trim|xss_clean|required');
 	
-	    			$this->form_validation->set_rules('stu_icname','Intermediate School Class Name','trim|xss_clean|required');
-          			$this->form_validation->set_rules('stu_iinstitute','Intermediate School Institute Name','trim|xss_clean|required');
-           			$this->form_validation->set_rules('stu_iboard','Intermediate School Board','trim|xss_clean|required');
-           			$this->form_validation->set_rules('stu_isubject','Intermediate School Subject','trim|xss_clean|required');
+	    		$this->form_validation->set_rules('stu_icname','Intermediate School Class Name','trim|xss_clean|required');
+          		$this->form_validation->set_rules('stu_iinstitute','Intermediate School Institute Name','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_iboard','Intermediate School Board','trim|xss_clean|required');
+           		$this->form_validation->set_rules('stu_isubject','Intermediate School Subject','trim|xss_clean|required');
 	   			$this->form_validation->set_rules('stu_ipassed','Intermediate School Passed/Appeared','trim|xss_clean|required');
 	   			$this->form_validation->set_rules('stu_immarks','Intermediate School Max Marks','trim|xss_clean|required');
 				$this->form_validation->set_rules('stu_imobtain','Intermediate School Marks Obtained','trim|xss_clean|required');
@@ -374,9 +376,13 @@ class Student extends CI_Controller {
                   		'sm_religion'  		=>	$this->input->post('stu_addreligion'),
          				//'sm_enrollmentno'	=>	$enroollno'
                 			);
-					//$this->db->insert('student_master', $data);	
-					$this->db->insert('student_master', $stu_personnel);
+					
+
+					$flagsm = $this->db->insert('student_master', $stu_personnel);
+					echo $flagsm;
 					$insertid = $this->db->insert_id();
+					print_r($insertid);
+					
 
 					//insert into student parent
 					$stu_parent = array(
@@ -396,16 +402,17 @@ class Student extends CI_Controller {
 						'spar_pcountry'   	=>	$this->input->post('stu_addpcountry'),
 						'spar_ppincode'   	=>	$this->input->post('stu_addpcode'),
 						'spar_caddress'  	=>	$this->input->post('stu_addcostreet'),
-						//'spar_cdistrict'  	=>	$this->input->post['Sdist'),
-						//'spar_cpostoffice'  	=>	$this->input->post['Spost'),
+					  //'spar_cdistrict'  	=>	$this->input->post['Sdist'),
+					  //'spar_cpostoffice'  	=>	$this->input->post['Spost'),
                 		'spar_ccity'  		=>	$this->input->post('stu_addcocity'),
                 		'spar_cstate'   	=>	$this->input->post('stu_addcostate'),
 						'spar_ccountry'   	=>	$this->input->post('stu_addcocountry'),
 						'spar_cpincode'   	=>	$this->input->post('stu_addcocode')
                 	
                 			);
-					//print_r($parent);		
-					$parent = $this->commodel->insertrec('student_parent', $stu_parent);
+				//	print_r($stu_parent);		
+					$flagparent = $this->commodel->insertrec('student_parent', $stu_parent);
+
 					
 					//insert record in student education table
 					$stu_Hedu = array(
@@ -422,9 +429,10 @@ class Student extends CI_Controller {
 						//'asedu_percentage'   	=>	$this->input->post('eduugc_net')
                 			);	
 					//print_r($Hedu);
-					$this->commodel->insertrec('student_education', $stu_Hedu);
+					$flageduh=$this->commodel->insertrec('student_education', $stu_Hedu);
 				
 					$stu_intn =$this->input->post('stu_icname');
+
 					$stu_Iedu = array(
 						'sedu_smid'				=>	$insertid,
 						'sedu_class'   			=>	$this->input->post('stu_icname'),
@@ -440,7 +448,7 @@ class Student extends CI_Controller {
              		  	 	);
 					//print_r($Iedu);
 					if(!empty($stu_intn)){
-						$this->commodel->insertrec('student_education', $stu_Iedu);
+						$flagedui=$this->commodel->insertrec('student_education', $stu_Iedu);
 					}
 
 					$stu_gran =$this->input->post('stu_gsubject');
@@ -463,6 +471,7 @@ class Student extends CI_Controller {
 					}
 
 					$stu_pron =$this->input->post('stu_psubject');
+
 					$stu_Pgedu = array(
 						'sedu_smid'				=>	$insertid,
 						'sedu_class'   			=>	$this->input->post('stu_gcname'),
@@ -480,6 +489,7 @@ class Student extends CI_Controller {
 					if(!empty($stu_pron)){
 						$this->commodel->insertrec('student_education', $stu_Pgedu);
 					}
+
 
 					$stu_anyn =$this->input->post('stu_asubject');
 					$stu_Aedu = array(
@@ -499,20 +509,26 @@ class Student extends CI_Controller {
 					if(!empty($stu_anyn)){
 						$this->commodel->insertrec('student_education', $stu_Aedu);
 					}
+
 	
 					//insert into student enterence exam
 					$stu_enterence = array(
-						'seex_smid'		=>	$insertid,
-						'seex_rollno'		=>	$this->input->post('stu_addrollno'),
+						 'seex_smid'		=>	$insertid,
+						 'seex_rollno'		=>	$this->input->post('stu_addrollno'),
 						//'seex_examname'   	=>	$_POST[''],
-                				//'spar_paddress'  	=>	$_POST['Spaddress'],
-                				//'spar_pcity'  	=>	$_POST['Scity'],
-                				//'spar_pstate'   	=>	$_POST['Sstate'],
+                		//'spar_paddress'  	=>	$_POST['Spaddress'],
+                		//'spar_pcity'  	=>	$_POST['Scity'],
+                		//'spar_pstate'   	=>	$_POST['Sstate'],
 						//'spar_pcountry'   	=>	$_POST['Scountry'],
 						//'spar_ppincode'   	=>	$_POST['Spincode']
 			
                 				);
-					$this->commodel->insertrec('student_entrance_exam',$stu_enterence);
+					print_r($stu_enterence);
+
+					$flagsee=$this->commodel->insertrec('student_entrance_exam',$stu_enterence);
+
+					
+				
 
 					$cacadyer = $this->user_model->getcurrentAcadYear();
 					//insert into student program
@@ -533,46 +549,62 @@ class Student extends CI_Controller {
 						'sp_deptid'			=> 	$this->input->post('stu_adddepart'),
 						'sp_branch'			=> 	$this->input->post('stu_addcourse')
 			                );
+					print_r($stu_stuprog);
+					
 					
 					$this->db->insert('student_program', $stu_stuprog);
 					$getprogid = $this->db->insert_id();
+				
 					
 					//insert into student fees
 					$stu_fees = array(
 						'sfee_smid'		=>	$insertid,
 						'sfee_spid'		=>	$getprogid
-                				);	
+                				);
+					print_r($stu_fees);
+
 					$this->commodel->insertrec('student_fees',$stu_fees);
+
+						
 	
 					//insert into student_admissionstatus
 					$stud_status = array(
 						'sas_hallticketno'	=>	$number,
 						'sas_studentmasterid'	=>	$insertid,
                 				);
+				//	print_r($stud_status);
+
 					$this->commodel->insertrec('student_admissionstatus',$stud_status);
-					
+				
 					/*$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","entexamrollno",$number)->id;
 					$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","entexamrollno",$number)->entexamname;
 					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;*/
-					$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","jeeapplication_no",$number)->id;
-					$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","jeeapplication_no",$number)->entexamname;
-					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","jeeapplication_no",$number)->entexamrollno;
-					$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","jeeapplication_no",$number)->meritlist_no;
+					$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$number)->id;
+					$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$number)->entexamname;
+					$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$number)->entexamrollno;
+					$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$number)->meritlist_no;
 				//	$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	
 					//print_r($ameritid.' '.$ameritexname.' '.$ameritrollno.' '.$ameritno);die;
 					//insert  into student entry exit
 						$stu_entry = array(
-							'senex_prgid'				=>	$this->input->post('stu_addcourse'),
+							
 							'senex_smid'				=>	$insertid,
+							'senex_rollno'				=>  $getprogid,
+							'senex_prgid'				=>	$this->input->post('stu_addcourse'),
 							'senex_entexamapplicationno'=>	$this->input->post('stu_addrollno'),
 							'senex_entexamname'			=>	$ameritexname,
 							'senex_entexamrollno'		=>	$ameritrollno,
 							'senex_entexamrank'			=>  $ameritid,
-							'senex_entexammeritno'		=>	$ameritno
+							'senex_entexammeritno'		=>	$ameritno,
 						 );
-					$this->commodel->insertrec('student_entry_exit',$stu_entry);
+						print_r($stu_entry);
+
+					$flagsee=$this->commodel->insertrec('student_entry_exit',$stu_entry);
+				//	echo $flagsee;
+						
 					$this->logger->write_logmessage("insert", "New student record insert in student entry exit table.".$_POST['stu_addrollno']);
-                    			$this->logger->write_dblogmessage("insert", "New student record insert in student entry exit table.".$_POST['stu_addrollno']);				
+
+                    $this->logger->write_dblogmessage("insert", "New student record insert in student entry exit table.".$_POST['stu_addrollno']);				
 
 					//insert into admission step
 					$no=1;
@@ -581,10 +613,12 @@ class Student extends CI_Controller {
 						'application_no'	=>	$this->input->post('stu_addrollno'),
 						'student_masterid'	=>	$insertid,
 						'step1_status'   	=>	$no,
-                				'step1_date'  		=>	$cdate
+                		'step1_date'  		=>	$cdate,
                 	
                 			);
+					print_r($stu_admission);
 					$stu_step1 = $this->commodel->insertrec('student_admissionstep', $stu_admission);
+					
 					$session_studata = array(
 						'sm_id' => $insertid,
 					);
@@ -593,7 +627,7 @@ class Student extends CI_Controller {
 					{
                    				$this->logger->write_logmessage("insert", "New Student admission personnel , family & education record not add successfully.".$_POST['stu_addrollno']);
                     				$this->logger->write_dblogmessage("insert", "New Student admission personnel , family & education record not add successfully.".$_POST['stu_addrollno'] );
-                   	 			$this->session->set_flashdata("err_message",'Error in adding admission details');
+                   	 			$this->session->set_flashdata("err_message",'Error in adding admission details -admission form');
 						redirect('student/student_admissionform');
                 			}
                 			else{
@@ -1040,10 +1074,10 @@ class Student extends CI_Controller {
 		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","entexamrollno",$number)->entexamname;
 		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","entexamrollno",$number)->entexamrollno;
 		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","entexamrollno",$number)->meritlist_no;	*/
-		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","jeeapplication_no",$number)->id;
+		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$number)->id;
 		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$number)->entexamname;
 		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$number)->entexamrollno;
-		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","jeeapplication_no",$number)->meritlist_no;
+		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$number)->meritlist_no;
 		//print_r($ameritid.' '.$ameritexname.' '.$ameritrollno.' '.$ameritno);die;
 		//insert  into student entry exit
 		$stuentry = array(
@@ -1499,7 +1533,29 @@ class Student extends CI_Controller {
        	 	//$cancel  = base_url() . 'payumoney/payustatus';//return to payustatus function
 		//for live change action  https://secure.payu.in)
 				
-		$data = array(
+		
+		$cdate = date('Y-m-d');
+		//insert record in pg table
+		$pgdata = array(
+			'aspg_asmid' 	=> $Sid,	
+			'aspg_txnid' 	=> $txnid,	
+			'aspg_pinfo' 	=> $pinfo,	
+			'aspg_amount' 	=> $amount,	
+			'aspg_ftype'	=> $ftype,	
+			'aspg_date' 	=> $cdate,	
+			//'aspg_gw'	=> ,	
+			//'aspg_status'	=> ,	
+			//'aspg_txncode' 	=> ,
+			//'aspg_reason' 	=>	
+		);
+		//print_r($pgdata);
+		$pginsert = $this->db->insert('admissionstudent_pg', $pgdata);
+		//echo $pginsert;
+
+		$this->logger->write_logmessage("insert", "New student record insert in admissionstudent_pg table.");
+        $this->logger->write_dblogmessage("insert", "New student insert in admissionstudent_pg table" );
+
+        $data = array(
             		'mkey' => $MERCHANT_KEY,
             		'tid' => $txnid,
             		'hash' => $hash,
@@ -1515,23 +1571,7 @@ class Student extends CI_Controller {
            		'furl' => $fail,
             		   
         	);
-		//insert record in pg table
-		$pgdata = array(
-			'aspg_asmid' 	=> $Sid,	
-			'aspg_txnid' 	=> $txnid,	
-			'aspg_pinfo' 	=> $pinfo,	
-			'aspg_amount' 	=> $amount,	
-			'aspg_ftype'	=> $ftype,	
-			//'aspg_date' 	=> ,	
-			//'aspg_gw'	=> ,	
-			//'aspg_status'	=> ,	
-			//'aspg_txncode' 	=> ,
-			//'aspg_reason' 	=>	
-		);
-		$pginsert = $this->db->insert('admissionstudent_pg', $pgdata);
-		$this->logger->write_logmessage("insert", "New student record insert in admissionstudent_pg table.");
-                $this->logger->write_dblogmessage("insert", "New student insert in admissionstudent_pg table" );
-
+      // die();
 		//print_r($wharray);
 		//fees paid by online /offline
 		//if online then redirect to payment gateway
@@ -1688,25 +1728,29 @@ class Student extends CI_Controller {
           	if($status == 'success'){
 	 		// update pg table
 			$pgdata = array(
-				'aspg_asmid' 	=> $Sid,	
-				'aspg_txnid' 	=> $txnid,	
-				'aspg_pinfo' 	=> $productinfo,	
-				'aspg_amount' 	=> $amount,	
-				'aspg_ftype'	=> $ftype,	
+				//'aspg_asmid' 	=> $Sid,	
+				//'aspg_txnid' 	=> $txnid,	
+			//	'aspg_pinfo' 	=> $productinfo,	
+			//	'aspg_amount' 	=> $amount,	
+			//	'aspg_ftype'	=> $ftype,	
 				'aspg_date' 	=> $cdate,	
 				//'aspg_gw'	=> ,	
 				'aspg_status'	=> $status,	
 				//'aspg_txncode' 	=> ,
 				//'aspg_reason' 	=>	
 			);
-			$pgupdate=$this->commodel->insertrec('admissionstudent_pg', $pgdata,'aspg_asmid',$Sid);
+			$pgupdate=$this->commodel->updaterec('admissionstudent_pg', $pgdata,'aspg_asmid',$Sid);
 			$this->logger->write_logmessage("update", "Update in admissionstudent_pg table.");
                 	$this->logger->write_dblogmessage("update", "Update in admissionstudent_pg table." );
 	 		//call payment function for update record
-		 	$pmathod = 'Online';
-		 	$bank='PayuMoney';
-		 		
-		 	$this->payment($txnid,$bank,$amount,$ftype,$pmathod);
+		 	$pmathod = "Online";
+		 	$bank="PayuMoney";
+		 		//echo $txnid."bankname".$bank."amonut".$amount."type".$ftype."method".$pmathod ;
+		 		//die();
+             
+		 	$this->payment($txnid, $bank, $amount, $ftype, $pmathod);
+
+		 	//$this->payment().'/'.$txnid.'/'.$bank.'/'.$amount.'/'.$ftype.'/'.$pmathod;
 			//set the proper message
 			//$message = '<h3>Online fees submit successfully.</h3>';
                 	//$this->session->set_flashdata('msg',$message);
@@ -1715,18 +1759,18 @@ class Student extends CI_Controller {
          	else{
 			// update pg table
 			$pgdata = array(
-				'aspg_asmid' 	=> $Sid,	
-				'aspg_txnid' 	=> $txnid,	
-				'aspg_pinfo' 	=> $productinfo,	
-				'aspg_amount' 	=> $amount,	
-				'aspg_ftype'	=> $ftype,	
+				//'aspg_asmid' 	=> $Sid,	
+				//'aspg_txnid' 	=> $txnid,	
+				//'aspg_pinfo' 	=> $productinfo,	
+			//	'aspg_amount' 	=> $amount,	
+				//'aspg_ftype'	=> $ftype,	
 				'aspg_date' 	=> $cdate,	
 				//'aspg_gw'	=> ,	
 				'aspg_status'	=> $status,	
 				//'aspg_txncode' 	=> ,
 				//'aspg_reason' 	=>	
 			);
-			$pgupdate=$this->commodel->insertrec('admissionstudent_pg', $pgdata);
+			$pgupdate=$this->commodel->updaterec('admissionstudent_pg', $pgdata,'aspg_asmid',$Sid);
 			$this->logger->write_logmessage("insert", "failed record insert in admissionstudent_pg table.");
                 	$this->logger->write_dblogmessage("insert", "failed record insert in admissionstudent_pg table.");
 
@@ -1749,19 +1793,21 @@ class Student extends CI_Controller {
             return true;
         }
     }
-	public function payment($post1,$post2,$post3,$post4,$post5){
+
+	function payment($post1, $post2, $post3, $post4, $post5){
 		$Sid = $this->session->userdata['sm_id'];
 		
 			$step4 = array(
 		 		'sfee_referenceno'   	=>	$post1,
                 		'sfee_bankname'  	=>	$post2,
+
                 		'sfee_feeamount'  	=>	$post3,
                 		'sfee_feename'   	=>	$post4,
 				'sfee_paymentmethod'   =>	$post5
                 	);
-			$update = $this->commodel->updaterec('student_fees', $step4,'sfee_smid',$Sid);
+			$updatesf = $this->commodel->updaterec('student_fees', $step4,'sfee_smid',$Sid);
 			$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.".$Sid);
-                    	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." .$Sid);
+            	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." .$Sid);
 			
 			$email= $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Sid)->sm_email;
 				$mobile= $this->commodel->get_listspfic1('student_master','sm_mobile','sm_id',$Sid)->sm_mobile;
@@ -1772,12 +1818,12 @@ class Student extends CI_Controller {
 					$sdate = date('Y-m-d H:i:s');
 					
 					$stuentmerit = array(
-		                		'admission_taken'           =>	$sdate,
-						'admission_date'	    =>	$sdate,
+		                		'admission_taken'       =>	$sdate,
+								'admission_date'	    =>	$sdate,
 	           	     		);
-		             		$this->db->where('entexamrollno',$ano);
-    					$this->db->update('admissionmeritlist',$stuentmerit);
-
+		             //	$this->db->where('entexamrollno',$ano);
+    				//	$this->db->update('admissionmeritlist',$stuentmerit);
+    					$updateaml = $this->commodel->updaterec('admissionmeritlist', $stuentmerit,'entexamrollno',$ano);
 
 					// update into student entry exit
 					$sdate = date('Y-m-d H:i:s');
@@ -1791,26 +1837,28 @@ class Student extends CI_Controller {
 					}
 					else{$rollno = $ydate.'0001';}
 					$stuentpdate = array(
-		                		'senex_rollno'           =>	$rollno,
+		                'senex_rollno'           =>	$rollno,
 						'senex_dateofadmission'	 =>	$sdate,
 						'modifierid'		 =>	$Sid  	
 	           	     		);
 					
-		             		$this->db->where('senex_smid',$Sid);
-    					$this->db->update('student_entry_exit',$stuentpdate);
+		             //		$this->db->where('senex_smid',$Sid);
+    				//	$this->db->update('student_entry_exit',$stuentpdate);
+    				$updatesee = $this->commodel->updaterec('student_entry_exit', $stuentpdate,'senex_smid',$Sid);
 					$this->logger->write_logmessage("update", "Step 4 user id update in student_entry_exit table.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_entry_exit table." );
+                    $this->logger->write_dblogmessage("update", "Step 4 user id update in student_entry_exit table." );
 
 				//update student admission status table
 				$prgid =  $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;		
 				$stu_stupdate = array(
-		                		'sas_prgid'           =>	$prgid,
+		                'sas_prgid'           =>	$prgid,
 						'sas_admissiondate'   =>	$sdate,
 						//'modifierid'	      =>	$Sid  	
 	           	     		);
 					
-		             	$this->db->where('sas_studentmasterid',$Sid);
-    				$this->db->update('student_admissionstatus',$stu_stupdate);
+		            // 	$this->db->where('sas_studentmasterid',$Sid);
+    				//$this->db->update('student_admissionstatus',$stu_stupdate);
+    				$updatesee = $this->commodel->updaterec('student_admissionstatus', $stu_stupdate,'sas_studentmasterid',$Sid);
 				$this->logger->write_logmessage("update", "Step 4 student admission status update.");
                     		$this->logger->write_dblogmessage("update", "Step 4 student admission status update." );
 
@@ -1824,7 +1872,7 @@ class Student extends CI_Controller {
 				    	$password=md5($passwd);
 					// insert data into edrp user db1
 					$dataeu = array(
-                                    		'username'=> $email,
+                                		'username'=> $email,
                                     		'password'=> $password,
 				    		'email'=> $email,
 				    		'componentreg'=> '*',
@@ -1900,29 +1948,30 @@ class Student extends CI_Controller {
 					//$this->db->update('student_admissionstep', $step4);
 					$updast4 = $this->commodel->updaterec('student_admissionstep', $step4,'student_masterid',$Sid);
 					$this->logger->write_logmessage("update", "Step 4 update student_admissionstep table.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 update student_admissionstep table.");
+                    $this->logger->write_dblogmessage("update", "Step 4 update student_admissionstep table.");
 
 					//make transaction complete
 					
-					$this->db->trans_complete();
+				//	$this->db->trans_complete();
 					//$this->load->view('student/offlinePayment');		
  
 	 				//check if transaction status TRUE or FALSE
-        				if ($this->db->trans_status() === FALSE) {
+        			////	if ($this->db->trans_status() === FALSE) {
             					//if something went wrong, rollback everything
-            					$this->db->trans_rollback();
+            			//		$this->db->trans_rollback();
 						//else stay with step4
-						$msg = '<h3>You are already exist.</h3>';
-  						$this->session->set_flashdata('err_message',$msg);	
-						$this->logger->write_logmessage("insert", "Step 4 error update and insert");
-                    				$this->logger->write_dblogmessage("insert", "Step 4 error update and insert" );
-						redirect('student/payment');
-						
+					////	$msg = '<h3>You are already exist.</h3>';
+  					////	$this->session->set_flashdata('err_message',$msg);	
+				////		$this->logger->write_logmessage("insert", "Step 4 error update and insert");
+                 ////   	$this->logger->write_dblogmessage("insert", "Step 4 error update and insert" );
+						//redirect('student/payment');
+				////		$this->student_step4($Sid);	
+
            					//return FALSE;
-      		  			} else {
+      		  	////		} else {
 						
             					//if everything went right, commit the data to the database
-           					$this->db->trans_commit();
+           				$this->db->trans_commit();
 						$rowsno=$this->commodel->getnoofrows('email_setting');		
 						if($rowsno >0){
 							//if sucess send mail to user with login details 
@@ -1961,7 +2010,8 @@ class Student extends CI_Controller {
 						$this->logger->write_logmessage("insert", "Step 4 detail update and insert successfully.");
                     				$this->logger->write_dblogmessage("insert", "Step 4 detail update and insert successfully." );
 						redirect('student/student_step5');
-       					}// close else transcation failure and else is missing
+						return;
+       				////	}// close else transcation failure and else is missing
 				//}// close of if is duplication
 				//else{
 				//	$message = 'Your login-id and email are already exsist.';
@@ -2294,7 +2344,8 @@ class Student extends CI_Controller {
 		$this->cpin= $this->commodel->get_listspfic1('student_parent','spar_cpincode','spar_smid',$id)->spar_cpincode;
 		
 		$this->cateid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$id)->sm_category;
-		$this->catename=$this->commodel->get_listspfic1('category','cat_name','cat_id',$this->cateid)->cat_name;
+		$this->catename=$this->cateid;
+		//$this->catename=$this->commodel->get_listspfic1('category','cat_name','cat_id',$this->cateid)->cat_name;
 
 		//fees detail
 		$this->prog=$this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
