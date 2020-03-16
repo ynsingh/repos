@@ -257,13 +257,13 @@ class Jslist extends CI_Controller
                         $gpr_select_box.='<option value=>-------Select Pay Range--------';
                         $gpr_select_box.='<option value=6000-10199>6000-10199';
                         $gpr_select_box.='<option value=10200-18599>10200-18599';
-                        $gpr_select_box.='<option value=18600-inf>18600-inf';
+                        $gpr_select_box.='<option value=18600-1000000>18600-inf';
                 }else{
                         $gpr_select_box ='';
                         $gpr_select_box.='<option value=>-------Select Pay Range--------';
                         $gpr_select_box.='<option value=18201-26200>18201-26200';
                         $gpr_select_box.='<option value=26201-48700>26201-48700';
-                        $gpr_select_box.='<option value=48700-inf>48700-inf';
+                        $gpr_select_box.='<option value=48700-1000000>48700-inf';
                 }
                 echo json_encode($gpr_select_box);
         }
@@ -278,14 +278,14 @@ class Jslist extends CI_Controller
                         $gpr_select_box.='<option value=0-8000>0-8000';
                         $gpr_select_box.='<option value=8001-12000>8001-12000';
                         $gpr_select_box.='<option value=12001-16000>12001-16000';
-                        $gpr_select_box.='<option value=16001-inf>16001-inf';
+                        $gpr_select_box.='<option value=16001-1000000>16001-inf';
                 }else{
                         $gpr_select_box ='';
                         $gpr_select_box.='<option value=>-------Select Pay Range--------';
                         $gpr_select_box.='<option value=0-20600>0-20600';
                         $gpr_select_box.='<option value=20601-30800>20601-30800';
                         $gpr_select_box.='<option value=30801-41100>30801-41100';
-                        $gpr_select_box.='<option value=41101-inf>41101-inf';
+                        $gpr_select_box.='<option value=41101-1000000>41101-inf';
                 }
                 echo json_encode($gpr_select_box);
         }
@@ -314,7 +314,7 @@ class Jslist extends CI_Controller
 			$gpr_select_box.='<option value=21020-21579>21020-21579';
 			$gpr_select_box.='<option value=21580-22139>21580-22139';
 			$gpr_select_box.='<option value=22140-24999>22140-24999';
-			$gpr_select_box.='<option value=25000-inf>25000-inf';
+			$gpr_select_box.='<option value=25000-1000000>25000-inf';
 		}else{
 			$gpr_select_box ='';
                         $gpr_select_box.='<option value=>-------Select Pay Range--------';
@@ -332,9 +332,9 @@ class Jslist extends CI_Controller
 			$gpr_select_box.='<option value=50201-51600>50201-51600';
 			$gpr_select_box.='<option value=51601-54000>51601-54000';
 			$gpr_select_box.='<option value=54001-55500>54001-55500';
-			$gpr_select_box.='<option value=55601-56900>55501-56900';
+			$gpr_select_box.='<option value=55501-56900>55501-56900';
 			$gpr_select_box.='<option value=56901-64200>56901-64200';
-			$gpr_select_box.='<option value=64201-inf>64201-inf';
+			$gpr_select_box.='<option value=64201-1000000>64201-inf';
 		}
 		echo json_encode($gpr_select_box);
 	}
@@ -1086,6 +1086,7 @@ class Jslist extends CI_Controller
                     if($htype == 'L'){
                        // print_r("dd===".$hid);
                         $hno=0;
+                        $hvalue=0;
                         $wdata2=array('slh_empid' =>$empid,'slh_headid'=>$hid);
                         $mdrecord=$this->sismodel->get_maxvalue('salary_loan_head','slh_id',$wdata2);
                         $mslhid='';
@@ -1107,12 +1108,12 @@ class Jslist extends CI_Controller
                                 $intlhvalue=round($this->sismodel->get_listspfic1('salary_loan_head','slh_installamount','slh_id',$mslhid)->slh_installamount,0);
                             }
                         }
-                        					$combthree=$hno."^".$hvalue."^".$intlttno."^".$intlno."^".$intlhvalue;
-                       						// print_r($combthree);
-                        					array_push($values,$combthree);
-                    					}
-                				}//forachhidarr     
-            				}// close if if tab8
+                        	$combthree=$hno."^".$hvalue."^".$intlttno."^".$intlno."^".$intlhvalue;
+                       		// print_r($combthree);
+                        	array_push($values,$combthree);
+                    	}
+                	}//forachhidarr     
+            	}// close if if tab8
     
 				}//close second else
       			}//close first else 

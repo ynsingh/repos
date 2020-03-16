@@ -1546,12 +1546,16 @@
                                     echo $ttlnoguestlec;
                                 ?></td>
                             </tr>
-                            <tr>
-                                <td><?php 
+				<?php
                                     $selectfield='spgld_year';
                                     $whdata= array ('spgld_empid' =>$emp_id);    
                                     $whorder='spgld_year DESC';
                                     $lastyear=$this->sismodel->get_orderlistspficemorelimit('staff_perform_guest_lect_data',$selectfield,$whdata,$whorder,'2');
+				if(!empty($lastyear[0]->spgld_year)){
+				?>
+				
+                            <tr>
+                                <td><?php 
                                    // print_r($lastyear);
                                                       
                                     echo $lastyear[0]->spgld_year;
@@ -1562,6 +1566,10 @@
                                     echo $lastguestlec;
                                 ?></td>
                             </tr>
+				<?php
+				}
+				if(!empty($lastyear[1]->spgld_year)){
+				?>
                              <tr>
                                 <td><?php 
                                     echo $lastyear[1]->spgld_year;
@@ -1572,6 +1580,7 @@
                                     echo $prelastguestlec;
                                 ?></td>
                             </tr>
+			<?php } ?>
                         </tbody>     
                     </tr>
                     <tr></tr>

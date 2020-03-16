@@ -904,9 +904,9 @@ class SIS_model extends CI_Model
      
     //    $paycom='6th';
         $newrange=array();
-        $sixcomm=array ("0-8000", "8001-12000", "12001-16000", "16001-inf");
-        $comm7= array("0-20600", "20601-30800", "30801-41100", "41101-inf");
-	$newrange[]="0-inf";
+        $sixcomm=array ("0-8000", "8001-12000", "12001-16000", "16001-1000000");
+        $comm7= array("0-20600", "20601-30800", "30801-41100", "41101-1000000");
+//	$newrange[]="0-inf";
         if($paycom == '6th'){
             foreach ($sixcomm as $rangevalsix) {
                 $strange=explode("-",$rangevalsix); 
@@ -941,13 +941,13 @@ class SIS_model extends CI_Model
     /********************************get HRA Amount according to Pay Range, Pay Commission and BP ****************/
     public function gethra_amount($basicpay,$paycom) {
      
-        $paycom='6th';
+ //       $paycom='6th';
         $newrange=array();
         $sixcomm=array ("0-5299","5300-6699","6700-8189","8190-9299","9300-10599","10600-11899","11900-13769","13770-14509","14510-15999",
-            "16000-17299","17300-19529","19530-20089","20090-21019","21020-21579","21580-22139","22140-24999","25000-inf");
+            "16000-17299","17300-19529","19530-20089","20090-21019","21020-21579","21580-22139","22140-24999","25000-1000000");
         
         $pcomm7= array("0-13600","13601-17200","17201-21000","21001-23900","23901-27200","27201-30600","30601-35400","35401-37300",
-        "37301-41100","41101-44500","44501-50200","50201-51600","51601-54000","54001-55500","55501-56900","56901-64200","64201-inf");
+        "37301-41100","41101-44500","44501-50200","50201-51600","51601-54000","54001-55500","55501-56900","56901-64200","64201-1000000");
         if($paycom == '6th'){
             foreach ($sixcomm as $rangevalsix) {
                 $strange=explode("-",$rangevalsix); 
@@ -985,7 +985,7 @@ class SIS_model extends CI_Model
         $newrange=array();
        
         if($paycom == '6th'){
-            $sixcomm=array ("6000-10199", "10200-18599", "18600-inf");
+            $sixcomm=array ("6000-10199", "10200-18599", "18600-1000000");
             foreach ($sixcomm as $rangevalsix) {
                 $strange=explode("-",$rangevalsix); 
                 // print_r("6th==".$strange[0]."\n".$strange[1]."\n");
@@ -1000,13 +1000,13 @@ class SIS_model extends CI_Model
             
         }
         else{
-             $comm7= array("18201-26200", "26201-48700", "48700-inf");
+             $comm7= array("18201-26200", "26201-48700", "48700-1000000");
             foreach ($comm7 as $rangevalseven) {
                 $strange=explode("-",$rangevalseven); 
-                //  print_r("7th".$strange[0]."\n".$strange[1]."\n");
+           //       print_r("7th".$strange[0]."\n".$strange[1]."\n");
                 if(true === in_array($basicpay, range($strange[0], $strange[1])))
                 {
-                //    print_r($strange[0]."\n".$strange[1]."\n");
+             //       print_r($strange[0]."\n".$strange[1]."\n");
                     $newrange[]=$rangevalseven;
                 } 
               

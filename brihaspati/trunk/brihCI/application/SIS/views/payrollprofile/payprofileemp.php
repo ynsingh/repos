@@ -598,16 +598,21 @@
         <?php $this->load->view('template/header'); ?>
         <div align="left" width="100%">
             
-                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                <?php echo form_error('<div class="isa_error">','</div>');?>
+                <?php //echo validation_errors('<div class="isa_warning">','</div>');?>
+                <?php //echo form_error('<div class="isa_error">','</div>');?>
                 
-	        <?php if(isset($_SESSION['success'])){?>
+	        <?php if((isset($_SESSION['success']))&&(!empty($_SESSION['success']))){?>
                     <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
-                 <?php if(isset($_SESSION['err_message'])){?>
+                 <?php if((isset($_SESSION['err_message']))&&(!empty($_SESSION['success']))){?>
                     <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                <?php
+                };
+                ?>    
+                 <?php if((isset($_SESSION['warning']))&&(!empty($_SESSION['warning']))){?>
+                    <div  class="isa_warning"><?php echo $_SESSION['warning'];?></div>
                 <?php
                 };
                 ?>    

@@ -29,7 +29,7 @@ class Payrollprofile extends CI_Controller
     
     /****************************************************************************/
     public function payprofile(){
-               
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');               
         $this->hglist= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         $this->ccalist= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         $this->society= $this->sismodel->get_listspfic2('society_master_list','soc_id','soc_sname');
@@ -271,6 +271,8 @@ class Payrollprofile extends CI_Controller
     }
 	
   public function emppayprofile(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
         $ppmdata['hglist']= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         $ppmdata['ccalist']= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         $ppmdata['society']= $this->sismodel->get_listspfic2('society_master_list','soc_id','soc_sname');
@@ -472,6 +474,44 @@ class Payrollprofile extends CI_Controller
             	if($headcode == 'Basic'){
         	    	$incrementamt = $this->input->post('increment'.$i, TRUE);
 			$headval = $headval + $incrementamt;
+			$pmflag=true;
+			// check basic + increment exist in pay matrix
+			// get pay comm, level amount
+			$emppc = $this->sismodel->get_listspfic1('employee_master','emp_paycomm','emp_id',$empid)->emp_paycomm;
+			$empwt = $this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
+			$emplevelid = $this->sismodel->get_listspfic1('employee_master','emp_salary_grade','emp_id',$empid)->emp_salary_grade;
+			$emplevel = $this->sismodel->get_listspfic1('salary_grade_master','sgm_level','sgm_id',$emplevelid)->sgm_level;
+			$whdatapm = array(
+                           'pm_pc'        =>$emppc,
+                           'pm_wt'        =>$empwt,
+                           'pm_level'     =>$emplevel,
+                        );
+                        $respm = $this->sismodel->get_listspficemore('paymatrix','*',$whdatapm);
+			 for($p=1;$p<=40;$p++){
+				$nme='pm_sublevel'.$p;
+                    		$pmamt=$respm[0]->$nme;
+				if(!empty($pmamt)){
+					if($pmamt == $headval){
+						$pmflag=false;
+						break;
+					}
+				}else{
+					break;
+				}
+				
+			}
+			if($pmflag){
+				$this->logger->write_logmessage("update","Trying to add updated values in payroll profile ", " basic does not match with pay matrx, please try again");
+		                $this->logger->write_dblogmessage("update","Trying to updated values in payroll profile", " basic does not match with pay matrx, please try again");
+                		$this->session->set_flashdata('err_message','Error in adding updated values in payroll profile because - basic does not match with pay matrx', 'error');
+				$emppfno= $this->sismodel->get_listspfic1('employee_master_support','ems_code','ems_empid',$empid)->ems_code;
+		                $ppmdata['emppfno']=$emppfno;
+				$this->session->set_flashdata('emppfval', '#tab6,'.$emppfno);
+		                $this->load->view('payrollprofile/payprofileemp',$ppmdata);
+                		return;
+
+			}
+
 		}
 
                 $headname= $this->sismodel->get_listspfic1('salary_head','sh_name','sh_id',$headidin)->sh_name;
@@ -876,6 +916,7 @@ class Payrollprofile extends CI_Controller
 
 
        	public function payleaveentry(){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 	        if(isset($_POST['pleaveent'])) {
             		$this->form_validation->set_rules('emppfno','Employee PF Number','trim|xss_clean');
 	            	$this->form_validation->set_rules('pal','PAL','trim|xss_clean');
@@ -945,6 +986,7 @@ class Payrollprofile extends CI_Controller
 	}
 
 	public function viewpayleaveentry(){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$cyear=	$this->session->flashdata('empyear');
 		$cmonth=$this->session->flashdata('empmonth');
 		$ssiondeptid=$this->session->userdata('id_dept');
@@ -986,6 +1028,7 @@ class Payrollprofile extends CI_Controller
 
 
        	public function editpayleaveentry($id){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$data['id']=$id;
 		$empid=$this->sismodel->get_listspfic1('salary_leave_entry','sle_empid','sle_id',$id)->sle_empid;
 		$empname=$this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$empid)->emp_name;
@@ -1074,6 +1117,7 @@ class Payrollprofile extends CI_Controller
 	}
 	
 	public function deletepayleaves($id){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
                 $roleid=$this->session->userdata('id_role');
                 if($roleid == 1){
                         $delflag=$this->sismodel->deleterow('salary_leave_entry','sle_id',$id);
@@ -1088,6 +1132,7 @@ class Payrollprofile extends CI_Controller
         }
 
        	public function paytransentry(){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$data['hragrade']= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         	$data['ccagrade']= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
 //		$whorder='hg_gradeid';
@@ -1165,6 +1210,7 @@ class Payrollprofile extends CI_Controller
 	}
 
 	public function viewpaytransentry(){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$cyear= $this->session->flashdata('empyear');
                 $cmonth=$this->session->flashdata('empmonth');
 		$ssiondeptid=$this->session->userdata('id_dept');
@@ -1208,6 +1254,7 @@ class Payrollprofile extends CI_Controller
 	}
 
        	public function editpaytransentry($id){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$data['id']=$id;
 		$whorder='hg_gradeid';
 		$data['hragrade'] =$this->sismodel->get_orderlistspficemore('hra_grade','hg_gradeid,hg_amount','',$whorder);
@@ -1320,6 +1367,7 @@ class Payrollprofile extends CI_Controller
 	}
 
 	public function deletepaytrans($id){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$roleid=$this->session->userdata('id_role');
 		if($roleid == 1){
 			$delflag=$this->sismodel->deleterow('salary_transfer_entry','ste_id',$id);	
@@ -1333,6 +1381,7 @@ class Payrollprofile extends CI_Controller
 		}
 	}
         public function empsalslip(){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
             $currentuser=$this->session->userdata('username');
             $empid = $this->sismodel->get_listspfic1('employee_master','emp_id','emp_email', $currentuser)->emp_id;
             

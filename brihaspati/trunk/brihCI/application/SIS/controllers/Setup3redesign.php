@@ -27,11 +27,12 @@ class Setup3redesign extends CI_Controller
 
     
     public function index () {
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         //$this->grademaster();
     }
     /********************* Add salary head form  *******************************************/
     public function salaryhead(){
-        
+        $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         if(isset($_POST['addsalaryhead'])) {
             //form validation
             
@@ -329,6 +330,7 @@ class Setup3redesign extends CI_Controller
     /************************************** Display salary heads for formula  **************************/
 
     public function salaryformula_list(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 	$selectfield="salary_head.sh_id, salary_head.sh_code, salary_head.sh_name, salary_head.sh_tnt,salary_formula.sf_id, salary_formula.sf_formula";
 	$joincond = 'salary_formula.sf_salhead_id = salary_head.sh_id';
 	$whdata = array('salary_head.sh_calc_type'=> 'Y');
@@ -343,6 +345,7 @@ class Setup3redesign extends CI_Controller
     /************************************** Add salary head formula  **************************/
 
     public function add_salaryformula($id){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $data['id'] = $id;
         $data['salhdata'] = $this->sismodel->get_listrow('salary_head','sh_id',$id)->row();
         if(isset($_POST['add_salhformula'])) {
@@ -393,6 +396,7 @@ class Setup3redesign extends CI_Controller
     /************************************** Edit salary head formula  **************************/
 
     public function edit_salaryformula($id){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $data['id'] = $id;
         $data['salhdata'] = $this->sismodel->get_listrow('salary_formula','sf_id',$id)->row();
         if(isset($_POST['edit_salhformula'])) {
@@ -441,6 +445,7 @@ class Setup3redesign extends CI_Controller
        
     /********************* Add Employee type form  *******************************************/
     public function employeetype(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         if(isset($_POST['addemptype'])) {
             //form validation
             
@@ -533,6 +538,7 @@ class Setup3redesign extends CI_Controller
     /************************************** Display employee type  **************************/
 
     public function employeetype_list(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $data['emptype_record'] =$this->sismodel->get_list('employee_type');
         $this->logger->write_logmessage("view"," view post type list" );
         $this->logger->write_dblogmessage("view"," view post type list");
@@ -541,7 +547,7 @@ class Setup3redesign extends CI_Controller
      /**************************************closer  Display employee type  **************************/
     /********************* Add Employee type form  *******************************************/
     public function edit_employeetype($id){
-       
+       $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $data['id'] = $id;
         $data['emptypedata'] = $this->sismodel->get_listrow('employee_type','empt_id',$id)->row();
         if(isset($_POST['updateemptype'])) {
@@ -649,7 +655,7 @@ class Setup3redesign extends CI_Controller
        
     /*********************  Salary Head Configuration form  *******************************************/
     public function salhead_config(){
-        
+        $array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->emptype= $this->sismodel->get_list('employee_type');
         $this->salhead =$this->sismodel->get_list('salary_head');
         $data=array();
@@ -725,6 +731,7 @@ class Setup3redesign extends CI_Controller
     
     /*********************  Salary Head  Default value  form *******************************************/
     public function shdefaultvalue(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $this->salhead =$this->sismodel->get_list('salary_head');
         $data=array();
@@ -824,6 +831,7 @@ class Setup3redesign extends CI_Controller
     
     /*********************   Salary Slip  form *********************************************************/
     public function salaryslip(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $empid=$this->uri->segment(3);
         $this->emptnt=$this->sismodel->get_listspfic1('employee_master','emp_worktype','emp_id',$empid)->emp_worktype;
         $selectfield ="sh_id, sh_code, sh_name, sh_tnt, sh_type, sh_calc_type";
@@ -1089,6 +1097,7 @@ class Setup3redesign extends CI_Controller
     
     /*********************   CCA Places Grade *********************************************************/
     public function cca_placesgrade(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $data['ccarecord'] =$this->sismodel->get_list('cca_grade_city');
         $this->logger->write_logmessage("view"," view cca place grade list" );
         $this->logger->write_dblogmessage("view"," view cca place grade list");
@@ -1098,6 +1107,7 @@ class Setup3redesign extends CI_Controller
     /*********************  closer HRA Places Grade *********************************************************/ 
     /*********************   HRA Places Grade *********************************************************/
     public function hra_placesgrade(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $data['hrarecord'] =$this->sismodel->get_list('hra_grade_city');
         $this->logger->write_logmessage("view"," view hra place grade list" );
         $this->logger->write_dblogmessage("view"," view hra place grade list");
@@ -1108,6 +1118,7 @@ class Setup3redesign extends CI_Controller
     
     /*********************   HRA Grade List*********************************************************/
     public function hra_grade(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 	$selectfield='hg_id,hg_paycomm,hg_payrange,hg_gradeid,hg_amount';
         $data['hragrade'] =$this->sismodel->get_orderlistspficemore('hra_grade',$selectfield, '','');
         $this->logger->write_logmessage("view"," view hra grade list" );
@@ -1118,6 +1129,7 @@ class Setup3redesign extends CI_Controller
     /*********************  closer HRA  Grade *********************************************************/ 
     /*********************  ADD HRA Grade *********************************************************/
     public function add_hragrade(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 //        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         if(isset($_POST['add_hragrade'])) {
@@ -1200,6 +1212,7 @@ class Setup3redesign extends CI_Controller
     /*********************  closer Add HRA  Grade *********************************************************/ 
     /********************* Add Employee type form  *******************************************/
     public function edit_hragrade($id){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
   //      $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         $data['id'] = $id;
@@ -1299,6 +1312,7 @@ class Setup3redesign extends CI_Controller
     
     /**This function Delete records */
     public function delete_hragrade($id) {
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->roleid=$this->session->userdata('id_role');
        // $this->hgid=$id;
         /* Deleting academicprofile Record */
@@ -1322,6 +1336,7 @@ class Setup3redesign extends CI_Controller
     }//closer
 
 	public function rentfreehra(){
+		$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         	$selectfield='rfh_id,rfh_paycomm,rfh_payrange,rfh_gradeid,rfh_amount';
 	        $data['rfhra'] =$this->sismodel->get_orderlistspficemore('rent_free_hra',$selectfield, '','');
         	$this->logger->write_logmessage("view"," view rent free hra grade list" );
@@ -1331,6 +1346,7 @@ class Setup3redesign extends CI_Controller
     	}
     /*********************  ADD HRA Grade *********************************************************/
     public function add_rfhragrade(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         if(isset($_POST['add_rfhragrade'])) {
             //form validation
@@ -1390,6 +1406,7 @@ class Setup3redesign extends CI_Controller
     /*********************  closer Add HRA  Grade *********************************************************/ 
     /********************* Add Employee type form  *******************************************/
     public function edit_rfhragrade($id){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         $data['id'] = $id;
         $data['rfhragradedata'] = $this->sismodel->get_listrow('rent_free_hra','rfh_id',$id)->row();
@@ -1468,6 +1485,7 @@ class Setup3redesign extends CI_Controller
     
     /**This function Delete records */
     public function delete_rfhragrade($id) {
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->roleid=$this->session->userdata('id_role');
         /* Deleting rent free hra Record */
         $delflag=$this->sismodel->deleterow('rent_free_hra','rfh_id',$id);
@@ -1492,6 +1510,7 @@ class Setup3redesign extends CI_Controller
 
     /*********************   Rent Recovery for government quarters List*********************************************************/
     public function rentrecovery(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 	$selectfield='rr_id,rr_paycomm,rr_payrange,rr_gradeid,rr_percentage';
         $data['rentrecovery'] =$this->sismodel->get_orderlistspficemore('rent_recovery',$selectfield, '','');
    //     $data['rentrecovery'] =$this->sismodel->get_list('rent_recovery');
@@ -1504,6 +1523,7 @@ class Setup3redesign extends CI_Controller
     
     /*********************  ADD Rent Recovery for government quarters *********************************************************/
     public function add_rentrecovery(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 //        $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         if(isset($_POST['add_rentrecovery'])) {
@@ -1584,6 +1604,7 @@ class Setup3redesign extends CI_Controller
     
     /********************* Edit Rent Recovery for government quarters form  *******************************************/
     public function edit_rentrecovery($id){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
     //    $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $this->hragrade= $this->sismodel->get_listspfic2('hra_grade_city','hgc_id','hgc_gradename');
         $data['id'] = $id;
@@ -1692,6 +1713,7 @@ class Setup3redesign extends CI_Controller
     
     /**This function Delete  Rent Recovery records */
     public function delete_rentrecovery($id) {
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->roleid=$this->session->userdata('id_role');
        // $this->hgid=$id;
         /* Deleting academicprofile Record */
@@ -1717,6 +1739,7 @@ class Setup3redesign extends CI_Controller
         
     /*********************   Rent City Compensatory Allowance(CCA) List*********************************************************/
     public function cca_allowance(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 	$selectfield='cca_id,cca_paycomm,cca_payrange,cca_gradeid,cca_amount';
         $data['ccadata'] =$this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$selectfield, '','');
         $this->logger->write_logmessage("view"," view CCA allowance data  list" );
@@ -1728,6 +1751,7 @@ class Setup3redesign extends CI_Controller
     
     /*********************  ADD City Compensatory Allowance(CCA) *********************************************************/
     public function add_ccaallowance(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
     //    $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $this->ccagrade= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         if(isset($_POST['add_ccaalowance'])) {
@@ -1812,6 +1836,7 @@ class Setup3redesign extends CI_Controller
     
     /********************* Edit City Compensatory Allowance(CCA) form  *******************************************/
     public function edit_ccaallowance($id){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
      //   $this->salgrade= $this->sismodel->get_list('salary_grade_master');
         $data['ccagrade']= $this->sismodel->get_listspfic2('cca_grade_city','cgc_id','cgc_gradename');
         $data['id'] = $id;
@@ -1913,6 +1938,7 @@ class Setup3redesign extends CI_Controller
     
     /**This function Delete  City Compensatory Allowance(CCA) records */
     public function delete_ccaallowance($id) {
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $this->roleid=$this->session->userdata('id_role');
        // $this->hgid=$id;
         /* Deleting academicprofile Record */
@@ -1940,7 +1966,8 @@ class Setup3redesign extends CI_Controller
     
     /*********************  Salary Processing *******************************************/
     public function salaryprocess(){
-	
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
+	$this->session->set_flashdata($array_items);
 	$deptnme='';
 	$deptid=$this->session->flashdata('fldeptid');
 //		echo $deptid; //die();
@@ -2466,6 +2493,7 @@ class Setup3redesign extends CI_Controller
     }*/
     /******************************lock salary month by head**************************************************************************/
     public function locksalary(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 	    $ssiondeptid=$this->session->userdata('id_dept');
 	    $cmonth= date('M');
 	    $cyear= date("Y");
@@ -2514,6 +2542,7 @@ class Setup3redesign extends CI_Controller
 
     /******************************unlock salary month by head**************************************************************************/
     public function unlocksalary(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
 		$datawh='';
                 $whorder='dept_name asc';
                 $ulsdata['deptdata'] = $this->commodel->get_orderlistspficemore('Department','dept_id,dept_name,dept_code',$datawh,$whorder);
@@ -2597,6 +2626,7 @@ class Setup3redesign extends CI_Controller
 
     /******************************copy previous month salary to next month**************************************************************************/
     public function copysalary(){
+	$array_items = array('success' => '', 'err_message' => '', 'warning' =>'');
         $selectfield ="emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_schemeid,emp_desig_code,emp_post,emp_worktype,emp_type_code,"
                 . "emp_email,emp_phone,emp_salary_grade,emp_bank_accno,emp_ddoid,emp_group,emp_aadhaar_no";
         $whdata = array ('emp_leaving' => NULL,'emp_dor>='=>date('Y-m-d'));

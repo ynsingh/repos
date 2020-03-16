@@ -123,7 +123,10 @@
                
                 <tr>
                     <td><b>Name:</b><?php echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$empid)->emp_name; ?></td>
-                    <td><b>PF No:</b><?php echo $this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code; ?></td>
+                    <td><b>PF No:</b><?php 
+						$emppfno=$this->sismodel->get_listspfic1('employee_master','emp_code','emp_id',$empid)->emp_code;
+						echo $emppfno;
+			 ?></td>
                     <td colspan="1"><b>Month/Year:</b><?php echo strtoupper($this->uri->segment(4)).'/'.$year;?></td>
                 </tr>
                 <tr>
@@ -208,16 +211,12 @@
                         ?>
                  <tr>
                     <th colspan="2">Earnings</th>
-                    
                 </tr>
                 <tr>
                     <th>Head</th>
                     <th>Amount</th>
-                   
                 </tr>
                 <?php 
-                
-                        
                        // echo " case 3 else selmonyear not greter than currentyd===";
                         $nodata=array(
                                 'sald_empid'                =>$empid,
@@ -225,23 +224,16 @@
                                 'sald_year'                 =>$year,   
                             );
                             $empnodata=$this->sismodel->isduplicatemore('salary_data',$nodata);
-                            
                             if(!$empnodata){
                               //  echo " case 4  if empnodata";
-                        
                         ?>
-               
                 <tr>                    
-                   
-                    
                     <?php $sumincome=0;$i=0;$j=0;$sumdeduction=0;$finalval=0;
-                     
+						    $hraforrent=0;
                     foreach($incomes as $incomedata){ ?>
-                    
                     <tr>
                     <?php if($incomedata->sh_tnt == $worktype || $incomedata->sh_tnt == 'Common') :?>    
                     <td>
-                        
                         <?php  echo $incomedata->sh_name/*."==id==".$incomedata->sh_id*/;
                             if(in_array($incomedata->sh_id,$allowedhead)){
                             echo "<font color=\"red\">*</font>";
@@ -255,17 +247,18 @@
                            // $headval= $this->sismodel->get_maxvalue('salary_earnings_head',$selectfield,$whdata);  
                             $headval= $this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$selectfield,'seh_modifydate=',$whdata);
                             // echo"seema===".$headval[0]->seh_headamount;
-                                        
                             ?>
                         <?php if(!empty($headval) && in_array($incomedata->sh_id,$allowedhead)):?>
                         <?php  if($incomedata->sh_calc_type == 'Y'):
                             $formula1=$this->sismodel->get_listspfic1('salary_formula','sf_formula','sf_salhead_id',$incomedata->sh_id);
                             if(!empty($formula1)){
                             $formula=$formula1->sf_formula;
+				if(is_numeric($formula)){
+					$finalval=$formula;
+				}else{
                             preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
                             //echo "in parenthesis inside: " . $match[2];
                             //  echo "before and after inside: " . $match[1] . $match[3] . "\n";
-                            
                             $strfmla=explode("+",$match[2]);
                             $strfmla2=explode("*",$match[3]);
                             //echo "mjjh===".$strfmla2[1];
@@ -280,7 +273,6 @@
 				}else{
                                         $headval1=0;
                                 }
-
                             }
                             else{
                                 $headval1=0;
@@ -299,30 +291,26 @@
                             else{
                                $headval2=0; 
                             }
-                            
                             $rawfor=$headval1 + $headval2 ;
                             //$rawfor=$headval1[0]->shdv_defaultvalue + $headval2[0]->shdv_defaultvalue ;
                             $finalval=$rawfor * $strfmla2[1];
-                            }//if formula empty
+                            }// else non numeric close
+                            }//close if formula not empty
                             else{
-                                
                                 /*********************basic pay amount from SEH PP***************/
                                 $sfbp="seh_headamount";
                                 $wdatabp = array('seh_empid' =>$empid,'seh_headid'=>1);
                                 //$headbp= $this->sismodel->get_maxvalue('salary_earnings_head',$sfbp,$wdatabp,'');
                                 $headbp= $this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfbp,'seh_modifydate=',$wdatabp);
                                 $bpamt=$headbp[0]->seh_headamount;
-                                                              
-                                
                                 $ccaid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CCA')->sh_id;
                                 $hraid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','HRA')->sh_id;
                                 if($incomedata->sh_id == $ccaid || $incomedata->sh_id == $hraid){
                                     if($incomedata->sh_id == $ccaid){
                                         $ccaamt=$this->sismodel->getcca_amount($bpamt,$paycomm);
-                                     //   echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$ccaamt[0];
+                            //            echo "====in vmbpamt===".$bpamt."=====in vmccaamt===".$ccaamt[0];
                                         $ccagrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid);
                                         if(!empty($ccagrade)){
-                                            
                                             $ccagrade= $ccagrade->ems_ccagrade;
                                             $sfield="cca_amount";
                                             $wdata = array('cca_payrange'=>$ccaamt[0],'cca_paycomm' =>$paycomm,'cca_gradeid' =>$ccagrade);
@@ -331,7 +319,6 @@
                                             $headvalc= $this->sismodel->get_orderlistspficemore('ccaallowance_calculation',$sfield,$wdata,'');  
                                             if(!empty($headvalc)){
                                                 $headvalcca=$headvalc[0]->cca_amount;
-                                            
                                             //echo"seema==".$headvalcca;
                                             //get cca grade from payrollprofile
                                             //$ccgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_ccagrade','ems_empid',$empid)->ems_ccagrade;
@@ -355,19 +342,23 @@
                                             $hragrade=$this->sismodel->get_listspfic1('employee_master_support','ems_hragrade','ems_empid',$empid);                     
                                         }
                                         $hraamt=$this->sismodel->gethra_amount($bpamt,$paycomm);
-                                                                              
+//                             echo $hraamt[0];                                                 
                                         if(!empty($hragrade) || !empty($rfhragrade)){
-                                            if($rfhragrade->ems_erfq == 'yes'){
+//						echo $rfhragrade->ems_erfq ;
+                                            if($rfhragrade->ems_erfq == "yes"){
                                                 $hragrade= $hragrade->ems_erfqhra;   
                                                 
                                                 $sfield="rfh_amount";
                                                 $wdata = array('rfh_payrange'=>$hraamt[0],'rfh_paycomm' =>$paycomm,'rfh_gradeid' =>$hragrade);
+				//		print_r($wdata);
                                                 // $wdata = array('hg_payscaleid' =>$pbid,'hg_workingtype' =>$worktype,'hg_gradeid' =>$hragrade);
                                                 $headvalh= $this->sismodel->get_orderlistspficemore('rent_free_hra',$sfield,$wdata,'');  
+				//		print_r($headvalh);
                                                 if(!empty($headvalh)){
                                                     $headvalhra=$headvalh[0]->rfh_amount;
                                                     $finalval=$headvalhra; 
-                                                  //  echo "seemain hra". $finalval;
+						    $hraforrent=$headvalhra;
+                                  //                  echo "seemain hra". $finalval;
                                                 }
                                                 else{
                                                     $finalval=0;    
@@ -383,7 +374,8 @@
                                                 if(!empty($headvalh)){
                                                     $headvalhra=$headvalh[0]->hg_amount;
                                                     $finalval=$headvalhra; 
-                                                   // echo "seemain hra". $finalval;
+						    $hraforrent=$headvalhra;
+                                           //         echo "seemain hra". $finalval;
                                                 }
                                                 else{
                                                     $finalval=0;    
@@ -401,7 +393,6 @@
                                     $finalval=0;
                                 }    
                             }//else formla empty check
-                            
                             
                         ?>
                         <input type="text"  class="headamtI" name="headamtI<?php echo $i;?>" id="headamtI<?php echo $i;?>"  value="<?php echo (round($finalval,0));  ?>" >
@@ -456,7 +447,6 @@
                                 $whdata = array('ssdh_empid' =>$empid,'ssdh_headid' =>$deductdata->sh_id);
                                 $headvalDed= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$selectfield,'ssdh_modifydate=',$whdata);
                             //   echo "seema==".$headvalDed[0]->ssdh_headamount.$empid.$deductdata->sh_id;
-                               
                             }
                             else{
                                 $selectfield ="slh_id";
@@ -464,9 +454,7 @@
                                 $headvalDed= $this->sismodel->get_rundualquery1('max(slh_modifydate)','salary_loan_head',$selectfield,'slh_modifydate=',$whdata);
                                 //$headvalDed= $this->sismodel->get_orderlistspficemore('salary_loan_head',$selectfield,$whdata,'');
                               //  echo "seema==lll===".$empid.$deductdata->sh_id;
-                               
                             }
-                           
                             ?>
                             <?php if(!empty($headvalDed) && in_array($deductdata->sh_id,$allowedhead)): //echo "in allowed case";?>
                             
@@ -475,6 +463,9 @@
                             if(!empty($formula1)){
                                // echo "in formula case";
                                  $formula=$formula1->sf_formula;
+				if(is_numeric($formula)){
+					$finalval=$formula;
+				}else{
                                 //  echo "formula inside===".$formula.$deductdata->sh_id.$deductdata->sh_name;
                                 preg_match('/(.*)\((.*?)\)(.*)/', $formula, $match);
                               //  echo "in parenthesis inside: " . $match[2];
@@ -487,10 +478,8 @@
 				if(!empty($match[3])){
 	                                $strfmla2=explode("*",$match[3]);
 				}
-                              //  echo "===token==0==".$strfmla[0]."===token2==".$strfmla[1]."===mjjh===".$strfmla2[1];
-                             
+       //                         echo "===token==0==".$strfmla[0]."===token2==".$strfmla[1]."===mjjh===".$strfmla2[1];
                                 if(!empty($strfmla[0])){
-                                   
                                     $shtypetok1id=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_code',$strfmla[0])->sh_type;
                                    // echo "token==1=".$shtypetok1id;
                                     if($shtypetok1id == 'I' ){
@@ -500,8 +489,7 @@
                                         $headval1=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
                                        // $headval1= $this->sismodel->get_maxvalue('salary_earnings_head',$sfield,$wdata,'');
                                         $headval1=$headval1[0]->seh_headamount;
-       //                                 echo "hval1insideI===".$headval1. "\n";
-                                        
+                                   //     echo "hval1insideI===".$headval1. "\n";
                                     }
                                     elseif($shtypetok1id == 'D'){
                                         $sfield ="ssdh_headamount";    
@@ -510,10 +498,9 @@
                                         $headval1= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfield,'ssdh_modifydate=',$wdata);
                                         //$headval1= $this->sismodel->get_maxvalue('salary_subsdeduction_head',$sfield,$wdata,'');
                                         $headval1=$headval1[0]->ssdh_headamount;
-         //                               echo "hval1insideiD===".$headval1. "\n";
+                                     //   echo "hval1insideiD===".$headval1. "\n";
                                     }
                                     else{
-                                    
                                         $sfield ="slh_headamount";
                                         $tok1id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[0])->sh_id;
                                         $wdata = array('slh_empid' =>$empid,'slh_headid' =>$tok1id);
@@ -526,18 +513,17 @@
                                 else{
                                     $headval1=0;
                                 }
+
                                 if(!empty($strfmla[1])){
-                                    
                                     $shtypetok2id=$this->sismodel->get_listspfic1('salary_head','sh_type','sh_code',$strfmla[1])->sh_type;
                                     if($shtypetok2id == 'I' ){
                                         $sfield ="seh_headamount";    
                                         $tok2id=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code',$strfmla[1])->sh_id;
                                         $wdata = array('seh_empid' =>$empid,'seh_headid' =>$tok2id);
-                                        $headval1=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
+                                        $headval2=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfield,'seh_modifydate=',$wdata);
                                        // $headval1= $this->sismodel->get_maxvalue('salary_earnings_head',$sfield,$wdata,'');
-                                        $headval1=$headval1[0]->seh_headamount;
-             //                           echo "hval1insideI token 1===".$headval1. "\n";
-                                        
+                                        $headval2=$headval2[0]->seh_headamount;
+                                     //   echo "hval1insideI token 1===".$headval2. "\n";
                                     }
                                     elseif($shtypetok2id == 'D' ){
                                         $sfield ="ssdh_headamount";   
@@ -547,7 +533,7 @@
                                         $headval2= $this->sismodel->get_rundualquery1('max(ssdh_modifydate)','salary_subsdeduction_head',$sfield,'ssdh_modifydate=',$wdata);
                                       //  $headval2= $this->sismodel->get_maxvalue('salary_subsdeduction_head',$sfield,$wdata,''); 
                                         $headval2=$headval2[0]->ssdh_headamount;
-               //                         echo "hval2insideD token 1===".$headval2. "\n";
+                                      //  echo "hval2insideD token 1===".$headval2. "\n";
                                     }
                                     else{
                                         $sfield ="slh_headamount";
@@ -563,12 +549,7 @@
                                 else{
                                     $headval2=0; 
                                 }
-                                                          
-                                $rawfor=$headval1 + $headval2 ;
-                               // $finalval=$rawfor * $strfmla2[1]. "\n";
-                                // echo "rawval===".$rawfor. "\n";
-                                //echo "==val1===".$headval1."==val2===".$headval2. "\n";
-                                                               
+                                 $rawfor=$headval1 + $headval2 ;
                                 if($deductdata->sh_code == 'UPFsub'){
                                     $finalval=$rawfor * $strfmla2[1];
                                     $upfsubid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','UPFsub')->sh_id;
@@ -584,9 +565,13 @@
                                             $finalval=$finalval;
                                         }
                                     }
-                                                                 
+					if(substr($emppfno, 0, 1) == "C"){
+						$finalval=0;
+					}
                                 }//upfsubcription closer
                                 elseif($deductdata->sh_code == 'CPS'){
+                                //elseif(substr($emppfno, 0, 1) == "C"){
+                                //else if($cflag){
                                     $finalval=$rawfor * $strfmla2[1];
                                     $cpssubid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','CPS')->sh_id;
                                     $sfcpssub ="ssdh_headamount";   
@@ -601,48 +586,48 @@
                                             $finalval=$finalval;
                                         }
                                     }
-                                    
+					if(substr($emppfno, 0, 1) == "V"){
+						$finalval=0;
+					}
                                 }//cpssubcription closer
                                 else{
                                     $finalval=$rawfor * $strfmla2[1]. "\n"; 
                                 }
-                                
+			}//close for non numeric case
                                 // echo "finalval==".$finalval;
-                                
-                            }//if close check for formula notempty
+                            }//if close check for formula not empty
                             else{
-                                //echo "==in  without formula==";
+                               // echo "==in  without formula==";
                                 /********write code for the rent recovery if occupied quarter*************/
                                 $rentid=$this->sismodel->get_listspfic1('salary_head','sh_id','sh_code','Rent')->sh_id; 
-                               // echo "rentid==".$rentid; 
+                              //  echo "rentid==".$rentid; 
                                 if($deductdata->sh_id == $rentid){
-                                    //echo "in yes 1part==";
+                                //   echo "in yes 1part==";
                                     $qtrocc=$this->sismodel->get_listspfic1('employee_master_support','ems_qoccupai','ems_empid',$empid);
                                     if(!empty($qtrocc) && $qtrocc->ems_qoccupai == 'yes'){
-                                       // echo "in yes part=2=";
+                                  //      echo "in yes part=2=";
                                         $rentgrade=$this->sismodel->get_listspfic1('employee_master_support','ems_rentgrade','ems_empid',$empid);
                                         if(!empty($rentgrade)){ 
                                            // echo "in yes part=3=";
                                             $rentgradeid=$rentgrade->ems_rentgrade;
-                                        
                                             $sfbp="seh_headamount";
                                             $wdatabp = array('seh_empid'=>$empid,'seh_headid' =>1);
                                             $headbp=$this->sismodel->get_rundualquery1('max(seh_modifydate)','salary_earnings_head',$sfbp,'seh_modifydate=',$wdatabp);
                                             //$headbp= $this->sismodel->get_maxvalue('salary_earnings_head',$sfbp,$wdatabp,'');
                                             $bpamt=$headbp[0]->seh_headamount;
                                             $hraamt=$this->sismodel->gethraper_amount($bpamt,$paycomm);
-                                            // echo "hrmamount seemapal===".$hraamt[0].$rentgradeid.$paycomm;
+  //                                           echo "hrmamount seemapal===".$hraamt[0].$rentgradeid.$paycomm;
                                             $sfield="rr_percentage";
                                             $wdata = array('rr_payrange'=>$hraamt[0],'rr_paycomm' =>$paycomm,'rr_gradeid' =>$rentgradeid);
                                             $headvalh= $this->sismodel->get_orderlistspficemore('rent_recovery',$sfield,$wdata,'');  
                                             if(!empty($headvalh)){
                                                 $rentrper=$headvalh[0]->rr_percentage;
-                                            
-                                            
+//						echo "rent percentage".$rentrper;
                                                 $rawrrcal=$bpamt*$rentrper;
                                                 $headvalhra=$rawrrcal;
                                                 //get cca grade from payrollprofile
-                                                $finalval=$headvalhra; 
+						//get the hra and add to rent
+                                                $finalval=$headvalhra+$hraforrent; 
                                             }
                                             else{
                                                 $finalval=0;  
@@ -663,10 +648,7 @@
                                     $finalval=0;
                                 }
                             }
-                            
-                            
                         ?>
-                        
                         <input type="text" class="headamtD" name="headamtD<?php echo $j;?>" id="headamtD<?php echo $j;?>"  value="<?php echo (round($finalval,0));  ?>" >
                         <?php  $sumdeduction+=(round($finalval,0)); // endif;?> 
                         <?php else : //echo "in  without dowm11 formula=="?>

@@ -229,12 +229,12 @@ class Setup3 extends CI_Controller
                 }
                 if($salhtype == "D"){
                         $salhcategory="GD";
-                        $salhcaltype="N";
+                    //    $salhcaltype="N";
                         $salhtax="N";
                 }
                 if($salhtype == "L"){
                         $salhcategory="GL";
-                        $salhcaltype="N";
+                     //   $salhcaltype="N";
                         $salhtax="N";
                 }
 
