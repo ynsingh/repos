@@ -138,18 +138,22 @@ $!data.getMessage()
 <div id="dataTableDiv" style="width:600; height:300; border:1px solid black;"></div>
 ## table 3 created for viewing spreadsheet
         <table>
+<tr><td>
+<INPUT TYPE="CHECKBOX" name="sendMails" value="sendMail" id="check"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp;
+</td>
 #if($type=="spreadsheet")
-        <tr><td><label><b>$brih_alias<font color="red">*</font></b></label></td><td> <input type="text" name="alias" value=""></td>
+        <td><label><b>$brih_alias<font color="red">*</font></b></label></td><td> <input type="text" name="alias" value=""></td>
         <td>
         <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="exportDataToTextarea(document.show,this)";>
          <button type="cancel" class="button-ftextstyle" onclick="window.location='call,UserMgmt_User,UploadMarks.vm';return false;">Cancel</button>
-</td></tr>
+</td>
 #else
-<tr><td>
+<td>
         <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_update" onClick="exportDataToTextarea(document.show,this);">
 </div>
-</td><tr>
+</td>
 #end
+</tr>
 	<input type="hidden" name="fieldValue" value="">
         <input type="hidden" name="fileName" value="$fileName">
         <input type="hidden" name="myvalue" id="myvalue"  value="">
@@ -165,6 +169,24 @@ $!data.getMessage()
 </br>
 <form id="load" name="upload" method="POST" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,UploadMarks.vm").setAction("UploadMarksAction")">
 <div>
+<div>
+##<INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail" onchange="javascript:showTextBox()" id="check"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp;
+<INPUT TYPE="CHECKBOX" name="sendMailu" value="sendMail" id="check"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp;
+</div>
+#* <table><tr>
+	<td >
+                <div style="display:none;" id="textboxDiv">
+                        <b> $brih_mail $brih_mailmsg </b>
+                </div>
+        </td>
+        <td>
+                <div style="display:none;" id="textboxDiv1">
+                         <textarea name="text1" rows=2 cols=35></textarea>
+                </div>
+        </td>
+        </tr>
+</table>
+*#
 <div id='FileBoxesGroup'>
         <div id="FileBoxDiv1">
         <label><b>$brih_alias<font color="red">*</font></b></label>
@@ -311,6 +333,15 @@ $!data.getMessage()
                         }
                 }
         }
-
+	function showTextBox() {
+        	if ($('#check').is(':checked')) {
+	            $("#textboxDiv").show();
+        	    $("#textboxDiv1").show();
+        	}
+        	else {
+	            $("#textboxDiv").hide();
+	            $("#textboxDiv1").hide();
+        	}
+	}
 
 </SCRIPT>

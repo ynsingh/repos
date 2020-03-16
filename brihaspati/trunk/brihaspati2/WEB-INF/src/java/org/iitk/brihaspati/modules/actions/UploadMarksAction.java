@@ -101,6 +101,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 		}
 		String text="null";
 		String myvalue = pp.getString("myvalue");
+		String mailflag = pp.getString("sendMailu","");
 		for(int count=0;count<10;count++){
 			FileItem fileItem=pp.getFileItem("file"+(count+1));
 			text = pp.getString("text"+(count+1));
@@ -137,7 +138,9 @@ public class UploadMarksAction extends SecureAction_Instructor
 	                                fileItem.write(tempFile);
         	                        StringUtil.insertCharacter(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),',','-');
                 	                tempFile.delete();
-					SendMail(data,user,cName,userName,marksExist);
+					if(mailflag.equals("sendMail")){
+						SendMail(data,user,cName,userName,marksExist);
+					}
 				}
 			}
 			else{
@@ -183,6 +186,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 				String filename = pp.getString("fileName","MARK.txt");
 				String type = pp.getString("type","");
 				String alias = pp.getString("alias","");
+				String mailflag = pp.getString("sendMails","");
 				if(type.equals("SpreadSheet")){
 					fileName=alias+"-"+filename;
 					String check = "";
@@ -274,7 +278,9 @@ public class UploadMarksAction extends SecureAction_Instructor
 				 */
 			        	StringUtil.insertCharSpreadsheet(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),tmpFile.getAbsolutePath(),',','-');
 					tempFile.delete();
-					SendMail(data,user,cName,userName,marksExist);
+					if(mailflag.equals("sendMail")){
+						SendMail(data,user,cName,userName,marksExist);
+					}
 					
 				}// end of 2 else
 			}// end of 1 try
